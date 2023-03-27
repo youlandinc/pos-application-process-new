@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clear-all": "rimraf ./.cache ./.next ./node_modules",
+    "prettier": "npx prettier --write ."
   },
   "dependencies": {
     "@emotion/cache": "^11.10.5",

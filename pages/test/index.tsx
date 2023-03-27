@@ -3,14 +3,14 @@ import { TextField, Typography } from '@mui/material';
 import * as React from 'react';
 import {
   Experimental_CssVarsProvider as CssVarsProvider,
-  useColorScheme,
   experimental_extendTheme as extendTheme,
+  useColorScheme,
 } from '@mui/material/styles';
 import Moon from '@mui/icons-material/DarkMode';
 import Sun from '@mui/icons-material/LightMode';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { teal, deepOrange, orange, cyan } from '@mui/material/colors';
+import { cyan, deepOrange, orange, teal } from '@mui/material/colors';
 import { theme } from '@/theme';
 
 function ColorSchemePicker() {
@@ -25,7 +25,6 @@ function ColorSchemePicker() {
 
   return (
     <Button
-      variant="outlined"
       onClick={() => {
         if (mode === 'light') {
           setMode('dark');
@@ -33,6 +32,7 @@ function ColorSchemePicker() {
           setMode('light');
         }
       }}
+      variant="outlined"
     >
       {mode === 'light' ? <Moon /> : <Sun />}
     </Button>
@@ -53,14 +53,14 @@ const Test = (): JSX.Element => {
   return (
     <div id="css-vars-custom-theme">
       <CssVarsProvider
-        theme={theme}
         colorSchemeNode={node || null}
         colorSchemeSelector="#css-vars-custom-theme"
         colorSchemeStorageKey="custom-theme-color-scheme"
         modeStorageKey="custom-theme-mode"
+        theme={theme}
       >
         <Box bgcolor="background.paper" sx={{ p: 1 }}>
-          <TextField label="Email" type="email" margin="normal" />
+          <TextField label="Email" margin="normal" type="email" />
           <Typography
             sx={{
               color: 'text.blue_title',
