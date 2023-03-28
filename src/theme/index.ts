@@ -74,4 +74,31 @@ export const theme = extendTheme({
       },
     },
   },
+  typography: {
+    fontFamily: 'Roboto',
+    h3: {
+      fontFamily: 'Roboto',
+      fontSize: 24,
+      lineHeight: 1.5,
+      fontWeight: 400,
+    },
+    h4: {
+      fontFamily: 'Roboto',
+      fontSize: 20,
+      lineHeight: 1.5,
+      fontWeight: 400,
+    },
+    h5: {
+      fontFamily: 'Roboto',
+      fontSize: 16,
+      lineHeight: 1.5,
+      fontWeight: 400,
+    },
+    h6: {
+      fontFamily: 'Roboto',
+      fontSize: 12,
+      lineHeight: 1.5,
+      fontWeight: 400,
+    },
+  },
 });

@@ -68,6 +68,7 @@ const Test = (): JSX.Element => {
           >
             2222222222222222222222
           </Typography>
+          <Typography variant="h1">33333333333333333</Typography>
           <Box sx={{ py: 2, mx: 'auto' }}>
             <Box sx={{ pb: 4 }}>
               <ColorSchemePicker />
