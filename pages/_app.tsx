@@ -7,7 +7,6 @@ import { lightTheme } from '@/theme';
 import { AppProps } from 'next/app';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { ThemeProvider } from '@mui/material/styles';
-import { IntlErrorCode, NextIntlProvider } from 'next-intl';
 import { Router } from 'next/router';
 import NProgress from 'nprogress';
 import { SnackbarProvider } from 'notistack';
