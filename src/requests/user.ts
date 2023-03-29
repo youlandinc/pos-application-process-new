@@ -1,4 +1,4 @@
-import { post, get } from './axios';
+import { get, post } from './axios';
 import { User } from '@/types/user';
 
 export const _fetchUserSetting = () => {

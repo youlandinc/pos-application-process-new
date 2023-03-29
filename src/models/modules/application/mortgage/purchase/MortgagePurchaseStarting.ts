@@ -1,5 +1,5 @@
-import { Instance, types, SnapshotOut } from 'mobx-state-tree';
-import { MortgagePurchasePurpose, MortgagePurchaseProperty } from './index';
+import { Instance, SnapshotOut, types } from 'mobx-state-tree';
+import { MortgagePurchaseProperty, MortgagePurchasePurpose } from './index';
 import { StartingData } from '@/types/variable';
 import { StartingState, VariableName } from '@/types/enum';
 import { PropertyOpt } from '@/types/options';

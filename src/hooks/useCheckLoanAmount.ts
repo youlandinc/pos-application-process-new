@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { PropertyOpt, UnitOpt } from '@/types/options';
+import { PropertyOpt, UnitOpt } from '../types/options';
 import { utils } from '@/common/utils';
 
 export const useCheckLoanAmount = (
@@ -40,8 +40,7 @@ export const useCheckLoanAmount = (
     }
     if (loanAmount < 50000) {
       setSecondAmountError(['Minimum loan amount is $50,000.']);
-    } else {
-      if (loanAmount > limit) {
+    } else if (loanAmount > limit) {
         setSecondAmountError([
           `Maximum loan amount is ${utils.formatDollar(
             limit,
@@ -58,7 +57,6 @@ export const useCheckLoanAmount = (
             : [''],
         );
       }
-    }
   }, [propertyOpt, numberOfUnits, firstAmount, secondAmount]);
 
   return {

@@ -1,7 +1,7 @@
 import {
+  PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
-  PipelineTaskItemStatus,
 } from '@/types/enum'
 import { AddressData } from '@/types/variable'
 

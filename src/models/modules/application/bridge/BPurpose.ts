@@ -28,7 +28,7 @@ export const BPurpose = types
         key: T,
         value: typeof self['values'][T],
       ) {
-        self['values'][key] = value;
+        self.values[key] = value;
       },
     };
   });

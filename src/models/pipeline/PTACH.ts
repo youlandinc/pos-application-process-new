@@ -1,9 +1,9 @@
 import { getSnapshot, Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { UploadData } from '@/models/UploadFile';
 import {
+  PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
-  PipelineTaskItemStatus,
 } from '@/types/enum';
 import { PipelineACH, PipelineTaskItem } from '@/types/myApplicationData';
 import { Address } from '@/models/modules';
@@ -47,12 +47,12 @@ export const PTACH = types
   .actions((self) => {
     return {
       injectPipelineTaskData(data: PipelineTaskItem<PipelineACH>) {
-        if (!data) return;
+        if (!data) {return;}
         const { taskName, taskId, taskStatus, taskForm } = data;
         self.taskName = taskName;
         self.taskId = taskId;
         self.taskStatus = taskStatus;
-        if (!taskForm) return;
+        if (!taskForm) {return;}
         const {
           accountType,
           accountNumber,

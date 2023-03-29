@@ -1,4 +1,4 @@
-import { Html, Head, Main, NextScript } from 'next/document';
+import { Head, Html, Main, NextScript } from 'next/document';
 import { getInitColorSchemeScript } from '@mui/material/styles';
 export default function Document() {
   return (

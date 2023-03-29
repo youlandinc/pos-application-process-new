@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import throttle from 'lodash/throttle';
 import { GooglePlaces } from '@/types/googlePlaces';
 

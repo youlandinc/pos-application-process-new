@@ -1,4 +1,4 @@
-import { Instance, types, SnapshotOut } from 'mobx-state-tree';
+import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { PipelineTaskKey } from '@/types/enum';
 import {
   PipelineACH,

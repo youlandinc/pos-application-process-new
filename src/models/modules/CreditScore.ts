@@ -8,7 +8,7 @@ import {
 } from 'mobx-state-tree';
 import validate from '@/common/validate';
 import { CreditScoreSchema } from '@/common/schema';
-import { Address, IAddress, SAddress, DebtData } from '@/models/modules';
+import { Address, DebtData, IAddress, SAddress } from '@/models/modules';
 import { DebtWrongReasonOpt, RelationshipOpt } from '@/types/options';
 import { CreditScoreState, VariableName } from '@/types/enum';
 import {
@@ -63,7 +63,7 @@ export const PersonalInfo = types
         self[key] = value;
         const errors = validate(
           { [key]: value },
-          { [key]: CreditScoreSchema['selfInfo'][key] },
+          { [key]: CreditScoreSchema.selfInfo[key] },
         );
         self.errors = {
           ...self.errors,
@@ -83,7 +83,7 @@ export const PersonalInfo = types
         }
       },
       validateSelfInfo() {
-        let errors = validate(self, CreditScoreSchema['selfInfo']);
+        let errors = validate(self, CreditScoreSchema.selfInfo);
         if (!self.authorizedCreditCheck) {
           if (errors === void 0) {
             errors = {};

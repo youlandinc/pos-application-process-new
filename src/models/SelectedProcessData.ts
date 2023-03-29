@@ -31,11 +31,11 @@ export const SelectedProcessData = types
       try {
         const rootStore = getParent(self, 1);
         if (
-          rootStore['userSetting'] &&
-          rootStore['userSetting'].setting.lastSelectedProcessId !== ''
+          rootStore.userSetting &&
+          rootStore.userSetting.setting.lastSelectedProcessId !== ''
         ) {
           const res: AxiosResponse<ProcessData> = yield _fetchProcessData(
-            rootStore['userSetting'].setting.lastSelectedProcessId,
+            rootStore.userSetting.setting.lastSelectedProcessId,
           );
           self.loading = false;
           self.setProcessData(res.data);

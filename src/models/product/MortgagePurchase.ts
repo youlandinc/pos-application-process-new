@@ -1,7 +1,7 @@
 import { getParent, Instance, SnapshotIn, types } from 'mobx-state-tree';
 import {
-  MortgagePurchaseAssets,
   CreditScore,
+  MortgagePurchaseAssets,
   MortgagePurchaseDTI,
   MortgagePurchaseRealtor,
   MortgagePurchaseStarting,

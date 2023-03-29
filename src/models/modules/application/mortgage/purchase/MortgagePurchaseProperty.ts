@@ -1,7 +1,7 @@
 import validate from '@/common/validate';
 import { OccupancyOpt, PropertyOpt, UnitOpt } from '@/types/options';
 import { PropertySchema } from '@/common/schema';
-import { types, Instance, destroy, SnapshotOut } from 'mobx-state-tree';
+import { destroy, Instance, SnapshotOut, types } from 'mobx-state-tree';
 
 export const MortgagePurchaseProperty = types
   .model({
@@ -40,16 +40,16 @@ export const MortgagePurchaseProperty = types
   .views((self) => ({
     get checkIsValid() {
       const { occupancyOpt, propertyOpt, numberOfUnits } = self.values;
-      if (!occupancyOpt) return false;
+      if (!occupancyOpt) {return false;}
       if (occupancyOpt === OccupancyOpt.investmentProperty) {
         return propertyOpt === PropertyOpt.twoToFourFamily
           ? !!numberOfUnits
           : !!propertyOpt;
-      } else {
+      } 
         return propertyOpt === PropertyOpt.twoToFourFamily
           ? !!numberOfUnits
           : !!propertyOpt;
-      }
+      
     },
   }))
   .actions((self) => ({
@@ -64,7 +64,7 @@ export const MortgagePurchaseProperty = types
         destroy(self.errors[key as unknown as any]);
       }
       self.isValid = Object.keys(self.errors).length === 0;
-      self['values'][key] = value;
+      self.values[key] = value;
     },
     validateForm() {
       const errors = validate(self.values, PropertySchema);
@@ -72,7 +72,7 @@ export const MortgagePurchaseProperty = types
       self.errors = errors || {};
     },
     resetPartForm() {
-      if (self.values.propertyOpt === PropertyOpt.twoToFourFamily) return;
+      if (self.values.propertyOpt === PropertyOpt.twoToFourFamily) {return;}
       self.values.numberOfUnits = UnitOpt.default;
       if (!self.values.rentalIncome) {
         self.values.rentalIncome = undefined;

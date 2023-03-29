@@ -1,8 +1,8 @@
-import { post, get } from '../axios';
+import { get, post } from '../axios';
 import {
-  PreApprovalLetterMPData,
   PreApprovalLetterBPData,
   PreApprovalLetterBRData,
+  PreApprovalLetterMPData,
 } from '@/types/dashboardData';
 
 export const _fetchPreApprovedLetterCheck = <

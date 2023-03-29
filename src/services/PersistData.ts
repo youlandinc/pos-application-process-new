@@ -62,7 +62,7 @@ class BasePersistService {
   }
 
   destroy() {
-    if (!this.reaction) return;
+    if (!this.reaction) {return;}
     this.reaction.dispose();
   }
 }
@@ -79,7 +79,7 @@ class PersistSessionService extends BasePersistService {
 
   loadDataFromStorage() {
     const data = localStorage.getItem(this.storageKey);
-    if (!data) return;
+    if (!data) {return;}
     const json = <UserSession>JSON.parse(data);
     rootStore.updateSession(json);
   }
@@ -97,7 +97,7 @@ class PersistProfileService extends BasePersistService {
 
   loadDataFromStorage() {
     const data = localStorage.getItem(this.storageKey);
-    if (!data) return;
+    if (!data) {return;}
     const json = <ClientUserProfile>JSON.parse(data);
     rootStore.updateProfile(json);
   }
@@ -115,7 +115,7 @@ class PersistUserSettingService extends BasePersistService {
 
   loadDataFromStorage() {
     const data = localStorage.getItem(this.storageKey);
-    if (!data) return;
+    if (!data) {return;}
     const json = <User.UserSetting>JSON.parse(data);
     rootStore.userSetting.setUserSetting(json);
   }

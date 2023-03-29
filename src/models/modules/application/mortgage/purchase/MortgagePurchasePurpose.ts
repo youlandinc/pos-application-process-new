@@ -1,6 +1,6 @@
 import { Address } from '@/models/modules';
-import { StageOpt, OfferOpt, PurchaseTimeOpt } from '@/types/options';
-import { types, Instance, SnapshotOut } from 'mobx-state-tree';
+import { OfferOpt, PurchaseTimeOpt, StageOpt } from '@/types/options';
+import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 
 export const MortgagePurchasePurpose = types
   .model({
@@ -44,7 +44,7 @@ export const MortgagePurchasePurpose = types
       key: T,
       value: typeof self['values'][T],
     ) {
-      self['values'][key] = value;
+      self.values[key] = value;
     },
   }));
 

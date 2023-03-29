@@ -1,12 +1,12 @@
 import {
+  cast,
+  getSnapshot,
   Instance,
   SnapshotIn,
   types,
-  getSnapshot,
-  cast,
 } from 'mobx-state-tree';
 import { MRMonthlyPaymentData } from '@/types/variable';
-import { VariableName, LoanType } from '@/types/enum';
+import { LoanType, VariableName } from '@/types/enum';
 
 export const PaymentLoan = types.model({
   caption: types.maybe(types.string),
@@ -41,7 +41,7 @@ export const MortgageRefinanceMonthlyPayment = types
   })
   .views((self) => ({
     get checkIsValid() {
-      if (typeof self.hasMonthlyPayment === 'undefined') return false;
+      if (typeof self.hasMonthlyPayment === 'undefined') {return false;}
       return self.hasMonthlyPayment
         ? self.aboutYourLoans.some((item) => item.isPrimary === true)
         : true;

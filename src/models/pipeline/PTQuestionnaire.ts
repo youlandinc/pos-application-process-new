@@ -6,11 +6,11 @@ import {
   types,
 } from 'mobx-state-tree';
 import { UploadData } from '@/models/UploadFile';
-import { SPQOwnerData, PQOwnerData } from '@/models/pipeline/PQOwner';
+import { PQOwnerData, SPQOwnerData } from '@/models/pipeline/PQOwner';
 import {
+  PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
-  PipelineTaskItemStatus,
 } from '@/types/enum';
 import {
   PipelineQuestionnaire,
@@ -49,8 +49,8 @@ export const PTQuestionnaire = types
           const result = validate(
             { ssn: item.ssn, dateOfBirth: item.birthday },
             {
-              ssn: CreditScoreSchema['selfInfo']['ssn'],
-              dateOfBirth: CreditScoreSchema['selfInfo']['dateOfBirth'],
+              ssn: CreditScoreSchema.selfInfo.ssn,
+              dateOfBirth: CreditScoreSchema.selfInfo.dateOfBirth,
             },
           );
           return !result && Object.values(item).find((value) => !!value);
@@ -69,12 +69,12 @@ export const PTQuestionnaire = types
   .actions((self) => {
     return {
       injectPipelineTaskData(data: PipelineTaskItem<PipelineQuestionnaire>) {
-        if (!data) return;
+        if (!data) {return;}
         const { taskName, taskId, taskStatus, taskForm } = data;
         self.taskName = taskName;
         self.taskId = taskId;
         self.taskStatus = taskStatus;
-        if (!taskForm) return;
+        if (!taskForm) {return;}
         const { documentFile } = taskForm;
         self.taskForm.documentFile = documentFile;
         if (taskForm?.licenses) {

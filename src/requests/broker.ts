@@ -1,4 +1,4 @@
-import { post, get, put, del } from './axios';
+import { del, get, post, put } from './axios';
 import { PipelineTaskItem, TaskFiles } from '@/types/myApplicationData';
 
 export const _fetchPipelineTask = () => {

@@ -1,6 +1,4 @@
 import {
-  BPropNumOpt,
-  ChannelOpt,
   DebtWrongReasonOpt,
   DenialReason,
   OccupancyOpt,
@@ -14,7 +12,9 @@ import {
   StageOpt,
   UnitOpt,
   WhyRefinanceOpt,
-} from '@/types/options';
+} from '@/types/options'
+
+import { Options } from './options'
 
 import {
   AssetsState,
@@ -27,10 +27,10 @@ import {
   MortgageRefinanceAssetsState,
   MortgageRefinanceState,
   StartingState,
-} from '@/types/enum';
+} from '@/types/enum'
 
-import { User } from './user';
-import { LoanType } from '@/types/enum';
+import { User } from './user'
+import { LoanType } from '@/types/enum'
 
 export interface AddressData {
   address: string;
@@ -41,7 +41,7 @@ export interface AddressData {
 }
 
 export interface WhereKnowUsData {
-  reference: ChannelOpt;
+  reference: Options.ChannelOpt;
 }
 
 interface BaseMortgageStartingData {
@@ -134,9 +134,9 @@ export interface SelfInfoData {
 }
 
 export type IncomeData =
-  | SalaryIncomeData
-  | SelfEmployIncomeData
-  | OtherIncomeData;
+    | SalaryIncomeData
+    | SelfEmployIncomeData
+    | OtherIncomeData;
 
 export interface SalaryIncomeData {
   timeunit: TimeUnit;
@@ -288,7 +288,7 @@ export interface MRResidenceOwnData {
 // bridge
 
 export interface BridgeStartingData {
-  propertyNumber: BPropNumOpt;
+  propertyNumber: Options.BridgePropertyNumberOpt;
   isConfirm: boolean | undefined;
   propertyType: PropertyOpt;
   propertyUnit: UnitOpt;
@@ -330,29 +330,29 @@ export interface BApplicationProcessSnapshot {
 }
 
 export type VariableValue =
-  | WhereKnowUsData
-  | BorrowerDebtSummaryData
-  | BorrowerData
-  | FinancialSituationData
-  | AboutOtherRelationData
-  | OtherIncomeData
-  | SelfEmployIncomeData
-  | SalaryIncomeData
-  | SelfInfoData
-  | PropertyOwnData
-  | LoanLockFeeData
-  | PropertyNewData
-  | StartingData
-  | ApplicationProcessSnapshot
-  | EstateAgent
-  | BorrowerDebtRecordData
-  | Encompass
-  // refinance
-  | MRStartingData
-  | MRMonthlyPaymentData
-  | MRResidenceOwnData
-  | MRWhyRefinanceData
-  // bridge
-  | BridgeStartingData
-  | BPEstimateRateData
-  | BREstimateRateData;
+    | WhereKnowUsData
+    | BorrowerDebtSummaryData
+    | BorrowerData
+    | FinancialSituationData
+    | AboutOtherRelationData
+    | OtherIncomeData
+    | SelfEmployIncomeData
+    | SalaryIncomeData
+    | SelfInfoData
+    | PropertyOwnData
+    | LoanLockFeeData
+    | PropertyNewData
+    | StartingData
+    | ApplicationProcessSnapshot
+    | EstateAgent
+    | BorrowerDebtRecordData
+    | Encompass
+    // refinance
+    | MRStartingData
+    | MRMonthlyPaymentData
+    | MRResidenceOwnData
+    | MRWhyRefinanceData
+    // bridge
+    | BridgeStartingData
+    | BPEstimateRateData
+    | BREstimateRateData;

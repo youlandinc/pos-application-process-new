@@ -1,4 +1,4 @@
-import { types, Instance, SnapshotOut } from 'mobx-state-tree';
+import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { DTIState } from '@/types/enum';
 
 export const MortgagePurchaseDTI = types

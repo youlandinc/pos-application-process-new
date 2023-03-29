@@ -14,7 +14,7 @@ export const useCheckHasLoggedIn = (
   const router = useRouter();
   const check = usePersistFn(() => {
     if (!persistDataLoaded || session === void 0 || !userType || !loginType)
-      return;
+      {return;}
     enqueueSnackbar('You have logged in and are now ready for you', {
       variant: 'success',
       autoHideDuration: AUTO_HIDE_DURATION,

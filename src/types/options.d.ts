@@ -1,3 +1,38 @@
+export declare namespace Options {
+  
+  enum ChannelOpt {
+    default = '',
+    podcast = 'podcast',
+    tv = 'tv',
+    lending_tree = 'lending_tree',
+    public_transit = 'public_transit',
+    news_outlet = 'news_outlet',
+    real_estate_agent = 'real_estate_agent',
+    search = 'search',
+    nerd_wallet = 'nerd_wallet',
+    friend_or_family = 'friend_or_family',
+    youtube = 'youtube',
+    credit_karma = 'credit_karma',
+    direct_mail = 'direct_mail',
+    facebook = 'facebook_ad',
+    other = 'other',
+  }
+  
+  enum BridgePropertyNumberOpt {
+    default = '',
+    zero = 'none',
+    one_to_four = 'one_to_four',
+    five_more = 'five_more',
+  }
+  
+  enum PipelineLicenseTypeOpt {
+    default = '',
+    nmls = 'nmls',
+    dre_broker = 'dre_broker',
+    dre_sale_person = 'dre_sale_person',
+  }
+}
+
 export enum StageOpt {
   researching = 'researching',
   makingOffer = 'making_offer',
@@ -92,35 +127,3 @@ export enum WhyRefinanceOpt {
   default = '',
 }
 
-// bridge
-export enum BPropNumOpt {
-  default = '',
-  zero = 'none',
-  one_to_four = 'one_to_four',
-  five_more = 'five_more',
-}
-
-export enum ChannelOpt {
-  default = '',
-  podcast = 'podcast',
-  tv = 'tv',
-  lending_tree = 'lending_tree',
-  public_transit = 'public_transit',
-  news_outlet = 'news_outlet',
-  real_estate_agent = 'real_estate_agent',
-  search = 'search',
-  nerd_wallet = 'nerd_wallet',
-  friend_or_family = 'friend_or_family',
-  youtube = 'youtube',
-  credit_karma = 'credit_karma',
-  direct_mail = 'direct_mail',
-  facebook = 'facebook_ad',
-  other = 'other',
-}
-
-export enum LicenseTypeOpt {
-  default = '',
-  nmls = 'nmls',
-  dre_broker = 'dre_broker',
-  dre_sale_person = 'dre_sale_person',
-}

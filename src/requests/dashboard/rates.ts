@@ -3,9 +3,9 @@ import { RatesProductData } from '@/types/dashboardData';
 import {
   BPEstimateRateData,
   BREstimateRateData,
+  MRStartingData,
   PropertyNewData,
   StartingData,
-  MRStartingData,
 } from '@/types/variable';
 
 export const _fetchRatesProduct = (processInsId = '') => {

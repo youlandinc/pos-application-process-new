@@ -1,4 +1,4 @@
-import { Instance, types, SnapshotOut } from 'mobx-state-tree';
+import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { BPurpose } from '@/models/modules/application/bridge/BPurpose';
 import { BProperty } from '@/models/modules/application/bridge/BProperty';
 import { StartingState, VariableName } from '@/types/enum';

@@ -17,7 +17,7 @@ export const DashboardTask = types
         // this just for payment async get result , because stripe give me the results first, so this will show fail or success(complete).
         status: Record<string, 'complete' | 'undone' | 'fail' | 'processing'>,
       ) {
-        self.paymentStatus = status['payment'];
+        self.paymentStatus = status.payment;
       },
       changeFieldValue<K extends keyof typeof self>(
         key: K,
@@ -29,7 +29,7 @@ export const DashboardTask = types
   })
   .actions((self) => {
     const fetchTaskItemStatus = flow(function* (processId = '') {
-      if (!processId) return;
+      if (!processId) {return;}
       try {
         const res = yield _fetchTaskItemStatus(processId);
         self.injectTaskItemStatus(res.data);

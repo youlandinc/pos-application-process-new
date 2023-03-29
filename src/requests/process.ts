@@ -1,4 +1,4 @@
-import { post, get, put } from './axios';
+import { get, post, put } from './axios';
 import { ProcessData } from '@/types/server';
 
 export const _startProcess = (productName = 'mortgage') => {

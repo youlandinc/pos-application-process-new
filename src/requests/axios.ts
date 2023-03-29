@@ -14,9 +14,7 @@ const service = axios.create({
 
 service.interceptors.request.use((config) => {
   if (rootStore.session) {
-    config.headers[
-      'Authorization'
-    ] = `Bearer ${rootStore.session.idToken.jwtToken}`;
+    config.headers.Authorization = `Bearer ${rootStore.session.idToken.jwtToken}`;
   }
   return config;
 });

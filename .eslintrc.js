@@ -74,6 +74,7 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 1,
     'no-void': 'off',
+    '@typescript-eslint/no-explicit-any': 'off'
   },
   settings: {
     react: {

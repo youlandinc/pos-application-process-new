@@ -1,7 +1,7 @@
 import validate from '@/common/validate';
 import { EstateAgent } from '@/types/variable';
 import { RealtorSchema } from '@/common/schema';
-import { types, Instance, SnapshotOut, destroy } from 'mobx-state-tree';
+import { destroy, Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { VariableName } from '@/types/enum';
 
 export const MortgagePurchaseRealtor = types

@@ -1,13 +1,13 @@
-import { types, Instance } from 'mobx-state-tree';
+import { Instance, types } from 'mobx-state-tree';
 import {
-  MortgagePurchase,
-  SMortgagePurchase,
-  MortgageRefinance,
-  SMortgageRefinance,
   BridgePurchase,
-  SBridgePurchase,
   BridgeRefinance,
+  MortgagePurchase,
+  MortgageRefinance,
+  SBridgePurchase,
   SBridgeRefinance,
+  SMortgagePurchase,
+  SMortgageRefinance,
 } from '@/models/product';
 import { FormDefaultValueMap } from '@/constants/formDefaultValue';
 

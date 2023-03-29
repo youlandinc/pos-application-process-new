@@ -1,5 +1,5 @@
 import { Address } from '@/models/modules';
-import { types, Instance, SnapshotOut } from 'mobx-state-tree';
+import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 
 export const MortgageRefinancePurpose = types
   .model({
@@ -17,7 +17,7 @@ export const MortgageRefinancePurpose = types
       key: T,
       value: typeof self['values'][T],
     ) {
-      self['values'][key] = value;
+      self.values[key] = value;
     },
   }));
 

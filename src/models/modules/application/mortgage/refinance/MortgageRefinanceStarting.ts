@@ -1,5 +1,5 @@
-import { Instance, types, SnapshotOut } from 'mobx-state-tree';
-import { MortgageRefinancePurpose, MortgageRefinanceProperty } from './index';
+import { Instance, SnapshotOut, types } from 'mobx-state-tree';
+import { MortgageRefinanceProperty, MortgageRefinancePurpose } from './index';
 import { MRStartingData } from '@/types/variable';
 import { StartingState, VariableName } from '@/types/enum';
 import { PropertyOpt } from '@/types/options';

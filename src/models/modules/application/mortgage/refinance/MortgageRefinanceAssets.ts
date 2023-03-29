@@ -1,16 +1,16 @@
 import {
-  types,
-  Instance,
-  SnapshotOut,
   cast,
   getSnapshot,
+  Instance,
+  SnapshotOut,
+  types,
 } from 'mobx-state-tree';
 import {
-  LoanData,
-  FinancialSituation,
-  DebtData,
-  SLoanData,
   Address,
+  DebtData,
+  FinancialSituation,
+  LoanData,
+  SLoanData,
 } from '@/models/modules';
 import { PropPurposeOpt, PropTitleOpt, WhyRefinanceOpt } from '@/types/options';
 import { MortgageRefinanceAssetsState, VariableName } from '@/types/enum';
@@ -227,7 +227,7 @@ const MortgageRefinanceWhyRefinance = types
   .views((self) => ({
     get checkIsValid(): boolean {
       const { purpose, cashOut, cashValid } = self;
-      if (!purpose) return false;
+      if (!purpose) {return false;}
       switch (purpose) {
         case WhyRefinanceOpt.cashOut:
           return !!cashOut && cashValid;

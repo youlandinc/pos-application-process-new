@@ -1,8 +1,8 @@
-import { types, Instance, SnapshotOut, cast } from 'mobx-state-tree';
+import { cast, Instance, SnapshotOut, types } from 'mobx-state-tree';
 import {
   Address,
-  LoanData,
   FinancialSituation,
+  LoanData,
   SLoanData,
 } from '@/models/modules';
 import { PropPlanOpt, PropPurposeOpt, PropTitleOpt } from '@/types/options';

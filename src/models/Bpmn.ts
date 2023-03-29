@@ -1,4 +1,4 @@
-import { types, Instance, SnapshotIn, cast } from 'mobx-state-tree';
+import { cast, Instance, SnapshotIn, types } from 'mobx-state-tree';
 import { ServerTaskKey } from '@/types/enum';
 import { ProcessData } from '@/types/server';
 

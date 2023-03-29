@@ -6,9 +6,9 @@ import {
   types,
 } from 'mobx-state-tree';
 import {
+  PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
-  PipelineTaskItemStatus,
 } from '@/types/enum';
 import { SUploadData, UploadData } from '@/models/UploadFile';
 import { PipelineLicense, PipelineTaskItem } from '@/types/myApplicationData';

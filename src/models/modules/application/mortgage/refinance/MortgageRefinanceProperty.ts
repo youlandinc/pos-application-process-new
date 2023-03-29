@@ -2,11 +2,11 @@ import validate from '@/common/validate';
 import { OccupancyOpt, PropertyOpt, UnitOpt } from '@/types/options';
 import { PropertySchema } from '@/common/schema';
 import {
-  types,
-  Instance,
   destroy,
-  SnapshotOut,
   getSnapshot,
+  Instance,
+  SnapshotOut,
+  types,
 } from 'mobx-state-tree';
 
 export const MortgageRefinanceProperty = types
@@ -50,16 +50,16 @@ export const MortgageRefinanceProperty = types
       const { occupancyOpt, propertyOpt, numberOfUnits, homeValue } =
         self.values;
       const valid = Object.keys(self.errors).every((key) => !self.errors[key]);
-      if (!homeValue || !occupancyOpt || !valid) return false;
+      if (!homeValue || !occupancyOpt || !valid) {return false;}
       if (occupancyOpt === OccupancyOpt.investmentProperty) {
         return propertyOpt === PropertyOpt.twoToFourFamily
           ? !!numberOfUnits
           : !!propertyOpt;
-      } else {
+      } 
         return propertyOpt === PropertyOpt.twoToFourFamily
           ? !!numberOfUnits
           : !!propertyOpt;
-      }
+      
     },
   }))
   .actions((self) => ({
@@ -74,7 +74,7 @@ export const MortgageRefinanceProperty = types
         destroy(self.errors[key as unknown as any]);
       }
       self.isValid = Object.keys(self.errors).length === 0;
-      self['values'][key] = value;
+      self.values[key] = value;
     },
     validateForm() {
       const errors = validate(self.values, PropertySchema);
@@ -84,7 +84,7 @@ export const MortgageRefinanceProperty = types
       self.errors = errors || {};
     },
     resetPartForm() {
-      if (self.values.propertyOpt === PropertyOpt.twoToFourFamily) return;
+      if (self.values.propertyOpt === PropertyOpt.twoToFourFamily) {return;}
       self.values.numberOfUnits = UnitOpt.default;
       if (!self.values.rentalIncome) {
         self.values.rentalIncome = 0;
