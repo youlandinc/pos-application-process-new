@@ -2,14 +2,14 @@ import { LoanStage, LoanType } from '@/types/enum';
 import { PropertyOpt } from '@/types/options';
 import {
   BorrowerDebtSummaryData,
+  BPEstimateRateData,
+  BREstimateRateData,
   BridgeStartingData,
   FinancialSituationData,
   MRStartingData,
   MRWhyRefinanceData,
   PropertyNewData,
   StartingData,
-  BPEstimateRateData,
-  BREstimateRateData,
 } from '@/types/variable';
 
 // overview

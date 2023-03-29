@@ -30,7 +30,8 @@
     "react-is": "16.8.0",
     "react-use": "^17.4.0",
     "reset.css": "^2.0.2",
-    "styled-components": "^5.3.9"
+    "styled-components": "^5.3.9",
+    "zustand": "^4.3.6"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^13.1.1",

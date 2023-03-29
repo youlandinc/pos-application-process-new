@@ -2,8 +2,8 @@ import {
   PipelineTaskKey,
   PipelineTaskName,
   PipelineTaskItemStatus,
-} from '@/types/enum';
-import { AddressData } from '@/types/variable';
+} from '@/types/enum'
+import { AddressData } from '@/types/variable'
 
 export interface PipelineTasksMap {
   [PipelineTaskKey.AI]: PipelineTaskItem<PipelineACH>;
@@ -14,7 +14,7 @@ export interface PipelineTasksMap {
   [PipelineTaskKey.WF]: PipelineTaskItem<PipelineW9>;
 }
 
-export interface PipelineTaskItem<T extends any> {
+export interface PipelineTaskItem<T extends PipelineACH | PipelineAgreement | PipelineGovernment | PipelineLicense | PipelineQuestionnaire | PipelineW9> {
   taskId: string;
   taskName: PipelineTaskName;
   taskStatus: PipelineTaskItemStatus;
