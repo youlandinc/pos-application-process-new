@@ -1,249 +1,233 @@
 import { LoanType } from '@/types/enum';
-import {
-  DebtWrongReasonOpt,
-  OccupancyOpt,
-  OfferOpt,
-  PropertyOpt,
-  PropPlanOpt,
-  PropPurposeOpt,
-  PropTitleOpt,
-  PurchaseTimeOpt,
-  RelationshipOpt,
-  StageOpt,
-  UnitOpt,
-  WhyRefinanceOpt,
-} from '@/types/options';
+import { Options } from '@/types/options';
 
-export const OPTION_MORTGAGE_PROPERTY: {
-  [key: string]: Option[];
-} = {
-  occupancyOpt: [
-    {
-      key: OccupancyOpt.primaryResidence,
-      value: OccupancyOpt.primaryResidence,
-      label: 'Primary residence',
-    },
-    {
-      key: OccupancyOpt.secondHome,
-      value: OccupancyOpt.secondHome,
-      label: 'Second home',
-    },
-    {
-      key: OccupancyOpt.investmentProperty,
-      value: OccupancyOpt.investmentProperty,
-      label: 'Investment property',
-    },
-  ],
-  propertyOpt: [
-    {
-      key: PropertyOpt.singleFamily,
-      value: PropertyOpt.singleFamily,
-      label: 'Single family',
-    },
-    {
-      key: PropertyOpt.townhouse,
-      value: PropertyOpt.townhouse,
-      label: 'Townhouse',
-    },
-    {
-      key: PropertyOpt.condo,
-      value: PropertyOpt.condo,
-      label: 'Condo',
-    },
-    {
-      key: PropertyOpt.twoToFourFamily,
-      value: PropertyOpt.twoToFourFamily,
-      label: '2-4 Units',
-    },
-  ],
-  numberOfUnits: [
-    {
-      key: UnitOpt.twoUnits + '',
-      value: UnitOpt.twoUnits,
-      label: '2 Units',
-    },
-    {
-      key: UnitOpt.threeUnits + '',
-      value: UnitOpt.threeUnits,
-      label: '3 Units',
-    },
-    {
-      key: UnitOpt.fourUnits + '',
-      value: UnitOpt.fourUnits,
-      label: '4 Units',
-    },
-  ],
-};
-
-export const OPTION_MORTGAGE_PURCHASEPURPOS: {
-  [key: string]: Option[];
-} = {
-  process: [
-    {
-      key: StageOpt.researching,
-      value: StageOpt.researching,
-      label: "I'm just researching",
-    },
-    {
-      key: StageOpt.makingOffer,
-      value: StageOpt.makingOffer,
-      label: "I'm making offers",
-    },
-    {
-      key: StageOpt.signedPurchase,
-      value: StageOpt.signedPurchase,
-      label: 'I have signed a purchase contract',
-    },
-  ],
-  offer: [
-    {
-      key: OfferOpt.preApproval,
-      value: OfferOpt.preApproval,
-      label: 'Get a Pre-approval Letter',
-    },
-    {
-      key: OfferOpt.isAfford,
-      value: OfferOpt.isAfford,
-      label: 'See how much I can afford',
-    },
-    {
-      key: OfferOpt.realEstate,
-      value: OfferOpt.realEstate,
-      label: 'Find a real estate agent',
-    },
-  ],
-  purchaseTime: [
-    {
-      key: PurchaseTimeOpt.quarter,
-      value: PurchaseTimeOpt.quarter,
-      label: '0-3 months',
-    },
-    {
-      key: PurchaseTimeOpt.half,
-      value: PurchaseTimeOpt.half,
-      label: '3-6 months',
-    },
-    {
-      key: PurchaseTimeOpt.year,
-      value: PurchaseTimeOpt.year,
-      label: '6+ months',
-    },
-    {
-      key: PurchaseTimeOpt.notSure,
-      value: PurchaseTimeOpt.notSure,
-      label: 'Not sure',
-    },
-  ],
-};
-
-export const OPTION_MORTGAGE_ASSETS: { [key: string]: Option[] } = {
-  propertyPlan: [
-    {
-      value: PropPlanOpt.sellIt,
-      key: PropPlanOpt.sellIt,
-      label: 'Sell it',
-    },
-    {
-      value: PropPlanOpt.keepIt,
-      key: PropPlanOpt.keepIt,
-      label: 'Keep it',
-    },
-  ],
-  propertyTitle: [
-    {
-      value: PropTitleOpt.byYourself,
-      key: PropTitleOpt.byYourself,
-      label: 'By yourself',
-    },
-    {
-      value: PropTitleOpt.jointlyWithSpouse,
-      key: PropTitleOpt.jointlyWithSpouse,
-      label: 'Jointly with spouse',
-    },
-    {
-      value: PropTitleOpt.jointlyWithAnotherPerson,
-      key: PropTitleOpt.jointlyWithAnotherPerson,
-      label: 'Jointly with another person',
-    },
-  ],
-  propertyPurpose: [
-    {
-      value: PropPurposeOpt.secondHome,
-      key: PropPurposeOpt.secondHome,
-      label: 'Second home',
-    },
-    {
-      value: PropPurposeOpt.investment,
-      key: PropPurposeOpt.investment,
-      label: 'Investment',
-    },
-  ],
-  whyRefinance: [
-    {
-      value: WhyRefinanceOpt.lowerPayment,
-      key: WhyRefinanceOpt.lowerPayment,
-      label: 'Lower my monthly payment',
-    },
-    {
-      value: WhyRefinanceOpt.cashOut,
-      key: WhyRefinanceOpt.cashOut,
-      label: 'Take cash out to pay for other expenses',
-    },
-    {
-      value: WhyRefinanceOpt.payoffExist,
-      key: WhyRefinanceOpt.payoffExist,
-      label: 'Pay off my existing mortgage sooner',
-    },
-    {
-      value: WhyRefinanceOpt.consolidateDebts,
-      key: WhyRefinanceOpt.consolidateDebts,
-      label: 'Consolidate high-interest debts into a single payment',
-    },
-  ],
-};
-
-export const OPTION_MORTGAGE_COBORROWERRELATIONSHIP = [
+export const OPTIONS_MORTGAGE_OCCUPANCY: Option[] = [
   {
-    value: RelationshipOpt.unmarried,
-    key: RelationshipOpt.unmarried,
+    key: Options.OccupancyOpt.primaryResidence,
+    value: Options.OccupancyOpt.primaryResidence,
+    label: 'Primary residence',
+  },
+  {
+    key: Options.OccupancyOpt.secondHome,
+    value: Options.OccupancyOpt.secondHome,
+    label: 'Second home',
+  },
+  {
+    key: Options.OccupancyOpt.investmentProperty,
+    value: Options.OccupancyOpt.investmentProperty,
+    label: 'Investment property',
+  },
+];
+
+export const OPTIONS_MORTGAGE_PROPERTY: Option[] = [
+  {
+    key: Options.PropertyOpt.singleFamily,
+    value: Options.PropertyOpt.singleFamily,
+    label: 'Single family',
+  },
+  {
+    key: Options.PropertyOpt.townhouse,
+    value: Options.PropertyOpt.townhouse,
+    label: 'Townhouse',
+  },
+  {
+    key: Options.PropertyOpt.condo,
+    value: Options.PropertyOpt.condo,
+    label: 'Condo',
+  },
+  {
+    key: Options.PropertyOpt.twoToFourFamily,
+    value: Options.PropertyOpt.twoToFourFamily,
+    label: '2-4 Units',
+  },
+];
+
+export const OPTIONS_MORTGAGE_UNIT: Option[] = [
+  {
+    key: Options.UnitOpt.twoUnits + '',
+    value: Options.UnitOpt.twoUnits,
+    label: '2 Units',
+  },
+  {
+    key: Options.UnitOpt.threeUnits + '',
+    value: Options.UnitOpt.threeUnits,
+    label: '3 Units',
+  },
+  {
+    key: Options.UnitOpt.fourUnits + '',
+    value: Options.UnitOpt.fourUnits,
+    label: '4 Units',
+  },
+];
+
+export const OPTIONS_MORTGAGE_PROCESS: Option[] = [
+  {
+    key: Options.ProcessOpt.researching,
+    value: Options.ProcessOpt.researching,
+    label: "I'm just researching",
+  },
+  {
+    key: Options.ProcessOpt.makingOffer,
+    value: Options.ProcessOpt.makingOffer,
+    label: "I'm making offers",
+  },
+  {
+    key: Options.ProcessOpt.signedPurchase,
+    value: Options.ProcessOpt.signedPurchase,
+    label: 'I have signed a purchase contract',
+  },
+];
+
+export const OPTIONS_MORTGAGE_OFFER: Option[] = [
+  {
+    key: Options.OfferOpt.preApproval,
+    value: Options.OfferOpt.preApproval,
+    label: 'Get a Pre-approval Letter',
+  },
+  {
+    key: Options.OfferOpt.isAfford,
+    value: Options.OfferOpt.isAfford,
+    label: 'See how much I can afford',
+  },
+  {
+    key: Options.OfferOpt.realEstate,
+    value: Options.OfferOpt.realEstate,
+    label: 'Find a real estate agent',
+  },
+];
+
+export const OPTIONS_MORTGAGE_PURCHASE_TIME: Option[] = [
+  {
+    key: Options.PurchaseTimeOpt.quarter,
+    value: Options.PurchaseTimeOpt.quarter,
+    label: '0-3 months',
+  },
+  {
+    key: Options.PurchaseTimeOpt.half,
+    value: Options.PurchaseTimeOpt.half,
+    label: '3-6 months',
+  },
+  {
+    key: Options.PurchaseTimeOpt.year,
+    value: Options.PurchaseTimeOpt.year,
+    label: '6+ months',
+  },
+  {
+    key: Options.PurchaseTimeOpt.notSure,
+    value: Options.PurchaseTimeOpt.notSure,
+    label: 'Not sure',
+  },
+];
+
+export const OPTIONS_MORTGAGE_PROP_PLAN: Option[] = [
+  {
+    value: Options.PropPlanOpt.sellIt,
+    key: Options.PropPlanOpt.sellIt,
+    label: 'Sell it',
+  },
+  {
+    value: Options.PropPlanOpt.keepIt,
+    key: Options.PropPlanOpt.keepIt,
+    label: 'Keep it',
+  },
+];
+
+export const OPTIONS_MORTGAGE_PROP_TITLE: Option[] = [
+  {
+    value: Options.PropTitleOpt.byYourself,
+    key: Options.PropTitleOpt.byYourself,
+    label: 'By yourself',
+  },
+  {
+    value: Options.PropTitleOpt.jointlyWithSpouse,
+    key: Options.PropTitleOpt.jointlyWithSpouse,
+    label: 'Jointly with spouse',
+  },
+  {
+    value: Options.PropTitleOpt.jointlyWithAnotherPerson,
+    key: Options.PropTitleOpt.jointlyWithAnotherPerson,
+    label: 'Jointly with another person',
+  },
+];
+
+export const OPTIONS_MORTGAGE_PROP_PURPOSE: Option[] = [
+  {
+    value: Options.PropPurposeOpt.secondHome,
+    key: Options.PropPurposeOpt.secondHome,
+    label: 'Second home',
+  },
+  {
+    value: Options.PropPurposeOpt.investment,
+    key: Options.PropPurposeOpt.investment,
+    label: 'Investment',
+  },
+];
+
+export const OPTIONS_MORTGAGE_WHY_REFINANCE: Option[] = [
+  {
+    value: Options.WhyRefinanceOpt.lowerPayment,
+    key: Options.WhyRefinanceOpt.lowerPayment,
+    label: 'Lower my monthly payment',
+  },
+  {
+    value: Options.WhyRefinanceOpt.cashOut,
+    key: Options.WhyRefinanceOpt.cashOut,
+    label: 'Take cash out to pay for other expenses',
+  },
+  {
+    value: Options.WhyRefinanceOpt.payoffExist,
+    key: Options.WhyRefinanceOpt.payoffExist,
+    label: 'Pay off my existing mortgage sooner',
+  },
+  {
+    value: Options.WhyRefinanceOpt.consolidateDebts,
+    key: Options.WhyRefinanceOpt.consolidateDebts,
+    label: 'Consolidate high-interest debts into a single payment',
+  },
+];
+
+export const OPTIONS_MORTGAGE_CO_BORROWER_RELATIONSHIP = [
+  {
+    value: Options.RelationshipOpt.unmarried,
+    key: Options.RelationshipOpt.unmarried,
     label: 'Unmarried',
   },
   {
-    value: RelationshipOpt.married,
-    key: RelationshipOpt.married,
+    value: Options.RelationshipOpt.married,
+    key: Options.RelationshipOpt.married,
     label: 'Married',
   },
   {
-    value: RelationshipOpt.legallySeparated,
-    key: RelationshipOpt.legallySeparated,
+    value: Options.RelationshipOpt.legallySeparated,
+    key: Options.RelationshipOpt.legallySeparated,
     label: 'Legally Separated',
   },
 ];
 
-export const OPTION_MORTGAGE_DEBTWRONG: Option[] = [
+export const OPTIONS_MORTGAGE_DEBT_WRONG: Option[] = [
   {
     label: 'Balance has been paid and is now $0.',
-    key: DebtWrongReasonOpt.had_paid,
-    value: DebtWrongReasonOpt.had_paid,
+    key: Options.DebtWrongReasonOpt.had_paid,
+    value: Options.DebtWrongReasonOpt.had_paid,
   },
   {
     label: 'Co-signer and someone else pays the bill.',
-    key: DebtWrongReasonOpt.co_signer_pays,
-    value: DebtWrongReasonOpt.co_signer_pays,
+    key: Options.DebtWrongReasonOpt.co_signer_pays,
+    value: Options.DebtWrongReasonOpt.co_signer_pays,
   },
   {
     label: 'Work account that employer pays.',
-    key: DebtWrongReasonOpt.employer_pays,
-    value: DebtWrongReasonOpt.employer_pays,
+    key: Options.DebtWrongReasonOpt.employer_pays,
+    value: Options.DebtWrongReasonOpt.employer_pays,
   },
   {
     label: '',
-    key: DebtWrongReasonOpt.default,
-    value: DebtWrongReasonOpt.default,
+    key: Options.DebtWrongReasonOpt.default,
+    value: Options.DebtWrongReasonOpt.default,
   },
 ];
 
-export const OPTION_MORTGAGE_RATESPRODUCT: Option[] = [
+export const OPTIONS_MORTGAGE_RATES_PRODUCT: Option[] = [
   {
     key: LoanType.UNCATEGORIZED,
     value: LoanType.UNCATEGORIZED,
