@@ -68,7 +68,7 @@ export declare namespace Options {
     twoToFourFamily = 'two_to_four_family',
   }
 
-  enum UnitOpt {
+  enum PropertyUnitOpt {
     default = 0,
     twoUnits = 2,
     threeUnits = 3,
@@ -82,13 +82,13 @@ export declare namespace Options {
     default = '',
   }
 
-  enum PropPlanOpt {
+  enum PropertyPlanOpt {
     sellIt = 'sell_it',
     keepIt = 'keep_it',
     default = '',
   }
 
-  enum PropTitleOpt {
+  enum PropertyTitleOpt {
     byYourself = 'by_yourself',
     jointlyWithSpouse = 'jointly_with_spouse',
     jointlyWithAnotherPerson = 'jointly_with_another_person',

@@ -1,5 +1,5 @@
 import { LoanStage, LoanType } from '@/types/enum';
-import { PropertyOpt } from '@/types/options';
+import { Options } from '@/types/options';
 import {
   BorrowerDebtSummaryData,
   BPEstimateRateData,
@@ -30,7 +30,7 @@ export interface OverviewClosingCostData {
 
 export type OverviewBridgeLoanDetail = {
   amortization: string;
-  propertyType: PropertyOpt;
+  propertyType: Options.PropertyOpt;
   closeDate: string;
   penalty: number;
   lien: string;

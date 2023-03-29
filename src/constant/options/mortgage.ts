@@ -44,18 +44,18 @@ export const OPTIONS_MORTGAGE_PROPERTY: Option[] = [
 
 export const OPTIONS_MORTGAGE_UNIT: Option[] = [
   {
-    key: Options.UnitOpt.twoUnits + '',
-    value: Options.UnitOpt.twoUnits,
+    key: Options.PropertyUnitOpt.twoUnits + '',
+    value: Options.PropertyUnitOpt.twoUnits,
     label: '2 Units',
   },
   {
-    key: Options.UnitOpt.threeUnits + '',
-    value: Options.UnitOpt.threeUnits,
+    key: Options.PropertyUnitOpt.threeUnits + '',
+    value: Options.PropertyUnitOpt.threeUnits,
     label: '3 Units',
   },
   {
-    key: Options.UnitOpt.fourUnits + '',
-    value: Options.UnitOpt.fourUnits,
+    key: Options.PropertyUnitOpt.fourUnits + '',
+    value: Options.PropertyUnitOpt.fourUnits,
     label: '4 Units',
   },
 ];
@@ -119,33 +119,33 @@ export const OPTIONS_MORTGAGE_PURCHASE_TIME: Option[] = [
   },
 ];
 
-export const OPTIONS_MORTGAGE_PROP_PLAN: Option[] = [
+export const OPTIONS_MORTGAGE_PROPERTY_PLAN: Option[] = [
   {
-    value: Options.PropPlanOpt.sellIt,
-    key: Options.PropPlanOpt.sellIt,
+    value: Options.PropertyPlanOpt.sellIt,
+    key: Options.PropertyPlanOpt.sellIt,
     label: 'Sell it',
   },
   {
-    value: Options.PropPlanOpt.keepIt,
-    key: Options.PropPlanOpt.keepIt,
+    value: Options.PropertyPlanOpt.keepIt,
+    key: Options.PropertyPlanOpt.keepIt,
     label: 'Keep it',
   },
 ];
 
-export const OPTIONS_MORTGAGE_PROP_TITLE: Option[] = [
+export const OPTIONS_MORTGAGE_PROPERTY_TITLE: Option[] = [
   {
-    value: Options.PropTitleOpt.byYourself,
-    key: Options.PropTitleOpt.byYourself,
+    value: Options.PropertyTitleOpt.byYourself,
+    key: Options.PropertyTitleOpt.byYourself,
     label: 'By yourself',
   },
   {
-    value: Options.PropTitleOpt.jointlyWithSpouse,
-    key: Options.PropTitleOpt.jointlyWithSpouse,
+    value: Options.PropertyTitleOpt.jointlyWithSpouse,
+    key: Options.PropertyTitleOpt.jointlyWithSpouse,
     label: 'Jointly with spouse',
   },
   {
-    value: Options.PropTitleOpt.jointlyWithAnotherPerson,
-    key: Options.PropTitleOpt.jointlyWithAnotherPerson,
+    value: Options.PropertyTitleOpt.jointlyWithAnotherPerson,
+    key: Options.PropertyTitleOpt.jointlyWithAnotherPerson,
     label: 'Jointly with another person',
   },
 ];

@@ -1,17 +1,3 @@
-import {
-  OccupancyOpt,
-  OfferOpt,
-  PropertyOpt,
-  PropPlanOpt,
-  PropPurposeOpt,
-  PropTitleOpt,
-  PurchaseTimeOpt,
-  RelationshipOpt,
-  StageOpt,
-  UnitOpt,
-  WhyRefinanceOpt,
-} from '@/types/options';
-
 import { Options } from '@/types/options';
 
 import {
@@ -40,9 +26,9 @@ export const FormData = {
       starting: {
         purpose: {
           values: {
-            stageOpt: StageOpt.default,
-            offerOpt: OfferOpt.default,
-            purchaseTimeOpt: PurchaseTimeOpt.default,
+            stageOpt: Options.ProcessOpt.default,
+            offerOpt: Options.OfferOpt.default,
+            purchaseTimeOpt: Options.PurchaseTimeOpt.default,
             address: {
               formatAddress: '',
               aptNumber: '',
@@ -58,10 +44,10 @@ export const FormData = {
         },
         property: {
           values: {
-            occupancyOpt: OccupancyOpt.default,
-            propertyOpt: PropertyOpt.default,
+            occupancyOpt: Options.OccupancyOpt.default,
+            propertyOpt: Options.PropertyOpt.default,
             rentalIncome: undefined,
-            numberOfUnits: UnitOpt.default,
+            numberOfUnits: Options.PropertyUnitOpt.default,
           },
           errors: {},
           isValid: false,
@@ -117,7 +103,7 @@ export const FormData = {
             readyEnter: undefined,
           },
           coBorrowerRelationship: {
-            relationship: RelationshipOpt.default,
+            relationship: Options.RelationshipOpt.default,
             liveTogether: undefined,
             willLiveTogether: undefined,
           },
@@ -195,9 +181,9 @@ export const FormData = {
           expectRentPrice: undefined,
           sellForPurchaseNew: undefined,
           hasMonthlyPayment: undefined,
-          propertyTitle: PropTitleOpt.default,
-          propertyPlan: PropPlanOpt.default,
-          propertyPurpose: PropPurposeOpt.default,
+          propertyTitle: Options.PropertyTitleOpt.default,
+          propertyPlan: Options.PropertyPlanOpt.default,
+          propertyPurpose: Options.PropPurposeOpt.default,
           loanList: [],
           interestedRefinancing: undefined,
         },
@@ -250,9 +236,9 @@ export const FormData = {
         property: {
           values: {
             homeValue: undefined,
-            occupancyOpt: OccupancyOpt.default,
-            propertyOpt: PropertyOpt.default,
-            numberOfUnits: UnitOpt.default,
+            occupancyOpt: Options.OccupancyOpt.default,
+            propertyOpt: Options.PropertyOpt.default,
+            numberOfUnits: Options.PropertyUnitOpt.default,
             rentalIncome: undefined,
           },
           errors: {},
@@ -309,7 +295,7 @@ export const FormData = {
             readyEnter: undefined,
           },
           coBorrowerRelationship: {
-            relationship: RelationshipOpt.default,
+            relationship: Options.RelationshipOpt.default,
             liveTogether: undefined,
             willLiveTogether: undefined,
           },
@@ -372,11 +358,11 @@ export const FormData = {
             ownCurrentEstate: undefined,
             hasMonthlyPayment: undefined,
             payments: [],
-            propertyTitle: PropTitleOpt.default,
+            propertyTitle: Options.PropertyTitleOpt.default,
           },
           yourProperty: [],
           whyRefinance: {
-            purpose: WhyRefinanceOpt.default,
+            purpose: Options.WhyRefinanceOpt.default,
             cashOut: undefined,
             payments: [],
             hasMonthlyPayment: false,
@@ -430,8 +416,8 @@ export const FormData = {
         },
         property: {
           values: {
-            propertyType: PropertyOpt.default,
-            propertyUnit: UnitOpt.default,
+            propertyType: Options.PropertyOpt.default,
+            propertyUnit: Options.PropertyUnitOpt.default,
             isConfirm: false,
           },
         },
@@ -497,8 +483,8 @@ export const FormData = {
         },
         property: {
           values: {
-            propertyType: PropertyOpt.default,
-            propertyUnit: UnitOpt.default,
+            propertyType: Options.PropertyOpt.default,
+            propertyUnit: Options.PropertyUnitOpt.default,
             isConfirm: false,
           },
         },

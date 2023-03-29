@@ -110,5 +110,5 @@ declare namespace User {
     email: string;
   }
 
-  interface UserUploadRequest extends TaskFiles {}
+  type UserUploadRequest = TaskFiles;
 }

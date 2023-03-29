@@ -1,5 +1,4 @@
 export * from './usePersistFn';
-export * from './useStateCallback';
 export * from './useCreation';
 export * from './useDebounceFn';
 export * from './useStoreData';
