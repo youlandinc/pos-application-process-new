@@ -1,4 +1,4 @@
-import { Options } from '@/types/options'
+import { Options } from '@/types/options';
 
 export const OPTIONS_PIPELINE_LICENSE_TYPE: Option[] = [
   {
@@ -16,4 +16,4 @@ export const OPTIONS_PIPELINE_LICENSE_TYPE: Option[] = [
     key: Options.PipelineLicenseTypeOpt.dre_sale_person,
     value: Options.PipelineLicenseTypeOpt.dre_sale_person,
   },
-]
+];

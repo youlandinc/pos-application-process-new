@@ -39,7 +39,7 @@ export const MortgagePurchaseRealtor = types
     return {
       changeFieldValue<K extends keyof typeof self>(
         key: K,
-        value: typeof self[K],
+        value: (typeof self)[K],
       ) {
         const errors = validate(
           { [key]: value },

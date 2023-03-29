@@ -1,17 +1,17 @@
 import { LoanType } from '@/types/enum';
 import {
-  OccupancyOpt,
-  PropertyOpt,
-  UnitOpt,
-  OfferOpt,
-  StageOpt,
-  PurchaseTimeOpt,
-  PropPlanOpt,
-  PropTitleOpt,
-  PropPurposeOpt,
-  WhyRefinanceOpt,
-  RelationshipOpt,
   DebtWrongReasonOpt,
+  OccupancyOpt,
+  OfferOpt,
+  PropertyOpt,
+  PropPlanOpt,
+  PropPurposeOpt,
+  PropTitleOpt,
+  PurchaseTimeOpt,
+  RelationshipOpt,
+  StageOpt,
+  UnitOpt,
+  WhyRefinanceOpt,
 } from '@/types/options';
 
 export const OPTION_MORTGAGE_PROPERTY: {

@@ -41,22 +41,22 @@ export const useCheckLoanAmount = (
     if (loanAmount < 50000) {
       setSecondAmountError(['Minimum loan amount is $50,000.']);
     } else if (loanAmount > limit) {
-        setSecondAmountError([
-          `Maximum loan amount is ${utils.formatDollar(
-            limit,
-          )}. We suggest you increase your down payment to ${utils.formatDollar(
-            firstAmount - limit,
-          )}`,
-        ]);
-      } else {
-        setSecondAmountError(
-          parseFloat(rate) < 20
-            ? [
-                `Your total down payment is only ${rate} of the purchase price. The minimum to qualify is 20%`,
-              ]
-            : [''],
-        );
-      }
+      setSecondAmountError([
+        `Maximum loan amount is ${utils.formatDollar(
+          limit,
+        )}. We suggest you increase your down payment to ${utils.formatDollar(
+          firstAmount - limit,
+        )}`,
+      ]);
+    } else {
+      setSecondAmountError(
+        parseFloat(rate) < 20
+          ? [
+              `Your total down payment is only ${rate} of the purchase price. The minimum to qualify is 20%`,
+            ]
+          : [''],
+      );
+    }
   }, [propertyOpt, numberOfUnits, firstAmount, secondAmount]);
 
   return {

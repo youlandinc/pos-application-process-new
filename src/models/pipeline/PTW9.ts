@@ -45,7 +45,7 @@ export const PTW9 = types
       },
       changeFieldValue<K extends keyof typeof self>(
         key: K,
-        value: typeof self[K],
+        value: (typeof self)[K],
       ) {
         self[key] = value;
       },

@@ -24,9 +24,9 @@ export const BPurpose = types
   })
   .actions((self) => {
     return {
-      changeFieldValue<T extends keyof typeof self['values']>(
+      changeFieldValue<T extends keyof (typeof self)['values']>(
         key: T,
-        value: typeof self['values'][T],
+        value: (typeof self)['values'][T],
       ) {
         self.values[key] = value;
       },

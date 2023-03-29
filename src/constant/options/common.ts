@@ -199,4 +199,4 @@ export const OPTIONS_COMMON_STATE: Option[] = [
     key: 'WI',
   },
   { label: 'Wyoming', value: 'WY', key: 'WY' },
-]
+];

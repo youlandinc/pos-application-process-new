@@ -21,7 +21,7 @@ export const DashboardTask = types
       },
       changeFieldValue<K extends keyof typeof self>(
         key: K,
-        value: typeof self[K],
+        value: (typeof self)[K],
       ) {
         self[key] = value;
       },
@@ -29,7 +29,9 @@ export const DashboardTask = types
   })
   .actions((self) => {
     const fetchTaskItemStatus = flow(function* (processId = '') {
-      if (!processId) {return;}
+      if (!processId) {
+        return;
+      }
       try {
         const res = yield _fetchTaskItemStatus(processId);
         self.injectTaskItemStatus(res.data);

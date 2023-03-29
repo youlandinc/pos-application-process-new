@@ -33,9 +33,9 @@ export const BProperty = types
     },
   }))
   .actions((self) => ({
-    changeFieldValue<T extends keyof typeof self['values']>(
+    changeFieldValue<T extends keyof (typeof self)['values']>(
       key: T,
-      value: typeof self['values'][T],
+      value: (typeof self)['values'][T],
     ) {
       self.values[key] = value;
     },

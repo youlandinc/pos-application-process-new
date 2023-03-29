@@ -13,10 +13,9 @@ export const UserSetting = types
     setUserSetting(setting: User.UserSetting) {
       self.setting = setting;
     },
-    changeSettingField: flow(function* <K extends keyof typeof self['setting']>(
-      key: K,
-      value: typeof self.setting[K],
-    ) {
+    changeSettingField: flow(function* <
+      K extends keyof (typeof self)['setting'],
+    >(key: K, value: (typeof self.setting)[K]) {
       self.setting = {
         ...self.setting,
         [key]: value,

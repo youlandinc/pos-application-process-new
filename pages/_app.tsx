@@ -38,7 +38,7 @@ function onError(error) {
 // @ts-expect-error: Unreachable code error
 function getMessageFallback({ namespace, key, error }) {
   const path = [namespace, key].filter((part) => part != null).join('.');
-  
+
   if (error.code === IntlErrorCode.MISSING_MESSAGE) {
     return `${path} is not yet translated`;
   }
@@ -47,7 +47,7 @@ function getMessageFallback({ namespace, key, error }) {
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  
+
   useEffect(() => {
     const handleRouteStart = () => NProgress.start();
     const handleRouteDone = () => NProgress.done();
@@ -60,30 +60,30 @@ export default function MyApp(props: MyAppProps) {
       Router.events.off('routeChangeError', handleRouteDone);
     };
   }, []);
-  
+
   return (
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <meta content="initial-scale=1, width=device-width" name="viewport" />
-          <meta
-              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-              name="viewport"
-          />
-          <title>YouLand</title>
-        </Head>
-        <ThemeProvider theme={lightTheme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <NextIntlProvider
-              getMessageFallback={getMessageFallback}
-              messages={pageProps.messages}
-              onError={onError}
-          >
-            <SnackbarProvider>
-              <Component {...pageProps} />
-            </SnackbarProvider>
-          </NextIntlProvider>
-        </ThemeProvider>
-      </CacheProvider>
+    <CacheProvider value={emotionCache}>
+      <Head>
+        <meta content="initial-scale=1, width=device-width" name="viewport" />
+        <meta
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          name="viewport"
+        />
+        <title>YouLand</title>
+      </Head>
+      <ThemeProvider theme={lightTheme}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        <NextIntlProvider
+          getMessageFallback={getMessageFallback}
+          messages={pageProps.messages}
+          onError={onError}
+        >
+          <SnackbarProvider>
+            <Component {...pageProps} />
+          </SnackbarProvider>
+        </NextIntlProvider>
+      </ThemeProvider>
+    </CacheProvider>
   );
 }

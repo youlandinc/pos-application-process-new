@@ -66,7 +66,7 @@ const RootStore = types.model(RootModel).actions((self) => {
         loginType: profile.userProfile.loginType,
       };
     },
-    injectSimpleUserProfile(profile: typeof self['userProfile']) {
+    injectSimpleUserProfile(profile: (typeof self)['userProfile']) {
       self.userProfile = { ...profile };
     },
     updateSession(session: UserSession | undefined) {

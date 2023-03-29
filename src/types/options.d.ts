@@ -1,5 +1,4 @@
 export declare namespace Options {
-  
   enum ChannelOpt {
     default = '',
     podcast = 'podcast',
@@ -17,14 +16,14 @@ export declare namespace Options {
     facebook = 'facebook_ad',
     other = 'other',
   }
-  
+
   enum BridgePropertyNumberOpt {
     default = '',
     zero = 'none',
     one_to_four = 'one_to_four',
     five_more = 'five_more',
   }
-  
+
   enum PipelineLicenseTypeOpt {
     default = '',
     nmls = 'nmls',
@@ -126,4 +125,3 @@ export enum WhyRefinanceOpt {
   consolidateDebts = 'consolidate_debts',
   default = '',
 }
-

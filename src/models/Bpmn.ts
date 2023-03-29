@@ -17,7 +17,7 @@ export const Bpmn = types
     setTaskId(taskId: string) {
       self.taskId = taskId;
     },
-    setTaskKey(ServerTaskKey: typeof self['ServerTaskKey']) {
+    setTaskKey(ServerTaskKey: (typeof self)['ServerTaskKey']) {
       self.ServerTaskKey = ServerTaskKey;
     },
     setOwners(owners: ProcessData['owners']) {

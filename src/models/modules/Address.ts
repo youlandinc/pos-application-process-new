@@ -36,7 +36,7 @@ export const Address = types
   .actions((self) => ({
     changeFieldValue<T extends keyof typeof self>(
       key: T,
-      value: typeof self[T],
+      value: (typeof self)[T],
     ) {
       const errors = validate({ [key]: value }, { [key]: PurposeSchema[key] });
       self.errors = { ...self.errors, ...(errors || {}) };

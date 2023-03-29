@@ -58,7 +58,7 @@ export const MortgageRefinanceResidenceOwn = types
   .actions((self) => ({
     changeFieldValue<K extends keyof typeof self>(
       key: K,
-      value: typeof self[K],
+      value: (typeof self)[K],
     ) {
       self[key] = value;
     },
@@ -168,7 +168,7 @@ export const MortgageRefinanceYourProperty = types
   .actions((self) => ({
     changeFieldValue<K extends keyof typeof self>(
       key: K,
-      value: typeof self[K],
+      value: (typeof self)[K],
     ) {
       self[key] = value;
     },
@@ -227,7 +227,9 @@ const MortgageRefinanceWhyRefinance = types
   .views((self) => ({
     get checkIsValid(): boolean {
       const { purpose, cashOut, cashValid } = self;
-      if (!purpose) {return false;}
+      if (!purpose) {
+        return false;
+      }
       switch (purpose) {
         case WhyRefinanceOpt.cashOut:
           return !!cashOut && cashValid;
@@ -244,7 +246,7 @@ const MortgageRefinanceWhyRefinance = types
   .actions((self) => ({
     changeFieldValue<K extends keyof typeof self>(
       key: K,
-      value: typeof self[K],
+      value: (typeof self)[K],
     ) {
       self[key] = value;
     },
@@ -287,7 +289,7 @@ export const MortgageRefinanceAssets = types
     },
     changeFieldValue<K extends keyof typeof self>(
       key: K,
-      value: typeof self[K],
+      value: (typeof self)[K],
     ) {
       self[key] = value;
     },

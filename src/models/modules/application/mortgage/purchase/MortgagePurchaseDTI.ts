@@ -9,7 +9,7 @@ export const MortgagePurchaseDTI = types
     state: types.frozen<DTIState>(),
   })
   .actions((self) => ({
-    changeState(state: typeof self['state']) {
+    changeState(state: (typeof self)['state']) {
       self.state = state;
     },
     setReconciled(reconciled: boolean) {

@@ -69,12 +69,16 @@ export const PTQuestionnaire = types
   .actions((self) => {
     return {
       injectPipelineTaskData(data: PipelineTaskItem<PipelineQuestionnaire>) {
-        if (!data) {return;}
+        if (!data) {
+          return;
+        }
         const { taskName, taskId, taskStatus, taskForm } = data;
         self.taskName = taskName;
         self.taskId = taskId;
         self.taskStatus = taskStatus;
-        if (!taskForm) {return;}
+        if (!taskForm) {
+          return;
+        }
         const { documentFile } = taskForm;
         self.taskForm.documentFile = documentFile;
         if (taskForm?.licenses) {
@@ -85,13 +89,13 @@ export const PTQuestionnaire = types
       },
       changeFieldValue<K extends keyof typeof self.taskForm>(
         key: K,
-        value: typeof self.taskForm[K],
+        value: (typeof self.taskForm)[K],
       ) {
         self.taskForm[key] = value;
       },
       changeLicensesFieldValue<K extends keyof typeof PQOwnerData>(
         key: string,
-        value: typeof PQOwnerData[K],
+        value: (typeof PQOwnerData)[K],
         index: number,
       ) {
         self.taskForm.licenses[index][key] = value;

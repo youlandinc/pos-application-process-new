@@ -58,7 +58,7 @@ export const PersonalInfo = types
     return {
       changeSelfInfo<K extends keyof typeof self>(
         key: K,
-        value: typeof self[K],
+        value: (typeof self)[K],
       ) {
         self[key] = value;
         const errors = validate(
@@ -250,8 +250,8 @@ const PersonalIncome = types
     return {
       changeIncomeField<
         T extends 'salary' | 'selfEmployed' | 'other',
-        K extends keyof typeof self[T],
-      >(incomeType: T, key: K, value: typeof self[T][K]): void {
+        K extends keyof (typeof self)[T],
+      >(incomeType: T, key: K, value: (typeof self)[T][K]): void {
         self[incomeType][key] = value;
       },
       getPostData(
@@ -510,12 +510,12 @@ export const CreditScore = types
     };
   })
   .actions((self) => ({
-    changeState(state: typeof self['state']) {
+    changeState(state: (typeof self)['state']) {
       self.state = state;
     },
     changeFieldValue<K extends keyof typeof self>(
       key: K,
-      value: typeof self[K],
+      value: (typeof self)[K],
     ) {
       self[key] = value;
     },

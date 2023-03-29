@@ -1,4 +1,4 @@
-import { Options } from '@/types/options'
+import { Options } from '@/types/options';
 
 export const OPTIONS_BRIDGE_CHANNEL: Option[] = [
   {
@@ -48,7 +48,7 @@ export const OPTIONS_BRIDGE_CHANNEL: Option[] = [
   },
   {
     key: Options.ChannelOpt.youtube,
-    value:Options.ChannelOpt.youtube,
+    value: Options.ChannelOpt.youtube,
     label: 'YouTube',
   },
   {
@@ -71,7 +71,7 @@ export const OPTIONS_BRIDGE_CHANNEL: Option[] = [
     value: Options.ChannelOpt.other,
     label: 'Other...',
   },
-]
+];
 
 export const OPTIONS_BRIDGE_PROPERTY_NUMBER: Option[] = [
   {
@@ -89,4 +89,4 @@ export const OPTIONS_BRIDGE_PROPERTY_NUMBER: Option[] = [
     value: Options.BridgePropertyNumberOpt.five_more,
     label: '5+ properties',
   },
-]
+];

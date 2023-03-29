@@ -41,7 +41,9 @@ export const MortgageRefinanceMonthlyPayment = types
   })
   .views((self) => ({
     get checkIsValid() {
-      if (typeof self.hasMonthlyPayment === 'undefined') {return false;}
+      if (typeof self.hasMonthlyPayment === 'undefined') {
+        return false;
+      }
       return self.hasMonthlyPayment
         ? self.aboutYourLoans.some((item) => item.isPrimary === true)
         : true;
@@ -50,7 +52,7 @@ export const MortgageRefinanceMonthlyPayment = types
   .actions((self) => ({
     changeFieldValue<K extends keyof typeof self>(
       key: K,
-      value: typeof self[K],
+      value: (typeof self)[K],
     ) {
       self[key] = value;
     },

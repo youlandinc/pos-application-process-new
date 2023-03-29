@@ -41,7 +41,7 @@ export const RealEstate = types
     return {
       changeFieldValue<K extends keyof typeof self>(
         key: K,
-        value: typeof self[K],
+        value: (typeof self)[K],
       ) {
         self[key] = value;
       },
@@ -204,7 +204,7 @@ export const MortgagePurchaseAssets = types
       },
       changeFieldValue<K extends keyof typeof self>(
         key: K,
-        value: typeof self[K],
+        value: (typeof self)[K],
       ) {
         self[key] = value;
       },

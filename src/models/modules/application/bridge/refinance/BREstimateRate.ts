@@ -20,7 +20,7 @@ export const BREstimateRate = types
   .actions((self) => ({
     changeFieldValue<T extends keyof typeof self>(
       key: T,
-      value: typeof self[T],
+      value: (typeof self)[T],
     ) {
       self[key] = value;
     },

@@ -40,22 +40,23 @@ export const MortgagePurchaseProperty = types
   .views((self) => ({
     get checkIsValid() {
       const { occupancyOpt, propertyOpt, numberOfUnits } = self.values;
-      if (!occupancyOpt) {return false;}
+      if (!occupancyOpt) {
+        return false;
+      }
       if (occupancyOpt === OccupancyOpt.investmentProperty) {
         return propertyOpt === PropertyOpt.twoToFourFamily
           ? !!numberOfUnits
           : !!propertyOpt;
-      } 
-        return propertyOpt === PropertyOpt.twoToFourFamily
-          ? !!numberOfUnits
-          : !!propertyOpt;
-      
+      }
+      return propertyOpt === PropertyOpt.twoToFourFamily
+        ? !!numberOfUnits
+        : !!propertyOpt;
     },
   }))
   .actions((self) => ({
-    changeFieldValue<T extends keyof typeof self['values']>(
+    changeFieldValue<T extends keyof (typeof self)['values']>(
       key: T,
-      value: typeof self['values'][T],
+      value: (typeof self)['values'][T],
     ) {
       const errors = validate({ [key]: value }, { [key]: PropertySchema[key] });
       self.isValid = !errors;
@@ -72,7 +73,9 @@ export const MortgagePurchaseProperty = types
       self.errors = errors || {};
     },
     resetPartForm() {
-      if (self.values.propertyOpt === PropertyOpt.twoToFourFamily) {return;}
+      if (self.values.propertyOpt === PropertyOpt.twoToFourFamily) {
+        return;
+      }
       self.values.numberOfUnits = UnitOpt.default;
       if (!self.values.rentalIncome) {
         self.values.rentalIncome = undefined;

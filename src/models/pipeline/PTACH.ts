@@ -47,12 +47,16 @@ export const PTACH = types
   .actions((self) => {
     return {
       injectPipelineTaskData(data: PipelineTaskItem<PipelineACH>) {
-        if (!data) {return;}
+        if (!data) {
+          return;
+        }
         const { taskName, taskId, taskStatus, taskForm } = data;
         self.taskName = taskName;
         self.taskId = taskId;
         self.taskStatus = taskStatus;
-        if (!taskForm) {return;}
+        if (!taskForm) {
+          return;
+        }
         const {
           accountType,
           accountNumber,
@@ -74,7 +78,7 @@ export const PTACH = types
       },
       changeFieldValue<K extends keyof typeof self.taskForm>(
         key: K,
-        value: typeof self.taskForm[K],
+        value: (typeof self.taskForm)[K],
       ) {
         self.taskForm[key] = value;
       },

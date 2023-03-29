@@ -8,7 +8,7 @@ export const BCreditScore = types
     state: types.frozen<BridgeCreditScoreState>(),
   })
   .actions((self) => ({
-    changeState(state: typeof self['state']) {
+    changeState(state: (typeof self)['state']) {
       self.state = state;
     },
   }));
