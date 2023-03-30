@@ -3,7 +3,7 @@ import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 import { usePersistFn } from '@/hooks/usePersistFn';
 import { useCallback, useEffect } from 'react';
-import { UserType } from '@/types/enum';
+import { UserType } from '@/types';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
 export const useCheckHasLoggedIn = (

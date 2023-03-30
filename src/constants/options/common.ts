@@ -1,4 +1,4 @@
-import { UserType } from '@/types/enum';
+import { UserType } from '@/types';
 
 export const OPTIONS_COMMON_USER_TYPE: Option[] = [
   {

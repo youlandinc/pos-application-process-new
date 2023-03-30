@@ -1,4 +1,4 @@
-import { LoanType } from '@/types/enum';
+import { LoanType } from '@/types';
 import { Options } from '@/types/options';
 
 export const OPTIONS_MORTGAGE_OCCUPANCY: Option[] = [

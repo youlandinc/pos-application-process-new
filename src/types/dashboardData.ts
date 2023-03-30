@@ -10,7 +10,7 @@ import {
   MRWhyRefinanceData,
   PropertyNewData,
   StartingData,
-} from '@/types/variable';
+} from '@/types';
 
 // overview
 export type OverviewData<T extends OverviewSummaryData = any> = {

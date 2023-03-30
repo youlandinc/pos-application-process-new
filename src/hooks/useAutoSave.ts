@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { IBpmn } from '@/models/Bpmn';
 import { _updateProcessVariables } from '@/requests';
 import {
-  ApplicationProcessSnapshot,
-  BApplicationProcessSnapshot,
-} from '@/types/variable';
+  BridgeApplicationProcessSnapshot,
+  MortgageApplicationProcessSnapshot,
+} from '@/types';
 import { usePersistFn } from '@/hooks/usePersistFn';
 import { useDebounceFn } from '@/hooks/useDebounceFn';
 import { VariableName } from '@/types/enum';
@@ -24,7 +24,7 @@ export const useAutoSave = (
   bpmn: IBpmn,
 ) => {
   const [lastPostData, setLastPostData] = useState<
-    ApplicationProcessSnapshot | BApplicationProcessSnapshot
+    MortgageApplicationProcessSnapshot | BridgeApplicationProcessSnapshot
   >();
 
   const saveClientApplicationProgress = usePersistFn(() => {
