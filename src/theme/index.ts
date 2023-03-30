@@ -28,8 +28,8 @@ declare module '@mui/material/styles/createPalette' {
     homepage: string;
     float: string;
     dark: string;
-    accordion_summary: string;
     nav: string;
+    accordion_summary: string;
   }
 }
 
