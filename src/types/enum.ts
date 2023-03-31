@@ -217,31 +217,3 @@ export enum UserType {
   REAL_ESTATE_AGENT = 'REAL_ESTATE_AGENT',
   LOAN_OFFICER = 'LOAN_OFFICER',
 }
-
-export enum PipelineTaskItemStatus {
-  UNFINISHED = 'unfinished',
-  FINISHED = 'finished',
-  CONFIRMED = 'confirmed',
-}
-
-export enum PipelineTaskName {
-  BROKER_LICENSE = 'Broker License',
-  ACH_INFORMATION = 'ACH Information',
-  BROKER_QUESTIONNAIRE = 'Broker Questionnaire',
-  BROKER_AGREEMENT = 'Broker Agreement',
-  BROKER_GOVERNMENT_ID = 'Broker Government ID',
-  W9_FORM = 'W9 Form',
-  LOAN_OFFICER_AGREEMENT = 'Loan Officer information',
-  REAL_ESTATE_AGENT_AGREEMENT = 'Real Estate Agent information',
-}
-
-export enum PipelineTaskKey {
-  BL = 'BROKER_LICENSE',
-  AI = 'ACH_INFORMATION',
-  BQ = 'BROKER_QUESTIONNAIRE',
-  BA = 'BROKER_AGREEMENT',
-  BG = 'BROKER_GOVERNMENT_ID',
-  WF = 'W9_FORM',
-  LOA = 'LOAN_OFFICER_AGREEMENT',
-  REAA = 'REAL_ESTATE_AGENT_AGREEMENT',
-}

@@ -70,7 +70,7 @@ interface BaseExtra {
 }
 
 // This is a bit of a big change to specify a type, I don't have time for this, but I'll see what happens
-interface Variable<T extends any = any> {
+interface Variable<T> {
   name: string;
   type: VariableType;
   value: T;

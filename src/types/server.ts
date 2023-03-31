@@ -1,5 +1,4 @@
 import { LoanStage, LoanType } from '@/types/enum';
-import { AddressData } from '@/types/variable';
 import { Options } from '@/types/options';
 
 export enum HttpErrorType {
