@@ -1,6 +1,6 @@
-import { AddressData } from '@/types/variable';
-import { BizType, LoginType, UserType } from '@/types/enum';
-import { TaskFiles } from '@/types/myApplicationData';
+import { AddressData } from '@/types/application';
+import { TaskFiles } from '@/types/pipeline';
+import { BizType, LoginType, UserType } from './enum';
 
 declare namespace User {
   interface BaseUserInfo {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { REQUEST_TIMEOUT } from '@/constants';
-import { rootStore } from '@/models/Root';
+//import { rootStore } from '@/models/Root';
 import { HttpErrorType } from '@/types/server';
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8';

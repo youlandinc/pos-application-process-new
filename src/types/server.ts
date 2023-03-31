@@ -6,7 +6,6 @@ export enum HttpErrorType {
 }
 
 // Process
-
 export interface ProcessData {
   extra: ProcessExtra;
   owners: Array<{ userId: string }>;
