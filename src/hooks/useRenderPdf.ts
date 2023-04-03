@@ -6,7 +6,7 @@ export const useRenderPdf = (element: MutableRefObject<HTMLDivElement>) => {
       if (!element.current?.shadowRoot) {
         element.current.attachShadow({ mode: 'open' });
       }
-      element.current.shadowRoot.innerHTML = `${string || '123'}`;
+      element.current.shadowRoot?.innerHTML = `${string || '123'}`;
     },
     [element],
   );

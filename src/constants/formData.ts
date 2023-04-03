@@ -1,5 +1,4 @@
 import { Options } from '@/types/options';
-
 import {
   AssetsState,
   BridgeCreditScoreState,
@@ -10,11 +9,13 @@ import {
   MortgagePurchaseState,
   MortgageRefinanceAssetsState,
   MortgageRefinanceState,
+  StartingState,
+} from '@/types/enum';
+import {
   PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
-  StartingState,
-} from '@/types/enum';
+} from '@/types/pipeline';
 
 export const FormData = {
   mortgage: {
