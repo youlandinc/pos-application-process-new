@@ -1,5 +1,5 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { LicenseTypeOpt } from '@/types/options';
+import { Options } from '@/types/options';
 
 export const PQOwnerData = types.model({
   ownerName: types.maybe(types.string),
@@ -8,10 +8,10 @@ export const PQOwnerData = types.model({
   state: types.maybe(types.string),
   licenseType: types.maybe(
     types.union(
-      types.literal(LicenseTypeOpt.default),
-      types.literal(LicenseTypeOpt.dre_sale_person),
-      types.literal(LicenseTypeOpt.dre_broker),
-      types.literal(LicenseTypeOpt.nmls),
+      types.literal(Options.PipelineLicenseTypeOpt.default),
+      types.literal(Options.PipelineLicenseTypeOpt.dre_sale_person),
+      types.literal(Options.PipelineLicenseTypeOpt.dre_broker),
+      types.literal(Options.PipelineLicenseTypeOpt.nmls),
     ),
   ),
   license: types.maybe(types.string),

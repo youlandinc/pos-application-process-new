@@ -6,12 +6,13 @@ import {
   types,
 } from 'mobx-state-tree';
 import {
+  PipelineTaskItem,
+  PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
-  PipelineTaskItemStatus,
-} from '@/types/enum';
+  PipelineW9,
+} from '@/types/pipeline';
 import { SUploadData, UploadData } from '@/models/UploadFile';
-import { PipelineTaskItem, PipelineW9 } from '@/types/myApplicationData';
 
 export const PTW9 = types
   .model({
@@ -45,7 +46,7 @@ export const PTW9 = types
       },
       changeFieldValue<K extends keyof typeof self>(
         key: K,
-        value: typeof self[K],
+        value: (typeof self)[K],
       ) {
         self[key] = value;
       },

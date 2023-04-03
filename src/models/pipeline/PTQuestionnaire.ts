@@ -8,14 +8,12 @@ import {
 import { UploadData } from '@/models/UploadFile';
 import { PQOwnerData, SPQOwnerData } from '@/models/pipeline/PQOwner';
 import {
+  PipelineQuestionnaire,
+  PipelineTaskItem,
   PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
-} from '@/types/enum';
-import {
-  PipelineQuestionnaire,
-  PipelineTaskItem,
-} from '@/types/myApplicationData';
+} from '@/types/pipeline';
 import { validate } from 'validate.js';
 import { CreditScoreSchema } from '@/common/schema';
 

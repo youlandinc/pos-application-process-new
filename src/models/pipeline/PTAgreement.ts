@@ -1,12 +1,13 @@
 import { getSnapshot, Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { UploadData } from '@/models/UploadFile';
 import {
+  PipelineAgreement,
+  PipelineTaskItem,
   PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
-} from '@/types/enum';
-import { PipelineAgreement, PipelineTaskItem } from '@/types/myApplicationData';
-import { Address } from '@/models/modules';
+} from '@/types/pipeline';
+import { Address } from '@/models/common';
 
 export const PTAgreement = types
   .model({

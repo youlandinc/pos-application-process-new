@@ -1,6 +1,9 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { PipelineTaskItemStatus } from '@/types/enum';
-import { PipelineAgreement, PipelineTaskItem } from '@/types/myApplicationData';
+import {
+  PipelineAgreement,
+  PipelineTaskItem,
+  PipelineTaskItemStatus,
+} from '@/types/pipeline';
 import { Address } from '@/models/modules';
 
 export const PTAgreementNotBroker = types

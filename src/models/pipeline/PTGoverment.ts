@@ -6,15 +6,13 @@ import {
   types,
 } from 'mobx-state-tree';
 import {
+  PipelineGovernment,
+  PipelineTaskItem,
   PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
-} from '@/types/enum';
+} from '@/types/pipeline';
 import { SUploadData, UploadData } from '@/models/UploadFile';
-import {
-  PipelineGovernment,
-  PipelineTaskItem,
-} from '@/types/myApplicationData';
 
 export const PTGovernment = types
   .model({
