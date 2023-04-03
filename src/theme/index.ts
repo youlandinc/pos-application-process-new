@@ -1,11 +1,4 @@
-import {
-  cyan,
-  deepOrange,
-  orange,
-  pink,
-  teal,
-  yellow,
-} from '@mui/material/colors';
+import { cyan, deepOrange, orange, teal } from '@mui/material/colors';
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles';
 
 declare module '@mui/material/styles/createPalette' {
