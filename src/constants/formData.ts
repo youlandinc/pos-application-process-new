@@ -184,7 +184,7 @@ export const FormData = {
           hasMonthlyPayment: undefined,
           propertyTitle: Options.PropertyTitleOpt.default,
           propertyPlan: Options.PropertyPlanOpt.default,
-          propertyPurpose: Options.PropPurposeOpt.default,
+          propertyPurpose: Options.PropertyPurposeOpt.default,
           loanList: [],
           interestedRefinancing: undefined,
         },

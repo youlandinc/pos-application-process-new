@@ -19,7 +19,7 @@ import {
   PTW9,
 } from '@/models/pipeline';
 
-export const PipelineTask = types
+export const PTask = types
   .model({
     [PipelineTaskKey.AI]: PTACH,
     [PipelineTaskKey.BA]: PTAgreement,
@@ -92,5 +92,5 @@ export const PipelineTask = types
     };
   });
 
-export type IPipelineTask = Instance<typeof PipelineTask>;
-export type SPipelineTask = SnapshotOut<typeof PipelineTask>;
+export type IPTask = Instance<typeof PTask>;
+export type SPTask = SnapshotOut<typeof PTask>;

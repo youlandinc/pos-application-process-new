@@ -12,7 +12,7 @@ import {
   PipelineTaskKey,
   PipelineTaskName,
 } from '@/types/pipeline';
-import { SUploadData, UploadData } from '@/models/UploadFile';
+import { SUploadData, UploadData } from '@/models/base';
 
 export const PTLicense = types
   .model({
@@ -26,7 +26,7 @@ export const PTLicense = types
       ),
     ),
     taskForm: types.model({
-      taskFiles: types.maybe(types.array(UploadData)),
+      taskFiles: types.array(UploadData),
     }),
   })
   .actions((self) => {

@@ -1,12 +1,12 @@
 import { get, post, put } from '../axios';
-import { RatesProductData } from '@/types/dashboardData';
+import { RatesProductData } from '@/types/dashboard';
 import {
   BPEstimateRateData,
   BREstimateRateData,
+  MortgagePropertyNewData,
+  MortgageStartingData,
   MRStartingData,
-  PropertyNewData,
-  StartingData,
-} from '@/types/variable';
+} from '@/types/application';
 
 export const _fetchRatesProduct = (processInsId = '') => {
   return get(`/dashboard/rate/${processInsId}/all`);
@@ -22,8 +22,10 @@ type FetchProductMapPreviewQueryData =
   | BPQueryData
   | BRQueryData;
 
-export type MPQueryData = PropertyNewData &
-  Partial<Pick<StartingData, 'propertyOpt' | 'numberOfUnits' | 'propAddr'>>;
+export type MPQueryData = MortgagePropertyNewData &
+  Partial<
+    Pick<MortgageStartingData, 'propertyOpt' | 'numberOfUnits' | 'propAddr'>
+  >;
 
 export type MRQueryData = Pick<MRStartingData, 'homeValue'> & {
   taxAndInsurance: string;

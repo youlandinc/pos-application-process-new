@@ -1,4 +1,6 @@
-import { Instance, types } from 'mobx-state-tree';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import {
   BridgePurchase,
   BridgeRefinance,
@@ -8,8 +10,8 @@ import {
   SBridgeRefinance,
   SMortgagePurchase,
   SMortgageRefinance,
-} from '@/models/product';
-import { FormData } from '@/constants/formData';
+} from '@/models/application';
+import { FormData } from '@/constants';
 
 const Union = types.union({
   dispatcher: (
@@ -45,20 +47,17 @@ export const ApplicationForm = types
     initialized: types.boolean,
     productCategory: types.frozen<ProductCategory>(),
     applicationType: types.frozen<ApplicationType>(),
-    formData: Union,
+    formData: types.maybe(Union),
   })
   .actions((self) => ({
-    initForm<
-      T extends
-        | SMortgagePurchase
-        | SMortgageRefinance
-        | SBridgePurchase
-        | SBridgeRefinance,
-    >(productCategory: ProductCategory, applicationType: ApplicationType) {
+    initForm(
+      productCategory: ProductCategory,
+      applicationType: ApplicationType,
+    ) {
       self.applicationType = applicationType;
       self.productCategory = productCategory;
       self.formData = {
-        ...FormDefaultValueMap[productCategory][applicationType],
+        ...FormData[productCategory][applicationType],
       };
       this.setInitialized(true);
     },
@@ -68,3 +67,4 @@ export const ApplicationForm = types
   }));
 
 export type IApplicationForm = Instance<typeof ApplicationForm>;
+export type SApplicationForm = SnapshotOut<typeof ApplicationForm>;

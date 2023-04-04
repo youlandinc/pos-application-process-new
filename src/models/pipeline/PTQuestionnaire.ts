@@ -5,8 +5,8 @@ import {
   SnapshotOut,
   types,
 } from 'mobx-state-tree';
-import { UploadData } from '@/models/UploadFile';
-import { PQOwnerData, SPQOwnerData } from '@/models/pipeline/PQOwner';
+import { UploadData } from '@/models/base';
+import { PQOwnerData, SPQOwnerData } from '@/models/pipeline';
 import {
   PipelineQuestionnaire,
   PipelineTaskItem,
@@ -15,7 +15,7 @@ import {
   PipelineTaskName,
 } from '@/types/pipeline';
 import { validate } from 'validate.js';
-import { CreditScoreSchema } from '@/common/schema';
+import { CreditScoreSchema } from '@/constants';
 
 export const PTQuestionnaire = types
   .model({
@@ -30,7 +30,7 @@ export const PTQuestionnaire = types
     ),
     taskForm: types.model({
       documentFile: types.maybe(UploadData),
-      licenses: types.maybe(types.array(PQOwnerData)),
+      licenses: types.array(PQOwnerData),
     }),
   })
   .views((self) => ({

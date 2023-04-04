@@ -1,10 +1,10 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
+import { Address } from '@/models/base';
 import {
   PipelineAgreement,
   PipelineTaskItem,
   PipelineTaskItemStatus,
 } from '@/types/pipeline';
-import { Address } from '@/models/modules';
 
 export const PTAgreementNotBroker = types
   .model({

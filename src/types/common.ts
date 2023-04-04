@@ -1,5 +1,6 @@
 import { User } from '@/types/user';
 import {
+  BorrowerData,
   BorrowerDebtRecordData,
   BorrowerDebtSummaryData,
   BPEstimateRateData,
@@ -10,7 +11,6 @@ import {
   MortgageAboutOtherRelationData,
   MortgageApplicationProcessSnapshot,
   MortgageAssetsData,
-  MortgageBorrowerData,
   MortgageFinancialSituationData,
   MortgageLoanLockFeeData,
   MortgagePropertyNewData,
@@ -50,6 +50,7 @@ export type VariableValue =
   | Encompass
   | SelfInfoData
   | IncomeData
+  | BorrowerData
   | BorrowerDebtSummaryData
   | BorrowerDebtRecordData
   | WhereKnowUsData
@@ -62,7 +63,6 @@ export type VariableValue =
   | MortgagePropertyOwnData
   | MortgageAboutOtherRelationData
   | MortgageFinancialSituationData
-  | MortgageBorrowerData
   // mortgage refinance
   | MRStartingData
   | MRMonthlyPaymentData

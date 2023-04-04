@@ -5,14 +5,6 @@ type ProductCategory = 'mortgage' | 'bridge';
 
 type ApplicationType = 'purchase' | 'refinance';
 
-type SceneType =
-  | 'mortgage purchase'
-  | 'mortgage refinance'
-  | 'bridge purchase'
-  | 'bridge refinance'
-  | 'Unknown'
-  | '';
-
 interface Option {
   key: string;
   value: string | number;
@@ -140,8 +132,8 @@ interface UserSession {
 }
 
 interface ClientUserProfile {
-  username: string;
-  email: string;
-  userType: import('@/types/enum.ts').UserType;
-  loginType: import('@/types/enum').LoginType;
+  username: string | undefined;
+  email: string | undefined;
+  userType: import('@/types/enum.ts').UserType | undefined;
+  loginType: import('@/types/enum').LoginType | undefined;
 }

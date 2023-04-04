@@ -1,14 +1,13 @@
 import { cast, Instance, SnapshotIn, types } from 'mobx-state-tree';
-import { ServerTaskKey } from '@/types/enum';
-import { ProcessData } from '@/types/server';
+import { ProcessData, ServerTaskKey } from '@/types';
 
 export const Bpmn = types
   .model({
-    processId: types.string,
-    taskId: types.string,
-    ServerTaskKey: types.frozen<ServerTaskKey>(),
-    owners: types.frozen<ProcessData['owners']>(),
-    variables: types.array(types.frozen<Record<string, any>>({})),
+    processId: types.maybe(types.string),
+    taskId: types.maybe(types.string),
+    ServerTaskKey: types.maybe(types.frozen<ServerTaskKey>()),
+    owners: types.maybe(types.frozen<ProcessData['owners']>()),
+    variables: types.maybe(types.array(types.frozen<Record<string, any>>({}))),
   })
   .actions((self) => ({
     setProcessId(processId: string) {

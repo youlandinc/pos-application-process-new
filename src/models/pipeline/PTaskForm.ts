@@ -1,18 +1,18 @@
-import { flow, Instance, types } from 'mobx-state-tree';
-import { PipelineTask, SPipelineTask } from './PTask';
-import { FormData } from '@/constants/formData';
+import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
+import { FormData } from '@/constants';
+import { PTask, SPTask } from './PTask';
 import { _fetchPipelineTask } from '@/requests';
 
 const Union = types.union({
-  dispatcher: (snapshot: SPipelineTask | undefined) => {
+  dispatcher: (snapshot: SPTask | undefined) => {
     if (!snapshot) {
       return types.undefined;
     }
-    return PipelineTask;
+    return PTask;
   },
 });
 
-export const PipelineTaskForm = types
+export const PTaskForm = types
   .model({
     formData: Union,
     pipelineInitialized: types.boolean,
@@ -40,4 +40,5 @@ export const PipelineTaskForm = types
     };
   });
 
-export type IPipelineTaskForm = Instance<typeof PipelineTaskForm>;
+export type IPTaskForm = Instance<typeof PTaskForm>;
+export type SPTaskForm = SnapshotOut<typeof PTaskForm>;

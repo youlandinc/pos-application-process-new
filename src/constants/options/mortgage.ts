@@ -150,15 +150,15 @@ export const OPTIONS_MORTGAGE_PROPERTY_TITLE: Option[] = [
   },
 ];
 
-export const OPTIONS_MORTGAGE_PROP_PURPOSE: Option[] = [
+export const OPTIONS_MORTGAGE_PROPERTY_PURPOSE: Option[] = [
   {
-    value: Options.PropPurposeOpt.secondHome,
-    key: Options.PropPurposeOpt.secondHome,
+    value: Options.PropertyPurposeOpt.secondHome,
+    key: Options.PropertyPurposeOpt.secondHome,
     label: 'Second home',
   },
   {
-    value: Options.PropPurposeOpt.investment,
-    key: Options.PropPurposeOpt.investment,
+    value: Options.PropertyPurposeOpt.investment,
+    key: Options.PropertyPurposeOpt.investment,
     label: 'Investment',
   },
 ];

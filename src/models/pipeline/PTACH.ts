@@ -1,5 +1,5 @@
 import { getSnapshot, Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { UploadData } from '@/models/UploadFile';
+import { Address, UploadData } from '@/models/base';
 import {
   PipelineACH,
   PipelineTaskItem,
@@ -7,7 +7,6 @@ import {
   PipelineTaskKey,
   PipelineTaskName,
 } from '@/types/pipeline';
-import { Address } from '@/models/common';
 
 export const PTACH = types
   .model({

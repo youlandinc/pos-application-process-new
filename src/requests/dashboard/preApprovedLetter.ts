@@ -1,15 +1,15 @@
 import { get, post } from '../axios';
 import {
-  PreApprovalLetterBPData,
-  PreApprovalLetterBRData,
-  PreApprovalLetterMPData,
-} from '@/types/dashboardData';
+  BPPreApprovalLetterData,
+  BRPreApprovalLetterData,
+  MPPreApprovalLetterData,
+} from '@/types/dashboard';
 
 export const _fetchPreApprovedLetterCheck = <
   T extends
-    | PreApprovalLetterMPData
-    | PreApprovalLetterBPData
-    | PreApprovalLetterBRData,
+    | BRPreApprovalLetterData
+    | BPPreApprovalLetterData
+    | MPPreApprovalLetterData,
 >(
   processId = '',
   checkData: T,
@@ -27,9 +27,9 @@ export const _fetchPDFFile = (processId) => {
 
 export const _fetchPreApprovedLetterInfo = <
   T extends
-    | PreApprovalLetterMPData
-    | PreApprovalLetterBPData
-    | PreApprovalLetterBRData,
+    | BRPreApprovalLetterData
+    | BPPreApprovalLetterData
+    | MPPreApprovalLetterData,
 >(
   processId: string,
 ) => {

@@ -12,7 +12,7 @@ import {
   PipelineTaskName,
   PipelineW9,
 } from '@/types/pipeline';
-import { SUploadData, UploadData } from '@/models/UploadFile';
+import { SUploadData, UploadData } from '@/models/base';
 
 export const PTW9 = types
   .model({
@@ -25,11 +25,9 @@ export const PTW9 = types
         types.literal(PipelineTaskItemStatus.CONFIRMED),
       ),
     ),
-    taskForm: types.maybe(
-      types.model({
-        taskFiles: types.array(UploadData),
-      }),
-    ),
+    taskForm: types.model({
+      taskFiles: types.array(UploadData),
+    }),
   })
   .actions((self) => {
     return {
@@ -51,7 +49,7 @@ export const PTW9 = types
         self[key] = value;
       },
       addFile(uploadData: SUploadData) {
-        const temp = [].concat(self.taskForm.taskFiles);
+        const temp: SUploadData[] = [].concat(self.taskForm.taskFiles as any);
         temp.push(uploadData);
         self.taskForm.taskFiles = cast(temp);
       },

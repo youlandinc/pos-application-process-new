@@ -15,7 +15,7 @@ export const _updateTask = (
 
 export const _updateTaskVariables = (
   taskId: string,
-  variables: Variable[],
+  variables: Variable<any>[],
   overwrite = true,
 ) => {
   return put<BaseResponse & { taskId: string }>(`/tasks/${taskId}/variables`, {

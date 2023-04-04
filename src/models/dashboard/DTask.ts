@@ -1,7 +1,7 @@
-import { flow, Instance, types } from 'mobx-state-tree';
+import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { _fetchTaskItemStatus } from '@/requests/dashboard';
 
-export const DashboardTask = types
+export const DTask = types
   .model({
     paymentStatus: types.union(
       types.literal('complete'),
@@ -45,4 +45,5 @@ export const DashboardTask = types
     };
   });
 
-export type IDashboardTask = Instance<typeof DashboardTask>;
+export type IDTask = Instance<typeof DTask>;
+export type SDTask = SnapshotOut<typeof DTask>;

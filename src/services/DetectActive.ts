@@ -1,9 +1,8 @@
 import { rootStore } from '@/models/Root';
 import { User } from '@/types/user';
 import { _userRefreshToken } from '@/requests/user';
-import { LOGIN_APP_KEY } from '@/constants';
-import { utils } from '@/common/utils';
-import { userpool } from '@/common/userpool';
+import { LOGIN_APP_KEY, userpool } from '@/constants';
+import { POSCreateDebounceFunction } from '@/utils';
 
 const EXPIRED_TIME = 1000 * 60 * 9;
 
@@ -11,7 +10,7 @@ const EXPIRED_TIME = 1000 * 60 * 9;
 
 export class DetectActiveService {
   private _userData: User.UserSignInRequest;
-  private _refreshSessionTimerRef: NodeJS.Timer;
+  private _refreshSessionTimerRef: NodeJS.Timer | undefined;
   private _isActive = false;
   private readonly _clearDebouncedUpdate: () => void;
   private readonly _debouncedUpdate: () => void;
@@ -31,12 +30,9 @@ export class DetectActiveService {
     this._userData = userData;
     this._isActive = true;
 
-    const { run: debounceSetActive, cancel } = utils.createDebounceFunction(
-      () => {
-        this._isActive = true;
-      },
-      300,
-    );
+    const { run: debounceSetActive, cancel } = POSCreateDebounceFunction(() => {
+      this._isActive = true;
+    }, 300);
     this._debouncedUpdate = debounceSetActive;
     this._clearDebouncedUpdate = cancel;
   }

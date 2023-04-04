@@ -1,3 +1,12 @@
+export enum SceneType {
+  default = '',
+  unknown = 'Unknown',
+  mortgage_purchase = 'mortgage purchase',
+  mortgage_refinance = 'mortgage refinance',
+  bridge_purchase = 'bridge purchase',
+  bridge_refinance = 'bridge refinance',
+}
+
 export enum ServerTaskKey {
   // common task
   // starting,refuse,about_yourself,income,about_other,income_of_other...
@@ -135,7 +144,7 @@ export enum LoanStage {
   PreApproved = 'Pre Approved',
   RateLocking = 'Rate Locking',
   RateLocked = 'Rate Locked',
-  Approval = 'Approval',
+  Approved = 'Approved',
   FinalClosing = 'Final Closing',
   Refusal = 'Rejected',
 }

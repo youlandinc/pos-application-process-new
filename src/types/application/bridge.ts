@@ -34,7 +34,7 @@ export interface WhereKnowUsData {
 export interface BPEstimateRateData {
   purchasePrice: number | undefined;
   purchaseLoanAmount: number | undefined;
-  isCor: boolean;
+  isCor: boolean | undefined;
   cor: number | undefined;
   arv: number | undefined;
   brokerPoints?: number | undefined;
@@ -44,9 +44,9 @@ export interface BPEstimateRateData {
 export interface BREstimateRateData {
   homeValue: number | undefined;
   balance: number | undefined;
-  isCashOut: boolean;
+  isCashOut: boolean | undefined;
   cashOutAmount: number | undefined;
-  isCor: boolean;
+  isCor: boolean | undefined;
   cor: number | undefined;
   arv: number | undefined;
   brokerPoints?: number | undefined;

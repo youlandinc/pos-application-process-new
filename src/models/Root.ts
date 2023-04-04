@@ -1,32 +1,47 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { Instance, types } from 'mobx-state-tree';
 import { createContext, useContext } from 'react';
-import { ApplicationForm } from './ApplicationForm';
-import { Bpmn } from '@/models/Bpmn';
-import { NotificationStation } from '@/models/NotificationStation';
-import { LoginType, ServerTaskKey, UserType } from '@/types/enum';
-import { DetectUserActiveService } from '@/models/DetectUserActiveService';
-import { UserSetting } from '@/models/UserSetting';
-import { SelectedProcessData } from '@/models/SelectedProcessData';
-import { DashboardTask } from '@/models/DashboardTask';
-import { PipelineTaskForm } from './PipelineTaskForm';
+import { LoginType, SceneType, ServerTaskKey, UserType } from '@/types/enum';
 import Router from 'next/router';
 import { STaskItemStatus } from '@/requests/dashboard';
 import { User } from '@/types/user';
-import { userpool } from '@/common/userpool';
+import { userpool } from '@/constants';
+import {
+  Bpmn,
+  DetectUserActiveService,
+  NotificationStation,
+  SelectedProcessData,
+} from './base';
+import { ApplicationForm } from './application';
+import { PTaskForm } from './pipeline';
+import { DTask } from './dashboard';
+import {
+  UserSetting,
+  //UserConfig,
+  //UserProfile
+} from './user';
 
 export const RootModel = {
   persistDataLoaded: types.boolean,
   loadedGoogle: types.boolean,
-  applicationForm: ApplicationForm,
+
   bpmn: Bpmn,
-  userProfile: types.maybe(types.frozen<ClientUserProfile>()),
-  notificationStation: NotificationStation,
-  session: types.maybe(types.frozen<UserSession>()),
-  detectUserActiveService: DetectUserActiveService,
-  userSetting: UserSetting,
   selectedProcessData: SelectedProcessData,
-  dashboardTask: DashboardTask,
-  pipelineTask: PipelineTaskForm,
+
+  applicationForm: ApplicationForm,
+
+  dashboardTask: DTask,
+
+  pipelineTask: PTaskForm,
+
+  session: types.maybe(types.frozen<UserSession>()),
+  userSetting: UserSetting,
+  userProfile: types.maybe(types.frozen<ClientUserProfile>()),
+
+  // todo: need extract to user model
+  // useConfig:UserConfig,
+  // UserProfile: UserProfile,
   userType: types.maybe(
     types.union(
       types.literal(UserType.CUSTOMER),
@@ -41,6 +56,9 @@ export const RootModel = {
       types.literal(LoginType.GOOGLE_LOGIN),
     ),
   ),
+
+  detectUserActiveService: DetectUserActiveService,
+  notificationStation: NotificationStation,
 };
 
 const RootStore = types.model(RootModel).actions((self) => {
@@ -66,16 +84,19 @@ const RootStore = types.model(RootModel).actions((self) => {
         loginType: profile.userProfile.loginType,
       };
     },
-    injectSimpleUserProfile(profile: (typeof self)['userProfile']) {
+    injectSimpleUserProfile(profile: ClientUserProfile) {
       self.userProfile = { ...profile };
     },
-    updateSession(session: UserSession | undefined) {
+    updateSession(session?: UserSession) {
       self.session = session;
     },
-    updateProfile(profile: ClientUserProfile | undefined) {
+    updateProfile(profile?: ClientUserProfile) {
       self.userProfile = profile;
     },
-    updateProfileAttribute(name: keyof ClientUserProfile, value: unknown) {
+    updateProfileAttribute(
+      name: keyof (typeof self)['userProfile'],
+      value: unknown,
+    ) {
       self.userProfile = { ...self.userProfile, [name]: value };
     },
     updateUserType(value: UserType) {
@@ -90,7 +111,7 @@ const RootStore = types.model(RootModel).actions((self) => {
     setPersistDataLoaded() {
       self.persistDataLoaded = true;
     },
-    logout(isMemo = true) {
+    logout() {
       if (Router.pathname === '/auth/sign_in') {
         return;
       }
@@ -110,23 +131,35 @@ const RootStore = types.model(RootModel).actions((self) => {
 
 const initialState = {
   loadedGoogle: false,
-  applicationForm: {
-    initialized: false,
-  },
-  userProfile: void 0,
+  persistDataLoaded: false,
+
   session: void 0,
-  notificationStation: {
-    notifications: [],
-  },
   bpmn: {
     processId: '',
     taskId: '',
     ServerTaskKey: ServerTaskKey.starting,
     variables: [{}],
   },
-  detectUserActiveService: {
-    instance: void 0,
+
+  applicationForm: {
+    initialized: false,
   },
+
+  selectedProcessData: {
+    data: void 0,
+    scene: SceneType.default,
+    loading: false,
+  },
+  dashboardTask: {
+    paymentStatus: 'undone' as STaskItemStatus,
+    taskInitialized: false,
+  },
+
+  pipelineTask: {
+    pipelineInitialized: false,
+  },
+
+  userProfile: void 0,
   userSetting: {
     initialized: false,
     loading: false,
@@ -134,27 +167,21 @@ const initialState = {
       lastSelectedProcessId: '',
     },
   },
-  selectedProcessData: {
-    data: void 0,
-    scene: '' as SceneType,
-    loading: false,
+  userType: void 0,
+  loginType: void 0,
+
+  detectUserActiveService: {
+    instance: void 0,
   },
-  persistDataLoaded: false,
-  dashboardTask: {
-    paymentStatus: 'undone' as STaskItemStatus,
-    taskInitialized: false,
+  notificationStation: {
+    notifications: [],
   },
-  pipelineTask: {
-    pipelineInitialized: false,
-  },
-  userType: undefined,
-  isGoogleUser: undefined,
 };
 
 export const rootStore = RootStore.create(initialState);
 
-export type RootInstance = Instance<typeof RootStore>;
-const RootStoreContext = createContext<null | RootInstance>(null);
+export type IRoot = Instance<typeof RootStore>;
+const RootStoreContext = createContext<null | IRoot>(null);
 
 export const Provider = RootStoreContext.Provider;
 

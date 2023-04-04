@@ -95,7 +95,7 @@ export declare namespace Options {
     default = '',
   }
 
-  enum PropPurposeOpt {
+  enum PropertyPurposeOpt {
     default = '',
     secondHome = 'second_home',
     investment = 'investment_property',

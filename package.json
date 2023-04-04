@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3456",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -20,6 +20,7 @@
     "@mui/material": "^5.11.13",
     "@mui/styled-engine-sc": "^5.11.11",
     "axios": "^1.3.4",
+    "crypto-js": "^4.1.1",
     "csstype": "^3.0.10",
     "date-fns": "^2.29.3",
     "mobx": "^6.9.0",
@@ -33,7 +34,8 @@
     "react-is": "16.8.0",
     "react-use": "^17.4.0",
     "reset.css": "^2.0.2",
-    "styled-components": "^5.3.9"
+    "styled-components": "^5.3.9",
+    "validate.js": "^0.13.1"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^13.1.1",

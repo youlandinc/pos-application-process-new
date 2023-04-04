@@ -54,11 +54,11 @@ declare namespace User {
   interface UserProfile {
     account: string;
     avatar: string | null;
-    email: string;
+    email: string | undefined;
     loginType: LoginType;
     name: string;
     tenantId: string;
-    userId: string;
+    userId: string | undefined;
     userType: UserType;
   }
 

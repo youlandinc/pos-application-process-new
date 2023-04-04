@@ -84,7 +84,7 @@ export interface BaseLoanData {
 
 export interface BaseMortgageAssetsData {
   propAddr: AddressData;
-  propertyPurpose: Options.PropPurposeOpt;
+  propertyPurpose: Options.PropertyPurposeOpt;
   expectRentPrice: number | undefined;
   propertyTitle: Options.PropertyTitleOpt;
   hasMonthlyPayment: boolean | undefined;
@@ -94,7 +94,7 @@ export interface BaseMortgageAssetsData {
 
 export interface MortgageAssetsData extends BaseMortgageAssetsData {
   propertyPlan: Options.PropertyPlanOpt;
-  sellForPurchaseNew: boolean;
+  sellForPurchaseNew: boolean | undefined;
   isCurrentEstate: boolean | undefined;
   expectSellPrice: number | undefined;
   interestedRefinancing: boolean | undefined;
@@ -109,45 +109,35 @@ export interface MortgagePropertyOwnData {
 }
 
 export interface MortgageAboutOtherRelationData {
-  isOnTheTitle: boolean;
-  isCoBorrower: boolean;
+  isOnTheTitle: boolean | undefined;
+  isCoBorrower: boolean | undefined;
   relationshipOpt: Options.RelationshipOpt;
-  togetherCurrently: boolean;
-  togetherInNewHome: boolean;
-  readyEnter: boolean;
+  togetherCurrently: boolean | undefined;
+  togetherInNewHome: boolean | undefined;
+  readyEnter: boolean | undefined;
 }
 
 export interface MortgageFinancialSituationData {
-  giftFromRelative: number;
-  loanAmount: number;
-  other: number;
-  retirementAccount: number;
-  salesOfRealEstate: number;
-  savingAccount: number;
-  stockAndBonds: number;
-}
-
-export interface MortgageBorrowerData {
-  reconciled: boolean;
-  preApproved: boolean;
-  denialReason: Options.DenialReason;
-  debtMonthly: number;
-  grossIncomeMonthly: number;
-  creditScore: number;
-  loanAmountMax: number;
+  giftFromRelative: number | undefined;
+  loanAmount: number | undefined;
+  other: number | undefined;
+  retirementAccount: number | undefined;
+  salesOfRealEstate: number | undefined;
+  savingAccount: number | undefined;
+  stockAndBonds: number | undefined;
 }
 
 export interface MortgageDebtData {
   id: string;
-  receiver: string;
-  balance: number;
-  payment: number;
+  receiver: string | undefined;
+  balance: number | undefined;
+  payment: number | undefined;
   paymentSchedule: TimeUnit;
 }
 
 export interface MortgageRecordDebtData extends MortgageDebtData {
-  canPayoff?: boolean;
-  disabled?: boolean;
+  canPayoff?: boolean | undefined;
+  disabled?: boolean | undefined;
   wrongReason?: Options.DebtWrongReasonOpt | undefined;
   consolidate?: undefined | boolean;
 }
@@ -163,28 +153,28 @@ export interface BorrowerDebtRecordData {
 // mortgage refinance
 
 export interface MRStartingData extends BaseMortgageStartingData {
-  homeValue: number;
+  homeValue: number | undefined;
 }
 
 export interface MonthlyPaymentLoan {
-  caption: string;
-  balance: number;
-  payment: number;
-  isPrimary: boolean;
-  includedTaxAndIns: boolean;
-  refinance: boolean;
+  caption: string | undefined;
+  balance: number | undefined;
+  payment: number | undefined;
+  isPrimary: boolean | undefined;
+  includedTaxAndIns: boolean | undefined;
+  refinance: boolean | undefined;
   loanType: LoanType;
-  loanRate: number;
+  loanRate: number | undefined;
 }
 
 export interface MRMonthlyPaymentData {
-  hasMonthlyPayment: boolean;
+  hasMonthlyPayment: boolean | undefined;
   aboutYourLoans: Record<string, MonthlyPaymentLoan>;
 }
 
 export interface MRWhyRefinanceData {
   purpose: Options.WhyRefinanceOpt;
-  cashOut: number;
+  cashOut: number | undefined;
 }
 
 export interface MRYourPropertyData {
@@ -192,8 +182,8 @@ export interface MRYourPropertyData {
 }
 
 export interface MRResidenceOwnData {
-  ownCurrentEstate: boolean;
+  ownCurrentEstate: boolean | undefined;
   propertyTitle: Options.PropertyTitleOpt;
-  hasMonthlyPayment: boolean;
+  hasMonthlyPayment: boolean | undefined;
   payments: Record<string, BaseLoanData>;
 }
