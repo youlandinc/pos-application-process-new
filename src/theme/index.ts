@@ -1,30 +1,16 @@
 import { createTheme } from '@mui/material/styles';
 
 declare module '@mui/material/styles/createPalette' {
-  interface TypeText {
-    constant_primary: string;
-    white_60: string;
-    white_40: string;
-    white: string;
-    yellow_hover: string;
-    yellow_title: string;
-    blue_title: string;
-    blue_dark: string;
-    placeholder: string;
-  }
+  interface TypeText {}
 
   interface TypeBackground {
-    banner: string;
-    white: string;
-    icon: string;
-    footer: string;
-    homepage: string;
-    float: string;
-    dark: string;
-    nav: string;
-    accordion_summary: string;
+    primary: string;
+    primary_hover: string;
+    success_hover: string;
+    secondary_hover: string;
+    warning_hover: string;
+    error_hover: string;
   }
-
   interface TypeAction {
     default: string;
   }
@@ -49,27 +35,23 @@ export const theme = createTheme({
     error: {
       main: '#FF5630',
     },
+    info: {
+      main: '#9095A3',
+    },
     action: {
       default: '#D2D6E1',
       focus: '#202939',
       hover: '#636A7C',
       disabled: '#CDCDCD',
     },
-    text: {
-      constant_primary: 'rgba(0,0,0,.87)',
-      primary: '#202939',
-      secondary: 'rgba(0,0,0,.6)',
-      disabled: 'rgba(0,0,0,.38)',
-      white_40: 'rgba(255,255,255,.4)',
-      white_60: 'rgba(255,255,255,.6)',
-      white: 'rgba(255,255,255,1)',
-      yellow_hover: '#FFE492',
-      yellow_title: '#F3D370',
-      blue_title: '#1134E3',
-      blue_dark: '#041256',
-      placeholder: '#9095A3',
+    text: {},
+    background: {
+      primary_hover: '#0C249F',
+      success_hover: '#0A5554',
+      secondary_hover: '#D9B239',
+      warning_hover: '#7A4100',
+      error_hover: '#7A0916',
     },
-    background: {},
   },
   typography: {
     fontFamily: 'Poppins, "pingfang sc", sans-serif',

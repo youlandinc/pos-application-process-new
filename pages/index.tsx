@@ -16,49 +16,6 @@ const Index = () => {
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <link href="/favicon.ico" rel="icon" />
       </Head>
-      <Box
-        sx={{
-          p: 50,
-        }}
-      >
-        <StyledTextField
-          disabled
-          label={'label'}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder={'placeholder'}
-          sx={{ width: 320 }}
-          value={value}
-        />
-        <Box mt={8}>
-          <StyledTextField
-            label={'label'}
-            onChange={(e) => setValue(e.target.value)}
-            placeholder={'placeholder'}
-            sx={{ width: 320 }}
-            validate={['error 1', 'error 2']}
-            value={value}
-          />
-        </Box>
-        <Box mt={8}>
-          <StyledTextField
-            label={'label'}
-            onChange={(e) => setValue(e.target.value)}
-            placeholder={'placeholder'}
-            sx={{ width: 320 }}
-            validate={['error 1']}
-            value={value}
-          />
-        </Box>
-        <Box mt={8}>
-          <StyledTextField
-            label={'label'}
-            onChange={(e) => setValue(e.target.value)}
-            placeholder={'placeholder'}
-            sx={{ width: 320 }}
-            value={value}
-          />
-        </Box>
-      </Box>
     </>
   );
 };

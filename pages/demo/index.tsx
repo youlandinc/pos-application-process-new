@@ -1,10 +1,11 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import { ArrowRightAlt, MoveToInbox } from '@mui/icons-material';
 
-import { StyledButton } from '@/components/atoms';
+import { StyledButton, StyledTextField } from '@/components/atoms';
 
 const ButtonDemo: FC = () => {
+  const [value, setValue] = useState('123');
   return (
     <Box
       sx={{
@@ -21,6 +22,45 @@ const ButtonDemo: FC = () => {
         }}
       >
         <Typography sx={{ mb: 5 }} variant="h5">
+          TextField
+        </Typography>
+
+        <StyledTextField
+          disabled
+          label={'label'}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={'placeholder'}
+          sx={{ width: 180 }}
+          value={value}
+        />
+
+        <StyledTextField
+          label={'label'}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={'placeholder'}
+          sx={{ width: 180, mx: 2 }}
+          validate={['error 1', 'error 2']}
+          value={value}
+        />
+
+        <StyledTextField
+          label={'label'}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={'placeholder'}
+          sx={{ width: 180 }}
+          validate={['error 1']}
+          value={value}
+        />
+
+        <StyledTextField
+          label={'label'}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={'placeholder'}
+          sx={{ width: 180, ml: 2 }}
+          value={value}
+        />
+
+        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
           Contained Button
         </Typography>
         <Grid container spacing={2}>
@@ -39,6 +79,11 @@ const ButtonDemo: FC = () => {
           <Grid item xs={false}>
             <StyledButton color="primary" variant="contained">
               Primary
+            </StyledButton>
+          </Grid>
+          <Grid item xs={false}>
+            <StyledButton color="info" variant="contained">
+              Cancel
             </StyledButton>
           </Grid>
           <Grid item xs={false}>
@@ -64,10 +109,10 @@ const ButtonDemo: FC = () => {
           <Grid item xs={false}>
             <StyledButton
               sx={{
-                bgcolor: 'text.white',
-                color: 'text.blue_title',
+                bgcolor: '#fff',
+                color: 'primary.main',
                 '&:hover': {
-                  bgcolor: 'text.white_60',
+                  bgcolor: '#fff',
                 },
               }}
               variant="contained"

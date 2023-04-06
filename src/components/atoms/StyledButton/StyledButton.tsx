@@ -11,6 +11,7 @@ export const StyledButton: FC<StyledButtonProps> = (props) => {
     sx,
     ...rest
   } = props;
+
   return (
     <Button
       onClick={(e) => {
@@ -20,7 +21,18 @@ export const StyledButton: FC<StyledButtonProps> = (props) => {
           e.stopPropagation();
         }
       }}
-      sx={Object.assign({}, { ...StyledButtonClasses, ...sx })}
+      sx={Object.assign(
+        {},
+        {
+          // '&.MuiButton-root': {
+          //   '&:hover': {
+          //     bgcolor: 'background.' + props.color + '_hover',
+          //   },
+          // },
+          ...StyledButtonClasses,
+          ...sx,
+        },
+      )}
       {...rest}
     >
       <>{loading ? loadingText : props.children}</>
