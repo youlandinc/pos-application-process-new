@@ -69,6 +69,7 @@ export const theme = createTheme({
       blue_dark: '#041256',
       placeholder: '#9095A3',
     },
+    background: {},
   },
   typography: {
     fontFamily: 'Poppins, "pingfang sc", sans-serif',
