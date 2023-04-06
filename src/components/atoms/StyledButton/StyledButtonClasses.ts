@@ -1,6 +1,6 @@
 import { SxProps } from '@mui/material';
 
-export const ClassesButton: SxProps = {
+export const StyledButtonClasses: SxProps = {
   textTransform: 'none',
   fontWeight: 600,
   fontSize: 16,

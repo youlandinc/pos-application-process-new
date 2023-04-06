@@ -1,4 +1,3 @@
-import { POSFlex } from '@/styles';
 import { FC } from 'react';
 import { Box, TextField } from '@mui/material';
 

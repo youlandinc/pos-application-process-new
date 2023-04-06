@@ -1,7 +1,7 @@
+import { FC } from 'react';
 import { Button } from '@mui/material';
-import React, { FC } from 'react';
-import { StyledButtonProps } from './StyledButton.types';
-import { ClassesButton } from './StyledButtonClasses';
+
+import { StyledButtonClasses, StyledButtonProps } from './index';
 
 export const StyledButton: FC<StyledButtonProps> = (props) => {
   const {
@@ -13,8 +13,6 @@ export const StyledButton: FC<StyledButtonProps> = (props) => {
   } = props;
   return (
     <Button
-      sx={Object.assign({}, { ...ClassesButton, ...sx })}
-      {...rest}
       onClick={(e) => {
         if (!loading && onClick) {
           onClick(e);
@@ -22,6 +20,8 @@ export const StyledButton: FC<StyledButtonProps> = (props) => {
           e.stopPropagation();
         }
       }}
+      sx={Object.assign({}, { ...StyledButtonClasses, ...sx })}
+      {...rest}
     >
       <>{loading ? loadingText : props.children}</>
     </Button>
