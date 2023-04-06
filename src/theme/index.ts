@@ -1,3 +1,4 @@
+import { ClassesButton } from '@/components/atoms/StyledButton/StyledButtonClasses';
 import { createTheme } from '@mui/material/styles';
 
 declare module '@mui/material/styles/createPalette' {
@@ -32,6 +33,14 @@ export const theme = createTheme({
     },
     secondary: {
       main: '#F3D370',
+    },
+    success: {
+      main: '#36B37E',
+      contrastText: '#fff',
+    },
+    warning: {
+      main: '#FFAB00',
+      contrastText: '#fff',
     },
     text: {
       constant_primary: 'rgba(0,0,0,.87)',
@@ -70,5 +79,29 @@ export const theme = createTheme({
   //},
   typography: {
     fontFamily: 'Poppins, "pingfang sc", sans-serif',
+    h3: {
+      fontFamily: 'Roboto',
+      fontSize: 24,
+      lineHeight: 1.5,
+      fontWeight: 600,
+    },
+    h4: {
+      fontFamily: 'Roboto',
+      fontSize: 20,
+      lineHeight: 1.5,
+      fontWeight: 600,
+    },
+    h5: {
+      fontFamily: 'Roboto',
+      fontSize: 16,
+      lineHeight: 1.5,
+      fontWeight: 600,
+    },
+    h6: {
+      fontFamily: 'Roboto',
+      fontSize: 12,
+      lineHeight: 1.5,
+      fontWeight: 600,
+    },
   },
 });
