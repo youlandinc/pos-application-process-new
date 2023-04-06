@@ -1,12 +1,13 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
 import { Box, TextField } from '@mui/material';
 //import React from 'react';
+import { StyledTextField } from '@/components/atoms';
+import { useState } from 'react';
 
 //const inter = Inter({ subsets: ['latin'] });
 
 const Index = () => {
+  const [value, setValue] = useState('');
   return (
     <>
       <Head>
@@ -15,9 +16,39 @@ const Index = () => {
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <link href="/favicon.ico" rel="icon" />
       </Head>
-      <Box>
-        123
-        <TextField />
+      <Box
+        sx={{
+          p: 50,
+        }}
+      >
+        <StyledTextField
+          disabled
+          label={'label'}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={'placeholder'}
+          sx={{ width: 320 }}
+          value={value}
+        />
+        <Box mt={8}>
+          <StyledTextField
+            error
+            helperText={'Caption text, description, notification'}
+            label={'label'}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder={'placeholder'}
+            sx={{ width: 320 }}
+            value={value}
+          />
+        </Box>
+        <Box mt={8}>
+          <StyledTextField
+            label={'label'}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder={'placeholder'}
+            sx={{ width: 320 }}
+            value={value}
+          />
+        </Box>
       </Box>
     </>
   );

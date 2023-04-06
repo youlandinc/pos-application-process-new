@@ -10,6 +10,7 @@ declare module '@mui/material/styles/createPalette' {
     yellow_title: string;
     blue_title: string;
     blue_dark: string;
+    placeholder: string;
   }
 
   interface TypeBackground {
@@ -23,6 +24,10 @@ declare module '@mui/material/styles/createPalette' {
     nav: string;
     accordion_summary: string;
   }
+
+  interface TypeAction {
+    default: string;
+  }
 }
 
 export const theme = createTheme({
@@ -33,9 +38,18 @@ export const theme = createTheme({
     secondary: {
       main: '#F3D370',
     },
+    error: {
+      main: '#FF5630',
+    },
+    action: {
+      default: '#D2D6E1',
+      focus: '#202939',
+      hover: '#636A7C',
+      disabled: '#CDCDCD',
+    },
     text: {
       constant_primary: 'rgba(0,0,0,.87)',
-      primary: 'rgba(0,0,0,.87)',
+      primary: '#202939',
       secondary: 'rgba(0,0,0,.6)',
       disabled: 'rgba(0,0,0,.38)',
       white_40: 'rgba(255,255,255,.4)',
@@ -45,29 +59,9 @@ export const theme = createTheme({
       yellow_title: '#F3D370',
       blue_title: '#1134E3',
       blue_dark: '#041256',
+      placeholder: '#9095A3',
     },
   },
-  //},
-  //  dark: {
-  //    palette: {
-  //      primary: cyan,
-  //      secondary: orange,
-  //      text: {
-  //        constant_primary: 'rgba(0,0,0,.87)',
-  //        primary: 'rgba(0,0,0,.87)',
-  //        secondary: 'rgba(0,0,0,.6)',
-  //        disabled: 'rgba(0,0,0,.38)',
-  //        white_40: 'rgba(255,255,255,.4)',
-  //        white_60: 'rgba(255,255,255,.6)',
-  //        white: 'rgba(255,255,255,1)',
-  //        yellow_hover: '#FFE492',
-  //        yellow_title: '#F3D370',
-  //        blue_title: '#a134E3',
-  //        blue_dark: '#041256',
-  //      },
-  //    },
-  //  },
-  //},
   typography: {
     fontFamily: 'Poppins, "pingfang sc", sans-serif',
   },
