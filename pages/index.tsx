@@ -31,12 +31,21 @@ const Index = () => {
         />
         <Box mt={8}>
           <StyledTextField
-            error
-            helperText={'Caption text, description, notification'}
             label={'label'}
             onChange={(e) => setValue(e.target.value)}
             placeholder={'placeholder'}
             sx={{ width: 320 }}
+            validate={['error 1', 'error 2']}
+            value={value}
+          />
+        </Box>
+        <Box mt={8}>
+          <StyledTextField
+            label={'label'}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder={'placeholder'}
+            sx={{ width: 320 }}
+            validate={['error 1']}
             value={value}
           />
         </Box>
