@@ -9,9 +9,23 @@ export const StyledButton: FC<StyledButtonProps> = (props) => {
     onClick,
     loadingText = 'loading',
     sx,
+    variant = 'contained',
     ...rest
   } = props;
+  const handledSx = () => {
+    switch (variant) {
+      // case 'contained':
+      //   return props.color + '.A100';
+      case 'text':
+        return props.color + '.A200';
 
+      case 'outlined':
+        return props.color + '.A200';
+
+      default:
+        return props.color + '.A100';
+    }
+  };
   return (
     <Button
       onClick={(e) => {
@@ -24,15 +38,16 @@ export const StyledButton: FC<StyledButtonProps> = (props) => {
       sx={Object.assign(
         {},
         {
-          // '&.MuiButton-root': {
-          //   '&:hover': {
-          //     bgcolor: 'background.' + props.color + '_hover',
-          //   },
-          // },
+          '&.MuiButton-root': {
+            '&:hover': {
+              bgcolor: handledSx(),
+            },
+          },
           ...StyledButtonClasses,
           ...sx,
         },
       )}
+      variant={variant}
       {...rest}
     >
       <>{loading ? loadingText : props.children}</>

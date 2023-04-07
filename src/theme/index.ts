@@ -1,16 +1,8 @@
 import { createTheme } from '@mui/material/styles';
-
 declare module '@mui/material/styles/createPalette' {
   interface TypeText {}
 
-  interface TypeBackground {
-    primary: string;
-    primary_hover: string;
-    success_hover: string;
-    secondary_hover: string;
-    warning_hover: string;
-    error_hover: string;
-  }
+  interface TypeBackground {}
   interface TypeAction {
     default: string;
   }
@@ -20,23 +12,35 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: '#1134E3',
+      A100: '#0C249F',
+      A200: 'rgba(17, 52, 227, 0.2)',
     },
     secondary: {
       main: '#F3D370',
+      A100: '#D9B239',
+      A200: 'rgba(243, 211, 112, 0.2)',
     },
     success: {
       main: '#36B37E',
       contrastText: '#fff',
+      A100: '#0A5554',
+      A200: 'rgba(225, 239, 228, 1)',
     },
     warning: {
       main: '#FFAB00',
       contrastText: '#fff',
+      A100: '#7A4100',
+      A200: 'rgba(255, 171, 0, 0.2)',
     },
     error: {
       main: '#FF5630',
+      A100: '#7A0916',
+      A200: 'rgba(255, 86, 48, 0.2)',
     },
     info: {
       main: '#9095A3',
+      A100: '#636A7C',
+      A200: 'rgba(144, 149, 163, 0.2)',
     },
     action: {
       default: '#D2D6E1',
@@ -45,13 +49,7 @@ export const theme = createTheme({
       disabled: '#CDCDCD',
     },
     text: {},
-    background: {
-      primary_hover: '#0C249F',
-      success_hover: '#0A5554',
-      secondary_hover: '#D9B239',
-      warning_hover: '#7A4100',
-      error_hover: '#7A0916',
-    },
+    background: {},
   },
   typography: {
     fontFamily: 'Poppins, "pingfang sc", sans-serif',
