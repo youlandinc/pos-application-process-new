@@ -3,27 +3,26 @@ import { Button } from '@mui/material';
 
 import { StyledButtonClasses, StyledButtonProps } from './index';
 
-export const StyledButton: FC<StyledButtonProps> = (props) => {
-  const {
-    loading = false,
-    onClick,
-    loadingText = 'loading',
-    sx,
-    variant = 'contained',
-    ...rest
-  } = props;
+export const StyledButton: FC<StyledButtonProps> = ({
+  loading = false,
+  onClick,
+  loadingText = 'loading',
+  sx,
+  variant = 'contained',
+  ...rest
+}) => {
   const handledSx = () => {
     switch (variant) {
       // case 'contained':
       //   return props.color + '.A100';
       case 'text':
-        return props.color + '.A200';
+        return rest.color + '.A200';
 
       case 'outlined':
-        return props.color + '.A200';
+        return rest.color + '.A200';
 
       default:
-        return props.color + '.A100';
+        return rest.color + '.A100';
     }
   };
   return (
@@ -36,13 +35,14 @@ export const StyledButton: FC<StyledButtonProps> = (props) => {
         }
       }}
       sx={Object.assign(
-        {},
         {
           '&.MuiButton-root': {
             '&:hover': {
               bgcolor: handledSx(),
             },
           },
+        },
+        {
           ...StyledButtonClasses,
           ...sx,
         },
@@ -50,7 +50,7 @@ export const StyledButton: FC<StyledButtonProps> = (props) => {
       variant={variant}
       {...rest}
     >
-      <>{loading ? loadingText : props.children}</>
+      <>{loading ? loadingText : rest.children}</>
     </Button>
   );
 };

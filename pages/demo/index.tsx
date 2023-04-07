@@ -5,11 +5,14 @@ import { ArrowRightAlt, MoveToInbox } from '@mui/icons-material';
 import {
   StyledButton,
   StyledTextField,
+  StyledTextFieldNumber,
   StyledTextFieldPassword,
 } from '@/components/atoms';
 
 const ButtonDemo: FC = () => {
   const [value, setValue] = useState('123');
+  const [number, setNumber] = useState(1000);
+
   return (
     <Box
       sx={{
@@ -26,40 +29,67 @@ const ButtonDemo: FC = () => {
         }}
       >
         <Typography sx={{ mb: 5 }} variant="h5">
+          Text Field Number
+        </Typography>
+
+        <StyledTextFieldNumber
+          label={'dollar'}
+          onValueChange={(v) => {
+            setNumber(v.floatValue ?? 0);
+          }}
+          placeholder={'dollar'}
+          prefix={'$'}
+          sx={{ width: 180 }}
+          value={number}
+        />
+
+        <StyledTextFieldNumber
+          decimalScale={3}
+          label={'percentage'}
+          onValueChange={(v) => {
+            setNumber(v.floatValue ?? 0);
+          }}
+          placeholder={'percentage'}
+          suffix={'%'}
+          sx={{ width: 180, ml: 2 }}
+          value={number}
+        />
+
+        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
           TextField
         </Typography>
 
         <StyledTextField
           disabled
-          label={'label'}
+          label={'disabled'}
           onChange={(e) => setValue(e.target.value)}
-          placeholder={'placeholder'}
+          placeholder={'disabled'}
           sx={{ width: 180 }}
           value={value}
         />
 
         <StyledTextField
-          label={'label'}
+          label={'error array'}
           onChange={(e) => setValue(e.target.value)}
-          placeholder={'placeholder'}
+          placeholder={'error array'}
           sx={{ width: 180, mx: 2 }}
           validate={['error 1', 'error 2']}
           value={value}
         />
 
         <StyledTextField
-          label={'label'}
+          label={'error'}
           onChange={(e) => setValue(e.target.value)}
-          placeholder={'placeholder'}
+          placeholder={'error'}
           sx={{ width: 180 }}
           validate={['error 1']}
           value={value}
         />
 
         <StyledTextField
-          label={'label'}
+          label={'static'}
           onChange={(e) => setValue(e.target.value)}
-          placeholder={'placeholder'}
+          placeholder={'static'}
           sx={{ width: 180, ml: 2 }}
           value={value}
         />

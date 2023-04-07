@@ -17,12 +17,14 @@ export const StyledTextField: FC<StyledTextFieldTypes> = ({
         error={!!(validate?.length && validate[0])}
         helperText={
           validate?.length
-            ? validate.map((item) => (
-                <>
-                  <Box component={'span'} sx={{ display: 'block', m: 0 }}>
-                    {item}
-                  </Box>
-                </>
+            ? validate.map((item, index) => (
+                <Box
+                  component={'span'}
+                  key={item + '_' + index}
+                  sx={{ display: 'block', m: 0 }}
+                >
+                  {item}
+                </Box>
               ))
             : validate
             ? validate

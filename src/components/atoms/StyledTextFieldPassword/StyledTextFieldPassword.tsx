@@ -1,12 +1,12 @@
 import { FC, useCallback, useState } from 'react';
 import { Box, IconButton, InputAdornment } from '@mui/material';
+import { VisibilityOff, VisibilityOutlined } from '@mui/icons-material';
 
 import {
   StyledTextField,
-  StyledTextFieldPasswordProps,
   StyledTextFieldPasswordClasses,
+  StyledTextFieldPasswordProps,
 } from '@/components/atoms';
-import { VisibilityOff, VisibilityOutlined } from '@mui/icons-material';
 
 export const StyledTextFieldPassword: FC<StyledTextFieldPasswordProps> = ({
   value,

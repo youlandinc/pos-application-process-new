@@ -1,8 +1,16 @@
-import { StyledTextFieldTypes } from '@/components/atoms';
+import { NumberFormatValues } from 'react-number-format';
+import { SxProps } from '@mui/material';
 
-export interface StyledTextFieldNumberProps extends StyledTextFieldTypes {
-  min?: number;
-  max?: number;
+export interface StyledTextFieldNumberProps {
+  allowNegative?: boolean;
+  onValueChange: (values: NumberFormatValues) => void;
+  thousandSeparator?: boolean;
   prefix?: string;
   suffix?: string;
+  label?: string;
+  value: number;
+  sx?: SxProps;
+  required?: boolean;
+  placeholder?: string;
+  decimalScale?: number;
 }

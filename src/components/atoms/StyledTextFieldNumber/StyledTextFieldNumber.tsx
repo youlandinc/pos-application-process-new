@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { TextField } from '@mui/material';
+import { FC, useEffect, useState } from 'react';
+import { InputAdornment, TextField } from '@mui/material';
 import { NumberFormatValues, NumericFormat } from 'react-number-format';
 
 import {
@@ -8,26 +8,90 @@ import {
 } from '@/components/atoms';
 
 export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
-  sx,
+  allowNegative = false,
+  onValueChange,
   prefix,
+  suffix,
+  value,
+  sx,
+  decimalScale = 2,
+  thousandSeparator = true,
+  ...rest
 }) => {
+  const [isFocus, setIsFocus] = useState(value !== void 0 || !!prefix);
+
+  const [text, setText] = useState<number | string>(value);
+
+  useEffect(
+    () => {
+      if (value) {
+        setText(value.toFixed(decimalScale));
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
+  const handledChange = (v: NumberFormatValues) => {
+    setText(v.formattedValue);
+    onValueChange(v);
+  };
+
   return (
     <>
       <NumericFormat
+        allowedDecimalSeparators={['.']}
+        allowNegative={allowNegative}
         customInput={TextField}
+        decimalScale={decimalScale}
+        fixedDecimalScale
+        InputLabelProps={{ shrink: isFocus }}
+        InputProps={{
+          value: text ? (thousandSeparator ? text.toLocaleString() : text) : '',
+          startAdornment: !!prefix && (
+            <InputAdornment position="start" sx={{ p: 0, m: 0 }}>
+              {prefix}
+            </InputAdornment>
+          ),
+          endAdornment: !!suffix && (
+            <InputAdornment position="end" sx={{ p: 0, m: 0 }}>
+              {suffix}
+            </InputAdornment>
+          ),
+        }}
+        onBlur={(e) => {
+          if (prefix) {
+            return;
+          }
+          e.preventDefault();
+          if (!text) {
+            setIsFocus(false);
+          }
+        }}
+        onFocus={(e) => {
+          if (prefix) {
+            return;
+          }
+          e.preventDefault();
+          setIsFocus(true);
+        }}
+        onValueChange={handledChange}
         sx={Object.assign(
-          {},
           {
-            ...StyledTextFieldClasses,
-            ...sx,
             '& .MuiOutlinedInput-input': {
               padding: prefix
                 ? '15.5px 32px 15.5px 4px'
                 : '15.5px 32px 15.5px 14px',
             },
           },
+          {
+            ...StyledTextFieldClasses,
+            ...sx,
+          },
         )}
-      ></NumericFormat>
+        variant={'outlined'}
+        {...rest}
+      />
     </>
   );
 };
