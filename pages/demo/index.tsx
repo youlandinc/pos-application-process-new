@@ -7,11 +7,13 @@ import {
   StyledTextField,
   StyledTextFieldNumber,
   StyledTextFieldPassword,
+  StyledTextFieldPhone,
 } from '@/components/atoms';
 
 const ButtonDemo: FC = () => {
   const [value, setValue] = useState('123');
   const [number, setNumber] = useState(1000.99);
+  const [phone, setPhone] = useState<string | number>('1234567890');
 
   return (
     <Box
@@ -104,6 +106,20 @@ const ButtonDemo: FC = () => {
           sx={{ width: 380 }}
           value={value}
         />
+
+        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
+          Text Field phone
+        </Typography>
+        <StyledTextFieldPhone
+          label={'phone'}
+          onValueChange={(v) => {
+            setPhone(v.floatValue ?? '');
+          }}
+          placeholder={'placeholder'}
+          sx={{ width: 380 }}
+          value={phone}
+        />
+        {phone}
 
         <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
           Contained Button
