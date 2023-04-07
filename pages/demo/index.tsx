@@ -11,7 +11,7 @@ import {
 
 const ButtonDemo: FC = () => {
   const [value, setValue] = useState('123');
-  const [number, setNumber] = useState(1000);
+  const [number, setNumber] = useState(1000.99);
 
   return (
     <Box

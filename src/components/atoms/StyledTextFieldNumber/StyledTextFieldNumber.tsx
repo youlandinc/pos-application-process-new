@@ -1,6 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import { InputAdornment, TextField } from '@mui/material';
-import { NumberFormatValues, NumericFormat } from 'react-number-format';
+import {
+  NumberFormatValues,
+  NumericFormat,
+  numericFormatter,
+} from 'react-number-format';
 
 import {
   StyledTextFieldClasses,
@@ -25,7 +29,12 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
   useEffect(
     () => {
       if (value) {
-        setText(value.toFixed(decimalScale));
+        setText(
+          numericFormatter(value.toString(), {
+            fixedDecimalScale: true,
+            decimalScale,
+          }),
+        );
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,6 +54,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
         customInput={TextField}
         decimalScale={decimalScale}
         fixedDecimalScale
+        thousandSeparator={thousandSeparator}
         InputLabelProps={{ shrink: isFocus }}
         InputProps={{
           value: text ? (thousandSeparator ? text.toLocaleString() : text) : '',
@@ -77,13 +87,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
         }}
         onValueChange={handledChange}
         sx={Object.assign(
-          {
-            '& .MuiOutlinedInput-input': {
-              padding: prefix
-                ? '15.5px 32px 15.5px 4px'
-                : '15.5px 32px 15.5px 14px',
-            },
-          },
+          {},
           {
             ...StyledTextFieldClasses,
             ...sx,
