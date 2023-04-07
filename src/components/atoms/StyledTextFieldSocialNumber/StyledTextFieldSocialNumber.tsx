@@ -8,7 +8,7 @@ import {
 
 export const StyledTextFieldSocialNumber: FC<
   StyledTextFieldSocialNumberTypes
-> = ({ value, sx, onChange, validate, ...rest }) => {
+> = ({ value, sx, onValueChange, validate, ...rest }) => {
   const [originValue, setOriginValue] = useState(value);
 
   const [text, setText] = useState('');
@@ -56,7 +56,7 @@ export const StyledTextFieldSocialNumber: FC<
       const string = formatSSN(e.target.value);
       setOriginValue(string);
       setText(string);
-      onChange(string.split('-').join(''));
+      onValueChange(string.split('-').join(''));
     }
   };
   const handledBlur = () => {

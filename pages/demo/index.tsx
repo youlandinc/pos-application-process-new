@@ -129,11 +129,12 @@ const ButtonDemo: FC = () => {
         </Typography>
         <StyledTextFieldSocialNumber
           label={'Social Number'}
-          onChange={(e) => setSSN(e)}
+          onValueChange={(e) => setSSN(e)}
           placeholder={'Social Number'}
           sx={{ width: 180 }}
           value={ssn}
         />
+        {ssn}
 
         <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
           Contained Button
