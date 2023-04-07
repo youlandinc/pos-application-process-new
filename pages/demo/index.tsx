@@ -28,33 +28,6 @@ const ButtonDemo: FC = () => {
           p: 5,
         }}
       >
-        <Typography sx={{ mb: 5 }} variant="h5">
-          Text Field Number
-        </Typography>
-
-        <StyledTextFieldNumber
-          label={'dollar'}
-          onValueChange={(v) => {
-            setNumber(v.floatValue ?? 0);
-          }}
-          placeholder={'dollar'}
-          prefix={'$'}
-          sx={{ width: 180 }}
-          value={number}
-        />
-
-        <StyledTextFieldNumber
-          decimalScale={3}
-          label={'percentage'}
-          onValueChange={(v) => {
-            setNumber(v.floatValue ?? 0);
-          }}
-          placeholder={'percentage'}
-          suffix={'%'}
-          sx={{ width: 180, ml: 2 }}
-          value={number}
-        />
-
         <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
           TextField
         </Typography>
@@ -93,11 +66,42 @@ const ButtonDemo: FC = () => {
           sx={{ width: 180, ml: 2 }}
           value={value}
         />
+
+        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
+          Text Field Number
+        </Typography>
+
+        <StyledTextFieldNumber
+          label={'dollar'}
+          onValueChange={(v) => {
+            setNumber(v.floatValue ?? 0);
+          }}
+          placeholder={'dollar'}
+          prefix={'$'}
+          sx={{ width: 180 }}
+          value={number}
+        />
+
+        <StyledTextFieldNumber
+          decimalScale={3}
+          label={'percentage'}
+          onValueChange={(v) => {
+            setNumber(v.floatValue ?? 0);
+          }}
+          placeholder={'percentage'}
+          suffix={'%'}
+          sx={{ width: 180, ml: 2 }}
+          value={number}
+        />
+
+        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
+          Text Field Password
+        </Typography>
         <StyledTextFieldPassword
           label={'password'}
           onChange={(e) => setValue(e.target.value)}
           placeholder={'placeholder'}
-          sx={{ width: 180, ml: 2 }}
+          sx={{ width: 380 }}
           value={value}
         />
 
