@@ -8,12 +8,15 @@ import {
   StyledTextFieldNumber,
   StyledTextFieldPassword,
   StyledTextFieldPhone,
+  StyledTextFieldSocialNumber,
 } from '@/components/atoms';
 
 const ButtonDemo: FC = () => {
   const [value, setValue] = useState('123');
   const [number, setNumber] = useState(1000.99);
   const [phone, setPhone] = useState<string | number>('1234567890');
+
+  const [ssn, setSSN] = useState('123123123');
 
   return (
     <Box
@@ -120,6 +123,17 @@ const ButtonDemo: FC = () => {
           value={phone}
         />
         {phone}
+
+        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
+          Text Field Social Number
+        </Typography>
+        <StyledTextFieldSocialNumber
+          label={'Social Number'}
+          onChange={(e) => setSSN(e)}
+          placeholder={'Social Number'}
+          sx={{ width: 180 }}
+          value={ssn}
+        />
 
         <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
           Contained Button
