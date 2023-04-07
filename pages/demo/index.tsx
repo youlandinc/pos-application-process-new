@@ -2,7 +2,11 @@ import { FC, useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import { ArrowRightAlt, MoveToInbox } from '@mui/icons-material';
 
-import { StyledButton, StyledTextField } from '@/components/atoms';
+import {
+  StyledButton,
+  StyledTextField,
+  StyledTextFieldPassword,
+} from '@/components/atoms';
 
 const ButtonDemo: FC = () => {
   const [value, setValue] = useState('123');
@@ -54,6 +58,13 @@ const ButtonDemo: FC = () => {
 
         <StyledTextField
           label={'label'}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={'placeholder'}
+          sx={{ width: 180, ml: 2 }}
+          value={value}
+        />
+        <StyledTextFieldPassword
+          label={'password'}
           onChange={(e) => setValue(e.target.value)}
           placeholder={'placeholder'}
           sx={{ width: 180, ml: 2 }}
