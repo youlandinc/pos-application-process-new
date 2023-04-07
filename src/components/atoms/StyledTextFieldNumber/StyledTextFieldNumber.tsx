@@ -54,7 +54,6 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
         customInput={TextField}
         decimalScale={decimalScale}
         fixedDecimalScale
-        thousandSeparator={thousandSeparator}
         InputLabelProps={{ shrink: isFocus }}
         InputProps={{
           value: text ? (thousandSeparator ? text.toLocaleString() : text) : '',
@@ -93,6 +92,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
             ...sx,
           },
         )}
+        thousandSeparator={thousandSeparator}
         variant={'outlined'}
         {...rest}
       />
