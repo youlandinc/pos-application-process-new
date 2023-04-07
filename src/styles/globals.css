@@ -65,18 +65,18 @@ ul {
 }
 
 /*MUI DataGrid style format*/
-.MuiDataGrid-windowContainer {
-  box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.15);
-}
+/*.MuiDataGrid-windowContainer {*/
+/*  box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.15);*/
+/*}*/
 
-.MuiDataGrid-columnHeader:focus {
-  outline: none !important;
-  border: 0;
-}
+/*.MuiDataGrid-columnHeader:focus {*/
+/*  outline: none !important;*/
+/*  border: 0;*/
+/*}*/
 
-.MuiDataGrid-footerContainer {
-  margin: 24px 0 48px 0;
-}
+/*.MuiDataGrid-footerContainer {*/
+/*  margin: 24px 0 48px 0;*/
+/*}*/
 
 #nprogress .bar {
   position: fixed;
