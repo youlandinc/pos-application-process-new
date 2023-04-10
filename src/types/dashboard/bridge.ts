@@ -3,7 +3,7 @@ import {
   BREstimateRateData,
   BridgeStartingData,
 } from '@/types/application';
-import { BaseOverviewSummaryData, BasePreApprovalLetterData } from './common';
+import { BaseOverviewSummaryData, BasePreApprovalLetterData } from '@/types';
 import { Options } from '@/types/options';
 
 export type BridgeOverviewDetail = {

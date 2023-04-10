@@ -1,4 +1,3 @@
-import { Options } from '@/types/options';
 import {
   AssetsState,
   BridgeCreditScoreState,
@@ -16,6 +15,7 @@ import {
   PipelineTaskKey,
   PipelineTaskName,
 } from '@/types/pipeline';
+import { Options } from '@/types/options';
 
 export const FormData = {
   mortgage: {

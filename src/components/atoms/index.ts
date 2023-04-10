@@ -1,3 +1,5 @@
+export * from './Transitions';
+
 export * from './StyledButton';
 
 export * from './StyledTextField';

@@ -9,14 +9,18 @@ import {
   StyledTextFieldPassword,
   StyledTextFieldPhone,
   StyledTextFieldSocialNumber,
+  Transitions,
 } from '@/components/atoms';
+import { useSwitch } from '@/hooks';
 
-const ButtonDemo: FC = () => {
+const Components: FC = () => {
   const [value, setValue] = useState('123');
   const [number, setNumber] = useState(1000.99);
   const [phone, setPhone] = useState<string | number>('1234567890');
 
   const [ssn, setSSN] = useState('123123123');
+
+  const { visible, toggle } = useSwitch(false);
 
   return (
     <Box
@@ -25,6 +29,18 @@ const ButtonDemo: FC = () => {
         width: '100%',
       }}
     >
+      <StyledButton onClick={() => toggle()} sx={{ mb: 10 }} />
+      <Transitions>
+        {visible && (
+          <StyledTextFieldSocialNumber
+            label={'Social Number'}
+            onValueChange={(e) => setSSN(e)}
+            placeholder={'Social Number'}
+            sx={{ width: 180 }}
+            value={ssn}
+          />
+        )}
+      </Transitions>
       <Box
         sx={{
           width: '100%',
@@ -477,4 +493,4 @@ const ButtonDemo: FC = () => {
   );
 };
 
-export default ButtonDemo;
+export default Components;
