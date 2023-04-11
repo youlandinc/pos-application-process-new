@@ -3,8 +3,15 @@ declare module '@mui/material/styles/createPalette' {
   interface TypeText {}
 
   interface TypeBackground {}
+
   interface TypeAction {
     default: string;
+  }
+}
+
+declare module '@mui/material/styles/createTypography' {
+  interface TypographyOptions {
+    body3: TypographyStyle;
   }
 }
 
@@ -82,6 +89,31 @@ export const theme = createTheme({
       fontSize: 18,
       lineHeight: '28px',
       fontWeight: 600,
+    },
+    subtitle1: {
+      fontSize: 16,
+      lineHeight: '24px',
+      fontWeight: 600,
+    },
+    subtitle2: {
+      fontSize: 14,
+      lineHeight: '20px',
+      fontWeight: 600,
+    },
+    body1: {
+      fontSize: 16,
+      lineHeight: '24px',
+      fontWeight: 400,
+    },
+    body2: {
+      fontSize: 14,
+      lineHeight: '20px',
+      fontWeight: 400,
+    },
+    body3: {
+      fontSize: 12,
+      lineHeight: '18px',
+      fontWeight: 400,
     },
   },
 });
