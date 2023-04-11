@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { SetStateAction, useCallback, useEffect, useState } from 'react';
 
 export const useSessionStorageState = (key: string) => {
   const [state, setState] = useState(null);
@@ -25,9 +25,9 @@ export const useSessionStorageState = (key: string) => {
   }, [key]);
 
   const setItem = useCallback(
-    (data) => {
+    (data: SetStateAction<null>) => {
       if (typeof window !== 'undefined') {
-        sessionStorage.setItem(key, data);
+        sessionStorage.setItem(key, JSON.stringify(data));
         setState(data);
       }
     },
