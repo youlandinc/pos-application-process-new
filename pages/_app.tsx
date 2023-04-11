@@ -45,7 +45,7 @@ export default function MyApp(props: MyAppProps) {
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
           name="viewport"
         />
-        <title>YouLand</title>
+        <title>Point of Sale</title>
       </Head>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
