@@ -55,3 +55,5 @@ export const POSSize = <T extends number | string, X extends number | string>(
     height: height || width,
   };
 };
+
+export * from './createEmotionCache';

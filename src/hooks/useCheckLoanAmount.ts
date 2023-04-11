@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { PropertyOpt, UnitOpt } from '../types/options';
+import { PropertyOpt, UnitOpt } from '../types/posOptions';
 import { utils } from '@/common/utils';
 
 export const useCheckLoanAmount = (

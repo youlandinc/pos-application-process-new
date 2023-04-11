@@ -1,3 +1,5 @@
+export * from './Provider';
+
 export * from './Transitions';
 
 export * from './StyledButton';

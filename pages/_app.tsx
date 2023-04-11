@@ -1,19 +1,21 @@
-import * as React from 'react';
 import { useEffect } from 'react';
-import createEmotionCache from '../src/styles/createEmotionCache';
-import CssBaseline from '@mui/material/CssBaseline';
 import Head from 'next/head';
-import { theme } from '@/theme';
 import { AppProps } from 'next/app';
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import { ThemeProvider } from '@mui/material/styles';
 import { Router } from 'next/router';
+
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import { ThemeProvider } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+
 import NProgress from 'nprogress';
 import { SnackbarProvider } from 'notistack';
 
 import 'normalize.css';
 import 'reset.css';
 import '@/styles/globals.css';
+
+import { createEmotionCache } from '@/styles';
+import { theme } from '@/theme';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -24,6 +26,7 @@ interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  console.log(props);
   useEffect(() => {
     const handleRouteStart = () => NProgress.start();
     const handleRouteDone = () => NProgress.done();

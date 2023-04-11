@@ -6,7 +6,7 @@ module.exports = {
     CLIENT_ID: process.env.CLIENT_ID,
     STRIPE_PUBLISH_KEY: process.env.STRIPE_PUBLISH_KEY,
   },
-  reactStrictMode: false,
+  reactStrictMode: true,
   trailingSlash: true,
   webpack(config) {
     config.module.rules.push({
