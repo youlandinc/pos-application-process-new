@@ -203,6 +203,7 @@ const Components: FC = () => {
               sx={{
                 bgcolor: '#fff',
                 color: 'primary.main',
+                boxShadow: '0px 10px 20px rgba(17, 52, 227, 0.1)',
                 '&:hover': {
                   bgcolor: '#fff',
                 },

@@ -6,6 +6,7 @@ export const StyledButtonClasses: SxProps = {
   fontSize: 16,
   height: '48px',
   borderRadius: 2,
+  boxShadow: 'none',
   '&:disabled': {
     color: 'action.disabled',
   },

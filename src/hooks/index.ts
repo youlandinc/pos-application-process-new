@@ -4,6 +4,7 @@
 //export * from './useStoreData';
 //export * from './useAutoSave';
 export * from './useSwitch';
+export * from './useSessionStorageState';
 //export * from './useCheckLogin';
 //export * from './useCheckProcessId';
 //export * from './useGooglePlacesSearch';
