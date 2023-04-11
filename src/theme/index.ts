@@ -53,5 +53,35 @@ export const theme = createTheme({
   },
   typography: {
     fontFamily: 'Poppins, "pingfang sc", sans-serif',
+    h1: {
+      fontSize: 56,
+      lineHeight: 1.5,
+      fontWeight: 600,
+    },
+    h2: {
+      fontSize: 48,
+      lineHeight: 1.5,
+      fontWeight: 600,
+    },
+    h3: {
+      fontSize: 32,
+      lineHeight: 1.5,
+      fontWeight: 600,
+    },
+    h4: {
+      fontSize: 24,
+      lineHeight: 1.5,
+      fontWeight: 600,
+    },
+    h5: {
+      fontSize: 20,
+      lineHeight: '30px',
+      fontWeight: 600,
+    },
+    h6: {
+      fontSize: 18,
+      lineHeight: '28px',
+      fontWeight: 600,
+    },
   },
 });
