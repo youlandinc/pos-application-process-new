@@ -8,19 +8,17 @@ import { STaskItemStatus } from '@/requests/dashboard';
 import { User } from '@/types/user';
 import { userpool } from '@/constants';
 import {
+  ApplicationForm,
   Bpmn,
   DetectUserActiveService,
+  DTask,
   NotificationStation,
+  PTaskForm,
   SelectedProcessData,
-} from './base';
-import { ApplicationForm } from './application';
-import { PTaskForm } from './pipeline';
-import { DTask } from './dashboard';
-import {
   UserSetting,
   //UserConfig,
   //UserProfile
-} from './user';
+} from './base';
 
 export const RootModel = {
   persistDataLoaded: types.boolean,

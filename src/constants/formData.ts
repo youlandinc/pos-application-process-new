@@ -1,4 +1,20 @@
 import {
+  BridgePropertyNumberOpt,
+  ChannelOpt,
+  OccupancyOpt,
+  OfferOpt,
+  PipelineLicenseTypeOpt,
+  ProcessOpt,
+  PropertyOpt,
+  PropertyPlanOpt,
+  PropertyPurposeOpt,
+  PropertyTitleOpt,
+  PropertyUnitOpt,
+  PurchaseTimeOpt,
+  RelationshipOpt,
+  WhyRefinanceOpt,
+} from '@/types';
+import {
   AssetsState,
   BridgeCreditScoreState,
   BridgePurchaseState,
@@ -15,7 +31,6 @@ import {
   PipelineTaskKey,
   PipelineTaskName,
 } from '@/types/pipeline';
-import { Options } from '@/types/options';
 
 export const FormData = {
   mortgage: {
@@ -27,9 +42,9 @@ export const FormData = {
       starting: {
         purpose: {
           values: {
-            stageOpt: Options.ProcessOpt.default,
-            offerOpt: Options.OfferOpt.default,
-            purchaseTimeOpt: Options.PurchaseTimeOpt.default,
+            stageOpt: ProcessOpt.default,
+            offerOpt: OfferOpt.default,
+            purchaseTimeOpt: PurchaseTimeOpt.default,
             address: {
               formatAddress: '',
               aptNumber: '',
@@ -45,10 +60,10 @@ export const FormData = {
         },
         property: {
           values: {
-            occupancyOpt: Options.OccupancyOpt.default,
-            propertyOpt: Options.PropertyOpt.default,
+            occupancyOpt: OccupancyOpt.default,
+            propertyOpt: PropertyOpt.default,
             rentalIncome: undefined,
-            numberOfUnits: Options.PropertyUnitOpt.default,
+            numberOfUnits: PropertyUnitOpt.default,
           },
           errors: {},
           isValid: false,
@@ -104,7 +119,7 @@ export const FormData = {
             readyEnter: undefined,
           },
           coBorrowerRelationship: {
-            relationship: Options.RelationshipOpt.default,
+            relationship: RelationshipOpt.default,
             liveTogether: undefined,
             willLiveTogether: undefined,
           },
@@ -182,9 +197,9 @@ export const FormData = {
           expectRentPrice: undefined,
           sellForPurchaseNew: undefined,
           hasMonthlyPayment: undefined,
-          propertyTitle: Options.PropertyTitleOpt.default,
-          propertyPlan: Options.PropertyPlanOpt.default,
-          propertyPurpose: Options.PropertyPurposeOpt.default,
+          propertyTitle: PropertyTitleOpt.default,
+          propertyPlan: PropertyPlanOpt.default,
+          propertyPurpose: PropertyPurposeOpt.default,
           loanList: [],
           interestedRefinancing: undefined,
         },
@@ -237,9 +252,9 @@ export const FormData = {
         property: {
           values: {
             homeValue: undefined,
-            occupancyOpt: Options.OccupancyOpt.default,
-            propertyOpt: Options.PropertyOpt.default,
-            numberOfUnits: Options.PropertyUnitOpt.default,
+            occupancyOpt: OccupancyOpt.default,
+            propertyOpt: PropertyOpt.default,
+            numberOfUnits: PropertyUnitOpt.default,
             rentalIncome: undefined,
           },
           errors: {},
@@ -296,7 +311,7 @@ export const FormData = {
             readyEnter: undefined,
           },
           coBorrowerRelationship: {
-            relationship: Options.RelationshipOpt.default,
+            relationship: RelationshipOpt.default,
             liveTogether: undefined,
             willLiveTogether: undefined,
           },
@@ -359,11 +374,11 @@ export const FormData = {
             ownCurrentEstate: undefined,
             hasMonthlyPayment: undefined,
             payments: [],
-            propertyTitle: Options.PropertyTitleOpt.default,
+            propertyTitle: PropertyTitleOpt.default,
           },
           yourProperty: [],
           whyRefinance: {
-            purpose: Options.WhyRefinanceOpt.default,
+            purpose: WhyRefinanceOpt.default,
             cashOut: undefined,
             payments: [],
             hasMonthlyPayment: false,
@@ -401,7 +416,7 @@ export const FormData = {
       starting: {
         purpose: {
           values: {
-            propertyNumber: Options.BridgePropertyNumberOpt.default,
+            propertyNumber: BridgePropertyNumberOpt.default,
             address: {
               formatAddress: '',
               aptNumber: '',
@@ -417,8 +432,8 @@ export const FormData = {
         },
         property: {
           values: {
-            propertyType: Options.PropertyOpt.default,
-            propertyUnit: Options.PropertyUnitOpt.default,
+            propertyType: PropertyOpt.default,
+            propertyUnit: PropertyUnitOpt.default,
             isConfirm: false,
           },
         },
@@ -450,7 +465,7 @@ export const FormData = {
         state: BridgeCreditScoreState.notice,
       },
       whereKnowUs: {
-        reference: Options.ChannelOpt.default,
+        reference: ChannelOpt.default,
       },
       estimateRate: {
         purchasePrice: undefined,
@@ -468,7 +483,7 @@ export const FormData = {
       starting: {
         purpose: {
           values: {
-            propertyNumber: Options.BridgePropertyNumberOpt.default,
+            propertyNumber: BridgePropertyNumberOpt.default,
             address: {
               formatAddress: '',
               aptNumber: '',
@@ -484,8 +499,8 @@ export const FormData = {
         },
         property: {
           values: {
-            propertyType: Options.PropertyOpt.default,
-            propertyUnit: Options.PropertyUnitOpt.default,
+            propertyType: PropertyOpt.default,
+            propertyUnit: PropertyUnitOpt.default,
             isConfirm: false,
           },
         },
@@ -517,7 +532,7 @@ export const FormData = {
         state: BridgeCreditScoreState.notice,
       },
       whereKnowUs: {
-        reference: Options.ChannelOpt.default,
+        reference: ChannelOpt.default,
       },
       estimateRate: {
         homeValue: undefined,
@@ -650,7 +665,7 @@ export const FormData = {
             ssn: undefined,
             birthday: null,
             state: undefined,
-            licenseType: Options.PipelineLicenseTypeOpt.default,
+            licenseType: PipelineLicenseTypeOpt.default,
             license: undefined,
           },
         ],

@@ -4,11 +4,11 @@ import {
   BridgeStartingData,
 } from '@/types/application';
 import { BaseOverviewSummaryData, BasePreApprovalLetterData } from '@/types';
-import { Options } from '@/types/options';
+import { PropertyOpt } from '@/types/options';
 
 export type BridgeOverviewDetail = {
   amortization: string;
-  propertyType: Options.PropertyOpt;
+  propertyType: PropertyOpt;
   closeDate: string;
   penalty: number;
   lien: string;

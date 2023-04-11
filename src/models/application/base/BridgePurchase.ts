@@ -1,41 +1,42 @@
 import { getParent, Instance, SnapshotIn, types } from 'mobx-state-tree';
 
-import { Options } from '@/types/options';
-import { BridgeRefinanceState, VariableName } from '@/types/enum';
-import { ProcessData } from '@/types/server';
+import { IApplicationForm } from '@/models/base/ApplicationForm';
+import { WhereKnowUs } from '@/models/application/common/WhereKnowUs';
+import {
+  BPEstimateRate,
+  BridgeCreditScore,
+  BridgeStarting,
+} from '@/models/application/bridge';
 
+import { DenialReason } from '@/types/options';
+import { BridgePurchaseState, VariableName } from '@/types/enum';
+import { ProcessData } from '@/types/server';
 import {
   BorrowerData,
-  BREstimateRateData,
+  BPEstimateRateData,
   BridgeApplicationProcessSnapshot,
   BridgeStartingData,
   SelfInfoData,
   WhereKnowUsData,
 } from '@/types/application';
 import { VariableValue } from '@/types';
-import {
-  BREstimateRate,
-  BridgeCreditScore,
-  BridgeStarting,
-} from '@/models/application/bridge';
-import { IApplicationForm, WhereKnowUs } from '@/models/application';
 
-export const BridgeRefinance = types
+export const BridgePurchase = types
   .model({
-    name: 'BridgeRefinance',
+    name: 'BridgePurchase',
     starting: BridgeStarting,
     creditScore: BridgeCreditScore,
     whereKnowUs: WhereKnowUs,
-    estimateRate: BREstimateRate,
+    estimateRate: BPEstimateRate,
     preApproved: types.boolean,
-    denialReason: types.maybe(types.frozen<Options.DenialReason>()),
-    state: types.frozen<BridgeRefinanceState>(),
+    denialReason: types.maybe(types.frozen<DenialReason>()),
+    state: types.frozen<BridgePurchaseState>(),
   })
   .actions((self) => ({
-    changeState(state: BridgeRefinanceState) {
+    changeState(state: BridgePurchaseState) {
       self.state = state;
     },
-    setPreApproved(preApproved: boolean, denialReason: Options.DenialReason) {
+    setPreApproved(preApproved: boolean, denialReason: DenialReason) {
       self.preApproved = preApproved;
       self.denialReason = denialReason;
     },
@@ -59,7 +60,7 @@ export const BridgeRefinance = types
     },
     setClientState(clientAppProgress: BridgeApplicationProcessSnapshot) {
       const { state, creditScore, starting } = clientAppProgress;
-      self.state = state as BridgeRefinanceState;
+      self.state = state as BridgePurchaseState;
       self.starting.state = starting.state;
       self.creditScore.state = creditScore.state;
     },
@@ -90,7 +91,7 @@ export const BridgeRefinance = types
             break;
           }
           case VariableName.estimateRate: {
-            const value = variable.value as BREstimateRateData;
+            const value = variable.value as BPEstimateRateData;
             self.estimateRate.injectServerData(value);
             break;
           }
@@ -105,5 +106,5 @@ export const BridgeRefinance = types
     },
   }));
 
-export type IBridgeRefinance = Instance<typeof BridgeRefinance>;
-export type SBridgeRefinance = SnapshotIn<typeof BridgeRefinance>;
+export type IBridgePurchase = Instance<typeof BridgePurchase>;
+export type SBridgePurchase = SnapshotIn<typeof BridgePurchase>;

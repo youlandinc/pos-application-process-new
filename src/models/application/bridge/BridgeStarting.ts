@@ -1,5 +1,8 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { BridgeProperty, BridgePurpose } from './index';
+
+import { BridgeProperty } from './BridgeProperty';
+import { BridgePurpose } from './BridgePurpose';
+
 import { StartingState, VariableName } from '@/types/enum';
 import { BridgeStartingData } from '@/types/application/bridge';
 

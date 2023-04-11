@@ -1,17 +1,19 @@
 import { getSnapshot, Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { Address, UploadData } from '@/models/base';
+import { Address } from '@/models/common/Address';
+import { UploadData } from '@/models/common/UploadFile';
+
 import {
-  PipelineAgreement,
+  PipelineACH,
   PipelineTaskItem,
   PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
 } from '@/types/pipeline';
 
-export const PTAgreement = types
+export const PTACH = types
   .model({
     taskId: types.maybe(types.string),
-    taskName: PipelineTaskName[PipelineTaskKey.BA],
+    taskName: PipelineTaskName[PipelineTaskKey.AI],
     taskStatus: types.maybe(
       types.union(
         types.literal(PipelineTaskItemStatus.UNFINISHED),
@@ -20,23 +22,23 @@ export const PTAgreement = types
       ),
     ),
     taskForm: types.model({
+      bankName: types.maybeNull(types.string),
       address: Address,
-      email: types.maybeNull(types.string),
-      title: types.maybeNull(types.string),
-      fullName: types.maybeNull(types.string),
-      company: types.maybeNull(types.string),
+      routingNumber: types.maybeNull(types.string),
+      accountName: types.maybeNull(types.string),
+      accountNumber: types.maybeNull(types.string),
+      accountType: types.maybeNull(types.string),
       documentFile: types.maybe(UploadData),
-      phone: types.maybe(types.string),
     }),
   })
   .views((self) => ({
     get checkTaskFormValid() {
       return (
-        !!self.taskForm.phone &&
-        !!self.taskForm.email &&
-        !!self.taskForm.title &&
-        !!self.taskForm.fullName &&
-        !!self.taskForm.company &&
+        !!self.taskForm.bankName &&
+        !!self.taskForm.routingNumber &&
+        !!self.taskForm.accountName &&
+        !!self.taskForm.accountNumber &&
+        !!self.taskForm.accountType &&
         self.taskForm.address.checkAddressValid
       );
     },
@@ -46,7 +48,7 @@ export const PTAgreement = types
   }))
   .actions((self) => {
     return {
-      injectPipelineTaskData(data: PipelineTaskItem<PipelineAgreement>) {
+      injectPipelineTaskData(data: PipelineTaskItem<PipelineACH>) {
         if (!data) {
           return;
         }
@@ -58,20 +60,20 @@ export const PTAgreement = types
           return;
         }
         const {
-          email,
-          title,
-          fullName,
-          company,
+          accountType,
+          accountNumber,
+          routingNumber,
+          accountName,
+          bankName,
           propAddr,
           documentFile,
-          phone,
         } = taskForm;
         self.taskForm.documentFile = documentFile;
-        self.taskForm.email = email;
-        self.taskForm.title = title;
-        self.taskForm.fullName = fullName;
-        self.taskForm.company = company;
-        self.taskForm.phone = phone;
+        self.taskForm.accountType = accountType;
+        self.taskForm.accountNumber = accountNumber;
+        self.taskForm.routingNumber = routingNumber;
+        self.taskForm.bankName = bankName;
+        self.taskForm.accountName = accountName;
         if (propAddr) {
           self.taskForm.address.injectServerData(propAddr);
         }
@@ -84,37 +86,51 @@ export const PTAgreement = types
       },
       getGenerateFileData() {
         const { taskId, taskForm } = self;
-        const { email, title, fullName, company, address, phone } = taskForm;
+        const {
+          accountType,
+          accountNumber,
+          routingNumber,
+          accountName,
+          bankName,
+          address,
+        } = taskForm;
         return {
           taskId,
-          email,
-          title,
-          fullName,
-          company,
-          phone,
-          propAddr: address.getPostData(),
+          accountType,
+          accountNumber,
+          routingNumber,
+          accountName,
+          bankName,
+          address: address.getPostData(),
         };
       },
       getPostData() {
         const { taskId, taskForm } = self;
-        const { email, title, fullName, company, address, phone } = taskForm;
+        const {
+          accountType,
+          accountNumber,
+          routingNumber,
+          accountName,
+          bankName,
+          address,
+        } = taskForm;
         return {
           taskId,
           taskForm: {
-            email,
-            title,
-            fullName,
-            company,
-            phone,
+            accountType,
+            accountNumber,
+            routingNumber,
+            accountName,
+            bankName,
             documentFile: self.taskForm.documentFile
               ? getSnapshot(self.taskForm.documentFile)
               : undefined,
-            propAddr: address.getPostData(),
+            address: address.getPostData(),
           },
         };
       },
     };
   });
 
-export type IPTAgreement = Instance<typeof PTAgreement>;
-export type SPTAgreement = SnapshotOut<typeof PTAgreement>;
+export type IPTACH = Instance<typeof PTACH>;
+export type SPTACH = SnapshotOut<typeof PTACH>;

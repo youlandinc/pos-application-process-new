@@ -6,22 +6,25 @@ import {
   SnapshotOut,
   types,
 } from 'mobx-state-tree';
-import validate from '@/constants/validate';
-import { CreditScoreSchema } from '@/constants';
-import { DebtData } from '@/models/application';
-import { Address, IAddress, SAddress } from '@/models/base';
-import { Options } from '@/types/options';
+import { DebtData } from '@/models/common/DebtData';
+import { Address, IAddress, SAddress } from '@/models/common/Address';
+
+import { DebtWrongReasonOpt, RelationshipOpt } from '@/types/options';
 import { CreditScoreState, VariableName } from '@/types/enum';
 import {
   BorrowerDebtRecordData,
   BorrowerDebtSummaryData,
   IncomeData,
   MortgageAboutOtherRelationData,
+  MortgageRecordDebtData,
   OtherIncomeData,
   SalaryIncomeData,
   SelfEmployIncomeData,
   SelfInfoData,
 } from '@/types/application';
+
+import validate from '@/constants/validate';
+import { CreditScoreSchema } from '@/constants';
 
 export const PersonalInfo = types
   .model({
@@ -50,7 +53,11 @@ export const PersonalInfo = types
   })
   .views((self) => ({
     get checkInfoValid() {
-      if (Object.keys(self.errors).every((item) => !self.errors[item])) {
+      if (
+        Object.keys(self.errors).every(
+          (item) => !self.errors[item as keyof typeof self.errors],
+        )
+      ) {
         return self.address.isValid && self.authorizedCreditCheck;
       }
       return false;
@@ -72,8 +79,8 @@ export const PersonalInfo = types
           ...(errors || {}),
         };
 
-        if (self.errors[key as unknown as any] && errors === void 0) {
-          destroy(self.errors[key as unknown as any]);
+        if (self.errors[key as keyof typeof self.errors] && errors === void 0) {
+          destroy(self.errors[key as keyof typeof self.errors]);
         }
         self.isValid = Object.keys(self.errors).length === 0;
         self[key] = value;
@@ -381,10 +388,10 @@ export const CreditScore = types
       }),
       coBorrowerRelationship: types.model({
         relationship: types.union(
-          types.literal(Options.RelationshipOpt.unmarried),
-          types.literal(Options.RelationshipOpt.married),
-          types.literal(Options.RelationshipOpt.legallySeparated),
-          types.literal(Options.RelationshipOpt.default),
+          types.literal(RelationshipOpt.unmarried),
+          types.literal(RelationshipOpt.married),
+          types.literal(RelationshipOpt.legallySeparated),
+          types.literal(RelationshipOpt.default),
         ),
         liveTogether: types.maybe(types.boolean),
         willLiveTogether: types.maybe(types.boolean),
@@ -521,10 +528,16 @@ export const CreditScore = types
     ) {
       self[key] = value;
     },
-    changeCoBorrowerField(key: string, value: boolean) {
+    changeCoBorrowerField(
+      key: 'hasCoOwners' | 'hasCoBorrower' | 'readyEnter',
+      value: boolean,
+    ) {
       self.values.coBorrower[key] = value;
     },
-    changeCoBorrowerRelationshipField(key: string, value: any) {
+    changeCoBorrowerRelationshipField<T extends boolean & RelationshipOpt>(
+      key: 'relationship' | 'liveTogether' | 'willLiveTogether',
+      value: T,
+    ) {
       self.values.coBorrowerRelationship[key] = value;
     },
     setDebts(
@@ -542,7 +555,7 @@ export const CreditScore = types
             consolidate,
             canPayoff = false,
             disabled = false,
-            wrongReason = Options.DebtWrongReasonOpt.default,
+            wrongReason = DebtWrongReasonOpt.default,
           } = debts.payments[key];
           return {
             id,
@@ -573,7 +586,9 @@ export const CreditScore = types
     getDebtsPostData(
       role: 'self' | 'coBorrower' = 'self',
     ): Variable<BorrowerDebtRecordData & BorrowerDebtSummaryData> {
-      const payments = {};
+      const payments: {
+        [key: string]: MortgageRecordDebtData;
+      } = {};
       self.values[
         role === 'self' ? 'borrowerDebts' : 'coBorrowerDebts'
       ].forEach((debt) => {

@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import {
   cast,
   getSnapshot,
@@ -7,14 +5,18 @@ import {
   SnapshotOut,
   types,
 } from 'mobx-state-tree';
+
+import { Address } from '@/models/common/Address';
+import { LoanData, SLoanData } from '@/models/common/LoanData';
+import { MortgageFinancialSituation } from '@/models/application/common/MortgageFinancialSitutation';
+
 import validate from 'validate.js';
-import { Address } from '@/models/base';
+
 import {
-  LoanData,
-  MortgageFinancialSituation,
-  SLoanData,
-} from '@/models/application';
-import { Options } from '@/types/options';
+  PropertyPurposeOpt,
+  PropertyTitleOpt,
+  WhyRefinanceOpt,
+} from '@/types/options';
 import { MortgageRefinanceAssetsState, VariableName } from '@/types/enum';
 import {
   MRResidenceOwnData,
@@ -28,10 +30,10 @@ export const MortgageRefinanceResidenceOwn = types
     hasMonthlyPayment: types.maybe(types.boolean),
     payments: types.array(LoanData),
     propertyTitle: types.union(
-      types.literal(Options.PropertyTitleOpt.byYourself),
-      types.literal(Options.PropertyTitleOpt.jointlyWithSpouse),
-      types.literal(Options.PropertyTitleOpt.jointlyWithAnotherPerson),
-      types.literal(Options.PropertyTitleOpt.default),
+      types.literal(PropertyTitleOpt.byYourself),
+      types.literal(PropertyTitleOpt.jointlyWithSpouse),
+      types.literal(PropertyTitleOpt.jointlyWithAnotherPerson),
+      types.literal(PropertyTitleOpt.default),
     ),
   })
   .views((self) => ({
@@ -122,15 +124,15 @@ export const MortgageRefinanceYourProperty = types
     payments: types.array(LoanData),
     address: Address,
     propertyTitle: types.union(
-      types.literal(Options.PropertyTitleOpt.byYourself),
-      types.literal(Options.PropertyTitleOpt.jointlyWithSpouse),
-      types.literal(Options.PropertyTitleOpt.jointlyWithAnotherPerson),
-      types.literal(Options.PropertyTitleOpt.default),
+      types.literal(PropertyTitleOpt.byYourself),
+      types.literal(PropertyTitleOpt.jointlyWithSpouse),
+      types.literal(PropertyTitleOpt.jointlyWithAnotherPerson),
+      types.literal(PropertyTitleOpt.default),
     ),
     propertyPurpose: types.union(
-      types.literal(Options.PropertyPurposeOpt.default),
-      types.literal(Options.PropertyPurposeOpt.secondHome),
-      types.literal(Options.PropertyPurposeOpt.investment),
+      types.literal(PropertyPurposeOpt.default),
+      types.literal(PropertyPurposeOpt.secondHome),
+      types.literal(PropertyPurposeOpt.investment),
     ),
     expectRentPrice: types.maybe(types.number),
     hasMonthlyPayment: types.maybe(types.boolean),
@@ -154,9 +156,9 @@ export const MortgageRefinanceYourProperty = types
         return false;
       }
       if (propertyPurpose && propertyTitle && notUndefined(hasMonthlyPayment)) {
-        if (propertyPurpose === Options.PropertyPurposeOpt.secondHome) {
+        if (propertyPurpose === PropertyPurposeOpt.secondHome) {
           return hasMonthlyPayment ? this.checkLoanListValid : true;
-        } else if (propertyPurpose === Options.PropertyPurposeOpt.investment) {
+        } else if (propertyPurpose === PropertyPurposeOpt.investment) {
           return (
             notUndefined(expectRentPrice) &&
             (hasMonthlyPayment ? this.checkLoanListValid : true)
@@ -216,11 +218,11 @@ export type SMortgageRefinanceYourProperty = SnapshotOut<
 const MortgageRefinanceWhyRefinance = types
   .model({
     purpose: types.union(
-      types.literal(Options.WhyRefinanceOpt.default),
-      types.literal(Options.WhyRefinanceOpt.lowerPayment),
-      types.literal(Options.WhyRefinanceOpt.cashOut),
-      types.literal(Options.WhyRefinanceOpt.payoffExist),
-      types.literal(Options.WhyRefinanceOpt.consolidateDebts),
+      types.literal(WhyRefinanceOpt.default),
+      types.literal(WhyRefinanceOpt.lowerPayment),
+      types.literal(WhyRefinanceOpt.cashOut),
+      types.literal(WhyRefinanceOpt.payoffExist),
+      types.literal(WhyRefinanceOpt.consolidateDebts),
     ),
     cashOut: types.maybe(types.number),
     // this is report of credit
@@ -236,12 +238,12 @@ const MortgageRefinanceWhyRefinance = types
         return false;
       }
       switch (purpose) {
-        case Options.WhyRefinanceOpt.cashOut:
+        case WhyRefinanceOpt.cashOut:
           return !!cashOut && cashValid;
-        case Options.WhyRefinanceOpt.consolidateDebts:
+        case WhyRefinanceOpt.consolidateDebts:
           return self.debtValid;
-        case Options.WhyRefinanceOpt.lowerPayment:
-        case Options.WhyRefinanceOpt.payoffExist:
+        case WhyRefinanceOpt.lowerPayment:
+        case WhyRefinanceOpt.payoffExist:
           return (self.totalBalance ?? 0) >= 100000;
         default:
           return false;

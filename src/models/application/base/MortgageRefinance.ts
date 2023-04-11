@@ -1,13 +1,15 @@
 import { getParent, Instance, SnapshotIn, types } from 'mobx-state-tree';
-import { IApplicationForm } from '@/models/application';
+
+import { IApplicationForm } from '@/models/base/ApplicationForm';
+import { CreditScore } from '@/models/application/common/CreditScore';
 import {
-  CreditScore,
   MortgagePurchaseDTI,
   MortgageRefinanceAssets,
   MortgageRefinanceMonthlyPayment,
   MortgageRefinanceStarting,
-} from '@/models/application/';
-import { Options } from '@/types/options';
+} from '@/models/application/mortgage';
+
+import { DenialReason } from '@/types/options';
 import {
   MortgageRefinanceAssetsState,
   MortgageRefinanceState,
@@ -41,14 +43,14 @@ export const MortgageRefinance = types
     assets: MortgageRefinanceAssets,
     DTI: MortgagePurchaseDTI,
     preApproved: types.boolean,
-    denialReason: types.maybe(types.frozen<Options.DenialReason>()),
+    denialReason: types.maybe(types.frozen<DenialReason>()),
     state: types.frozen<MortgageRefinanceState>(),
   })
   .actions((self) => ({
     changeState(state: MortgageRefinanceState) {
       self.state = state;
     },
-    setPreApproved(preApproved: boolean, denialReason: Options.DenialReason) {
+    setPreApproved(preApproved: boolean, denialReason: DenialReason) {
       self.preApproved = preApproved;
       self.denialReason = denialReason;
     },

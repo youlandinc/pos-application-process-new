@@ -1,4 +1,5 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
+
 import { MortgageFinancialSituationData } from '@/types/application';
 import { VariableName } from '@/types/enum';
 

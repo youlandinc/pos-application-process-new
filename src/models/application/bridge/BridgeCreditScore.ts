@@ -1,5 +1,7 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { PersonalInfo } from '@/models/application';
+
+import { PersonalInfo } from '@/models/application/common/CreditScore';
+
 import { BridgeCreditScoreState } from '@/types/enum';
 
 export const BridgeCreditScore = types

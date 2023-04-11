@@ -1,5 +1,6 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { Address } from '@/models/base';
+
+import { Address } from '@/models/common/Address';
 
 export const MortgageRefinancePurpose = types
   .model({

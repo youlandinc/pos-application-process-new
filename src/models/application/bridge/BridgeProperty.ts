@@ -1,21 +1,22 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { Options } from '@/types/options';
+
+import { PropertyOpt, PropertyUnitOpt } from '@/types/options';
 
 export const BridgeProperty = types
   .model({
     values: types.model({
       propertyType: types.union(
-        types.literal(Options.PropertyOpt.default),
-        types.literal(Options.PropertyOpt.singleFamily),
-        types.literal(Options.PropertyOpt.townhouse),
-        types.literal(Options.PropertyOpt.condo),
-        types.literal(Options.PropertyOpt.twoToFourFamily),
+        types.literal(PropertyOpt.default),
+        types.literal(PropertyOpt.singleFamily),
+        types.literal(PropertyOpt.townhouse),
+        types.literal(PropertyOpt.condo),
+        types.literal(PropertyOpt.twoToFourFamily),
       ),
       propertyUnit: types.union(
-        types.literal(Options.PropertyUnitOpt.default),
-        types.literal(Options.PropertyUnitOpt.twoUnits),
-        types.literal(Options.PropertyUnitOpt.threeUnits),
-        types.literal(Options.PropertyUnitOpt.fourUnits),
+        types.literal(PropertyUnitOpt.default),
+        types.literal(PropertyUnitOpt.twoUnits),
+        types.literal(PropertyUnitOpt.threeUnits),
+        types.literal(PropertyUnitOpt.fourUnits),
       ),
       isConfirm: types.maybe(types.boolean),
     }),
@@ -26,7 +27,7 @@ export const BridgeProperty = types
       if (!isConfirm || !propertyType) {
         return false;
       }
-      if (propertyType === Options.PropertyOpt.twoToFourFamily) {
+      if (propertyType === PropertyOpt.twoToFourFamily) {
         return !!isConfirm && !!propertyUnit;
       }
       return !!isConfirm && !!propertyType;

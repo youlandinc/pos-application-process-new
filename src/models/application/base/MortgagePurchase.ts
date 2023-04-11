@@ -1,12 +1,15 @@
 import { getParent, Instance, SnapshotIn, types } from 'mobx-state-tree';
-import { CreditScore, IApplicationForm } from '@/models/application';
+
+import { IApplicationForm } from '@/models/base/ApplicationForm';
+import { CreditScore } from '@/models/application/common/CreditScore';
 import {
   MortgagePurchaseAssets,
   MortgagePurchaseDTI,
   MortgagePurchaseRealtor,
   MortgagePurchaseStarting,
-} from './index';
-import { Options } from '@/types/options';
+} from '@/models/application/mortgage';
+
+import { DenialReason } from '@/types/options';
 import { VariableValue } from '@/types/common';
 import {
   BorrowerData,
@@ -35,14 +38,14 @@ export const MortgagePurchase = types
     realtor: MortgagePurchaseRealtor,
     DTI: MortgagePurchaseDTI,
     preApproved: types.boolean,
-    denialReason: types.maybe(types.frozen<Options.DenialReason>()),
+    denialReason: types.maybe(types.frozen<DenialReason>()),
     state: types.frozen<MortgagePurchaseState>(),
   })
   .actions((self) => ({
     changeState(state: MortgagePurchaseState) {
       self.state = state;
     },
-    setPreApproved(preApproved: boolean, denialReason: Options.DenialReason) {
+    setPreApproved(preApproved: boolean, denialReason: DenialReason) {
       self.preApproved = preApproved;
       self.denialReason = denialReason;
     },
@@ -194,7 +197,10 @@ export const MortgagePurchase = types
             ) {
               temp = result.value;
             }
-            self.creditScore.setDebts(temp || value, 'self');
+            self.creditScore.setDebts(
+              (temp || value) as BorrowerDebtSummaryData,
+              'self',
+            );
             break;
           }
           case VariableName._otherDebtSummary: {
@@ -210,7 +216,10 @@ export const MortgagePurchase = types
             ) {
               temp = result.value;
             }
-            self.creditScore.setDebts(temp || value, 'coBorrower');
+            self.creditScore.setDebts(
+              (temp || value) as BorrowerDebtSummaryData,
+              'coBorrower',
+            );
             break;
           }
           case VariableName.propertyNew: {

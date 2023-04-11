@@ -1,15 +1,17 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { Address } from '@/models/base';
-import { Options } from '@/types/options';
+
+import { Address } from '@/models/common/Address';
+
+import { BridgePropertyNumberOpt } from '@/types/options';
 
 export const BridgePurpose = types
   .model({
     values: types.model({
       propertyNumber: types.union(
-        types.literal(Options.BridgePropertyNumberOpt.default),
-        types.literal(Options.BridgePropertyNumberOpt.zero),
-        types.literal(Options.BridgePropertyNumberOpt.one_to_four),
-        types.literal(Options.BridgePropertyNumberOpt.five_more),
+        types.literal(BridgePropertyNumberOpt.default),
+        types.literal(BridgePropertyNumberOpt.zero),
+        types.literal(BridgePropertyNumberOpt.one_to_four),
+        types.literal(BridgePropertyNumberOpt.five_more),
       ),
       address: Address,
     }),

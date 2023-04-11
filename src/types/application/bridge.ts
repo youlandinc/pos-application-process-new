@@ -1,4 +1,9 @@
-import { Options } from '@/types/options';
+import {
+  BridgePropertyNumberOpt,
+  ChannelOpt,
+  PropertyOpt,
+  PropertyUnitOpt,
+} from '@/types/options';
 import { AddressData } from '@/types/common';
 import {
   BridgeCreditScoreState,
@@ -20,15 +25,15 @@ export interface BridgeApplicationProcessSnapshot {
 }
 
 export interface BridgeStartingData {
-  propertyNumber: Options.BridgePropertyNumberOpt;
+  propertyNumber: BridgePropertyNumberOpt;
   isConfirm: boolean | undefined;
-  propertyType: Options.PropertyOpt;
-  propertyUnit: Options.PropertyUnitOpt;
+  propertyType: PropertyOpt;
+  propertyUnit: PropertyUnitOpt;
   propAddr: AddressData;
 }
 
 export interface WhereKnowUsData {
-  reference: Options.ChannelOpt;
+  reference: ChannelOpt;
 }
 
 export interface BPEstimateRateData {

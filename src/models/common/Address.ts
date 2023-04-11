@@ -40,8 +40,8 @@ export const Address = types
     ) {
       const errors = validate({ [key]: value }, { [key]: PurposeSchema[key] });
       self.errors = { ...self.errors, ...(errors || {}) };
-      if (self.errors[key as unknown as any] && errors === void 0) {
-        destroy(self.errors[key as unknown as any]);
+      if (self.errors[key as keyof typeof self.errors] && errors === void 0) {
+        destroy(self.errors[key as keyof typeof self.errors]);
       }
       self.isValid = Object.keys(self.errors).length === 0;
       self[key] = value;

@@ -1,8 +1,10 @@
 import { destroy, Instance, SnapshotOut, types } from 'mobx-state-tree';
-import validate from '@/constants/validate';
-import { RealtorSchema } from '@/constants';
+
 import { EstateAgent } from '@/types/common';
 import { VariableName } from '@/types/enum';
+
+import validate from '@/constants/validate';
+import { RealtorSchema } from '@/constants';
 
 export const MortgagePurchaseRealtor = types
   .model({
@@ -46,8 +48,8 @@ export const MortgagePurchaseRealtor = types
           { [key]: RealtorSchema[key] },
         );
         self.errors = { ...self.errors, ...(errors || {}) };
-        if (self.errors[key as unknown as any] && errors === void 0) {
-          destroy(self.errors[key as unknown as any]);
+        if (self.errors[key as keyof typeof self.errors] && errors === void 0) {
+          destroy(self.errors[key as keyof typeof self.errors]);
         }
         self.isValid = Object.values(self.errors).every((item) => !item);
         self[key] = value;

@@ -1,6 +1,6 @@
 import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { FormData } from '@/constants';
-import { PTask, SPTask } from './PTask';
+import { PTask, SPTask } from '@/models/pipeline/PTask';
 import { _fetchPipelineTask } from '@/requests';
 
 const Union = types.union({

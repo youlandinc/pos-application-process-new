@@ -5,6 +5,8 @@ import {
   SnapshotOut,
   types,
 } from 'mobx-state-tree';
+import { SUploadData, UploadData } from '@/models/common/UploadFile';
+
 import {
   PipelineTaskItem,
   PipelineTaskItemStatus,
@@ -12,7 +14,6 @@ import {
   PipelineTaskName,
   PipelineW9,
 } from '@/types/pipeline';
-import { SUploadData, UploadData } from '@/models/base';
 
 export const PTW9 = types
   .model({

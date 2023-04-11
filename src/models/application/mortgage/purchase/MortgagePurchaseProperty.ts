@@ -1,29 +1,29 @@
 import { destroy, Instance, SnapshotOut, types } from 'mobx-state-tree';
 import validate from '@/constants/validate';
 import { PropertySchema } from '@/constants';
-import { Options } from '@/types/options';
+import { OccupancyOpt, PropertyOpt, PropertyUnitOpt } from '@/types/options';
 
 export const MortgagePurchaseProperty = types
   .model({
     values: types.model({
       occupancyOpt: types.union(
-        types.literal(Options.OccupancyOpt.primaryResidence),
-        types.literal(Options.OccupancyOpt.secondHome),
-        types.literal(Options.OccupancyOpt.investmentProperty),
-        types.literal(Options.OccupancyOpt.default),
+        types.literal(OccupancyOpt.primaryResidence),
+        types.literal(OccupancyOpt.secondHome),
+        types.literal(OccupancyOpt.investmentProperty),
+        types.literal(OccupancyOpt.default),
       ),
       propertyOpt: types.union(
-        types.literal(Options.PropertyOpt.singleFamily),
-        types.literal(Options.PropertyOpt.townhouse),
-        types.literal(Options.PropertyOpt.condo),
-        types.literal(Options.PropertyOpt.twoToFourFamily),
-        types.literal(Options.PropertyOpt.default),
+        types.literal(PropertyOpt.singleFamily),
+        types.literal(PropertyOpt.townhouse),
+        types.literal(PropertyOpt.condo),
+        types.literal(PropertyOpt.twoToFourFamily),
+        types.literal(PropertyOpt.default),
       ),
       numberOfUnits: types.union(
-        types.literal(Options.PropertyUnitOpt.twoUnits),
-        types.literal(Options.PropertyUnitOpt.threeUnits),
-        types.literal(Options.PropertyUnitOpt.fourUnits),
-        types.literal(Options.PropertyUnitOpt.default),
+        types.literal(PropertyUnitOpt.twoUnits),
+        types.literal(PropertyUnitOpt.threeUnits),
+        types.literal(PropertyUnitOpt.fourUnits),
+        types.literal(PropertyUnitOpt.default),
       ),
       rentalIncome: types.maybe(types.number),
     }),
@@ -43,12 +43,12 @@ export const MortgagePurchaseProperty = types
       if (!occupancyOpt) {
         return false;
       }
-      if (occupancyOpt === Options.OccupancyOpt.investmentProperty) {
-        return propertyOpt === Options.PropertyOpt.twoToFourFamily
+      if (occupancyOpt === OccupancyOpt.investmentProperty) {
+        return propertyOpt === PropertyOpt.twoToFourFamily
           ? !!numberOfUnits
           : !!propertyOpt;
       }
-      return propertyOpt === Options.PropertyOpt.twoToFourFamily
+      return propertyOpt === PropertyOpt.twoToFourFamily
         ? !!numberOfUnits
         : !!propertyOpt;
     },
@@ -73,17 +73,17 @@ export const MortgagePurchaseProperty = types
       self.errors = errors || {};
     },
     resetPartForm() {
-      if (self.values.propertyOpt === Options.PropertyOpt.twoToFourFamily) {
+      if (self.values.propertyOpt === PropertyOpt.twoToFourFamily) {
         return;
       }
-      self.values.numberOfUnits = Options.PropertyUnitOpt.default;
+      self.values.numberOfUnits = PropertyUnitOpt.default;
       if (!self.values.rentalIncome) {
         self.values.rentalIncome = undefined;
       }
     },
     resetAllForm() {
-      self.values.propertyOpt = Options.PropertyOpt.default;
-      self.values.numberOfUnits = Options.PropertyUnitOpt.default;
+      self.values.propertyOpt = PropertyOpt.default;
+      self.values.numberOfUnits = PropertyUnitOpt.default;
       self.values.rentalIncome = undefined;
     },
   }));

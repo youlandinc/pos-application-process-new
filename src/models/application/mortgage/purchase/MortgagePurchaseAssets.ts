@@ -1,13 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { cast, Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { Address } from '@/models/base';
+
+import { Address, SAddress } from '@/models/common/Address';
+import { LoanData, SLoanData } from '@/models/common/LoanData';
+import { MortgageFinancialSituation } from '@/models/application/common/MortgageFinancialSitutation';
+
 import {
-  LoanData,
-  MortgageFinancialSituation,
-  SLoanData,
-} from '@/models/application';
-import { Options } from '@/types/options';
+  PropertyPlanOpt,
+  PropertyPurposeOpt,
+  PropertyTitleOpt,
+} from '@/types/options';
 import { AssetsState, VariableName } from '@/types/enum';
 import {
   MortgageAssetsData,
@@ -19,23 +20,23 @@ export const RealEstate = types
     payments: types.array(LoanData),
     address: Address,
     propertyTitle: types.union(
-      types.literal(Options.PropertyTitleOpt.byYourself),
-      types.literal(Options.PropertyTitleOpt.jointlyWithSpouse),
-      types.literal(Options.PropertyTitleOpt.jointlyWithAnotherPerson),
-      types.literal(Options.PropertyTitleOpt.default),
+      types.literal(PropertyTitleOpt.byYourself),
+      types.literal(PropertyTitleOpt.jointlyWithSpouse),
+      types.literal(PropertyTitleOpt.jointlyWithAnotherPerson),
+      types.literal(PropertyTitleOpt.default),
     ),
     propertyPurpose: types.union(
-      types.literal(Options.PropertyPurposeOpt.default),
-      types.literal(Options.PropertyPurposeOpt.secondHome),
-      types.literal(Options.PropertyPurposeOpt.investment),
+      types.literal(PropertyPurposeOpt.default),
+      types.literal(PropertyPurposeOpt.secondHome),
+      types.literal(PropertyPurposeOpt.investment),
     ),
     expectRentPrice: types.maybe(types.number),
     hasMonthlyPayment: types.maybe(types.boolean),
     changeResidence: types.maybe(types.boolean),
     propertyPlan: types.union(
-      types.literal(Options.PropertyPlanOpt.keepIt),
-      types.literal(Options.PropertyPlanOpt.sellIt),
-      types.literal(Options.PropertyPlanOpt.default),
+      types.literal(PropertyPlanOpt.keepIt),
+      types.literal(PropertyPlanOpt.sellIt),
+      types.literal(PropertyPlanOpt.default),
     ),
     sellForPurchaseNew: types.maybe(types.boolean),
     expectSellPrice: types.maybe(types.number),
@@ -71,7 +72,7 @@ export const RealEstate = types
       deleteLoan(idx: number) {
         self.payments.splice(idx, 1);
       },
-      injectAddress(data) {
+      injectAddress(data: SAddress) {
         self.address.formatAddress = data.formatAddress;
         self.address.state = data.state;
         self.address.street = data.street;
@@ -105,13 +106,13 @@ export const RealEstate = types
           formatAddress &&
           notUndefined(hasMonthlyPayment)
         ) {
-          if (propertyPlan === Options.PropertyPlanOpt.sellIt) {
+          if (propertyPlan === PropertyPlanOpt.sellIt) {
             return (
               notUndefined(expectSellPrice) &&
               notUndefined(sellForPurchaseNew) &&
               (hasMonthlyPayment ? this.checkLoanListValid : true)
             );
-          } else if (propertyPlan === Options.PropertyPlanOpt.keepIt) {
+          } else if (propertyPlan === PropertyPlanOpt.keepIt) {
             return notUndefined(changeResidence) && changeResidence
               ? notUndefined(expectRentPrice) &&
                   (hasMonthlyPayment ? this.checkLoanListValid : true)
@@ -146,11 +147,9 @@ export const RealEstate = types
           propertyTitle &&
           notUndefined(hasMonthlyPayment)
         ) {
-          if (propertyPurpose === Options.PropertyPurposeOpt.secondHome) {
+          if (propertyPurpose === PropertyPurposeOpt.secondHome) {
             return hasMonthlyPayment ? this.checkLoanListValid : true;
-          } else if (
-            propertyPurpose === Options.PropertyPurposeOpt.investment
-          ) {
+          } else if (propertyPurpose === PropertyPurposeOpt.investment) {
             return (
               notUndefined(expectRentPrice) &&
               (hasMonthlyPayment ? this.checkLoanListValid : true)

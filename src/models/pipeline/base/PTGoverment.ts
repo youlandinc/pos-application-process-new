@@ -5,18 +5,19 @@ import {
   SnapshotOut,
   types,
 } from 'mobx-state-tree';
+import { SUploadData, UploadData } from '@/models/common/UploadFile';
+
 import {
-  PipelineLicense,
+  PipelineGovernment,
   PipelineTaskItem,
   PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
 } from '@/types/pipeline';
-import { SUploadData, UploadData } from '@/models/base';
 
-export const PTLicense = types
+export const PTGovernment = types
   .model({
-    taskName: PipelineTaskName[PipelineTaskKey.BL],
+    taskName: PipelineTaskName[PipelineTaskKey.BG],
     taskId: types.maybe(types.string),
     taskStatus: types.maybe(
       types.union(
@@ -31,7 +32,7 @@ export const PTLicense = types
   })
   .actions((self) => {
     return {
-      injectPipelineTaskData(data: PipelineTaskItem<PipelineLicense>) {
+      injectPipelineTaskData(data: PipelineTaskItem<PipelineGovernment>) {
         const { taskName, taskId, taskStatus, taskForm } = data;
         self.taskName = taskName;
         self.taskId = taskId;
@@ -66,5 +67,5 @@ export const PTLicense = types
     };
   });
 
-export type IPTLicense = Instance<typeof PTLicense>;
-export type SPTLicense = SnapshotOut<typeof PTLicense>;
+export type IPTGovernment = Instance<typeof PTGovernment>;
+export type SPTGovernment = SnapshotOut<typeof PTGovernment>;

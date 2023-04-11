@@ -5,8 +5,9 @@ import {
   SnapshotOut,
   types,
 } from 'mobx-state-tree';
-import { UploadData } from '@/models/base';
-import { PQOwnerData, SPQOwnerData } from '@/models/pipeline';
+import { UploadData } from '@/models/common/UploadFile';
+import { PQOwnerData, SPQOwnerData } from './PQOwner';
+
 import {
   PipelineQuestionnaire,
   PipelineTaskItem,
@@ -14,6 +15,7 @@ import {
   PipelineTaskKey,
   PipelineTaskName,
 } from '@/types/pipeline';
+
 import { validate } from 'validate.js';
 import { CreditScoreSchema } from '@/constants';
 
@@ -55,7 +57,7 @@ export const PTQuestionnaire = types
         })
       );
     },
-    checkArrayIsValid(item) {
+    checkArrayIsValid(item: SPQOwnerData) {
       for (const [, value] of Object.entries(item)) {
         if (!value) {
           return false;
@@ -91,9 +93,9 @@ export const PTQuestionnaire = types
       ) {
         self.taskForm[key] = value;
       },
-      changeLicensesFieldValue<K extends keyof typeof PQOwnerData>(
-        key: string,
-        value: (typeof PQOwnerData)[K],
+      changeLicensesFieldValue<K extends keyof SPQOwnerData>(
+        key: keyof SPQOwnerData,
+        value: SPQOwnerData[K],
         index: number,
       ) {
         self.taskForm.licenses[index][key] = value;

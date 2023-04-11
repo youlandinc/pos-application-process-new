@@ -1,5 +1,5 @@
 import { LoanStage, LoanType } from '@/types/enum';
-import { Options } from '@/types/options';
+import { OccupancyOpt } from '@/types/options';
 
 export enum HttpErrorType {
   tokenExpired = '40001',
@@ -24,5 +24,5 @@ export interface PreApprovalLetterData {
   purchasePrice: number;
   city: string;
   state: string;
-  propertyUsage: Options.OccupancyOpt;
+  propertyUsage: OccupancyOpt;
 }

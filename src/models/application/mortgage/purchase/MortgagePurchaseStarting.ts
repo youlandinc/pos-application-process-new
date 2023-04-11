@@ -1,6 +1,9 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { MortgagePurchaseProperty, MortgagePurchasePurpose } from './index';
-import { Options } from '@/types/options';
+
+import { MortgagePurchasePurpose } from '@/models/application/mortgage/purchase/MortgagePurchasePurpose';
+import { MortgagePurchaseProperty } from '@/models/application/mortgage/purchase/MortgagePurchaseProperty';
+
+import { PropertyOpt } from '@/types/options';
 import { MortgageStartingData } from '@/types/application';
 import { StartingState, VariableName } from '@/types/enum';
 
@@ -12,9 +15,7 @@ export const MortgagePurchaseStarting = types
   })
   .views((self) => ({
     get propertyIsValid() {
-      if (
-        self.property.values.propertyOpt === Options.PropertyOpt.twoToFourFamily
-      ) {
+      if (self.property.values.propertyOpt === PropertyOpt.twoToFourFamily) {
         return !!(
           self.property.values.rentalIncome &&
           self.property.values.numberOfUnits

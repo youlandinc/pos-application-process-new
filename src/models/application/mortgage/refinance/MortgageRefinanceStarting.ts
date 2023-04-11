@@ -1,6 +1,9 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { MortgageRefinanceProperty, MortgageRefinancePurpose } from './index';
-import { Options } from '@/types/options';
+
+import { MortgageRefinanceProperty } from '@/models/application/mortgage/refinance/MortgageRefinanceProperty';
+import { MortgageRefinancePurpose } from '@/models/application/mortgage/refinance/MortgageRefinancePurpose';
+
+import { PropertyOpt } from '@/types/options';
 import { MRStartingData } from '@/types/application';
 import { StartingState, VariableName } from '@/types/enum';
 
@@ -12,9 +15,7 @@ export const MortgageRefinanceStarting = types
   })
   .views((self) => ({
     get propertyIsValid() {
-      if (
-        self.property.values.propertyOpt === Options.PropertyOpt.twoToFourFamily
-      ) {
+      if (self.property.values.propertyOpt === PropertyOpt.twoToFourFamily) {
         return !!(
           self.property.values.rentalIncome &&
           self.property.values.numberOfUnits &&

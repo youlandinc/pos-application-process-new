@@ -1,10 +1,10 @@
 import { AddressData } from '@/types';
-import { Options } from '@/types/options';
+import { DenialReason } from '@/types/options';
 
 export interface BorrowerData {
   reconciled: boolean;
   preApproved: boolean;
-  denialReason: Options.DenialReason;
+  denialReason: DenialReason;
   debtMonthly: number;
   grossIncomeMonthly: number;
   creditScore: number;

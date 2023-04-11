@@ -1,5 +1,3 @@
-export * from './MortgageRefinance';
-
 export * from './MortgageRefinanceProperty';
 export * from './MortgageRefinancePurpose';
 export * from './MortgageRefinanceStarting';

@@ -31,6 +31,8 @@ export enum PipelineTaskKey {
 export interface PipelineTasksMap {
   [PipelineTaskKey.AI]: PipelineTaskItem<PipelineACH>;
   [PipelineTaskKey.BA]: PipelineTaskItem<PipelineAgreement>;
+  [PipelineTaskKey.LOA]: PipelineTaskItem<PipelineAgreement>;
+  [PipelineTaskKey.REAA]: PipelineTaskItem<PipelineAgreement>;
   [PipelineTaskKey.BG]: PipelineTaskItem<PipelineGovernment>;
   [PipelineTaskKey.BL]: PipelineTaskItem<PipelineLicense>;
   [PipelineTaskKey.BQ]: PipelineTaskItem<PipelineQuestionnaire>;

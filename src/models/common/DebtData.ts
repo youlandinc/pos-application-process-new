@@ -1,5 +1,5 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { Options } from '@/types/options';
+import { DebtWrongReasonOpt } from '@/types/options';
 
 export const TimeUnit = types.frozen<TimeUnit>();
 
@@ -15,10 +15,10 @@ export const DebtData = types
     consolidate: types.maybe(types.boolean),
     wrongReason: types.maybe(
       types.union(
-        types.literal(Options.DebtWrongReasonOpt.default),
-        types.literal(Options.DebtWrongReasonOpt.had_paid),
-        types.literal(Options.DebtWrongReasonOpt.co_signer_pays),
-        types.literal(Options.DebtWrongReasonOpt.employer_pays),
+        types.literal(DebtWrongReasonOpt.default),
+        types.literal(DebtWrongReasonOpt.had_paid),
+        types.literal(DebtWrongReasonOpt.co_signer_pays),
+        types.literal(DebtWrongReasonOpt.employer_pays),
       ),
     ),
   })

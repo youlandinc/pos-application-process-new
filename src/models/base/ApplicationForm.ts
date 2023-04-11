@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import {
   BridgePurchase,
@@ -10,15 +8,15 @@ import {
   SBridgeRefinance,
   SMortgagePurchase,
   SMortgageRefinance,
-} from '@/models/application';
+} from '@/models/application/base';
 import { FormData } from '@/constants';
 
 const Union = types.union({
   dispatcher: (
     snapshot:
       | SMortgagePurchase
-      | SMortgageRefinance
       | SBridgePurchase
+      | SMortgageRefinance
       | SBridgeRefinance
       | undefined,
   ) => {
@@ -26,18 +24,19 @@ const Union = types.union({
       return types.undefined;
     }
     switch (snapshot.name) {
-      case 'MortgagePurchase': {
+      case 'MortgagePurchase':
         return MortgagePurchase;
-      }
-      case 'MortgageRefinance': {
+
+      case 'MortgageRefinance':
         return MortgageRefinance;
-      }
-      case 'BridgePurchase': {
+
+      case 'BridgePurchase':
         return BridgePurchase;
-      }
-      case 'BridgeRefinance': {
+
+      case 'BridgeRefinance':
         return BridgeRefinance;
-      }
+      default:
+        return types.undefined;
     }
   },
 });

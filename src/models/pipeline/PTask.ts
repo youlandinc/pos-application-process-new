@@ -1,15 +1,5 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import {
-  PipelineACH,
-  PipelineAgreement,
-  PipelineGovernment,
-  PipelineLicense,
-  PipelineQuestionnaire,
-  PipelineTaskItem,
-  PipelineTaskKey,
-  PipelineW9,
-} from '@/types/pipeline';
-import {
   PTACH,
   PTAgreement,
   PTAgreementNotBroker,
@@ -17,7 +7,19 @@ import {
   PTLicense,
   PTQuestionnaire,
   PTW9,
-} from '@/models/pipeline';
+} from './base';
+
+import {
+  PipelineACH,
+  PipelineAgreement,
+  PipelineGovernment,
+  PipelineLicense,
+  PipelineQuestionnaire,
+  PipelineTaskItem,
+  PipelineTaskKey,
+  PipelineTasksMap,
+  PipelineW9,
+} from '@/types/pipeline';
 
 export const PTask = types
   .model({
@@ -32,7 +34,7 @@ export const PTask = types
   })
   .actions((self) => {
     return {
-      injectPipelineTaskData(data) {
+      injectPipelineTaskData(data: Partial<PipelineTasksMap>) {
         if (data) {
           for (const [key, value] of Object.entries(data)) {
             switch (key) {
@@ -80,7 +82,7 @@ export const PTask = types
           }
         }
       },
-      loadProcessData(taskData) {
+      loadProcessData(taskData: Partial<PipelineTasksMap>) {
         this.injectPipelineTaskData(taskData);
       },
       changeFieldValue<K extends keyof typeof self>(

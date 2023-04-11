@@ -8,6 +8,3 @@ export * from './PTAgreement';
 export * from './PTGoverment';
 
 export * from './PTAGreementNotBroker';
-
-export * from './PTask';
-export * from './PTaskForm';
