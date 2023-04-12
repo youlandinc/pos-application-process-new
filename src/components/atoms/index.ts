@@ -9,3 +9,5 @@ export * from './StyledTextFieldNumber';
 export * from './StyledTextFieldSocialNumber';
 export * from './StyledTextFieldPassword';
 export * from './StyledTextFieldPhone';
+
+export * from './StyledCheckbox';
