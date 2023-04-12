@@ -1,13 +1,17 @@
 import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { _fetchTaskItemStatus } from '@/requests/dashboard';
+import {
+  _fetchTaskItemStatus,
+  STaskItemsStatusResponse,
+  STaskItemStatus,
+} from '@/requests/dashboard';
 
 export const DTask = types
   .model({
     paymentStatus: types.union(
-      types.literal('complete'),
-      types.literal('undone'),
-      types.literal('fail'),
-      types.literal('processing'),
+      types.literal(STaskItemStatus.COMPLETE),
+      types.literal(STaskItemStatus.UNDONE),
+      types.literal(STaskItemStatus.FAIL),
+      types.literal(STaskItemStatus.PROCESSING),
     ),
     taskInitialized: types.boolean,
   })
@@ -15,7 +19,7 @@ export const DTask = types
     return {
       injectTaskItemStatus(
         // this just for payment async get result , because stripe give me the results first, so this will show fail or success(complete).
-        status: Record<string, 'complete' | 'undone' | 'fail' | 'processing'>,
+        status: STaskItemsStatusResponse,
       ) {
         self.paymentStatus = status.payment;
       },

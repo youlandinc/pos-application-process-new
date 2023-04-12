@@ -1,2 +1,2 @@
 export * from './SignIn';
-// export * from './SingnUp';
+// export * from './SignUp';

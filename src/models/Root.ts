@@ -1,12 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-import { Instance, types } from 'mobx-state-tree';
 import { createContext, useContext } from 'react';
-import { LoginType, SceneType, ServerTaskKey, UserType } from '@/types/enum';
+import { Instance, types } from 'mobx-state-tree';
 import Router from 'next/router';
-import { STaskItemStatus } from '@/requests/dashboard';
-import { User } from '@/types/user';
-import { userpool } from '@/constants';
+
 import {
   ApplicationForm,
   Bpmn,
@@ -19,6 +14,13 @@ import {
   //UserConfig,
   //UserProfile
 } from './base';
+
+import { LoginType, SceneType, ServerTaskKey, UserType } from '@/types/enum';
+import { User } from '@/types/user';
+
+import { STaskItemStatus } from '@/requests/dashboard';
+
+import { userpool } from '@/constants';
 
 export const RootModel = {
   persistDataLoaded: types.boolean,
@@ -141,6 +143,8 @@ const initialState = {
 
   applicationForm: {
     initialized: false,
+    productCategory: void 0,
+    applicationType: void 0,
   },
 
   selectedProcessData: {
@@ -149,7 +153,7 @@ const initialState = {
     loading: false,
   },
   dashboardTask: {
-    paymentStatus: 'undone' as STaskItemStatus,
+    paymentStatus: STaskItemStatus.UNDONE,
     taskInitialized: false,
   },
 

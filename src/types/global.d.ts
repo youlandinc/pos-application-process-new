@@ -1,9 +1,9 @@
-type ProductCategory = 'mortgage' | 'bridge';
+type ProductCategory = 'mortgage' | 'bridge' | undefined;
 // | 'mortgageAlter'
 // | 'rental'
 // | 'jumbo';
 
-type ApplicationType = 'purchase' | 'refinance';
+type ApplicationType = 'purchase' | 'refinance' | undefined;
 
 interface Option {
   key: string;
@@ -132,8 +132,8 @@ interface UserSession {
 }
 
 interface ClientUserProfile {
-  username: string | undefined;
-  email: string | undefined;
-  userType: import('@/types/enum.ts').UserType | undefined;
-  loginType: import('@/types/enum').LoginType | undefined;
+  username?: string | undefined;
+  email?: string | undefined;
+  userType?: import('@/types/enum.ts').UserType | undefined;
+  loginType?: import('@/types/enum').LoginType | undefined;
 }

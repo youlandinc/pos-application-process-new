@@ -53,12 +53,14 @@ export const ApplicationForm = types
       productCategory: ProductCategory,
       applicationType: ApplicationType,
     ) {
-      self.applicationType = applicationType;
-      self.productCategory = productCategory;
-      self.formData = {
-        ...FormData[productCategory][applicationType],
-      };
-      this.setInitialized(true);
+      if (productCategory && applicationType) {
+        self.applicationType = applicationType;
+        self.productCategory = productCategory;
+        self.formData = {
+          ...FormData[productCategory][applicationType],
+        };
+        this.setInitialized(true);
+      }
     },
     setInitialized(initialized: boolean) {
       self.initialized = initialized;
