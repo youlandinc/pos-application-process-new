@@ -47,6 +47,7 @@ export default function MyApp(props: MyAppProps) {
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
           name="viewport"
         />
+        <link href="/POS.svg" rel="icon" />
         <title>Point of Sale</title>
       </Head>
       <ThemeProvider theme={theme}>

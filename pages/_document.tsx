@@ -4,7 +4,7 @@ import { getInitColorSchemeScript } from '@mui/material/styles';
 export default function Document() {
   return (
     <Html>
-      <Head></Head>
+      <Head />
       <body>
         {getInitColorSchemeScript()}
         <Main />
