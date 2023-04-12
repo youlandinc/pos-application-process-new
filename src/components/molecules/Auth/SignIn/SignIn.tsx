@@ -3,13 +3,13 @@ import Link from 'next/link';
 
 import { Box, Typography } from '@mui/material';
 
+import { SignInClasses } from './index';
 import {
   StyledButton,
   StyledTextField,
   StyledTextFieldPassword,
 } from '@/components/atoms';
 
-import { SignInClasses } from '@/components/molecules';
 export const SignIn: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
