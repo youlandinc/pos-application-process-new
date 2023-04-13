@@ -11,7 +11,6 @@ import {
 import { StyledSelectProps, StyledSelectStyles } from './index';
 
 export const StyledSelect: FC<StyledSelectProps> = ({
-  id,
   options = [],
   validate,
   value = '',
@@ -21,7 +20,6 @@ export const StyledSelect: FC<StyledSelectProps> = ({
   sxList,
   sx,
   sxHelperText,
-  sxSelect,
   ...rest
 }) => {
   return (

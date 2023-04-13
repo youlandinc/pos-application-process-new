@@ -57,7 +57,6 @@ const SelectComponent: FC = () => {
               static
             </Typography>
             <StyledSelect
-              id={'static'}
               label={'static'}
               onChange={(e) => setValue1(e.target.value)}
               options={OPTIONS_BRIDGE_PROPERTY_NUMBER}
@@ -70,7 +69,6 @@ const SelectComponent: FC = () => {
               selected
             </Typography>
             <StyledSelect
-              id={'selected'}
               label={'selected'}
               onChange={(e) => setValue2(e.target.value)}
               options={OPTIONS_COMMON_STATE}
@@ -83,7 +81,6 @@ const SelectComponent: FC = () => {
               error
             </Typography>
             <StyledSelect
-              id={'error'}
               label={'error'}
               onChange={(e) => setValue3(e.target.value)}
               options={OPTIONS_BRIDGE_PROPERTY_NUMBER}
@@ -98,7 +95,6 @@ const SelectComponent: FC = () => {
             </Typography>
             <StyledSelect
               disabled
-              id={'disabled'}
               label={'disabled'}
               onChange={(e) => setValue4(e.target.value)}
               options={OPTIONS_COMMON_STATE}
