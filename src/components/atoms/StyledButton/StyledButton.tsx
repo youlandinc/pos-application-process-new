@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Button } from '@mui/material';
 
-import { StyledButtonClasses, StyledButtonProps } from './index';
+import { StyledButtonProps, StyledButtonStyles } from './index';
 
 export const StyledButton: FC<StyledButtonProps> = ({
   loading = false,
@@ -43,7 +43,7 @@ export const StyledButton: FC<StyledButtonProps> = ({
           },
         },
         {
-          ...StyledButtonClasses,
+          ...StyledButtonStyles,
           ...sx,
         },
       )}

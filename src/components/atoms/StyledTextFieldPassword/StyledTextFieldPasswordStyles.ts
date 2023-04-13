@@ -1,7 +1,7 @@
 import { POSFont } from '@/styles';
 import { SxProps } from '@mui/material';
 
-export const StyledTextFieldPasswordClasses: { [key: string]: SxProps } = {
+export const StyledTextFieldPasswordStyles: { [key: string]: SxProps } = {
   error: { color: 'error.main' },
   pass: { color: 'success.main' },
   passwordTips: {

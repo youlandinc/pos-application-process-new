@@ -4,8 +4,8 @@ import { VisibilityOff, VisibilityOutlined } from '@mui/icons-material';
 
 import {
   StyledTextField,
-  StyledTextFieldPasswordClasses,
   StyledTextFieldPasswordProps,
+  StyledTextFieldPasswordStyles,
 } from '@/components/atoms';
 
 export const StyledTextFieldPassword: FC<StyledTextFieldPasswordProps> = ({
@@ -43,25 +43,25 @@ export const StyledTextFieldPassword: FC<StyledTextFieldPasswordProps> = ({
           <Box component={'ul'} sx={{ pl: 2 }}>
             <Box
               component={'li'}
-              sx={{ ...StyledTextFieldPasswordClasses.passwordTips }}
+              sx={{ ...StyledTextFieldPasswordStyles.passwordTips }}
             >
               8 characters minimum
             </Box>
             <Box
               component={'li'}
-              sx={{ ...StyledTextFieldPasswordClasses.passwordTips }}
+              sx={{ ...StyledTextFieldPasswordStyles.passwordTips }}
             >
               Cannot contain spaces
             </Box>
             <Box
               component={'li'}
-              sx={{ ...StyledTextFieldPasswordClasses.passwordTips }}
+              sx={{ ...StyledTextFieldPasswordStyles.passwordTips }}
             >
               At least one letter
             </Box>
             <Box
               component={'li'}
-              sx={{ ...StyledTextFieldPasswordClasses.passwordTips }}
+              sx={{ ...StyledTextFieldPasswordStyles.passwordTips }}
             >
               At least one number
             </Box>
