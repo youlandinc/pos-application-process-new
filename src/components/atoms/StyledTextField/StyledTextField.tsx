@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Box, TextField } from '@mui/material';
 
-import { StyledTextFieldClasses, StyledTextFieldTypes } from './index';
+import { StyledTextFieldStyles, StyledTextFieldTypes } from './index';
 
 export const StyledTextField: FC<StyledTextFieldTypes> = ({
   sx,
@@ -34,7 +34,7 @@ export const StyledTextField: FC<StyledTextFieldTypes> = ({
         sx={Object.assign(
           {},
           {
-            ...StyledTextFieldClasses,
+            ...StyledTextFieldStyles,
             ...sx,
           },
         )}

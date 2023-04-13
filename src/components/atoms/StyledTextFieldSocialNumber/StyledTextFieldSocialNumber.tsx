@@ -2,8 +2,8 @@ import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 
 import {
-  StyledTextFieldClasses,
   StyledTextFieldSocialNumberTypes,
+  StyledTextFieldStyles,
 } from '@/components/atoms';
 
 export const StyledTextFieldSocialNumber: FC<
@@ -84,7 +84,7 @@ export const StyledTextFieldSocialNumber: FC<
         sx={Object.assign(
           {},
           {
-            ...StyledTextFieldClasses,
+            ...StyledTextFieldStyles,
             ...sx,
           },
         )}

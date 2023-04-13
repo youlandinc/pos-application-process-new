@@ -7,8 +7,8 @@ import {
 } from 'react-number-format';
 
 import {
-  StyledTextFieldClasses,
   StyledTextFieldNumberProps,
+  StyledTextFieldStyles,
 } from '@/components/atoms';
 
 export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
@@ -88,7 +88,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
         sx={Object.assign(
           {},
           {
-            ...StyledTextFieldClasses,
+            ...StyledTextFieldStyles,
             ...sx,
           },
         )}

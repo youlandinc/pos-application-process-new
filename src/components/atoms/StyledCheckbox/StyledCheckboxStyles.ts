@@ -13,12 +13,10 @@ export const StyledCheckboxStyles: Record<string, SxProps> = {
     },
   },
   checkbox: {
-    '& .MuiCheckbox-root': {
-      mt: '-10px',
-      mr: '-10px',
-      '& svg': {
-        fill: '#9095A3',
-      },
+    mt: '-10px',
+    mr: '-10px',
+    '& svg': {
+      fill: '#9095A3',
     },
     '& .Mui-checked': {
       '& svg': {

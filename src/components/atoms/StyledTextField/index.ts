@@ -1,4 +1,4 @@
 export * from './StyledTextField';
 
-export * from './StyledTextFieldClasses';
+export * from './StyledTextFieldStyles';
 export * from './StyledTextField.types';
