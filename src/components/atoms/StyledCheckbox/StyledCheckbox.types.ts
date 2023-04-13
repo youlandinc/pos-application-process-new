@@ -8,4 +8,6 @@ export interface StyledCheckboxProps extends CheckboxProps {
   checked?: boolean;
   label: ReactNode;
   indeterminateIcon?: ReactNode;
+  sxCheckbox?: SxProps;
+  sxLabel?: SxProps;
 }

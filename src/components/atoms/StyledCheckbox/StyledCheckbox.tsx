@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Checkbox, FormControlLabel, Icon } from '@mui/material';
 
-import { StyledCheckboxClasses, StyledCheckboxProps } from './index';
+import { StyledCheckboxProps, StyledCheckboxStyles } from './index';
 
 import CHECKBOX_STATIC from './static.svg';
 import CHECKBOX_CHECKED from './checked.svg';
@@ -15,6 +15,8 @@ export const StyledCheckbox: FC<StyledCheckboxProps> = ({
   checkedIcon,
   indeterminateIcon,
   indeterminate,
+  sxCheckbox,
+  sxLabel,
   ...rest
 }) => {
   return (
@@ -30,11 +32,15 @@ export const StyledCheckbox: FC<StyledCheckboxProps> = ({
               <Icon component={indeterminateIcon || CHECKBOX_INDETERMINATE} />
             }
             onChange={onChange}
+            sx={Object.assign(
+              {},
+              { ...StyledCheckboxStyles.checkbox, ...sxCheckbox },
+            )}
             {...rest}
           />
         }
         label={label}
-        sx={Object.assign({}, { ...StyledCheckboxClasses })}
+        sx={Object.assign({}, { ...StyledCheckboxStyles.label, ...sxLabel })}
       />
     </>
   );

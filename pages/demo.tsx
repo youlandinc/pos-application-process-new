@@ -1,8 +1,9 @@
-import { StyledCheckbox } from '@/components/atoms';
 import { Box } from '@mui/material';
 import { useState } from 'react';
 
-const Demo = () => {
+import { StyledCheckbox } from '@/components/atoms';
+
+const DemoPage = (): JSX.Element => {
   const [checked, setChecked] = useState(false);
 
   return (
@@ -18,4 +19,4 @@ const Demo = () => {
   );
 };
 
-export default Demo;
+export default DemoPage;

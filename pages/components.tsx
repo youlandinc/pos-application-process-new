@@ -4,6 +4,7 @@ import { ArrowRightAlt, MoveToInbox } from '@mui/icons-material';
 
 import {
   StyledButton,
+  StyledCheckbox,
   StyledTextField,
   StyledTextFieldNumber,
   StyledTextFieldPassword,
@@ -20,6 +21,8 @@ const Components: FC = () => {
 
   const [ssn, setSSN] = useState('123123123');
 
+  const [checked, setChecked] = useState(false);
+
   const { visible, toggle } = useSwitch(false);
 
   return (
@@ -29,18 +32,6 @@ const Components: FC = () => {
         width: '100%',
       }}
     >
-      <StyledButton onClick={() => toggle()} sx={{ mb: 10 }} />
-      <Transitions>
-        {visible && (
-          <StyledTextFieldSocialNumber
-            label={'Social Number'}
-            onValueChange={(e) => setSSN(e)}
-            placeholder={'Social Number'}
-            sx={{ width: 180 }}
-            value={ssn}
-          />
-        )}
-      </Transitions>
       <Box
         sx={{
           width: '100%',
@@ -49,6 +40,45 @@ const Components: FC = () => {
           p: 5,
         }}
       >
+        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
+          Checkbox
+        </Typography>
+
+        <StyledCheckbox
+          checked={checked}
+          label={
+            "I'm using Material UI kit for React. I'm making Checkboxes dynamically from states and updating them, But I'm getting uncontrolled element error."
+          }
+          onChange={(e) => setChecked(e.target.checked)}
+        />
+
+        <StyledCheckbox
+          checked={false}
+          disabled={true}
+          label={
+            "I'm using Material UI kit for React. I'm making Checkboxes dynamically from states and updating them, But I'm getting uncontrolled element error."
+          }
+          onChange={(e) => setChecked(e.target.checked)}
+        />
+
+        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
+          Transitions
+        </Typography>
+        <StyledButton onClick={() => toggle()} sx={{ mb: 10 }}>
+          Click Me !
+        </StyledButton>
+        <Transitions>
+          {visible && (
+            <StyledTextFieldSocialNumber
+              label={'Social Number'}
+              onValueChange={(e) => setSSN(e)}
+              placeholder={'Social Number'}
+              sx={{ width: 180 }}
+              value={ssn}
+            />
+          )}
+        </Transitions>
+
         <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
           TextField
         </Typography>
