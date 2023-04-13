@@ -76,7 +76,7 @@ const BusinessTextFieldComponent: FC = () => {
               }}
               placeholder={'percentage'}
               suffix={'%'}
-              sx={{ width: 180, ml: 2 }}
+              sx={{ width: 180, ml: 5 }}
               value={value2}
             />
           </Box>
