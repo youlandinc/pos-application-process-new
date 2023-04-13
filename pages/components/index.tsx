@@ -1,10 +1,18 @@
-import { StyledButton } from '@/components/atoms';
-import { POSFlex } from '@/styles';
-import { Box, Divider, Typography } from '@mui/material';
+import { StyledButton, StyledDialog } from '@/components/atoms';
+import { useSwitch } from '@/hooks';
+import { POSFlex, POSFont } from '@/styles';
+import {
+  Box,
+  DialogActions,
+  DialogContent,
+  Divider,
+  Typography,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 
 const Components = () => {
   const router = useRouter();
+  const { visible: show, open, close } = useSwitch(false);
   return (
     <Box
       sx={{
@@ -62,6 +70,11 @@ const Components = () => {
               Select
             </StyledButton>
           </Box>
+          <Box className={'component_item'}>
+            <StyledButton color="primary" onClick={open} variant="contained">
+              Open Dialog
+            </StyledButton>
+          </Box>
         </Box>
       </Box>
       <Box className={'component_wrap'}>
@@ -92,6 +105,30 @@ const Components = () => {
           </Box>
         </Box>
       </Box>
+      <StyledDialog handleClose={close} open={show} Title="Delete Files?">
+        <DialogContent sx={{ ...POSFont(14, 400, 1.5, 'info.main') }}>
+          Are you sure you want to delete Property Address
+        </DialogContent>
+        <DialogActions>
+          <StyledButton
+            autoFocus
+            color="info"
+            onClick={close}
+            size="small"
+            variant="outlined"
+          >
+            Cancel
+          </StyledButton>
+          <StyledButton
+            color="primary"
+            onClick={close}
+            size="small"
+            variant="contained"
+          >
+            Confirm
+          </StyledButton>
+        </DialogActions>
+      </StyledDialog>
     </Box>
   );
 };

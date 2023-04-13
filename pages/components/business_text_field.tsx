@@ -2,6 +2,8 @@ import {
   StyledButton,
   StyledTextField,
   StyledTextFieldNumber,
+  StyledTextFieldPassword,
+  StyledTextFieldPhone,
   StyledTextFieldSocialNumber,
 } from '@/components/atoms';
 import { POSFlex } from '@/styles';
@@ -14,7 +16,9 @@ const BusinessTextFieldComponent: FC = () => {
 
   const [value1, setValue1] = useState<number>(0);
   const [value2, setValue2] = useState<number>(0);
+  const [value3, setValue3] = useState('');
   const [ssn, setSSN] = useState<string>('123456789');
+  const [phone, setPhone] = useState<string | number>('1234567890');
 
   return (
     <Box
@@ -104,6 +108,53 @@ const BusinessTextFieldComponent: FC = () => {
                 variant={'body1'}
               >
                 Social Security Number Output: {ssn}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+
+        <Box className={'component_item'} mt={5}>
+          <Box>
+            <Typography mb={2} variant={'body1'}>
+              Text Field Password
+            </Typography>
+            <Box sx={{ ...POSFlex('center', 'flex-start', 'row'), gap: 5 }}>
+              <StyledTextFieldPassword
+                label={'password'}
+                onChange={(e) => setValue3(e.target.value)}
+                placeholder={'placeholder'}
+                sx={{ width: 180 }}
+                value={value3}
+              />
+            </Box>
+          </Box>
+        </Box>
+
+        <Box className={'component_item'} mt={5}>
+          <Box>
+            <Typography mb={2} variant={'body1'}>
+              Text Field phone
+            </Typography>
+            <Box sx={{ ...POSFlex('center', 'flex-start', 'row'), gap: 5 }}>
+              <StyledTextFieldPhone
+                label={'phone'}
+                onValueChange={(v) => {
+                  setPhone(v.floatValue ?? '');
+                }}
+                placeholder={'placeholder'}
+                sx={{ width: 180 }}
+                value={phone}
+              />
+              <Typography
+                mb={2}
+                sx={{
+                  mb: 2,
+                  flex: 1,
+                  height: 0,
+                }}
+                variant={'body1'}
+              >
+                Text Field phone Output: {phone}
               </Typography>
             </Box>
           </Box>

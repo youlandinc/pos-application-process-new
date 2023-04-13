@@ -10,12 +10,12 @@ export const StyledButtonStyles: SxProps = {
   '&:disabled': {
     color: 'action.disabled',
   },
-  '&.MuiButton-sizeMedium': {
+  '&.MuiButton-sizeSmall': {
     height: '36px',
     py: 1,
     fontSize: 14,
   },
   '&.MuiButton-outlinedInfo': {
-    color: 'action.focus',
+    color: 'text.primary',
   },
 };

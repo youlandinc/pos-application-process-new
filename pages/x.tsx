@@ -528,7 +528,7 @@ const X: FC = () => {
               autoFocus
               color="info"
               onClick={close}
-              size="medium"
+              size="small"
               variant="outlined"
             >
               Cancel
@@ -536,7 +536,7 @@ const X: FC = () => {
             <StyledButton
               color="primary"
               onClick={close}
-              size="medium"
+              size="small"
               variant="contained"
             >
               Confirm
