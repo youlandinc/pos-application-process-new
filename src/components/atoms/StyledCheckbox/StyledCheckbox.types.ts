@@ -9,5 +9,4 @@ export interface StyledCheckboxProps extends CheckboxProps {
   label: ReactNode;
   indeterminateIcon?: ReactNode;
   sxCheckbox?: SxProps;
-  sxLabel?: SxProps;
 }

@@ -14,7 +14,7 @@ import {
 } from '@/components/atoms';
 import { useSwitch } from '@/hooks';
 
-const Components: FC = () => {
+const X: FC = () => {
   const [value, setValue] = useState('123');
   const [number, setNumber] = useState(1000.99);
   const [phone, setPhone] = useState<string | number>('1234567890');
@@ -524,4 +524,4 @@ const Components: FC = () => {
   );
 };
 
-export default Components;
+export default X;

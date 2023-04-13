@@ -16,7 +16,7 @@ export const StyledCheckbox: FC<StyledCheckboxProps> = ({
   indeterminateIcon,
   indeterminate,
   sxCheckbox,
-  sxLabel,
+  sx,
   ...rest
 }) => {
   return (
@@ -32,15 +32,12 @@ export const StyledCheckbox: FC<StyledCheckboxProps> = ({
               <Icon component={indeterminateIcon || CHECKBOX_INDETERMINATE} />
             }
             onChange={onChange}
-            sx={Object.assign(
-              {},
-              { ...StyledCheckboxStyles.checkbox, ...sxCheckbox },
-            )}
+            sx={{ ...sxCheckbox }}
             {...rest}
           />
         }
         label={label}
-        sx={Object.assign({}, { ...StyledCheckboxStyles.label, ...sxLabel })}
+        sx={Object.assign({}, { ...StyledCheckboxStyles, ...sx })}
       />
     </>
   );
