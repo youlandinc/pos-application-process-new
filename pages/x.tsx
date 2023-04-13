@@ -132,29 +132,6 @@ const X: FC = () => {
           Text Field Number
         </Typography>
 
-        <StyledTextFieldNumber
-          label={'dollar'}
-          onValueChange={(v) => {
-            setNumber(v.floatValue ?? 0);
-          }}
-          placeholder={'dollar'}
-          prefix={'$'}
-          sx={{ width: 180 }}
-          value={number}
-        />
-
-        <StyledTextFieldNumber
-          decimalScale={3}
-          label={'percentage'}
-          onValueChange={(v) => {
-            setNumber(v.floatValue ?? 0);
-          }}
-          placeholder={'percentage'}
-          suffix={'%'}
-          sx={{ width: 180, ml: 2 }}
-          value={number}
-        />
-
         <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
           Text Field Password
         </Typography>

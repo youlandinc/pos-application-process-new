@@ -84,8 +84,10 @@ const Components = () => {
         <Divider className={'divider'} />
         <Box className={'component_list'} component={'ul'}>
           <Box className={'component_item'}>
-            <StyledButton onClick={() => router.push('/components/checkbox')}>
-              Checkbox
+            <StyledButton
+              onClick={() => router.push('/components/business_text_field')}
+            >
+              TextField (Number, Phone, Social Number,etc...)
             </StyledButton>
           </Box>
         </Box>
