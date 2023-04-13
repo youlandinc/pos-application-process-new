@@ -1,6 +1,6 @@
 import { SxProps } from '@mui/material';
 
-export const StyledButtonClasses: SxProps = {
+export const StyledButtonStyles: SxProps = {
   textTransform: 'none',
   fontWeight: 600,
   fontSize: 16,
@@ -9,5 +9,13 @@ export const StyledButtonClasses: SxProps = {
   boxShadow: 'none',
   '&:disabled': {
     color: 'action.disabled',
+  },
+  '&.MuiButton-sizeMedium': {
+    height: '36px',
+    py: 1,
+    fontSize: 14,
+  },
+  '&.MuiButton-outlinedInfo': {
+    color: 'action.focus',
   },
 };

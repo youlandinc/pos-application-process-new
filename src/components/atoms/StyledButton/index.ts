@@ -1,4 +1,4 @@
 export * from './StyledButton';
 
 export * from './StyledButton.types';
-export * from './StyledButtonClasses';
+export * from './StyledButtonStyles';

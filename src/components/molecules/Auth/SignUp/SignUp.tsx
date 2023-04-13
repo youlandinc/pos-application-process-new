@@ -3,26 +3,26 @@ import Link from 'next/link';
 
 import { Box, Typography } from '@mui/material';
 
-import { SignInClasses } from './index';
+import { SignUpStyles } from './index';
 import {
   StyledButton,
   StyledTextField,
   StyledTextFieldPassword,
 } from '@/components/atoms';
 
-export const SignIn: FC = () => {
+export const SignUp: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   return (
     <Box
       sx={{
-        ...SignInClasses,
+        ...SignUpStyles,
       }}
     >
-      <Box className="sign_in_img"></Box>
-      <Box className="sign_in_form">
+      <Box className="sign_up_img"></Box>
+      <Box className="sign_up_form">
         <Typography className="form_title" variant="h3">
-          Welcome to YouLand!
+          sign up
         </Typography>
 
         <StyledTextField
@@ -39,28 +39,54 @@ export const SignIn: FC = () => {
           sx={{ width: '100%' }}
           value={password}
         />
+        <StyledTextFieldPassword
+          label={'Confirmed Password'}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder={'Confirmed Password'}
+          sx={{ width: '100%' }}
+          value={password}
+        />
         <StyledButton
           color="primary"
           sx={{ width: '100%' }}
           variant="contained"
         >
-          Continue
+          Create account
         </StyledButton>
 
         <Box className="form_foot">
           <Typography variant="body2">
-            Don&apos;t have an account?
+            Already have an account?
             <Box
               component={'span'}
               sx={{
                 color: 'primary.main',
               }}
             >
-              <Link href={''}>Sign Up</Link>
+              <Link href={'/auth/login/'}>Sign in</Link>
             </Box>
           </Typography>
-          <Typography variant="body2">
-            <Link href={''}>Forgot password?</Link>
+          <Typography sx={{ color: 'info.main', mt: 3 }} variant="body2">
+            By signing up, you agree to our{' '}
+            <Box
+              component={'span'}
+              sx={{
+                color: 'primary.main',
+              }}
+            >
+              <Link href={''}> Term of Use </Link>
+            </Box>
+            and to receive YouLand emails & updates and acknowledge that you
+            read our{' '}
+            <Box
+              component={'span'}
+              sx={{
+                color: 'primary.main',
+              }}
+            >
+              <Link href={''}> Privacy Policy</Link>
+            </Box>
+            .
           </Typography>
         </Box>
       </Box>

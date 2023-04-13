@@ -4,6 +4,8 @@ export * from './Transitions';
 
 export * from './StyledButton';
 
+export * from './StyledDialog';
+
 export * from './StyledTextField';
 export * from './StyledTextFieldNumber';
 export * from './StyledTextFieldSocialNumber';

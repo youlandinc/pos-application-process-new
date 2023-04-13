@@ -1,197 +1,46 @@
-import { FC, useState } from 'react';
-import {
-  Box,
-  DialogActions,
-  DialogContent,
-  Grid,
-  Typography,
-} from '@mui/material';
+import { FC } from 'react';
+import { useRouter } from 'next/router';
+import { Box, Grid, Typography } from '@mui/material';
+
+import { StyledButton } from '@/components/atoms';
 import { ArrowRightAlt, MoveToInbox } from '@mui/icons-material';
 
-import {
-  StyledButton,
-  StyledCheckbox,
-  StyledDialog,
-  StyledTextField,
-  StyledTextFieldNumber,
-  StyledTextFieldPassword,
-  StyledTextFieldPhone,
-  StyledTextFieldSocialNumber,
-  Transitions,
-} from '@/components/atoms';
-import { useSwitch } from '@/hooks';
-import { POSFont } from '@/styles';
-
-const X: FC = () => {
-  const [value, setValue] = useState('123');
-  const [number, setNumber] = useState(1000.99);
-  const [phone, setPhone] = useState<string | number>('1234567890');
-
-  const [ssn, setSSN] = useState('123123123');
-
-  const [checked, setChecked] = useState(false);
-
-  const { visible, toggle } = useSwitch(false);
-
-  const { visible: show, open, close } = useSwitch(false);
+const ButtonComponent: FC = () => {
+  const router = useRouter();
 
   return (
     <Box
       sx={{
-        p: 15,
-        width: '100%',
+        m: 4,
+        p: 4,
+        width: '90%',
+        border: '1px solid rgba(145, 158, 171, 0.32)',
+        borderRadius: 4,
+        '& .component_wrap': {
+          '& .divider': {
+            my: 2,
+          },
+          '& .component_item': {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            boxShadow: '1px 1px 3px 1px rgba(0,0,0,.38)',
+            p: 4,
+            borderRadius: 4,
+          },
+        },
       }}
     >
-      <Box
+      <StyledButton
+        onClick={() => router.back()}
         sx={{
-          width: '100%',
-          border: '1px dashed rgba(145, 158, 171, 0.32)',
-          borderRadius: 8,
-          p: 5,
+          my: 3,
         }}
+        variant={'outlined'}
       >
-        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
-          Checkbox
-        </Typography>
-
-        <StyledCheckbox
-          checked={checked}
-          label={
-            "I'm using Material UI kit for React. I'm making Checkboxes dynamically from states and updating them, But I'm getting uncontrolled element error."
-          }
-          onChange={(e) => setChecked(e.target.checked)}
-        />
-
-        <StyledCheckbox
-          checked={false}
-          disabled={true}
-          label={
-            "I'm using Material UI kit for React. I'm making Checkboxes dynamically from states and updating them, But I'm getting uncontrolled element error."
-          }
-          onChange={(e) => setChecked(e.target.checked)}
-        />
-
-        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
-          Transitions
-        </Typography>
-        <StyledButton onClick={() => toggle()} sx={{ mb: 10 }}>
-          Click Me !
-        </StyledButton>
-        <Transitions>
-          {visible && (
-            <StyledTextFieldSocialNumber
-              label={'Social Number'}
-              onValueChange={(e) => setSSN(e)}
-              placeholder={'Social Number'}
-              sx={{ width: 180 }}
-              value={ssn}
-            />
-          )}
-        </Transitions>
-
-        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
-          TextField
-        </Typography>
-
-        <StyledTextField
-          disabled
-          label={'disabled'}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder={'disabled'}
-          sx={{ width: 180 }}
-          value={value}
-        />
-
-        <StyledTextField
-          label={'error array'}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder={'error array'}
-          sx={{ width: 180, mx: 2 }}
-          validate={['error 1', 'error 2']}
-          value={value}
-        />
-
-        <StyledTextField
-          label={'error'}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder={'error'}
-          sx={{ width: 180 }}
-          validate={['error 1']}
-          value={value}
-        />
-
-        <StyledTextField
-          label={'static'}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder={'static'}
-          sx={{ width: 180, ml: 2 }}
-          value={value}
-        />
-
-        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
-          Text Field Number
-        </Typography>
-
-        <StyledTextFieldNumber
-          label={'dollar'}
-          onValueChange={(v) => {
-            setNumber(v.floatValue ?? 0);
-          }}
-          placeholder={'dollar'}
-          prefix={'$'}
-          sx={{ width: 180 }}
-          value={number}
-        />
-
-        <StyledTextFieldNumber
-          decimalScale={3}
-          label={'percentage'}
-          onValueChange={(v) => {
-            setNumber(v.floatValue ?? 0);
-          }}
-          placeholder={'percentage'}
-          suffix={'%'}
-          sx={{ width: 180, ml: 2 }}
-          value={number}
-        />
-
-        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
-          Text Field Password
-        </Typography>
-        <StyledTextFieldPassword
-          label={'password'}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder={'placeholder'}
-          sx={{ width: 380 }}
-          value={value}
-        />
-
-        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
-          Text Field phone
-        </Typography>
-        <StyledTextFieldPhone
-          label={'phone'}
-          onValueChange={(v) => {
-            setPhone(v.floatValue ?? '');
-          }}
-          placeholder={'placeholder'}
-          sx={{ width: 380 }}
-          value={phone}
-        />
-        {phone}
-
-        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
-          Text Field Social Number
-        </Typography>
-        <StyledTextFieldSocialNumber
-          label={'Social Number'}
-          onValueChange={(e) => setSSN(e)}
-          placeholder={'Social Number'}
-          sx={{ width: 180 }}
-          value={ssn}
-        />
-        {ssn}
-
+        back to components
+      </StyledButton>
+      <Box className={'component_wrap'}>
         <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
           Contained Button
         </Typography>
@@ -534,41 +383,9 @@ const X: FC = () => {
             </StyledButton>
           </Grid>
         </Grid>
-
-        <Typography sx={{ mb: 5, mt: 10 }} variant="h5">
-          Dialog
-        </Typography>
-        <StyledButton color="primary" onClick={open} variant="contained">
-          Open Dialog
-        </StyledButton>
-
-        <StyledDialog handleClose={close} open={show} Title="Delete Files?">
-          <DialogContent sx={{ ...POSFont(14, 400, 1.5, 'info.main') }}>
-            Are you sure you want to delete Property Address
-          </DialogContent>
-          <DialogActions>
-            <StyledButton
-              autoFocus
-              color="info"
-              onClick={close}
-              size="medium"
-              variant="outlined"
-            >
-              Cancel
-            </StyledButton>
-            <StyledButton
-              color="primary"
-              onClick={close}
-              size="medium"
-              variant="contained"
-            >
-              Confirm
-            </StyledButton>
-          </DialogActions>
-        </StyledDialog>
       </Box>
     </Box>
   );
 };
 
-export default X;
+export default ButtonComponent;
