@@ -11,7 +11,7 @@ export const StyledTextFieldStyles: SxProps = {
     transform: 'translate(12px, -8px) scale(0.75)',
   },
   '& label.Mui-focused': {
-    color: 'action.focus',
+    color: 'text.focus',
   },
   '& .MuiOutlinedInput-input': {
     padding: '13.5px 14px',
@@ -27,20 +27,20 @@ export const StyledTextFieldStyles: SxProps = {
       lineHeight: 1,
     },
     '& fieldset': {
-      borderColor: 'action.default',
+      borderColor: 'background.border_default',
     },
     '&:hover fieldset': {
-      borderColor: 'action.hover',
-      color: 'action.hover',
+      borderColor: 'background.border_hover',
+      color: 'background.border_hover',
     },
     '&.Mui-focused fieldset': {
       border: '1px solid',
-      borderColor: 'action.focus',
+      borderColor: 'background.border_focus',
     },
   },
   '& .Mui-disabled.MuiOutlinedInput-root': {
     '&:hover fieldset': {
-      borderColor: 'action.disabled',
+      borderColor: 'background.border_disabled',
     },
   },
   '& .Mui-disabled': {

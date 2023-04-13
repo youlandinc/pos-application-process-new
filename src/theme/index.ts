@@ -1,8 +1,22 @@
 import { createTheme } from '@mui/material/styles';
-declare module '@mui/material/styles/createPalette' {
-  interface TypeText {}
 
-  interface TypeBackground {}
+declare module '@mui/material/styles/createPalette' {
+  interface TypeText {
+    white: string;
+    primary: string;
+    secondary: string;
+    disabled: string;
+    hover: string;
+    focus: string;
+    outline: string;
+  }
+
+  interface TypeBackground {
+    border_default: string;
+    border_focus: string;
+    border_hover: string;
+    broder_disabled: string;
+  }
 
   interface TypeAction {
     default: string;
@@ -51,12 +65,25 @@ export const theme = createTheme({
     },
     action: {
       default: '#D2D6E1',
-      focus: '#202939',
-      hover: '#636A7C',
+      hover: '#F4F6FA',
       disabled: '#CDCDCD',
+      disabledBackground: '#ffffff',
     },
-    text: {},
-    background: {},
+    text: {
+      primary: '#202939',
+      secondary: '#9095A3',
+      disabled: '#CDCDCD',
+      hover: '#636A7C',
+      focus: '#202939',
+      outline: '#D2D6E1',
+      white: '#FFFFFF',
+    },
+    background: {
+      border_default: '#D2D6E1',
+      border_focus: '#202939',
+      border_hover: '#202939',
+      broder_disabled: '#CDCDCD',
+    },
   },
   typography: {
     fontFamily: 'Poppins, "pingfang sc", sans-serif',

@@ -11,3 +11,5 @@ export * from './StyledTextFieldPassword';
 export * from './StyledTextFieldPhone';
 
 export * from './StyledCheckbox';
+
+export * from './StyledSelect';

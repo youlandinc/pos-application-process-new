@@ -57,6 +57,11 @@ const Components = () => {
               Button
             </StyledButton>
           </Box>
+          <Box className={'component_item'}>
+            <StyledButton onClick={() => router.push('/components/select')}>
+              Select
+            </StyledButton>
+          </Box>
         </Box>
       </Box>
       <Box className={'component_wrap'}>
