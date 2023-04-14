@@ -1,4 +1,3 @@
-import { POSTypeOf } from '@/utils';
 import { FC, useState } from 'react';
 import { Box, Divider, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -13,6 +12,9 @@ const SelectComponent: FC = () => {
   const router = useRouter();
 
   const [value1, setValue1] = useState<string[]>([]);
+  const [value2, setValue2] = useState<string[]>(['none', 'one_to_four']);
+  const [value3, setValue3] = useState<string[]>([]);
+  const [value4, setValue4] = useState<string[]>(['AL', 'WA']);
 
   return (
     <Box
@@ -57,9 +59,47 @@ const SelectComponent: FC = () => {
             <StyledSelectMultiple
               label={'static'}
               onValueChange={(v) => setValue1([...value1, ...v])}
-              options={OPTIONS_BRIDGE_PROPERTY_NUMBER}
-              sx={{ width: '100%' }}
+              options={OPTIONS_COMMON_STATE}
+              sx={{ width: 200 }}
               value={value1}
+            />
+          </Box>
+          <Box>
+            <Typography mb={2} variant={'body1'}>
+              selected
+            </Typography>
+            <StyledSelectMultiple
+              label={'selected'}
+              onValueChange={(v) => setValue2([...value2, ...v])}
+              options={OPTIONS_BRIDGE_PROPERTY_NUMBER}
+              sx={{ width: 300 }}
+              value={value2}
+            />
+          </Box>
+          <Box>
+            <Typography mb={2} variant={'body1'}>
+              error
+            </Typography>
+            <StyledSelectMultiple
+              label={'error'}
+              onValueChange={(v) => setValue3([...value3, ...v])}
+              options={OPTIONS_BRIDGE_PROPERTY_NUMBER}
+              sx={{ width: 400 }}
+              validate={['error1', 'error2']}
+              value={value3}
+            />
+          </Box>
+          <Box>
+            <Typography mb={2} variant={'body1'}>
+              disabled
+            </Typography>
+            <StyledSelectMultiple
+              disabled
+              label={'disabled'}
+              onValueChange={(v) => setValue4([...value4, ...v])}
+              options={OPTIONS_COMMON_STATE}
+              sx={{ width: 500 }}
+              value={value4}
             />
           </Box>
         </Box>

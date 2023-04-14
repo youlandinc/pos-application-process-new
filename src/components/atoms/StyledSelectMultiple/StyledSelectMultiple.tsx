@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -25,7 +25,7 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
   sxHelperText,
   ...rest
 }) => {
-  const [selectValue, setSelectValue] = useState(value);
+  const [selectValue, setSelectValue] = useState([]);
 
   const handledChange = (e: any) => {
     const {
@@ -37,6 +37,15 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
 
     onValueChange(result);
   };
+
+  useEffect(
+    () => {
+      const result = POSTypeOf(value) === 'String' ? value.split(',') : value;
+      setSelectValue(result);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   return (
     <>
