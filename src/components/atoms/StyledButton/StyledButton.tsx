@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import { StyledButtonProps, StyledButtonStyles } from './index';
 
 export const StyledButton: FC<StyledButtonProps> = ({
+  children,
   loading = false,
   onClick,
   loadingText = 'loading',
@@ -50,7 +51,7 @@ export const StyledButton: FC<StyledButtonProps> = ({
       variant={variant}
       {...rest}
     >
-      <>{loading ? loadingText : rest.children}</>
+      <>{loading ? loadingText : children}</>
     </Button>
   );
 };

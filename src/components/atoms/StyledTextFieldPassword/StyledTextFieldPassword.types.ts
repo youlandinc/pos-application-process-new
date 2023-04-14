@@ -1,3 +1,6 @@
 import { StyledTextFieldTypes } from '@/components/atoms';
 
-export type StyledTextFieldPasswordProps = StyledTextFieldTypes;
+export interface StyledTextFieldPasswordProps extends StyledTextFieldTypes {
+  isCheck: boolean;
+  value: string;
+}

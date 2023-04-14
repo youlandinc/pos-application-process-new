@@ -117,7 +117,12 @@ const BusinessTextFieldComponent: FC = () => {
             <Typography mb={2} variant={'body1'}>
               Text Field Password
             </Typography>
-            <Box sx={{ ...POSFlex('center', 'flex-start', 'row'), gap: 5 }}>
+            <Box
+              sx={{
+                // ...POSFlex('center', 'flex-start', 'row'),
+                gap: 5,
+              }}
+            >
               <StyledTextFieldPassword
                 label={'password'}
                 onChange={(e) => setValue3(e.target.value)}
