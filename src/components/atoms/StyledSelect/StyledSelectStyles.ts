@@ -19,7 +19,7 @@ export const StyledSelectStyles: Record<string, SxProps> = {
   },
   list: {
     '& .Mui-selected': {
-      bgcolor: '#C5D1FF',
+      bgcolor: '#C5D1FF !important',
     },
     '& .MuiMenuItem-root': {
       fontSize: 14,

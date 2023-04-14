@@ -64,6 +64,13 @@ const Components = () => {
             </StyledButton>
           </Box>
           <Box className={'component_item'}>
+            <StyledButton
+              onClick={() => router.push('/components/select_multiple')}
+            >
+              Multiple Select
+            </StyledButton>
+          </Box>
+          <Box className={'component_item'}>
             <StyledButton onClick={() => router.push('/components/tooltip')}>
               Tooltip
             </StyledButton>
@@ -76,11 +83,6 @@ const Components = () => {
         </Typography>
         <Divider className={'divider'} />
         <Box className={'component_list'} component={'ul'}>
-          <Box className={'component_item'}>
-            <StyledButton onClick={() => router.push('/components/checkbox')}>
-              Checkbox
-            </StyledButton>
-          </Box>
           <Box className={'component_item'}>
             <StyledButton
               color="primary"
