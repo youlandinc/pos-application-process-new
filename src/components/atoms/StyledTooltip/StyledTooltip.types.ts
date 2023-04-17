@@ -1,3 +1,5 @@
 import { TooltipProps } from '@mui/material';
 
-export type StyledTooltipProps = TooltipProps;
+export interface StyledTooltipProps extends TooltipProps {
+  theme?: 'dark' | 'main';
+}

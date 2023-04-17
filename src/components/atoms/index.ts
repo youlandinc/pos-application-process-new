@@ -3,6 +3,7 @@ export * from './Provider';
 export * from './Transitions';
 
 export * from './StyledButton';
+export * from './StyledButtonGroup';
 
 export * from './StyledTooltip';
 

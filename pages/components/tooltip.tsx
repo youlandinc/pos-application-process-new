@@ -45,15 +45,20 @@ const TooltipComponent: FC = () => {
         <Divider className={'divider'} />
         <Box className={'component_item'}>
           <Grid container justifyContent="center">
-            <Grid item>
-              <StyledTooltip open={true} placement="top-start" title="Add">
-                <StyledButton>top-start</StyledButton>
+            <Grid container item justifyContent="center">
+              <StyledTooltip
+                open={true}
+                placement="top-start"
+                theme="dark"
+                title="Add"
+              >
+                <StyledButton>dark top-start</StyledButton>
               </StyledTooltip>
-              <StyledTooltip placement="top" title="Add">
-                <StyledButton>top</StyledButton>
+              <StyledTooltip placement="top" theme="dark" title="Add">
+                <StyledButton sx={{ mx: 3 }}>dark top</StyledButton>
               </StyledTooltip>
-              <StyledTooltip placement="top-end" title="Add">
-                <StyledButton>top-end</StyledButton>
+              <StyledTooltip placement="top-end" theme="dark" title="Add">
+                <StyledButton>dark top-end</StyledButton>
               </StyledTooltip>
             </Grid>
           </Grid>
@@ -62,11 +67,11 @@ const TooltipComponent: FC = () => {
               <StyledTooltip placement="left-start" title="Add">
                 <StyledButton>left-start</StyledButton>
               </StyledTooltip>
-              <br />
+
               <StyledTooltip placement="left" title="Add">
-                <StyledButton>left</StyledButton>
+                <StyledButton sx={{ my: 3 }}>left</StyledButton>
               </StyledTooltip>
-              <br />
+
               <StyledTooltip placement="left-end" title="Add">
                 <StyledButton>left-end</StyledButton>
               </StyledTooltip>
@@ -85,7 +90,7 @@ const TooltipComponent: FC = () => {
               </Grid>
               <Grid item>
                 <StyledTooltip placement="right" title="Add">
-                  <StyledButton>right</StyledButton>
+                  <StyledButton sx={{ my: 3 }}>right</StyledButton>
                 </StyledTooltip>
               </Grid>
               <Grid item>
@@ -96,12 +101,12 @@ const TooltipComponent: FC = () => {
             </Grid>
           </Grid>
           <Grid container justifyContent="center">
-            <Grid item>
+            <Grid container item justifyContent="center">
               <StyledTooltip placement="bottom-start" title="Add">
                 <StyledButton>bottom-start</StyledButton>
               </StyledTooltip>
               <StyledTooltip placement="bottom" title="Add">
-                <StyledButton>bottom</StyledButton>
+                <StyledButton sx={{ mx: 3 }}>bottom</StyledButton>
               </StyledTooltip>
               <StyledTooltip placement="bottom-end" title="Add">
                 <StyledButton>bottom-end</StyledButton>

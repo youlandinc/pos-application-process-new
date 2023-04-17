@@ -92,6 +92,15 @@ const Components = () => {
               Open Dialog
             </StyledButton>
           </Box>
+          <Box className={'component_item'}>
+            <StyledButton
+              color="primary"
+              onClick={() => router.push('/components/button_group')}
+              variant="contained"
+            >
+              Button Group
+            </StyledButton>
+          </Box>
         </Box>
       </Box>
       <Box className={'component_wrap'}>

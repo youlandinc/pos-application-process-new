@@ -5,8 +5,12 @@ console.log(
 );
 
 export const StyledTooltipStyles: SxProps = {
-  bgColor: 'text.primary',
-  '&.MuiTooltip-arrow': {
-    color: 'text.primary',
+  fontSize: 12,
+  fontWeight: 400,
+  '&.dark': {
+    bgcolor: 'text.primary',
+    '& .MuiTooltip-arrow': {
+      color: 'text.primary',
+    },
   },
 };
