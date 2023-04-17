@@ -3,10 +3,10 @@ import { Box, IconButton, InputAdornment } from '@mui/material';
 import { VisibilityOff, VisibilityOutlined } from '@mui/icons-material';
 
 import {
-  StyledTextField,
   StyledTextFieldPasswordProps,
   StyledTextFieldPasswordStyles,
-} from '@/components/atoms';
+} from './index';
+import { StyledTextField, Transitions } from '@/components/atoms';
 
 export const StyledTextFieldPassword: FC<StyledTextFieldPasswordProps> = ({
   value,
@@ -63,7 +63,7 @@ export const StyledTextFieldPassword: FC<StyledTextFieldPasswordProps> = ({
         value={value}
         {...rest}
       />
-      <Box sx={{ mt: 1, mb: 3 }}>
+      <Transitions>
         {!!value && isCheck && (
           <Box
             component={'ul'}
@@ -95,7 +95,7 @@ export const StyledTextFieldPassword: FC<StyledTextFieldPasswordProps> = ({
             </Box>
           </Box>
         )}
-      </Box>
+      </Transitions>
     </>
   );
 };
