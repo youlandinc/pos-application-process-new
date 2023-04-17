@@ -81,7 +81,8 @@ export default function MyApp(props: MyAppProps) {
         </ProviderPersistData>
       </Provider>
       <Script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASfIDno0_JIFsVZvatp09IqCT360RyWlI&libraries=places"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASfIDno0_JIFsVZvatp09IqCT360RyWlI&libraries=places&callback"
+        strategy={'beforeInteractive'}
         type="text/javascript"
       />
     </>

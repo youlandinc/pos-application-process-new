@@ -1,21 +1,10 @@
-import React, { useEffect, useState } from 'react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+import { useEffect, useMemo, useRef, useState } from 'react';
 import throttle from 'lodash/throttle';
 import { GooglePlaces } from '@/types/googlePlaces';
 
-export interface PlaceType {
-  place_id?: string;
-  description: string;
-  structured_formatting: {
-    main_text: string;
-    secondary_text: string;
-    main_text_matched_substrings: [
-      {
-        offset: number;
-        length: number;
-      },
-    ];
-  };
-}
+import { PlaceType } from '@/components/atoms';
 
 const autocompleteService = { current: null };
 const placesService = { current: null };
@@ -45,7 +34,7 @@ export const useGooglePlacesSearch = (
     setServiceLoaded(!(!autocompleteService.current || !placesService.current));
   };
 
-  const getAutocompletionRequest = React.useMemo(
+  const getAutocompletionRequest = useMemo(
     () =>
       throttle(
         (
@@ -62,7 +51,7 @@ export const useGooglePlacesSearch = (
     [],
   );
 
-  const getPlaceDetailsRequest = React.useMemo(
+  const getPlaceDetailsRequest = useMemo(
     () =>
       throttle(
         (

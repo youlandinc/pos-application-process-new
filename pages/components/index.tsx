@@ -101,6 +101,15 @@ const Components = () => {
               Button Group
             </StyledButton>
           </Box>
+          <Box className={'component_item'}>
+            <StyledButton
+              color="primary"
+              onClick={() => router.push('/components/google_map')}
+              variant="contained"
+            >
+              Google Auto Complete
+            </StyledButton>
+          </Box>
         </Box>
       </Box>
       <Box className={'component_wrap'}>

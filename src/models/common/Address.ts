@@ -3,7 +3,7 @@ import validate from 'validate.js';
 import { AddressData } from '@/types';
 import { PurposeSchema } from '@/constants';
 
-type AddressError = AddressData;
+type AddressError = Partial<AddressData>;
 
 export const Address = types
   .model({

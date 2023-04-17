@@ -26,7 +26,10 @@ export const StyledSelect: FC<StyledSelectProps> = ({
     <>
       <FormControl
         error={!!(validate?.length && validate[0])}
-        sx={Object.assign({}, { ...StyledSelectStyles.root, ...sx })}
+        sx={Object.assign(
+          disabled ? { '& label': { color: 'text.disabled' } } : {},
+          { ...StyledSelectStyles.root, ...sx },
+        )}
         variant={'outlined'}
       >
         <InputLabel>{label}</InputLabel>

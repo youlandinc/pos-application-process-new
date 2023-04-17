@@ -2,11 +2,17 @@ import { SxProps } from '@mui/material';
 
 export const StyledSelectStyles: Record<string, SxProps> = {
   root: {
+    '& .Mui-disabled': {
+      color: 'text.disabled',
+    },
     '& .MuiInputBase-formControl': {
       borderRadius: 2,
     },
-    '& .MuiFormLabel-root.Mui-focused': {
+    '& .MuiInputLabel-formControl.Mui-focused': {
       color: 'text.primary',
+    },
+    '& .MuiOutlinedInput-input': {
+      p: '13.5px 14px',
     },
     '& .Mui-focused': {
       '& .MuiOutlinedInput-notchedOutline': {

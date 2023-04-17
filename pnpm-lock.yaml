@@ -31,6 +31,12 @@ dependencies:
   '@mui/x-date-pickers':
     specifier: ^6.2.0
     version: 6.2.0(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(@mui/base@5.0.0-alpha.124)(@mui/material@5.11.16)(@mui/system@5.11.16)(date-fns@2.29.3)(react-dom@18.2.0)(react@18.2.0)
+  '@types/autosuggest-highlight':
+    specifier: ^3.2.0
+    version: 3.2.0
+  autosuggest-highlight:
+    specifier: ^3.3.4
+    version: 3.3.4
   axios:
     specifier: ^1.3.5
     version: 1.3.5
@@ -43,6 +49,9 @@ dependencies:
   date-fns:
     specifier: ^2.29.3
     version: 2.29.3
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   mobx:
     specifier: ^6.9.0
     version: 6.9.0
@@ -96,6 +105,9 @@ devDependencies:
   '@svgr/webpack':
     specifier: ^6.5.1
     version: 6.5.1
+  '@types/lodash':
+    specifier: ^4.14.194
+    version: 4.14.194
   '@types/node':
     specifier: ^18.15.11
     version: 18.15.11
@@ -2906,6 +2918,13 @@ packages:
     engines: { node: '>=10.13.0' }
     dev: true
 
+  /@types/autosuggest-highlight@3.2.0:
+    resolution:
+      {
+        integrity: sha512-bTcsL4YYypjhKfPaImxuoMPiTyiUp7VGKytMr15/413IoazrOIfV/gca2ysI/IW0ftZYCPI5xppRm6IVX1Efqw==,
+      }
+    dev: false
+
   /@types/js-cookie@2.2.7:
     resolution:
       {
@@ -2924,6 +2943,13 @@ packages:
     resolution:
       {
         integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==,
+      }
+    dev: true
+
+  /@types/lodash@4.14.194:
+    resolution:
+      {
+        integrity: sha512-r22s9tAS7imvBt2lyHC9B8AGwWnXaYb1tY09oyLkXDs4vArpYJzw09nj8MLx5VfciBPGIb+ZwG0ssYnEPJxn/g==,
       }
     dev: true
 
@@ -3358,6 +3384,15 @@ packages:
       {
         integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==,
       }
+    dev: false
+
+  /autosuggest-highlight@3.3.4:
+    resolution:
+      {
+        integrity: sha512-j6RETBD2xYnrVcoV1S5R4t3WxOlWZKyDQjkwnggDPSjF5L4jV98ZltBpvPvbkM1HtoSe5o+bNrTHyjPbieGeYA==,
+      }
+    dependencies:
+      remove-accents: 0.4.4
     dev: false
 
   /available-typed-arrays@1.0.5:
@@ -6684,6 +6719,13 @@ packages:
     dependencies:
       jsesc: 0.5.0
     dev: true
+
+  /remove-accents@0.4.4:
+    resolution:
+      {
+        integrity: sha512-EpFcOa/ISetVHEXqu+VwI96KZBmq+a8LJnGkaeFw45epGlxIZz5dhEEnNZMsQXgORu3qaMoLX4qJCzOik6ytAg==,
+      }
+    dev: false
 
   /reset.css@2.0.2:
     resolution:

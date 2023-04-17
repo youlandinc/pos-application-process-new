@@ -1,8 +1,4 @@
-import { SxProps, tooltipClasses } from '@mui/material';
-console.log(
-  '🚀 ~ file: StyledTooltipStyles.ts:2 ~ tooltipClasses:',
-  tooltipClasses,
-);
+import { SxProps } from '@mui/material';
 
 export const StyledTooltipStyles: SxProps = {
   fontSize: 12,
