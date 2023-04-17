@@ -1,6 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
-import { StyledTextField, StyledTextFieldPhoneProps } from '@/components/atoms';
+
+import { StyledTextFieldPhoneProps } from './index';
+
+import { StyledTextField } from '../StyledTextField';
 
 export const StyledTextFieldPhone: FC<StyledTextFieldPhoneProps> = ({
   format = '(###) ###-####',

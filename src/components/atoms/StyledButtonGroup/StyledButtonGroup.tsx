@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import { StyledButtonGroupProps, StyledButtonGroupStyles } from './index';

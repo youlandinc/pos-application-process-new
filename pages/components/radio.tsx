@@ -1,13 +1,13 @@
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Divider, Typography } from '@mui/material';
 
-import { StyledButton, StyledButtonGroup } from '@/components/atoms';
+import { StyledButton, StyledRadio } from '@/components/atoms';
 
-const ButtonGroupComponent: FC = () => {
+const RadioComponent: FC = () => {
   const router = useRouter();
 
-  const [value, setValue] = useState('no');
+  const [value, setValue] = useState('option2');
 
   return (
     <Box
@@ -43,43 +43,43 @@ const ButtonGroupComponent: FC = () => {
       </StyledButton>
 
       <Box className={'component_wrap'}>
-        <Typography variant={'h4'}>Button Group</Typography>
+        <Typography variant={'h4'}>Radio Group</Typography>
         <Divider className={'divider'} />
         <Box className={'component_item'}>
+          <Typography mb={2} variant={'body1'}>
+            Status
+          </Typography>
           <Box>
-            <Typography mb={2} variant={'body1'}>
-              Status
-            </Typography>
-            <StyledButtonGroup
-              onChange={(
-                event: React.MouseEvent<HTMLElement>,
-                newAlignment: string,
-              ) => {
-                setValue(newAlignment);
+            <StyledRadio
+              label="Label"
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setValue((event.target as HTMLInputElement).value);
               }}
               options={[
-                { value: 'yse', label: 'Yse' },
-                { value: 'no', label: 'No' },
+                { value: 'option1', label: 'option1' },
+                { value: 'option2', label: 'option2', disabled: true },
+                { value: 'option3', label: 'option3' },
+                { value: 'option4', label: 'option4', disabled: true },
               ]}
               value={value}
             />
           </Box>
-          <Box mt={5}>
+          <Box>
             <Typography mb={2} variant={'body1'}>
-              Disabled Status
+              row
             </Typography>
-            <StyledButtonGroup
-              disabled
-              onChange={(
-                event: React.MouseEvent<HTMLElement>,
-                newAlignment: string,
-              ) => {
-                setValue(newAlignment);
+            <StyledRadio
+              label="Label"
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setValue((event.target as HTMLInputElement).value);
               }}
               options={[
-                { value: 'yse', label: 'Yse' },
-                { value: 'no', label: 'No' },
+                { value: 'option1', label: 'option1' },
+                { value: 'option2', label: 'option2' },
+                { value: 'option3', label: 'option3' },
+                { value: 'option4', label: 'option4', disabled: true },
               ]}
+              row
               value={value}
             />
           </Box>
@@ -88,4 +88,4 @@ const ButtonGroupComponent: FC = () => {
     </Box>
   );
 };
-export default ButtonGroupComponent;
+export default RadioComponent;

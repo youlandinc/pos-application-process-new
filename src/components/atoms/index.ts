@@ -4,6 +4,7 @@ export * from './Transitions';
 
 export * from './StyledButton';
 export * from './StyledButtonGroup';
+export * from './StyledRadio';
 
 export * from './StyledTooltip';
 

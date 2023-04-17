@@ -13,7 +13,7 @@ const Components = () => {
         borderRadius: 4,
         m: 4,
         p: 4,
-        width: '50%',
+        width: '90%',
         '& .component_wrap': {
           m: 4,
           p: 4,
@@ -73,6 +73,12 @@ const Components = () => {
           <Box className={'component_item'}>
             <StyledButton onClick={() => router.push('/components/tooltip')}>
               Tooltip
+            </StyledButton>
+          </Box>
+
+          <Box className={'component_item'}>
+            <StyledButton onClick={() => router.push('/components/radio')}>
+              Radio
             </StyledButton>
           </Box>
         </Box>
