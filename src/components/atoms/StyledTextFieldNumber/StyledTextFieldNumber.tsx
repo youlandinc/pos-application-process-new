@@ -22,8 +22,6 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
   thousandSeparator = true,
   ...rest
 }) => {
-  const [isFocus, setIsFocus] = useState(value !== void 0 || !!prefix);
-
   const [text, setText] = useState<number | string>(value);
 
   useEffect(
@@ -54,37 +52,12 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
         customInput={TextField}
         decimalScale={decimalScale}
         fixedDecimalScale
-        InputLabelProps={{ shrink: isFocus }}
         InputProps={{
           value: text ? (thousandSeparator ? text.toLocaleString() : text) : '',
-          startAdornment: !!prefix && (
-            <InputAdornment position="start" sx={{ p: 0, m: 0 }}>
-              {prefix}
-            </InputAdornment>
-          ),
-          endAdornment: !!suffix && (
-            <InputAdornment position="end" sx={{ p: 0, m: 0 }}>
-              {suffix}
-            </InputAdornment>
-          ),
-        }}
-        onBlur={(e) => {
-          if (prefix) {
-            return;
-          }
-          e.preventDefault();
-          if (!text) {
-            setIsFocus(false);
-          }
-        }}
-        onFocus={(e) => {
-          if (prefix) {
-            return;
-          }
-          e.preventDefault();
-          setIsFocus(true);
         }}
         onValueChange={handledChange}
+        prefix={prefix}
+        suffix={suffix}
         sx={Object.assign(
           {},
           {
