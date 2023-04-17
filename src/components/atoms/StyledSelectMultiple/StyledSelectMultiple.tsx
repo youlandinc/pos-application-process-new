@@ -25,7 +25,7 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
   sxHelperText,
   ...rest
 }) => {
-  const [selectValue, setSelectValue] = useState([]);
+  const [selectValue, setSelectValue] = useState(['']);
 
   const handledChange = (e: any) => {
     const {
@@ -85,7 +85,7 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
           {options.map((opt) => (
             <MenuItem key={opt.key} value={opt.value}>
               <StyledCheckbox
-                checked={selectValue.indexOf(opt.value) > -1}
+                checked={selectValue.indexOf(opt.value as any) > -1}
                 sx={StyledSelectMultipleStyle.checkboxSx}
               />
               {opt.label}
