@@ -1,11 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { Router } from 'next/router';
+import Script from 'next/script';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { ThemeProvider } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import en from 'date-fns/locale/en-US';
 
 import NProgress from 'nprogress';
 import { SnackbarProvider } from 'notistack';
@@ -16,6 +20,9 @@ import '@/styles/globals.css';
 
 import { createEmotionCache } from '@/styles';
 import { theme } from '@/theme';
+
+import { ProviderDetectActive, ProviderPersistData } from '@/components/atoms';
+import { Provider, rootStore } from '@/models/Root';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -39,8 +46,24 @@ export default function MyApp(props: MyAppProps) {
     };
   }, []);
 
+  const renderComponent = useMemo(
+    () => (
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <LocalizationProvider dateAdapter={AdapterDateFns} locale={en}>
+            <SnackbarProvider>
+              <Component {...pageProps} />
+            </SnackbarProvider>
+          </LocalizationProvider>
+        </ThemeProvider>
+      </CacheProvider>
+    ),
+    [Component, pageProps],
+  );
+
   return (
-    <CacheProvider value={emotionCache}>
+    <>
       <Head>
         <meta content="initial-scale=1, width=device-width" name="viewport" />
         <meta
@@ -50,13 +73,17 @@ export default function MyApp(props: MyAppProps) {
         <link href="/POS.svg" rel="icon" />
         <title>Point of Sale</title>
       </Head>
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <SnackbarProvider>
-          <Component {...pageProps} />
-        </SnackbarProvider>
-      </ThemeProvider>
-    </CacheProvider>
+      <Provider value={rootStore}>
+        <ProviderPersistData
+          rootStoreKeys={['session', 'userProfile', 'userSetting']}
+        >
+          <ProviderDetectActive>{renderComponent}</ProviderDetectActive>
+        </ProviderPersistData>
+      </Provider>
+      <Script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASfIDno0_JIFsVZvatp09IqCT360RyWlI&libraries=places"
+        type="text/javascript"
+      />
+    </>
   );
 }

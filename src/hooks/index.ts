@@ -11,5 +11,5 @@ export * from './useSessionStorageState';
 //export * from './useCheckLoanAmount';
 //export * from './useRenderPdf';
 
-//export * from './usePersistFn';
+export * from './usePersistFn';
 export * from './usePersistData';
