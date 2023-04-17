@@ -47,6 +47,9 @@ const ButtonGroupComponent: FC = () => {
         <Divider className={'divider'} />
         <Box className={'component_item'}>
           <Box>
+            <Typography mb={2} variant={'body1'}>
+              Status
+            </Typography>
             <StyledButtonGroup
               onChange={(
                 event: React.MouseEvent<HTMLElement>,
@@ -61,7 +64,10 @@ const ButtonGroupComponent: FC = () => {
               value={value}
             />
           </Box>
-          <Box>
+          <Box mt={5}>
+            <Typography mb={2} variant={'body1'}>
+              Disabled Status
+            </Typography>
             <StyledButtonGroup
               disabled
               onChange={(

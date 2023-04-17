@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Divider, Typography } from '@mui/material';
 
@@ -46,6 +46,9 @@ const RadioComponent: FC = () => {
         <Typography variant={'h4'}>Radio Group</Typography>
         <Divider className={'divider'} />
         <Box className={'component_item'}>
+          <Typography mb={2} variant={'body1'}>
+            Status
+          </Typography>
           <Box>
             <StyledRadio
               label="Label"
@@ -54,14 +57,17 @@ const RadioComponent: FC = () => {
               }}
               options={[
                 { value: 'option1', label: 'option1' },
-                { value: 'option2', label: 'option2' },
+                { value: 'option2', label: 'option2', disabled: true },
                 { value: 'option3', label: 'option3' },
-                { value: 'option4', label: 'option4' },
+                { value: 'option4', label: 'option4', disabled: true },
               ]}
               value={value}
             />
           </Box>
           <Box>
+            <Typography mb={2} variant={'body1'}>
+              row
+            </Typography>
             <StyledRadio
               label="Label"
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
