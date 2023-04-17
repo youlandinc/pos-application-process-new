@@ -26,6 +26,8 @@ export const StyledSelect: FC<StyledSelectProps> = ({
     <>
       <FormControl
         error={!!(validate?.length && validate[0])}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         sx={Object.assign(
           disabled ? { '& label': { color: 'text.disabled' } } : {},
           { ...StyledSelectStyles.root, ...sx },
