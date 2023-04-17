@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { Dialog, DialogTitle } from '@mui/material';
 
 import { StyledDialogProps, StyledDialogStyles } from './index';
