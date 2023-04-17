@@ -59,7 +59,7 @@ export default function MyApp(props: MyAppProps) {
         </ThemeProvider>
       </CacheProvider>
     ),
-    [Component, pageProps],
+    [Component, emotionCache, pageProps],
   );
 
   return (
