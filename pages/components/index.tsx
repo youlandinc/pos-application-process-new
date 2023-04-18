@@ -13,7 +13,6 @@ const Components = () => {
         borderRadius: 4,
         m: 4,
         p: 4,
-        width: '90%',
         '& .component_wrap': {
           m: 4,
           p: 4,
@@ -24,6 +23,7 @@ const Components = () => {
           },
           '& .component_list': {
             ...POSFlex('center', 'flex-start', 'row'),
+            flexWrap: 'wrap',
             gap: 2,
             listStyle: 'none',
             p: 0,
