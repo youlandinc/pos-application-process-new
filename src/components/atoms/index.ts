@@ -22,3 +22,5 @@ export * from './StyledSelect';
 export * from './StyledSelectMultiple';
 
 export * from './StyledGoogleAutoComplete';
+
+export * from './StyledPaymentCard';

@@ -4,15 +4,13 @@ export const StyledSelectStyles: Record<string, SxProps> = {
   root: {
     '& .Mui-disabled': {
       color: 'text.disabled',
+      cursor: 'not-allowed',
     },
     '& .MuiInputBase-formControl': {
       borderRadius: 2,
     },
     '& .MuiInputLabel-formControl.Mui-focused': {
       color: 'text.primary',
-    },
-    '& .MuiOutlinedInput-input': {
-      p: '13.5px 14px',
     },
     '& .Mui-focused': {
       '& .MuiOutlinedInput-notchedOutline': {

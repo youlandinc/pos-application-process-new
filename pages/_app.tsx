@@ -48,18 +48,16 @@ export default function MyApp(props: MyAppProps) {
 
   const renderComponent = useMemo(
     () => (
-      <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <LocalizationProvider dateAdapter={AdapterDateFns} locale={en}>
-            <SnackbarProvider>
-              <Component {...pageProps} />
-            </SnackbarProvider>
-          </LocalizationProvider>
-        </ThemeProvider>
-      </CacheProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <LocalizationProvider dateAdapter={AdapterDateFns} locale={en}>
+          <SnackbarProvider>
+            <Component {...pageProps} />
+          </SnackbarProvider>
+        </LocalizationProvider>
+      </ThemeProvider>
     ),
-    [Component, emotionCache, pageProps],
+    [Component, pageProps],
   );
 
   return (
@@ -77,7 +75,11 @@ export default function MyApp(props: MyAppProps) {
         <ProviderPersistData
           rootStoreKeys={['session', 'userProfile', 'userSetting']}
         >
-          <ProviderDetectActive>{renderComponent}</ProviderDetectActive>
+          <ProviderDetectActive>
+            <CacheProvider value={emotionCache}>
+              {renderComponent}
+            </CacheProvider>
+          </ProviderDetectActive>
         </ProviderPersistData>
       </Provider>
       <Script

@@ -116,6 +116,15 @@ const Components = () => {
               Google Auto Complete
             </StyledButton>
           </Box>
+          <Box className={'component_item'}>
+            <StyledButton
+              color="primary"
+              onClick={() => router.push('/components/payment_card')}
+              variant="contained"
+            >
+              Payment Card
+            </StyledButton>
+          </Box>
         </Box>
       </Box>
       <Box className={'component_wrap'}>

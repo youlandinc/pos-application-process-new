@@ -4,17 +4,8 @@ export const StyledTextFieldStyles: SxProps = {
   width: '100%',
   borderRadius: 2,
   padding: 0,
-  '& .MuiInputLabel-outlined': {
-    transform: 'translate(12px, 14px) scale(1)',
-  },
-  '& .MuiInputLabel-outlined.MuiInputLabel-shrink': {
-    transform: 'translate(12px, -8px) scale(0.75)',
-  },
   '& label.Mui-focused': {
     color: 'text.focus',
-  },
-  '& .MuiOutlinedInput-input': {
-    padding: '13.5px 14px',
   },
   '& .MuiOutlinedInput-root': {
     borderRadius: 2,
@@ -45,6 +36,9 @@ export const StyledTextFieldStyles: SxProps = {
   },
   '& .Mui-disabled': {
     cursor: 'not-allowed',
+    '&:hover fieldset': {
+      borderColor: 'background.border_default',
+    },
   },
   '& .MuiFormHelperText-root': {
     margin: 0,
