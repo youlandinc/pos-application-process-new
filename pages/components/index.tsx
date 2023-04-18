@@ -119,6 +119,15 @@ const Components = () => {
           <Box className={'component_item'}>
             <StyledButton
               color="primary"
+              onClick={() => router.push('/components/transitions')}
+              variant="contained"
+            >
+              Transitions
+            </StyledButton>
+          </Box>
+          <Box className={'component_item'}>
+            <StyledButton
+              color="primary"
               onClick={() => router.push('/components/payment_card')}
               variant="contained"
             >
