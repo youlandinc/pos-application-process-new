@@ -24,3 +24,5 @@ export * from './StyledSelectMultiple';
 export * from './StyledGoogleAutoComplete';
 
 export * from './StyledPaymentCard';
+
+export * from './StyledDatePicker';

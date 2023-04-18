@@ -1,11 +1,16 @@
-import { FC } from 'react';
+import { parseISO } from 'date-fns';
+import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Divider, Typography } from '@mui/material';
 
-import { StyledButton, StyledPaymentCard } from '@/components/atoms';
+import { StyledButton, StyledDatePicker } from '@/components/atoms';
 
-const PaymentCardComponent: FC = () => {
+import { observer } from 'mobx-react-lite';
+
+const GoogleMapComponent: FC = observer(() => {
   const router = useRouter();
+
+  const [date, setDate] = useState<unknown>(parseISO('2021-11-10'));
 
   return (
     <Box
@@ -47,11 +52,17 @@ const PaymentCardComponent: FC = () => {
             <Typography mb={2} variant={'body1'}>
               static
             </Typography>
-            <StyledPaymentCard amount={123} secret={'123'} />
+            <StyledDatePicker
+              onChange={(e, context) => {
+                console.log(e, context);
+                setDate(e);
+              }}
+              value={date}
+            />
           </Box>
         </Box>
       </Box>
     </Box>
   );
-};
-export default PaymentCardComponent;
+});
+export default GoogleMapComponent;

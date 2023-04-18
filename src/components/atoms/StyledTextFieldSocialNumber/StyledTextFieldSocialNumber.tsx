@@ -2,12 +2,12 @@ import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 
 import {
-  StyledTextFieldSocialNumberTypes,
+  StyledTextFieldSocialNumberProps,
   StyledTextFieldStyles,
 } from '@/components/atoms';
 
 export const StyledTextFieldSocialNumber: FC<
-  StyledTextFieldSocialNumberTypes
+  StyledTextFieldSocialNumberProps
 > = ({ value, sx, onValueChange, validate, ...rest }) => {
   const [originValue, setOriginValue] = useState(value);
 

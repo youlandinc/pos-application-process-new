@@ -9,13 +9,10 @@ const Components = () => {
   return (
     <Box
       sx={{
-        border: '1px solid rgba(145, 158, 171, 0.32)',
-        borderRadius: 4,
-        m: 4,
-        p: 4,
+        p: 2,
         '& .component_wrap': {
-          m: 4,
-          p: 4,
+          mt: 4,
+          p: 2,
           borderRadius: 4,
           boxShadow: '1px 1px 3px 1px rgba(0,0,0,.38)',
           '& .divider': {
@@ -75,10 +72,16 @@ const Components = () => {
               Tooltip
             </StyledButton>
           </Box>
-
           <Box className={'component_item'}>
             <StyledButton onClick={() => router.push('/components/radio')}>
               Radio
+            </StyledButton>
+          </Box>
+          <Box className={'component_item'}>
+            <StyledButton
+              onClick={() => router.push('/components/date_picker')}
+            >
+              Date Picker
             </StyledButton>
           </Box>
         </Box>
