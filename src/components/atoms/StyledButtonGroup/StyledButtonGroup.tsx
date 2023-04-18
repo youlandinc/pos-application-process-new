@@ -26,7 +26,7 @@ export const StyledButtonGroup: FC<StyledButtonGroupProps> = ({
     >
       {options?.map((item, index) => (
         <ToggleButton key={index} value={item.value}>
-          {item.value}
+          {item.label}
         </ToggleButton>
       ))}
     </ToggleButtonGroup>
