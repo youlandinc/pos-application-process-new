@@ -41,7 +41,7 @@ export const Login: FC = () => {
         />
         <StyledButton
           color="primary"
-          sx={{ width: '100%' }}
+          sx={{ width: '100%', mt: 3 }}
           variant="contained"
         >
           Continue
