@@ -60,7 +60,7 @@ const OPTInputComponent: FC = observer(() => {
             </Typography>
             <StyledTextFieldOtp
               disabled
-              onChange={(v) => setOtp2(v)}
+              onChange={(v) => console.log(v)}
               values={otp2}
             />
           </Box>
