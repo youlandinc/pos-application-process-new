@@ -19,9 +19,8 @@ const SelectComponent: FC = () => {
   return (
     <Box
       sx={{
-        m: 4,
         p: 4,
-        width: '50%',
+        width: { lg: '50%', xs: '100%' },
         border: '1px solid rgba(145, 158, 171, 0.32)',
         borderRadius: 4,
         '& .component_wrap': {

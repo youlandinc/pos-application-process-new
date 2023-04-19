@@ -1,6 +1,14 @@
 import { createTheme } from '@mui/material/styles';
 
 declare module '@mui/material/styles/createPalette' {
+  interface BreakpointOverrides {
+    xs: true;
+    sm: true;
+    md: true;
+    lg: true;
+    xl: true;
+  }
+
   interface TypeText {
     white: string;
     primary: string;
@@ -16,6 +24,7 @@ declare module '@mui/material/styles/createPalette' {
     border_focus: string;
     border_hover: string;
     broder_disabled: string;
+    white: string;
   }
 
   interface TypeAction {
@@ -30,6 +39,15 @@ declare module '@mui/material/styles/createTypography' {
 }
 
 export const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 375,
+      md: 768,
+      lg: 1024,
+      xl: 1440,
+    },
+  },
   palette: {
     primary: {
       main: '#1134E3',
@@ -83,6 +101,7 @@ export const theme = createTheme({
       border_focus: '#202939',
       border_hover: '#202939',
       broder_disabled: '#CDCDCD',
+      white: '#FFFFFF',
     },
   },
   typography: {

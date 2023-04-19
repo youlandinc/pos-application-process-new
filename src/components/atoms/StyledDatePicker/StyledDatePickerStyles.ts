@@ -1,6 +1,6 @@
 import { SxProps } from '@mui/material';
 
-export const StyledTextFieldStyles: SxProps = {
+export const StyledDatePickerStyles: SxProps = {
   width: '100%',
   borderRadius: 2,
   padding: 0,

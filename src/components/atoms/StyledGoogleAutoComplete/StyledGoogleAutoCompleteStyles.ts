@@ -22,9 +22,6 @@ export const StyledGoogleAutoCompleteStyles: Record<
   inside: {
     autoComplete: {
       width: '100%',
-      '& .MuiOutlinedInput-root': {
-        p: '6px',
-      },
     },
     icon: {
       width: 'calc(100% - 44px)',

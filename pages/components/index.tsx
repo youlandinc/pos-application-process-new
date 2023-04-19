@@ -9,14 +9,10 @@ const Components = () => {
   return (
     <Box
       sx={{
-        border: '1px solid rgba(145, 158, 171, 0.32)',
-        borderRadius: 4,
-        m: 4,
-        p: 4,
-        width: '90%',
+        p: 2,
         '& .component_wrap': {
-          m: 4,
-          p: 4,
+          mt: 4,
+          p: 2,
           borderRadius: 4,
           boxShadow: '1px 1px 3px 1px rgba(0,0,0,.38)',
           '& .divider': {
@@ -24,6 +20,7 @@ const Components = () => {
           },
           '& .component_list': {
             ...POSFlex('center', 'flex-start', 'row'),
+            flexWrap: 'wrap',
             gap: 2,
             listStyle: 'none',
             p: 0,
@@ -75,10 +72,16 @@ const Components = () => {
               Tooltip
             </StyledButton>
           </Box>
-
           <Box className={'component_item'}>
             <StyledButton onClick={() => router.push('/components/radio')}>
               Radio
+            </StyledButton>
+          </Box>
+          <Box className={'component_item'}>
+            <StyledButton
+              onClick={() => router.push('/components/date_picker')}
+            >
+              Date Picker
             </StyledButton>
           </Box>
         </Box>
@@ -125,6 +128,25 @@ const Components = () => {
               Transitions
             </StyledButton>
           </Box>
+          <Box className={'component_item'}>
+            <StyledButton
+              color="primary"
+              onClick={() => router.push('/components/payment_card')}
+              variant="contained"
+            >
+              Payment Card
+            </StyledButton>
+          </Box>
+          <Box className={'component_item'}>
+            <StyledButton
+              color="primary"
+              onClick={() => router.push('/components/date_range')}
+              variant="contained"
+            >
+              DateRange
+            </StyledButton>
+          </Box>
+          
         </Box>
       </Box>
       <Box className={'component_wrap'}>

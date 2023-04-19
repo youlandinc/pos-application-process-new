@@ -32,7 +32,7 @@ export const SignUp: FC = () => {
           label={'Select role'}
           onChange={(e) => setRole(e.target.value)}
           options={OPTIONS_COMMON_USER_TYPE}
-          sx={{ width: 200 }}
+          sx={{ width: '100%', mt: 3 }}
           value={role}
         />
 

@@ -13,3 +13,5 @@ export * from './useGooglePlacesSearch';
 
 export * from './usePersistFn';
 export * from './usePersistData';
+
+export * from './useBreakpoints';

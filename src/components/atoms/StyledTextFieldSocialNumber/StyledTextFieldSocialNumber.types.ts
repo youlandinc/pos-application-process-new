@@ -1,6 +1,6 @@
-import { StyledTextFieldTypes } from '@/components/atoms';
+import { StyledTextFieldProps } from '@/components/atoms';
 
-export type StyledTextFieldSocialNumberTypes = StyledTextFieldTypes & {
+export type StyledTextFieldSocialNumberProps = StyledTextFieldProps & {
   value: string;
   onValueChange: (value: string) => void;
 };

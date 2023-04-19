@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { Box, TextField } from '@mui/material';
 
-import { StyledTextFieldStyles, StyledTextFieldTypes } from './index';
+import { StyledTextFieldProps, StyledTextFieldStyles } from './index';
 
-export const StyledTextField: FC<StyledTextFieldTypes> = ({
+export const StyledTextField: FC<StyledTextFieldProps> = ({
   sx,
   value = '',
   onChange,
