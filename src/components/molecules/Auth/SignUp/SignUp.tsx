@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import Link from 'next/link';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Icon, Typography } from '@mui/material';
 
 import { SignUpStyles } from './index';
 import {
@@ -11,6 +11,8 @@ import {
   StyledTextFieldPassword,
 } from '@/components/atoms';
 import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
+
+import SignUpSvg from '../../../../../public/sign_up.svg';
 
 export const SignUp: FC = () => {
   const [email, setEmail] = useState('');
@@ -22,7 +24,7 @@ export const SignUp: FC = () => {
         ...SignUpStyles,
       }}
     >
-      <Box className="sign_up_img"></Box>
+      <Icon className="sign_up_img" component={SignUpSvg} />
       <Box className="sign_up_form">
         <Typography className="form_title" variant="h3">
           sign up
@@ -44,7 +46,6 @@ export const SignUp: FC = () => {
           value={email}
         />
         <StyledTextFieldPassword
-          isCheck
           label={'Password'}
           onChange={(e) => setPassword(e.target.value)}
           placeholder={'Password'}
@@ -52,6 +53,7 @@ export const SignUp: FC = () => {
           value={password}
         />
         <StyledTextFieldPassword
+          isCheck={false}
           label={'Confirmed Password'}
           onChange={(e) => setPassword(e.target.value)}
           placeholder={'Confirmed Password'}

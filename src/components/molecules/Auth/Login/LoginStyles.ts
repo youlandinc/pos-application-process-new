@@ -2,35 +2,38 @@ import { POSFlex } from '@/styles';
 
 export const LoginStyles = {
   px: {
-    md: '15.5vw',
-    sm: 0,
+    lg: '15.5vw',
+    md: 0,
   },
-  ...POSFlex('', 'space-between', undefined),
-  // display: 'flex',
-  // justifyContent: 'space-between',
-  mt: 18,
+  height: '100vh',
+  ...POSFlex('center', 'space-between', undefined),
   '& .sign_in_img': {
+    minWidth: {
+      lg: 300,
+      md: 0,
+    },
     width: {
-      md: '48%',
+      lg: 'calc(100% - 748px)',
+      md: 0,
       sm: 0,
     },
-    backgroundImage: "url('/sign_in.svg')",
-    backgroundSize: '100% 100%',
-    backgroundPosition: 'center',
+    height: 460,
   },
   '& .sign_in_form': {
     boxShadow: {
-      md: '0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
-      sm: 'none',
+      lg: '0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
+      md: 'none',
     },
     px: {
-      md: 4,
+      lg: 4,
+      md: 3,
       sm: 3,
       xs: 3,
     },
     py: 6.5,
     width: {
-      md: '48%',
+      lg: '700px',
+      md: '100%',
       sm: '100%',
       xs: '100%',
     },
@@ -42,14 +45,12 @@ export const LoginStyles = {
       },
     },
     '& .form_foot': {
-      // display: 'flex',
       mt: 3,
-
       textAlign: 'center',
-      // justifyContent: 'space-between',
       ...POSFlex('', 'space-between', undefined),
       flexFlow: {
-        md: 'inherit',
+        lg: 'inherit',
+        md: 'column',
         sm: 'column',
         xs: 'column',
       },

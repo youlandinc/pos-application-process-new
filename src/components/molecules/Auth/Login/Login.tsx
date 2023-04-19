@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import Link from 'next/link';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Icon, Typography } from '@mui/material';
 
 import { LoginStyles } from './index';
 import {
@@ -9,6 +9,8 @@ import {
   StyledTextField,
   StyledTextFieldPassword,
 } from '@/components/atoms';
+
+import SignInSvg from '../../../../../public/sign_in.svg';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
@@ -19,7 +21,7 @@ export const Login: FC = () => {
         ...LoginStyles,
       }}
     >
-      <Box className="sign_in_img"></Box>
+      <Icon className="sign_in_img" component={SignInSvg} />
       <Box className="sign_in_form">
         <Typography className="form_title" variant="h3">
           Welcome to YouLand!
