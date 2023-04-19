@@ -31,13 +31,10 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
             : undefined
         }
         onChange={onChange}
-        sx={Object.assign(
-          {},
-          {
-            ...StyledTextFieldStyles,
-            ...sx,
-          },
-        )}
+        sx={{
+          ...StyledTextFieldStyles,
+          ...sx,
+        }}
         value={value}
         variant={variant}
         {...rest}

@@ -26,12 +26,13 @@ export const StyledSelect: FC<StyledSelectProps> = ({
     <>
       <FormControl
         error={!!(validate?.length && validate[0])}
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        sx={Object.assign(
-          disabled ? { '& label': { color: 'text.disabled' } } : {},
-          { ...StyledSelectStyles.root, ...sx },
-        )}
+        sx={{
+          [disabled ? '& label' : '']: {
+            color: 'text.disabled',
+          },
+          ...StyledSelectStyles.root,
+          ...sx,
+        }}
         variant={'outlined'}
       >
         <InputLabel>{label}</InputLabel>
@@ -40,10 +41,7 @@ export const StyledSelect: FC<StyledSelectProps> = ({
           inputProps={{
             MenuProps: {
               MenuListProps: {
-                sx: Object.assign(
-                  {},
-                  { ...StyledSelectStyles.list, ...sxList },
-                ),
+                sx: { ...StyledSelectStyles.list, ...sxList },
               },
             },
           }}
@@ -60,10 +58,7 @@ export const StyledSelect: FC<StyledSelectProps> = ({
         </Select>
         {validate?.length && validate[0] && (
           <FormHelperText
-            sx={Object.assign(
-              {},
-              { ...StyledSelectStyles.helperText, ...sxHelperText },
-            )}
+            sx={{ ...StyledSelectStyles.helperText, ...sxHelperText }}
           >
             {validate?.length
               ? validate.map((item, index) => (

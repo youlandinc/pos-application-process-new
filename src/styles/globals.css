@@ -78,6 +78,42 @@ ul {
   margin-top: 16px;
 }
 
+/*opt style*/
+
+.OPT_TextField_inputStyle_container > div {
+  border: none;
+}
+
+.OPT_TextField_inputStyle_container > div > input {
+  width: 36px !important;
+  height: 36px !important;
+  margin-right: 4px;
+  outline: none;
+  border: none !important;
+  border-radius: 0 !important;
+  border-bottom: 1px solid #D2D6E1 !important;
+  color: #202939;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  caret-color: #202939 !important;
+}
+
+.OPT_TextField_inputStyle_container > div > input:focus,
+.OPT_TextField_inputStyle_container > div > input:hover {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #202939 !important;
+}
+
+.OPT_TextField_inputStyle_container > div > input:disabled {
+  border-bottom: 1px solid #CDCDCD !important;
+  caret-color: #202939 !important;
+  background: transparent !important;
+  cursor: not-allowed;
+  color: #CDCDCD !important
+}
+
 /*MUI DataGrid style format*/
 /*.MuiDataGrid-windowContainer {*/
 /*  box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.15);*/

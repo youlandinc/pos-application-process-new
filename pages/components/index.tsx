@@ -84,6 +84,11 @@ const Components = () => {
               Date Picker
             </StyledButton>
           </Box>
+          <Box className={'component_item'}>
+            <StyledButton onClick={() => router.push('/components/otp_input')}>
+              OTP TextField
+            </StyledButton>
+          </Box>
         </Box>
       </Box>
       <Box className={'component_wrap'}>
@@ -146,7 +151,6 @@ const Components = () => {
               DateRange
             </StyledButton>
           </Box>
-          
         </Box>
       </Box>
       <Box className={'component_wrap'}>

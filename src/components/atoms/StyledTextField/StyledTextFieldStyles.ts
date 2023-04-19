@@ -1,6 +1,4 @@
-import { SxProps } from '@mui/material';
-
-export const StyledTextFieldStyles: SxProps = {
+export const StyledTextFieldStyles = {
   width: '100%',
   borderRadius: 2,
   padding: 0,
@@ -44,4 +42,4 @@ export const StyledTextFieldStyles: SxProps = {
     margin: 0,
     fontSize: 12,
   },
-};
+} as const;

@@ -1,3 +1,4 @@
+import { UserType } from '@/types';
 import { FC, useState } from 'react';
 import Link from 'next/link';
 
@@ -17,7 +18,7 @@ import SignUpSvg from '../../../../../public/sign_up.svg';
 export const SignUp: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<unknown>('');
+  const [role, setRole] = useState<keyof typeof UserType>();
   return (
     <Box
       sx={{
@@ -31,8 +32,8 @@ export const SignUp: FC = () => {
         </Typography>
 
         <StyledSelect
-          label={'Select role'}
-          onChange={(e) => setRole(e.target.value)}
+          label={'Select Role'}
+          onChange={(e) => setRole(e.target.value as keyof typeof UserType)}
           options={OPTIONS_COMMON_USER_TYPE}
           sx={{ width: '100%', mt: 3 }}
           value={role}
