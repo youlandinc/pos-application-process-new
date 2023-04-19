@@ -91,7 +91,7 @@ ul {
   outline: none;
   border: none !important;
   border-radius: 0 !important;
-  border-bottom: 1px solid #D2D6E1 !important;
+  border-bottom: 1px solid #d2d6e1 !important;
   color: #202939;
   font-size: 16px;
   font-weight: 600;
@@ -107,11 +107,11 @@ ul {
 }
 
 .OPT_TextField_inputStyle_container > div > input:disabled {
-  border-bottom: 1px solid #CDCDCD !important;
+  border-bottom: 1px solid #cdcdcd !important;
   caret-color: #202939 !important;
   background: transparent !important;
   cursor: not-allowed;
-  color: #CDCDCD !important
+  color: #cdcdcd !important;
 }
 
 /*MUI DataGrid style format*/
