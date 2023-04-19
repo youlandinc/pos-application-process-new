@@ -2,7 +2,8 @@ import { POSFlex } from '@/styles';
 
 export const LoginStyles = {
   px: {
-    lg: '15.5vw',
+    xl: '12.5vw',
+    lg: 10,
     md: 0,
   },
   height: '100vh',
@@ -14,7 +15,7 @@ export const LoginStyles = {
     },
     width: {
       lg: 'calc(100% - 748px)',
-      md: 0,
+
       sm: 0,
     },
     height: 460,
@@ -33,8 +34,6 @@ export const LoginStyles = {
     py: 6.5,
     width: {
       lg: '700px',
-      md: '100%',
-      sm: '100%',
       xs: '100%',
     },
     textAlign: 'center',
@@ -44,16 +43,22 @@ export const LoginStyles = {
         sm: 24,
       },
     },
+    '& .form_body': {
+      mt: 3,
+      '&>div:nth-child(2)': {
+        my: 3,
+      },
+      '& button': {
+        width: '100%',
+      },
+    },
     '& .form_foot': {
       mt: 3,
       textAlign: 'center',
-      ...POSFlex('', 'space-between', undefined),
-      flexFlow: {
+      ...POSFlex('', 'space-between', {
         lg: 'inherit',
-        md: 'column',
-        sm: 'column',
         xs: 'column',
-      },
+      }),
     },
   },
 };

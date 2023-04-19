@@ -24,6 +24,7 @@ import { useBreakpoints, useSwitch } from '@/hooks';
 
 export const StyledDateRange: FC<StyledDateRangeProps> = ({
   sx,
+  label,
   dateRange = [null, null],
   ...rest
 }) => {
@@ -154,19 +155,15 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
 
   return (
     <Box
-      sx={Object.assign(
-        {},
-        {
-          ...StyledDateRangeStyles,
-          ...sx,
-        },
-      )}
+      sx={{
+        ...StyledDateRangeStyles,
+        ...sx,
+      }}
     >
       <ReactDatePicker
         calendarContainer={Container}
-        customInput={<CustomInput inputRef={inputRef} />}
+        customInput={<CustomInput inputRef={inputRef} label={label} />}
         endDate={dateRange[1]}
-        open={true}
         renderCustomHeader={CustomHeader}
         selectsRange={true}
         startDate={dateRange[0]}

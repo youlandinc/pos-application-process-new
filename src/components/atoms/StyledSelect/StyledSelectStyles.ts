@@ -2,6 +2,7 @@ import { SxProps } from '@mui/material';
 
 export const StyledSelectStyles: Record<string, SxProps> = {
   root: {
+    width: '100%',
     '& .Mui-disabled': {
       color: 'text.disabled',
       cursor: 'not-allowed',

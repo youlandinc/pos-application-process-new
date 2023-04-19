@@ -5,6 +5,7 @@ export interface StyledDateRangeProps
   extends Omit<ReactDatePickerProps, 'onChange'> {
   sx?: SxProps;
   dateRange: [Date | null, Date | null];
+  label?: string;
   onChange: (
     date: [Date | null, Date | null],
     event: React.SyntheticEvent<any> | undefined,

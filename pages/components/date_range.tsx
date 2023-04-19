@@ -5,7 +5,7 @@ import { Box, Divider, Typography } from '@mui/material';
 import { StyledButton, StyledDateRange } from '@/components/atoms';
 import { format } from 'date-fns';
 
-const DatepickerComponent: FC = () => {
+const DatePickerComponent: FC = () => {
   const router = useRouter();
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
     null,
@@ -58,6 +58,7 @@ const DatepickerComponent: FC = () => {
             <Box sx={{ width: 300 }}>
               <StyledDateRange
                 dateRange={dateRange}
+                label="日期"
                 onChange={(date: [Date | null, Date | null]) =>
                   setDateRange(date)
                 }
@@ -69,4 +70,4 @@ const DatepickerComponent: FC = () => {
     </Box>
   );
 };
-export default DatepickerComponent;
+export default DatePickerComponent;

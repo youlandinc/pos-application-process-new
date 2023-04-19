@@ -29,44 +29,41 @@ export const SignUp: FC = () => {
         <Typography className="form_title" variant="h3">
           sign up
         </Typography>
-
-        <StyledSelect
-          label={'Select role'}
-          onChange={(e) => setRole(e.target.value)}
-          options={OPTIONS_COMMON_USER_TYPE}
-          sx={{ width: '100%', mt: 3 }}
-          value={role}
-        />
-
-        <StyledTextField
-          label={'Email'}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder={'Email'}
-          sx={{ width: '100%', my: 3 }}
-          value={email}
-        />
-        <StyledTextFieldPassword
-          label={'Password'}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder={'Password'}
-          sx={{ width: '100%' }}
-          value={password}
-        />
-        <StyledTextFieldPassword
-          isCheck={false}
-          label={'Confirmed Password'}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder={'Confirmed Password'}
-          sx={{ width: '100%', my: 3 }}
-          value={password}
-        />
-        <StyledButton
-          color="primary"
-          sx={{ width: '100%' }}
-          variant="contained"
-        >
-          Create account
-        </StyledButton>
+        <Box className="form_body">
+          <StyledSelect
+            label={'Select role'}
+            onChange={(e) => setRole(e.target.value)}
+            options={OPTIONS_COMMON_USER_TYPE}
+            value={role}
+          />
+          <StyledTextField
+            label={'Email'}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={'Email'}
+            value={email}
+          />
+          <StyledTextFieldPassword
+            label={'Password'}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={'Password'}
+            sx={{ width: '100%' }}
+            value={password}
+          />
+          <StyledTextFieldPassword
+            isCheck={false}
+            label={'Confirmed Password'}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={'Confirmed Password'}
+            value={password}
+          />
+          <StyledButton
+            color="primary"
+            sx={{ width: '100%' }}
+            variant="contained"
+          >
+            Create account
+          </StyledButton>
+        </Box>
 
         <Box className="form_foot">
           <Typography variant="body2">
@@ -77,7 +74,7 @@ export const SignUp: FC = () => {
                 color: 'primary.main',
               }}
             >
-              <Link href={'/auth/login/'}>Sign in</Link>
+              <Link href={'/auth/login/'}> Sign in</Link>
             </Box>
           </Typography>
           <Typography sx={{ color: 'info.main', mt: 3 }} variant="body2">

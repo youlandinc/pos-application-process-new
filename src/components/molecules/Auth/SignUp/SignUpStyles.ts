@@ -2,7 +2,8 @@ import { POSFlex } from '@/styles';
 
 export const SignUpStyles = {
   px: {
-    lg: '15.5vw',
+    xl: '12.5vw',
+    lg: 10,
     md: 0,
   },
   height: '100vh',
@@ -14,7 +15,6 @@ export const SignUpStyles = {
     },
     width: {
       lg: 'calc(100% - 748px)',
-      md: 0,
       sm: 0,
     },
     height: 670,
@@ -26,8 +26,6 @@ export const SignUpStyles = {
     },
     px: {
       lg: 4,
-      md: 3,
-      sm: 3,
       xs: 3,
     },
     py: 6.5,
@@ -37,7 +35,15 @@ export const SignUpStyles = {
       sm: '100%',
       xs: '100%',
     },
-
+    '& .form_body': {
+      mt: 3,
+      '&>div:nth-child(even)': {
+        my: 3,
+      },
+      '& button': {
+        width: '100%',
+      },
+    },
     '& .form_title': {
       textAlign: 'center',
       fontSize: {
