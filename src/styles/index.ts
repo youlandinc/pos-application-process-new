@@ -1,33 +1,10 @@
+import { SxProps } from '@mui/material';
 import { CSSProperties } from 'react';
 
-export const POSFont = <
-  S extends CSSProperties['fontSize'],
-  W extends CSSProperties['fontWeight'],
-  L extends CSSProperties['lineHeight'],
-  C extends CSSProperties['color'],
->(
-  fontSize?: S,
-  fontWeight?: W,
-  lineHeight?: L,
-  color?: C,
-): {
-  fontSize?: S;
-  fontWeight?: W;
-  lineHeight?: L;
-  color?: C;
-} => {
-  return {
-    fontSize,
-    fontWeight,
-    lineHeight,
-    color,
-  };
-};
-
 export const POSFlex = <
-  A extends CSSProperties['alignItems'],
-  J extends CSSProperties['justifyContent'],
-  D extends CSSProperties['flexDirection'],
+  A extends CSSProperties['alignItems'] | Omit<SxProps, 'alignItems'>,
+  J extends CSSProperties['justifyContent'] | Omit<SxProps, 'justifyContent'>,
+  D extends CSSProperties['flexDirection'] | Omit<SxProps, 'flexDirection'>,
 >(
   align?: A,
   justify?: J,
@@ -44,6 +21,36 @@ export const POSFlex = <
     justifyContent: justify,
     flexDirection: direction,
   };
+};
+
+export const POSFont = <
+  S extends CSSProperties['fontSize'] | Omit<SxProps, 'fontSize'>,
+  W extends CSSProperties['fontWeight'] | Omit<SxProps, 'fontWeight'>,
+  L extends CSSProperties['lineHeight'] | Omit<SxProps, 'lightHeight'>,
+  C extends CSSProperties['color'] | Omit<SxProps, 'color'>,
+>(
+  fontSize?: S,
+  fontWeight?: W,
+  lineHeight?: L,
+  color?: C,
+): {
+  color: C | undefined;
+  fontSize: S | undefined;
+  lineHeight: L | undefined;
+  fontWeight: W | undefined;
+} => {
+  return {
+    fontSize,
+    fontWeight,
+    color,
+    lineHeight,
+  };
+};
+
+export const flexCenter = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 };
 
 export const POSSize = <T extends number | string, X extends number | string>(
