@@ -6,13 +6,16 @@ import { Box, Typography } from '@mui/material';
 import { SignUpStyles } from './index';
 import {
   StyledButton,
+  StyledSelect,
   StyledTextField,
   StyledTextFieldPassword,
 } from '@/components/atoms';
+import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
 
 export const SignUp: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState<unknown>('');
   return (
     <Box
       sx={{
@@ -25,6 +28,14 @@ export const SignUp: FC = () => {
           sign up
         </Typography>
 
+        <StyledSelect
+          label={'Select role'}
+          onChange={(e) => setRole(e.target.value)}
+          options={OPTIONS_COMMON_USER_TYPE}
+          sx={{ width: 200 }}
+          value={role}
+        />
+
         <StyledTextField
           label={'Email'}
           onChange={(e) => setEmail(e.target.value)}
@@ -33,6 +44,7 @@ export const SignUp: FC = () => {
           value={email}
         />
         <StyledTextFieldPassword
+          isCheck
           label={'Password'}
           onChange={(e) => setPassword(e.target.value)}
           placeholder={'Password'}
@@ -43,7 +55,7 @@ export const SignUp: FC = () => {
           label={'Confirmed Password'}
           onChange={(e) => setPassword(e.target.value)}
           placeholder={'Confirmed Password'}
-          sx={{ width: '100%' }}
+          sx={{ width: '100%', my: 3 }}
           value={password}
         />
         <StyledButton
