@@ -10,7 +10,7 @@ export const StyledDialogStyles: SxProps = {
       color: 'text.primary',
     },
     '& .dialog_footer': {
-      height: 60,
+      minHeight: 60,
       textAlign: 'right',
       px: 3,
       py: 1.5,
@@ -27,7 +27,7 @@ export const StyledDialogStyles: SxProps = {
       mx: 3,
     },
     '& .MuiPaper-root': {
-      borderRadius: 1,
+      borderRadius: 2,
       maxWidth: {
         lg: 600,
         xs: '100%',
