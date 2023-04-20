@@ -1,11 +1,13 @@
 import { SignUpSchema } from '@/constants/schema/sign_up';
 import { useSwitch } from '@/hooks';
-import { _userSingUp } from '@/requests';
+import { _userSendCode, _userSingUp, _userVerifyCode } from '@/requests';
 import {
   ChangeEventHandler,
   FC,
   FormEventHandler,
   useCallback,
+  useEffect,
+  useMemo,
   useState,
 } from 'react';
 import Link from 'next/link';
@@ -14,7 +16,7 @@ import { useSnackbar } from 'notistack';
 
 import { Box, Icon, Typography } from '@mui/material';
 
-import { UserType } from '@/types';
+import { BizType, UserType } from '@/types';
 import { validate } from 'validate.js';
 
 import { SignUpStyles } from './index';
@@ -46,6 +48,7 @@ export const SignUp: FC = () => {
   const [confirmedPassword, setConfirmedPassword] = useState('');
   const [userType, setUserType] = useState<keyof typeof UserType>();
   const [otp, setOtp] = useState('');
+  const [target, setTarget] = useState<'_top' | '_blank'>('_top');
   const [formError, setFormError] = useState<
     Partial<Record<keyof typeof SignUpSchema, string[]>> | undefined
   >();
@@ -62,7 +65,11 @@ export const SignUp: FC = () => {
     noSpaceError: false,
   });
 
-  const { open, close, visible } = useSwitch(true);
+  const { open, close, visible } = useSwitch(false);
+
+  useEffect(() => {
+    setTarget('_blank');
+  }, []);
 
   const handledPasswordChange: ChangeEventHandler<HTMLInputElement> =
     useCallback((e) => {
@@ -108,27 +115,53 @@ export const SignUp: FC = () => {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
         });
-      } finally {
-        close();
       }
     },
-    [
-      close,
-      confirmedPassword,
-      email,
-      enqueueSnackbar,
-      open,
-      password,
-      userType,
-    ],
+    [confirmedPassword, email, enqueueSnackbar, open, password, userType],
   );
+
+  const handledResendOtp = useCallback(async () => {
+    const data = {
+      bizType: BizType.REGISTER,
+      appkey: LOGIN_APP_KEY,
+      email,
+    };
+    await _userSendCode(data);
+  }, [email]);
+
+  const handledVerifyOtp = useCallback(async () => {
+    const data = {
+      appkey: LOGIN_APP_KEY,
+      code: otp,
+      email,
+      bizType: BizType.REGISTER,
+    };
+    try {
+      await _userVerifyCode(data);
+      await router.push('./login');
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    }
+  }, [email, enqueueSnackbar, otp, router]);
+
+  const isDisabled = useMemo(() => {
+    for (const [, value] of Object.entries(passwordError)) {
+      if (!value) {
+        return true;
+      }
+    }
+    return !email || !password || !confirmedPassword || !userType;
+  }, [confirmedPassword, email, password, passwordError, userType]);
 
   return (
     <Box sx={SignUpStyles}>
       <Icon className="sign_up_img" component={SignUpSvg} />
       <Box className="sign_up_form">
         <Typography className="form_title" variant="h3">
-          sign up
+          Sign Up
         </Typography>
 
         <Box className="form_body" component={'form'} onSubmit={handledSubmit}>
@@ -154,7 +187,10 @@ export const SignUp: FC = () => {
           <Box>
             <StyledTextFieldPassword
               error={
-                Object.values(passwordError).filter((item) => item).length > 0
+                password
+                  ? Object.values(passwordError).filter((item) => !item)
+                      .length > 0
+                  : false
               }
               label={'Password'}
               onChange={handledPasswordChange}
@@ -203,8 +239,13 @@ export const SignUp: FC = () => {
             validate={formError?.confirmedPassword}
             value={confirmedPassword}
           />
-          <StyledButton color="primary" type={'submit'} variant="contained">
-            Create account
+          <StyledButton
+            color="primary"
+            disabled={isDisabled}
+            type={'submit'}
+            variant="contained"
+          >
+            Create Account
           </StyledButton>
         </Box>
 
@@ -213,7 +254,7 @@ export const SignUp: FC = () => {
             Already have an account?
             <Link className="link_style" href={'/auth/login/'}>
               {' '}
-              Sign in
+              Log In
             </Link>
           </Typography>
           <Typography sx={{ color: 'info.main', mt: 3 }} variant="body2">
@@ -221,7 +262,7 @@ export const SignUp: FC = () => {
             <Link
               className="link_style"
               href={'https://www.youland.com/legal/terms/'}
-              target="_blank"
+              target={target}
             >
               {' '}
               Term of Use{' '}
@@ -231,7 +272,7 @@ export const SignUp: FC = () => {
             <Link
               className="link_style"
               href={'https://www.youland.com/legal/privacy/'}
-              target="_blank"
+              target={target}
             >
               Privacy Policy
             </Link>
@@ -267,6 +308,7 @@ export const SignUp: FC = () => {
               <Typography
                 color={'text.primary'}
                 component={'span'}
+                onClick={handledResendOtp}
                 variant={'body2'}
               >
                 Request again
@@ -276,10 +318,19 @@ export const SignUp: FC = () => {
         }
         footer={
           <>
-            <StyledButton size={'small'} sx={{ mr: 1 }} variant={'outlined'}>
+            <StyledButton
+              onClick={close}
+              size={'small'}
+              sx={{ mr: 1 }}
+              variant={'outlined'}
+            >
               Cancel
             </StyledButton>
-            <StyledButton color={'primary'} size={'small'}>
+            <StyledButton
+              color={'primary'}
+              onClick={handledVerifyOtp}
+              size={'small'}
+            >
               Confirm
             </StyledButton>
           </>

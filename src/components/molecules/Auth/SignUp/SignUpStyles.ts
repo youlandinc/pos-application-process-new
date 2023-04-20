@@ -25,6 +25,7 @@ export const SignUpStyles = {
       lg: '0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
       md: 'none',
     },
+    borderRadius: 2,
     px: {
       lg: 4,
       xs: 3,
