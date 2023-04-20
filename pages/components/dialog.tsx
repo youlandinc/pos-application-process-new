@@ -1,12 +1,6 @@
 import { FC } from 'react';
 import { useRouter } from 'next/router';
-import {
-  Box,
-  DialogActions,
-  DialogContent,
-  Divider,
-  Typography,
-} from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 
 import { StyledButton, StyledDialog } from '@/components/atoms';
 import { useSwitch } from '@/hooks';

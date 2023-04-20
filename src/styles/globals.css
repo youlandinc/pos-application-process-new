@@ -80,8 +80,13 @@ ul {
 
 /*opt style*/
 
+.OPT_TextField_inputStyle_container {
+  width: auto !important;
+}
+
 .OPT_TextField_inputStyle_container > div {
   border: none;
+  width: auto
 }
 
 .OPT_TextField_inputStyle_container > div > input {
@@ -142,7 +147,40 @@ ul {
   display: none;
 }
 
+/*global common atom style*/
 
 .link_style {
   color: #1134E3;
+}
+
+.POS_tl {
+  text-align: left
+}
+
+.POS_tc {
+  text-align: center;
+}
+
+.POS_tr {
+  text-align: right;
+}
+
+.POS_flex {
+  display: flex
+}
+
+.POS_inline_flex {
+  display: inline-flex;
+}
+
+.POS_fullwidth {
+  width: 100%;
+}
+
+.POS_al_c {
+  align-items: center;
+}
+
+.POS_jc_c {
+  justify-content: center;
 }

@@ -23,6 +23,7 @@ import {
   StyledDialog,
   StyledSelect,
   StyledTextField,
+  StyledTextFieldOtp,
   StyledTextFieldPassword,
   Transitions,
 } from '@/components/atoms';
@@ -44,6 +45,7 @@ export const SignUp: FC = () => {
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
   const [userType, setUserType] = useState<keyof typeof UserType>();
+  const [otp, setOtp] = useState('');
   const [formError, setFormError] = useState<
     Partial<Record<keyof typeof SignUpSchema, string[]>> | undefined
   >();
@@ -237,6 +239,59 @@ export const SignUp: FC = () => {
           </Typography>
         </Box>
       </Box>
+      <StyledDialog
+        content={
+          <Box>
+            <Typography
+              className={'POS_tl POS_fullwidth'}
+              color={'text.secondary'}
+              component={'div'}
+              variant={'body2'}
+            >
+              An email with a verification code has been sent to{' '}
+              <Typography component={'span'} variant={'subtitle2'}>
+                {email || '123'}
+              </Typography>
+            </Typography>
+            <Box className={'POS_flex POS_jc_c POS_al_c'} mt={3}>
+              <StyledTextFieldOtp onChange={(v) => setOtp(v)} />
+            </Box>
+            <Typography
+              className={'POS_tc POS_fullwidth'}
+              color={'text.secondary'}
+              component={'div'}
+              mt={3}
+              variant={'body2'}
+            >
+              Didn&apos;t verification code?{' '}
+              <Typography
+                color={'text.primary'}
+                component={'span'}
+                variant={'body2'}
+              >
+                Request again
+              </Typography>
+            </Typography>
+          </Box>
+        }
+        footer={
+          <>
+            <StyledButton size={'small'} variant={'outlined'}>
+              Cancel
+            </StyledButton>
+            <StyledButton color={'primary'} size={'small'}>
+              Confirm
+            </StyledButton>
+          </>
+        }
+        header={
+          <>
+            <Typography variant={'h6'}>Thank you for joining us!</Typography>
+          </>
+        }
+        onClose={close}
+        open={visible}
+      />
     </Box>
   );
 };
