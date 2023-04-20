@@ -94,7 +94,7 @@ export const SignUp: FC = () => {
           sign up
         </Typography>
 
-        <Box component={'form'} onSubmit={handledSubmit}>
+        <Box className="form_body" component={'form'} onSubmit={handledSubmit}>
           <StyledSelect
             label={'Select Role'}
             onChange={(e) =>
@@ -102,7 +102,6 @@ export const SignUp: FC = () => {
             }
             options={OPTIONS_COMMON_USER_TYPE}
             required
-            sx={{ width: '100%', mt: 3 }}
             validate={formError?.userType}
             value={userType}
           />
@@ -112,7 +111,6 @@ export const SignUp: FC = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder={'Email'}
             required
-            sx={{ width: '100%', my: 3 }}
             validate={formError?.email}
             value={email}
           />
@@ -121,7 +119,6 @@ export const SignUp: FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder={'Password'}
             required
-            sx={{ width: '100%' }}
             value={password}
           />
           <StyledTextFieldPassword
@@ -129,16 +126,10 @@ export const SignUp: FC = () => {
             onChange={(e) => setConfirmedPassword(e.target.value)}
             placeholder={'Confirmed Password'}
             required
-            sx={{ width: '100%', my: 3 }}
             validate={formError?.confirmedPassword}
             value={confirmedPassword}
           />
-          <StyledButton
-            color="primary"
-            sx={{ width: '100%' }}
-            type={'submit'}
-            variant="contained"
-          >
+          <StyledButton color="primary" type={'submit'} variant="contained">
             Create account
           </StyledButton>
         </Box>
