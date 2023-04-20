@@ -1,7 +1,7 @@
 import { POSFlex } from '@/styles';
 
 export const LoginStyles = {
-  ...POSFlex('center', 'space-between', undefined),
+  ...POSFlex('center', 'space-between', 'row'),
   minHeight: '100vh',
   p: {
     xl: 27.5,
@@ -44,7 +44,7 @@ export const LoginStyles = {
     '& .form_foot': {
       mt: 3,
       textAlign: 'center',
-      ...POSFlex('', 'space-between', {
+      ...POSFlex('unset', 'space-between', {
         lg: 'inherit',
         xs: 'column',
       }),
