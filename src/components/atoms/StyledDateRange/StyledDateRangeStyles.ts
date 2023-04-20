@@ -1,6 +1,10 @@
+import { SxProps } from '@mui/material';
 import { POSFont } from '@/styles';
 
-export const StyledDateRangeStyles = {
+export const StyledDateRangeStyles: SxProps = {
+  '& .react-datepicker__portal': {
+    bgcolor: 'rgba(0, 0, 0, 0.5)',
+  },
   '& .react-datepicker-popper': {
     zIndex: 2,
   },
@@ -13,8 +17,11 @@ export const StyledDateRangeStyles = {
     '& .react-datepicker__day-name': {
       width: 36,
       lineHeight: '36px',
-      fontSize: 14,
+      fontSize: 0,
       color: 'text.secondary',
+      '&:first-letter': {
+        fontSize: 14,
+      },
     },
     '& .react-datepicker__day--today': {
       borderRadius: '50% !important',
@@ -48,6 +55,9 @@ export const StyledDateRangeStyles = {
     '& .react-datepicker__header': {
       bgcolor: 'background.white',
       border: 'none',
+      '& .MuiIconButton-root': {
+        px: 0,
+      },
     },
     '& .years-box': {
       maxHeight: 300,

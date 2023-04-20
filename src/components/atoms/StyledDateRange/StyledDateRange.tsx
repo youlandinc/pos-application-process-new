@@ -128,6 +128,9 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
     return (
       <>
         <TextField
+          InputProps={{
+            readOnly: true,
+          }}
           sx={StyledTextFieldStyles}
           variant="outlined"
           {...props}
