@@ -10,7 +10,7 @@ import {
   StyledTextFieldPassword,
 } from '@/components/atoms';
 
-import SignInSvg from '../../../../../public/sign_in.svg';
+import LOG_IN_SVG from '@/svg/log_in.svg';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
@@ -21,7 +21,7 @@ export const Login: FC = () => {
         ...LoginStyles,
       }}
     >
-      <Icon className="sign_in_img" component={SignInSvg} />
+      <Icon className="sign_in_img" component={LOG_IN_SVG} />
       <Box className="sign_in_form">
         <Typography className="form_title" variant="h3">
           Welcome to YouLand!

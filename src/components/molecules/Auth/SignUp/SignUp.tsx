@@ -35,7 +35,7 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-import SignUpSvg from '../../../../../public/sign_up.svg';
+import SIGN_UP_SVG from '@/svg/sign_up.svg';
 
 export const SignUp: FC = () => {
   const router = useRouter();
@@ -157,7 +157,7 @@ export const SignUp: FC = () => {
 
   return (
     <Box sx={SignUpStyles}>
-      <Icon className="sign_up_img" component={SignUpSvg} />
+      <Icon className="sign_up_img" component={SIGN_UP_SVG} />
       <Box className="sign_up_form">
         <Typography className="form_title" variant="h3">
           Sign Up
