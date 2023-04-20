@@ -1,41 +1,30 @@
 import { POSFlex } from '@/styles';
 
 export const LoginStyles = {
-  px: {
-    xl: '12.5vw',
-    lg: 10,
-    md: 0,
-  },
-  minHeight: '100vh',
   ...POSFlex('center', 'space-between', undefined),
+  minHeight: '100vh',
+  p: {
+    xl: 27.5,
+    lg: 10,
+    md: 5,
+  },
   '& .sign_in_img': {
-    minWidth: {
-      lg: 300,
-      md: 0,
-    },
-    width: {
-      lg: 'calc(100% - 748px)',
-      sm: 0,
-    },
+    display: { xs: 'none', lg: 'block' },
     minHeight: 460,
+    minWidth: 300,
+    width: 'calc(100% - 748px)',
+    height: 'auto',
   },
   '& .sign_in_form': {
     flex: 1,
     boxShadow: {
       lg: '0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
-      md: 'none',
+      xs: 'none',
     },
-    px: {
-      lg: 4,
-      md: 3,
-      sm: 3,
-      xs: 3,
-    },
+    px: { lg: 4, xs: 3 },
     py: 6.5,
-    width: {
-      lg: '700px',
-      xs: '100%',
-    },
+    borderRadius: 2,
+    width: { lg: '700px', xs: '100%' },
     textAlign: 'center',
     '& .form_title': {
       fontSize: {

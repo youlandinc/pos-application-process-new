@@ -85,7 +85,7 @@ ul {
 
 .OPT_TextField_inputStyle_container > div {
   border: none;
-  width: auto
+  width: auto;
 }
 
 .OPT_TextField_inputStyle_container > div > input {
@@ -155,11 +155,11 @@ ul {
 }
 
 .link_style {
-  color: #1134E3;
+  color: #1134e3;
 }
 
 .POS_tl {
-  text-align: left
+  text-align: left;
 }
 
 .POS_tc {
@@ -171,7 +171,7 @@ ul {
 }
 
 .POS_flex {
-  display: flex
+  display: flex;
 }
 
 .POS_inline_flex {

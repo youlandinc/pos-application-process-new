@@ -1,5 +1,3 @@
-import { SignUpSchema } from '@/constants/schema/sign_up';
-import { useSwitch } from '@/hooks';
 import { _userSendCode, _userSingUp, _userVerifyCode } from '@/requests';
 import {
   ChangeEventHandler,
@@ -10,16 +8,23 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { Box, Icon, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-
-import { Box, Icon, Typography } from '@mui/material';
-
-import { BizType, UserType } from '@/types';
 import { validate } from 'validate.js';
 
+import { BizType, UserType } from '@/types';
+import { useSwitch } from '@/hooks';
 import { SignUpStyles } from './index';
+import {
+  AUTO_HIDE_DURATION,
+  LOGIN_APP_KEY,
+  OPTIONS_COMMON_USER_TYPE,
+  SignUpSchema,
+  userpool,
+} from '@/constants';
+
 import {
   StyledButton,
   StyledDialog,
@@ -29,12 +34,6 @@ import {
   StyledTextFieldPassword,
   Transitions,
 } from '@/components/atoms';
-import {
-  AUTO_HIDE_DURATION,
-  LOGIN_APP_KEY,
-  OPTIONS_COMMON_USER_TYPE,
-  userpool,
-} from '@/constants';
 
 import SignUpSvg from '../../../../../public/sign_up.svg';
 
