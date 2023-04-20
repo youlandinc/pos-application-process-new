@@ -161,6 +161,7 @@ export const SignUp: FC = () => {
     <StyledBoxWrap sx={{ ...POSFlex('center', 'center', 'column') }}>
       <Box sx={SignUpStyles}>
         <Icon className="sign_up_img" component={SIGN_UP_SVG} />
+
         <Box className="sign_up_form">
           <Typography className="form_title" variant="h3">
             Sign Up
@@ -263,9 +264,8 @@ export const SignUp: FC = () => {
 
           <Box className="form_foot">
             <Typography variant="body2">
-              Already have an account?
+              Already have an account?{' '}
               <Link className="link_style" href={'/auth/login/'}>
-                {' '}
                 Log In
               </Link>
             </Typography>
@@ -276,7 +276,6 @@ export const SignUp: FC = () => {
                 href={'https://www.youland.com/legal/terms/'}
                 target={target}
               >
-                {' '}
                 Term of Use{' '}
               </Link>
               and to receive YouLand emails & updates and acknowledge that you
@@ -292,6 +291,7 @@ export const SignUp: FC = () => {
             </Typography>
           </Box>
         </Box>
+
         <StyledDialog
           content={
             <Box>

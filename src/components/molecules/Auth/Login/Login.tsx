@@ -33,7 +33,7 @@ export const Login: FC = () => {
             Welcome to YouLand!
           </Typography>
 
-          <Box className="form_body" component={'form'}>
+          <Box className="form_body" component={'form'} onSubmit={() => {}}>
             <StyledTextField
               label={'Email'}
               onChange={(e) => setEmail(e.target.value)}
@@ -51,6 +51,7 @@ export const Login: FC = () => {
             <StyledButton
               color="primary"
               disabled={isDisabled}
+              type={'submit'}
               variant="contained"
             >
               Continue

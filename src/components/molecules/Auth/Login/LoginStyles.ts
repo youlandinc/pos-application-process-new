@@ -5,22 +5,22 @@ export const LoginStyles = {
   width: '100%',
   height: '100%',
   '& .sign_in_img': {
-    display: { xs: 'none', lg: 'block' },
+    flex: 1,
     width: '100%',
     height: 'auto',
-    flex: 1,
+    display: { xs: 'none', lg: 'block' },
   },
   '& .sign_in_form': {
     flex: 1,
+    textAlign: 'center',
+    py: 6.5,
+    borderRadius: 2,
+    width: { lg: '700px', xs: '100%' },
+    px: { lg: 4, xs: 3 },
     boxShadow: {
       lg: '0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
       xs: 'none',
     },
-    px: { lg: 4, xs: 3 },
-    py: 6.5,
-    borderRadius: 2,
-    width: { lg: '700px', xs: '100%' },
-    textAlign: 'center',
     '& .form_title': {
       fontSize: 'clamp(24px,2.5vw,32px)',
     },
@@ -36,10 +36,7 @@ export const LoginStyles = {
     '& .form_foot': {
       mt: 3,
       textAlign: 'center',
-      ...POSFlex('unset', 'space-between', {
-        lg: 'inherit',
-        xs: 'column',
-      }),
+      ...POSFlex('unset', 'space-between', { lg: 'inherit', xs: 'column' }),
     },
   },
 };

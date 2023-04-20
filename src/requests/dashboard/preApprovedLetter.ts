@@ -21,7 +21,7 @@ export const _sendPreapprovalLetter = (processId: string, email: string) => {
   return post(`/dashboard/letter/${processId}/send/${email}`);
 };
 
-export const _fetchPDFFile = (processId) => {
+export const _fetchPDFFile = (processId: string) => {
   return get(`/dashboard/letter/${processId}/pdf`, { responseType: 'blob' });
 };
 
