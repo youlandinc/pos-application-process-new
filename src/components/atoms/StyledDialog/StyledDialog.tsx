@@ -1,10 +1,5 @@
 import React, { FC } from 'react';
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from '@mui/material';
+import { Box, Dialog } from '@mui/material';
 
 import { StyledDialogProps, StyledDialogStyles } from './index';
 
@@ -26,9 +21,9 @@ export const StyledDialog: FC<StyledDialogProps> = ({
       })}
       {...rest}
     >
-      {header && <DialogTitle>{header}</DialogTitle>}
-      {content && <DialogContent>{content} </DialogContent>}
-      {footer && <DialogActions>{footer} </DialogActions>}
+      {header && <Box className="dialog-header">{header}</Box>}
+      {content && <Box className="dialog-content">{content} </Box>}
+      {footer && <Box className="dialog-footer">{footer} </Box>}
     </Dialog>
   );
 };
