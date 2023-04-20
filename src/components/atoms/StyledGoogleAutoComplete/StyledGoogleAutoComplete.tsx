@@ -21,7 +21,7 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
   observer(({ address, fullAddress = true, disabled, label }) => {
     const { formatAddress } = address;
 
-    const handlePlaceSelect = useCallback((place: any) => {
+    const handledPlaceSelect = useCallback((place: any) => {
       if (!place.formatted_address) {
         return;
       }
@@ -63,7 +63,7 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
               <_StyledGoogleAutoComplete
                 disabled={disabled}
                 fullAddress={fullAddress}
-                handlePlaceSelect={handlePlaceSelect}
+                handledPlaceSelect={handledPlaceSelect}
                 inputValue={formatAddress}
                 label={label}
                 onInputChange={(e, val) => {
@@ -122,7 +122,7 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
             <_StyledGoogleAutoComplete
               disabled={disabled}
               fullAddress={fullAddress}
-              handlePlaceSelect={handlePlaceSelect}
+              handledPlaceSelect={handledPlaceSelect}
               inputValue={formatAddress}
               onInputChange={(e, val) =>
                 address.changeFieldValue('formatAddress', val)
@@ -139,7 +139,7 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
   inputValue,
   onInputChange,
   fullAddress,
-  handlePlaceSelect,
+  handledPlaceSelect,
   value,
   disabled,
   label,
@@ -186,7 +186,7 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
                 'formatted_address',
               ],
             },
-            (place) => handlePlaceSelect(place),
+            (place) => handledPlaceSelect(place),
           );
         }
       }}

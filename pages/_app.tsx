@@ -34,15 +34,15 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   useEffect(() => {
-    const handleRouteStart = () => NProgress.start();
-    const handleRouteDone = () => NProgress.done();
-    Router.events.on('routeChangeStart', handleRouteStart);
-    Router.events.on('routeChangeComplete', handleRouteDone);
-    Router.events.on('routeChangeError', handleRouteDone);
+    const handledRouteStart = () => NProgress.start();
+    const handledRouteDone = () => NProgress.done();
+    Router.events.on('routeChangeStart', handledRouteStart);
+    Router.events.on('routeChangeComplete', handledRouteDone);
+    Router.events.on('routeChangeError', handledRouteDone);
     return () => {
-      Router.events.off('routeChangeStart', handleRouteStart);
-      Router.events.off('routeChangeComplete', handleRouteDone);
-      Router.events.off('routeChangeError', handleRouteDone);
+      Router.events.off('routeChangeStart', handledRouteStart);
+      Router.events.off('routeChangeComplete', handledRouteDone);
+      Router.events.off('routeChangeError', handledRouteDone);
     };
   }, []);
 

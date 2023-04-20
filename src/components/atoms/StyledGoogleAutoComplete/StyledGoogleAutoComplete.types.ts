@@ -11,7 +11,7 @@ export interface _StyledGoogleAutoCompleteProps {
   inputValue: string;
   onInputChange: (e: any, val: string) => void;
   fullAddress: boolean;
-  handlePlaceSelect: (place: any) => void;
+  handledPlaceSelect: (place: any) => void;
   disabled?: boolean;
   value: PlaceType | string;
   label?: string;

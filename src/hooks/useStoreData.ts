@@ -40,7 +40,7 @@ export const useStoreData = () => {
     [taskId],
   );
 
-  const handleNextTask = usePersistFn(
+  const handledNextTask = usePersistFn(
     async (variables: Variable[], successCb?: (TaskData) => void) => {
       const res = await updateTaskVariables(variables).catch((err) => {
         console.log(err);
@@ -62,7 +62,7 @@ export const useStoreData = () => {
     },
   );
 
-  const handlePrevTask = usePersistFn(
+  const handledPrevTask = usePersistFn(
     async (targetKey: ServerTaskKey, successCb?: (task: TaskData) => void) => {
       const prevTask = await changeTask(targetKey, taskId);
       if (prevTask) {
@@ -97,8 +97,8 @@ export const useStoreData = () => {
     completeTask,
     changeTaskState,
     changeTask,
-    handleNextTask,
-    handlePrevTask,
+    handledNextTask,
+    handledPrevTask,
     bindProcess,
   };
 };
