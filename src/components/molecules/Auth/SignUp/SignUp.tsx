@@ -35,7 +35,7 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-import SIGN_UP_SVG from '@/svg/sign_up.svg';
+import SIGN_UP_SVG from '@/svg/auth/sign_up.svg';
 
 export const SignUp: FC = () => {
   const router = useRouter();

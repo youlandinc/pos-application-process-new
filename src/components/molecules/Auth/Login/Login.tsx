@@ -10,7 +10,7 @@ import {
   StyledTextFieldPassword,
 } from '@/components/atoms';
 
-import LOG_IN_SVG from '@/svg/log_in.svg';
+import LOG_IN_SVG from '@/svg/auth/log_in.svg';
 
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
