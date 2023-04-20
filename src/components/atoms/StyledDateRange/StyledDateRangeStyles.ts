@@ -16,7 +16,7 @@ export const StyledDateRangeStyles = {
       fontSize: 14,
       color: 'text.secondary',
     },
-    '& .react-datepicker__day--keyboard-selected': {
+    '& .react-datepicker__day--today': {
       borderRadius: '50% !important',
       bgcolor: 'transparent',
       border: '1px solid',
