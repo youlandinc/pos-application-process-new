@@ -10,10 +10,8 @@ export const SignUpStyles = {
   },
   '& .sign_up_img': {
     display: { xs: 'none', lg: 'block' },
-    minHeight: 460,
-    minWidth: 300,
-    width: 'calc(100% - 748px)',
-    height: 'auto',
+    width: 'max(300px,calc(100% - 748px))',
+    height: 'max(460px,100%)',
   },
   '& .sign_up_form': {
     flex: 1,
@@ -36,10 +34,7 @@ export const SignUpStyles = {
     },
     '& .form_title': {
       textAlign: 'center',
-      fontSize: {
-        md: 32,
-        sm: 24,
-      },
+      fontSize: 'clamp(24px,2.5vw,32px)',
     },
     '& .form_foot': {
       mt: 3,
