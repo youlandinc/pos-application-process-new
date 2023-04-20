@@ -2,8 +2,11 @@ export * from './Provider';
 
 export * from './Transitions';
 
+export * from './StyledBoxWrap';
+
 export * from './StyledButton';
 export * from './StyledButtonGroup';
+
 export * from './StyledRadio';
 
 export * from './StyledTooltip';

@@ -2,16 +2,13 @@ import { POSFlex } from '@/styles';
 
 export const LoginStyles = {
   ...POSFlex('center', 'space-between', 'row'),
-  minHeight: '100vh',
-  p: {
-    xl: 27.5,
-    lg: 10,
-    md: 5,
-  },
+  width: '100%',
+  height: '100%',
   '& .sign_in_img': {
     display: { xs: 'none', lg: 'block' },
-    width: 'max(300px,calc(100% - 748px))',
-    height: 'max(460px,100%)',
+    width: '100%',
+    height: 'auto',
+    flex: 1,
   },
   '& .sign_in_form': {
     flex: 1,
@@ -29,7 +26,7 @@ export const LoginStyles = {
     },
     '& .form_body': {
       mt: 3,
-      '&>div:nth-child(2)': {
+      '&>div:nth-of-type(2)': {
         my: 3,
       },
       '& button': {

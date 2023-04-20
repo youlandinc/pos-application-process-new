@@ -1,3 +1,4 @@
+import { POSFlex } from '@/styles';
 import {
   ChangeEventHandler,
   FC,
@@ -26,6 +27,7 @@ import {
 } from '@/constants';
 
 import {
+  StyledBoxWrap,
   StyledButton,
   StyledDialog,
   StyledSelect,
@@ -156,192 +158,204 @@ export const SignUp: FC = () => {
   }, [confirmedPassword, email, password, passwordError, userType]);
 
   return (
-    <Box sx={SignUpStyles}>
-      <Icon className="sign_up_img" component={SIGN_UP_SVG} />
-      <Box className="sign_up_form">
-        <Typography className="form_title" variant="h3">
-          Sign Up
-        </Typography>
+    <StyledBoxWrap sx={{ ...POSFlex('center', 'center', 'column') }}>
+      <Box sx={SignUpStyles}>
+        <Icon className="sign_up_img" component={SIGN_UP_SVG} />
+        <Box className="sign_up_form">
+          <Typography className="form_title" variant="h3">
+            Sign Up
+          </Typography>
 
-        <Box className="form_body" component={'form'} onSubmit={handledSubmit}>
-          <StyledSelect
-            label={'Select Role'}
-            onChange={(e) =>
-              setUserType(e.target.value as keyof typeof UserType)
-            }
-            options={OPTIONS_COMMON_USER_TYPE}
-            required
-            validate={formError?.userType}
-            value={userType}
-          />
-
-          <StyledTextField
-            label={'Email'}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={'Email'}
-            required
-            validate={formError?.email}
-            value={email}
-          />
-          <Box>
-            <StyledTextFieldPassword
-              error={
-                password
-                  ? Object.values(passwordError).filter((item) => !item)
-                      .length > 0
-                  : false
-              }
-              label={'Password'}
-              onChange={handledPasswordChange}
-              placeholder={'Password'}
-              required
-              value={password}
-            />
-            <Transitions>
-              {password && (
-                <Box className={'password_error_list'} component={'ul'}>
-                  <Box
-                    className={!passwordError.lengthError ? 'error_active' : ''}
-                    component={'li'}
-                  >
-                    8 characters minimum
-                  </Box>
-                  <Box
-                    className={
-                      !passwordError.noSpaceError ? 'error_active' : ''
-                    }
-                    component={'li'}
-                  >
-                    Cannot contain spaces
-                  </Box>
-                  <Box
-                    className={!passwordError.letterError ? 'error_active' : ''}
-                    component={'li'}
-                  >
-                    At least one letter
-                  </Box>
-                  <Box
-                    className={!passwordError.numberError ? 'error_active' : ''}
-                    component={'li'}
-                  >
-                    At least one number
-                  </Box>
-                </Box>
-              )}
-            </Transitions>
-          </Box>
-          <StyledTextFieldPassword
-            label={'Confirmed Password'}
-            onChange={(e) => setConfirmedPassword(e.target.value)}
-            placeholder={'Confirmed Password'}
-            required
-            validate={formError?.confirmedPassword}
-            value={confirmedPassword}
-          />
-          <StyledButton
-            color="primary"
-            disabled={isDisabled}
-            type={'submit'}
-            variant="contained"
+          <Box
+            className="form_body"
+            component={'form'}
+            onSubmit={handledSubmit}
           >
-            Create Account
-          </StyledButton>
-        </Box>
+            <StyledSelect
+              label={'Select Role'}
+              onChange={(e) =>
+                setUserType(e.target.value as keyof typeof UserType)
+              }
+              options={OPTIONS_COMMON_USER_TYPE}
+              required
+              validate={formError?.userType}
+              value={userType}
+            />
 
-        <Box className="form_foot">
-          <Typography variant="body2">
-            Already have an account?
-            <Link className="link_style" href={'/auth/login/'}>
-              {' '}
-              Log In
-            </Link>
-          </Typography>
-          <Typography sx={{ color: 'info.main', mt: 3 }} variant="body2">
-            By signing up, you agree to our{' '}
-            <Link
-              className="link_style"
-              href={'https://www.youland.com/legal/terms/'}
-              target={target}
-            >
-              {' '}
-              Term of Use{' '}
-            </Link>
-            and to receive YouLand emails & updates and acknowledge that you
-            read our{' '}
-            <Link
-              className="link_style"
-              href={'https://www.youland.com/legal/privacy/'}
-              target={target}
-            >
-              Privacy Policy
-            </Link>
-            .
-          </Typography>
-        </Box>
-      </Box>
-      <StyledDialog
-        content={
-          <Box>
-            <Typography
-              className={'POS_tl POS_fullwidth'}
-              color={'text.secondary'}
-              component={'div'}
-              variant={'body2'}
-            >
-              An email with a verification code has been sent to{' '}
-              <Typography component={'span'} variant={'subtitle2'}>
-                {email}
-              </Typography>
-            </Typography>
-            <Box className={'POS_flex POS_jc_c POS_al_c'} mt={3}>
-              <StyledTextFieldOtp onChange={(v) => setOtp(v)} />
+            <StyledTextField
+              label={'Email'}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={'Email'}
+              required
+              validate={formError?.email}
+              value={email}
+            />
+            <Box>
+              <StyledTextFieldPassword
+                error={
+                  password
+                    ? Object.values(passwordError).filter((item) => !item)
+                        .length > 0
+                    : false
+                }
+                label={'Password'}
+                onChange={handledPasswordChange}
+                placeholder={'Password'}
+                required
+                value={password}
+              />
+              <Transitions>
+                {password && (
+                  <Box className={'password_error_list'} component={'ul'}>
+                    <Box
+                      className={
+                        !passwordError.lengthError ? 'error_active' : ''
+                      }
+                      component={'li'}
+                    >
+                      8 characters minimum
+                    </Box>
+                    <Box
+                      className={
+                        !passwordError.noSpaceError ? 'error_active' : ''
+                      }
+                      component={'li'}
+                    >
+                      Cannot contain spaces
+                    </Box>
+                    <Box
+                      className={
+                        !passwordError.letterError ? 'error_active' : ''
+                      }
+                      component={'li'}
+                    >
+                      At least one letter
+                    </Box>
+                    <Box
+                      className={
+                        !passwordError.numberError ? 'error_active' : ''
+                      }
+                      component={'li'}
+                    >
+                      At least one number
+                    </Box>
+                  </Box>
+                )}
+              </Transitions>
             </Box>
-            <Typography
-              className={'POS_tc POS_fullwidth'}
-              color={'text.secondary'}
-              component={'div'}
-              mt={3}
-              variant={'body2'}
+            <StyledTextFieldPassword
+              label={'Confirmed Password'}
+              onChange={(e) => setConfirmedPassword(e.target.value)}
+              placeholder={'Confirmed Password'}
+              required
+              validate={formError?.confirmedPassword}
+              value={confirmedPassword}
+            />
+            <StyledButton
+              color="primary"
+              disabled={isDisabled}
+              type={'submit'}
+              variant="contained"
             >
-              Didn&apos;t verification code?{' '}
+              Create Account
+            </StyledButton>
+          </Box>
+
+          <Box className="form_foot">
+            <Typography variant="body2">
+              Already have an account?
+              <Link className="link_style" href={'/auth/login/'}>
+                {' '}
+                Log In
+              </Link>
+            </Typography>
+            <Typography sx={{ color: 'info.main', mt: 3 }} variant="body2">
+              By signing up, you agree to our{' '}
+              <Link
+                className="link_style"
+                href={'https://www.youland.com/legal/terms/'}
+                target={target}
+              >
+                {' '}
+                Term of Use{' '}
+              </Link>
+              and to receive YouLand emails & updates and acknowledge that you
+              read our{' '}
+              <Link
+                className="link_style"
+                href={'https://www.youland.com/legal/privacy/'}
+                target={target}
+              >
+                Privacy Policy
+              </Link>
+              .
+            </Typography>
+          </Box>
+        </Box>
+        <StyledDialog
+          content={
+            <Box>
               <Typography
-                color={'text.primary'}
-                component={'span'}
-                onClick={handledResendOtp}
+                className={'POS_tl POS_fullwidth'}
+                color={'text.secondary'}
+                component={'div'}
                 variant={'body2'}
               >
-                Request again
+                An email with a verification code has been sent to{' '}
+                <Typography component={'span'} variant={'subtitle2'}>
+                  {email}
+                </Typography>
               </Typography>
-            </Typography>
-          </Box>
-        }
-        footer={
-          <>
-            <StyledButton
-              onClick={close}
-              size={'small'}
-              sx={{ mr: 1 }}
-              variant={'outlined'}
-            >
-              Cancel
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              onClick={handledVerifyOtp}
-              size={'small'}
-            >
-              Confirm
-            </StyledButton>
-          </>
-        }
-        header={
-          <>
-            <Typography variant={'h6'}>Thank you for joining us!</Typography>
-          </>
-        }
-        onClose={close}
-        open={visible}
-      />
-    </Box>
+              <Box className={'POS_flex POS_jc_c POS_al_c'} mt={3}>
+                <StyledTextFieldOtp onChange={(v) => setOtp(v)} />
+              </Box>
+              <Typography
+                className={'POS_tc POS_fullwidth'}
+                color={'text.secondary'}
+                component={'div'}
+                mt={3}
+                variant={'body2'}
+              >
+                Didn&apos;t verification code?{' '}
+                <Typography
+                  color={'text.primary'}
+                  component={'span'}
+                  onClick={handledResendOtp}
+                  variant={'body2'}
+                >
+                  Request again
+                </Typography>
+              </Typography>
+            </Box>
+          }
+          footer={
+            <>
+              <StyledButton
+                onClick={close}
+                size={'small'}
+                sx={{ mr: 1 }}
+                variant={'outlined'}
+              >
+                Cancel
+              </StyledButton>
+              <StyledButton
+                color={'primary'}
+                onClick={handledVerifyOtp}
+                size={'small'}
+              >
+                Confirm
+              </StyledButton>
+            </>
+          }
+          header={
+            <>
+              <Typography variant={'h6'}>Thank you for joining us!</Typography>
+            </>
+          }
+          onClose={close}
+          open={visible}
+        />
+      </Box>
+    </StyledBoxWrap>
   );
 };

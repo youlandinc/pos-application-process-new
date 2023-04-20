@@ -1,19 +1,17 @@
 import { POSFlex, POSFont } from '@/styles';
 
 export const SignUpStyles = {
-  ...POSFlex('center', 'space-between', 'row'),
-  minHeight: '100vh',
-  p: {
-    xl: 27.5,
-    lg: 10,
-    md: 5,
-  },
+  ...POSFlex('center', 'center', 'row'),
+  width: '100%',
+  height: '100%',
   '& .sign_up_img': {
     display: { xs: 'none', lg: 'block' },
-    width: 'max(300px,calc(100% - 748px))',
-    height: 'max(460px,100%)',
+    width: '100%',
+    height: 'auto',
+    flex: 1,
   },
   '& .sign_up_form': {
+    border: '1px solid',
     flex: 1,
     py: 6.5,
     borderRadius: 2,
@@ -25,7 +23,7 @@ export const SignUpStyles = {
     },
     '& .form_body': {
       mt: 3,
-      '&>div:nth-child(even)': {
+      '&>div:nth-of-type(even)': {
         my: 3,
       },
       '& button': {
