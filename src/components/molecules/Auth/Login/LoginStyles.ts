@@ -15,7 +15,6 @@ export const LoginStyles = {
     },
     width: {
       lg: 'calc(100% - 748px)',
-
       sm: 0,
     },
     height: 460,

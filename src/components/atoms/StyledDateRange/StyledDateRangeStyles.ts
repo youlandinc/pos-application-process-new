@@ -1,6 +1,9 @@
 import { POSFont } from '@/styles';
 
 export const StyledDateRangeStyles = {
+  '& .react-datepicker-popper': {
+    zIndex: 2,
+  },
   '& .react-datepicker': {
     border: 'none',
     bgcolor: 'background.white',
@@ -52,10 +55,10 @@ export const StyledDateRangeStyles = {
       overflow: 'auto',
       display: 'flex',
       flexWrap: 'wrap',
-
+      px: 0,
       '& li': {
         py: 0.5,
-        px: 1.5,
+        px: 2,
         my: 1,
         mx: 0.5,
         cursor: 'pointer',

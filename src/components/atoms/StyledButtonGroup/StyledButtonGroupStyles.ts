@@ -6,7 +6,7 @@ export const StyledButtonGroupStyles: SxProps = {
     fontWeight: 600,
     fontSize: 16,
     color: 'text.primary',
-    height: '48px',
+    padding: '14px 20px',
     borderRadius: 2,
     boxShadow: 'none',
     py: 2,
@@ -24,8 +24,7 @@ export const StyledButtonGroupStyles: SxProps = {
       },
     },
     '&.MuiToggleButton--sizeSmall': {
-      height: '36px',
-      py: 1,
+      padding: '6px 12px',
       fontSize: 14,
     },
   },

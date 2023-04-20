@@ -2,53 +2,15 @@ import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Divider, Typography } from '@mui/material';
 
-import { StyledButton, StyledGoogleAutoComplete } from '@/components/atoms';
+import { StyledButton, StyledTextFieldOtp } from '@/components/atoms';
 
 import { observer } from 'mobx-react-lite';
 
-import { Address } from '@/models/common/Address';
-
-const GoogleMapComponent: FC = observer(() => {
+const OPTInputComponent: FC = observer(() => {
   const router = useRouter();
 
-  const [address1] = useState(
-    Address.create({
-      formatAddress: '',
-      state: '',
-      street: '',
-      city: '',
-      aptNumber: '',
-      postcode: '',
-      isValid: false,
-      errors: {},
-    }),
-  );
-
-  const [address2] = useState(
-    Address.create({
-      formatAddress: '',
-      state: '',
-      street: '',
-      city: '',
-      aptNumber: '',
-      postcode: '',
-      isValid: false,
-      errors: {},
-    }),
-  );
-
-  const [address3] = useState(
-    Address.create({
-      formatAddress: '',
-      state: '',
-      street: '',
-      city: '',
-      aptNumber: '',
-      postcode: '',
-      isValid: false,
-      errors: {},
-    }),
-  );
+  const [otp1, setOtp1] = useState('');
+  const [otp2, setOtp2] = useState(['1', '2', '3', '4', '5', '6']);
 
   return (
     <Box
@@ -90,23 +52,21 @@ const GoogleMapComponent: FC = observer(() => {
             <Typography mb={2} variant={'body1'}>
               static
             </Typography>
-            <StyledGoogleAutoComplete address={address1} />
-          </Box>
-          <Box>
-            <Typography mb={2} variant={'body1'}>
-              full address
-            </Typography>
-            <StyledGoogleAutoComplete address={address2} fullAddress={false} />
+            <StyledTextFieldOtp onChange={(v) => setOtp1(v)} />
           </Box>
           <Box>
             <Typography mb={2} variant={'body1'}>
               disabled
             </Typography>
-            <StyledGoogleAutoComplete address={address3} disabled fullAddress />
+            <StyledTextFieldOtp
+              disabled
+              onChange={(v) => console.log(v)}
+              values={otp2}
+            />
           </Box>
         </Box>
       </Box>
     </Box>
   );
 });
-export default GoogleMapComponent;
+export default OPTInputComponent;

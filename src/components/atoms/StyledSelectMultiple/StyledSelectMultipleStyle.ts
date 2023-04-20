@@ -1,7 +1,6 @@
 import { StyledSelectStyles } from '@/components/atoms';
-import { SxProps } from '@mui/material';
 
-export const StyledSelectMultipleStyle: Record<string, SxProps> = {
+export const StyledSelectMultipleStyle = {
   ...StyledSelectStyles,
   checkboxSx: {
     '& .MuiCheckbox-root': {
@@ -11,4 +10,4 @@ export const StyledSelectMultipleStyle: Record<string, SxProps> = {
       },
     },
   },
-};
+} as const;

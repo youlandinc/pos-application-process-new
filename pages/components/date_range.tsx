@@ -63,6 +63,37 @@ const DatePickerComponent: FC = () => {
                   setDateRange(date)
                 }
               />
+              <Box sx={{ width: 300, my: 3 }}>
+                <StyledDateRange
+                  dateRange={dateRange}
+                  disabled
+                  label="日期"
+                  onChange={(date: [Date | null, Date | null]) =>
+                    setDateRange(date)
+                  }
+                />
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+
+        <Box className={'component_item'} mt={3}>
+          <Box>
+            <Typography mb={2} variant={'body1'}>
+              Mobile
+            </Typography>
+            {dateRange[0] && format(dateRange[0], "yyyy-MM-dd'T'HH:mm:ss'Z'")}-
+            {dateRange[1] && format(dateRange[1], "yyyy-MM-dd'T'HH:mm:ss'Z'")}
+            <Box sx={{ width: 300 }}>
+              <StyledDateRange
+                dateRange={dateRange}
+                label="日期"
+                onChange={(date: [Date | null, Date | null]) =>
+                  setDateRange(date)
+                }
+                open={true}
+                withPortal={true}
+              />
             </Box>
           </Box>
         </Box>

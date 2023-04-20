@@ -1,3 +1,4 @@
+import { Transitions } from '@/components/atoms';
 import { FC } from 'react';
 import {
   Box,
@@ -20,18 +21,21 @@ export const StyledSelect: FC<StyledSelectProps> = ({
   sxList,
   sx,
   sxHelperText,
+  required,
   ...rest
 }) => {
   return (
     <>
       <FormControl
         error={!!(validate?.length && validate[0])}
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        sx={Object.assign(
-          disabled ? { '& label': { color: 'text.disabled' } } : {},
-          { ...StyledSelectStyles.root, ...sx },
-        )}
+        required={required}
+        sx={{
+          [disabled ? '& label' : '']: {
+            color: 'text.disabled',
+          },
+          ...StyledSelectStyles.root,
+          ...sx,
+        }}
         variant={'outlined'}
       >
         <InputLabel>{label}</InputLabel>
@@ -40,10 +44,7 @@ export const StyledSelect: FC<StyledSelectProps> = ({
           inputProps={{
             MenuProps: {
               MenuListProps: {
-                sx: Object.assign(
-                  {},
-                  { ...StyledSelectStyles.list, ...sxList },
-                ),
+                sx: { ...StyledSelectStyles.list, ...sxList },
               },
             },
           }}
@@ -58,28 +59,27 @@ export const StyledSelect: FC<StyledSelectProps> = ({
             </MenuItem>
           ))}
         </Select>
-        {validate?.length && validate[0] && (
-          <FormHelperText
-            sx={Object.assign(
-              {},
-              { ...StyledSelectStyles.helperText, ...sxHelperText },
-            )}
-          >
-            {validate?.length
-              ? validate.map((item, index) => (
-                  <Box
-                    component={'span'}
-                    key={item + '_' + index}
-                    sx={{ display: 'block', m: 0 }}
-                  >
-                    {item}
-                  </Box>
-                ))
-              : validate
-              ? validate[0]
-              : undefined}
-          </FormHelperText>
-        )}
+        <Transitions>
+          {validate?.length && validate[0] && (
+            <FormHelperText
+              sx={{ ...StyledSelectStyles.helperText, ...sxHelperText }}
+            >
+              {validate?.length
+                ? validate.map((item, index) => (
+                    <Box
+                      component={'span'}
+                      key={item + '_' + index}
+                      sx={{ display: 'block', m: 0 }}
+                    >
+                      {item}
+                    </Box>
+                  ))
+                : validate
+                ? validate[0]
+                : undefined}
+            </FormHelperText>
+          )}
+        </Transitions>
       </FormControl>
     </>
   );

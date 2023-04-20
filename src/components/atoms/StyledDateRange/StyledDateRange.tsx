@@ -138,11 +138,9 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
   });
 
   function Container({ className, children }: CalendarContainerProps) {
-    // console.log({ children, className }, children[3][0].props.children[0]);
     return (
       <CalendarContainer className={className}>
         <div style={{ position: 'relative' }}>
-          {/* {children[3][0].props.children[0].props.children[0]} */}
           {visible
             ? children &&
               (children as unknown as any)[3][0]?.props.children[0].props

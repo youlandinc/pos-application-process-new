@@ -1,47 +1,20 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { Box, IconButton, InputAdornment } from '@mui/material';
+import { FC, useCallback, useState } from 'react';
+import { IconButton, InputAdornment } from '@mui/material';
 import { VisibilityOff, VisibilityOutlined } from '@mui/icons-material';
 
-import {
-  StyledTextFieldPasswordProps,
-  StyledTextFieldPasswordStyles,
-} from './index';
-import { StyledTextField, Transitions } from '@/components/atoms';
+import { StyledTextFieldPasswordProps } from './index';
+import { StyledTextField } from '@/components/atoms';
 
 export const StyledTextFieldPassword: FC<StyledTextFieldPasswordProps> = ({
   value,
-  isCheck = true,
+
   ...rest
 }) => {
   const [visible, setVisible] = useState(false);
-  const [passwordError, setPasswordError] = useState<{
-    lengthError: boolean;
-    letterError: boolean;
-    numberError: boolean;
-    noSpaceError: boolean;
-  }>({
-    lengthError: false,
-    letterError: false,
-    numberError: false,
-    noSpaceError: false,
-  });
 
   const onToggleVisibleClick = useCallback(() => {
     setVisible((old) => !old);
   }, []);
-
-  useEffect(() => {
-    const lengthError = (value as string)?.length >= 8;
-    const noSpaceError = value.indexOf(' ') <= 0;
-    const numberError = !!value.match(/\d/g);
-    const letterError = !!value.match(/[a-zA-Z]/g);
-    setPasswordError({
-      lengthError,
-      noSpaceError,
-      letterError,
-      numberError,
-    });
-  }, [value]);
 
   return (
     <>
@@ -63,39 +36,6 @@ export const StyledTextFieldPassword: FC<StyledTextFieldPasswordProps> = ({
         value={value}
         {...rest}
       />
-      <Transitions>
-        {!!value && isCheck && (
-          <Box
-            component={'ul'}
-            sx={{ ...StyledTextFieldPasswordStyles.passwordTips }}
-          >
-            <Box
-              className={passwordError.lengthError ? 'pass' : 'error'}
-              component={'li'}
-            >
-              8 characters minimum
-            </Box>
-            <Box
-              className={passwordError.noSpaceError ? 'pass' : 'error'}
-              component={'li'}
-            >
-              Cannot contain spaces
-            </Box>
-            <Box
-              className={passwordError.letterError ? 'pass' : 'error'}
-              component={'li'}
-            >
-              At least one letter
-            </Box>
-            <Box
-              className={passwordError.numberError ? 'pass' : 'error'}
-              component={'li'}
-            >
-              At least one number
-            </Box>
-          </Box>
-        )}
-      </Transitions>
     </>
   );
 };

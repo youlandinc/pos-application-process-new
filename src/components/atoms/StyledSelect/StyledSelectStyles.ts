@@ -1,6 +1,4 @@
-import { SxProps } from '@mui/material';
-
-export const StyledSelectStyles: Record<string, SxProps> = {
+export const StyledSelectStyles = {
   root: {
     width: '100%',
     '& .Mui-disabled': {
@@ -37,4 +35,4 @@ export const StyledSelectStyles: Record<string, SxProps> = {
     fontSize: 12,
     color: 'error.main',
   },
-};
+} as const;

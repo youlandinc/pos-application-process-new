@@ -1,21 +1,20 @@
 import { SxProps } from '@mui/material';
 
-export const StyledButtonStyles: SxProps = {
+export const StyledButtonStyles = {
   textTransform: 'none',
   fontWeight: 600,
   fontSize: 16,
-  height: '48px',
+  padding: '14px 20px',
   borderRadius: 2,
   boxShadow: 'none',
   '&:disabled': {
     color: 'action.disabled',
   },
   '&.MuiButton-sizeSmall': {
-    height: '36px',
-    py: 1,
+    padding: '6px 12px',
     fontSize: 14,
   },
   '&.MuiButton-outlinedInfo': {
     color: 'text.primary',
   },
-};
+} as const;
