@@ -1,7 +1,13 @@
 import { SignUpSchema } from '@/constants/schema/sign_up';
 import { useSwitch } from '@/hooks';
 import { _userSingUp } from '@/requests';
-import { FC, FormEventHandler, useCallback, useState } from 'react';
+import {
+  ChangeEventHandler,
+  FC,
+  FormEventHandler,
+  useCallback,
+  useState,
+} from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -14,9 +20,11 @@ import { validate } from 'validate.js';
 import { SignUpStyles } from './index';
 import {
   StyledButton,
+  StyledDialog,
   StyledSelect,
   StyledTextField,
   StyledTextFieldPassword,
+  Transitions,
 } from '@/components/atoms';
 import {
   AUTO_HIDE_DURATION,
@@ -40,7 +48,34 @@ export const SignUp: FC = () => {
     Partial<Record<keyof typeof SignUpSchema, string[]>> | undefined
   >();
 
-  const { open, close, visible } = useSwitch(false);
+  const [passwordError, setPasswordError] = useState<{
+    lengthError: boolean;
+    letterError: boolean;
+    numberError: boolean;
+    noSpaceError: boolean;
+  }>({
+    lengthError: false,
+    letterError: false,
+    numberError: false,
+    noSpaceError: false,
+  });
+
+  const { open, close, visible } = useSwitch(true);
+
+  const handledPasswordChange: ChangeEventHandler<HTMLInputElement> =
+    useCallback((e) => {
+      setPassword(e.target.value);
+      const lengthError = e.target.value?.length >= 8;
+      const noSpaceError = e.target.value.indexOf(' ') <= 0;
+      const numberError = !!e.target.value.match(/\d/g);
+      const letterError = !!e.target.value.match(/[a-zA-Z]/g);
+      setPasswordError({
+        lengthError,
+        noSpaceError,
+        letterError,
+        numberError,
+      });
+    }, []);
 
   const handledSubmit = useCallback<FormEventHandler>(
     async (e) => {
@@ -114,13 +149,50 @@ export const SignUp: FC = () => {
             validate={formError?.email}
             value={email}
           />
-          <StyledTextFieldPassword
-            label={'Password'}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder={'Password'}
-            required
-            value={password}
-          />
+          <Box>
+            <StyledTextFieldPassword
+              error={
+                Object.values(passwordError).filter((item) => item).length > 0
+              }
+              label={'Password'}
+              onChange={handledPasswordChange}
+              placeholder={'Password'}
+              required
+              value={password}
+            />
+            <Transitions>
+              {password && (
+                <Box className={'password_error_list'} component={'ul'}>
+                  <Box
+                    className={!passwordError.lengthError ? 'error_active' : ''}
+                    component={'li'}
+                  >
+                    8 characters minimum
+                  </Box>
+                  <Box
+                    className={
+                      !passwordError.noSpaceError ? 'error_active' : ''
+                    }
+                    component={'li'}
+                  >
+                    Cannot contain spaces
+                  </Box>
+                  <Box
+                    className={!passwordError.letterError ? 'error_active' : ''}
+                    component={'li'}
+                  >
+                    At least one letter
+                  </Box>
+                  <Box
+                    className={!passwordError.numberError ? 'error_active' : ''}
+                    component={'li'}
+                  >
+                    At least one number
+                  </Box>
+                </Box>
+              )}
+            </Transitions>
+          </Box>
           <StyledTextFieldPassword
             label={'Confirmed Password'}
             onChange={(e) => setConfirmedPassword(e.target.value)}
