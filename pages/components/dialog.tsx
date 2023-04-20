@@ -60,12 +60,12 @@ const DialogComponent: FC = () => {
               Open Icon Dialog
             </StyledButton>
             <StyledDialog
-              customContent={
+              content={
                 <Box sx={{ ...POSFont(14, 400, 1.5, 'info.main') }}>
                   Are you sure you want to delete Property Address
                 </Box>
               }
-              customFooter={
+              footer={
                 <>
                   <StyledButton
                     color="error"
@@ -87,7 +87,7 @@ const DialogComponent: FC = () => {
                   </StyledButton>
                 </>
               }
-              customHeader={
+              header={
                 <>
                   <DeleteForever
                     sx={{
@@ -109,12 +109,12 @@ const DialogComponent: FC = () => {
               Open Dialog
             </StyledButton>
             <StyledDialog
-              customContent={
+              content={
                 <Box sx={{ ...POSFont(14, 400, 1.5, 'info.main') }}>
                   Sign out of current account?
                 </Box>
               }
-              customFooter={
+              footer={
                 <>
                   <StyledButton
                     autoFocus
@@ -136,7 +136,7 @@ const DialogComponent: FC = () => {
                   </StyledButton>
                 </>
               }
-              customHeader="Sign out"
+              header="Sign out"
               onClose={close1}
               open={show1}
             />

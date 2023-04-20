@@ -9,11 +9,10 @@ import {
 import { StyledDialogProps, StyledDialogStyles } from './index';
 
 export const StyledDialog: FC<StyledDialogProps> = ({
-  customHeader,
-  customContent,
-  customFooter,
+  header,
+  content,
+  footer,
   sx,
-  children,
   open,
   ...rest
 }) => {
@@ -27,10 +26,9 @@ export const StyledDialog: FC<StyledDialogProps> = ({
       })}
       {...rest}
     >
-      {customHeader && <DialogTitle>{customHeader}</DialogTitle>}
-      {customContent && <DialogContent>{customContent} </DialogContent>}
-      {customFooter && <DialogActions>{customFooter} </DialogActions>}
-      {children}
+      {header && <DialogTitle>{header}</DialogTitle>}
+      {content && <DialogContent>{content} </DialogContent>}
+      {footer && <DialogActions>{footer} </DialogActions>}
     </Dialog>
   );
 };
