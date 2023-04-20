@@ -250,7 +250,7 @@ export const SignUp: FC = () => {
             >
               An email with a verification code has been sent to{' '}
               <Typography component={'span'} variant={'subtitle2'}>
-                {email || '123'}
+                {email}
               </Typography>
             </Typography>
             <Box className={'POS_flex POS_jc_c POS_al_c'} mt={3}>
@@ -276,7 +276,7 @@ export const SignUp: FC = () => {
         }
         footer={
           <>
-            <StyledButton size={'small'} variant={'outlined'}>
+            <StyledButton size={'small'} sx={{ mr: 1 }} variant={'outlined'}>
               Cancel
             </StyledButton>
             <StyledButton color={'primary'} size={'small'}>

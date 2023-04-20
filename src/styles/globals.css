@@ -13,7 +13,6 @@
   src: url('../../public/fonts/Poppins-Bold.ttf');
   font-weight: 700;
 }
-
 html,
 body {
   width: 100%;
@@ -149,6 +148,12 @@ ul {
 
 /*global common atom style*/
 
+/*variable*/
+
+:root {
+  --POS--gap: 8px;
+}
+
 .link_style {
   color: #1134E3;
 }
@@ -183,4 +188,14 @@ ul {
 
 .POS_jc_c {
   justify-content: center;
+}
+
+/*margin*/
+
+.POS_mr_1 {
+  margin-right: var(--POS--gap);
+}
+
+.POS_mr_2 {
+  margin-right: calc(2 * var(--POS--gap));
 }
