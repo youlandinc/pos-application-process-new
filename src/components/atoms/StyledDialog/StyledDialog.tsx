@@ -21,9 +21,9 @@ export const StyledDialog: FC<StyledDialogProps> = ({
       })}
       {...rest}
     >
-      {header && <Box className="dialog-header">{header}</Box>}
-      {content && <Box className="dialog-content">{content} </Box>}
-      {footer && <Box className="dialog-footer">{footer} </Box>}
+      {header && <Box className="dialog_header">{header}</Box>}
+      {content && <Box className="dialog_content">{content} </Box>}
+      {footer && <Box className="dialog_footer">{footer} </Box>}
     </Dialog>
   );
 };

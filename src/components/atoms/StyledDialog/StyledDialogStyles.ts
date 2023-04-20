@@ -2,20 +2,20 @@ import { SxProps } from '@mui/material';
 
 export const StyledDialogStyles: SxProps = {
   '&.MuiDialog-root': {
-    '& .dialog-header': {
+    '& .dialog_header': {
       height: 76,
       p: 3,
       fontWeight: 600,
       fontSize: 18,
       color: 'text.primary',
     },
-    '& .dialog-footer': {
+    '& .dialog_footer': {
       height: 60,
       textAlign: 'right',
       px: 3,
       py: 1.5,
     },
-    '& .dialog-content': {
+    '& .dialog_content': {
       px: 3,
       py: 1.5,
     },
