@@ -1,4 +1,3 @@
-import { _userSendCode, _userSingUp, _userVerifyCode } from '@/requests';
 import {
   ChangeEventHandler,
   FC,
@@ -14,6 +13,7 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { validate } from 'validate.js';
 
+import { _userSendCode, _userSingUp, _userVerifyCode } from '@/requests';
 import { BizType, UserType } from '@/types';
 import { useSwitch } from '@/hooks';
 import { SignUpStyles } from './index';
