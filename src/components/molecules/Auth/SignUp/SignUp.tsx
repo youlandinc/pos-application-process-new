@@ -137,41 +137,30 @@ export const SignUp: FC = () => {
         <Box className="form_foot">
           <Typography variant="body2">
             Already have an account?
-            <Box
-              component={'span'}
-              sx={{
-                color: 'primary.main',
-              }}
-            >
-              <Link href={'/auth/login/'}> Sign in</Link>
-            </Box>
+            <Link className="link_style" href={'/auth/login/'}>
+              {' '}
+              Sign in
+            </Link>
           </Typography>
           <Typography sx={{ color: 'info.main', mt: 3 }} variant="body2">
             By signing up, you agree to our{' '}
-            <Box
-              component={'span'}
-              sx={{
-                color: 'primary.main',
-              }}
+            <Link
+              className="link_style"
+              href={'https://www.youland.com/legal/terms/'}
+              target="_blank"
             >
-              <Link href={'https://www.youland.com/legal/terms/'}>
-                {' '}
-                Term of Use{' '}
-              </Link>
-            </Box>
+              {' '}
+              Term of Use{' '}
+            </Link>
             and to receive YouLand emails & updates and acknowledge that you
             read our{' '}
-            <Box
-              component={'span'}
-              sx={{
-                color: 'primary.main',
-              }}
+            <Link
+              className="link_style"
+              href={'https://www.youland.com/legal/privacy/'}
+              target="_blank"
             >
-              <Link href={'https://www.youland.com/legal/privacy/'}>
-                {' '}
-                Privacy Policy
-              </Link>
-            </Box>
+              Privacy Policy
+            </Link>
             .
           </Typography>
         </Box>

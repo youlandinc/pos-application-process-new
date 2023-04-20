@@ -60,11 +60,7 @@ const DialogComponent: FC = () => {
               Open Icon Dialog
             </StyledButton>
             <StyledDialog
-              fullWidth={true}
-              handleClose={close}
-              maxWidth="sm"
-              open={show}
-              Title={
+              customHeader={
                 <>
                   <DeleteForever
                     sx={{
@@ -76,31 +72,37 @@ const DialogComponent: FC = () => {
                   Delete Files?
                 </>
               }
-            >
-              <DialogContent sx={{ ...POSFont(14, 400, 1.5, 'info.main') }}>
-                Are you sure you want to delete Property Address
-              </DialogContent>
-              <DialogActions>
-                <StyledButton
-                  color="error"
-                  onClick={close}
-                  size="small"
-                  variant="contained"
-                >
-                  Delete
-                </StyledButton>
-                <StyledButton
-                  autoFocus
-                  color="info"
-                  onClick={close}
-                  size="small"
-                  sx={{ ml: 3 }}
-                  variant="outlined"
-                >
-                  Cancel
-                </StyledButton>
-              </DialogActions>
-            </StyledDialog>
+              customContent={
+                <Box sx={{ ...POSFont(14, 400, 1.5, 'info.main') }}>
+                  Are you sure you want to delete Property Address
+                </Box>
+              }
+              customFooter={
+                <>
+                  <StyledButton
+                    color="error"
+                    onClick={close}
+                    size="small"
+                    variant="contained"
+                  >
+                    Delete
+                  </StyledButton>
+                  <StyledButton
+                    autoFocus
+                    color="info"
+                    onClick={close}
+                    size="small"
+                    sx={{ ml: 3 }}
+                    variant="outlined"
+                  >
+                    Cancel
+                  </StyledButton>
+                </>
+              }
+              fullWidth={true}
+              onClose={close}
+              open={show}
+            />
           </Box>
 
           <Box>
@@ -108,36 +110,38 @@ const DialogComponent: FC = () => {
               Open Dialog
             </StyledButton>
             <StyledDialog
+              customContent={
+                <Box sx={{ ...POSFont(14, 400, 1.5, 'info.main') }}>
+                  Sign out of current account?
+                </Box>
+              }
+              customFooter={
+                <>
+                  <StyledButton
+                    autoFocus
+                    color="info"
+                    onClick={close1}
+                    size="small"
+                    variant="outlined"
+                  >
+                    Cancel
+                  </StyledButton>
+                  <StyledButton
+                    color="primary"
+                    onClick={close1}
+                    size="small"
+                    sx={{ ml: 3 }}
+                    variant="contained"
+                  >
+                    Confirm
+                  </StyledButton>
+                </>
+              }
+              customHeader="Sign out"
               fullWidth={true}
-              handleClose={close1}
-              maxWidth="sm"
+              onClose={close1}
               open={show1}
-              Title="Sign out"
-            >
-              <DialogContent sx={{ ...POSFont(14, 400, 1.5, 'info.main') }}>
-                Sign out of current account?
-              </DialogContent>
-              <DialogActions>
-                <StyledButton
-                  autoFocus
-                  color="info"
-                  onClick={close1}
-                  size="small"
-                  variant="outlined"
-                >
-                  Cancel
-                </StyledButton>
-                <StyledButton
-                  color="primary"
-                  onClick={close1}
-                  size="small"
-                  sx={{ ml: 3 }}
-                  variant="contained"
-                >
-                  Confirm
-                </StyledButton>
-              </DialogActions>
-            </StyledDialog>
+            />
           </Box>
         </Box>
       </Box>

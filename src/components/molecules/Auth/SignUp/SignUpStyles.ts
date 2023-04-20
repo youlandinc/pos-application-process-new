@@ -6,7 +6,7 @@ export const SignUpStyles = {
     lg: 10,
     md: 0,
   },
-  height: '100vh',
+  minHeight: '100vh',
   ...POSFlex('center', 'space-between', undefined),
   '& .sign_up_img': {
     minWidth: {
@@ -20,6 +20,7 @@ export const SignUpStyles = {
     height: 670,
   },
   '& .sign_up_form': {
+    // flex: 1,
     boxShadow: {
       lg: '0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
       md: 'none',

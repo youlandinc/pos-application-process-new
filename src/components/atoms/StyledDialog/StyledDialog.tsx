@@ -1,19 +1,25 @@
 import React, { FC } from 'react';
-import { Dialog, DialogTitle } from '@mui/material';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from '@mui/material';
 
 import { StyledDialogProps, StyledDialogStyles } from './index';
 
 export const StyledDialog: FC<StyledDialogProps> = ({
-  Title,
+  customHeader,
+  customContent,
+  customFooter,
   sx,
   children,
-  handleClose,
   open,
   ...rest
 }) => {
   return (
     <Dialog
-      onClose={handleClose}
+      fullWidth={true}
       open={open}
       sx={Object.assign({
         ...StyledDialogStyles,
@@ -21,7 +27,9 @@ export const StyledDialog: FC<StyledDialogProps> = ({
       })}
       {...rest}
     >
-      {Title && <DialogTitle>{Title}</DialogTitle>}
+      {customHeader && <DialogTitle>{customHeader}</DialogTitle>}
+      {customContent && <DialogContent>{customContent} </DialogContent>}
+      {customFooter && <DialogActions>{customFooter} </DialogActions>}
       {children}
     </Dialog>
   );

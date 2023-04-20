@@ -6,7 +6,7 @@ export const LoginStyles = {
     lg: 10,
     md: 0,
   },
-  height: '100vh',
+  minHeight: '100vh',
   ...POSFlex('center', 'space-between', undefined),
   '& .sign_in_img': {
     minWidth: {
@@ -17,9 +17,10 @@ export const LoginStyles = {
       lg: 'calc(100% - 748px)',
       sm: 0,
     },
-    height: 460,
+    minHeight: 460,
   },
   '& .sign_in_form': {
+    flex: 1,
     boxShadow: {
       lg: '0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
       md: 'none',
