@@ -11,7 +11,6 @@ export const SignUpStyles = {
     flex: 1,
   },
   '& .sign_up_form': {
-    border: '1px solid',
     flex: 1,
     py: 6.5,
     borderRadius: 2,
