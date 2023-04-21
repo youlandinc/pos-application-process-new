@@ -4,6 +4,9 @@ export const StyledTextFieldStyles = {
   padding: 0,
   '& label.Mui-focused': {
     color: 'text.focus',
+    '& span': {
+      color: 'text.focus',
+    },
   },
   '& .MuiOutlinedInput-root': {
     borderRadius: 2,

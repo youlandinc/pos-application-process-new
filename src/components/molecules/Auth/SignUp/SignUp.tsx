@@ -1,4 +1,3 @@
-import { POSFlex } from '@/styles';
 import {
   ChangeEventHandler,
   FC,
@@ -14,10 +13,11 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { validate } from 'validate.js';
 
-import { _userSendCode, _userSingUp, _userVerifyCode } from '@/requests';
-import { BizType, UserType } from '@/types';
+import { observer } from 'mobx-react-lite';
+
 import { useSwitch } from '@/hooks';
 import { SignUpStyles } from './index';
+import { POSFlex } from '@/styles';
 import {
   AUTO_HIDE_DURATION,
   LOGIN_APP_KEY,
@@ -25,6 +25,8 @@ import {
   SignUpSchema,
   userpool,
 } from '@/constants';
+import { BizType, UserType } from '@/types';
+import { _userSendCode, _userSingUp, _userVerifyCode } from '@/requests';
 
 import {
   StyledBoxWrap,
@@ -39,7 +41,7 @@ import {
 
 import SIGN_UP_SVG from '@/svg/auth/sign_up.svg';
 
-export const SignUp: FC = () => {
+export const SignUp: FC = observer(() => {
   const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -50,6 +52,7 @@ export const SignUp: FC = () => {
   const [userType, setUserType] = useState<keyof typeof UserType>();
   const [otp, setOtp] = useState('');
   const [target, setTarget] = useState<'_top' | '_blank'>('_top');
+  const [loading, setLoading] = useState<boolean>(false);
   const [formError, setFormError] = useState<
     Partial<Record<keyof typeof SignUpSchema, string[]>> | undefined
   >();
@@ -100,7 +103,7 @@ export const SignUp: FC = () => {
         return;
       }
 
-      const data = {
+      const params = {
         appkey: LOGIN_APP_KEY,
         emailParam: {
           email,
@@ -109,26 +112,42 @@ export const SignUp: FC = () => {
         },
       };
       try {
-        await _userSingUp(data);
+        setLoading(true);
+        await _userSingUp(params);
         open();
       } catch (err) {
         enqueueSnackbar(err as string, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
         });
+      } finally {
+        setLoading(false);
       }
     },
     [confirmedPassword, email, enqueueSnackbar, open, password, userType],
   );
 
   const handledResendOtp = useCallback(async () => {
+    if (loading) {
+      return;
+    }
     const data = {
       bizType: BizType.REGISTER,
       appkey: LOGIN_APP_KEY,
       email,
     };
-    await _userSendCode(data);
-  }, [email]);
+    try {
+      setLoading(true);
+      await _userSendCode(data);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [email, loading]);
 
   const handledVerifyOtp = useCallback(async () => {
     const data = {
@@ -173,6 +192,7 @@ export const SignUp: FC = () => {
             onSubmit={handledSubmit}
           >
             <StyledSelect
+              disabled={loading}
               label={'Select Role'}
               onChange={(e) =>
                 setUserType(e.target.value as keyof typeof UserType)
@@ -184,6 +204,7 @@ export const SignUp: FC = () => {
             />
 
             <StyledTextField
+              disabled={loading}
               label={'Email'}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={'Email'}
@@ -193,6 +214,7 @@ export const SignUp: FC = () => {
             />
             <Box>
               <StyledTextFieldPassword
+                disabled={loading}
                 error={
                   password
                     ? Object.values(passwordError).filter((item) => !item)
@@ -245,6 +267,7 @@ export const SignUp: FC = () => {
               </Transitions>
             </Box>
             <StyledTextFieldPassword
+              disabled={loading}
               label={'Confirmed Password'}
               onChange={(e) => setConfirmedPassword(e.target.value)}
               placeholder={'Confirmed Password'}
@@ -254,7 +277,7 @@ export const SignUp: FC = () => {
             />
             <StyledButton
               color="primary"
-              disabled={isDisabled}
+              disabled={isDisabled || loading}
               type={'submit'}
               variant="contained"
             >
@@ -331,6 +354,7 @@ export const SignUp: FC = () => {
           footer={
             <>
               <StyledButton
+                disabled={loading}
                 onClick={close}
                 size={'small'}
                 sx={{ mr: 1 }}
@@ -340,6 +364,7 @@ export const SignUp: FC = () => {
               </StyledButton>
               <StyledButton
                 color={'primary'}
+                disabled={loading}
                 onClick={handledVerifyOtp}
                 size={'small'}
               >
@@ -358,4 +383,4 @@ export const SignUp: FC = () => {
       </Box>
     </StyledBoxWrap>
   );
-};
+});
