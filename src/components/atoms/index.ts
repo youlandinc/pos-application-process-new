@@ -4,6 +4,8 @@ export * from './Transitions';
 
 export * from './StyledBoxWrap';
 
+export * from './StyledHeaderLogo';
+
 export * from './StyledButton';
 export * from './StyledButtonGroup';
 

@@ -23,7 +23,8 @@ export const POSFormatPercent = (
     return '0.000%';
   }
   return (
-    ((Math.floor(percentageValue * 10000) / 10000) * 100).toFixed(radix) + '%'
+    ((Math.floor(percentageValue * 1000000) / 1000000) * 100).toFixed(radix) +
+    '%'
   );
 };
 

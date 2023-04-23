@@ -5,7 +5,7 @@ export const StyledBoxWrapStyles = {
     ...POSFlex('center', 'center', 'row'),
   },
   inside: {
-    minHeight: '100vh',
+    minHeight: 'calc(100vh - 92px)',
     width: {
       xl: 1440,
       lg: 938,

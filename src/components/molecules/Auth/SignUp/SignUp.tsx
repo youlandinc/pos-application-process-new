@@ -177,7 +177,9 @@ export const SignUp: FC = observer(() => {
   }, [confirmedPassword, email, password, passwordError, userType]);
 
   return (
-    <StyledBoxWrap sx={{ ...POSFlex('center', 'center', 'column') }}>
+    <StyledBoxWrap
+      sx={{ ...POSFlex('center', 'center', 'column'), minHeight: '100vh' }}
+    >
       <Box sx={SignUpStyles}>
         <Icon className="sign_up_img" component={SIGN_UP_SVG} />
 

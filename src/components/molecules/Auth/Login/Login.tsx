@@ -99,7 +99,9 @@ export const Login: FC<LoginProps> = observer(({ to, successCb }) => {
   );
 
   return (
-    <StyledBoxWrap sx={{ ...POSFlex('center', 'center', 'column') }}>
+    <StyledBoxWrap
+      sx={{ ...POSFlex('center', 'center', 'column'), minHeight: '100vh' }}
+    >
       <Box sx={LoginStyles}>
         <Icon className="sign_in_img" component={LOG_IN_SVG} />
 
