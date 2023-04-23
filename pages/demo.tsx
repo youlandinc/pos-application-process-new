@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import { Layout } from '@/components';
+import { POSLayout } from '@/components/molecules/POSLayout';
 
 const DemoPage = (): JSX.Element => {
-  return <Layout scene={'dashboard'}></Layout>;
+  return <POSLayout scene={'dashboard'}></POSLayout>;
 };
 
 export default DemoPage;

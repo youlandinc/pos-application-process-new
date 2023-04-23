@@ -124,7 +124,7 @@ const RootStore = types.model(RootModel).actions((self) => {
         userpool.clearLastAuthUserInfo(lastAuthId);
         userpool.clearLastAuthUserToken(lastAuthId);
       }
-      window.location.href = '/auth/sign_in';
+      window.location.href = '/auth/login';
     },
   };
 });

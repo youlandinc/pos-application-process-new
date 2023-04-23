@@ -1,14 +1,15 @@
 import { FC, useMemo } from 'react';
 import { Box, Icon } from '@mui/material';
 
-import { HeaderProps, HeaderStyles, MyAccountButton } from '../index';
+import { POSHeaderProps, POSHeaderStyles } from './index';
+import { MyAccountButton } from '../MyAccountButton';
 import { POSFlex } from '@/styles';
 import { StyledButton, StyledHeaderLogo } from '@/components';
 
 import BUTTON_ICON_VIEW_ALL_LOANS from '@/svg/button/button_icon_view_all_loans.svg';
 import BUTTON_ICON_ADD_NEW_LOAN from '@/svg/button/button_icon_add_new_loan.svg';
 
-export const Header: FC<HeaderProps> = ({ store, scene }) => {
+export const POSHeader: FC<POSHeaderProps> = ({ store, scene }) => {
   const renderButton = useMemo(() => {
     switch (scene) {
       case 'application':
@@ -40,7 +41,7 @@ export const Header: FC<HeaderProps> = ({ store, scene }) => {
               />
               View All Loans
             </StyledButton>
-            <MyAccountButton />
+            <MyAccountButton scene={scene} store={store} />
           </Box>
         );
       case 'pipeline':
@@ -57,7 +58,7 @@ export const Header: FC<HeaderProps> = ({ store, scene }) => {
               />
               Start New Loan
             </StyledButton>
-            <MyAccountButton />
+            <MyAccountButton scene={scene} store={store} />
           </Box>
         );
     }
