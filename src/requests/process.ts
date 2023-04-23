@@ -1,3 +1,4 @@
+import { ProcessesParams } from '@/types/process';
 import { get, post, put } from './axios';
 import { ProcessData } from '@/types/server';
 
@@ -29,13 +30,13 @@ export const _bindProcess = (processInsId: string) => {
   return post<BaseResponse>(`/processes/${processInsId}/users/bind`);
 };
 
-export const _fetchAllProcesses = (params) => {
+export const _fetchAllProcesses = (params: ProcessesParams) => {
   return post<{ content: ProcessData[] } & any>(
     '/processes/user/application',
     params,
   );
 };
 
-export const _fetchAllCommission = (params) => {
-  return post('/processes/commission', params);
-};
+// export const _fetchAllCommission = (params) => {
+//   return post('/processes/commission', params);
+// };

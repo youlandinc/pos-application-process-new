@@ -190,6 +190,11 @@ ul {
   justify-content: center;
 }
 
+.POS_f_jc_c {
+  display: flex;
+  justify-content: space-between
+}
+
 /*margin*/
 
 .POS_mr_1 {

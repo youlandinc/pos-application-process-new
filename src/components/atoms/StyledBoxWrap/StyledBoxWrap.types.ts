@@ -1,3 +1,7 @@
 import { BoxProps } from '@mui/material';
+import { ReactNode } from 'react';
 
-export type StyledBoxWrapProps = BoxProps;
+export interface StyledBoxWrapProps extends BoxProps {
+  children?: ReactNode;
+  isHeader?: boolean;
+}

@@ -9,27 +9,27 @@ export const _completePipelineTask = (params: PipelineTaskItem<any>) => {
   return post('/dashboard/broker/application/task', params);
 };
 
-export const _deleteUpload = (taskId, params) => {
+export const _deleteUpload = (taskId: string, params: { url: string }) => {
   return del(`/dashboard/broker/application/task/${taskId}`, {
     data: params.url,
   });
 };
 
-export const _addTaskFile = (params, taskId) => {
+export const _addTaskFile = (params: FormData, taskId: string) => {
   return put<TaskFiles[]>(
     `/dashboard/broker/application/task/${taskId}`,
     params,
   );
 };
 
-export const _downloadBrokerFile = (params) => {
+export const _downloadBrokerFile = (params: { url: string }) => {
   return get('/usercenter/api/common/file/download', {
     params,
     responseType: 'blob',
   });
 };
 
-export const _previewDocument = (params) => {
+export const _previewDocument = (params: { type: string; taskId: string }) => {
   return post('/dashboard/broker/application/preview', params);
 };
 

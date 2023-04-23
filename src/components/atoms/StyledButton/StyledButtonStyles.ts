@@ -20,7 +20,7 @@ export const StyledButtonStyles: SxProps = {
     padding: '6px 12px',
     fontSize: 14,
   },
-  '&.MuiButton-outlinedInfo': {
+  '&.MuiButton-outlinedInfo, &.MuiButton-textInfo': {
     color: 'text.primary',
   },
 } as const;
