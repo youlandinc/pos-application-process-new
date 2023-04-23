@@ -19,7 +19,7 @@ import { SignUpSchema } from '@/constants';
 import { useBreakpoints } from '@/hooks';
 
 export const ForgotPassword: FC<ForgotPasswordProps> = ({
-  onlyForm = false,
+  isNestForm = false,
 }) => {
   const breakpoint = useBreakpoints();
 
@@ -93,7 +93,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
 
   return (
     <>
-      {onlyForm ? (
+      {isNestForm ? (
         <Box
           className="form_body"
           component={'form'}
