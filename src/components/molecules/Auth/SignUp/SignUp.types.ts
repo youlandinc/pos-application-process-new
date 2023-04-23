@@ -1,3 +1,3 @@
 export interface SignUpProps {
-  onlyForm?: boolean;
+  isNestForm?: boolean;
 }

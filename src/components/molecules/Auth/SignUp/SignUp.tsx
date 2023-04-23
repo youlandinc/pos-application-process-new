@@ -41,7 +41,7 @@ import {
 
 import SIGN_UP_SVG from '@/svg/auth/sign_up.svg';
 
-export const SignUp: FC<SignUpProps> = observer(({ onlyForm = false }) => {
+export const SignUp: FC<SignUpProps> = observer(({ isNestForm = false }) => {
   const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -178,7 +178,7 @@ export const SignUp: FC<SignUpProps> = observer(({ onlyForm = false }) => {
 
   return (
     <>
-      {onlyForm ? (
+      {isNestForm ? (
         <Box
           className="form_body"
           component={'form'}
