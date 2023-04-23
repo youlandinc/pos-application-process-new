@@ -1,9 +1,3 @@
-import { LoginProps } from '@/components/molecules/Auth/Login/Login.types';
-import { AUTO_HIDE_DURATION, LOGIN_APP_KEY, userpool } from '@/constants';
-import { _userSingIn } from '@/requests';
-import { DetectActiveService } from '@/services/DetectActive';
-import { LoginType, UserType } from '@/types';
-import { User } from '@/types/user';
 import { FC, FormEventHandler, useCallback, useMemo, useState } from 'react';
 import { Box, Icon, Typography } from '@mui/material';
 import Link from 'next/link';
@@ -13,8 +7,14 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { LoginStyles } from './index';
+import { LoginProps, LoginStyles } from './index';
 import { POSFlex } from '@/styles';
+import { AUTO_HIDE_DURATION, LOGIN_APP_KEY, userpool } from '@/constants';
+import { DetectActiveService } from '@/services/DetectActive';
+import { LoginType, UserType } from '@/types';
+import { User } from '@/types/user';
+import { _userSingIn } from '@/requests';
+
 import {
   StyledBoxWrap,
   StyledButton,
