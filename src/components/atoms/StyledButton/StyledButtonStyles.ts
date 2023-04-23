@@ -1,10 +1,10 @@
+import { POSFont } from '@/styles';
 import { SxProps } from '@mui/material';
 
 export const StyledButtonStyles: SxProps = {
+  ...POSFont(16, 600, 1.5),
   textTransform: 'none',
-  fontWeight: 600,
-  fontSize: 16,
-  padding: '14px 20px',
+  padding: '15px 20px',
   borderRadius: 2,
   boxShadow: 'none',
   '&:disabled': {
@@ -17,7 +17,7 @@ export const StyledButtonStyles: SxProps = {
     borderColor: 'background.broder_disabled',
   },
   '&.MuiButton-sizeSmall': {
-    padding: '6px 12px',
+    padding: '7px 12px',
     fontSize: 14,
   },
   '&.MuiButton-outlinedInfo, &.MuiButton-textInfo': {

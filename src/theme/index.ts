@@ -1,14 +1,17 @@
 import { createTheme } from '@mui/material/styles';
 
-declare module '@mui/material/styles/createPalette' {
+declare module '@mui/material/styles' {
   interface BreakpointOverrides {
     xs: true;
     sm: true;
     md: true;
     lg: true;
     xl: true;
+    xxl: true;
   }
+}
 
+declare module '@mui/material/styles/createPalette' {
   interface TypeText {
     white: string;
     primary: string;
@@ -46,6 +49,7 @@ export const theme = createTheme({
       md: 768,
       lg: 1024,
       xl: 1440,
+      xxl: 1920,
     },
   },
   palette: {

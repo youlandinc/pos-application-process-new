@@ -1,16 +1,67 @@
-import { FC } from 'react';
-import { Box } from '@mui/material';
+import { FC, useMemo } from 'react';
+import { Box, Icon } from '@mui/material';
 
-import { HeaderProps, HeaderStyles } from './index';
+import { HeaderProps, HeaderStyles, MyAccountButton } from '../index';
 import { POSFlex } from '@/styles';
-import { StyledHeaderLogo } from '@/components';
+import { StyledButton, StyledHeaderLogo } from '@/components';
 
-export const Header: FC<HeaderProps> = () => {
-  //const renderButton = useMemo(() => {
-  //  switch(){
-  //
-  //  }
-  //}, []);
+import BUTTON_ICON_VIEW_ALL_LOANS from '@/svg/button/button_icon_view_all_loans.svg';
+import BUTTON_ICON_ADD_NEW_LOAN from '@/svg/button/button_icon_add_new_loan.svg';
+
+export const Header: FC<HeaderProps> = ({ store, scene }) => {
+  const renderButton = useMemo(() => {
+    switch (scene) {
+      case 'application':
+        return (
+          <Box>
+            <StyledButton
+              className={'POS_mr_3'}
+              color={'info'}
+              variant={'text'}
+            >
+              Sign Up
+            </StyledButton>
+            <StyledButton color={'info'} variant={'text'}>
+              Log In
+            </StyledButton>
+          </Box>
+        );
+      case 'dashboard':
+        return (
+          <Box>
+            <StyledButton
+              className={'POS_mr_3'}
+              color={'info'}
+              variant={'outlined'}
+            >
+              <Icon
+                className={'POS_icon_left'}
+                component={BUTTON_ICON_VIEW_ALL_LOANS}
+              />
+              View All Loans
+            </StyledButton>
+            <MyAccountButton />
+          </Box>
+        );
+      case 'pipeline':
+        return (
+          <Box>
+            <StyledButton
+              className={'POS_mr_3'}
+              color={'info'}
+              variant={'outlined'}
+            >
+              <Icon
+                className={'POS_icon_left'}
+                component={BUTTON_ICON_ADD_NEW_LOAN}
+              />
+              Start New Loan
+            </StyledButton>
+            <MyAccountButton />
+          </Box>
+        );
+    }
+  }, [scene]);
 
   return (
     <Box
@@ -21,17 +72,21 @@ export const Header: FC<HeaderProps> = () => {
       <Box
         sx={{
           ...POSFlex('center', 'flex-start', 'row'),
-          border: '1px solid',
           height: 92,
           width: {
-            xl: 1440,
+            xxl: 1440,
+            xl: 1240,
             lg: 938,
             xs: '100%',
+          },
+          px: {
+            lg: 0,
+            xs: 'clamp(24px,6.4vw,80px)',
           },
         }}
       >
         <StyledHeaderLogo />
-        <Box sx={{ ml: 'auto', border: '1px solid' }}>234</Box>
+        <Box sx={{ ml: 'auto' }}>{renderButton}</Box>
       </Box>
     </Box>
   );

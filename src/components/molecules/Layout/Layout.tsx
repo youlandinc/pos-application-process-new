@@ -12,7 +12,7 @@ export const Layout: FC<LayoutProps> = observer(({ children, scene }) => {
 
   return (
     <Box sx={{ height: '100%' }}>
-      <Header store={store} scene={scene} />
+      <Header scene={scene} store={store} />
       <StyledBoxWrap>{children}</StyledBoxWrap>
     </Box>
   );

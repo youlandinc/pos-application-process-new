@@ -1,3 +1,3 @@
 export interface ForgotPasswordProps {
-  onlyForm?: boolean;
+  isNestForm?: boolean;
 }

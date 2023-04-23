@@ -7,7 +7,8 @@ export const StyledBoxWrapStyles = {
   inside: {
     minHeight: 'calc(100vh - 92px)',
     width: {
-      xl: 1440,
+      xxl: 1440,
+      xl: 1240,
       lg: 938,
       xs: '100%',
     },

@@ -198,9 +198,39 @@ ul {
 /*margin*/
 
 .POS_mr_1 {
-  margin-right: var(--POS--gap);
+  margin-right: var(--POS--gap) !important;
 }
 
 .POS_mr_2 {
-  margin-right: calc(2 * var(--POS--gap));
+  margin-right: calc(2 * var(--POS--gap)) !important;
+}
+
+.POS_mr_3 {
+  margin-right: calc(3 * var(--POS--gap)) !important;
+}
+
+.POS_ml_1 {
+  margin-left: var(--POS--gap) !important;
+}
+
+.POS_ml_2 {
+  margin-left: calc(2 * var(--POS--gap)) !important;
+}
+
+.POS_ml_3 {
+  margin-left: calc(3 * var(--POS--gap)) !important;
+}
+
+/* icon button*/
+
+.POS_icon_left {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.POS_icon_right {
+  width: 24px;
+  height: 24px;
+  margin-left: 8px;
 }
