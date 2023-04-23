@@ -14,6 +14,7 @@ import { DetectActiveService } from '@/services/DetectActive';
 import { LoginType, UserType } from '@/types';
 import { User } from '@/types/user';
 import { _userSingIn } from '@/requests';
+import { useCheckHasLoggedIn } from '@/hooks';
 
 import {
   StyledBoxWrap,

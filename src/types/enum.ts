@@ -218,6 +218,7 @@ export enum BizType {
 export enum LoginType {
   YLACCOUNT_LOGIN = 'YLACCOUNT_LOGIN',
   GOOGLE_LOGIN = 'GOOGLE_LOGIN',
+  DEFAULT = '',
 }
 
 export enum UserType {

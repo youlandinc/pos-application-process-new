@@ -54,6 +54,7 @@ export const RootModel = {
     types.union(
       types.literal(LoginType.YLACCOUNT_LOGIN),
       types.literal(LoginType.GOOGLE_LOGIN),
+      types.literal(LoginType.DEFAULT),
     ),
   ),
 
@@ -165,6 +166,8 @@ const initialState = {
   userSetting: {
     initialized: false,
     loading: false,
+    pipelineStatus: false,
+    pipelineStatusInitialized: false,
     setting: {
       lastSelectedProcessId: '',
     },

@@ -1,11 +1,16 @@
-import { Login } from '@/components/molecules';
-import { Box } from '@mui/material';
 import { FC } from 'react';
+import { Box } from '@mui/material';
+
+import { useCheckHasLoggedIn } from '@/hooks';
+
+import { Login } from '@/components';
 
 const LoginPage: FC = (): JSX.Element => {
+  useCheckHasLoggedIn();
+
   return (
     <Box>
-      <Login />
+      <Login to={'/pipeline'} />
     </Box>
   );
 };

@@ -2,6 +2,8 @@ export * from './Provider';
 
 export * from './Transitions';
 
+export * from './StyledLoading';
+
 export * from './StyledBoxWrap';
 
 export * from './StyledHeaderLogo';
