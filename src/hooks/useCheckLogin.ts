@@ -6,7 +6,7 @@ import { useCallback, useEffect } from 'react';
 import { UserType } from '@/types';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
-export const useCheckHasLoggedIn = (jumpPath = '/pipeline/application') => {
+export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
   const { session, persistDataLoaded, userType, loginType } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();

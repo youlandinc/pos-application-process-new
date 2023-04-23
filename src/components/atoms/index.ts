@@ -35,3 +35,5 @@ export * from './StyledPaymentCard';
 
 export * from './StyledDatePicker';
 export * from './StyledDateRange';
+
+export * from './StyledFormItem';
