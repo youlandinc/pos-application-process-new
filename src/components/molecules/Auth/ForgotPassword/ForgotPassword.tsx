@@ -13,11 +13,7 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { validate } from 'validate.js';
 
-import {
-  ForgotPasswordFormStyles,
-  ForgotPasswordProps,
-  ForgotPasswordStyles,
-} from './index';
+import { ForgotPasswordProps, ForgotPasswordStyles } from './index';
 import { POSFlex } from '@/styles';
 
 import {
@@ -184,7 +180,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
           className="form_body"
           component={'form'}
           onSubmit={onSubmitClick}
-          sx={ForgotPasswordFormStyles}
+          sx={ForgotPasswordStyles.form}
         >
           <StyledTextField
             label={'Email'}
@@ -279,7 +275,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
         </Box>
       ) : (
         <StyledBoxWrap sx={{ ...POSFlex('center', 'center', 'column') }}>
-          <Box sx={ForgotPasswordStyles}>
+          <Box sx={ForgotPasswordStyles.forgotPassword}>
             <Icon
               className="forgot_password_img"
               component={FORGOT_PASSWORD_SVG}

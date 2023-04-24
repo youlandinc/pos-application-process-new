@@ -16,7 +16,7 @@ import { validate } from 'validate.js';
 import { observer } from 'mobx-react-lite';
 
 import { useSwitch } from '@/hooks';
-import { SignUpFormStyles, SignUpProps, SignUpStyles } from './index';
+import { SignUpProps, SignUpStyles } from './index';
 import { POSFlex } from '@/styles';
 import {
   AUTO_HIDE_DURATION,
@@ -183,7 +183,7 @@ export const SignUp: FC<SignUpProps> = observer(({ isNestForm = false }) => {
           className="form_body"
           component={'form'}
           onSubmit={handledSubmit}
-          sx={SignUpFormStyles}
+          sx={SignUpStyles.from}
         >
           <StyledSelect
             disabled={loading}
@@ -276,7 +276,7 @@ export const SignUp: FC<SignUpProps> = observer(({ isNestForm = false }) => {
         <StyledBoxWrap
           sx={{ ...POSFlex('center', 'center', 'column'), minHeight: '100vh' }}
         >
-          <Box sx={SignUpStyles}>
+          <Box sx={SignUpStyles.singUp}>
             <Icon className="sign_up_img" component={SIGN_UP_SVG} />
 
             <Box className="sign_up_form">

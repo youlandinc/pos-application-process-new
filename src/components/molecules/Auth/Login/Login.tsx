@@ -7,7 +7,7 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { LoginFormStyles, LoginProps, LoginStyles } from './index';
+import { LoginProps, LoginStyles } from './index';
 import { POSFlex } from '@/styles';
 import { AUTO_HIDE_DURATION, LOGIN_APP_KEY, userpool } from '@/constants';
 import { DetectActiveService } from '@/services/DetectActive';
@@ -112,7 +112,7 @@ export const Login: FC<LoginProps> = observer(
             className="form_body"
             component={'form'}
             onSubmit={handledLogin}
-            sx={LoginFormStyles}
+            sx={LoginStyles.form}
           >
             <StyledTextField
               disabled={loading}
@@ -146,7 +146,7 @@ export const Login: FC<LoginProps> = observer(
               minHeight: '100vh',
             }}
           >
-            <Box sx={LoginStyles}>
+            <Box sx={LoginStyles.login}>
               <Icon className="sign_in_img" component={LOG_IN_SVG} />
 
               <Box className="sign_in_form">
