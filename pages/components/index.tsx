@@ -89,6 +89,11 @@ const Components = () => {
               OTP TextField
             </StyledButton>
           </Box>
+          <Box className={'component_item'}>
+            <StyledButton onClick={() => router.push('/components/snackbar')}>
+              Snackbar
+            </StyledButton>
+          </Box>
         </Box>
       </Box>
       <Box className={'component_wrap'}>

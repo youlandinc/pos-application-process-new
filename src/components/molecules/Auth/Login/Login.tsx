@@ -105,40 +105,46 @@ export const Login: FC<LoginProps> = observer(
       ],
     );
 
+    const FormBody = useMemo(() => {
+      return (
+        <Box
+          className="form_body"
+          component={'form'}
+          onSubmit={handledLogin}
+          sx={!isNestForm ? LoginStyles.form : {}}
+        >
+          <StyledTextField
+            disabled={loading}
+            label={'Email'}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={'Email'}
+            required
+            value={email}
+          />
+          <StyledTextFieldPassword
+            disabled={loading}
+            label={'Password'}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={'Password'}
+            required
+            value={password}
+          />
+          <StyledButton
+            color="primary"
+            disabled={isDisabled || loading}
+            type={'submit'}
+            variant="contained"
+          >
+            Continue
+          </StyledButton>
+        </Box>
+      );
+    }, [email, handledLogin, isDisabled, isNestForm, loading, password]);
+
     return (
       <>
         {isNestForm ? (
-          <Box
-            className="form_body"
-            component={'form'}
-            onSubmit={handledLogin}
-            sx={LoginStyles.form}
-          >
-            <StyledTextField
-              disabled={loading}
-              label={'Email'}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={'Email'}
-              required
-              value={email}
-            />
-            <StyledTextFieldPassword
-              disabled={loading}
-              label={'Password'}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder={'Password'}
-              required
-              value={password}
-            />
-            <StyledButton
-              color="primary"
-              disabled={isDisabled || loading}
-              type={'submit'}
-              variant="contained"
-            >
-              Continue
-            </StyledButton>
-          </Box>
+          FormBody
         ) : (
           <StyledBoxWrap
             sx={{
@@ -153,38 +159,7 @@ export const Login: FC<LoginProps> = observer(
                 <Typography className="form_title" variant="h3">
                   Welcome to YouLand!
                 </Typography>
-
-                <Box
-                  className="form_body"
-                  component={'form'}
-                  onSubmit={handledLogin}
-                >
-                  <StyledTextField
-                    disabled={loading}
-                    label={'Email'}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder={'Email'}
-                    required
-                    value={email}
-                  />
-                  <StyledTextFieldPassword
-                    disabled={loading}
-                    label={'Password'}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder={'Password'}
-                    required
-                    value={password}
-                  />
-                  <StyledButton
-                    color="primary"
-                    disabled={isDisabled || loading}
-                    type={'submit'}
-                    variant="contained"
-                  >
-                    Continue
-                  </StyledButton>
-                </Box>
-
+                {FormBody}
                 <Box className="form_foot">
                   <Typography variant="body2">
                     Don&apos;t have an account?
