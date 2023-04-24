@@ -6,7 +6,7 @@ import { ProviderPersistDataProps } from './index';
 
 export const ProviderPersistData: FC<ProviderPersistDataProps> = observer(
   (props) => {
-    //usePersisData(props.rootStoreKeys);
+    usePersisData(props.rootStoreKeys);
     return <>{props.children}</>;
   },
 );

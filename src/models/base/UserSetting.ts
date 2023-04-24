@@ -1,13 +1,19 @@
 import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { User } from '@/types/user';
 import { AxiosResponse } from 'axios';
-import { _fetchUserSetting, _updateUserSetting } from '@/requests';
+import {
+  _fetchPipelineStatus,
+  _fetchUserSetting,
+  _updateUserSetting,
+} from '@/requests';
 
 export const UserSetting = types
   .model({
     setting: types.frozen<User.UserSetting>(),
     loading: types.boolean,
     initialized: types.boolean,
+    pipelineStatus: types.boolean,
+    pipelineStatusInitialized: types.boolean,
   })
   .actions((self) => ({
     setUserSetting(setting: User.UserSetting) {
@@ -37,8 +43,21 @@ export const UserSetting = types
         console.log(e);
       }
     });
+    const fetchPipelineStatus = flow(function* () {
+      self.loading = true;
+      try {
+        const res = yield _fetchPipelineStatus();
+        self.pipelineStatus = res.data;
+        self.loading = false;
+        self.pipelineStatusInitialized = true;
+      } catch (e) {
+        self.loading = false;
+        self.pipelineStatusInitialized = false;
+      }
+    });
     return {
       fetchUserSetting,
+      fetchPipelineStatus,
     };
   });
 

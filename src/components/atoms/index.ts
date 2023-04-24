@@ -2,6 +2,8 @@ export * from './Provider';
 
 export * from './Transitions';
 
+export * from './StyledLoading';
+
 export * from './StyledBoxWrap';
 
 export * from './StyledHeaderLogo';
@@ -33,3 +35,5 @@ export * from './StyledPaymentCard';
 
 export * from './StyledDatePicker';
 export * from './StyledDateRange';
+
+export * from './StyledFormItem';

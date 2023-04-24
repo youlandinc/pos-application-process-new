@@ -1,5 +1,6 @@
 import { FC, useMemo } from 'react';
 import { Box, Icon } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import { POSHeaderProps, POSHeaderStyles } from './index';
 import { MyAccountButton } from '../MyAccountButton';
@@ -33,6 +34,7 @@ export const POSHeader: FC<POSHeaderProps> = ({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
+              onClick={() => router.push('/pipeline')}
               variant={'outlined'}
             >
               <Icon
@@ -50,6 +52,7 @@ export const POSHeader: FC<POSHeaderProps> = ({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
+              onClick={() => router.push('/application/bridge')}
               variant={'outlined'}
             >
               <Icon
@@ -70,22 +73,7 @@ export const POSHeader: FC<POSHeaderProps> = ({ store, scene }) => {
         ...POSFlex('center', 'center', 'row'),
       }}
     >
-      <Box
-        sx={{
-          ...POSFlex('center', 'flex-start', 'row'),
-          height: 92,
-          width: {
-            xxl: 1440,
-            xl: 1240,
-            lg: 938,
-            xs: '100%',
-          },
-          px: {
-            lg: 0,
-            xs: 'clamp(24px,6.4vw,80px)',
-          },
-        }}
-      >
+      <Box sx={POSHeaderStyles}>
         <StyledHeaderLogo />
         <Box sx={{ ml: 'auto' }}>{renderButton}</Box>
       </Box>
