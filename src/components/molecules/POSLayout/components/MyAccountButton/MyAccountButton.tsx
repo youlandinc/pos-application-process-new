@@ -1,5 +1,12 @@
-import { useRouter } from 'next/router';
-import { FC, MouseEvent, useCallback, useMemo, useRef, useState } from 'react';
+import {
+  FC,
+  MouseEvent,
+  SyntheticEvent,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   ClickAwayListener,
   Grow,
@@ -9,6 +16,7 @@ import {
   Paper,
   Popper,
 } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import { MyAccountButtonProps, MyAccountStyles } from './index';
 import { StyledButton } from '@/components';
@@ -31,15 +39,19 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
   const anchorRef = useRef<HTMLButtonElement>(null);
 
   const router = useRouter();
-  const handledClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+
+  const handledClose = useCallback((event: Event | SyntheticEvent) => {
+    if (
+      anchorRef.current &&
+      anchorRef.current.contains(event.target as HTMLElement)
+    ) {
       return;
     }
 
     setPopperVisible(false);
-  };
+  }, []);
 
-  const handledClick = () => setPopperVisible((open) => !open);
+  const handledClick = useCallback(() => setPopperVisible((open) => !open), []);
 
   const handledMenuItemClick = useCallback(
     async (e: MouseEvent<HTMLElement>, url: string) => {
@@ -52,7 +64,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
       await router.push(url);
       handledClose(e);
     },
-    [router, store],
+    [handledClose, router, store],
   );
 
   const renderMenuList = useMemo(() => {

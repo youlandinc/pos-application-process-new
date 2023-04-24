@@ -1,12 +1,17 @@
-import { usePersistFn, useStoreData, useSwitch } from '@/hooks';
-import { FC, useMemo, useState } from 'react';
-import { Box, Icon } from '@mui/material';
+import Link from 'next/link';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { Box, Icon, IconButton, Typography } from '@mui/material';
+import { Close } from '@mui/icons-material';
 import { useRouter } from 'next/router';
+
+import { observer } from 'mobx-react-lite';
 
 import { POSHeaderProps, POSHeaderStyles } from './index';
 import { MyAccountButton } from '../MyAccountButton';
 import { POSFlex } from '@/styles';
+import { usePersistFn, useStoreData, useSwitch } from '@/hooks';
 import {
+  ForgotPassword,
   Login,
   SignUp,
   StyledButton,
@@ -17,8 +22,11 @@ import {
 import BUTTON_ICON_VIEW_ALL_LOANS from '@/svg/button/button_icon_view_all_loans.svg';
 import BUTTON_ICON_ADD_NEW_LOAN from '@/svg/button/button_icon_add_new_loan.svg';
 
-export const POSHeader: FC<POSHeaderProps> = ({ store, scene }) => {
+export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const router = useRouter();
+
+  const { bindProcess } = useStoreData();
+  const { visible, open, close } = useSwitch(false);
 
   const {
     session,
@@ -28,11 +36,10 @@ export const POSHeader: FC<POSHeaderProps> = ({ store, scene }) => {
     userSetting: { pipelineStatus, pipelineStatusInitialized },
   } = store;
 
-  const { visible, open, close } = useSwitch(false);
-
-  const { bindProcess } = useStoreData();
-
-  const [authType, setAuthType] = useState<'login' | 'sign_up' | ''>('');
+  const [authType, setAuthType] = useState<
+    'login' | 'sign_up' | 'reset_password'
+  >('login');
+  const [target, setTarget] = useState<'_top' | '_blank'>('_top');
 
   const hasSession = useMemo<boolean>(() => !!session, [session]);
 
@@ -41,7 +48,11 @@ export const POSHeader: FC<POSHeaderProps> = ({ store, scene }) => {
     [router.query],
   );
 
-  const loginSuccess = usePersistFn(() => {
+  useEffect(() => {
+    setTarget('_blank');
+  }, []);
+
+  const handledLoginSuccess = usePersistFn(() => {
     close();
     if (initialized && bpmn.owners.length === 0) {
       bindProcess();
@@ -52,10 +63,27 @@ export const POSHeader: FC<POSHeaderProps> = ({ store, scene }) => {
     }
   });
 
+  const handledSignUpAndResetSuccess = usePersistFn(() => {
+    close();
+    setAuthType('login');
+  });
+
+  const handledClose = useCallback(
+    (
+      e: MouseEvent,
+      reason: 'backdropClick' | 'escapeKeyDown' | 'closeButtonClick',
+    ) => {
+      if (reason !== 'backdropClick') {
+        close();
+      }
+    },
+    [close],
+  );
+
   const renderButton = useMemo(() => {
     switch (scene) {
       case 'application':
-        return hasSession ? (
+        return !hasSession ? (
           <Box>
             <StyledButton
               className={'POS_mr_3'}
@@ -135,6 +163,135 @@ export const POSHeader: FC<POSHeaderProps> = ({ store, scene }) => {
     }
   }, [hasSession, open, router, scene, store]);
 
+  const renderDialog = useMemo(() => {
+    switch (authType) {
+      case 'login':
+        return {
+          header: (
+            <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
+              <Typography variant={'h6'}>Welcome to YouLand!</Typography>
+              <IconButton onClick={close} sx={{ color: 'text.primary' }}>
+                <Close />
+              </IconButton>
+            </Box>
+          ),
+          content: <Login isNestForm successCb={handledLoginSuccess} />,
+          footer: (
+            <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
+              <Typography variant={'body2'}>
+                Don&apos;t have an account?{' '}
+                <Typography
+                  className={'link_style'}
+                  component={'span'}
+                  onClick={() => setAuthType('sign_up')}
+                  variant={'body2'}
+                >
+                  Sign Up
+                </Typography>
+              </Typography>
+              <Typography
+                className={'link_style'}
+                color={'primary'}
+                onClick={() => setAuthType('reset_password')}
+                variant={'body2'}
+              >
+                Forgot Password?
+              </Typography>
+            </Box>
+          ),
+        };
+
+      case 'reset_password':
+        return {
+          header: (
+            <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
+              <Typography variant={'h6'}>Reset Password</Typography>
+              <IconButton onClick={close} sx={{ color: 'text.primary' }}>
+                <Close />
+              </IconButton>
+            </Box>
+          ),
+          content: (
+            <ForgotPassword
+              isNestForm
+              isRedirect={false}
+              successCb={handledSignUpAndResetSuccess}
+            />
+          ),
+          footer: (
+            <Typography
+              className={'link_style'}
+              color={'info'}
+              onClick={() => setAuthType('login')}
+              variant={'body2'}
+            >
+              Back to Log In
+            </Typography>
+          ),
+        };
+
+      case 'sign_up':
+        return {
+          header: (
+            <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
+              <Typography variant={'h6'}>Sign Up</Typography>
+              <IconButton onClick={close} sx={{ color: 'text.primary' }}>
+                <Close />
+              </IconButton>
+            </Box>
+          ),
+          content: (
+            <SignUp
+              isNestForm
+              isRedirect={false}
+              successCb={handledSignUpAndResetSuccess}
+            />
+          ),
+          footer: (
+            <Box className="POS_tc">
+              <Typography component={'div'} variant={'body2'}>
+                Already have an account?{' '}
+                <Typography
+                  className={'link_style'}
+                  component={'span'}
+                  onClick={() => setAuthType('login')}
+                  variant={'body2'}
+                >
+                  Log In
+                </Typography>
+              </Typography>
+              <Typography sx={{ color: 'info.main', mt: 3 }} variant={'body2'}>
+                By signing up, you agree to our{' '}
+                <Link
+                  className="link_style"
+                  href={'https://www.youland.com/legal/terms/'}
+                  target={target}
+                >
+                  Term of Use{' '}
+                </Link>
+                and to receive YouLand emails & updates and acknowledge that you
+                read our{' '}
+                <Link
+                  className="link_style"
+                  href={'https://www.youland.com/legal/privacy/'}
+                  target={target}
+                >
+                  Privacy Policy
+                </Link>
+                .
+              </Typography>
+            </Box>
+          ),
+        };
+    }
+  }, [
+    authType,
+    close,
+    handledLoginSuccess,
+    handledSignUpAndResetSuccess,
+    target,
+  ]);
+
   return (
     <Box
       sx={{
@@ -146,16 +303,13 @@ export const POSHeader: FC<POSHeaderProps> = ({ store, scene }) => {
         <Box sx={{ ml: 'auto' }}>{renderButton}</Box>
       </Box>
       <StyledDialog
-        content={
-          authType === 'sign_up' ? (
-            <SignUp isNestForm />
-          ) : (
-            <Login isNestForm successCb={loginSuccess} />
-          )
-        }
-        onClose={close}
+        content={renderDialog.content}
+        disableEscapeKeyDown
+        footer={renderDialog.footer}
+        header={renderDialog.header}
+        onClose={handledClose}
         open={visible}
       />
     </Box>
   );
-};
+});

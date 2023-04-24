@@ -156,6 +156,7 @@ ul {
 
 .link_style {
   color: #1134e3;
+  cursor: pointer;
 }
 
 .POS_tl {
@@ -170,16 +171,21 @@ ul {
   text-align: right;
 }
 
-.POS_flex {
-  display: flex;
-}
-
 .POS_inline_flex {
   display: inline-flex;
 }
 
 .POS_fullwidth {
   width: 100%;
+}
+
+/* flex */
+.POS_flex {
+  display: flex;
+}
+
+.POS_fd_row {
+  flex-direction: row;
 }
 
 .POS_al_c {
@@ -190,8 +196,7 @@ ul {
   justify-content: center;
 }
 
-.POS_f_jc_c {
-  display: flex;
+.POS_jc_sb {
   justify-content: space-between;
 }
 

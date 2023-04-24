@@ -57,7 +57,7 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
   }, [check, persistDataLoaded]);
 };
 
-export const useCheckInfoIsComplete = (jumpPath = '/my_application/task') => {
+export const useCheckInfoIsComplete = (jumpPath = '/pipeline') => {
   const {
     session,
     persistDataLoaded,
@@ -75,7 +75,7 @@ export const useCheckInfoIsComplete = (jumpPath = '/my_application/task') => {
     if (
       !persistDataLoaded ||
       (session && userType && loginType && pipelineStatus) ||
-      router.pathname.includes('my_application/task') ||
+      router.pathname.includes('pipeline') ||
       router.pathname.includes('change_email') ||
       router.pathname.includes('change_password')
     ) {

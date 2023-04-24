@@ -157,6 +157,7 @@ export const SignUp: FC<SignUpProps> = observer(
         email,
         bizType: BizType.REGISTER,
       };
+      setLoading(true);
       try {
         await _userVerifyCode(data);
         successCb && successCb();
@@ -169,6 +170,8 @@ export const SignUp: FC<SignUpProps> = observer(
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
         });
+      } finally {
+        setLoading(false);
       }
     }, [close, email, enqueueSnackbar, isRedirect, otp, router, successCb]);
 

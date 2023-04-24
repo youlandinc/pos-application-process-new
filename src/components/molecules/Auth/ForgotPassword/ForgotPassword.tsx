@@ -44,6 +44,8 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
+  console.log(breakpoint);
+
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [password, setPassword] = useState('');
