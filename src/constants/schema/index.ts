@@ -4,3 +4,4 @@ export * from './creditScore';
 export * from './realtor';
 
 export * from './sign_up';
+export * from './forgot_password';
