@@ -108,41 +108,41 @@ const useGenerateComponent = () => {
           case BridgePurchaseState.starting:
             return (
               <DynamicStarting
-                updateState={updateState}
                 changeTaskState={changeTaskState}
                 completeTaskState={completeTaskState}
                 nextStep={next}
                 prevStep={back}
+                updateState={updateState}
               />
             );
           case BridgePurchaseState.auth:
             return (
               <DynamicAuth
-                updateState={updateState}
                 changeTaskState={changeTaskState}
                 completeTaskState={completeTaskState}
                 nextStep={next}
                 prevStep={back}
+                updateState={updateState}
               />
             );
           case BridgePurchaseState.creditScore:
             return (
               <DynamicCreditScore
-                updateState={updateState}
                 changeTaskState={changeTaskState}
                 completeTaskState={completeTaskState}
                 nextStep={next}
                 prevStep={back}
+                updateState={updateState}
               />
             );
           case BridgePurchaseState.whereKnowUs:
             return (
               <DynamicWhereKnow
-                updateState={updateState}
                 changeTaskState={changeTaskState}
                 completeTaskState={completeTaskState}
                 nextStep={next}
                 prevStep={back}
+                updateState={updateState}
               />
             );
           case BridgePurchaseState.estimateRate:

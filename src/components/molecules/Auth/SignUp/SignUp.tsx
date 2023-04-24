@@ -147,7 +147,7 @@ export const SignUp: FC<SignUpProps> = observer(({ isNestForm = false }) => {
     } finally {
       setLoading(false);
     }
-  }, [email, loading]);
+  }, [email, enqueueSnackbar, loading]);
 
   const handledVerifyOtp = useCallback(async () => {
     const data = {
@@ -412,77 +412,79 @@ export const SignUp: FC<SignUpProps> = observer(({ isNestForm = false }) => {
                 </Typography>
               </Box>
             </Box>
-
-            <StyledDialog
-              content={
-                <Box>
-                  <Typography
-                    className={'POS_tl POS_fullwidth'}
-                    color={'text.secondary'}
-                    component={'div'}
-                    variant={'body2'}
-                  >
-                    An email with a verification code has been sent to{' '}
-                    <Typography component={'span'} variant={'subtitle2'}>
-                      {email}
-                    </Typography>
-                  </Typography>
-                  <Box className={'POS_flex POS_jc_c POS_al_c'} mt={3}>
-                    <StyledTextFieldOtp onChange={(v) => setOtp(v)} />
-                  </Box>
-                  <Typography
-                    className={'POS_tc POS_fullwidth'}
-                    color={'text.secondary'}
-                    component={'div'}
-                    mt={3}
-                    variant={'body2'}
-                  >
-                    Didn&apos;t verification code?{' '}
-                    <Typography
-                      color={'text.primary'}
-                      component={'span'}
-                      onClick={handledResendOtp}
-                      variant={'body2'}
-                    >
-                      Request again
-                    </Typography>
-                  </Typography>
-                </Box>
-              }
-              footer={
-                <>
-                  <StyledButton
-                    disabled={loading}
-                    onClick={close}
-                    size={'small'}
-                    sx={{ mr: 1 }}
-                    variant={'outlined'}
-                  >
-                    Cancel
-                  </StyledButton>
-                  <StyledButton
-                    color={'primary'}
-                    disabled={loading}
-                    onClick={handledVerifyOtp}
-                    size={'small'}
-                  >
-                    Confirm
-                  </StyledButton>
-                </>
-              }
-              header={
-                <>
-                  <Typography variant={'h6'}>
-                    Thank you for joining us!
-                  </Typography>
-                </>
-              }
-              onClose={close}
-              open={visible}
-            />
           </Box>
         </StyledBoxWrap>
       )}
+      <StyledDialog
+        content={
+          <Box>
+            <Typography
+              className={'POS_tl POS_fullwidth'}
+              color={'text.secondary'}
+              component={'div'}
+              variant={'body2'}
+            >
+              An email with a verification code has been sent to{' '}
+              <Typography component={'span'} variant={'subtitle2'}>
+                {email}
+              </Typography>
+            </Typography>
+            <Box className={'POS_flex POS_jc_c POS_al_c'} mt={3}>
+              <StyledTextFieldOtp onChange={(v) => setOtp(v)} />
+            </Box>
+            <Typography
+              className={'POS_tc POS_fullwidth'}
+              color={'text.secondary'}
+              component={'div'}
+              mt={3}
+              variant={'body2'}
+            >
+              Didn&apos;t verification code?{' '}
+              <Typography
+                color={'text.primary'}
+                component={'span'}
+                onClick={handledResendOtp}
+                variant={'body2'}
+              >
+                Request again
+              </Typography>
+            </Typography>
+          </Box>
+        }
+        disableEscapeKeyDown
+        footer={
+          <>
+            <StyledButton
+              disabled={loading}
+              onClick={close}
+              size={'small'}
+              sx={{ mr: 1 }}
+              variant={'outlined'}
+            >
+              Cancel
+            </StyledButton>
+            <StyledButton
+              color={'primary'}
+              disabled={loading}
+              onClick={handledVerifyOtp}
+              size={'small'}
+            >
+              Confirm
+            </StyledButton>
+          </>
+        }
+        header={
+          <>
+            <Typography variant={'h6'}>Thank you for joining us!</Typography>
+          </>
+        }
+        onClose={(e, reason) => {
+          if (reason !== 'backdropClick') {
+            close();
+          }
+        }}
+        open={visible}
+      />
     </>
   );
 });

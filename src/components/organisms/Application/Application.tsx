@@ -255,9 +255,9 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
             <Box className={classes.selectionWrap}>
               <Box className={classes.firstPageSelection}>
                 <Box
-                  position="relative"
-                  overflow={'hidden'}
                   onClick={() => setApplicationType('purchase')}
+                  overflow={'hidden'}
+                  position="relative"
                 >
                   <Box
                     className={classes.btnText}
@@ -267,29 +267,29 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
                   </Box>
                   <Box className={classes.applicationBtn}>
                     <Image
-                      width={400}
-                      height={325}
                       draggable={false}
+                      height={325}
                       src={
                         applicationType === 'purchase'
                           ? activeBtnImg.src
                           : defaultBtnImg.src
                       }
+                      width={400}
                     />
                   </Box>
                 </Box>
 
                 <Box
-                  margin={'72px 36px 0 36px'}
                   color={'rgba(0,0,0,.6)'}
                   fontSize={36}
                   fontWeight={700}
+                  margin={'72px 36px 0 36px'}
                 >
                   Or
                 </Box>
                 <Box
-                  position="relative"
                   onClick={() => setApplicationType('refinance')}
+                  position="relative"
                 >
                   <Box
                     className={classes.btnText}
@@ -299,24 +299,24 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
                   </Box>
                   <Box className={classes.applicationBtn}>
                     <Image
-                      width={400}
-                      height={325}
                       draggable={false}
+                      height={325}
                       src={
                         applicationType === 'refinance'
                           ? activeBtnImg.src
                           : defaultBtnImg.src
                       }
+                      width={400}
                     />
                   </Box>
                 </Box>
               </Box>
               <Box className={classes.firstPageActionWrap}>
                 <StyledButton
-                  loading={initState.loading}
-                  onClick={handleInitForm}
                   classes={nextBtnClasses}
                   disabled={!applicationType}
+                  loading={initState.loading}
+                  onClick={handleInitForm}
                 >
                   Next
                 </StyledButton>
