@@ -1,18 +1,19 @@
 import { useEffect, useMemo } from 'react';
+import { CheckCircle, Error, Warning } from '@mui/icons-material';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { Router } from 'next/router';
 import Script from 'next/script';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import { ThemeProvider } from '@mui/material';
+import { styled, ThemeProvider } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import en from 'date-fns/locale/en-US';
 
 import NProgress from 'nprogress';
-import { SnackbarProvider } from 'notistack';
+import { MaterialDesignContent, SnackbarProvider } from 'notistack';
 
 import 'normalize.css';
 import 'reset.css';
@@ -46,12 +47,73 @@ export default function MyApp(props: MyAppProps) {
     };
   }, []);
 
+  const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
+    '&.notistack-MuiContent-success': {
+      color: theme.palette.success.main,
+    },
+    '&.notistack-MuiContent-error': {
+      color: theme.palette.error.main,
+    },
+    '&.notistack-MuiContent-info': {
+      color: theme.palette.text.primary,
+    },
+    '&.notistack-MuiContent-default': {
+      backgroundColor: '#fff',
+      color: theme.palette.text.primary,
+    },
+    '&.notistack-MuiContent': {
+      backgroundColor: '#fff',
+      '&::before': {
+        position: 'absolute',
+        content: '" "',
+        padding: 8,
+        width: 40,
+        height: 40,
+        left: 12,
+        borderRadius: 12,
+      },
+    },
+    '&.notistack-MuiContent-warning': {
+      color: theme.palette.warning.main,
+    },
+  }));
+
   const renderComponent = useMemo(
     () => (
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <LocalizationProvider apterLocale={en} dateAdapter={AdapterDateFns}>
-          <SnackbarProvider>
+          <SnackbarProvider
+            Components={{
+              success: StyledMaterialDesignContent,
+              error: StyledMaterialDesignContent,
+              default: StyledMaterialDesignContent,
+              info: StyledMaterialDesignContent,
+              warning: StyledMaterialDesignContent,
+            }}
+            // iconVariant={{
+            //   success: (
+            //     <span>
+            //       <CheckCircle />
+            //     </span>
+            //   ),
+            //   error: (
+            //     <span>
+            //       <Error />
+            //     </span>
+            //   ),
+            //   warning: (
+            //     <span>
+            //       <Warning />
+            //     </span>
+            //   ),
+            //   info: (
+            //     <span>
+            //       <Error />
+            //     </span>
+            //   ),
+            // }}
+          >
             <Component {...pageProps} />
           </SnackbarProvider>
         </LocalizationProvider>

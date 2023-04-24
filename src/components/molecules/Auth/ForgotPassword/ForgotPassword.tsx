@@ -37,6 +37,8 @@ import { _userResetPassword, _userSendCode } from '@/requests';
 
 export const ForgotPassword: FC<ForgotPasswordProps> = ({
   isNestForm = false,
+  successCb,
+  isRedirect = true,
 }) => {
   const breakpoint = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
@@ -135,7 +137,10 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
           email,
         };
         await _userResetPassword(data);
-        await router.push('./login');
+        successCb && successCb();
+        if (isRedirect) {
+          await router.push('./login');
+        }
       } catch (error) {
         enqueueSnackbar(error as string, {
           variant: 'error',
@@ -146,10 +151,12 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
     [
       verificationCode,
       email,
-      enqueueSnackbar,
       password,
       confirmedPassword,
+      successCb,
+      isRedirect,
       router,
+      enqueueSnackbar,
     ],
   );
 
@@ -173,106 +180,125 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
     return !email || !password || !confirmedPassword || !verificationCode;
   }, [confirmedPassword, email, password, passwordError, verificationCode]);
 
-  return (
-    <>
-      {isNestForm ? (
-        <Box
-          className="form_body"
-          component={'form'}
-          onSubmit={onSubmitClick}
-          sx={ForgotPasswordStyles.form}
-        >
+  const FormBody = useMemo(() => {
+    return (
+      <Box
+        className="form_body"
+        component={'form'}
+        onSubmit={onSubmitClick}
+        sx={!isNestForm ? ForgotPasswordStyles.form : {}}
+      >
+        <StyledTextField
+          label={'Email'}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder={'Email'}
+          required
+          validate={formError?.email}
+          value={email}
+        />
+        <Box className="POS_f_jc_c">
           <StyledTextField
-            label={'Email'}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={'Email'}
+            label={'Verification Code'}
+            onChange={(e) => setVerificationCode(e.target.value)}
+            placeholder={'Verification Code'}
             required
-            validate={formError?.email}
-            value={email}
-          />
-          <Box className="POS_f_jc_c">
-            <StyledTextField
-              label={'Verification Code'}
-              onChange={(e) => setVerificationCode(e.target.value)}
-              placeholder={'Verification Code'}
-              required
-              value={verificationCode}
-            />
-            <StyledButton
-              color="primary"
-              disabled={seconds < 60}
-              onClick={onSendCodeClick}
-              sx={{ ml: 1.5 }}
-              variant="contained"
-            >
-              {sendButtonText}
-            </StyledButton>
-          </Box>
-
-          <Box>
-            <StyledTextFieldPassword
-              error={
-                password
-                  ? Object.values(passwordError).filter((item) => !item)
-                      .length > 0
-                  : false
-              }
-              label={'Password'}
-              onChange={handledPasswordChange}
-              placeholder={'Password'}
-              required
-              value={password}
-            />
-            <Transitions>
-              {password && (
-                <Box className={'password_error_list'} component={'ul'}>
-                  <Box
-                    className={!passwordError.lengthError ? 'error_active' : ''}
-                    component={'li'}
-                  >
-                    8 characters minimum
-                  </Box>
-                  <Box
-                    className={
-                      !passwordError.noSpaceError ? 'error_active' : ''
-                    }
-                    component={'li'}
-                  >
-                    Cannot contain spaces
-                  </Box>
-                  <Box
-                    className={!passwordError.letterError ? 'error_active' : ''}
-                    component={'li'}
-                  >
-                    At least one letter
-                  </Box>
-                  <Box
-                    className={!passwordError.numberError ? 'error_active' : ''}
-                    component={'li'}
-                  >
-                    At least one number
-                  </Box>
-                </Box>
-              )}
-            </Transitions>
-          </Box>
-          <StyledTextFieldPassword
-            label={'Confirmed Password'}
-            onChange={(e) => setConfirmedPassword(e.target.value)}
-            placeholder={'Confirmed Password'}
-            required
-            validate={formError?.confirmedPassword}
-            value={confirmedPassword}
+            value={verificationCode}
           />
           <StyledButton
             color="primary"
-            disabled={isDisabled}
-            type={'submit'}
+            disabled={seconds < 60}
+            onClick={onSendCodeClick}
+            sx={{ ml: 1.5 }}
             variant="contained"
           >
-            Set Password
+            {sendButtonText}
           </StyledButton>
         </Box>
+
+        <Box>
+          <StyledTextFieldPassword
+            error={
+              password
+                ? Object.values(passwordError).filter((item) => !item).length >
+                  0
+                : false
+            }
+            label={'Password'}
+            onChange={handledPasswordChange}
+            placeholder={'Password'}
+            required
+            value={password}
+          />
+          <Transitions>
+            {password && (
+              <Box className={'password_error_list'} component={'ul'}>
+                <Box
+                  className={!passwordError.lengthError ? 'error_active' : ''}
+                  component={'li'}
+                >
+                  8 characters minimum
+                </Box>
+                <Box
+                  className={!passwordError.noSpaceError ? 'error_active' : ''}
+                  component={'li'}
+                >
+                  Cannot contain spaces
+                </Box>
+                <Box
+                  className={!passwordError.letterError ? 'error_active' : ''}
+                  component={'li'}
+                >
+                  At least one letter
+                </Box>
+                <Box
+                  className={!passwordError.numberError ? 'error_active' : ''}
+                  component={'li'}
+                >
+                  At least one number
+                </Box>
+              </Box>
+            )}
+          </Transitions>
+        </Box>
+        <StyledTextFieldPassword
+          label={'Confirmed Password'}
+          onChange={(e) => setConfirmedPassword(e.target.value)}
+          placeholder={'Confirmed Password'}
+          required
+          validate={formError?.confirmedPassword}
+          value={confirmedPassword}
+        />
+        <StyledButton
+          color="primary"
+          disabled={isDisabled}
+          type={'submit'}
+          variant="contained"
+        >
+          Set Password
+        </StyledButton>
+      </Box>
+    );
+  }, [
+    confirmedPassword,
+    email,
+    formError?.confirmedPassword,
+    formError?.email,
+    handledPasswordChange,
+    isDisabled,
+    isNestForm,
+    onSendCodeClick,
+    onSubmitClick,
+    password,
+    passwordError,
+    seconds,
+    sendButtonText,
+    verificationCode,
+  ]);
+
+  return (
+    <>
+      {isNestForm ? (
+        FormBody
       ) : (
         <StyledBoxWrap sx={{ ...POSFlex('center', 'center', 'column') }}>
           <Box sx={ForgotPasswordStyles.forgotPassword}>
@@ -286,109 +312,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
                 Reset Password
               </Typography>
 
-              <Box
-                className="form_body"
-                component={'form'}
-                onSubmit={onSubmitClick}
-              >
-                <StyledTextField
-                  label={'Email'}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={'Email'}
-                  required
-                  validate={formError?.email}
-                  value={email}
-                />
-                <Box className="POS_f_jc_c">
-                  <StyledTextField
-                    label={'Verification Code'}
-                    onChange={(e) => setVerificationCode(e.target.value)}
-                    placeholder={'Verification Code'}
-                    required
-                    validate={formError?.verificationCode}
-                    value={verificationCode}
-                  />
-                  <StyledButton
-                    color="primary"
-                    disabled={seconds < 60}
-                    onClick={onSendCodeClick}
-                    sx={{ ml: 1.5 }}
-                    variant="contained"
-                  >
-                    {sendButtonText}
-                  </StyledButton>
-                </Box>
-
-                <Box>
-                  <StyledTextFieldPassword
-                    error={
-                      password
-                        ? Object.values(passwordError).filter((item) => !item)
-                            .length > 0
-                        : false
-                    }
-                    label={'Password'}
-                    onChange={handledPasswordChange}
-                    placeholder={'Password'}
-                    required
-                    value={password}
-                  />
-                  <Transitions>
-                    {password && (
-                      <Box className={'password_error_list'} component={'ul'}>
-                        <Box
-                          className={
-                            !passwordError.lengthError ? 'error_active' : ''
-                          }
-                          component={'li'}
-                        >
-                          8 characters minimum
-                        </Box>
-                        <Box
-                          className={
-                            !passwordError.noSpaceError ? 'error_active' : ''
-                          }
-                          component={'li'}
-                        >
-                          Cannot contain spaces
-                        </Box>
-                        <Box
-                          className={
-                            !passwordError.letterError ? 'error_active' : ''
-                          }
-                          component={'li'}
-                        >
-                          At least one letter
-                        </Box>
-                        <Box
-                          className={
-                            !passwordError.numberError ? 'error_active' : ''
-                          }
-                          component={'li'}
-                        >
-                          At least one number
-                        </Box>
-                      </Box>
-                    )}
-                  </Transitions>
-                </Box>
-                <StyledTextFieldPassword
-                  label={'Confirmed Password'}
-                  onChange={(e) => setConfirmedPassword(e.target.value)}
-                  placeholder={'Confirmed Password'}
-                  required
-                  validate={formError?.confirmedPassword}
-                  value={confirmedPassword}
-                />
-                <StyledButton
-                  color="primary"
-                  disabled={isDisabled}
-                  type={'submit'}
-                  variant="contained"
-                >
-                  Set Password
-                </StyledButton>
-              </Box>
+              {FormBody}
 
               <Box className="form_foot">
                 <StyledButton color="info" variant="text">
