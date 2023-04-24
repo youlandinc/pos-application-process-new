@@ -7,7 +7,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Box, BoxProps, Icon, Typography } from '@mui/material';
+import { Box, Icon, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
