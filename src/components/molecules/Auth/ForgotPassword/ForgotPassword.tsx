@@ -1,9 +1,23 @@
-import { ChangeEventHandler, FC, useCallback, useMemo, useState } from 'react';
-import Link from 'next/link';
-
+import {
+  ChangeEventHandler,
+  FC,
+  FormEventHandler,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import { Box, Icon, Typography } from '@mui/material';
 
-import { ForgotPasswordProps, ForgotPasswordStyles } from './index';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import { validate } from 'validate.js';
+
+import {
+  ForgotPasswordFormStyles,
+  ForgotPasswordProps,
+  ForgotPasswordStyles,
+} from './index';
 import { POSFlex } from '@/styles';
 
 import {
@@ -15,13 +29,22 @@ import {
 } from '@/components/atoms';
 
 import FORGOT_PASSWORD_SVG from '@/svg/auth/forgot_password.svg';
-import { SignUpSchema } from '@/constants';
+import {
+  AUTO_HIDE_DURATION,
+  ForgotPasswordSchema,
+  LOGIN_APP_KEY,
+  userpool,
+} from '@/constants';
 import { useBreakpoints } from '@/hooks';
+import { BizType } from '@/types';
+import { _userResetPassword, _userSendCode } from '@/requests';
 
 export const ForgotPassword: FC<ForgotPasswordProps> = ({
   isNestForm = false,
 }) => {
   const breakpoint = useBreakpoints();
+  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
@@ -30,7 +53,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
 
   const [seconds, setSeconds] = useState(60);
   const [formError, setFormError] = useState<
-    Partial<Record<keyof typeof SignUpSchema, string[]>> | undefined
+    Partial<Record<keyof typeof ForgotPasswordSchema, string[]>> | undefined
   >();
   const [passwordError, setPasswordError] = useState<{
     lengthError: boolean;
@@ -59,17 +82,80 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
       });
     }, []);
 
-  const sendVerificationCode = () => {
-    let num = 60;
-    const timer = setInterval(() => {
-      num--;
-      setSeconds(num);
-      if (num < 1) {
-        setSeconds(60);
-        clearInterval(timer);
+  const onSendCodeClick = useCallback(async () => {
+    const errors = validate({ email }, ForgotPasswordSchema);
+    setFormError(errors?.email && { email: errors?.email });
+    if (errors?.email) {
+      return;
+    }
+
+    try {
+      const data = {
+        email,
+        bizType: BizType.RESET_PASS,
+        appkey: LOGIN_APP_KEY,
+      };
+      await _userSendCode(data);
+      let num = 60;
+      const timer = setInterval(() => {
+        num--;
+        setSeconds(num);
+        if (num < 1) {
+          setSeconds(60);
+          clearInterval(timer);
+        }
+      }, 1000);
+    } catch (error) {
+      enqueueSnackbar(error as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    }
+  }, [email, enqueueSnackbar]);
+
+  const onSubmitClick = useCallback<FormEventHandler>(
+    async (e) => {
+      e.preventDefault();
+      const errors = validate(
+        {
+          verificationCode,
+          email,
+          password,
+          confirmedPassword,
+        },
+        ForgotPasswordSchema,
+      );
+      setFormError(errors);
+
+      if (errors) {
+        return;
       }
-    }, 1000);
-  };
+
+      try {
+        const data = {
+          newPass: userpool.encode(password),
+          appkey: LOGIN_APP_KEY,
+          verifyCode: verificationCode,
+          email,
+        };
+        await _userResetPassword(data);
+        await router.push('./login');
+      } catch (error) {
+        enqueueSnackbar(error as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
+      }
+    },
+    [
+      verificationCode,
+      email,
+      enqueueSnackbar,
+      password,
+      confirmedPassword,
+      router,
+    ],
+  );
 
   const sendButtonText = useMemo(() => {
     if (seconds < 60) {
@@ -97,14 +183,15 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
         <Box
           className="form_body"
           component={'form'}
-          onSubmit={() => {}}
-          sx={ForgotPasswordStyles}
+          onSubmit={onSubmitClick}
+          sx={ForgotPasswordFormStyles}
         >
           <StyledTextField
             label={'Email'}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={'Email'}
             required
+            validate={formError?.email}
             value={email}
           />
           <Box className="POS_f_jc_c">
@@ -118,7 +205,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
             <StyledButton
               color="primary"
               disabled={seconds < 60}
-              onClick={sendVerificationCode}
+              onClick={onSendCodeClick}
               sx={{ ml: 1.5 }}
               variant="contained"
             >
@@ -203,12 +290,17 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
                 Reset Password
               </Typography>
 
-              <Box className="form_body" component={'form'} onSubmit={() => {}}>
+              <Box
+                className="form_body"
+                component={'form'}
+                onSubmit={onSubmitClick}
+              >
                 <StyledTextField
                   label={'Email'}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={'Email'}
                   required
+                  validate={formError?.email}
                   value={email}
                 />
                 <Box className="POS_f_jc_c">
@@ -217,12 +309,13 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
                     onChange={(e) => setVerificationCode(e.target.value)}
                     placeholder={'Verification Code'}
                     required
+                    validate={formError?.verificationCode}
                     value={verificationCode}
                   />
                   <StyledButton
                     color="primary"
                     disabled={seconds < 60}
-                    onClick={sendVerificationCode}
+                    onClick={onSendCodeClick}
                     sx={{ ml: 1.5 }}
                     variant="contained"
                   >

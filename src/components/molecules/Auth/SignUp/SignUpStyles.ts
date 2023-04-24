@@ -50,3 +50,34 @@ export const SignUpStyles = {
     },
   },
 };
+
+export const SignUpFormStyles = {
+  '&.form_body': {
+    mt: 3,
+    '&>div:nth-of-type(even)': {
+      my: 3,
+    },
+    '& button': {
+      width: '100%',
+    },
+  },
+  '& .form_title': {
+    textAlign: 'center',
+    fontSize: 'clamp(24px,2.5vw,32px)',
+  },
+  '& .form_foot': {
+    mt: 3,
+    textAlign: 'center',
+  },
+  '& .password_error_list': {
+    ...POSFont(12, 600, 1.5, 'success.main'),
+    listStyle: 'disc',
+    listStylePosition: 'inside',
+    p: 0,
+    mt: 0.25,
+    '& .error_active': {
+      color: 'error.main',
+      transition: 'color .3s',
+    },
+  },
+} as const;

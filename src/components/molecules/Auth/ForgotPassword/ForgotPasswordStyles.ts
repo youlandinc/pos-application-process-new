@@ -1,4 +1,4 @@
-import { POSFlex } from '@/styles';
+import { POSFlex, POSFont } from '@/styles';
 
 export const ForgotPasswordStyles = {
   ...POSFlex('center', 'space-between', 'row'),
@@ -12,7 +12,7 @@ export const ForgotPasswordStyles = {
   },
   '& .forgot_password_form': {
     flex: 1,
-    textAlign: 'center',
+    // textAlign: 'center',
     py: 6.5,
     borderRadius: 2,
     width: { lg: '700px', xs: '100%' },
@@ -41,4 +41,46 @@ export const ForgotPasswordStyles = {
       },
     },
   },
+  '& .password_error_list': {
+    ...POSFont(12, 600, 1.5, 'success.main'),
+    listStyle: 'disc',
+    listStylePosition: 'inside',
+    p: 0,
+    mt: 0.25,
+    '& .error_active': {
+      color: 'error.main',
+      transition: 'color .3s',
+    },
+  },
 };
+
+export const ForgotPasswordFormStyles = {
+  '&.form_body': {
+    mt: 3,
+    '&>div:nth-of-type(even)': {
+      my: 3,
+    },
+    '& button': {
+      width: '100%',
+    },
+  },
+  '& .form_title': {
+    textAlign: 'center',
+    fontSize: 'clamp(24px,2.5vw,32px)',
+  },
+  '& .form_foot': {
+    mt: 3,
+    textAlign: 'center',
+  },
+  '& .password_error_list': {
+    ...POSFont(12, 600, 1.5, 'success.main'),
+    listStyle: 'disc',
+    listStylePosition: 'inside',
+    p: 0,
+    mt: 0.25,
+    '& .error_active': {
+      color: 'error.main',
+      transition: 'color .3s',
+    },
+  },
+} as const;
