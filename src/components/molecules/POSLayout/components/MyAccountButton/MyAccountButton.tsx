@@ -1,6 +1,14 @@
 import { useRouter } from 'next/router';
-import { FC, MouseEvent, useCallback, useMemo, useState } from 'react';
-import { Fade, Icon, Menu, MenuItem } from '@mui/material';
+import { FC, MouseEvent, useCallback, useMemo, useRef, useState } from 'react';
+import {
+  ClickAwayListener,
+  Grow,
+  Icon,
+  MenuItem,
+  MenuList,
+  Paper,
+  Popper,
+} from '@mui/material';
 
 import { MyAccountButtonProps, MyAccountStyles } from './index';
 import { StyledButton } from '@/components';
@@ -18,27 +26,31 @@ const MENU_LIST = [
 ];
 
 export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const [popperVisible, setPopperVisible] = useState(false);
+
+  const anchorRef = useRef<HTMLButtonElement>(null);
 
   const router = useRouter();
-  const handledClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handledClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setPopperVisible(false);
   };
-  const handledClose = () => {
-    setAnchorEl(null);
-  };
+
+  const handledClick = () => setPopperVisible((open) => !open);
 
   const handledMenuItemClick = useCallback(
     async (e: MouseEvent<HTMLElement>, url: string) => {
       e.preventDefault();
       if (url === 'sign_out') {
         store.logout();
-        handledClose();
+        handledClose(e);
         return;
       }
       await router.push(url);
-      handledClose();
+      handledClose(e);
     },
     [router, store],
   );
@@ -80,13 +92,9 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
   return (
     <>
       <StyledButton
-        aria-controls={open ? 'POS_CUSTOM_MY_ACCOUNT_MENU' : undefined}
-        aria-expanded={open ? 'true' : undefined}
-        aria-haspopup="true"
         color={'info'}
-        disableElevation
-        id="POS_CUSTOM_MY_ACCOUNT_BUTTON"
         onClick={handledClick}
+        ref={anchorRef}
         variant="outlined"
       >
         My Account
@@ -94,7 +102,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
           className={'POS_icon_right'}
           component={BUTTON_ICON_ARROW}
           sx={
-            open
+            popperVisible
               ? {
                   transform: 'rotate(.5turn)',
                   transition: 'all .3s',
@@ -103,20 +111,29 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
           }
         />
       </StyledButton>
-      <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        id="POS_CUSTOM_MY_ACCOUNT_MENU"
-        MenuListProps={{
-          'aria-labelledby': 'POS_CUSTOM_MY_ACCOUNT_BUTTON',
-        }}
-        onClose={handledClose}
-        open={open}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-        TransitionComponent={Fade}
+      <Popper
+        anchorEl={anchorRef.current}
+        disablePortal
+        open={popperVisible}
+        placement="bottom"
+        sx={{ position: 'relative', zIndex: 1000 }}
+        transition
       >
-        {renderMenuList}
-      </Menu>
+        {({ TransitionProps }) => (
+          <Grow
+            {...TransitionProps}
+            style={{
+              transformOrigin: 'top',
+            }}
+          >
+            <Paper>
+              <ClickAwayListener onClickAway={handledClose}>
+                <MenuList sx={{ mt: 2, width: 170 }}>{renderMenuList}</MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
     </>
   );
 };

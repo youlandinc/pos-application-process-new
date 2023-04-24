@@ -55,7 +55,7 @@ export const POSHeader: FC<POSHeaderProps> = ({ store, scene }) => {
   const renderButton = useMemo(() => {
     switch (scene) {
       case 'application':
-        return (
+        return hasSession ? (
           <Box>
             <StyledButton
               className={'POS_mr_3'}
@@ -78,6 +78,22 @@ export const POSHeader: FC<POSHeaderProps> = ({ store, scene }) => {
             >
               Log In
             </StyledButton>
+          </Box>
+        ) : (
+          <Box>
+            <StyledButton
+              className={'POS_mr_3'}
+              color={'info'}
+              onClick={() => router.push('/pipeline')}
+              variant={'outlined'}
+            >
+              <Icon
+                className={'POS_icon_left'}
+                component={BUTTON_ICON_VIEW_ALL_LOANS}
+              />
+              View All Loans
+            </StyledButton>
+            <MyAccountButton scene={scene} store={store} />
           </Box>
         );
       case 'dashboard':
@@ -117,7 +133,7 @@ export const POSHeader: FC<POSHeaderProps> = ({ store, scene }) => {
           </Box>
         );
     }
-  }, [open, router, scene, store]);
+  }, [hasSession, open, router, scene, store]);
 
   return (
     <Box
