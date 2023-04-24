@@ -1,3 +1,7 @@
 export * from './EntrancePage';
 
-export * from './ApplicationPage';
+export * from './Application';
+
+export * from './Dashboard';
+
+export * from './Pipeline';

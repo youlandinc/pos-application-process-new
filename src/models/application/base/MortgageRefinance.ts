@@ -224,4 +224,4 @@ export const MortgageRefinance = types
   }));
 
 export type IMortgageRefinance = Instance<typeof MortgageRefinance>;
-export type SMortgageRefinance = SnapshotIn<typeof MortgageRefinance>;
+export type w = SnapshotIn<typeof MortgageRefinance>;

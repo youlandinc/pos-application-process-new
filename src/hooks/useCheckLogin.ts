@@ -1,10 +1,12 @@
-import { useMst } from '@/models/Root';
-import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
-import { usePersistFn } from '@/hooks/usePersistFn';
 import { useCallback, useEffect } from 'react';
-import { UserType } from '@/types';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+
+import { useMst } from '@/models/Root';
+
+import { usePersistFn } from './index';
 import { AUTO_HIDE_DURATION } from '@/constants';
+import { UserType } from '@/types';
 
 export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
   const { session, persistDataLoaded, userType, loginType } = useMst();
@@ -32,6 +34,9 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const check = usePersistFn(() => {
+    if (router.pathname.includes('application')) {
+      return;
+    }
     if (
       !persistDataLoaded ||
       (session && userType && loginType) ||
@@ -104,7 +109,6 @@ export const useCheckInfoIsComplete = (jumpPath = '/my_application/task') => {
   ]);
 
   useEffect(() => {
-    console.log(router);
     check();
   }, [check]);
 };

@@ -2,8 +2,11 @@ import { ProcessesParams } from '@/types/process';
 import { get, post, put } from './axios';
 import { ProcessData } from '@/types/server';
 
-export const _startProcess = (productName = 'mortgage') => {
-  return post<ProcessData>(`/processes/${productName}`, {});
+export const _startProcess = (
+  productName = 'mortgage',
+  tenantId: string | number,
+) => {
+  return post<ProcessData>(`/processes/${productName}/${tenantId}`, {});
 };
 
 export const _fetchProcessData = (processInsId = '') => {
