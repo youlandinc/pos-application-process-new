@@ -186,7 +186,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
         className="form_body"
         component={'form'}
         onSubmit={onSubmitClick}
-        sx={!isNestForm ? ForgotPasswordStyles.form : {}}
+        sx={isNestForm ? ForgotPasswordStyles.form : {}}
       >
         <StyledTextField
           label={'Email'}

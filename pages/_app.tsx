@@ -6,7 +6,12 @@ import { Router } from 'next/router';
 import Script from 'next/script';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import { styled, ThemeProvider } from '@mui/material';
+import {
+  Color,
+  PaletteColorOptions,
+  styled,
+  ThemeProvider,
+} from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -50,12 +55,27 @@ export default function MyApp(props: MyAppProps) {
   const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
     '&.notistack-MuiContent-success': {
       color: theme.palette.success.main,
+      '&::before': {
+        backgroundColor: (theme.palette.success as PaletteColorOptions & Color)
+          .A200,
+      },
     },
     '&.notistack-MuiContent-error': {
       color: theme.palette.error.main,
+      '&::before': {
+        backgroundColor: (theme.palette.error as PaletteColorOptions & Color)
+          .A200,
+      },
     },
     '&.notistack-MuiContent-info': {
       color: theme.palette.text.primary,
+      '& svg': {
+        color: theme.palette.primary.main,
+      },
+      '&::before': {
+        backgroundColor: (theme.palette.primary as PaletteColorOptions & Color)
+          .A200,
+      },
     },
     '&.notistack-MuiContent-default': {
       backgroundColor: '#fff',
@@ -63,6 +83,13 @@ export default function MyApp(props: MyAppProps) {
     },
     '&.notistack-MuiContent': {
       backgroundColor: '#fff',
+      padding: '12px 22px',
+      boxShadow:
+        ' 0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
+      '& svg': {
+        zIndex: 1,
+        marginRight: '22px !important',
+      },
       '&::before': {
         position: 'absolute',
         content: '" "',
@@ -75,6 +102,11 @@ export default function MyApp(props: MyAppProps) {
     },
     '&.notistack-MuiContent-warning': {
       color: theme.palette.warning.main,
+
+      '&::before': {
+        backgroundColor: (theme.palette.warning as PaletteColorOptions & Color)
+          .A200,
+      },
     },
   }));
 
@@ -84,6 +116,10 @@ export default function MyApp(props: MyAppProps) {
         <CssBaseline />
         <LocalizationProvider apterLocale={en} dateAdapter={AdapterDateFns}>
           <SnackbarProvider
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
             Components={{
               success: StyledMaterialDesignContent,
               error: StyledMaterialDesignContent,
@@ -91,6 +127,7 @@ export default function MyApp(props: MyAppProps) {
               info: StyledMaterialDesignContent,
               warning: StyledMaterialDesignContent,
             }}
+
             // iconVariant={{
             //   success: (
             //     <span>

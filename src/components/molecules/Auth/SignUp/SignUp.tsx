@@ -187,7 +187,7 @@ export const SignUp: FC<SignUpProps> = observer(
           className="form_body"
           component={'form'}
           onSubmit={handledSubmit}
-          sx={!isNestForm ? SignUpStyles.from : {}}
+          sx={isNestForm ? SignUpStyles.from : {}}
         >
           <StyledSelect
             disabled={loading}

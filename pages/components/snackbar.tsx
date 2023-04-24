@@ -15,7 +15,7 @@ const SnackbarComponent: FC = () => {
   ) => {
     enqueueSnackbar(`This is a ${type} message!`, {
       variant: type,
-      autoHideDuration: 100000 || AUTO_HIDE_DURATION,
+      autoHideDuration: 100000 | AUTO_HIDE_DURATION,
     });
   };
   return (

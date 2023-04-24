@@ -111,7 +111,7 @@ export const Login: FC<LoginProps> = observer(
           className="form_body"
           component={'form'}
           onSubmit={handledLogin}
-          sx={!isNestForm ? LoginStyles.form : {}}
+          sx={isNestForm ? LoginStyles.form : {}}
         >
           <StyledTextField
             disabled={loading}
