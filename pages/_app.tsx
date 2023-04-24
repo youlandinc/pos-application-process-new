@@ -86,9 +86,12 @@ export default function MyApp(props: MyAppProps) {
       padding: '12px 22px',
       boxShadow:
         ' 0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
-      '& svg': {
+      '& div:nth-of-type(1) svg': {
         zIndex: 1,
         marginRight: '22px !important',
+      },
+      '& div:nth-of-type(2) svg': {
+        color: theme.palette.info.main,
       },
       '&::before': {
         position: 'absolute',
@@ -118,7 +121,7 @@ export default function MyApp(props: MyAppProps) {
           <SnackbarProvider
             anchorOrigin={{
               vertical: 'top',
-              horizontal: 'left',
+              horizontal: 'right',
             }}
             Components={{
               success: StyledMaterialDesignContent,
@@ -127,36 +130,13 @@ export default function MyApp(props: MyAppProps) {
               info: StyledMaterialDesignContent,
               warning: StyledMaterialDesignContent,
             }}
-
-            // iconVariant={{
-            //   success: (
-            //     <span>
-            //       <CheckCircle />
-            //     </span>
-            //   ),
-            //   error: (
-            //     <span>
-            //       <Error />
-            //     </span>
-            //   ),
-            //   warning: (
-            //     <span>
-            //       <Warning />
-            //     </span>
-            //   ),
-            //   info: (
-            //     <span>
-            //       <Error />
-            //     </span>
-            //   ),
-            // }}
           >
             <Component {...pageProps} />
           </SnackbarProvider>
         </LocalizationProvider>
       </ThemeProvider>
     ),
-    [Component, pageProps],
+    [Component, StyledMaterialDesignContent, pageProps],
   );
 
   return (

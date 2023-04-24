@@ -152,6 +152,7 @@ ul {
 
 :root {
   --POS--gap: 8px;
+  --POS--min-gap: 8px;
 }
 
 .link_style {
@@ -225,6 +226,108 @@ ul {
 .POS_ml_3 {
   margin-left: calc(3 * var(--POS--gap)) !important;
 }
+
+/* padding */
+.POS_min_pr_1 {
+  padding-right: var(--POS--min-gap) !important;
+}
+
+.POS_min_pr_1 {
+  padding-right: var(--POS--min-gap) !important;
+}
+
+.POS_min_pr_2 {
+  padding-right: calc(2 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pr_3 {
+  padding-right: calc(3 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pr_4 {
+  padding-right: calc(4 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pr_5 {
+  padding-right: calc(5 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pr_6 {
+  padding-right: calc(6 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pl_1 {
+  padding-left: var(--POS--min-gap) !important;
+}
+
+.POS_min_pl_2 {
+  padding-left: calc(2 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pl_3 {
+  padding-left: calc(3 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pl_4 {
+  padding-left: calc(4 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pl_5 {
+  padding-left: calc(5* var(--POS--min-gap)) !important;
+}
+
+.POS_min_pl_6 {
+  padding-left: calc(6 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pt_1 {
+  padding-top: var(--POS--min-gap) !important;
+}
+
+.POS_min_pt_2 {
+  padding-top: calc(2 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pt_3 {
+  padding-top: calc(3 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pt_4 {
+  padding-top: calc(4 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pt_5 {
+  padding-top: calc(5* var(--POS--min-gap)) !important;
+}
+
+.POS_min_pt_6 {
+  padding-top: calc(6 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pb_1 {
+  padding-bottom: var(--POS--min-gap) !important;
+}
+
+.POS_min_pb_2 {
+  padding-bottom: calc(2 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pb_3 {
+  padding-bottom: calc(3 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pb_4 {
+  padding-bottom: calc(4 * var(--POS--min-gap)) !important;
+}
+
+.POS_min_pb_5 {
+  padding-bottom: calc(5* var(--POS--min-gap)) !important;
+}
+
+.POS_min_pb_6 {
+  padding-bottom: calc(6 * var(--POS--min-gap)) !important;
+}
+
 
 /* icon button*/
 

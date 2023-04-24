@@ -1,21 +1,30 @@
 import { FC } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, IconButton, Typography } from '@mui/material';
 
 import { StyledButton } from '@/components/atoms';
 import { useSnackbar } from 'notistack';
 import { AUTO_HIDE_DURATION } from '@/constants';
+import { Close } from '@mui/icons-material';
 
 const SnackbarComponent: FC = () => {
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const onSnackbar = (
     type: 'default' | 'error' | 'success' | 'warning' | 'info',
   ) => {
     enqueueSnackbar(`This is a ${type} message!`, {
       variant: type,
-      autoHideDuration: 100000 | AUTO_HIDE_DURATION,
+      autoHideDuration: 100000 || AUTO_HIDE_DURATION,
+      action(key) {
+        return (
+          <Close
+            onClick={() => closeSnackbar(key)}
+            sx={{ cursor: 'pointer' }}
+          />
+        );
+      },
     });
   };
   return (

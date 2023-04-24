@@ -50,7 +50,11 @@ const DialogComponent: FC = () => {
         <Divider className={'divider'} />
         <Box className={'component_item'}>
           <Box>
-            <StyledButton color="primary" onClick={open} variant="contained">
+            <StyledButton
+              color={'primary'}
+              onClick={open}
+              variant={'contained'}
+            >
               Open Icon Dialog
             </StyledButton>
             <StyledDialog

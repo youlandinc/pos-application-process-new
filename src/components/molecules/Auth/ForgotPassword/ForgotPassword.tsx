@@ -198,7 +198,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
           validate={formError?.email}
           value={email}
         />
-        <Box className="POS_f_jc_c">
+        <Box className="POS_flex POS_jc_sb">
           <StyledTextField
             label={'Verification Code'}
             onChange={(e) => setVerificationCode(e.target.value)}

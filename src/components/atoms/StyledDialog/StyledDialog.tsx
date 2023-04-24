@@ -11,6 +11,23 @@ export const StyledDialog: FC<StyledDialogProps> = ({
   open,
   ...rest
 }) => {
+  const handledClass = (name: string) => {
+    switch (name) {
+      // case 'contained':
+      //   return props.color + '.A100';
+      case 'dialog_header':
+        return `dialog_header ${content ? '' : ' POS_min_pb_3'}`;
+
+      case 'dialog_content':
+        return `dialog_content ${header ? '' : ' POS_min_pt_3'} ${
+          footer ? '' : ' POS_min_pb_3'
+        }`;
+
+      case 'dialog_footer':
+        return `dialog_footer ${content ? '' : ' POS_min_pt_3'}`;
+    }
+  };
+
   return (
     <Dialog
       fullWidth={true}
@@ -21,9 +38,11 @@ export const StyledDialog: FC<StyledDialogProps> = ({
       })}
       {...rest}
     >
-      {header && <Box className="dialog_header">{header}</Box>}
-      {content && <Box className="dialog_content">{content} </Box>}
-      {footer && <Box className="dialog_footer">{footer} </Box>}
+      {header && <Box className={handledClass('dialog_header')}>{header}</Box>}
+      {content && (
+        <Box className={handledClass('dialog_content')}>{content} </Box>
+      )}
+      {footer && <Box className={handledClass('dialog_footer')}>{footer} </Box>}
     </Dialog>
   );
 };
