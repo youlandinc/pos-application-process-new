@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { Button } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 
 import { StyledButtonProps, StyledButtonStyles } from './index';
 
@@ -8,6 +8,7 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
     {
       children,
       loading = false,
+      isIconButton = false,
       onClick,
       loadingText = 'loading',
       sx,
@@ -31,33 +32,64 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
       }
     };
     return (
-      <Button
-        onClick={(e) => {
-          if (!loading && onClick) {
-            onClick(e);
-          } else {
-            e.stopPropagation();
-          }
-        }}
-        ref={ref}
-        sx={Object.assign(
-          {
-            '&.MuiButton-root': {
-              '&:hover': {
-                bgcolor: handledSx(),
+      <>
+        {isIconButton ? (
+          <IconButton
+            onClick={(e) => {
+              if (!loading && onClick) {
+                onClick(e);
+              } else {
+                e.stopPropagation();
+              }
+            }}
+            ref={ref}
+            sx={Object.assign(
+              {
+                '&.MuiButton-root': {
+                  '&:hover': {
+                    bgcolor: handledSx(),
+                  },
+                },
               },
-            },
-          },
-          {
-            ...StyledButtonStyles,
-            ...sx,
-          },
+              {
+                ...StyledButtonStyles,
+                ...sx,
+              },
+            )}
+            {...rest}
+          >
+            <>{loading ? loadingText : children}</>
+          </IconButton>
+        ) : (
+          <Button
+            onClick={(e) => {
+              if (!loading && onClick) {
+                onClick(e);
+              } else {
+                e.stopPropagation();
+              }
+            }}
+            ref={ref}
+            sx={Object.assign(
+              {
+                '&.MuiButton-root': {
+                  '&:hover': {
+                    bgcolor: handledSx(),
+                  },
+                },
+              },
+              {
+                ...StyledButtonStyles,
+                ...sx,
+              },
+            )}
+            variant={variant}
+            {...rest}
+          >
+            <>{loading ? loadingText : children}</>
+          </Button>
         )}
-        variant={variant}
-        {...rest}
-      >
-        <>{loading ? loadingText : children}</>
-      </Button>
+      </>
     );
   },
 );

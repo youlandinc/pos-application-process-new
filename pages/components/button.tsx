@@ -299,6 +299,11 @@ const ButtonComponent: FC = () => {
             </StyledButton>
           </Grid>
           <Grid item xs={false}>
+            <StyledButton color="default" isIconButton={true}>
+              isIconButton
+            </StyledButton>
+          </Grid>
+          <Grid item xs={false}>
             <StyledButton color="info" variant="text">
               Cancel
             </StyledButton>

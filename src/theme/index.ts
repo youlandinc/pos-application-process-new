@@ -9,6 +9,15 @@ declare module '@mui/material/styles' {
     xl: true;
     xxl: true;
   }
+
+  interface Palette {
+    default: Palette['primary'];
+  }
+
+  // allow configuration using `createTheme`
+  interface PaletteOptions {
+    default?: PaletteOptions['primary'];
+  }
 }
 
 declare module '@mui/material/styles/createPalette' {
@@ -35,6 +44,12 @@ declare module '@mui/material/styles/createPalette' {
   }
 }
 
+declare module '@mui/material/Button' {
+  interface ButtonPropsColorOverrides {
+    default: true;
+  }
+}
+
 declare module '@mui/material/styles/createTypography' {
   interface TypographyOptions {
     body3: TypographyStyle;
@@ -53,6 +68,11 @@ export const theme = createTheme({
     },
   },
   palette: {
+    default: {
+      main: '#202939',
+      A100: '#636A7C',
+      A200: 'rgba(144, 149, 163, 0.2)',
+    },
     primary: {
       main: '#1134E3',
       A100: '#0C249F',
