@@ -1,8 +1,15 @@
 import { FC, forwardRef, useRef } from 'react';
-import { Box, IconButton, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material';
 import {
   ArrowDropDown,
   ArrowDropUp,
+  DateRange,
   KeyboardArrowLeft,
   KeyboardArrowRight,
 } from '@mui/icons-material';
@@ -130,6 +137,13 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
         <TextField
           InputProps={{
             readOnly: true,
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton edge="end" onClick={props.onClick} tabIndex={-1}>
+                  <DateRange />
+                </IconButton>
+              </InputAdornment>
+            ),
           }}
           sx={StyledTextFieldStyles}
           variant="outlined"

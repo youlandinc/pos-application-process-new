@@ -55,7 +55,7 @@ const DatePickerComponent: FC = () => {
             </Typography>
             {dateRange[0] && format(dateRange[0], "yyyy-MM-dd'T'HH:mm:ss'Z'")}-
             {dateRange[1] && format(dateRange[1], "yyyy-MM-dd'T'HH:mm:ss'Z'")}
-            <Box sx={{ width: 300 }}>
+            <Box sx={{}}>
               <StyledDateRange
                 dateRange={dateRange}
                 label="日期"

@@ -8,6 +8,11 @@ export const StyledDateRangeStyles: SxProps = {
   '& .react-datepicker-popper': {
     zIndex: 2,
   },
+  '& .MuiInputBase-input': {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
   '& .react-datepicker': {
     border: 'none',
     bgcolor: 'background.white',
@@ -33,6 +38,7 @@ export const StyledDateRangeStyles: SxProps = {
       width: 36,
       lineHeight: '36px',
       fontSize: 14,
+      borderRadius: '50%',
       color: 'text.primary',
       '&:hover': {
         borderRadius: '50% !important',
