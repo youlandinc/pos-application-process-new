@@ -2,11 +2,13 @@ import { POSFont } from '@/styles';
 import { SxProps } from '@mui/material';
 
 export const StyledButtonStyles: SxProps = {
-  ...POSFont(16, 600, 1.5),
-  textTransform: 'none',
-  padding: '15px 20px',
-  borderRadius: 2,
-  boxShadow: 'none',
+  '&.MuiButton-root': {
+    ...POSFont(16, 600, 1.5),
+    textTransform: 'none',
+    padding: '15px 20px',
+    borderRadius: 2,
+    boxShadow: 'none',
+  },
   '&:disabled': {
     color: 'info.main',
   },
@@ -16,7 +18,7 @@ export const StyledButtonStyles: SxProps = {
   '&.Mui-disabled': {
     borderColor: 'background.broder_disabled',
   },
-  '&.MuiButton-sizeSmall, &.MuiIconsButton-sizeSmall': {
+  '&.MuiButton-sizeSmall': {
     padding: '7px 12px',
     fontSize: 14,
   },
