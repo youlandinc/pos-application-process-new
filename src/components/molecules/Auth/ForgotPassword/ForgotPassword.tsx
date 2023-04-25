@@ -208,7 +208,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
           />
           <StyledButton
             color="primary"
-            disabled={seconds < 60}
+            disabled={!email || seconds < 60}
             onClick={onSendCodeClick}
             sx={{ ml: 1.5 }}
             variant="contained"

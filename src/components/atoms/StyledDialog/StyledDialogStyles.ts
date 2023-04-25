@@ -3,7 +3,7 @@ import { SxProps } from '@mui/material';
 export const StyledDialogStyles: SxProps = {
   '&.MuiDialog-root': {
     '& .dialog_header': {
-      minHeight: 76,
+      // minHeight: 76,
       px: 3,
       pt: 3,
       fontWeight: 600,
@@ -11,7 +11,7 @@ export const StyledDialogStyles: SxProps = {
       color: 'text.primary',
     },
     '& .dialog_footer': {
-      minHeight: 60,
+      // minHeight: 60,
       textAlign: 'right',
       px: 3,
       pb: 3,
