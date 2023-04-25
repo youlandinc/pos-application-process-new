@@ -16,11 +16,12 @@ export const StyledButtonStyles: SxProps = {
   '&.Mui-disabled': {
     borderColor: 'background.broder_disabled',
   },
-  '&.MuiButton-sizeSmall': {
+  '&.MuiButton-sizeSmall, &.MuiIconsButton-sizeSmall': {
     padding: '7px 12px',
     fontSize: 14,
   },
-  '&.MuiButton-outlinedInfo, &.MuiButton-textInfo': {
-    color: 'text.primary',
-  },
+  '&.MuiButton-outlinedInfo, &.MuiButton-textInfo , &.MuiIconButton-colorInfo':
+    {
+      color: 'text.primary',
+    },
 } as const;

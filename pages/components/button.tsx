@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Box, Grid, Typography } from '@mui/material';
 
 import { StyledButton } from '@/components/atoms';
-import { ArrowRightAlt, MoveToInbox } from '@mui/icons-material';
+import { ArrowRightAlt, Close, MoveToInbox } from '@mui/icons-material';
 
 const ButtonComponent: FC = () => {
   const router = useRouter();
@@ -299,8 +299,8 @@ const ButtonComponent: FC = () => {
             </StyledButton>
           </Grid>
           <Grid item xs={false}>
-            <StyledButton color="default" isIconButton={true}>
-              isIconButton
+            <StyledButton color="info" isIconButton={true}>
+              <Close />
             </StyledButton>
           </Grid>
           <Grid item xs={false}>

@@ -28,7 +28,7 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
           return rest.color + '.A200';
 
         default:
-          return rest.color + '.A100';
+          return rest.color + (isIconButton ? '.A200' : '.A100');
       }
     };
     return (
@@ -45,7 +45,7 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
             ref={ref}
             sx={Object.assign(
               {
-                '&.MuiButton-root': {
+                '&.MuiButton-root, &.MuiIconButton-root ': {
                   '&:hover': {
                     bgcolor: handledSx(),
                   },
