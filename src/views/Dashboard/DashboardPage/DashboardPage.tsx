@@ -1,5 +1,4 @@
-import React, { FC, ReactNode, useEffect } from 'react';
-import { CircularProgress } from '@mui/material';
+import { FC, ReactNode, useEffect } from 'react';
 
 import { POSLayout, StyledLoading } from '@/components/';
 import { useMst } from '@/models/Root';

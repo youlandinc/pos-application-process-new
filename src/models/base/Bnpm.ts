@@ -7,7 +7,7 @@ export const Bpmn = types
     processId: types.maybe(types.string),
     taskId: types.maybe(types.string),
     ServerTaskKey: types.maybe(types.frozen<ServerTaskKey>()),
-    owners: types.frozen<ProcessData['owners']>(),
+    owners: types.maybe(types.frozen<ProcessData['owners']>()),
     variables: types.maybe(types.array(types.frozen<Record<string, any>>({}))),
   })
   .actions((self) => ({

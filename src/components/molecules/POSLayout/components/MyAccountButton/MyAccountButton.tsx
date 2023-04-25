@@ -1,3 +1,4 @@
+import { useBreakpoints } from '@/hooks';
 import {
   FC,
   MouseEvent,
@@ -22,6 +23,7 @@ import { MyAccountButtonProps, MyAccountStyles } from './index';
 import { StyledButton } from '@/components';
 
 import BUTTON_ICON_ARROW from '@/svg/button/button_icon_arrow.svg';
+import BUTTON_ICON_MY_ACCOUNT from '@/svg/button/button_icon_my_account.svg';
 
 const MENU_LIST = [
   { label: 'My Profile', url: '' },
@@ -39,6 +41,8 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
   const anchorRef = useRef<HTMLButtonElement>(null);
 
   const router = useRouter();
+
+  const breakpoint = useBreakpoints();
 
   const handledClose = useCallback((event: Event | SyntheticEvent) => {
     if (
@@ -105,29 +109,36 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
     <>
       <StyledButton
         color={'info'}
+        isIconButton={['sm', 'xs', 'md'].includes(breakpoint)}
         onClick={handledClick}
         ref={anchorRef}
-        variant="outlined"
+        variant={'outlined'}
       >
-        My Account
-        <Icon
-          className={'POS_icon_right'}
-          component={BUTTON_ICON_ARROW}
-          sx={
-            popperVisible
-              ? {
-                  transform: 'rotate(.5turn)',
-                  transition: 'all .3s',
-                }
-              : { transition: 'all .3s' }
-          }
-        />
+        {!['sm', 'xs', 'md'].includes(breakpoint) ? (
+          <>
+            My Account
+            <Icon
+              className={'POS_icon_right'}
+              component={BUTTON_ICON_ARROW}
+              sx={
+                popperVisible
+                  ? {
+                      transform: 'rotate(.5turn)',
+                      transition: 'all .3s',
+                    }
+                  : { transition: 'all .3s' }
+              }
+            />
+          </>
+        ) : (
+          <Icon component={BUTTON_ICON_MY_ACCOUNT} />
+        )}
       </StyledButton>
       <Popper
         anchorEl={anchorRef.current}
         disablePortal
         open={popperVisible}
-        placement="bottom"
+        placement={'bottom'}
         sx={{ position: 'relative', zIndex: 1000 }}
         transition
       >

@@ -9,7 +9,7 @@ import { observer } from 'mobx-react-lite';
 import { POSHeaderProps, POSHeaderStyles } from './index';
 import { MyAccountButton } from '../MyAccountButton';
 import { POSFlex } from '@/styles';
-import { usePersistFn, useStoreData, useSwitch } from '@/hooks';
+import { useBreakpoints, usePersistFn, useStoreData, useSwitch } from '@/hooks';
 import {
   ForgotPassword,
   Login,
@@ -27,6 +27,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
 
   const { bindProcess } = useStoreData();
   const { visible, open, close } = useSwitch(false);
+  const breakpoint = useBreakpoints();
 
   const {
     session,
@@ -54,7 +55,10 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
 
   const handledLoginSuccess = usePersistFn(() => {
     close();
-    if (initialized && bpmn.owners.length === 0) {
+    if (
+      initialized &&
+      (bpmn.owners as Array<{ userId: string }>).length === 0
+    ) {
       bindProcess();
     }
     if (!initialized && hasProcessId) {
@@ -112,14 +116,19 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/pipeline')}
               variant={'outlined'}
             >
               <Icon
-                className={'POS_icon_left'}
+                className={
+                  !['xs', 'sm', 'md'].includes(breakpoint)
+                    ? 'POS_icon_left'
+                    : ''
+                }
                 component={BUTTON_ICON_VIEW_ALL_LOANS}
               />
-              View All Loans
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View All Loans'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
           </Box>
@@ -130,14 +139,36 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/pipeline')}
               variant={'outlined'}
             >
               <Icon
-                className={'POS_icon_left'}
+                className={
+                  !['xs', 'sm', 'md'].includes(breakpoint)
+                    ? 'POS_icon_left'
+                    : ''
+                }
                 component={BUTTON_ICON_VIEW_ALL_LOANS}
               />
-              View All Loans
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View All Loans'}
+            </StyledButton>
+            <StyledButton
+              className={'POS_mr_3'}
+              color={'info'}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+              onClick={() => router.push('/')}
+              variant={'outlined'}
+            >
+              <Icon
+                className={
+                  !['xs', 'sm', 'md'].includes(breakpoint)
+                    ? 'POS_icon_left'
+                    : ''
+                }
+                component={BUTTON_ICON_ADD_NEW_LOAN}
+              />
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start New Loan'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
           </Box>
@@ -148,20 +179,43 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+              onClick={() => router.push('/pipeline')}
+              variant={'outlined'}
+            >
+              <Icon
+                className={
+                  !['xs', 'sm', 'md'].includes(breakpoint)
+                    ? 'POS_icon_left'
+                    : ''
+                }
+                component={BUTTON_ICON_VIEW_ALL_LOANS}
+              />
+              {!['xs', 'sm', 'md', 'lg'].includes(breakpoint) &&
+                'View All Loans'}
+            </StyledButton>
+            <StyledButton
+              className={'POS_mr_3'}
+              color={'info'}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/')}
               variant={'outlined'}
             >
               <Icon
-                className={'POS_icon_left'}
+                className={
+                  !['xs', 'sm', 'md'].includes(breakpoint)
+                    ? 'POS_icon_left'
+                    : ''
+                }
                 component={BUTTON_ICON_ADD_NEW_LOAN}
               />
-              Start New Loan
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start New Loan'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
           </Box>
         );
     }
-  }, [hasSession, open, router, scene, store]);
+  }, [breakpoint, hasSession, open, router, scene, store]);
 
   const renderDialog = useMemo(() => {
     switch (authType) {
@@ -170,14 +224,26 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           header: (
             <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
               <Typography variant={'h6'}>Welcome to YouLand!</Typography>
-              <IconButton onClick={close} sx={{ color: 'text.primary' }}>
+              <StyledButton color={'info'} isIconButton onClick={close}>
                 <Close />
-              </IconButton>
+              </StyledButton>
             </Box>
           ),
           content: <Login isNestForm successCb={handledLoginSuccess} />,
           footer: (
-            <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
+            <Box
+              className={'POS_flex POS_jc_sb POS_al_c POS_fd_row POS_mt_3'}
+              sx={{
+                justifyContent: {
+                  md: 'space-between',
+                  xs: 'center',
+                },
+                flexDirection: {
+                  md: 'row',
+                  xs: 'column',
+                },
+              }}
+            >
               <Typography variant={'body2'}>
                 Don&apos;t have an account?{' '}
                 <Typography
@@ -206,9 +272,9 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           header: (
             <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
               <Typography variant={'h6'}>Reset Password</Typography>
-              <IconButton onClick={close} sx={{ color: 'text.primary' }}>
+              <StyledButton color={'info'} isIconButton onClick={close}>
                 <Close />
-              </IconButton>
+              </StyledButton>
             </Box>
           ),
           content: (
@@ -220,7 +286,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           ),
           footer: (
             <Typography
-              className={'link_style'}
+              className={'link_style POS_mt_3'}
               color={'info'}
               onClick={() => setAuthType('login')}
               variant={'body2'}
@@ -235,9 +301,9 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           header: (
             <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
               <Typography variant={'h6'}>Sign Up</Typography>
-              <IconButton onClick={close} sx={{ color: 'text.primary' }}>
+              <StyledButton color={'info'} isIconButton onClick={close}>
                 <Close />
-              </IconButton>
+              </StyledButton>
             </Box>
           ),
           content: (
@@ -248,7 +314,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             />
           ),
           footer: (
-            <Box className="POS_tc">
+            <Box className="POS_tc POS_mt_3">
               <Typography component={'div'} variant={'body2'}>
                 Already have an account?{' '}
                 <Typography
