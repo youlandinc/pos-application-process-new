@@ -191,8 +191,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 }
                 component={BUTTON_ICON_VIEW_ALL_LOANS}
               />
-              {!['xs', 'sm', 'md', 'lg'].includes(breakpoint) &&
-                'View All Loans'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View All Loans'}
             </StyledButton>
             <StyledButton
               className={'POS_mr_3'}

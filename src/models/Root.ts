@@ -64,7 +64,7 @@ export const RootModel = {
 
 const RootStore = types.model(RootModel).actions((self) => {
   return {
-    injectCognitoUserSession(session: User.UserSignInRequest) {
+    injectCognitoUserSession(session: User.UserRefreshTokenRequest) {
       self.session = {
         accessToken: {
           jwtToken: session.accessToken,

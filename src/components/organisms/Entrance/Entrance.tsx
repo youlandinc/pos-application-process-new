@@ -47,7 +47,7 @@ export const Entrance = observer(() => {
   }, [userType]);
 
   return (
-    <Box>
+    <Box sx={{ bgcolor: '#F5F8FA' }}>
       <Box sx={EntranceStyles.header}>
         <Box className={'entrance_header_inside'}>
           <StyledHeaderLogo />
@@ -63,8 +63,9 @@ export const Entrance = observer(() => {
               <StyledButton
                 key={item.name + index}
                 onClick={() => (window.location.href = item.url)}
-                sx={{ width: { md: 600, xs: '100%' } }}
+                sx={{ width: { md: 600, xs: '100%' }, height: 70 }}
                 variant={'outlined'}
+                color={'info'}
               >
                 {item.name}
               </StyledButton>

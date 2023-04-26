@@ -6,7 +6,7 @@ import { useCheckHasLoggedIn } from '@/hooks';
 import { Login } from '@/components';
 
 const LoginPage: FC = (): JSX.Element => {
-  useCheckHasLoggedIn();
+  //useCheckHasLoggedIn();
 
   return (
     <Box>

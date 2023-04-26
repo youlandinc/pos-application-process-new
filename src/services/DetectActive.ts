@@ -6,7 +6,7 @@ import { POSCreateDebounceFunction } from '@/utils';
 
 const EXPIRED_TIME = 1000 * 60 * 9;
 
-//const EXPIRED_TIME = 30000;
+//const EXPIRED_TIME = 3000;
 
 export class DetectActiveService {
   private _userData: User.UserSignInRequest;
@@ -76,7 +76,7 @@ export class DetectActiveService {
     this._isActive = false;
   }
 
-  private static _updateSession(session: User.UserSignInRequest) {
+  private static _updateSession(session: User.UserRefreshTokenRequest) {
     rootStore.injectCognitoUserSession(session);
   }
 

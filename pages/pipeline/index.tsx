@@ -1,9 +1,13 @@
 import { FC } from 'react';
 
-import { PipelinePage } from '@/views';
+import { PipelineList, PipelinePage } from '@/views';
 
-const Pipeline: FC = () => {
-  return <PipelinePage>Pipeline page</PipelinePage>;
+const PipelineModule: FC = () => {
+  return (
+    <PipelinePage>
+      <PipelineList />
+    </PipelinePage>
+  );
 };
 
-export default Pipeline;
+export default PipelineModule;
