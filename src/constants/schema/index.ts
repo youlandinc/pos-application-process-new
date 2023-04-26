@@ -5,3 +5,4 @@ export * from './realtor';
 
 export * from './sign_up';
 export * from './forgot_password';
+export * from './email_schema';

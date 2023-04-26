@@ -56,8 +56,8 @@ const list: MenuItems[] = [
   },
   {
     label: 'Pre-approval letter',
-    path: 'preapproval_letter',
-    key: 'preapproval_letter',
+    path: 'pre_approval_letter',
+    key: 'pre_approval_letter',
     icon: <TextSnippetOutlined />,
   },
   //{

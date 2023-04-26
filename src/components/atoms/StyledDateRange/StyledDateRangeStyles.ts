@@ -5,6 +5,14 @@ export const StyledDateRangeStyles: SxProps = {
   '& .react-datepicker__portal': {
     bgcolor: 'rgba(0, 0, 0, 0.5)',
   },
+  '& .react-datepicker__close-icon': {
+    right: 42,
+    '&::after': {
+      color: 'text.primary',
+      bgcolor: 'transparent',
+      content: '""',
+    },
+  },
   '& .react-datepicker-popper': {
     zIndex: 2,
   },
@@ -21,7 +29,6 @@ export const StyledDateRangeStyles: SxProps = {
     borderRadius: 1,
     '& .react-datepicker__day-name': {
       width: 36,
-      lineHeight: '36px',
       fontSize: 0,
       color: 'text.secondary',
       '&:first-letter': {
@@ -36,6 +43,7 @@ export const StyledDateRangeStyles: SxProps = {
     },
     '& .react-datepicker__day': {
       width: 36,
+      height: 36,
       lineHeight: '36px',
       fontSize: 14,
       borderRadius: '50%',

@@ -9,6 +9,7 @@ import {
 import {
   ArrowDropDown,
   ArrowDropUp,
+  Close,
   DateRange,
   KeyboardArrowLeft,
   KeyboardArrowRight,
@@ -139,6 +140,11 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
             readOnly: true,
             endAdornment: (
               <InputAdornment position="end">
+                {dateRange[1] && (
+                  <IconButton edge="end" size="small" tabIndex={-1}>
+                    <Close />
+                  </IconButton>
+                )}
                 <IconButton edge="end" onClick={props.onClick} tabIndex={-1}>
                   <DateRange />
                 </IconButton>
@@ -179,6 +185,8 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
         calendarContainer={Container}
         customInput={<CustomInput inputRef={inputRef} label={label} />}
         endDate={dateRange[1]}
+        isClearable
+        popperPlacement="bottom"
         renderCustomHeader={CustomHeader}
         selectsRange={true}
         startDate={dateRange[0]}
