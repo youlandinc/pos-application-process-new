@@ -147,6 +147,12 @@ export const Pipeline: FC = observer(() => {
     getListData();
   }, [getListData, page]);
 
+  useEffect(() => {
+    if (isChange) {
+      setPage(1);
+    }
+  }, [isChange]);
+
   return (
     <>
       <SearchBar
