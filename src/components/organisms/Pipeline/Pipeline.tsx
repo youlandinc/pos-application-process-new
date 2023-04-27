@@ -1,7 +1,3 @@
-import { StyledButton, StyledDialog, StyledLoading } from '@/components';
-import { useSwitch } from '@/hooks';
-import { POSFlex } from '@/styles';
-import { UserType } from '@/types';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import { DeleteForever } from '@mui/icons-material';
@@ -14,7 +10,8 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { _deleteProcess, _fetchAllProcesses } from '@/requests';
-
+import { useSwitch } from '@/hooks';
+import { UserType } from '@/types';
 import { AUTO_HIDE_DURATION, PAGE_SIZE } from '@/constants';
 import {
   LoanItemCard,
@@ -22,6 +19,8 @@ import {
   SearchBar,
   SearchBarProps,
 } from '@/components/organisms/Pipeline/components';
+
+import { StyledButton, StyledDialog, StyledLoading } from '@/components';
 
 import PIPELINE_NO_RESULT from '@/svg/pipeline/pipeline_no_result.svg';
 

@@ -24,10 +24,10 @@ import { StyledButton } from '@/components';
 
 const MENU_LIST = [
   { label: 'My Profile', url: '/pipeline/profile' },
-  { label: 'Change Email', url: 'auth/change_email' },
+  { label: 'Change Email', url: '/auth/change_email' },
   {
     label: 'Change Password',
-    url: 'auth/change_password',
+    url: '/auth/change_password',
   },
   { label: 'Sign Out', url: 'sign_out' },
 ];
