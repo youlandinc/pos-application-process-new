@@ -110,8 +110,8 @@ export const PipelineProfile: FC = observer(() => {
                 {BROKER_QUESTIONNAIRE.taskName}{' '}
                 <Typography
                   component={'span'}
-                  variant={'h6'}
                   sx={{ color: 'info.A100', fontSize: 'inherit' }}
+                  variant={'h6'}
                 >
                   (optional)
                 </Typography>

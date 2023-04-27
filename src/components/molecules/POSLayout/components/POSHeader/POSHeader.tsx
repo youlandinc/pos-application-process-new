@@ -1,7 +1,11 @@
 import Link from 'next/link';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Icon, IconButton, Typography } from '@mui/material';
-import { Close } from '@mui/icons-material';
+import { Box, Icon, Typography } from '@mui/material';
+import {
+  CloseOutlined,
+  PostAddOutlined,
+  WidgetsOutlined,
+} from '@mui/icons-material';
 import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
@@ -120,14 +124,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               onClick={() => router.push('/pipeline')}
               variant={'outlined'}
             >
-              <Icon
-                className={
-                  !['xs', 'sm', 'md'].includes(breakpoint)
-                    ? 'POS_icon_left'
-                    : ''
-                }
-                component={BUTTON_ICON_VIEW_ALL_LOANS}
-              />
+              <WidgetsOutlined />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'View All Loans'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
@@ -143,13 +140,12 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               onClick={() => router.push('/pipeline')}
               variant={'outlined'}
             >
-              <Icon
+              <WidgetsOutlined
                 className={
                   !['xs', 'sm', 'md'].includes(breakpoint)
                     ? 'POS_icon_left'
                     : ''
                 }
-                component={BUTTON_ICON_VIEW_ALL_LOANS}
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'View All Loans'}
             </StyledButton>
@@ -160,13 +156,12 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               onClick={() => router.push('/')}
               variant={'outlined'}
             >
-              <Icon
+              <PostAddOutlined
                 className={
                   !['xs', 'sm', 'md'].includes(breakpoint)
                     ? 'POS_icon_left'
                     : ''
                 }
-                component={BUTTON_ICON_ADD_NEW_LOAN}
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start New Loan'}
             </StyledButton>
@@ -184,13 +179,12 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               onClick={() => router.push('/pipeline')}
               variant={'outlined'}
             >
-              <Icon
+              <WidgetsOutlined
                 className={
                   !['xs', 'sm', 'md'].includes(breakpoint)
                     ? 'POS_icon_left'
                     : ''
                 }
-                component={BUTTON_ICON_VIEW_ALL_LOANS}
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'View All Loans'}
             </StyledButton>
@@ -202,13 +196,12 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               onClick={() => router.push('/')}
               variant={'outlined'}
             >
-              <Icon
+              <PostAddOutlined
                 className={
                   !['xs', 'sm', 'md'].includes(breakpoint)
                     ? 'POS_icon_left'
                     : ''
                 }
-                component={BUTTON_ICON_ADD_NEW_LOAN}
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start New Loan'}
             </StyledButton>
@@ -226,7 +219,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
               <Typography variant={'h6'}>Welcome to YouLand!</Typography>
               <StyledButton color={'info'} isIconButton onClick={close}>
-                <Close />
+                <CloseOutlined />
               </StyledButton>
             </Box>
           ),
@@ -274,7 +267,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
               <Typography variant={'h6'}>Reset Password</Typography>
               <StyledButton color={'info'} isIconButton onClick={close}>
-                <Close />
+                <CloseOutlined />
               </StyledButton>
             </Box>
           ),
@@ -303,7 +296,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
               <Typography variant={'h6'}>Sign Up</Typography>
               <StyledButton color={'info'} isIconButton onClick={close}>
-                <Close />
+                <CloseOutlined />
               </StyledButton>
             </Box>
           ),

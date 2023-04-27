@@ -11,19 +11,16 @@ import {
 import {
   ClickAwayListener,
   Grow,
-  Icon,
   MenuItem,
   MenuList,
   Paper,
   Popper,
 } from '@mui/material';
+import { ExpandMoreOutlined, PermIdentityOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 
 import { MyAccountButtonProps, MyAccountStyles } from './index';
 import { StyledButton } from '@/components';
-
-import BUTTON_ICON_ARROW from '@/svg/button/button_icon_arrow.svg';
-import BUTTON_ICON_MY_ACCOUNT from '@/svg/button/button_icon_my_account.svg';
 
 const MENU_LIST = [
   { label: 'My Profile', url: '/pipeline/profile' },
@@ -117,13 +114,13 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
         {!['sm', 'xs', 'md'].includes(breakpoint) ? (
           <>
             My Account
-            <Icon
+            <ExpandMoreOutlined
               className={'POS_icon_right'}
-              component={BUTTON_ICON_ARROW}
               sx={
                 popperVisible
                   ? {
-                      transform: 'rotate(.5turn)',
+                      transform: 'rotate(-.5turn)',
+                      transformOrigin: 'center',
                       transition: 'all .3s',
                     }
                   : { transition: 'all .3s' }
@@ -131,7 +128,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
             />
           </>
         ) : (
-          <Icon component={BUTTON_ICON_MY_ACCOUNT} />
+          <PermIdentityOutlined />
         )}
       </StyledButton>
       <Popper
