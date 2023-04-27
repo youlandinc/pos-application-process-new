@@ -8,9 +8,10 @@ export const StyledButtonStyles: SxProps = {
     padding: '15px 20px',
     borderRadius: 2,
     boxShadow: 'none',
-  },
-  '&:disabled': {
-    color: 'info.main',
+    '&:disabled': {
+      color: 'info.main',
+      cursor: 'no-drop',
+    },
   },
   '&.MuiButton-contained:disabled': {
     bgcolor: '#D4D7DA',

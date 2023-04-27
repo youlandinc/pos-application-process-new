@@ -114,6 +114,24 @@ const Components = () => {
           <Box className={'component_item'}>
             <StyledButton
               color="primary"
+              onClick={() => router.push('/components/drawer')}
+              variant="contained"
+            >
+              Open Drawer
+            </StyledButton>
+          </Box>
+          <Box className={'component_item'}>
+            <StyledButton
+              color="primary"
+              onClick={() => router.push('/components/upload_box')}
+              variant="contained"
+            >
+              UploadBox
+            </StyledButton>
+          </Box>
+          <Box className={'component_item'}>
+            <StyledButton
+              color="primary"
               onClick={() => router.push('/components/button_group')}
               variant="contained"
             >

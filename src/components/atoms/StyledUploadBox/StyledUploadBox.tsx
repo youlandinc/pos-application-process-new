@@ -8,7 +8,7 @@ import { useSwitch } from '@/hooks';
 import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFlex, POSFont, PSXTextEllipsis } from '@/styles';
-import { Box, Dialog, SxProps } from '@mui/material';
+import { Box, Dialog, Icon, SxProps, Typography } from '@mui/material';
 import {
   CloudUploadOutlined,
   DeleteOutlineOutlined,
@@ -19,19 +19,51 @@ import {
 import { POSFormatDate } from '@/utils';
 import { SUploadData } from '@/models/common/UploadFile';
 
+import UPLOAD_SVG from '@/svg/Upload/Upload.svg';
+
 export const StyledUploadBoxStyles: SxProps = {
   '& .icon': {
     verticalAlign: '-5px',
     cursor: 'pointer',
     '&:hover': {
-      color: '#3F81E9',
+      // color: '#3F81E9',
+    },
+  },
+  '& .upload_img': {
+    width: '40%',
+    height: '100%',
+    mr: {
+      md: 6,
+      sx: 0,
+    },
+    mb: {
+      md: 0,
+      xs: 3,
+    },
+  },
+  '& .upload_text': {
+    textAlign: {
+      md: 'left',
+      xs: 'center',
+    },
+    '& h5': {
+      fontSize: {
+        md: 20,
+        xs: 18,
+      },
+    },
+    '& p': {
+      color: 'text.secondary',
+      fontSize: {
+        md: 14,
+        xs: 12,
+      },
     },
   },
   '& .fileItem': {
     ...POSFont(16, 400, 1.5, 'rgba(0,0,0,.87)'),
     ...POSFlex('center', 'space-between', 'row'),
     width: '100%',
-
     padding: '16px 30px 16px 14px',
     border: '1px solid rgba(0, 0, 0, 0.6);',
     borderRadius: 8,
@@ -42,18 +74,30 @@ export const StyledUploadBoxStyles: SxProps = {
   },
   '& .uploadBox': {
     width: '100%',
-    height: 192,
-    border: '1px dashed rgba(0, 0, 0, 0.6)',
+    // height: 192,
+    border: '1px dashed',
+    borderColor: 'background.border_default',
     overflow: 'hidden',
     display: 'block',
     textAlign: 'center',
-    borderRadius: 8,
+    bgcolor: 'action.hover',
+    borderRadius: 2,
+    lineHeight: '236px',
+    minHeight: 236,
+  },
+  '& .MuiButton-root': {
+    p: '0 !important',
+  },
+  '& button': {
+    width: '100%',
+    bgcolor: 'action.hover',
   },
   '& .uploadBtn': {
     width: '100%',
-    padding: '56px 0 24px 0',
+    p: { md: 6, xs: 3 },
     textTransform: 'none',
     cursor: 'pointer',
+    ...POSFlex('center', 'space-between', { md: 'row', xs: 'column' }),
   },
   ' input': {
     width: '100%',
@@ -72,9 +116,9 @@ export const StyledUploadBoxStyles: SxProps = {
 
 interface StyledUploadBoxProps {
   fileList: SUploadData[];
-  onSuccess: (files: SUploadData[]) => void;
+  onSuccess: (files: FileList) => void;
   onDelete: (index: number) => void;
-  taskId?: string;
+  loading?: boolean;
   fileSize?: number;
   style?: CSSProperties;
   children?: ReactNode;
@@ -89,19 +133,17 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
     children,
     fileList,
     onDelete,
-    taskId,
     fileSize = 5, // MB
-    uploadText = 'Upload Documents',
+    uploadText = 'Select files',
     AcceptedText = '.jpg and .png or .pdf ',
     accept = 'image/*,.pdf',
-    style,
+    loading,
     // onDrop,
   } = props;
 
   const { enqueueSnackbar } = useSnackbar();
 
   const [deleteIndex, setDeleteIndex] = useState<number>(-1);
-  const [uploadLoading, setUploadLoading] = useState(false);
 
   const { open, visible, close } = useSwitch(false);
   const stopDefaults = (e: React.DragEvent) => {
@@ -127,24 +169,9 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
 
   const handleUpload = useCallback(
     async (files: FileList) => {
-      setUploadLoading(true);
-      const formData = new FormData();
-      Array.from(files, (item) => {
-        formData.append('files', item);
-      });
-      try {
-        const { data } = await _addTaskFile(formData, taskId as string);
-        onSuccess(data);
-        setUploadLoading(false);
-      } catch (err) {
-        setUploadLoading(false);
-        enqueueSnackbar(err as string, {
-          variant: 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-        });
-      }
+      onSuccess(files);
     },
-    [onSuccess, enqueueSnackbar, taskId],
+    [onSuccess],
   );
 
   const validatorFileSize = useCallback(
@@ -219,25 +246,34 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
         onChange={handleChange}
         type="file"
       />
-      <Box className={'uploadBox'} style={style}>
-        <StyledButton disabled={uploadLoading} sx={{ width: '100%' }}>
-          {uploadLoading ? (
-            <StyledLoading />
+      <Box className={'uploadBox'}>
+        <StyledButton color={'inherit'} disabled={loading}>
+          {loading ? (
+            <StyledLoading sx={{ color: 'primary.main' }} />
           ) : (
             <label
               className={'uploadBtn'}
               htmlFor="file-upload"
               {...dragEvents}
             >
-              <CloudUploadOutlined color="disabled" sx={{ fontSize: 48 }} />
-              <Box>{uploadText}</Box>
-              <Box>
+              <Icon className="upload_img" component={UPLOAD_SVG} />
+              <Box className="upload_text">
+                <Typography variant={'h5'}>{uploadText}</Typography>
+                {/* <Typography variant={'body1'}>
                 Accepted File Types:
                 {AcceptedText
                   ? AcceptedText
                   : accept && accept !== '*'
                   ? accept.split(',').join(' ')
                   : 'all'}
+              </Typography> */}
+                <Typography variant={'body2'}>
+                  Drop files here or click{' '}
+                  <Box className="link_style" component={'span'}>
+                    browse
+                  </Box>{' '}
+                  thorough your machine.
+                </Typography>
               </Box>
             </label>
           )}
