@@ -45,3 +45,7 @@ export const _fetchBrokerIsApproval = () => {
 export const _fetchPipelineStatus = () => {
   return get('/dashboard/pipeline/approve/status');
 };
+
+export const _deleteProcess = (processInsId: string) => {
+  return del(`/processes/${processInsId}`);
+};

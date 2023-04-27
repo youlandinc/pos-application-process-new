@@ -19,4 +19,6 @@ export interface LoanItemCardProps {
   };
   userType: UserType | undefined;
   children?: ReactNode;
+  onDelete: () => void;
+  onView: () => void;
 }

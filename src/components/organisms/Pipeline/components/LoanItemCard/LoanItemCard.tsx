@@ -32,7 +32,12 @@ import {
 
 import { LoanItemCardProps } from './index';
 
-export const LoanItemCard: FC<LoanItemCardProps> = ({ formData, userType }) => {
+export const LoanItemCard: FC<LoanItemCardProps> = ({
+  formData,
+  userType,
+  onView,
+  onDelete,
+}) => {
   const [popperVisible, setPopperVisible] = useState(false);
 
   const anchorRef = useRef<HTMLButtonElement>(null);
@@ -65,29 +70,46 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({ formData, userType }) => {
     setPopperVisible(false);
   }, []);
 
-  const handledClick = useCallback(() => setPopperVisible((open) => !open), []);
+  const handledClick = useCallback((e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    setPopperVisible((open) => !open);
+  }, []);
 
-  const handledMenuItemClick = useCallback(
+  const handledView = useCallback(
     async (e: MouseEvent<HTMLElement>) => {
       e.preventDefault();
+      e.stopPropagation();
       handledClose(e);
+      await onView();
     },
-    [handledClose],
+    [handledClose, onView],
+  );
+
+  const handledDelete = useCallback(
+    async (e: MouseEvent<HTMLElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
+      handledClose(e);
+      await onDelete();
+    },
+    [handledClose, onDelete],
   );
 
   return (
     <Box
+      onClick={handledView}
       sx={{
         p: 3,
         borderRadius: 2,
         border: '2px solid #D2D6E1',
+        transition: 'all .3s',
+        cursor: 'pointer',
         width: {
           xxl: 'calc(33% - 11.5px)',
           xl: 'calc(32.95% - 11.5px)',
           md: 'calc(50% - 12px)',
           xs: '100%',
         },
-        transition: 'all .3s',
         '&:hover': {
           borderColor: 'primary.main',
         },
@@ -99,8 +121,14 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({ formData, userType }) => {
         justifyContent={'space-between'}
       >
         <Box>
-          <Typography variant={'subtitle1'}>{line_1}</Typography>
-          <Typography variant={'subtitle1'}>{line_2}</Typography>
+          {address ? (
+            <>
+              <Typography variant={'subtitle1'}>{line_1}</Typography>
+              <Typography variant={'subtitle1'}>{line_2}</Typography>
+            </>
+          ) : (
+            <Typography variant={'subtitle1'}>Draft</Typography>
+          )}
         </Box>
         <StyledButton
           color={'info'}
@@ -128,14 +156,14 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({ formData, userType }) => {
               <Paper>
                 <ClickAwayListener onClickAway={handledClose}>
                   <MenuList sx={{ mt: 1.5, width: 180 }}>
-                    <MenuItem sx={{ width: '100%' }}>
+                    <MenuItem onClick={handledView} sx={{ width: '100%' }}>
                       <Icon
                         className={'POS_mr_3'}
                         component={RemoveRedEyeOutlined}
                       />
                       View
                     </MenuItem>
-                    <MenuItem sx={{ width: '100%' }}>
+                    <MenuItem onClick={handledDelete} sx={{ width: '100%' }}>
                       <Icon
                         className={'POS_mr_3'}
                         component={DeleteForeverOutlined}
@@ -190,13 +218,19 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({ formData, userType }) => {
             <Box className={'product_item'}>
               <Box>Origination Fee</Box>
               <Typography variant={'subtitle1'}>
-                {POSFormatPercent(brokerPoints / 100)}
+                {`${POSFormatDollar(
+                  brokerOriginationFee || officerOriginationFee,
+                )}(${POSFormatPercent(
+                  (brokerPoints && brokerPoints / 100) ||
+                    (officerPoints && officerPoints / 100) ||
+                    undefined,
+                )})`}
               </Typography>
             </Box>
             <Box className={'product_item'}>
               <Box>Processing Fee</Box>
               <Typography variant={'subtitle1'}>
-                {POSFormatDollar(brokerProcessingFee)}
+                {POSFormatDollar(brokerProcessingFee || officerProcessingFee)}
               </Typography>
             </Box>
           </>

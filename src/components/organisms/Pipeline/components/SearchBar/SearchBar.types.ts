@@ -7,6 +7,7 @@ export interface SearchBarProps {
   };
   onParamsChange: (
     k: keyof SearchBarProps['searchForm'],
-    v: string | string[] | [Date | null, Date | null],
+    v: string | string[] | [Date | null, Date | null] | boolean,
   ) => void;
+  onValueChange: (v: boolean) => void;
 }
