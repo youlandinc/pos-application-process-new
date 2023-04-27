@@ -63,4 +63,15 @@ export const POSSize = <T extends number | string, X extends number | string>(
   };
 };
 
+export const PSXTextEllipsis = (width: number | string, line = 1): any => {
+  return {
+    width,
+    overflow: 'hidden',
+    '-webkit-line-clamp': line,
+    '-webkit-box-orient': 'vertical',
+    'text-overflow': 'ellipsis',
+    'white-space': 'nowrap',
+  };
+};
+
 export * from './createEmotionCache';

@@ -53,3 +53,15 @@ export const LoginStyles = {
     },
   },
 } as const;
+
+export const LoginFormStyles = {
+  '&.form_body': {
+    mt: 3,
+    '&>div:nth-of-type(2)': {
+      my: 3,
+    },
+    '& button': {
+      width: '100%',
+    },
+  },
+} as const;

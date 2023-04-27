@@ -91,8 +91,16 @@ const POSMenuListStyles: SxProps = {
     '&.active': {
       bgcolor: 'primary.A200',
       color: 'primary.main',
-      borderLeft: '2px solid',
-      borderColor: 'primary.main',
+      position: 'relative',
+      '&::after': {
+        content: '""',
+        height: '100%',
+        width: 2,
+        bgcolor: 'primary.main',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+      },
     },
     '& svg': {
       verticalAlign: 'middle',

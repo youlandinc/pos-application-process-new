@@ -16,6 +16,7 @@ export * from './StyledRadio';
 export * from './StyledTooltip';
 
 export * from './StyledDialog';
+export * from './StyledDrawer';
 
 export * from './StyledTextField';
 export * from './StyledTextFieldOtp';

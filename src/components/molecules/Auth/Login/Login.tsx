@@ -7,7 +7,7 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { LoginProps, LoginStyles } from './index';
+import { LoginFormStyles, LoginProps, LoginStyles } from './index';
 import { POSFlex } from '@/styles';
 import { AUTO_HIDE_DURATION, LOGIN_APP_KEY, userpool } from '@/constants';
 import { DetectActiveService } from '@/services/DetectActive';

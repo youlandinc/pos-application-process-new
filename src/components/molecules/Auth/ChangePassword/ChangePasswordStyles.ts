@@ -1,19 +1,18 @@
 import { SxProps } from '@mui/material';
 import { POSFlex, POSFont } from '@/styles';
 
-export const ChangeEmailStyles: SxProps = {
+export const ChangePasswordStyles: SxProps = {
   ...POSFlex('center', 'space-between', 'row'),
   width: '100%',
   height: '100%',
-  '& .change_email_img': {
+  '& .change_password_img': {
     flex: 1,
     width: '100%',
     height: 'auto',
     display: { xs: 'none', lg: 'block' },
   },
-  '& .change_email_form': {
+  '& .change_password_form': {
     flex: 1,
-    textAlign: 'center',
     py: 6.5,
     borderRadius: 2,
     width: { lg: '700px', xs: '100%' },
@@ -31,6 +30,9 @@ export const ChangeEmailStyles: SxProps = {
       '&>div:nth-of-type(2)': {
         my: 3,
       },
+      '&>div:nth-of-type(3)': {
+        mb: 3,
+      },
       '& button': {
         width: '100%',
       },
@@ -39,6 +41,17 @@ export const ChangeEmailStyles: SxProps = {
       mt: 3,
       '& button': {
         width: '100%',
+      },
+    },
+    '& .password_error_list': {
+      ...POSFont(12, 600, 1.5, 'success.main'),
+      listStyle: 'disc',
+      listStylePosition: 'inside',
+      p: 0,
+      mt: 0.25,
+      '& .error_active': {
+        color: 'error.main',
+        transition: 'color .3s',
       },
     },
   },

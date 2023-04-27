@@ -1,2 +1,2 @@
 export * from './POSMenuList';
-export * from './SideDialog';
+export * from './SideDrawer';

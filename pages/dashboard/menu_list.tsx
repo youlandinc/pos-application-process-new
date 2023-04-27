@@ -3,7 +3,7 @@ import { Dehaze } from '@mui/icons-material';
 
 import {
   POSMenuList,
-  SideDialog,
+  SideDrawer,
   StyledBoxWrap,
   StyledButton,
 } from '@/components';
@@ -30,7 +30,7 @@ const POSMenuListPage: FC = () => {
           </Box>
         )}
       </StyledBoxWrap>
-      <SideDialog close={close} visible={visible} />
+      <SideDrawer close={close} visible={visible} />
     </>
   );
 };
