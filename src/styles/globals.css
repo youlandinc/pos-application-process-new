@@ -188,6 +188,10 @@ ul {
   flex-direction: row;
 }
 
+.POS_fd_column {
+  flex-direction: column;
+}
+
 .POS_al_c {
   align-items: center;
 }

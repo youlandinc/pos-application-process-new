@@ -13,8 +13,8 @@ import { StyledBoxWrap } from '@/components';
 export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
   const store = useMst();
 
-  //useCheckIsLogin();
-  //useCheckInfoIsComplete();
+  useCheckIsLogin();
+  useCheckInfoIsComplete();
 
   return (
     <Box sx={{ height: '100%' }}>

@@ -1,3 +1,5 @@
 export * from './PipelinePage';
 
-export * from './PipelineList';
+export * from './PipelineListPage';
+
+export * from './PipelineProfilePage';

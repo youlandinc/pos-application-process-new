@@ -15,6 +15,8 @@ export enum PipelineTaskName {
   W9_FORM = 'W9 Form',
   LOAN_OFFICER_AGREEMENT = 'Loan Officer information',
   REAL_ESTATE_AGENT_AGREEMENT = 'Real Estate Agent information',
+  LOAN_OFFICER_ACH_INFORMATION = 'Loan Officer ACH Information',
+  REAL_ESTATE_AGENT_ACH_INFORMATION = 'REAL_ESTATE_AGENT_ACH_INFORMATION',
 }
 
 export enum PipelineTaskKey {
@@ -26,6 +28,8 @@ export enum PipelineTaskKey {
   WF = 'W9_FORM',
   LOA = 'LOAN_OFFICER_AGREEMENT',
   REAA = 'REAL_ESTATE_AGENT_AGREEMENT',
+  LOI = 'LOAN_OFFICER_ACH_INFORMATION',
+  REAI = 'REAL_ESTATE_AGENT_ACH_INFORMATION',
 }
 
 export interface PipelineTasksMap {
@@ -37,6 +41,8 @@ export interface PipelineTasksMap {
   [PipelineTaskKey.BL]: PipelineTaskItem<PipelineLicense>;
   [PipelineTaskKey.BQ]: PipelineTaskItem<PipelineQuestionnaire>;
   [PipelineTaskKey.WF]: PipelineTaskItem<PipelineW9>;
+  [PipelineTaskKey.LOI]: PipelineTaskItem<PipelineACH>;
+  [PipelineTaskKey.REAI]: PipelineTaskItem<PipelineACH>;
 }
 
 export interface PipelineTaskItem<
@@ -80,7 +86,7 @@ export interface PipelineAgreement {
   title: string;
   fullName: string;
   company: string;
-  documentFile: TaskFiles;
+  documentFile?: TaskFiles;
   phone: string;
 }
 
@@ -98,7 +104,7 @@ export interface PipelineQuestionnaire {
 }
 
 export interface PipelineACH {
-  documentFile: TaskFiles;
+  documentFile?: TaskFiles;
   propAddr: AddressData;
   bankName: string;
   accountName: string;

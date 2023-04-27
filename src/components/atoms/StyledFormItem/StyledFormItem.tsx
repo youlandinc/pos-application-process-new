@@ -8,11 +8,14 @@ export const StyledFormItem: FC<StyledFormItemProps> = ({
   children,
   label,
   labelSx,
+  tip,
+  tipSx,
+  sx,
   ...rest
 }) => {
   const breakpoints = useBreakpoints();
   return (
-    <Box {...rest}>
+    <Box sx={{ maxWidth: 900, ...sx }} {...rest}>
       <Typography
         component={'div'}
         mb={3}
@@ -21,6 +24,16 @@ export const StyledFormItem: FC<StyledFormItemProps> = ({
       >
         {label}
       </Typography>
+      {tip && (
+        <Typography
+          component={'div'}
+          mb={3}
+          sx={{ color: 'info.A100', ...tipSx }}
+          variant={'body1'}
+        >
+          {tip}
+        </Typography>
+      )}
       {children}
     </Box>
   );

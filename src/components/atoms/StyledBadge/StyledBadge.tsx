@@ -1,9 +1,9 @@
+import { FC } from 'react';
+import { Box } from '@mui/material';
+
+import { StyledBadgeProps } from './index';
 import { POSFlex, POSFont } from '@/styles';
 import { LoanStage } from '@/types';
-import { Box } from '@mui/material';
-import { FC } from 'react';
-
-import { StyledBadgeProps, StyledBadgeStyles } from './index';
 
 export const StyledBadge: FC<StyledBadgeProps> = ({ content, status }) => {
   const computedStyles = () => ({

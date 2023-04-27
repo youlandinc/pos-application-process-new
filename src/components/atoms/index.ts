@@ -40,3 +40,5 @@ export * from './StyledDateRange';
 export * from './StyledFormItem';
 
 export * from './StyledBadge';
+
+export * from './StyledStatus';

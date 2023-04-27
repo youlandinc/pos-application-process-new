@@ -1,6 +1,7 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import {
   PTACH,
+  PTACHNotBroker,
   PTAgreement,
   PTAgreementNotBroker,
   PTGovernment,
@@ -31,6 +32,8 @@ export const PTask = types
     [PipelineTaskKey.WF]: PTW9,
     [PipelineTaskKey.LOA]: PTAgreementNotBroker,
     [PipelineTaskKey.REAA]: PTAgreementNotBroker,
+    [PipelineTaskKey.LOI]: PTACHNotBroker,
+    [PipelineTaskKey.REAI]: PTACHNotBroker,
   })
   .actions((self) => {
     return {
@@ -76,6 +79,16 @@ export const PTask = types
               case PipelineTaskKey.REAA:
                 self[PipelineTaskKey.REAA].injectPipelineTaskData(
                   value as PipelineTaskItem<PipelineAgreement>,
+                );
+                break;
+              case PipelineTaskKey.LOI:
+                self[PipelineTaskKey.LOI].injectPipelineTaskData(
+                  value as PipelineTaskItem<PipelineACH>,
+                );
+                break;
+              case PipelineTaskKey.REAI:
+                self[PipelineTaskKey.REAI].injectPipelineTaskData(
+                  value as PipelineTaskItem<PipelineACH>,
                 );
                 break;
             }

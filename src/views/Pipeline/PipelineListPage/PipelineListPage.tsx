@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 
 import { StyledLoading } from '@/components';
 
-const DynamicPipelineTable = dynamic(
+const DynamicPipelineList = dynamic(
   () =>
     import('@/components/organisms/Pipeline/Pipeline').then(
       (mod) => mod.Pipeline,
@@ -13,10 +13,10 @@ const DynamicPipelineTable = dynamic(
   },
 );
 
-export const PipelineList: FC = () => {
+export const PipelineListPage: FC = () => {
   return (
     <>
-      <DynamicPipelineTable />
+      <DynamicPipelineList />
     </>
   );
 };

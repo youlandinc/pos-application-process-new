@@ -57,7 +57,7 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
   }, [check, persistDataLoaded]);
 };
 
-export const useCheckInfoIsComplete = (jumpPath = '/pipeline') => {
+export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
   const {
     session,
     persistDataLoaded,
@@ -71,13 +71,14 @@ export const useCheckInfoIsComplete = (jumpPath = '/pipeline') => {
   } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
+  console.log(router.pathname);
   const check = useCallback(async () => {
     if (
       !persistDataLoaded ||
       (session && userType && loginType && pipelineStatus) ||
-      router.pathname.includes('pipeline') ||
-      router.pathname.includes('change_email') ||
-      router.pathname.includes('change_password')
+      router.pathname.includes('/pipeline/profile') ||
+      router.pathname.includes('/change_email') ||
+      router.pathname.includes('/change_password')
     ) {
       return;
     }

@@ -16,7 +16,7 @@ import { validate } from 'validate.js';
 import { observer } from 'mobx-react-lite';
 
 import { useSwitch } from '@/hooks';
-import { SignUpFormStyles, SignUpProps, SignUpStyles } from './index';
+import { SignUpProps, SignUpStyles } from './index';
 import { POSFlex } from '@/styles';
 import {
   AUTO_HIDE_DURATION,
@@ -353,7 +353,7 @@ export const SignUp: FC<SignUpProps> = observer(
         )}
         <StyledDialog
           content={
-            <Box>
+            <Box mt={3}>
               <Typography
                 className={'POS_tl POS_fullwidth'}
                 color={'text.secondary'}
@@ -389,7 +389,7 @@ export const SignUp: FC<SignUpProps> = observer(
           }
           disableEscapeKeyDown
           footer={
-            <>
+            <Box mt={3}>
               <StyledButton
                 disabled={loading}
                 onClick={close}
@@ -407,7 +407,7 @@ export const SignUp: FC<SignUpProps> = observer(
               >
                 Confirm
               </StyledButton>
-            </>
+            </Box>
           }
           header={
             <>

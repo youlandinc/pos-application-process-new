@@ -26,7 +26,7 @@ import BUTTON_ICON_ARROW from '@/svg/button/button_icon_arrow.svg';
 import BUTTON_ICON_MY_ACCOUNT from '@/svg/button/button_icon_my_account.svg';
 
 const MENU_LIST = [
-  { label: 'My Profile', url: '' },
+  { label: 'My Profile', url: '/pipeline/profile' },
   { label: 'Change Email', url: 'auth/change_email' },
   {
     label: 'Change Password',

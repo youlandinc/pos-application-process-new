@@ -1,6 +1,7 @@
 import { StyledButton, StyledDialog, StyledLoading } from '@/components';
 import { useSwitch } from '@/hooks';
 import { POSFlex } from '@/styles';
+import { UserType } from '@/types';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import { DeleteForever } from '@mui/icons-material';
@@ -29,9 +30,9 @@ export const Pipeline: FC = observer(() => {
   const router = useRouter();
 
   const {
-    userSetting,
+    userSetting: { pipelineStatus, pipelineStatusInitialized },
+    pipelineTask: { pipelineInitialized },
     userType,
-    pipelineTask: { pipelineInitialized, formData },
   } = useMst();
 
   const { visible, open, close } = useSwitch(false);
@@ -53,6 +54,12 @@ export const Pipeline: FC = observer(() => {
   });
 
   const [, getListData] = useAsyncFn(async () => {
+    if (
+      (!pipelineInitialized || !pipelineStatusInitialized || !pipelineStatus) &&
+      userType !== UserType.CUSTOMER
+    ) {
+      return;
+    }
     const params = {
       page,
       size: PAGE_SIZE,
@@ -141,7 +148,7 @@ export const Pipeline: FC = observer(() => {
       close();
       setDeleteLoading(false);
     }
-  }, [close, deleteId, enqueueSnackbar]);
+  }, [close, deleteId, enqueueSnackbar, getListData]);
 
   useEffect(() => {
     getListData();
@@ -153,7 +160,12 @@ export const Pipeline: FC = observer(() => {
     }
   }, [isChange]);
 
-  return (
+  return (!pipelineInitialized ||
+    !pipelineStatusInitialized ||
+    !pipelineStatus) &&
+    userType !== UserType.CUSTOMER ? (
+    <></>
+  ) : (
     <>
       <SearchBar
         onParamsChange={(k, v) =>
