@@ -10,12 +10,26 @@ export const StyledDrawerStyles: SxProps = {
       fontWeight: 600,
       fontSize: 18,
       color: 'text.primary',
+      borderBottom: '1px solid',
+      borderColor: 'background.border_default',
+      py: 3,
+      px: {
+        md: 6,
+        xs: 1.5,
+      },
     },
     '& .drawer_footer': {
       // minHeight: 60,
       width: '100%',
       position: 'sticky',
       bottom: 0,
+      borderTop: '1px solid',
+      borderColor: 'background.border_default',
+      py: 3,
+      px: {
+        md: 6,
+        xs: 1.5,
+      },
     },
     '& .drawer_content': {
       flexGrow: 1,

@@ -27,10 +27,10 @@ import BUTTON_ICON_MY_ACCOUNT from '@/svg/button/button_icon_my_account.svg';
 
 const MENU_LIST = [
   { label: 'My Profile', url: '' },
-  { label: 'Change Email', url: '' },
+  { label: 'Change Email', url: 'auth/change_email' },
   {
     label: 'Change Password',
-    url: '',
+    url: 'auth/change_password',
   },
   { label: 'Sign Out', url: 'sign_out' },
 ];
