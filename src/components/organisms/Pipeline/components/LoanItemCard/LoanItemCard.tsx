@@ -107,7 +107,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
         width: {
           xxl: 'calc(33% - 11.5px)',
           xl: 'calc(32.95% - 11.5px)',
-          md: 'calc(50% - 12px)',
+          lg: 'calc(50% - 12px)',
           xs: '100%',
         },
         '&:hover': {
