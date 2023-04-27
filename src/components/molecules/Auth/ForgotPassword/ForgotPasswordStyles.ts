@@ -54,6 +54,7 @@ export const ForgotPasswordStyles = {
       },
       '& .form_title': {
         fontSize: 'clamp(24px,2.5vw,32px)',
+        textAlign: 'center',
       },
       '& .form_body': {
         mt: 3,
