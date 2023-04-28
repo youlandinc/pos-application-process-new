@@ -77,6 +77,7 @@ export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
       !persistDataLoaded ||
       (session && userType && loginType && pipelineStatus) ||
       router.pathname.includes('/pipeline/profile') ||
+      router.pathname.includes('/pipeline/task') ||
       router.pathname.includes('/change_email') ||
       router.pathname.includes('/change_password')
     ) {
