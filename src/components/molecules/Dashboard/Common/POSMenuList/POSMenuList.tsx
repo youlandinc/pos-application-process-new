@@ -124,7 +124,7 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ scene }) => {
           return;
         }
         setActiveKey(key);
-        // router.push(`/dashboard/${path}`);
+        router.push(`/dashboard/${path}`);
       };
     },
     [activeKey],

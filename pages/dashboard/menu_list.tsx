@@ -10,6 +10,7 @@ import {
 import { useBreakpoints, useSwitch } from '@/hooks';
 import { Box } from '@mui/material';
 import { useMst } from '@/models/Root';
+import { SceneType } from '@/types';
 const POSMenuListPage: FC = () => {
   const { visible, open, close } = useSwitch();
   const breakpoint = useBreakpoints();
@@ -25,7 +26,9 @@ const POSMenuListPage: FC = () => {
           <Box sx={{ maxWidth: 280 }}>
             <POSMenuList
               info={selectedProcessData}
-              scene={selectedProcessData.scene || 'bridge refinance'}
+              scene={
+                (selectedProcessData.scene as SceneType) || 'bridge refinance'
+              }
             />
           </Box>
         )}
