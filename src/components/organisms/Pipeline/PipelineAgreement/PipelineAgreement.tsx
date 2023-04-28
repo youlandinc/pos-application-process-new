@@ -88,7 +88,11 @@ export const PipelineAgreement: FC = observer(() => {
               placeholder={'Company Name'}
             />
           </Stack>
-          <Stack flexDirection={'row'} gap={3} width={'100%'}>
+          <Stack
+            flexDirection={{ lg: 'row', xs: 'column' }}
+            gap={3}
+            width={'100%'}
+          >
             <StyledTextField
               label={'Your Full Name'}
               placeholder={'Your Full Name'}
@@ -101,7 +105,11 @@ export const PipelineAgreement: FC = observer(() => {
               placeholder={'Phone Number'}
             />
           </Stack>
-          <Stack flexDirection={'row'} gap={3} width={'100%'}>
+          <Stack
+            flexDirection={{ lg: 'row', xs: 'column' }}
+            gap={3}
+            width={'100%'}
+          >
             <StyledTextField label={'Your Title'} placeholder={'Your Title'} />
             <StyledTextField label={'Your Email'} placeholder={'Your Email'} />
           </Stack>
@@ -116,7 +124,7 @@ export const PipelineAgreement: FC = observer(() => {
             <StyledButton
               sx={{
                 width: { lg: 600, xs: '100%' },
-                mt: 3,
+                mt: { xs: 0, lg: 3 },
               }}
               variant={'outlined'}
             >
@@ -128,23 +136,20 @@ export const PipelineAgreement: FC = observer(() => {
             flexDirection={{ sx: 'column', lg: 'row' }}
             gap={3}
             justifyContent={'center'}
-            mt={3}
-            width={{
-              lg: 600,
-              xs: '100%',
-            }}
+            mt={{ lg: 3, xs: 0 }}
+            width={{ lg: 600, xs: '100%' }}
           >
             <StyledButton
               color={'info'}
               onClick={() => router.back()}
-              sx={{ flex: 1, width: '100%' }}
+              sx={{ flex: 1, width: '100%', order: { xs: 2, lg: 1 } }}
               variant={'text'}
             >
               Back
             </StyledButton>
             <StyledButton
               onClick={() => router.back()}
-              sx={{ flex: 1, width: '100%' }}
+              sx={{ flex: 1, width: '100%', order: { xs: 1, lg: 2 } }}
             >
               Save
             </StyledButton>
