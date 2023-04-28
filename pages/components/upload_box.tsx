@@ -23,7 +23,10 @@ const UploadBoxComponent: FC = () => {
     });
     console.log({ files });
     try {
-      const { data } = await _addTaskFile(formData, '');
+      const { data } = await _addTaskFile(
+        formData,
+        'babad_1651744528326295552',
+      );
       setFileList([...fileList, ...data]);
       setLoading(false);
     } catch (err) {

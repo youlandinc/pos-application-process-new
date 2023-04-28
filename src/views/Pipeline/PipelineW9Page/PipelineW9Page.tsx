@@ -5,8 +5,8 @@ import { StyledLoading } from '@/components';
 
 const DynamicPipelineW9 = dynamic(
   () =>
-    import('@/components/organisms/Pipeline/PipeLineW9').then(
-      (mod) => mod.Pipeline,
+    import('@/components/organisms/Pipeline/PipelineW9').then(
+      (mod) => mod.PipelineW9,
     ),
   {
     loading: () => <StyledLoading />,

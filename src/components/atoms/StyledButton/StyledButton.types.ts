@@ -1,4 +1,4 @@
-import { ButtonProps, IconButtonProps } from '@mui/material';
+import { ButtonProps } from '@mui/material';
 
 export interface StyledButtonProps extends ButtonProps {
   loading?: boolean;

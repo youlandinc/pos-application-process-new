@@ -161,6 +161,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
     onDragOver: stopDefaults,
     onDrop: async (e: React.DragEvent<HTMLElement>) => {
       stopDefaults(e);
+      console.log({ e });
       if (e.dataTransfer.files && validatorFileSize(e.dataTransfer.files)) {
         await handleUpload(e.dataTransfer.files);
       }
@@ -169,6 +170,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
 
   const handleUpload = useCallback(
     async (files: FileList) => {
+      console.log({ files });
       onSuccess(files);
     },
     [onSuccess],
@@ -194,6 +196,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
 
   const handleChange = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
+      console.dir({ event }, event.target.files);
       if (event.target.files && validatorFileSize(event.target.files)) {
         await handleUpload(event.target.files);
         event.target.value = '';
