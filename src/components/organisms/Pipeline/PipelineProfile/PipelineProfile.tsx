@@ -62,7 +62,7 @@ export const PipelineProfile: FC = observer(() => {
               className={'task_item'}
               flexDirection={'row'}
               justifyContent={'space-between'}
-              onClick={() => handleEnterSubTask('/pipeline/agreement')}
+              onClick={() => handleEnterSubTask('/pipeline/task/agreement')}
             >
               <Typography className={'task_label'} variant={'h6'}>
                 {BROKER_AGREEMENT.taskName}
@@ -75,7 +75,7 @@ export const PipelineProfile: FC = observer(() => {
               className={'task_item'}
               flexDirection={'row'}
               justifyContent={'space-between'}
-              onClick={() => handleEnterSubTask('/pipeline/government')}
+              onClick={() => handleEnterSubTask('/pipeline/task/government')}
             >
               <Typography className={'task_label'} variant={'h6'}>
                 {BROKER_GOVERNMENT_ID.taskName}
@@ -87,7 +87,7 @@ export const PipelineProfile: FC = observer(() => {
               className={'task_item'}
               flexDirection={'row'}
               justifyContent={'space-between'}
-              onClick={() => handleEnterSubTask('/pipeline/w9')}
+              onClick={() => handleEnterSubTask('/pipeline/task/w9')}
             >
               <Typography className={'task_label'} variant={'h6'}>
                 {W9_FORM.taskName}
@@ -100,7 +100,7 @@ export const PipelineProfile: FC = observer(() => {
               className={'task_item'}
               flexDirection={'row'}
               justifyContent={'space-between'}
-              onClick={() => handleEnterSubTask('/pipeline/questionnaire')}
+              onClick={() => handleEnterSubTask('/pipeline/task/questionnaire')}
             >
               <Typography
                 className={'task_label'}
@@ -123,7 +123,7 @@ export const PipelineProfile: FC = observer(() => {
               className={'task_item'}
               flexDirection={'row'}
               justifyContent={'space-between'}
-              onClick={() => handleEnterSubTask('/pipeline/ach')}
+              onClick={() => handleEnterSubTask('/pipeline/task/ach')}
             >
               <Typography className={'task_label'} variant={'h6'}>
                 {ACH_INFORMATION.taskName}
@@ -140,7 +140,7 @@ export const PipelineProfile: FC = observer(() => {
               className={'task_item'}
               flexDirection={'row'}
               justifyContent={'space-between'}
-              onClick={() => handleEnterSubTask('/pipeline/agreement')}
+              onClick={() => handleEnterSubTask('/pipeline/task/agreement')}
             >
               <Typography className={'task_label'} variant={'h6'}>
                 {LOAN_OFFICER_AGREEMENT.taskName}
@@ -152,7 +152,7 @@ export const PipelineProfile: FC = observer(() => {
               className={'task_item'}
               flexDirection={'row'}
               justifyContent={'space-between'}
-              onClick={() => handleEnterSubTask('/pipeline/w9')}
+              onClick={() => handleEnterSubTask('/pipeline/task/w9')}
             >
               <Typography className={'task_label'} variant={'h6'}>
                 {W9_FORM.taskName}
@@ -164,7 +164,7 @@ export const PipelineProfile: FC = observer(() => {
               className={'task_item'}
               flexDirection={'row'}
               justifyContent={'space-between'}
-              onClick={() => handleEnterSubTask('/pipeline/ach')}
+              onClick={() => handleEnterSubTask('/pipeline/task/ach')}
             >
               <Typography className={'task_label'} variant={'h6'}>
                 {LOAN_OFFICER_ACH_INFORMATION.taskName}
@@ -181,7 +181,7 @@ export const PipelineProfile: FC = observer(() => {
               className={'task_item'}
               flexDirection={'row'}
               justifyContent={'space-between'}
-              onClick={() => handleEnterSubTask('/pipeline/agreement')}
+              onClick={() => handleEnterSubTask('/pipeline/task/agreement')}
             >
               <Typography className={'task_label'} variant={'h6'}>
                 {REAL_ESTATE_AGENT_AGREEMENT.taskName}
@@ -193,7 +193,7 @@ export const PipelineProfile: FC = observer(() => {
               className={'task_item'}
               flexDirection={'row'}
               justifyContent={'space-between'}
-              onClick={() => handleEnterSubTask('/pipeline/w9')}
+              onClick={() => handleEnterSubTask('/pipeline/task/w9')}
             >
               <Typography className={'task_label'} variant={'h6'}>
                 {W9_FORM.taskName}
@@ -205,7 +205,7 @@ export const PipelineProfile: FC = observer(() => {
               className={'task_item'}
               flexDirection={'row'}
               justifyContent={'space-between'}
-              onClick={() => handleEnterSubTask('/pipeline/ach')}
+              onClick={() => handleEnterSubTask('/pipeline/task/ach')}
             >
               <Typography className={'task_label'} variant={'h6'}>
                 {REAL_ESTATE_AGENT_ACH_INFORMATION.taskName}
