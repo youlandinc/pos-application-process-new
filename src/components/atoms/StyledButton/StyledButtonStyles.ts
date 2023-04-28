@@ -8,17 +8,11 @@ export const StyledButtonStyles: SxProps = {
     padding: '15px 20px',
     borderRadius: 2,
     boxShadow: 'none',
-    '&:disabled': {
-      color: 'info.main',
-      cursor: 'no-drop',
-    },
   },
   '&.MuiButton-contained:disabled': {
     bgcolor: '#D4D7DA',
   },
-  '&.Mui-disabled': {
-    borderColor: 'background.broder_disabled',
-  },
+
   '&.MuiButton-sizeSmall': {
     padding: '7px 12px',
     fontSize: 14,
@@ -27,4 +21,14 @@ export const StyledButtonStyles: SxProps = {
     {
       color: 'text.primary',
     },
+  '&.MuiIconButton-root,&.MuiButton-root': {
+    '&:disabled': {
+      color: 'info.main',
+    },
+    '&.Mui-disabled': {
+      pointerEvents: 'auto',
+      cursor: 'not-allowed',
+      borderColor: 'background.broder_disabled',
+    },
+  },
 } as const;
