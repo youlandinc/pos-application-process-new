@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
 
-import { StyledTextFieldPhoneProps } from './index';
+import { StyledTextFieldPhoneProps, StyledTextFieldPhoneStyles } from './index';
 
 import { StyledTextField } from '../StyledTextField';
 
@@ -36,7 +36,10 @@ export const StyledTextFieldPhone: FC<StyledTextFieldPhoneProps> = ({
       format={format}
       mask={mask}
       onValueChange={handledChange}
-      sx={{ ...sx }}
+      sx={{
+        ...StyledTextFieldPhoneStyles,
+        ...sx,
+      }}
       value={text}
       {...rest}
     />
