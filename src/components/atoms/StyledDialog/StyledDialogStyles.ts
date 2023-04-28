@@ -2,8 +2,11 @@ import { SxProps } from '@mui/material';
 
 export const StyledDialogStyles: SxProps = {
   '&.MuiDialog-root': {
+    '& .MuiDialogTitle-root, & .MuiDialogContent-root, & .MuiDialogActions-root':
+      {
+        p: 0,
+      },
     '& .dialog_header': {
-      // minHeight: 76,
       px: 3,
       pt: 3,
       fontWeight: 600,
@@ -11,14 +14,12 @@ export const StyledDialogStyles: SxProps = {
       color: 'text.primary',
     },
     '& .dialog_footer': {
-      // minHeight: 60,
       textAlign: 'right',
       px: 3,
       pb: 3,
     },
     '& .dialog_content': {
       px: 3,
-      // py: 1.5,
     },
     '& .MuiDialog-paper': {
       width: {
@@ -35,11 +36,6 @@ export const StyledDialogStyles: SxProps = {
       },
       boxShadow:
         '0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
-    },
-
-    '& .MuiDialogActions-root': {
-      py: 1.5,
-      px: 3,
     },
   },
 } as const;

@@ -1,6 +1,7 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import {
   PipelineACH,
+  PipelineACHAccountType,
   PipelineTaskItem,
   PipelineTaskItemStatus,
 } from '@/types/pipeline';
@@ -23,7 +24,13 @@ export const PTACHNotBroker = types
       routingNumber: types.maybeNull(types.string),
       accountName: types.maybeNull(types.string),
       accountNumber: types.maybeNull(types.string),
-      accountType: types.maybeNull(types.string),
+      accountType: types.maybeNull(
+        types.union(
+          types.literal(PipelineACHAccountType.DEFAULT),
+          types.literal(PipelineACHAccountType.CHECKING),
+          types.literal(PipelineACHAccountType.SAVINGS),
+        ),
+      ),
     }),
   })
   .views((self) => ({

@@ -9,7 +9,7 @@ export * from './useCheckLogin';
 export * from './useGooglePlacesSearch';
 //export * from './useCountdown';
 //export * from './useCheckLoanAmount';
-//export * from './useRenderPdf';
+export * from './useRenderPdf';
 
 export * from './usePersistFn';
 export * from './usePersistData';

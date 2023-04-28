@@ -25,9 +25,10 @@ export const PTAgreementNotBroker = types
       title: types.maybeNull(types.string),
       fullName: types.maybeNull(types.string),
       company: types.maybeNull(types.string),
-      phone: types.maybe(types.string),
+      phone: types.maybeNull(types.string),
       license: types.maybe(
         types.union(
+          types.literal(PipelineLicenseType.DEFAULT),
           types.literal(PipelineLicenseType.DRE_LICENSE),
           types.literal(PipelineLicenseType.NMLS_LICENSE),
         ),

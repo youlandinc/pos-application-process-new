@@ -1,4 +1,9 @@
-import { LoanSpecies, LoanStage, PipelineLicenseType } from '@/types';
+import {
+  LoanSpecies,
+  LoanStage,
+  PipelineACHAccountType,
+  PipelineLicenseType,
+} from '@/types';
 import { PipelineLicenseTypeOpt } from '@/types/options';
 
 export const OPTIONS_PIPELINE_LICENSE_TYPE: Option[] = [
@@ -80,5 +85,18 @@ export const OPTIONS_LICENSE_TYPE: Option[] = [
     key: PipelineLicenseType.DRE_LICENSE,
     value: PipelineLicenseType.DRE_LICENSE,
     label: 'Dre License',
+  },
+];
+
+export const OPTIONS_ACCOUNT_TYPE: Option[] = [
+  {
+    key: PipelineACHAccountType.CHECKING,
+    value: PipelineACHAccountType.CHECKING,
+    label: 'Checking',
+  },
+  {
+    key: PipelineACHAccountType.SAVINGS,
+    value: PipelineACHAccountType.SAVINGS,
+    label: 'Savings',
   },
 ];

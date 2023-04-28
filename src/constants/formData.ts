@@ -3,6 +3,8 @@ import {
   ChannelOpt,
   OccupancyOpt,
   OfferOpt,
+  PipelineACHAccountType,
+  PipelineLicenseType,
   PipelineLicenseTypeOpt,
   ProcessOpt,
   PropertyOpt,
@@ -565,7 +567,7 @@ export const FormData = {
         accountName: '',
         routingNumber: '',
         accountNumber: '',
-        accountType: '',
+        accountType: PipelineACHAccountType.DEFAULT,
         documentFile: undefined,
       },
     },
@@ -588,7 +590,7 @@ export const FormData = {
         accountName: '',
         routingNumber: '',
         accountNumber: '',
-        accountType: '',
+        accountType: PipelineACHAccountType.DEFAULT,
       },
     },
     [PipelineTaskKey.REAI]: {
@@ -610,7 +612,7 @@ export const FormData = {
         accountName: '',
         routingNumber: '',
         accountNumber: '',
-        accountType: '',
+        accountType: PipelineACHAccountType.DEFAULT,
       },
     },
     [PipelineTaskKey.BA]: {
@@ -656,7 +658,7 @@ export const FormData = {
         title: '',
         fullName: '',
         company: '',
-        documentFile: undefined,
+        licenses: PipelineLicenseType.DEFAULT,
       },
     },
     [PipelineTaskKey.REAA]: {
@@ -679,7 +681,7 @@ export const FormData = {
         title: '',
         fullName: '',
         company: '',
-        documentFile: undefined,
+        licenses: PipelineLicenseType.DEFAULT,
       },
     },
     [PipelineTaskKey.BG]: {

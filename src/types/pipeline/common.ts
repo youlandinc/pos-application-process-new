@@ -111,10 +111,17 @@ export interface PipelineACH {
   accountName: string;
   routingNumber: string;
   accountNumber: string;
-  accountType: string;
+  accountType: PipelineACHAccountType;
 }
 
 export enum PipelineLicenseType {
   NMLS_LICENSE = 'NMLS',
   DRE_LICENSE = 'DRE',
+  DEFAULT = '',
+}
+
+export enum PipelineACHAccountType {
+  CHECKING = 'CHECKING',
+  SAVINGS = 'SAVINGS',
+  DEFAULT = '',
 }
