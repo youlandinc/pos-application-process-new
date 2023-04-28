@@ -3,6 +3,7 @@ import { Address } from '@/models/common/Address';
 
 import {
   PipelineAgreement,
+  PipelineLicenseType,
   PipelineTaskItem,
   PipelineTaskItemStatus,
 } from '@/types/pipeline';
@@ -25,6 +26,12 @@ export const PTAgreementNotBroker = types
       fullName: types.maybeNull(types.string),
       company: types.maybeNull(types.string),
       phone: types.maybe(types.string),
+      license: types.maybe(
+        types.union(
+          types.literal(PipelineLicenseType.DRE_LICENSE),
+          types.literal(PipelineLicenseType.NMLS_LICENSE),
+        ),
+      ),
     }),
   })
   .views((self) => ({
@@ -35,6 +42,7 @@ export const PTAgreementNotBroker = types
         !!self.taskForm.title &&
         !!self.taskForm.fullName &&
         !!self.taskForm.company &&
+        !!self.taskForm.license &&
         self.taskForm.address.checkAddressValid
       );
     },
@@ -52,12 +60,14 @@ export const PTAgreementNotBroker = types
         if (!taskForm) {
           return;
         }
-        const { email, title, fullName, company, propAddr, phone } = taskForm;
+        const { email, title, fullName, company, propAddr, phone, license } =
+          taskForm;
         self.taskForm.email = email;
         self.taskForm.title = title;
         self.taskForm.fullName = fullName;
         self.taskForm.company = company;
         self.taskForm.phone = phone;
+        self.taskForm.license = license;
         if (propAddr) {
           self.taskForm.address.injectServerData(propAddr);
         }
@@ -70,7 +80,8 @@ export const PTAgreementNotBroker = types
       },
       getPostData() {
         const { taskId, taskForm } = self;
-        const { email, title, fullName, company, address, phone } = taskForm;
+        const { email, title, fullName, company, address, phone, license } =
+          taskForm;
         return {
           taskId,
           taskForm: {
@@ -79,6 +90,7 @@ export const PTAgreementNotBroker = types
             fullName,
             company,
             phone,
+            license,
             propAddr: address.getPostData(),
           },
         };

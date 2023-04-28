@@ -88,6 +88,7 @@ export interface PipelineAgreement {
   company: string;
   documentFile?: TaskFiles;
   phone: string;
+  license?: PipelineLicenseType;
 }
 
 export interface PipelineGovernment {
@@ -111,4 +112,9 @@ export interface PipelineACH {
   routingNumber: string;
   accountNumber: string;
   accountType: string;
+}
+
+export enum PipelineLicenseType {
+  NMLS_LICENSE = 'NMLS',
+  DRE_LICENSE = 'DRE',
 }

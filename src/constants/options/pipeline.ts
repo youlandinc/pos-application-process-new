@@ -1,4 +1,4 @@
-import { LoanSpecies, LoanStage } from '@/types';
+import { LoanSpecies, LoanStage, PipelineLicenseType } from '@/types';
 import { PipelineLicenseTypeOpt } from '@/types/options';
 
 export const OPTIONS_PIPELINE_LICENSE_TYPE: Option[] = [
@@ -67,5 +67,18 @@ export const OPTIONS_LOAN_SPECIES: Option[] = [
     key: LoanSpecies.Bridge,
     value: LoanSpecies.Bridge,
     label: 'Bridge',
+  },
+];
+
+export const OPTIONS_LICENSE_TYPE: Option[] = [
+  {
+    key: PipelineLicenseType.NMLS_LICENSE,
+    value: PipelineLicenseType.NMLS_LICENSE,
+    label: 'NMLS License',
+  },
+  {
+    key: PipelineLicenseType.DRE_LICENSE,
+    value: PipelineLicenseType.DRE_LICENSE,
+    label: 'Dre License',
   },
 ];

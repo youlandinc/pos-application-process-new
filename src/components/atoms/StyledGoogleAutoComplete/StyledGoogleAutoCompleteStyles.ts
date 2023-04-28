@@ -12,8 +12,8 @@ export const StyledGoogleAutoCompleteStyles: Record<
     inputWrap: {
       ...POSFlex('center', 'flex-start'),
       width: '100%',
-      mt: 2.5,
-      gap: 2.5,
+      mt: 3,
+      gap: 3,
       '& *': {
         flex: 1,
       },
