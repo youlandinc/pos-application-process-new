@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
 
-import { StyledTextFieldPhoneProps, StyledTextFieldPhoneStyles } from './index';
+import { StyledTextFieldPhoneProps } from './index';
 
 import { StyledTextField } from '../StyledTextField';
 
@@ -37,7 +37,20 @@ export const StyledTextFieldPhone: FC<StyledTextFieldPhoneProps> = ({
       mask={mask}
       onValueChange={handledChange}
       sx={{
-        ...StyledTextFieldPhoneStyles,
+        '& .MuiOutlinedInput-root': {
+          borderRadius: 2,
+          boxShadow: 'none',
+          input: {
+            '&::placeholder': {
+              color: 'text.placeholder',
+            },
+            color: !value ? 'info.main' : 'text.primary',
+            lineHeight: 1,
+            '&:focus': {
+              color: 'text.primary',
+            },
+          },
+        },
         ...sx,
       }}
       value={text}
