@@ -324,7 +324,7 @@ export const PipelineAch: FC = observer(() => {
             justifyContent={'space-between'}
           >
             <Typography variant={'h6'}>Broker Agreement</Typography>
-            <StyledButton isIconButton onClick={close}>
+            <StyledButton disabled={agreeLoading} isIconButton onClick={close}>
               <CloseOutlined />
             </StyledButton>
           </Stack>
