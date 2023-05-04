@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
@@ -45,7 +45,6 @@ export const PipelineAgreement: FC = observer(() => {
   const [loading, setLoading] = useState<boolean>(false);
   const [genLoading, setGenLoading] = useState<boolean>(false);
   const [agreeLoading, setAgreeLoading] = useState<boolean>(false);
-  const [pdfString, setPdfString] = useState<string>('');
 
   const { visible, open, close } = useSwitch(false);
 
@@ -117,7 +116,9 @@ export const PipelineAgreement: FC = observer(() => {
     try {
       const res = await _previewDocument(data);
       open();
-      setPdfString(res.data);
+      setTimeout(() => {
+        renderFile(res.data);
+      });
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
@@ -144,14 +145,6 @@ export const PipelineAgreement: FC = observer(() => {
       setAgreeLoading(false);
     }
   }, [close, computedAgreement.agreement, enqueueSnackbar]);
-
-  useEffect(() => {
-    if (visible) {
-      setTimeout(() => {
-        renderFile(pdfString);
-      });
-    }
-  }, [visible, pdfString, renderFile]);
 
   return (
     <>
