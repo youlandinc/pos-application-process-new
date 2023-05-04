@@ -1,11 +1,6 @@
-import {
-  _completePipelineTask,
-  _fetchLegalFile,
-  _previewDocument,
-} from '@/requests';
-import { CloseOutlined } from '@mui/icons-material';
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
+import { CloseOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
@@ -25,6 +20,12 @@ import {
   StyledTextField,
   Transitions,
 } from '@/components';
+
+import {
+  _completePipelineTask,
+  _fetchLegalFile,
+  _previewDocument,
+} from '@/requests';
 
 export const PipelineAch: FC = observer(() => {
   const router = useRouter();
