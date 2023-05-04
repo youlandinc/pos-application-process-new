@@ -87,7 +87,7 @@ export interface PipelineAgreement {
   fullName: string;
   company: string;
   documentFile?: TaskFiles;
-  phone: string;
+  phoneNumber: string;
   license?: PipelineLicenseType;
 }
 

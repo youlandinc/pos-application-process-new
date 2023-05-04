@@ -230,7 +230,7 @@ export const PipelineAch: FC = observer(() => {
             {computedAch.isGenerateFile && (
               <StyledButton
                 disabled={!computedAch.ach.checkTaskFormValid || genLoading}
-                loading={agreeLoading}
+                loading={genLoading}
                 loadingText={'Generating...'}
                 onClick={handledGenerateFile}
                 sx={{
@@ -286,7 +286,7 @@ export const PipelineAch: FC = observer(() => {
                 Back
               </StyledButton>
               <StyledButton
-                disabled={!computedAch.ach.checkTaskFormValid}
+                disabled={!computedAch.ach.checkTaskPostForm}
                 loading={loading}
                 loadingText={'Saving...'}
                 onClick={handledCompleteTaskAndBackToSummary}
@@ -317,7 +317,7 @@ export const PipelineAch: FC = observer(() => {
             <StyledButton
               disabled={agreeLoading}
               loading={agreeLoading}
-              loadingText={'Saving...'}
+              loadingText={'Processing...'}
               onClick={handledSaveFile}
             >
               I Agree

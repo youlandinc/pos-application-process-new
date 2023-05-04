@@ -25,7 +25,7 @@ export const PTAgreementNotBroker = types
       title: types.maybeNull(types.string),
       fullName: types.maybeNull(types.string),
       company: types.maybeNull(types.string),
-      phone: types.maybeNull(types.string),
+      phoneNumber: types.maybeNull(types.string),
       license: types.maybe(
         types.union(
           types.literal(PipelineLicenseType.DEFAULT),
@@ -38,7 +38,7 @@ export const PTAgreementNotBroker = types
   .views((self) => ({
     get checkTaskPostForm() {
       return (
-        !!self.taskForm.phone &&
+        !!self.taskForm.phoneNumber &&
         !!self.taskForm.email &&
         !!self.taskForm.title &&
         !!self.taskForm.fullName &&
@@ -61,13 +61,20 @@ export const PTAgreementNotBroker = types
         if (!taskForm) {
           return;
         }
-        const { email, title, fullName, company, propAddr, phone, license } =
-          taskForm;
+        const {
+          email,
+          title,
+          fullName,
+          company,
+          propAddr,
+          phoneNumber,
+          license,
+        } = taskForm;
         self.taskForm.email = email;
         self.taskForm.title = title;
         self.taskForm.fullName = fullName;
         self.taskForm.company = company;
-        self.taskForm.phone = phone;
+        self.taskForm.phoneNumber = phoneNumber;
         self.taskForm.license = license;
         if (propAddr) {
           self.taskForm.address.injectServerData(propAddr);
@@ -81,8 +88,15 @@ export const PTAgreementNotBroker = types
       },
       getPostData() {
         const { taskId, taskForm } = self;
-        const { email, title, fullName, company, address, phone, license } =
-          taskForm;
+        const {
+          email,
+          title,
+          fullName,
+          company,
+          address,
+          phoneNumber,
+          license,
+        } = taskForm;
         return {
           taskId,
           taskForm: {
@@ -90,7 +104,7 @@ export const PTAgreementNotBroker = types
             title,
             fullName,
             company,
-            phone,
+            phoneNumber,
             license,
             propAddr: address.getPostData(),
           },

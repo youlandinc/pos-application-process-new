@@ -7,9 +7,15 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import {
+  _completePipelineTask,
+  _fetchLegalFile,
+  _previewDocument,
+} from '@/requests';
 import { AUTO_HIDE_DURATION, OPTIONS_LICENSE_TYPE } from '@/constants';
 import { useRenderPdf, useSwitch } from '@/hooks';
 import { UserType } from '@/types';
+
 import {
   StyledButton,
   StyledDialog,
@@ -20,12 +26,6 @@ import {
   StyledTextFieldPhone,
   Transitions,
 } from '@/components';
-
-import {
-  _completePipelineTask,
-  _fetchLegalFile,
-  _previewDocument,
-} from '@/requests';
 
 export const PipelineAgreement: FC = observer(() => {
   const router = useRouter();
@@ -194,10 +194,13 @@ export const PipelineAgreement: FC = observer(() => {
               <StyledTextFieldPhone
                 label={'Phone Number'}
                 onValueChange={({ value }) =>
-                  computedAgreement.agreement.changeFieldValue('phone', value)
+                  computedAgreement.agreement.changeFieldValue(
+                    'phoneNumber',
+                    value,
+                  )
                 }
                 placeholder={'Phone Number'}
-                value={computedAgreement.agreement.taskForm.phone}
+                value={computedAgreement.agreement.taskForm.phoneNumber}
               />
             </Stack>
             <Stack
@@ -254,7 +257,7 @@ export const PipelineAgreement: FC = observer(() => {
                 disabled={
                   !computedAgreement.agreement.checkTaskFormValid || genLoading
                 }
-                loading={agreeLoading}
+                loading={genLoading}
                 loadingText={'Generating...'}
                 onClick={handledGenerateFile}
                 sx={{
@@ -343,7 +346,7 @@ export const PipelineAgreement: FC = observer(() => {
             <StyledButton
               disabled={agreeLoading}
               loading={agreeLoading}
-              loadingText={'Saving...'}
+              loadingText={'Processing...'}
               onClick={handledSaveFile}
             >
               I Agree

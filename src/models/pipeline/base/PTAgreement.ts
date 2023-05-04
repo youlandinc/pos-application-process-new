@@ -28,13 +28,13 @@ export const PTAgreement = types
       fullName: types.maybeNull(types.string),
       company: types.maybeNull(types.string),
       documentFile: types.maybe(UploadData),
-      phone: types.maybe(types.string),
+      phoneNumber: types.maybe(types.string),
     }),
   })
   .views((self) => ({
     get checkTaskFormValid() {
       return (
-        !!self.taskForm.phone &&
+        !!self.taskForm.phoneNumber &&
         !!self.taskForm.email &&
         !!self.taskForm.title &&
         !!self.taskForm.fullName &&
@@ -66,14 +66,14 @@ export const PTAgreement = types
           company,
           propAddr,
           documentFile,
-          phone,
+          phoneNumber,
         } = taskForm;
         self.taskForm.documentFile = documentFile;
         self.taskForm.email = email;
         self.taskForm.title = title;
         self.taskForm.fullName = fullName;
         self.taskForm.company = company;
-        self.taskForm.phone = phone;
+        self.taskForm.phoneNumber = phoneNumber;
         if (propAddr) {
           self.taskForm.address.injectServerData(propAddr);
         }
@@ -86,20 +86,22 @@ export const PTAgreement = types
       },
       getGenerateFileData() {
         const { taskId, taskForm } = self;
-        const { email, title, fullName, company, address, phone } = taskForm;
+        const { email, title, fullName, company, address, phoneNumber } =
+          taskForm;
         return {
           taskId,
           email,
           title,
           fullName,
           company,
-          phone,
+          phoneNumber,
           propAddr: address.getPostData(),
         };
       },
       getPostData() {
         const { taskId, taskForm } = self;
-        const { email, title, fullName, company, address, phone } = taskForm;
+        const { email, title, fullName, company, address, phoneNumber } =
+          taskForm;
         return {
           taskId,
           taskForm: {
@@ -107,7 +109,7 @@ export const PTAgreement = types
             title,
             fullName,
             company,
-            phone,
+            phoneNumber,
             documentFile: self.taskForm.documentFile
               ? getSnapshot(self.taskForm.documentFile)
               : undefined,
