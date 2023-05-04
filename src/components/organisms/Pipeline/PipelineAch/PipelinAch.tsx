@@ -1,13 +1,14 @@
-import { FC, useMemo, useRef } from 'react';
-import { Box, Stack } from '@mui/material';
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Box, Stack, Typography } from '@mui/material';
+import { CloseOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { OPTIONS_ACCOUNT_TYPE } from '@/constants';
-import { useBreakpoints, useRenderPdf, useSwitch } from '@/hooks';
+import { AUTO_HIDE_DURATION, OPTIONS_ACCOUNT_TYPE } from '@/constants';
+import { useRenderPdf, useSwitch } from '@/hooks';
 import { UserType } from '@/types';
 
 import {
@@ -17,14 +18,25 @@ import {
   StyledGoogleAutoComplete,
   StyledSelect,
   StyledTextField,
+  Transitions,
 } from '@/components';
+
+import {
+  _completePipelineTask,
+  _fetchLegalFile,
+  _previewDocument,
+} from '@/requests';
 
 export const PipelineAch: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const breakpoint = useBreakpoints();
   const { visible, open, close } = useSwitch(false);
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [genLoading, setGenLoading] = useState<boolean>(false);
+  const [agreeLoading, setAgreeLoading] = useState<boolean>(false);
+  const [pdfString, setPdfString] = useState<string>('');
 
   const pdfFile = useRef(null);
   const { renderFile } = useRenderPdf(pdfFile);
@@ -73,6 +85,64 @@ export const PipelineAch: FC = observer(() => {
     REAL_ESTATE_AGENT_ACH_INFORMATION,
     userType,
   ]);
+
+  const handledCompleteTaskAndBackToSummary = useCallback(async () => {
+    setLoading(true);
+    const data = computedAch.ach.getPostData();
+    try {
+      await _completePipelineTask(data);
+      await router.push('/pipeline/profile');
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [computedAch.ach, enqueueSnackbar, router]);
+
+  const handledGenerateFile = useCallback(async () => {
+    setGenLoading(true);
+    const data = computedAch.ach.getGenerateFileData();
+    try {
+      const res = await _previewDocument(data);
+      open();
+      setPdfString(res.data);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setGenLoading(false);
+    }
+  }, [computedAch.ach, enqueueSnackbar, open]);
+
+  const handledSaveFile = useCallback(async () => {
+    setAgreeLoading(true);
+    const data = computedAch.ach.getPostData();
+    try {
+      const res = await _fetchLegalFile(data.taskId);
+      computedAch.ach.changeFieldValue('documentFile', res.data);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      close();
+      setAgreeLoading(false);
+    }
+  }, [close, computedAch.ach, enqueueSnackbar]);
+
+  useEffect(() => {
+    if (visible) {
+      setTimeout(() => {
+        renderFile(pdfString);
+      });
+    }
+  }, [visible, pdfString, renderFile]);
 
   return (
     <>
@@ -159,7 +229,10 @@ export const PipelineAch: FC = observer(() => {
             </Stack>
             {computedAch.isGenerateFile && (
               <StyledButton
-                onClick={open}
+                disabled={!computedAch.ach.checkTaskFormValid || genLoading}
+                loading={agreeLoading}
+                loadingText={'Generating...'}
+                onClick={handledGenerateFile}
                 sx={{
                   width: { lg: 600, xs: '100%' },
                   mt: { xs: 0, lg: 3 },
@@ -169,6 +242,33 @@ export const PipelineAch: FC = observer(() => {
                 Generate File
               </StyledButton>
             )}
+
+            <Transitions>
+              {computedAch.ach.taskForm.documentFile && (
+                <Typography
+                  component={'div'}
+                  mt={3}
+                  textAlign={'center'}
+                  variant={'body1'}
+                >
+                  The attached document is the{' '}
+                  <Typography
+                    className={'link_style'}
+                    component={'span'}
+                    fontWeight={600}
+                    onClick={() =>
+                      window.open(computedAch.ach.taskForm.documentFile.url)
+                    }
+                  >
+                    ACH Information.pdf
+                  </Typography>{' '}
+                  that you have confirmed. In case you need to make any changes,
+                  a new agreement will be generated and require your agreement
+                  again.
+                </Typography>
+              )}
+            </Transitions>
+
             <Stack
               alignItems={'center'}
               flexDirection={{ sx: 'column', lg: 'row' }}
@@ -186,7 +286,10 @@ export const PipelineAch: FC = observer(() => {
                 Back
               </StyledButton>
               <StyledButton
-                onClick={() => router.back()}
+                disabled={!computedAch.ach.checkTaskFormValid}
+                loading={loading}
+                loadingText={'Saving...'}
+                onClick={handledCompleteTaskAndBackToSummary}
                 sx={{ flex: 1, width: '100%', order: { xs: 1, lg: 2 } }}
               >
                 Save
@@ -199,9 +302,51 @@ export const PipelineAch: FC = observer(() => {
       <StyledDialog
         content={<Box ref={pdfFile} />}
         disableEscapeKeyDown
-        footer={<></>}
-        header={<></>}
+        footer={
+          <Stack
+            flexDirection={{ xs: 'column', lg: 'row' }}
+            gap={3}
+            justifyContent={{ lg: 'space-between', xs: 'center' }}
+            textAlign={'left'}
+            width={'100%'}
+          >
+            <Typography variant={'body1'}>
+              &quot;By clicking the below button, I hereby agree to the above
+              broker agreement.&quot;
+            </Typography>
+            <StyledButton
+              disabled={agreeLoading}
+              loading={agreeLoading}
+              loadingText={'Saving...'}
+              onClick={handledSaveFile}
+            >
+              I Agree
+            </StyledButton>
+          </Stack>
+        }
+        header={
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+          >
+            <Typography variant={'h6'}>Broker Agreement</Typography>
+            <StyledButton isIconButton onClick={close}>
+              <CloseOutlined />
+            </StyledButton>
+          </Stack>
+        }
         open={visible}
+        sx={{
+          '& .MuiPaper-root': {
+            maxWidth: { lg: '900px !important', xs: '100% !important' },
+            width: '100%',
+            '& .MuiDialogTitle-root, & .MuiDialogActions-root': {
+              bgcolor: '#F5F8FA',
+              p: 3,
+            },
+          },
+        }}
       />
     </>
   );

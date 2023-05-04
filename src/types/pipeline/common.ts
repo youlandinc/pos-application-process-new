@@ -125,8 +125,3 @@ export enum PipelineACHAccountType {
   SAVINGS = 'SAVINGS',
   DEFAULT = '',
 }
-
-export enum PipelineLicenseType {
-  NMLS_LICENSE = 'NMLS',
-  DRE_LICENSE = 'DRE',
-}

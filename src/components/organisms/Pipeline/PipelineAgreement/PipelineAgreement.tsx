@@ -1,4 +1,4 @@
-import { FC, useMemo, useRef } from 'react';
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
@@ -7,8 +7,8 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { OPTIONS_LICENSE_TYPE } from '@/constants';
-import { useBreakpoints, useRenderPdf, useSwitch } from '@/hooks';
+import { AUTO_HIDE_DURATION, OPTIONS_LICENSE_TYPE } from '@/constants';
+import { useRenderPdf, useSwitch } from '@/hooks';
 import { UserType } from '@/types';
 import {
   StyledButton,
@@ -18,12 +18,18 @@ import {
   StyledSelect,
   StyledTextField,
   StyledTextFieldPhone,
+  Transitions,
 } from '@/components';
+
+import {
+  _completePipelineTask,
+  _fetchLegalFile,
+  _previewDocument,
+} from '@/requests';
 
 export const PipelineAgreement: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const breakpoint = useBreakpoints();
 
   const {
     userType,
@@ -36,9 +42,15 @@ export const PipelineAgreement: FC = observer(() => {
     },
   } = useMst();
 
+  const [loading, setLoading] = useState<boolean>(false);
+  const [genLoading, setGenLoading] = useState<boolean>(false);
+  const [agreeLoading, setAgreeLoading] = useState<boolean>(false);
+  const [pdfString, setPdfString] = useState<string>('');
+
   const { visible, open, close } = useSwitch(false);
 
   const pdfFile = useRef(null);
+
   const { renderFile } = useRenderPdf(pdfFile);
 
   const computedAgreement = useMemo(() => {
@@ -82,6 +94,64 @@ export const PipelineAgreement: FC = observer(() => {
     REAL_ESTATE_AGENT_AGREEMENT,
     userType,
   ]);
+
+  const handledCompleteTaskAndBackToSummary = useCallback(async () => {
+    setLoading(true);
+    const data = computedAgreement.agreement.getPostData();
+    try {
+      await _completePipelineTask(data);
+      await router.push('/pipeline/profile');
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [computedAgreement.agreement, enqueueSnackbar, router]);
+
+  const handledGenerateFile = useCallback(async () => {
+    setGenLoading(true);
+    const data = computedAgreement.agreement.getGenerateFileData();
+    try {
+      const res = await _previewDocument(data);
+      open();
+      setPdfString(res.data);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setGenLoading(false);
+    }
+  }, [computedAgreement.agreement, enqueueSnackbar, open]);
+
+  const handledSaveFile = useCallback(async () => {
+    setAgreeLoading(true);
+    const data = computedAgreement.agreement.getPostData();
+    try {
+      const res = await _fetchLegalFile(data.taskId);
+      computedAgreement.agreement.changeFieldValue('documentFile', res.data);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      close();
+      setAgreeLoading(false);
+    }
+  }, [close, computedAgreement.agreement, enqueueSnackbar]);
+
+  useEffect(() => {
+    if (visible) {
+      setTimeout(() => {
+        renderFile(pdfString);
+      });
+    }
+  }, [visible, pdfString, renderFile]);
 
   return (
     <>
@@ -181,10 +251,12 @@ export const PipelineAgreement: FC = observer(() => {
             )}
             {computedAgreement.isGenerateFile && (
               <StyledButton
-                onClick={() => {
-                  console.log(computedAgreement.agreement);
-                  open();
-                }}
+                disabled={
+                  !computedAgreement.agreement.checkTaskFormValid || genLoading
+                }
+                loading={agreeLoading}
+                loadingText={'Generating...'}
+                onClick={handledGenerateFile}
                 sx={{
                   width: { lg: 600, xs: '100%' },
                   mt: { xs: 0, lg: 3 },
@@ -194,6 +266,33 @@ export const PipelineAgreement: FC = observer(() => {
                 Generate File
               </StyledButton>
             )}
+            <Transitions>
+              {computedAgreement.agreement.taskForm.documentFile && (
+                <Typography
+                  component={'div'}
+                  mt={3}
+                  textAlign={'center'}
+                  variant={'body1'}
+                >
+                  The attached document is the{' '}
+                  <Typography
+                    className={'link_style'}
+                    component={'span'}
+                    fontWeight={600}
+                    onClick={() =>
+                      window.open(
+                        computedAgreement.agreement.taskForm.documentFile.url,
+                      )
+                    }
+                  >
+                    Broker Agreement.pdf
+                  </Typography>{' '}
+                  that you have confirmed. In case you need to make any changes,
+                  a new agreement will be generated and require your agreement
+                  again.
+                </Typography>
+              )}
+            </Transitions>
             <Stack
               alignItems={'center'}
               flexDirection={{ sx: 'column', lg: 'row' }}
@@ -211,7 +310,12 @@ export const PipelineAgreement: FC = observer(() => {
                 Back
               </StyledButton>
               <StyledButton
-                onClick={() => router.back()}
+                disabled={
+                  !computedAgreement.agreement.checkTaskPostForm || loading
+                }
+                loading={loading}
+                loadingText={'Saving...'}
+                onClick={handledCompleteTaskAndBackToSummary}
                 sx={{ flex: 1, width: '100%', order: { xs: 1, lg: 2 } }}
               >
                 Save
@@ -222,9 +326,30 @@ export const PipelineAgreement: FC = observer(() => {
       </Stack>
 
       <StyledDialog
-        content={<Box ref={pdfFile} height={2000} />}
+        content={<Box ref={pdfFile} />}
         disableEscapeKeyDown
-        footer={<Stack>footer</Stack>}
+        footer={
+          <Stack
+            flexDirection={{ xs: 'column', lg: 'row' }}
+            gap={3}
+            justifyContent={{ lg: 'space-between', xs: 'center' }}
+            textAlign={'left'}
+            width={'100%'}
+          >
+            <Typography variant={'body1'}>
+              &quot;By clicking the below button, I hereby agree to the above
+              broker agreement.&quot;
+            </Typography>
+            <StyledButton
+              disabled={agreeLoading}
+              loading={agreeLoading}
+              loadingText={'Saving...'}
+              onClick={handledSaveFile}
+            >
+              I Agree
+            </StyledButton>
+          </Stack>
+        }
         header={
           <Stack
             alignItems={'center'}
