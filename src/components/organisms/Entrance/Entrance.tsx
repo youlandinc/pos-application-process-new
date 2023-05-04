@@ -1,3 +1,4 @@
+import { POSFlex } from '@/styles';
 import { useMemo } from 'react';
 import { Box } from '@mui/material';
 
@@ -53,7 +54,7 @@ export const Entrance = observer(() => {
           <StyledHeaderLogo />
         </Box>
       </Box>
-      <StyledBoxWrap>
+      <StyledBoxWrap sx={{ ...POSFlex('center', 'flex-start', 'column') }}>
         <StyledFormItem
           className={'POS_tc POS_fullwidth'}
           label={'Which product are you interested in?'}

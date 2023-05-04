@@ -247,12 +247,10 @@ export const PipelineProfile: FC = observer(() => {
     <Box>
       <StyledFormItem
         label={'Broker Tasks'}
-        labelSx={{ textAlign: 'center' }}
         sx={{ m: '0 auto' }}
         tip={
           'Please fill in the information that is needed for payment upon loan close.'
         }
-        tipSx={{ textAlign: 'center' }}
       >
         <Stack
           gap={1.5}

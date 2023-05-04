@@ -23,9 +23,6 @@ import {
   StyledHeaderLogo,
 } from '@/components';
 
-import BUTTON_ICON_VIEW_ALL_LOANS from '@/svg/button/button_icon_view_all_loans.svg';
-import BUTTON_ICON_ADD_NEW_LOAN from '@/svg/button/button_icon_add_new_loan.svg';
-
 export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const router = useRouter();
 
@@ -124,7 +121,13 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               onClick={() => router.push('/pipeline')}
               variant={'outlined'}
             >
-              <WidgetsOutlined />
+              <WidgetsOutlined
+                className={
+                  !['xs', 'sm', 'md'].includes(breakpoint)
+                    ? 'POS_icon_left'
+                    : ''
+                }
+              />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'View All Loans'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
