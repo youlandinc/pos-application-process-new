@@ -21,7 +21,6 @@ const UploadBoxComponent: FC = () => {
     Array.from(files, (item) => {
       formData.append('files', item);
     });
-    console.log({ files });
     try {
       const { data } = await _addTaskFile(
         formData,
