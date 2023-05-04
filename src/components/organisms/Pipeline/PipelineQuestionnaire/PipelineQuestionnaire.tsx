@@ -4,7 +4,7 @@ import { CloseOutlined } from '@mui/icons-material';
 
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { isValid } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';

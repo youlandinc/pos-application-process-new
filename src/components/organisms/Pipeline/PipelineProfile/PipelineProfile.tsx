@@ -1,12 +1,14 @@
-import { StyledButton, StyledFormItem, StyledStatus } from '@/components';
-import { useBreakpoints } from '@/hooks';
-import { UserType } from '@/types';
 import { FC, useCallback, useMemo } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
+
+import { useBreakpoints } from '@/hooks';
+import { UserType } from '@/types';
+
+import { StyledButton, StyledFormItem, StyledStatus } from '@/components';
 
 export const PipelineProfile: FC = observer(() => {
   const router = useRouter();
@@ -285,6 +287,7 @@ export const PipelineProfile: FC = observer(() => {
           {renderTaskList}
           <StyledButton
             disabled={!pipelineStatus}
+            onClick={() => router.push('/')}
             size={
               ['xs', 'sm', 'md', 'lg'].includes(breakpoint) ? 'small' : 'large'
             }
