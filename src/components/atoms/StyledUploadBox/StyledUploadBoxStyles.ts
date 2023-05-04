@@ -1,4 +1,4 @@
-import { POSFlex, POSFont, PSXTextEllipsis } from '@/styles';
+import { POSFlex, POSFont, POSTextEllipsis } from '@/styles';
 import { SxProps } from '@mui/material';
 
 // export const StyledDrawerStyles: SxProps = {
@@ -20,7 +20,7 @@ import { SxProps } from '@mui/material';
 //     marginBottom: 24,
 //   },
 //   '& .fileName': {
-//     ...PSXTextEllipsis(400),
+//     ...POSTextEllipsis(400),
 //   },
 //   '& .uploadBox': {
 //     width: '100%',

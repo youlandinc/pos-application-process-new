@@ -12,7 +12,7 @@ import {
   Transitions,
 } from '@/components/atoms';
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { POSFlex, POSFont, PSXTextEllipsis } from '@/styles';
+import { POSFlex, POSFont, POSTextEllipsis } from '@/styles';
 import { Box, Icon, SxProps, Typography } from '@mui/material';
 import {
   CloseOutlined,
@@ -66,10 +66,10 @@ export const StyledUploadBoxStyles: SxProps = {
     },
   },
   '& .fileItem': {
-    ...POSFont(16, 400, 1.5, 'text.primary'),
+    ...POSFont(14, 400, 1, 'text.primary'),
     ...POSFlex('center', 'space-between', 'row'),
     width: '100%',
-    py: 2,
+    py: 1.5,
     px: {
       lg: 3,
       xs: 1.5,
@@ -80,7 +80,7 @@ export const StyledUploadBoxStyles: SxProps = {
     mb: 3,
   },
   '& .fileName': {
-    ...PSXTextEllipsis({ xs: 200, lg: 400 }),
+    ...POSTextEllipsis({ xs: 200, lg: 400 }),
   },
   '& .uploadBox': {
     width: '100%',
@@ -118,7 +118,7 @@ export const StyledUploadBoxStyles: SxProps = {
     padding: '48px',
   },
   '& .dialogDetail': {
-    ...POSFont(14, 400, 1.5, 'info.main'),
+    ...POSFont(14, 400, 1, 'info.main'),
     textAlign: 'center',
     wordBreak: 'break-all',
   },
@@ -306,13 +306,14 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
                         style={{ marginRight: 10 }}
                       />
                       {item.originalFileName}
-                      <Box>
-                        {['xs', 'sm', 'md'].includes(breakpoint) &&
-                          POSFormatDate(
+                      {['xs', 'sm', 'md'].includes(breakpoint) && (
+                        <Box sx={{ mt: 1.5 }}>
+                          {POSFormatDate(
                             new Date(item.uploadTime as string),
                             'MM-dd-yyyy HH:mm:ss',
                           )}
-                      </Box>
+                        </Box>
+                      )}
                     </Box>
 
                     <Box>

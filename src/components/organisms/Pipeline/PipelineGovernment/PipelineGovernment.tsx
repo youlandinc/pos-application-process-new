@@ -1,4 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { Stack } from '@mui/material';
 
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -7,16 +8,15 @@ import { getSnapshot } from 'mobx-state-tree';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { TaskFiles } from '@/types';
 import { _addTaskFile, _completePipelineTask, _deleteUpload } from '@/requests';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 import {
   StyledButton,
   StyledFormItem,
   StyledUploadBox,
 } from '@/components/atoms';
-import { AUTO_HIDE_DURATION } from '@/constants';
-import { Stack } from '@mui/material';
-import { TaskFiles } from '@/types';
 
 export const PipelineGovernment: FC = observer(() => {
   const router = useRouter();
@@ -86,13 +86,13 @@ export const PipelineGovernment: FC = observer(() => {
     }
   };
 
-  const completeTaskAndBackToSummary = async () => {
+  const handledCompleteTaskAndBackToSummary = async () => {
     setLoading(true);
     const data = BROKER_GOVERNMENT_ID.getPostData();
     try {
       await _completePipelineTask(data);
       setLoading(false);
-      await router.push('/my_application/task');
+      await router.push('/pipeline/profile');
     } catch (err) {
       setLoading(false);
       enqueueSnackbar(err as string, {
@@ -141,7 +141,7 @@ export const PipelineGovernment: FC = observer(() => {
               color={'primary'}
               disabled={fileList.length <= 0 || loading}
               loading={loading}
-              onClick={() => completeTaskAndBackToSummary()}
+              onClick={() => handledCompleteTaskAndBackToSummary()}
               sx={{ flex: 1, width: '100%', order: { xs: 1, lg: 2 } }}
             >
               Save

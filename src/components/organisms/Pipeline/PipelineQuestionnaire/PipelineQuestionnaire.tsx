@@ -1,32 +1,23 @@
-import React, {
-  ChangeEvent,
-  FC,
-  MutableRefObject,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import { Box, Stack, SxProps } from '@mui/material';
-import { POSFlex, POSFont } from '@/styles';
+import { FC, MutableRefObject, useMemo, useRef, useState } from 'react';
+import { Box, Stack, SxProps, Typography } from '@mui/material';
+import { CloseOutlined } from '@mui/icons-material';
 
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { format, isValid, parseISO } from 'date-fns';
+import { isValid } from 'date-fns';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
-
-import { useBreakpoints, useRenderPdf, useSwitch } from '@/hooks';
 
 import {
   AUTO_HIDE_DURATION,
   OPTIONS_COMMON_STATE,
   OPTIONS_PIPELINE_LICENSE_TYPE,
 } from '@/constants';
+import { useBreakpoints, useRenderPdf, useSwitch } from '@/hooks';
 
-// import { PipelineQuestionnaireOwner } from '@/types/myApplicationData';
-// import { SPQOwnerData } from '@/models/pipeline';
+import { POSFlex, POSFont } from '@/styles';
 
 import {
   StyledButton,
@@ -43,13 +34,9 @@ import {
   _fetchLegalFile,
   _previewDocument,
 } from '@/requests';
-// import { LicenseTypeOpt } from '@/types/options';
-// import { utils } from '@/common/utils';
-import { CloseOutlined } from '@mui/icons-material';
 
 import { PipelineLicenseTypeOpt, PipelineQuestionnaireOwner } from '@/types';
 import { SPQOwnerData } from '@/models/pipeline/base/PQOwner';
-import { isNumber } from 'validate.js';
 
 const PipelineQuestionnaireStyles: SxProps = {
   '& .container': {
@@ -148,18 +135,18 @@ export const PipelineQuestionnaire: FC = observer(() => {
   const [genLoading, setGenLoading] = useState<boolean>(false);
   const [agreeLoading, setAgreeLoading] = useState<boolean>(false);
 
-  const pdfFile = useRef<MutableRefObject<HTMLDivElement>>(null);
+  const pdfFile = useRef(null);
 
   const { visible, open, close } = useSwitch(false);
 
   const { renderFile } = useRenderPdf(pdfFile);
 
-  const completeTaskAndBackToSummary = async () => {
+  const handledCompleteTaskAndBackToSummary = async () => {
     setLoading(true);
     const data = BROKER_QUESTIONNAIRE.getPostData();
     try {
       await _completePipelineTask(data);
-      await router.push('/my_application/task');
+      await router.push('/pipeline/profile');
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
@@ -173,7 +160,6 @@ export const PipelineQuestionnaire: FC = observer(() => {
   const generateFile = async () => {
     setGenLoading(true);
     const data = BROKER_QUESTIONNAIRE.getGenerateFileData();
-    console.log({ data });
     try {
       const res = await _previewDocument(data);
       open();
@@ -188,7 +174,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
     }
   };
 
-  const saveFile = async () => {
+  const handledSaveFile = async () => {
     setAgreeLoading(true);
     const data = BROKER_QUESTIONNAIRE.getPostData();
     try {
@@ -417,50 +403,62 @@ export const PipelineQuestionnaire: FC = observer(() => {
               color={'primary'}
               disabled={!BROKER_QUESTIONNAIRE.checkTaskFormValid || loading}
               loading={loading}
-              onClick={() => completeTaskAndBackToSummary()}
+              onClick={() => handledCompleteTaskAndBackToSummary()}
               sx={{ flex: 1, width: '100%', order: { xs: 1, lg: 2 } }}
             >
               Save
             </StyledButton>
           </Stack>
         </Stack>
-
         <StyledDialog
-          // classes={{
-          //   paper: paper,
-          // }}
-          content={<div className={'filePreviewContent'} ref={pdfFile} />}
+          content={<Box ref={pdfFile} />}
           disableEscapeKeyDown
           footer={
-            <Box className={'filePreviewFooter'}>
-              <Box>
-                By clicking the below button, I hereby agree to the above broker
-                agreement and authorize
-                {'YouLand'} to check my background.
-              </Box>
+            <Stack
+              flexDirection={{ xs: 'column', lg: 'row' }}
+              gap={3}
+              justifyContent={{ lg: 'space-between', xs: 'center' }}
+              textAlign={'left'}
+              width={'100%'}
+            >
+              <Typography variant={'body1'}>
+                &quot;By clicking the below button, I hereby agree to the above
+                broker agreement.&quot;
+              </Typography>
               <StyledButton
                 disabled={agreeLoading}
-                onClick={saveFile}
-                style={{ width: 200 }}
-                variant={'outlined'}
+                loading={agreeLoading}
+                loadingText={'Saving...'}
+                onClick={handledSaveFile}
               >
-                I agree
+                I Agree
               </StyledButton>
-            </Box>
+            </Stack>
           }
           header={
-            <Box className={'filePreviewHeader'}>
-              <Box textAlign={'center'} width={'100%'}>
-                Broker questionnaire
-              </Box>
-              <Box className={'filePreviewCancel'} onClick={() => close()}>
-                <CloseOutlined className={'closeIcon'} />
-              </Box>
-            </Box>
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+            >
+              <Typography variant={'h6'}>Broker Agreement</Typography>
+              <StyledButton isIconButton onClick={close}>
+                <CloseOutlined />
+              </StyledButton>
+            </Stack>
           }
           open={visible}
-          scroll={'paper'}
-        ></StyledDialog>
+          sx={{
+            '& .MuiPaper-root': {
+              maxWidth: { lg: '900px !important', xs: '100% !important' },
+              width: '100%',
+              '& .MuiDialogTitle-root, & .MuiDialogActions-root': {
+                bgcolor: '#F5F8FA',
+                p: 3,
+              },
+            },
+          }}
+        />
       </StyledFormItem>
     </Stack>
   );

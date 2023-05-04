@@ -63,17 +63,17 @@ export const POSSize = <T extends number | string, X extends number | string>(
   };
 };
 
-export const PSXTextEllipsis = (
+export const POSTextEllipsis = (
   width: CSSProperties['width'] | Omit<SxProps, 'width'>,
   line = 1,
 ): any => {
   return {
     width,
     overflow: 'hidden',
-    '-webkit-line-clamp': line,
-    '-webkit-box-orient': 'vertical',
-    'text-overflow': 'ellipsis',
-    'white-space': 'nowrap',
+    webkitLineClamp: line,
+    webkitBoxOrient: 'vertical',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   };
 };
 
