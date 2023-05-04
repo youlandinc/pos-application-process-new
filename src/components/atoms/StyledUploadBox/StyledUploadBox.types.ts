@@ -1,4 +1,4 @@
-export * from './StyledUploadBoxStyles';
+import { CSSProperties, ReactNode } from 'react';
 import { SUploadData } from '@/models/common/UploadFile';
 
 export interface StyledUploadBoxProps {

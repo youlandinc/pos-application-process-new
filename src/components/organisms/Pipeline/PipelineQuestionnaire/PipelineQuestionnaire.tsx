@@ -3,7 +3,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 
 import { useRouter } from 'next/router';
-import { format, isValid, parseISO } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
@@ -91,7 +91,9 @@ export const PipelineQuestionnaire: FC = observer(() => {
     try {
       const res = await _previewDocument(data);
       open();
-      renderFile(res.data);
+      setTimeout(() => {
+        renderFile(res.data);
+      });
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
@@ -122,282 +124,288 @@ export const PipelineQuestionnaire: FC = observer(() => {
   const isAddLicense = useMemo(() => {
     return BROKER_QUESTIONNAIRE.taskForm.licenses.length >= 4;
   }, [BROKER_QUESTIONNAIRE.taskForm.licenses.length]);
-
+  console.log(BROKER_QUESTIONNAIRE.taskForm?.licenses);
   return (
-    <Stack alignItems={'center'} justifyContent={'center'}>
-      <StyledFormItem
-        label={'Broker questionnaire（optional）'}
-        sx={{ width: '100%' }}
-        tip={`Please indicate the states in which you are licensed to broker
+    <>
+      <Stack alignItems={'center'} justifyContent={'center'}>
+        <StyledFormItem
+          label={'Broker questionnaire（optional）'}
+          sx={{ width: '100%' }}
+          tip={`Please indicate the states in which you are licensed to broker
                 loans and the type of license you hold in each state`}
-      >
-        <Transitions>
-          {BROKER_QUESTIONNAIRE.taskForm?.licenses?.map(
-            (item: PipelineQuestionnaireOwner, index: number) => (
-              <Stack
-                alignItems={'center'}
-                gap={3}
-                key={index}
-                mt={'48px'}
-                width={'100%'}
-              >
+        >
+          <Transitions>
+            {BROKER_QUESTIONNAIRE.taskForm?.licenses?.map(
+              (item: PipelineQuestionnaireOwner, index: number) => (
                 <Stack
                   alignItems={'center'}
-                  flexDirection={'row'}
                   gap={3}
-                  justifyContent={'space-between'}
+                  key={index}
+                  mt={'48px'}
                   width={'100%'}
                 >
-                  <Box
-                    sx={{
-                      ...POSFont({ lg: 24, xs: 18 }, 700, 1.5),
-                    }}
+                  <Stack
+                    alignItems={'center'}
+                    flexDirection={'row'}
+                    gap={3}
+                    justifyContent={'space-between'}
+                    width={'100%'}
                   >
-                    {'Broker name ' + (index + 1)}
-                  </Box>
-                  {index !== 0 && (
-                    <StyledButton
-                      color={'primary'}
-                      onClick={() => BROKER_QUESTIONNAIRE.removeLicenses(index)}
-                      size={'small'}
-                      variant={'outlined'}
+                    <Box
+                      sx={{
+                        ...POSFont({ lg: 24, xs: 18 }, 700, 1.5),
+                      }}
                     >
-                      Remove
-                    </StyledButton>
-                  )}
-                  {index === 0 && (
-                    <StyledButton
-                      color={'primary'}
-                      disabled={isAddLicense}
-                      onClick={() =>
-                        BROKER_QUESTIONNAIRE.addLicenses(initialized)
-                      }
-                      size={'small'}
-                      variant={'outlined'}
-                    >
-                      {['xs', 'sm', 'md'].includes(breakpoint)
-                        ? '+ Add'
-                        : '+ Add a new owner'}
-                    </StyledButton>
-                  )}
-                </Stack>
+                      {'Broker name ' + (index + 1)}
+                    </Box>
+                    {index !== 0 && (
+                      <StyledButton
+                        color={'primary'}
+                        onClick={() =>
+                          BROKER_QUESTIONNAIRE.removeLicenses(index)
+                        }
+                        size={'small'}
+                        variant={'outlined'}
+                      >
+                        Remove
+                      </StyledButton>
+                    )}
+                    {index === 0 && (
+                      <StyledButton
+                        color={'primary'}
+                        disabled={isAddLicense}
+                        onClick={() =>
+                          BROKER_QUESTIONNAIRE.addLicenses(initialized)
+                        }
+                        size={'small'}
+                        variant={'outlined'}
+                      >
+                        {['xs', 'sm', 'md'].includes(breakpoint)
+                          ? '+ Add'
+                          : '+ Add a new owner'}
+                      </StyledButton>
+                    )}
+                  </Stack>
 
-                <Stack
-                  flexDirection={{ lg: 'row', xs: 'column' }}
-                  gap={3}
-                  width={'100%'}
-                >
-                  <StyledTextField
-                    label={'Broker name ' + (index + 1)}
-                    onChange={(e) => {
-                      BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
-                        'ownerName',
-                        e.target.value,
-                        index,
-                      );
-                    }}
-                    value={item.ownerName}
-                  />
-                  <StyledTextFieldSocialNumber
-                    label={'Social Security Number'}
-                    onValueChange={(v) => {
-                      BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
-                        'ssn',
-                        v,
-                        index,
-                      );
-                    }}
-                    value={item?.ssn}
-                  />
-                </Stack>
+                  <Stack
+                    flexDirection={{ lg: 'row', xs: 'column' }}
+                    gap={3}
+                    width={'100%'}
+                  >
+                    <StyledTextField
+                      label={'Broker name ' + (index + 1)}
+                      onChange={(e) => {
+                        BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
+                          'ownerName',
+                          e.target.value,
+                          index,
+                        );
+                      }}
+                      value={item.ownerName}
+                    />
+                    <StyledTextFieldSocialNumber
+                      label={'Social Security Number'}
+                      onValueChange={(v) => {
+                        BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
+                          'ssn',
+                          v,
+                          index,
+                        );
+                      }}
+                      value={item?.ssn}
+                    />
+                  </Stack>
 
-                <Stack
-                  flexDirection={{ lg: 'row', xs: 'column' }}
-                  gap={3}
-                  width={'100%'}
-                >
-                  <StyledDatePicker
-                    label={'Date of Birth'}
-                    onChange={(date) => {
-                      BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
-                        'birthday',
-                        isValid(date)
-                          ? format(date as number | Date, 'yyyy-MM-dd O')
-                          : date instanceof Date
-                          ? isNaN(date.getTime())
-                            ? date.toString()
-                            : format(date, 'yyyy-MM-dd O')
-                          : null,
-                        index,
-                      );
-                    }}
-                    value={parseISO(item.birthday)}
-                  />
-                  <StyledSelect
-                    label={'State'}
-                    onChange={(e) => {
-                      BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
-                        'state',
-                        e.target.value as string,
-                        index,
-                      );
-                    }}
-                    options={OPTIONS_COMMON_STATE}
-                    value={item?.state}
-                  />
-                </Stack>
-                <Stack
-                  flexDirection={{ lg: 'row', xs: 'column' }}
-                  gap={3}
-                  width={'100%'}
-                >
-                  <StyledSelect
-                    label={'License type'}
-                    onChange={(e) => {
-                      BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
-                        'licenseType',
-                        e.target.value as string,
-                        index,
-                      );
-                    }}
-                    options={OPTIONS_PIPELINE_LICENSE_TYPE}
-                    value={item.licenseType}
-                  />
+                  <Stack
+                    flexDirection={{ lg: 'row', xs: 'column' }}
+                    gap={3}
+                    width={'100%'}
+                  >
+                    <StyledDatePicker
+                      label={'Date of Birth'}
+                      onChange={(date) => {
+                        BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
+                          'birthday',
+                          isValid(date)
+                            ? format(date as number | Date, 'yyyy-MM-dd O')
+                            : date instanceof Date
+                            ? isNaN(date.getTime())
+                              ? date.toString()
+                              : format(date, 'yyyy-MM-dd O')
+                            : null,
+                          index,
+                        );
+                      }}
+                      value={item.birthday && new Date(item.birthday)}
+                    />
+                    <StyledSelect
+                      label={'State'}
+                      onChange={(e) => {
+                        BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
+                          'state',
+                          e.target.value as string,
+                          index,
+                        );
+                      }}
+                      options={OPTIONS_COMMON_STATE}
+                      value={item?.state}
+                    />
+                  </Stack>
+                  <Stack
+                    flexDirection={{ lg: 'row', xs: 'column' }}
+                    gap={3}
+                    width={'100%'}
+                  >
+                    <StyledSelect
+                      label={'License type'}
+                      onChange={(e) => {
+                        BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
+                          'licenseType',
+                          e.target.value as string,
+                          index,
+                        );
+                      }}
+                      options={OPTIONS_PIPELINE_LICENSE_TYPE}
+                      value={item.licenseType}
+                    />
 
-                  <StyledTextField
-                    label="License #"
-                    onChange={(e) => {
-                      BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
-                        'license',
-                        e.target.value,
-                        index,
-                      );
-                    }}
-                    value={item.license}
-                  />
+                    <StyledTextField
+                      label="License #"
+                      onChange={(e) => {
+                        BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
+                          'license',
+                          e.target.value,
+                          index,
+                        );
+                      }}
+                      value={item.license}
+                    />
+                  </Stack>
                 </Stack>
-              </Stack>
-            ),
-          )}
-        </Transitions>
-        <Stack alignItems={'center'} gap={3} width={'100%'}>
-          <StyledButton
-            color={'primary'}
-            disabled={!BROKER_QUESTIONNAIRE.checkLicensesValid || genLoading}
-            loading={genLoading}
-            loadingText={'Generating...'}
-            onClick={() => generateFile()}
-            sx={{
-              width: { lg: 600, xs: '100%' },
-              mt: { xs: 0, lg: 3 },
-            }}
-            variant={'outlined'}
-          >
-            Generate file
-          </StyledButton>
-          <Transitions>
-            {BROKER_QUESTIONNAIRE.taskForm.documentFile && (
-              <Typography
-                component={'div'}
-                mt={3}
-                textAlign={'center'}
-                variant={'body1'}
-              >
-                The attached document is the{' '}
-                <Typography
-                  className={'link_style'}
-                  component={'span'}
-                  fontWeight={600}
-                  onClick={() =>
-                    window.open(BROKER_QUESTIONNAIRE.taskForm.documentFile.url)
-                  }
-                >
-                  Broker Questionnaire.pdf
-                </Typography>{' '}
-                that you have confirmed. In case you need to make any changes, a
-                new agreement will be generated and require your agreement
-                again.
-              </Typography>
+              ),
             )}
           </Transitions>
-          <Stack
-            alignItems={'center'}
-            flexDirection={{ sx: 'column', lg: 'row' }}
-            gap={3}
-            justifyContent={'center'}
-            mt={{ lg: 3, xs: 0 }}
-            width={{ lg: 600, xs: '100%' }}
-          >
-            <StyledButton
-              color={'info'}
-              onClick={() => router.back()}
-              sx={{ flex: 1, width: '100%', order: { xs: 2, lg: 1 } }}
-              variant={'text'}
-            >
-              Back
-            </StyledButton>
+          <Stack alignItems={'center'} gap={3} sx={{ mt: 3 }} width={'100%'}>
             <StyledButton
               color={'primary'}
-              disabled={!BROKER_QUESTIONNAIRE.checkTaskFormValid || loading}
-              loading={loading}
-              loadingText={'Saving...'}
-              onClick={() => handledCompleteTaskAndBackToSummary()}
-              sx={{ flex: 1, width: '100%', order: { xs: 1, lg: 2 } }}
+              disabled={!BROKER_QUESTIONNAIRE.checkLicensesValid || genLoading}
+              loading={genLoading}
+              loadingText={'Generating...'}
+              onClick={() => generateFile()}
+              sx={{
+                width: { lg: 600, xs: '100%' },
+                mt: { xs: 0, lg: 3 },
+              }}
+              variant={'outlined'}
             >
-              Save
+              Generate file
             </StyledButton>
-          </Stack>
-        </Stack>
-        <StyledDialog
-          content={<Box ref={pdfFile} />}
-          disableEscapeKeyDown
-          footer={
-            <Stack
-              flexDirection={{ xs: 'column', lg: 'row' }}
-              gap={3}
-              justifyContent={{ lg: 'space-between', xs: 'center' }}
-              textAlign={'left'}
-              width={'100%'}
-            >
-              <Typography variant={'body1'}>
-                &quot;By clicking the below button, I hereby agree to the above
-                broker agreement.&quot;
-              </Typography>
-              <StyledButton
-                disabled={agreeLoading}
-                loading={agreeLoading}
-                loadingText={'Processing...'}
-                onClick={handledSaveFile}
-              >
-                I Agree
-              </StyledButton>
-            </Stack>
-          }
-          header={
+            <Transitions>
+              {BROKER_QUESTIONNAIRE.taskForm.documentFile && (
+                <Typography
+                  component={'div'}
+                  mt={3}
+                  textAlign={'center'}
+                  variant={'body1'}
+                >
+                  The attached document is the{' '}
+                  <Typography
+                    className={'link_style'}
+                    component={'span'}
+                    fontWeight={600}
+                    onClick={() =>
+                      window.open(
+                        BROKER_QUESTIONNAIRE.taskForm.documentFile.url,
+                      )
+                    }
+                  >
+                    Broker Questionnaire.pdf
+                  </Typography>{' '}
+                  that you have confirmed. In case you need to make any changes,
+                  a new agreement will be generated and require your agreement
+                  again.
+                </Typography>
+              )}
+            </Transitions>
             <Stack
               alignItems={'center'}
-              flexDirection={'row'}
-              justifyContent={'space-between'}
+              flexDirection={{ sx: 'column', lg: 'row' }}
+              gap={3}
+              justifyContent={'center'}
+              mt={{ lg: 3, xs: 0 }}
+              width={{ lg: 600, xs: '100%' }}
             >
-              <Typography variant={'h6'}>Broker Agreement</Typography>
-              <StyledButton isIconButton onClick={close}>
-                <CloseOutlined />
+              <StyledButton
+                color={'info'}
+                onClick={() => router.back()}
+                sx={{ flex: 1, width: '100%', order: { xs: 2, lg: 1 } }}
+                variant={'text'}
+              >
+                Back
+              </StyledButton>
+              <StyledButton
+                color={'primary'}
+                disabled={!BROKER_QUESTIONNAIRE.checkTaskFormValid || loading}
+                loading={loading}
+                loadingText={'Saving...'}
+                onClick={() => handledCompleteTaskAndBackToSummary()}
+                sx={{ flex: 1, width: '100%', order: { xs: 1, lg: 2 } }}
+              >
+                Save
               </StyledButton>
             </Stack>
-          }
-          open={visible}
-          sx={{
-            '& .MuiPaper-root': {
-              maxWidth: { lg: '900px !important', xs: '100% !important' },
-              width: '100%',
-              '& .MuiDialogTitle-root, & .MuiDialogActions-root': {
-                bgcolor: '#F5F8FA',
-                p: 3,
-              },
+          </Stack>
+        </StyledFormItem>
+      </Stack>
+      <StyledDialog
+        content={<Box ref={pdfFile} />}
+        disableEscapeKeyDown
+        footer={
+          <Stack
+            flexDirection={{ xs: 'column', lg: 'row' }}
+            gap={3}
+            justifyContent={{ lg: 'space-between', xs: 'center' }}
+            textAlign={'left'}
+            width={'100%'}
+          >
+            <Typography variant={'body1'}>
+              &quot;By clicking the below button, I hereby agree to the above
+              broker agreement.&quot;
+            </Typography>
+            <StyledButton
+              disabled={agreeLoading}
+              loading={agreeLoading}
+              loadingText={'Processing...'}
+              onClick={handledSaveFile}
+            >
+              I Agree
+            </StyledButton>
+          </Stack>
+        }
+        header={
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+          >
+            <Typography variant={'h6'}>Broker Agreement</Typography>
+            <StyledButton isIconButton onClick={close}>
+              <CloseOutlined />
+            </StyledButton>
+          </Stack>
+        }
+        open={visible}
+        sx={{
+          '& .MuiPaper-root': {
+            maxWidth: { lg: '900px !important', xs: '100% !important' },
+            width: '100%',
+            '& .MuiDialogTitle-root, & .MuiDialogActions-root': {
+              bgcolor: '#F5F8FA',
+              p: 3,
             },
-          }}
-        />
-      </StyledFormItem>
-    </Stack>
+          },
+        }}
+      />
+    </>
   );
 });

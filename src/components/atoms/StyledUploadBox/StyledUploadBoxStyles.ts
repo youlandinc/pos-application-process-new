@@ -52,7 +52,7 @@ export const StyledUploadBoxStyles: SxProps = {
     border: '1px solid',
     borderColor: 'text.primary',
     borderRadius: 2,
-    mb: 3,
+    mt: 3,
   },
   '& .fileName': {
     ...POSTextEllipsis({ xs: 200, lg: 400 }),

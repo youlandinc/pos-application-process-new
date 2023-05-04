@@ -175,7 +175,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
         </StyledButton>
       </Box>
       {fileList.length !== 0 && (
-        <Box mt={'48px'}>
+        <Box mt={3}>
           <Transitions>
             {children
               ? children
