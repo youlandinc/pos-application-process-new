@@ -38,77 +38,6 @@ import {
 import { PipelineLicenseTypeOpt, PipelineQuestionnaireOwner } from '@/types';
 import { SPQOwnerData } from '@/models/pipeline/base/PQOwner';
 
-const PipelineQuestionnaireStyles: SxProps = {
-  '& .container': {
-    ...POSFlex('center', 'center', 'column'),
-    padding: '80px 7.5vw 48px 7.5vw',
-  },
-  '& .innerWrap': {
-    // width: 1312,
-    padding: '48px 72px',
-  },
-  '& .header': {
-    width: 800,
-  },
-  '& .title': {
-    ...POSFont({ lg: 24, xs: 18 }, 700, 1.5),
-    // width: '100%',
-  },
-  '& .subTitle': {
-    ...POSFont(16, 400, 1.5, 'rgba(0,0,0,.6)'),
-    marginBlockStart: 12,
-    width: '100%',
-  },
-  '& .content': {
-    // width: 800,
-    overflow: 'hidden',
-  },
-  '& .formRow': {
-    ...POSFlex('flex-start', 'space-between', 'row'),
-    // width: 800,
-  },
-  '& .formLabel': {
-    ...POSFlex('center', 'space-between', 'row'),
-  },
-  '& .footer': {
-    width: 800,
-    marginBlockStart: 48,
-  },
-  '& .filePreviewHeader': {
-    width: '100%',
-    height: 96,
-    background: '#F5F8FA',
-    padding: 0,
-    ...POSFlex('center', 'center', 'row'),
-    ...POSFont(24, 700, 1.5, 'rgba(0,0,0,.87)'),
-  },
-  '& .filePreviewCancel': {
-    ...POSFlex('center', 'center', undefined),
-    position: 'absolute',
-    width: 50,
-    right: 48,
-    zIndex: 100,
-    cursor: 'pointer',
-    border: '2px solid rgba(0,0,0,.6)',
-    borderRadius: 8,
-  },
-  '& .filePreviewFooter': {
-    ...POSFlex('center', 'space-between', 'row'),
-    ...POSFont(16, 400, 1.5, 'rgba(0,0,0,.6)'),
-    height: 96,
-    background: '#F5F8FA',
-    padding: '0 48px',
-  },
-  '& .closeIcon': {
-    fontSize: 16,
-    color: 'rgba(0,0,0,.6)',
-  },
-  '& .paper': {
-    width: 'min(1316px,100%)',
-    borderRadius: 8,
-  },
-};
-
 const initialized: SPQOwnerData = {
   ownerName: '',
   ssn: '',
@@ -196,11 +125,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
   }, [BROKER_QUESTIONNAIRE.taskForm.licenses.length]);
 
   return (
-    <Stack
-      alignItems={'center'}
-      justifyContent={'center'}
-      sx={PipelineQuestionnaireStyles}
-    >
+    <Stack alignItems={'center'} justifyContent={'center'}>
       <StyledFormItem
         label={'Broker questionnaire（optional）'}
         sx={{ width: '100%' }}
@@ -225,12 +150,8 @@ export const PipelineQuestionnaire: FC = observer(() => {
                   width={'100%'}
                 >
                   <Box
-                    className={'title'}
                     sx={{
-                      fontSize: {
-                        lg: 24,
-                        xs: 18,
-                      },
+                      ...POSFont({ lg: 24, xs: 18 }, 700, 1.5),
                     }}
                   >
                     {'Broker name ' + (index + 1)}
@@ -297,10 +218,8 @@ export const PipelineQuestionnaire: FC = observer(() => {
                   width={'100%'}
                 >
                   <StyledDatePicker
-                    // format="MM/dd/yyyy"
                     label={'Date of Birth'}
-                    onChange={(date, context) => {
-                      console.log(isValid(date) ? date : null, date);
+                    onChange={(date) => {
                       BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
                         'birthday',
                         isValid(date) ? date : null,
@@ -360,27 +279,40 @@ export const PipelineQuestionnaire: FC = observer(() => {
           <StyledButton
             color={'primary'}
             disabled={!BROKER_QUESTIONNAIRE.checkLicensesValid || genLoading}
+            loading={genLoading}
+            loadingText={'Generating...'}
             onClick={() => generateFile()}
             sx={{
               width: { lg: 600, xs: '100%' },
               mt: { xs: 0, lg: 3 },
             }}
+            variant={'outlined'}
           >
             Generate file
           </StyledButton>
-
           <Transitions>
             {BROKER_QUESTIONNAIRE.taskForm.documentFile && (
-              <Box mt={'48px'}>
-                This is a copy of the{' '}
-                <Link href={BROKER_QUESTIONNAIRE.taskForm.documentFile.url}>
-                  <a className={'linkStyle'} target={'_blank'}>
-                    Broker Questionnaire
-                  </a>
-                </Link>{' '}
-                you agreed to. If you need to change the agreement, it can be
-                generated and agreed to again.
-              </Box>
+              <Typography
+                component={'div'}
+                mt={3}
+                textAlign={'center'}
+                variant={'body1'}
+              >
+                The attached document is the{' '}
+                <Typography
+                  className={'link_style'}
+                  component={'span'}
+                  fontWeight={600}
+                  onClick={() =>
+                    window.open(BROKER_QUESTIONNAIRE.taskForm.documentFile.url)
+                  }
+                >
+                  Broker Questionnaire.pdf
+                </Typography>{' '}
+                that you have confirmed. In case you need to make any changes, a
+                new agreement will be generated and require your agreement
+                again.
+              </Typography>
             )}
           </Transitions>
           <Stack
@@ -403,6 +335,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
               color={'primary'}
               disabled={!BROKER_QUESTIONNAIRE.checkTaskFormValid || loading}
               loading={loading}
+              loadingText={'Saving...'}
               onClick={() => handledCompleteTaskAndBackToSummary()}
               sx={{ flex: 1, width: '100%', order: { xs: 1, lg: 2 } }}
             >
@@ -428,7 +361,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
               <StyledButton
                 disabled={agreeLoading}
                 loading={agreeLoading}
-                loadingText={'Saving...'}
+                loadingText={'Processing...'}
                 onClick={handledSaveFile}
               >
                 I Agree

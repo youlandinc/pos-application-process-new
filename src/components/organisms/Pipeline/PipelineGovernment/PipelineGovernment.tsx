@@ -141,6 +141,7 @@ export const PipelineGovernment: FC = observer(() => {
               color={'primary'}
               disabled={fileList.length <= 0 || loading}
               loading={loading}
+              loadingText={'Saving...'}
               onClick={() => handledCompleteTaskAndBackToSummary()}
               sx={{ flex: 1, width: '100%', order: { xs: 1, lg: 2 } }}
             >
