@@ -19,6 +19,11 @@ export const _addTaskFile = (params: FormData, taskId: string) => {
   return put<TaskFiles[]>(
     `/dashboard/pipeline/application/task/${taskId}`,
     params,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
   );
 };
 

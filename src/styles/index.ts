@@ -63,7 +63,10 @@ export const POSSize = <T extends number | string, X extends number | string>(
   };
 };
 
-export const PSXTextEllipsis = (width: number | string, line = 1): any => {
+export const PSXTextEllipsis = (
+  width: CSSProperties['width'] | Omit<SxProps, 'width'>,
+  line = 1,
+): any => {
   return {
     width,
     overflow: 'hidden',

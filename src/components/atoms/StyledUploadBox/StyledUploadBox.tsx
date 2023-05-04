@@ -2,16 +2,21 @@ import React, { CSSProperties, ReactNode, useCallback, useState } from 'react';
 
 import { useSnackbar } from 'notistack';
 
-import { _addTaskFile, _downloadBrokerFile } from '@/requests';
-import { useSwitch } from '@/hooks';
+import { _downloadBrokerFile } from '@/requests';
+import { useBreakpoints, useSwitch } from '@/hooks';
 
-import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
+import {
+  StyledButton,
+  StyledDialog,
+  StyledLoading,
+  Transitions,
+} from '@/components/atoms';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFlex, POSFont, PSXTextEllipsis } from '@/styles';
-import { Box, Dialog, Icon, SxProps, Typography } from '@mui/material';
+import { Box, Icon, SxProps, Typography } from '@mui/material';
 import {
-  CloudUploadOutlined,
-  DeleteOutlineOutlined,
+  CloseOutlined,
+  DeleteForeverOutlined,
   FolderOpen,
   GetAppOutlined,
   PageviewOutlined,
@@ -26,51 +31,56 @@ export const StyledUploadBoxStyles: SxProps = {
     verticalAlign: '-5px',
     cursor: 'pointer',
     '&:hover': {
-      // color: '#3F81E9',
+      color: 'primary.main',
     },
   },
   '& .upload_img': {
     width: '40%',
     height: '100%',
     mr: {
-      md: 6,
+      lg: 6,
       sx: 0,
     },
     mb: {
-      md: 0,
+      lg: 0,
       xs: 3,
     },
   },
   '& .upload_text': {
     textAlign: {
-      md: 'left',
+      lg: 'left',
       xs: 'center',
     },
     '& h5': {
       fontSize: {
-        md: 20,
+        lg: 20,
         xs: 18,
       },
     },
     '& p': {
       color: 'text.secondary',
       fontSize: {
-        md: 14,
+        lg: 14,
         xs: 12,
       },
     },
   },
   '& .fileItem': {
-    ...POSFont(16, 400, 1.5, 'rgba(0,0,0,.87)'),
+    ...POSFont(16, 400, 1.5, 'text.primary'),
     ...POSFlex('center', 'space-between', 'row'),
     width: '100%',
-    padding: '16px 30px 16px 14px',
-    border: '1px solid rgba(0, 0, 0, 0.6);',
-    borderRadius: 8,
-    marginBottom: 24,
+    py: 2,
+    px: {
+      lg: 3,
+      xs: 1.5,
+    },
+    border: '1px solid',
+    borderColor: 'text.primary',
+    borderRadius: 2,
+    mb: 3,
   },
   '& .fileName': {
-    ...PSXTextEllipsis(400),
+    ...PSXTextEllipsis({ xs: 200, lg: 400 }),
   },
   '& .uploadBox': {
     width: '100%',
@@ -97,7 +107,7 @@ export const StyledUploadBoxStyles: SxProps = {
     p: { md: 6, xs: 3 },
     textTransform: 'none',
     cursor: 'pointer',
-    ...POSFlex('center', 'space-between', { md: 'row', xs: 'column' }),
+    ...POSFlex('center', 'space-between', { lg: 'row', xs: 'column' }),
   },
   ' input': {
     width: '100%',
@@ -108,7 +118,7 @@ export const StyledUploadBoxStyles: SxProps = {
     padding: '48px',
   },
   '& .dialogDetail': {
-    ...POSFont(24, 400, 1.5, 'rgba(0,0,0,.87)'),
+    ...POSFont(14, 400, 1.5, 'info.main'),
     textAlign: 'center',
     wordBreak: 'break-all',
   },
@@ -142,6 +152,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
   } = props;
 
   const { enqueueSnackbar } = useSnackbar();
+  const breakpoint = useBreakpoints();
 
   const [deleteIndex, setDeleteIndex] = useState<number>(-1);
 
@@ -161,7 +172,6 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
     onDragOver: stopDefaults,
     onDrop: async (e: React.DragEvent<HTMLElement>) => {
       stopDefaults(e);
-      console.log({ e });
       if (e.dataTransfer.files && validatorFileSize(e.dataTransfer.files)) {
         await handleUpload(e.dataTransfer.files);
       }
@@ -170,7 +180,6 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
 
   const handleUpload = useCallback(
     async (files: FileList) => {
-      console.log({ files });
       onSuccess(files);
     },
     [onSuccess],
@@ -196,10 +205,10 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
 
   const handleChange = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
-      console.dir({ event }, event.target.files);
+      event.preventDefault();
       if (event.target.files && validatorFileSize(event.target.files)) {
         await handleUpload(event.target.files);
-        event.target.value = '';
+        // event.target.value = '';
       }
     },
     [handleUpload, validatorFileSize],
@@ -271,7 +280,9 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
                   : 'all'}
               </Typography> */}
                 <Typography variant={'body2'}>
-                  Drop files here or click{' '}
+                  {['xs', 'sm', 'md'].includes(breakpoint)
+                    ? 'Click '
+                    : 'Drop files here or click '}
                   <Box className="link_style" component={'span'}>
                     browse
                   </Box>{' '}
@@ -295,17 +306,31 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
                         style={{ marginRight: 10 }}
                       />
                       {item.originalFileName}
+                      <Box>
+                        {['xs', 'sm', 'md'].includes(breakpoint) &&
+                          POSFormatDate(
+                            new Date(item.uploadTime as string),
+                            'MM-dd-yyyy HH:mm:ss',
+                          )}
+                      </Box>
                     </Box>
+
                     <Box>
-                      {POSFormatDate(
-                        new Date(item.uploadTime as string),
-                        'MM-dd-yyyy HH:mm:ss',
-                      )}
+                      {['lg', 'xl', 'xxl'].includes(breakpoint) &&
+                        POSFormatDate(
+                          new Date(item.uploadTime as string),
+                          'MM-dd-yyyy HH:mm:ss',
+                        )}
 
                       <PageviewOutlined
                         className={'icon'}
                         onClick={() => window.open(item.url)}
-                        style={{ marginLeft: 50 }}
+                        sx={{
+                          ml: {
+                            lg: 6,
+                            xs: 0,
+                          },
+                        }}
                       />
 
                       <GetAppOutlined
@@ -314,7 +339,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
                         style={{ margin: '0 12px' }}
                       />
 
-                      <DeleteOutlineOutlined
+                      <CloseOutlined
                         className={'icon'}
                         onClick={() => {
                           setDeleteIndex(index);
@@ -328,8 +353,52 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
         </Box>
       )}
 
-      <Dialog
-        maxWidth={false}
+      <StyledDialog
+        content={
+          <Box
+            sx={{
+              ...POSFont(14, 400, 1.5, 'info.main'),
+              wordBreak: 'break-all',
+              py: 3,
+            }}
+          >
+            {`Are you sure you want to delete ${fileList[deleteIndex]?.originalFileName}`}
+          </Box>
+        }
+        footer={
+          <>
+            <StyledButton
+              color="error"
+              onClick={onDialogConfirmDelete}
+              size="small"
+              variant="contained"
+            >
+              Delete
+            </StyledButton>
+            <StyledButton
+              autoFocus
+              color="info"
+              onClick={close}
+              size="small"
+              sx={{ ml: 3 }}
+              variant="outlined"
+            >
+              Cancel
+            </StyledButton>
+          </>
+        }
+        header={
+          <>
+            <DeleteForeverOutlined
+              sx={{
+                mr: 1.5,
+                lineHeight: '28px',
+                verticalAlign: 'middle',
+              }}
+            />
+            Delete?
+          </>
+        }
         onClose={(event, reason) => {
           if (reason !== 'backdropClick') {
             close();
@@ -337,24 +406,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
         }}
         open={visible}
         transitionDuration={300}
-      >
-        <Box className={'dialogWrap'}>
-          <Box className={'dialogDetail'}>
-            {`Are you sure you want to delete ${fileList[deleteIndex]?.originalFileName}`}
-          </Box>
-          <Box mt={'24px'}>
-            <StyledButton onClick={() => close()} style={{ width: 120 }}>
-              Cancel
-            </StyledButton>
-            <StyledButton
-              onClick={onDialogConfirmDelete}
-              style={{ width: 120 }}
-            >
-              Delete
-            </StyledButton>
-          </Box>
-        </Box>
-      </Dialog>
+      ></StyledDialog>
     </Box>
   );
 };

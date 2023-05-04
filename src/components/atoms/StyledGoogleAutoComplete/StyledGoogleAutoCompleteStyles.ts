@@ -10,10 +10,10 @@ export const StyledGoogleAutoCompleteStyles: Record<
       width: '100%',
     },
     inputWrap: {
-      ...POSFlex('center', 'flex-start'),
+      ...POSFlex('center', 'flex-start', { lg: 'row', xs: 'column' }),
       width: '100%',
-      mt: 2.5,
-      gap: 2.5,
+      mt: 3,
+      gap: 3,
       '& *': {
         flex: 1,
       },

@@ -20,6 +20,7 @@ export const StyledFormItem: FC<StyledFormItemProps> = ({
         component={'div'}
         mb={3}
         sx={labelSx}
+        textAlign={'center'}
         variant={['xs', 'sm', 'md'].includes(breakpoints) ? 'h4' : 'h3'}
       >
         {label}
@@ -27,8 +28,9 @@ export const StyledFormItem: FC<StyledFormItemProps> = ({
       {tip && (
         <Typography
           component={'div'}
-          mb={3}
+          mb={6}
           sx={{ color: 'info.A100', ...tipSx }}
+          textAlign={'center'}
           variant={'body1'}
         >
           {tip}

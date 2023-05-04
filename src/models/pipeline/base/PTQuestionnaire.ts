@@ -98,6 +98,7 @@ export const PTQuestionnaire = types
         value: SPQOwnerData[K],
         index: number,
       ) {
+        console.log({ value }, key);
         self.taskForm.licenses[index][key] = value;
       },
       addLicenses(owner: SPQOwnerData) {
@@ -111,6 +112,7 @@ export const PTQuestionnaire = types
           taskId,
           taskForm: { licenses },
         } = self;
+        console.log({ licenses });
         return {
           taskId,
           licenses: getSnapshot(licenses),

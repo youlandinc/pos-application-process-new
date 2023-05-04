@@ -6,7 +6,7 @@ import { POSCreateDebounceFunction } from '@/utils';
 
 const EXPIRED_TIME = 1000 * 60 * 9;
 
-//const EXPIRED_TIME = 3000;
+// const EXPIRED_TIME = 3000;
 
 export class DetectActiveService {
   private _userData: User.UserSignInRequest;
