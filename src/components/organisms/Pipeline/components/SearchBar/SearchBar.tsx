@@ -1,11 +1,10 @@
-import { useBreakpoints, useSwitch } from '@/hooks';
 import { FC } from 'react';
-import { Box, Drawer, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { Close, FilterAltOutlined, SearchOutlined } from '@mui/icons-material';
 
 import { OPTIONS_LOAN_SPECIES, OPTIONS_LOAN_STAGE } from '@/constants';
 
-import { SearchBarProps } from './index';
+import { useBreakpoints, useSwitch } from '@/hooks';
 import {
   StyledButton,
   StyledDateRange,
@@ -13,6 +12,20 @@ import {
   StyledSelectMultiple,
   StyledTextField,
 } from '@/components';
+
+export interface SearchBarProps {
+  searchForm: {
+    propertyAddress: string;
+    loanStage: string[];
+    loanSpecies: string[];
+    dateRange: [Date | null, Date | null];
+  };
+  onParamsChange: (
+    k: keyof SearchBarProps['searchForm'],
+    v: string | string[] | [Date | null, Date | null] | boolean,
+  ) => void;
+  onValueChange: (v: boolean) => void;
+}
 
 export const SearchBar: FC<SearchBarProps> = ({
   searchForm,
@@ -39,6 +52,7 @@ export const SearchBar: FC<SearchBarProps> = ({
           >
             <FilterAltOutlined />
           </StyledButton>
+
           <StyledDrawer
             anchor={'right'}
             content={
@@ -107,12 +121,17 @@ export const SearchBar: FC<SearchBarProps> = ({
               </Stack>
             }
             header={
-              <Box>
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                width={'100%'}
+              >
                 Filter
                 <StyledButton isIconButton onClick={close}>
                   <Close />
                 </StyledButton>
-              </Box>
+              </Stack>
             }
             onClose={close}
             open={visible}

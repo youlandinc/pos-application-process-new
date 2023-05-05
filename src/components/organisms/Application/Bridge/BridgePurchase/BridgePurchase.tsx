@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { Box } from '@mui/material';
+import { useCallback, useMemo, useRef } from 'react';
+import { Stack } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
 import dynamic from 'next/dynamic';
@@ -61,7 +61,7 @@ const DynamicWhereKnow = dynamic(
 const DynamicEstimateRate = dynamic(
   () =>
     import('@/components/molecules/Application/Bridge/Purchase').then(
-      (mod) => mod.BPEstimateRate,
+      (mod) => mod.BridgePurchaseEstimateRate,
     ),
   {
     loading: () => <StyledLoading />,
@@ -170,7 +170,7 @@ const useStateMachine = (
   userSetting: IUserSetting,
 ) => {
   const state = applicationForm.formData.state as BridgePurchaseState;
-  const starting = applicationForm.formData.starting as IBStarting;
+  const starting = applicationForm.formData.starting as IBridgeStarting;
   const whereKnowUs = applicationForm.formData.whereKnowUs as IWhereKnowUs;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -247,7 +247,7 @@ const useStateMachine = (
     estimateRate: {
       next: async () => {
         const { taskId } = bpmn;
-        await _updateTask(taskId, 'complete')
+        await _updateTask(taskId as string, 'complete')
           .then(() => {
             applicationForm.formData.changeState(BridgePurchaseState.celebrate);
           })
@@ -275,7 +275,7 @@ const useStateMachine = (
   }, [state]);
 
   const back = useCallback(() => {
-    transitions.current[state].back();
+    transitions.current[state].back?.();
   }, [state]);
 
   return {
@@ -298,7 +298,7 @@ export const BridgePurchaseForm = observer(
     const { next, back, updateState, changeTaskState, completeTaskState } =
       useStateMachine(
         applicationForm,
-        session,
+        session as UserSession,
         bpmn,
         handleBack,
         router,
@@ -310,7 +310,13 @@ export const BridgePurchaseForm = observer(
     useAutoSave(applicationForm.formData, bpmn);
 
     return (
-      <Box style={{ padding: '120px 7.5vw' }}>
+      <Stack
+        alignItems={'center'}
+        flexDirection={'column'}
+        gap={6}
+        justifyContent={'center'}
+        width={'100%'}
+      >
         {renderFormNode(
           next,
           back,
@@ -318,7 +324,7 @@ export const BridgePurchaseForm = observer(
           completeTaskState,
           changeTaskState,
         )}
-      </Box>
+      </Stack>
     );
   },
 );

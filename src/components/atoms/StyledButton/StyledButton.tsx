@@ -10,7 +10,7 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
       loading = false,
       isIconButton = false,
       onClick,
-      loadingText = 'loading',
+      loadingText = 'Loading...',
       sx,
       variant = 'contained',
       ...rest

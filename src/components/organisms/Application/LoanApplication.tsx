@@ -4,7 +4,7 @@ import { Box, Stack } from '@mui/material';
 //import { Box, CircularProgress, makeStyles } from '@material-ui/core';
 //import { flexCenter, size, POSFont } from '@/common/styles/global';
 //import { MortgagePurchaseForm, MortgageRefinanceForm } from './Mortgage';
-//import { BridgePurchaseForm, BridgeRefinanceForm } from './Bridge';
+import { BridgePurchaseForm, BridgeRefinanceForm } from './Bridge';
 //import { useNextBtnClasses } from '@/common/classes';
 
 import { useRouter } from 'next/router';
@@ -255,8 +255,7 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
           return null;
         }
         if (productType === 'purchase' || applicationType === 'purchase') {
-          return <>purchase</>;
-          //return <BridgePurchaseForm handleBack={handleBack} />;
+          return <BridgePurchaseForm handleBack={handleBack} />;
         }
         if (productType === 'refinance' || applicationType === 'refinance') {
           return <>refinance</>;

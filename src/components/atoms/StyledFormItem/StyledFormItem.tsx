@@ -15,7 +15,7 @@ export const StyledFormItem: FC<StyledFormItemProps> = ({
 }) => {
   const breakpoints = useBreakpoints();
   return (
-    <Box sx={{ maxWidth: 900, ...sx }} {...rest}>
+    <Box sx={{ maxWidth: 900, width: '100%', ...sx }} {...rest}>
       <Typography
         component={'div'}
         mb={3}

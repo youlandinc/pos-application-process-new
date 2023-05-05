@@ -2,7 +2,11 @@ import { FC, useState } from 'react';
 import { Box, Divider, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { StyledButton, StyledSelect } from '@/components/atoms';
+import {
+  StyledButton,
+  StyledSelect,
+  StyledSelectOption,
+} from '@/components/atoms';
 import {
   OPTIONS_BRIDGE_PROPERTY_NUMBER,
   OPTIONS_COMMON_STATE,
@@ -98,6 +102,11 @@ const SelectComponent: FC = () => {
               onChange={(e) => setValue4(e.target.value)}
               options={OPTIONS_COMMON_STATE}
               value={value4}
+            />
+            <StyledSelectOption
+              onChange={(v) => setValue3(v)}
+              options={OPTIONS_BRIDGE_PROPERTY_NUMBER}
+              value={value3}
             />
           </Box>
         </Box>
