@@ -10,6 +10,7 @@ import { PQOwnerData, SPQOwnerData } from './PQOwner';
 
 import {
   PipelineQuestionnaire,
+  PipelineQuestionnaireOwner,
   PipelineTaskItem,
   PipelineTaskItemStatus,
   PipelineTaskKey,
@@ -18,6 +19,7 @@ import {
 
 import { validate } from 'validate.js';
 import { CreditScoreSchema } from '@/constants';
+import { format, parse, parseISO } from 'date-fns';
 
 export const PTQuestionnaire = types
   .model({
@@ -82,6 +84,9 @@ export const PTQuestionnaire = types
         const { documentFile } = taskForm;
         self.taskForm.documentFile = documentFile;
         if (taskForm?.licenses) {
+          taskForm?.licenses.forEach((item) => {
+            item.birthday = new Date(item.birthday);
+          });
           self.taskForm.licenses = cast(
             taskForm?.licenses as unknown as SPQOwnerData[],
           );
@@ -111,6 +116,9 @@ export const PTQuestionnaire = types
           taskId,
           taskForm: { licenses },
         } = self;
+        licenses.forEach((item) => {
+          item.birthday = format(item.birthday as Date, 'yyyy-MM-dd O');
+        });
         return {
           taskId,
           licenses: getSnapshot(licenses),
@@ -118,10 +126,14 @@ export const PTQuestionnaire = types
       },
       getPostData() {
         const { taskId } = self;
+        const licenses = JSON.parse(JSON.stringify(self.taskForm.licenses));
+        licenses.forEach((item: PipelineQuestionnaireOwner) => {
+          item.birthday = format(item.birthday as Date, 'yyyy-MM-dd O');
+        });
         return {
           taskId,
           taskForm: {
-            licenses: getSnapshot(self.taskForm.licenses),
+            licenses: licenses,
             documentFile: self.taskForm.documentFile
               ? getSnapshot(self.taskForm.documentFile)
               : undefined,

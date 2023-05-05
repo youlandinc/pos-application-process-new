@@ -8,6 +8,7 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
   value,
   onChange,
   label = 'Date',
+  ...rest
 }) => {
   return (
     <>
@@ -22,6 +23,7 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
         }}
         sx={StyledDatePickerStyles}
         value={value}
+        {...rest}
       />
     </>
   );

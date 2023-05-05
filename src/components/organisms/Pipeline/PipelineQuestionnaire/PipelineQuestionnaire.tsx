@@ -3,7 +3,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 
 import { useRouter } from 'next/router';
-import { format, isValid } from 'date-fns';
+import { format, isValid, parse, parseISO } from 'date-fns';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
@@ -226,17 +226,11 @@ export const PipelineQuestionnaire: FC = observer(() => {
                       onChange={(date) => {
                         BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
                           'birthday',
-                          isValid(date)
-                            ? format(date as number | Date, 'yyyy-MM-dd O')
-                            : date instanceof Date
-                            ? isNaN(date.getTime())
-                              ? date.toString()
-                              : format(date, 'yyyy-MM-dd O')
-                            : null,
+                          date,
                           index,
                         );
                       }}
-                      value={item.birthday && new Date(item.birthday)}
+                      value={item.birthday}
                     />
                     <StyledSelect
                       label={'State'}

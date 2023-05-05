@@ -70,7 +70,7 @@ export interface TaskFiles {
 export interface PipelineQuestionnaireOwner {
   ownerName: string;
   ssn: string;
-  birthday: string;
+  birthday: string | Date;
   state: string;
   licenseType: string;
   license: string;
