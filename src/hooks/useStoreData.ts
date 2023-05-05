@@ -5,13 +5,14 @@ import { useMst } from '@/models/Root';
 
 import { _bindProcess, _updateTask, _updateTaskVariables } from '@/requests';
 import { ServerTaskKey } from '@/types/enum';
-import { usePersistFn } from '@/hooks/usePersistFn';
+import { usePersistFn } from './index';
 
 export const useStoreData = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const { bpmn } = useMst();
   const { taskId } = bpmn;
+
   const [updateState, updateTaskVariables] = useAsyncFn(
     async (variables: Variable<any>[]) => {
       return await _updateTaskVariables(taskId as string, variables)

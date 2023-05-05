@@ -102,7 +102,12 @@ export const BridgeStarting: FC<FormNodeBaseProps> = observer((props) => {
         maxWidth={600}
         width={'100%'}
       >
-        <StyledButton onClick={back} sx={{ flex: 1 }}>
+        <StyledButton
+          color={'info'}
+          onClick={back}
+          sx={{ flex: 1 }}
+          variant={'text'}
+        >
           Back
         </StyledButton>
         <StyledButton

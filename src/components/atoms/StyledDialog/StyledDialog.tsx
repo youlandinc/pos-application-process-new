@@ -45,7 +45,10 @@ export const StyledDialog: FC<StyledDialogProps> = ({
       {...rest}
     >
       {header && (
-        <DialogTitle className={handledClass('dialog_header')}>
+        <DialogTitle
+          className={handledClass('dialog_header')}
+          component={'div'}
+        >
           {header}
         </DialogTitle>
       )}
