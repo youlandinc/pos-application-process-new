@@ -107,7 +107,7 @@ export const PipelineW9: FC = observer(() => {
           <Stack width={'100%'}>
             <StyledUploadBox
               fileList={fileList || []}
-              loading={uploadLoading}
+              loading={uploadLoading || loading}
               onDelete={onDelete}
               onSuccess={onSuccess}
             />
@@ -131,7 +131,7 @@ export const PipelineW9: FC = observer(() => {
             </StyledButton>
             <StyledButton
               color={'primary'}
-              disabled={fileList.length <= 0 || loading}
+              disabled={fileList.length <= 0 || loading || uploadLoading}
               loading={loading}
               loadingText={'Saving...'}
               onClick={() => handledCompleteTaskAndBackToSummary()}
