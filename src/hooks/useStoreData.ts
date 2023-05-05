@@ -1,6 +1,7 @@
 import { useAsyncFn } from 'react-use';
-import { _bindProcess, _updateTask, _updateTaskVariables } from '@/requests';
 import { useMst } from '@/models/Root';
+
+import { _bindProcess, _updateTask, _updateTaskVariables } from '@/requests';
 import { ServerTaskKey } from '@/types/enum';
 import { usePersistFn } from '@/hooks/usePersistFn';
 
@@ -8,8 +9,8 @@ export const useStoreData = () => {
   const { bpmn } = useMst();
   const { taskId } = bpmn;
   const [updateState, updateTaskVariables] = useAsyncFn(
-    async (variables: Variable[]) => {
-      return await _updateTaskVariables(taskId, variables)
+    async (variables: Variable<any>[]) => {
+      return await _updateTaskVariables(taskId as string, variables)
         .then((res) => res)
         .catch((err) => {
           console.log(err);
@@ -20,7 +21,7 @@ export const useStoreData = () => {
 
   const [completeTaskState, completeTask] = useAsyncFn(
     async (tId?: string) => {
-      return await _updateTask(tId || taskId, 'complete')
+      return await _updateTask(tId || (taskId as string), 'complete')
         .then((res) => res)
         .catch((err) => {
           console.log(err);
@@ -41,7 +42,7 @@ export const useStoreData = () => {
   );
 
   const handledNextTask = usePersistFn(
-    async (variables: Variable[], successCb?: (TaskData) => void) => {
+    async (variables: Variable<any>[], successCb?: (TaskData: any) => void) => {
       const res = await updateTaskVariables(variables).catch((err) => {
         console.log(err);
       });
@@ -80,7 +81,7 @@ export const useStoreData = () => {
   );
 
   const bindProcess = usePersistFn(() => {
-    _bindProcess(bpmn.processId)
+    _bindProcess(bpmn.processId as string)
       .then((res) => {
         console.log(res);
       })

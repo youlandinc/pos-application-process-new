@@ -71,7 +71,6 @@ export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
   } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  console.log(router.pathname);
   const check = useCallback(async () => {
     if (
       !persistDataLoaded ||

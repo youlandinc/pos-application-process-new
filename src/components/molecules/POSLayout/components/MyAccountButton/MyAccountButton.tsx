@@ -1,4 +1,18 @@
+import { StyledButton } from '@/components';
+import { userpool } from '@/constants';
+
 import { useBreakpoints } from '@/hooks';
+import { UserType } from '@/types';
+import { ExpandMoreOutlined, PermIdentityOutlined } from '@mui/icons-material';
+import {
+  ClickAwayListener,
+  Grow,
+  MenuItem,
+  MenuList,
+  Paper,
+  Popper,
+} from '@mui/material';
+import { useRouter } from 'next/router';
 import {
   FC,
   MouseEvent,
@@ -8,21 +22,19 @@ import {
   useRef,
   useState,
 } from 'react';
-import {
-  ClickAwayListener,
-  Grow,
-  MenuItem,
-  MenuList,
-  Paper,
-  Popper,
-} from '@mui/material';
-import { ExpandMoreOutlined, PermIdentityOutlined } from '@mui/icons-material';
-import { useRouter } from 'next/router';
 
 import { MyAccountButtonProps, MyAccountStyles } from './index';
-import { StyledButton } from '@/components';
 
-const MENU_LIST = [
+const MENU_LIST_CUSTOMER = [
+  { label: 'Change Email', url: '/auth/change_email' },
+  {
+    label: 'Change Password',
+    url: '/auth/change_password',
+  },
+  { label: 'Sign Out', url: 'sign_out' },
+];
+
+const MENU_LIST_NOT_CUSTOMER = [
   { label: 'My Profile', url: '/pipeline/profile' },
   { label: 'Change Email', url: '/auth/change_email' },
   {
@@ -33,6 +45,11 @@ const MENU_LIST = [
 ];
 
 export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
+  const userType = userpool.getLastAuthUserInfo(
+    userpool.getLastAuthUserId(),
+    'user_type',
+  );
+
   const [popperVisible, setPopperVisible] = useState(false);
 
   const anchorRef = useRef<HTMLButtonElement>(null);
@@ -81,7 +98,18 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
         );
       case 'dashboard':
       case 'pipeline':
-        return MENU_LIST.map((item, index) => (
+        if (userType === UserType.CUSTOMER) {
+          return MENU_LIST_CUSTOMER.map((item, index) => (
+            <MenuItem
+              key={`${item.label}_${index}`}
+              onClick={(e) => handledMenuItemClick(e, item.url)}
+              sx={MyAccountStyles.menu_item}
+            >
+              {item.label}
+            </MenuItem>
+          ));
+        }
+        return MENU_LIST_NOT_CUSTOMER.map((item, index) => (
           <MenuItem
             key={`${item.label}_${index}`}
             onClick={(e) => handledMenuItemClick(e, item.url)}
@@ -100,7 +128,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
           </MenuItem>
         );
     }
-  }, [handledMenuItemClick, scene]);
+  }, [handledMenuItemClick, scene, userType]);
 
   return (
     <>

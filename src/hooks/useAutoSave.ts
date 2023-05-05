@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react';
-import { IBpmn } from '@/models/Bpmn';
-import { _updateProcessVariables } from '@/requests';
+
 import {
   BridgeApplicationProcessSnapshot,
   MortgageApplicationProcessSnapshot,
 } from '@/types';
-import { usePersistFn } from '@/hooks/usePersistFn';
-import { useDebounceFn } from '@/hooks/useDebounceFn';
 import { VariableName } from '@/types/enum';
+import { IBpmn } from '@/models/base';
 import {
   IBridgePurchase,
   IBridgeRefinance,
   IMortgagePurchase,
   IMortgageRefinance,
-} from '@/models/product';
+} from '@/models/application/base';
+
+import { _updateProcessVariables } from '@/requests';
+import { useDebounceFn, usePersistFn } from './index';
 
 export const useAutoSave = (
   formData:
@@ -44,13 +45,17 @@ export const useAutoSave = (
     }
     setLastPostData(appProgressSnap);
 
-    _updateProcessVariables(bpmn.processId, [
-      {
-        name: VariableName.clientAppProgress,
-        type: 'json',
-        value: appProgressSnap,
-      },
-    ]);
+    try {
+      _updateProcessVariables(bpmn.processId as string, [
+        {
+          name: VariableName.clientAppProgress,
+          type: 'json',
+          value: appProgressSnap,
+        },
+      ]);
+    } catch (err) {
+      console.log(err);
+    }
   });
 
   const { run: saveClientApplicationProgressDebounce } = useDebounceFn(

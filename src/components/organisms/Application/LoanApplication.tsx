@@ -1,14 +1,19 @@
+import { POSFlex, POSFont } from '@/styles';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Box, Stack } from '@mui/material';
 //import { Box, CircularProgress, makeStyles } from '@material-ui/core';
 //import { flexCenter, size, POSFont } from '@/common/styles/global';
 //import { MortgagePurchaseForm, MortgageRefinanceForm } from './Mortgage';
 //import { BridgePurchaseForm, BridgeRefinanceForm } from './Bridge';
 //import { useNextBtnClasses } from '@/common/classes';
 
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { StyledButton } from '@/components/atoms';
+import {
+  StyledButton,
+  StyledFormItem,
+  StyledLoading,
+} from '@/components/atoms';
 import { useAsyncFn } from 'react-use';
 import { useNotification } from '@/hooks/useNotification';
 
@@ -70,6 +75,7 @@ const useInitProcessData = (
       if (productCategory === 'mortgage' && applicationType === 'purchase') {
         productName = 'mortgage';
       }
+      // todo : tenantId should replace params
       return await _startProcess(productName, '1000052022092800000102').catch(
         (err) => {
           console.log(err);
@@ -190,6 +196,26 @@ const useInitProcessData = (
   };
 };
 
+const LoanApplicationButtonStyles = {
+  ...POSFlex('center', 'center', 'row'),
+  ...POSFont(20, 600, 1.5, 'text.primary'),
+  cursor: 'pointer',
+  height: 64,
+  width: '100%',
+  maxWidth: 600,
+  border: '2px solid #C5D1FF',
+  borderRadius: 2,
+  transition: 'all .3s',
+  '&:hover': {
+    borderColor: 'primary.main',
+  },
+  '&.active': {
+    bgcolor: '#C5D1FF',
+    color: 'primary.main',
+    borderColor: 'primary.main',
+  },
+};
+
 export const LoanApplication = observer<LoanApplicationProps>((props) => {
   const { productCategory, applicationType: productType } = props;
   const store = useMst();
@@ -229,102 +255,75 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
           return null;
         }
         if (productType === 'purchase' || applicationType === 'purchase') {
-          return <BridgePurchaseForm handleBack={handleBack} />;
+          return <>purchase</>;
+          //return <BridgePurchaseForm handleBack={handleBack} />;
         }
         if (productType === 'refinance' || applicationType === 'refinance') {
-          return <BridgeRefinanceForm handleBack={handleBack} />;
+          return <>refinance</>;
+          //return <BridgeRefinanceForm handleBack={handleBack} />;
         }
         break;
       }
     }
   }, [productType, handleBack, productCategory, applicationType]);
 
+  const renderLabel = useMemo(() => {
+    switch (productCategory) {
+      case 'bridge': {
+        return 'Bridge/Fix and Flip';
+      }
+    }
+  }, [productCategory]);
+
   return (
-    <Box className={classes.root}>
+    <>
       {initialized ? (
         renderApplicationForm
       ) : (
-        <Box className={classes.firstPage}>
+        <Box width={'100%'}>
           {loadState.loading ? (
-            <CircularProgress
-              style={{
-                ...size(48),
-              }}
-            />
+            <StyledLoading />
           ) : (
-            <Box className={classes.selectionWrap}>
-              <Box className={classes.firstPageSelection}>
-                <Box
-                  onClick={() => setApplicationType('purchase')}
-                  overflow={'hidden'}
-                  position="relative"
+            <Stack
+              alignItems={'center'}
+              justifyContent={'center'}
+              width={'100%'}
+            >
+              <StyledFormItem label={renderLabel} width={'100%'}>
+                <Stack
+                  alignItems={'center'}
+                  gap={3}
+                  justifyContent={'center'}
+                  width={'100%'}
                 >
                   <Box
-                    className={classes.btnText}
-                    color={applicationType === 'purchase' ? '#fff' : '#787878'}
+                    className={applicationType === 'purchase' ? 'active' : ''}
+                    onClick={() => setApplicationType('purchase')}
+                    sx={LoanApplicationButtonStyles}
                   >
                     Are you buying?
                   </Box>
-                  <Box className={classes.applicationBtn}>
-                    <Image
-                      draggable={false}
-                      height={325}
-                      src={
-                        applicationType === 'purchase'
-                          ? activeBtnImg.src
-                          : defaultBtnImg.src
-                      }
-                      width={400}
-                    />
-                  </Box>
-                </Box>
-
-                <Box
-                  color={'rgba(0,0,0,.6)'}
-                  fontSize={36}
-                  fontWeight={700}
-                  margin={'72px 36px 0 36px'}
-                >
-                  Or
-                </Box>
-                <Box
-                  onClick={() => setApplicationType('refinance')}
-                  position="relative"
-                >
                   <Box
-                    className={classes.btnText}
-                    color={applicationType === 'refinance' ? '#fff' : '#787878'}
+                    className={applicationType === 'refinance' ? 'active' : ''}
+                    onClick={() => setApplicationType('refinance')}
+                    sx={LoanApplicationButtonStyles}
                   >
                     Refinancing?
                   </Box>
-                  <Box className={classes.applicationBtn}>
-                    <Image
-                      draggable={false}
-                      height={325}
-                      src={
-                        applicationType === 'refinance'
-                          ? activeBtnImg.src
-                          : defaultBtnImg.src
-                      }
-                      width={400}
-                    />
-                  </Box>
-                </Box>
-              </Box>
-              <Box className={classes.firstPageActionWrap}>
-                <StyledButton
-                  classes={nextBtnClasses}
-                  disabled={!applicationType}
-                  loading={initState.loading}
-                  onClick={handleInitForm}
-                >
-                  Next
-                </StyledButton>
-              </Box>
-            </Box>
+                  <StyledButton
+                    disabled={!applicationType}
+                    loading={initState.loading}
+                    onClick={handleInitForm}
+                    sx={{ width: '100%', maxWidth: 600, mt: 3 }}
+                  >
+                    Next
+                  </StyledButton>
+                </Stack>
+              </StyledFormItem>
+            </Stack>
           )}
         </Box>
       )}
-    </Box>
+    </>
   );
 });

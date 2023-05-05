@@ -1,5 +1,4 @@
-import { StyledButton } from '@/components';
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
@@ -8,6 +7,8 @@ import { useMst } from '@/models/Root';
 import { usePersistFn } from '@/hooks';
 import { Login, SignUp } from '@/components/molecules';
 import { _bindProcess } from '@/requests';
+
+import { StyledButton } from '@/components';
 
 export const Auth: FC<FormNodeBaseProps> = observer((props) => {
   const { prevStep, nextStep } = props;

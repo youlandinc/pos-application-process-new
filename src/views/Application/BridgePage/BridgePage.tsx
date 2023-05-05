@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
-import { observer } from 'mobx-react-lite/';
+import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { POSLayout } from '@/components';
+import { LoanApplication, POSLayout } from '@/components';
 
 export const BridgePage: FC = observer(() => {
   const {
@@ -12,7 +12,12 @@ export const BridgePage: FC = observer(() => {
 
   return (
     <>
-      <POSLayout scene={'application'}>Bridge application</POSLayout>
+      <POSLayout scene={'application'}>
+        <LoanApplication
+          applicationType={applicationType}
+          productCategory={'bridge'}
+        />
+      </POSLayout>
     </>
   );
 });

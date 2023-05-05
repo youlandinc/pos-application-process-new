@@ -229,16 +229,12 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           content: <Login isNestForm successCb={handledLoginSuccess} />,
           footer: (
             <Box
-              className={'POS_flex POS_jc_sb POS_al_c POS_fd_row POS_mt_3'}
+              className={
+                'POS_flex POS_jc_sb POS_al_c POS_fd_row POS_mt_3 POS_fullwidth'
+              }
               sx={{
-                justifyContent: {
-                  md: 'space-between',
-                  xs: 'center',
-                },
-                flexDirection: {
-                  md: 'row',
-                  xs: 'column',
-                },
+                justifyContent: { md: 'space-between', xs: 'center' },
+                flexDirection: { md: 'row', xs: 'column' },
               }}
             >
               <Typography variant={'body2'}>

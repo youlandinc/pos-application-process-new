@@ -107,7 +107,13 @@ export const Pipeline: FC = observer(() => {
         setFetchLoading(false);
         setIsChange(false);
       });
-  }, [searchForm, page]);
+  }, [
+    searchForm,
+    page,
+    pipelineInitialized,
+    pipelineStatusInitialized,
+    pipelineStatus,
+  ]);
 
   const handledView = (id: string) => {
     console.log(123);

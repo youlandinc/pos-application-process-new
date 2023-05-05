@@ -6,7 +6,7 @@ export const useCreation = <T>(factory: () => T, deps: any[]) => {
     obj: undefined as undefined | T,
     initialized: false,
   });
-  if (current.initialized === false || !depsAreSame(current.deps, deps)) {
+  if (!current.initialized || !depsAreSame(current.deps, deps)) {
     current.deps = deps;
     current.obj = factory();
     current.initialized = true;

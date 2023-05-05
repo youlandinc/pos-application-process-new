@@ -1,4 +1,4 @@
-import { POSFlex } from '@/styles';
+import { POSFlex, POSFont } from '@/styles';
 import { useMemo } from 'react';
 import { Box } from '@mui/material';
 
@@ -65,7 +65,12 @@ export const Entrance = observer(() => {
                 color={'info'}
                 key={item.name + index}
                 onClick={() => (window.location.href = item.url)}
-                sx={{ width: { md: 600, xs: '100%' }, height: 70 }}
+                sx={{
+                  width: { md: 600, xs: '100%' },
+                  height: 64,
+                  ...POSFont(20, 600, 1.5, 'text.primary'),
+                  fontSize: '20px !important',
+                }}
                 variant={'outlined'}
               >
                 {item.name}
