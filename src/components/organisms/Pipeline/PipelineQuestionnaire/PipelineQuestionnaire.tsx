@@ -282,7 +282,11 @@ export const PipelineQuestionnaire: FC = observer(() => {
           <Stack alignItems={'center'} gap={3} sx={{ mt: 3 }} width={'100%'}>
             <StyledButton
               color={'primary'}
-              disabled={!BROKER_QUESTIONNAIRE.checkLicensesValid || genLoading}
+              disabled={
+                !BROKER_QUESTIONNAIRE.checkLicensesValid ||
+                genLoading ||
+                loading
+              }
               loading={genLoading}
               loadingText={'Generating...'}
               onClick={() => generateFile()}
@@ -292,7 +296,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
               }}
               variant={'outlined'}
             >
-              Generate file
+              Generate File
             </StyledButton>
             <Transitions>
               {BROKER_QUESTIONNAIRE.taskForm.documentFile && (
@@ -339,7 +343,11 @@ export const PipelineQuestionnaire: FC = observer(() => {
               </StyledButton>
               <StyledButton
                 color={'primary'}
-                disabled={!BROKER_QUESTIONNAIRE.checkTaskFormValid || loading}
+                disabled={
+                  !BROKER_QUESTIONNAIRE.checkTaskFormValid ||
+                  loading ||
+                  genLoading
+                }
                 loading={loading}
                 loadingText={'Saving...'}
                 onClick={() => handledCompleteTaskAndBackToSummary()}
@@ -383,7 +391,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
             justifyContent={'space-between'}
           >
             <Typography variant={'h6'}>Broker Agreement</Typography>
-            <StyledButton isIconButton onClick={close}>
+            <StyledButton disabled={agreeLoading} isIconButton onClick={close}>
               <CloseOutlined />
             </StyledButton>
           </Stack>

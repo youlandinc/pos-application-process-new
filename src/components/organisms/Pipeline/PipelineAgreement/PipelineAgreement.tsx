@@ -248,7 +248,9 @@ export const PipelineAgreement: FC = observer(() => {
             {computedAgreement.isGenerateFile && (
               <StyledButton
                 disabled={
-                  !computedAgreement.agreement.checkTaskFormValid || genLoading
+                  !computedAgreement.agreement.checkTaskFormValid ||
+                  genLoading ||
+                  loading
                 }
                 loading={genLoading}
                 loadingText={'Generating...'}
@@ -307,7 +309,9 @@ export const PipelineAgreement: FC = observer(() => {
               </StyledButton>
               <StyledButton
                 disabled={
-                  !computedAgreement.agreement.checkTaskPostForm || loading
+                  !computedAgreement.agreement.checkTaskPostForm ||
+                  loading ||
+                  genLoading
                 }
                 loading={loading}
                 loadingText={'Saving...'}
