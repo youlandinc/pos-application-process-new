@@ -116,12 +116,14 @@ export const PTQuestionnaire = types
           taskId,
           taskForm: { licenses },
         } = self;
-        licenses.forEach((item) => {
+        const newLicenses = JSON.parse(JSON.stringify(licenses));
+        newLicenses.forEach((item: PipelineQuestionnaireOwner) => {
           item.birthday = format(item.birthday as Date, 'yyyy-MM-dd O');
         });
+
         return {
           taskId,
-          licenses: getSnapshot(licenses),
+          licenses: newLicenses,
         };
       },
       getPostData() {

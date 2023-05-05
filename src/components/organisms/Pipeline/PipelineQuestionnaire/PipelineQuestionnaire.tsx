@@ -124,7 +124,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
   const isAddLicense = useMemo(() => {
     return BROKER_QUESTIONNAIRE.taskForm.licenses.length >= 4;
   }, [BROKER_QUESTIONNAIRE.taskForm.licenses.length]);
-  console.log(BROKER_QUESTIONNAIRE.taskForm?.licenses);
+
   return (
     <>
       <Stack alignItems={'center'} justifyContent={'center'}>
