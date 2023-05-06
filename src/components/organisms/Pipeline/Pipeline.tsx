@@ -11,7 +11,7 @@ import { useMst } from '@/models/Root';
 
 import { _deleteProcess, _fetchAllProcesses } from '@/requests';
 import { useSwitch } from '@/hooks';
-import { UserType } from '@/types';
+import { LoanStage, UserType } from '@/types';
 import { AUTO_HIDE_DURATION, PAGE_SIZE } from '@/constants';
 import {
   LoanItemCard,
@@ -29,7 +29,11 @@ export const Pipeline: FC = observer(() => {
   const router = useRouter();
 
   const {
-    userSetting: { pipelineStatus, pipelineStatusInitialized },
+    userSetting: {
+      pipelineStatus,
+      pipelineStatusInitialized,
+      changeSettingField,
+    },
     pipelineTask: { pipelineInitialized },
     userType,
   } = useMst();
@@ -115,9 +119,31 @@ export const Pipeline: FC = observer(() => {
     pipelineStatus,
   ]);
 
-  const handledView = (id: string) => {
-    console.log(123);
-    console.log(id, 'view');
+  const handledView = async (row: LoanItemCardProps['formData']) => {
+    if (!row) {
+      return;
+    }
+    switch (row.loanStage) {
+      case LoanStage.Application:
+        window.location.href = `/application/${row.productType
+          .split(' ')[0]
+          .toLowerCase()}?processId=${row.youlandId}`;
+        break;
+      case LoanStage.Refusal:
+        enqueueSnackbar(
+          'Your application has been rejected, feel free to submit a new\n' +
+            'application',
+          {
+            variant: 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+          },
+        );
+        break;
+      default:
+        await changeSettingField('lastSelectedProcessId', row.youlandId + '');
+        await router.push('/dashboard/overview');
+        break;
+    }
   };
 
   const handledDelete = (id: string, address: string) => {
@@ -204,7 +230,7 @@ export const Pipeline: FC = observer(() => {
               formData={item}
               key={item.youlandId}
               onDelete={() => handledDelete(item.youlandId, item.address)}
-              onView={() => handledView(item.youlandId)}
+              onView={() => handledView(item)}
               userType={userType}
             />
           ))
