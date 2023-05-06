@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { NumberFormatValues, PatternFormat } from 'react-number-format';
 
 import { StyledTextFieldPhoneProps } from './index';

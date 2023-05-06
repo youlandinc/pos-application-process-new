@@ -7,6 +7,7 @@ export interface StyledTextFieldPhoneProps {
   sx?: SxProps;
   required?: boolean;
   placeholder?: string;
+  validate?: undefined | string[];
   mask?: string;
   value: number | string;
   onValueChange: (values: NumberFormatValues) => void;
