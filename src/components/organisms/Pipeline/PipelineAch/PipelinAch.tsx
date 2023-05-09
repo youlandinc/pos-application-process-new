@@ -118,7 +118,7 @@ export const PipelineAch: FC = observer(() => {
     } finally {
       setGenLoading(false);
     }
-  }, [computedAch.ach, enqueueSnackbar, open]);
+  }, [computedAch.ach, enqueueSnackbar, open, renderFile]);
 
   const handledSaveFile = useCallback(async () => {
     setAgreeLoading(true);

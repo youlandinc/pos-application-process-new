@@ -127,7 +127,7 @@ export const PipelineAgreement: FC = observer(() => {
     } finally {
       setGenLoading(false);
     }
-  }, [computedAgreement.agreement, enqueueSnackbar, open]);
+  }, [computedAgreement.agreement, enqueueSnackbar, open, renderFile]);
 
   const handledSaveFile = useCallback(async () => {
     setAgreeLoading(true);
