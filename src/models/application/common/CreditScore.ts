@@ -1,7 +1,6 @@
 import { format } from 'date-fns';
 import {
   cast,
-  destroy,
   getSnapshot,
   Instance,
   SnapshotOut,

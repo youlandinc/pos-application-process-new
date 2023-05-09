@@ -1,3 +1,5 @@
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { enqueueSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 
 import {
@@ -54,7 +56,10 @@ export const useAutoSave = (
         },
       ]);
     } catch (err) {
-      console.log(err);
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
     }
   });
 

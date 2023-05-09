@@ -7,7 +7,7 @@ import { UserType } from '@/types/enum';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
 export const useCheckProcessId = (jumpPath = '/my_application/application') => {
-  const { userSetting, userType, loginType } = useMst();
+  const { userSetting, userType } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const check = useCallback(() => {

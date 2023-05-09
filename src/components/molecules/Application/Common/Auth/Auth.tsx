@@ -20,9 +20,11 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
   const bindProcess = usePersistFn(() => {
     _bindProcess(bpmn.processId as string)
       .then((res) => {
+        //eslint-disable-next-line no-console
         console.log(res);
       })
       .catch((err) => {
+        //eslint-disable-next-line no-console
         console.log(err);
       });
   });

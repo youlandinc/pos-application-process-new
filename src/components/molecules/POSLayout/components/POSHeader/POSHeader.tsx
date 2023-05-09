@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Icon, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import {
   CloseOutlined,
   DehazeOutlined,
@@ -41,8 +41,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     session,
     bpmn,
     applicationForm: { initialized },
-    userType,
-    userSetting: { pipelineStatus, pipelineStatusInitialized },
+    userSetting: { pipelineStatus },
   } = store;
 
   const [authType, setAuthType] = useState<

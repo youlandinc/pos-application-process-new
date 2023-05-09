@@ -5,6 +5,8 @@ import { flow, getParent, Instance, types } from 'mobx-state-tree';
 import { _fetchProcessData } from '@/requests';
 import { AxiosResponse } from 'axios';
 import { ProcessData } from '@/types/server';
+import { enqueueSnackbar } from 'notistack';
+import { AUTO_HIDE_DURATION } from '@/constants';
 //import { ParseProcess } from '@/services/ParseProcess';
 
 export const SelectedProcessData = types
@@ -45,8 +47,11 @@ export const SelectedProcessData = types
           self.setScene(new ParseProcess(res.data).productType);
         }
       } catch (e) {
-        console.log(e);
         self.loading = false;
+        enqueueSnackbar(e as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
       }
     });
     return {

@@ -10,7 +10,7 @@ export const BPEstimateRate = types
     cor: types.maybe(types.number),
     arv: types.maybe(types.number),
   })
-  .views((self) => ({
+  .views(() => ({
     get checkIsValid() {
       return true;
     },

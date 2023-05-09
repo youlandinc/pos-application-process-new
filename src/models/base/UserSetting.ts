@@ -6,6 +6,8 @@ import {
   _fetchUserSetting,
   _updateUserSetting,
 } from '@/requests';
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { enqueueSnackbar } from 'notistack';
 
 export const UserSetting = types
   .model({
@@ -40,7 +42,10 @@ export const UserSetting = types
       } catch (e) {
         self.loading = false;
         self.initialized = false;
-        console.log(e);
+        enqueueSnackbar(e as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
       }
     });
     const fetchPipelineStatus = flow(function* () {
@@ -53,6 +58,10 @@ export const UserSetting = types
       } catch (e) {
         self.loading = false;
         self.pipelineStatusInitialized = false;
+        enqueueSnackbar(e as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
       }
     });
     return {

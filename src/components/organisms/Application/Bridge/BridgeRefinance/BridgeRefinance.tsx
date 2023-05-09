@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { NextRouter, useRouter } from 'next/router';

@@ -49,13 +49,10 @@ export const ApplicationForm = types
     formData: types.maybe(Union),
   })
   .actions((self) => ({
-    initForm<
-      T extends
-        | SMortgagePurchase
-        | SMortgageRefinance
-        | SBridgePurchase
-        | SBridgeRefinance,
-    >(productCategory: ProductCategory, applicationType: ApplicationType) {
+    initForm(
+      productCategory: ProductCategory,
+      applicationType: ApplicationType,
+    ) {
       if (productCategory && applicationType) {
         self.applicationType = applicationType;
         self.productCategory = productCategory;

@@ -1,6 +1,7 @@
+import { AUTO_HIDE_DURATION } from '@/constants';
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { observable } from 'mobx';
-import { OptionsObject, SnackbarMessage } from 'notistack';
+import { enqueueSnackbar, OptionsObject, SnackbarMessage } from 'notistack';
 
 export interface NotificationType {
   message: SnackbarMessage;
@@ -21,7 +22,10 @@ export const NotificationStation = types
           key: Date.now() + Math.random() + '',
         });
       } catch (err) {
-        console.log(err);
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
       }
     },
     removeSnackbar(key) {

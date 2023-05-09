@@ -126,7 +126,7 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ scene }) => {
         router.push(`/dashboard/${path}`);
       };
     },
-    [activeKey],
+    [activeKey, router],
   );
   const renderMenuList = useMemo(() => {
     let formatMenuList: MenuItems[] = [];

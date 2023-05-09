@@ -8,7 +8,7 @@ import { useMst } from '@/models/Root';
 import { StartingState } from '@/types/enum';
 import { IBridgeStarting } from '@/models/application/bridge';
 
-import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
+import { StyledButton, StyledLoading } from '@/components/atoms';
 
 const DynamicPurpose = dynamic(
   () => import('./components/BridgePurpose').then((mod) => mod.BridgePurpose),
