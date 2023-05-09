@@ -2,6 +2,7 @@ import { SxProps } from '@mui/material';
 
 export const StyledButtonGroupStyles: SxProps = {
   '& .MuiToggleButton-root': {
+    width: '100%',
     textTransform: 'capitalize',
     fontWeight: 600,
     fontSize: 16,

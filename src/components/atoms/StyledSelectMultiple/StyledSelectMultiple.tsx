@@ -51,16 +51,22 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
     <>
       <FormControl
         error={!!(validate?.length && validate[0])}
-        sx={{ ...StyledSelectMultipleStyle.root, ...sx }}
+        sx={{
+          ...StyledSelectMultipleStyle.root,
+          ...sx,
+        }}
         variant={'outlined'}
       >
-        <InputLabel>{label}</InputLabel>
+        <InputLabel sx={{ width: 'auto' }}>{label}</InputLabel>
         <Select
           disabled={disabled}
           inputProps={{
             MenuProps: {
               MenuListProps: {
-                sx: { ...StyledSelectMultipleStyle.list, ...sxList },
+                sx: {
+                  ...StyledSelectMultipleStyle.list,
+                  ...sxList,
+                },
               },
             },
           }}
@@ -91,7 +97,10 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
         </Select>
         {validate?.length && validate[0] && (
           <FormHelperText
-            sx={{ ...StyledSelectMultipleStyle.helperText, ...sxHelperText }}
+            sx={{
+              ...StyledSelectMultipleStyle.helperText,
+              ...sxHelperText,
+            }}
           >
             {validate?.length
               ? validate.map((item, index) => (

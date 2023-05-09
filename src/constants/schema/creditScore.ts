@@ -26,7 +26,7 @@ export const CreditScoreSchema: Record<any, any> = {
       },
       date: {
         minAge: 18,
-        message: '^Borrowers must not be less than 18 years old',
+        message: 'Borrowers must not be less than 18 years old',
       },
     },
     ssn: {

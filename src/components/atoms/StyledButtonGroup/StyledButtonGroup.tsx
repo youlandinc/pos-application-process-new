@@ -21,7 +21,7 @@ export const StyledButtonGroup: FC<StyledButtonGroupProps> = ({
           ...sx,
         },
       )}
-      value={value}
+      value={value === undefined ? '' : value ? 'yes' : 'no'}
       {...rest}
     >
       {options?.map((item, index) => (

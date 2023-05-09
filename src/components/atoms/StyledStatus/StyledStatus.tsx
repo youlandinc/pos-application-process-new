@@ -1,7 +1,8 @@
-import { POSFlex, POSFont } from '@/styles';
-import { PipelineTaskItemStatus } from '@/types';
 import { FC } from 'react';
 import { Box, SxProps } from '@mui/material';
+
+import { POSFont } from '@/styles';
+import { PipelineTaskItemStatus } from '@/types';
 
 import { StyledStatusProps } from './index';
 

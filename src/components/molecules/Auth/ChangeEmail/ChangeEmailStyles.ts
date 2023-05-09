@@ -1,5 +1,5 @@
 import { SxProps } from '@mui/material';
-import { POSFlex, POSFont } from '@/styles';
+import { POSFlex } from '@/styles';
 
 export const ChangeEmailStyles: SxProps = {
   ...POSFlex('center', 'space-between', 'row'),

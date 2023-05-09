@@ -1,5 +1,5 @@
 import validate from 'validate.js';
-import { addYears, compareAsc } from 'date-fns';
+import { addYears, compareAsc, isValid } from 'date-fns';
 
 validate.validators.optional = (
   value,
@@ -22,22 +22,27 @@ validate.validators.optional = (
 };
 
 validate.validators.date = (
-  value,
+  value: Date | null,
   options: { minAge?: number; message: string },
 ) => {
-  if (options && value === 'Invalid Date') {
-    return '^Invalid Date';
+  if (!value) {
+    return '^Date should not be empty';
+  }
+  if (!isValid(value)) {
+    return '^Date is Invalid';
   }
   if (
     options.minAge &&
     -1 === compareAsc(addYears(new Date(), -options.minAge), new Date(value))
   ) {
-    return options.message;
+    return options.message || '^Borrowers must not be less than 18 years old';
   }
-  return;
+  if (1 === compareAsc(new Date(1900, 1, 1), new Date(value))) {
+    return '^Date is too early';
+  }
 };
 
-validate.validators.ssn = (value, options) => {
+validate.validators.ssn = (value: string) => {
   const regex = /^(\d{9})$/;
   if (regex.test(value)) {
     return;
@@ -45,7 +50,7 @@ validate.validators.ssn = (value, options) => {
   return '^Invalid value';
 };
 
-validate.validators.AmericanPhoneNumber = (value, options) => {
+validate.validators.AmericanPhoneNumber = (value: string) => {
   const regex = /^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/;
   if (regex.test(value)) {
     return;

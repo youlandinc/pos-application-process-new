@@ -56,8 +56,10 @@ export const Entrance = observer(() => {
       </Box>
       <StyledBoxWrap sx={{ ...POSFlex('center', 'flex-start', 'column') }}>
         <StyledFormItem
-          className={'POS_tc POS_fullwidth'}
+          alignItems={'center'}
+          gap={3}
           label={'Which product are you interested in?'}
+          labelSx={{ m: 0 }}
         >
           {computedArray.map((item, index) => {
             return (

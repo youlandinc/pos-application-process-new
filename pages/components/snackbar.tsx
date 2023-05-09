@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Grid, IconButton, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 
 import { StyledButton } from '@/components/atoms';
 import { useSnackbar } from 'notistack';

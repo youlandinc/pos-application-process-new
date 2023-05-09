@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 
 import { TransitionsProps } from './index';
 
-export const Transitions: FC<TransitionsProps> = (props) => {
+export const Transitions: FC<TransitionsProps> = ({ ...rest }) => {
   const classes = useStyles();
 
   const root = useRef<HTMLDivElement>(null);
@@ -41,7 +41,11 @@ export const Transitions: FC<TransitionsProps> = (props) => {
     };
   }, [classes]);
 
-  return <div ref={root}>{props.children}</div>;
+  return (
+    <div ref={root} {...rest}>
+      {rest.children}
+    </div>
+  );
 };
 
 const useStyles = makeStyles({

@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
-import { BoxProps, SxProps } from '@mui/material';
+import { StackProps, SxProps } from '@mui/material';
 
-export interface StyledFormItemProps extends BoxProps {
+export interface StyledFormItemProps extends StackProps {
+  sub?: boolean;
   children?: ReactNode;
   sx?: SxProps;
   label: ReactNode;

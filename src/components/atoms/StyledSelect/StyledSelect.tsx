@@ -44,7 +44,10 @@ export const StyledSelect: FC<StyledSelectProps> = ({
           inputProps={{
             MenuProps: {
               MenuListProps: {
-                sx: { ...StyledSelectStyles.list, ...sxList },
+                sx: {
+                  ...StyledSelectStyles.list,
+                  ...sxList,
+                },
               },
             },
           }}

@@ -1,4 +1,4 @@
-import { format, parse, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Divider, Typography } from '@mui/material';
@@ -53,8 +53,7 @@ const GoogleMapComponent: FC = observer(() => {
               static
             </Typography>
             <StyledDatePicker
-              onChange={(e, context) => {
-                console.log(e, context);
+              onChange={(e) => {
                 setDate(e);
               }}
               value={date}

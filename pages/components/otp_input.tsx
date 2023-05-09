@@ -9,8 +9,8 @@ import { observer } from 'mobx-react-lite';
 const OPTInputComponent: FC = observer(() => {
   const router = useRouter();
 
-  const [otp1, setOtp1] = useState('');
-  const [otp2, setOtp2] = useState(['1', '2', '3', '4', '5', '6']);
+  const [, setOtp1] = useState('');
+  const [otp2] = useState(['1', '2', '3', '4', '5', '6']);
 
   return (
     <Box

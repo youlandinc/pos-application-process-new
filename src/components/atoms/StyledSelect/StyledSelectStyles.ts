@@ -1,6 +1,7 @@
 export const StyledSelectStyles = {
   root: {
     width: '100%',
+    maxWidth: 600,
     '& .Mui-disabled': {
       color: 'text.disabled',
       cursor: 'not-allowed',

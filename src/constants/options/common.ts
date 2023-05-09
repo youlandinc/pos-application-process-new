@@ -1,5 +1,18 @@
 import { UserType } from '@/types';
 
+export const OPTIONS_COMMON_YES_OR_NO: Option[] = [
+  {
+    label: 'Yes',
+    value: 'yes',
+    key: 'yes',
+  },
+  {
+    label: 'No',
+    value: 'no',
+    key: 'no',
+  },
+];
+
 export const OPTIONS_COMMON_USER_TYPE: Option[] = [
   {
     label: 'Consumer',

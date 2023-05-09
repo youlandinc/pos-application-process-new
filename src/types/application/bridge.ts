@@ -36,6 +36,10 @@ export interface WhereKnowUsData {
   reference: ChannelOpt;
 }
 
+export interface BridgeCoBorrowerCondition {
+  isCoBorrower: boolean | undefined;
+}
+
 export interface BPEstimateRateData {
   purchasePrice: number | undefined;
   purchaseLoanAmount: number | undefined;

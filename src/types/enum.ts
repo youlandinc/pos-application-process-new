@@ -125,6 +125,7 @@ export enum VariableName {
 
   // bridge
   estimateRate = 'estimateRate',
+  aboutOtherCondition = 'aboutOtherCondition',
 }
 
 export enum LoanType {
@@ -205,6 +206,7 @@ export enum BridgeCreditScoreState {
   notice = 'notice',
   selfInfo = 'selfInfo',
   creditScore = 'creditScore',
+  coBorrowerInfo = 'coBorrowerInfo',
 }
 
 export enum BizType {

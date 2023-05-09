@@ -15,6 +15,7 @@ import {
   BorrowerData,
   BPEstimateRateData,
   BridgeApplicationProcessSnapshot,
+  BridgeCoBorrowerCondition,
   BridgeStartingData,
   SelfInfoData,
   WhereKnowUsData,
@@ -81,6 +82,24 @@ export const BridgePurchase = types
             const value = variable.value as BorrowerData;
             const { creditScore, preApproved = false, denialReason } = value;
             self.creditScore.selfInfo.creditScore = creditScore;
+            self.preApproved = preApproved;
+            self.denialReason = denialReason;
+            break;
+          }
+          case VariableName.aboutOtherCondition: {
+            const value = variable.value as BridgeCoBorrowerCondition;
+            self.creditScore.injectServerData(value);
+            break;
+          }
+          case VariableName.aboutOtherInfo: {
+            const value = variable.value as SelfInfoData;
+            self.creditScore.coBorrowerInfo.injectServerData(value);
+            break;
+          }
+          case VariableName._otherPerson: {
+            const value = variable.value as BorrowerData;
+            const { creditScore, preApproved = false, denialReason } = value;
+            self.creditScore.coBorrowerInfo.creditScore = creditScore;
             self.preApproved = preApproved;
             self.denialReason = denialReason;
             break;

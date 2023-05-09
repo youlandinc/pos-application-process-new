@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import {
   cast,
   destroy,
@@ -52,6 +53,11 @@ export const PersonalInfo = types
     isValid: types.boolean,
   })
   .views((self) => ({
+    get checkValueIsEmpty() {
+      return Object.keys(self.errors).some(
+        (item) => !self[item as keyof typeof self],
+      );
+    },
     get checkInfoValid() {
       if (
         Object.keys(self.errors).every(
@@ -69,20 +75,6 @@ export const PersonalInfo = types
         key: K,
         value: (typeof self)[K],
       ) {
-        self[key] = value;
-        const errors = validate(
-          { [key]: value },
-          { [key]: CreditScoreSchema.selfInfo[key] },
-        );
-        self.errors = {
-          ...self.errors,
-          ...(errors || {}),
-        };
-
-        if (self.errors[key as keyof typeof self.errors] && errors === void 0) {
-          destroy(self.errors[key as keyof typeof self.errors]);
-        }
-        self.isValid = Object.keys(self.errors).length === 0;
         self[key] = value;
 
         if (key === 'firstName' || key === 'lastName') {
@@ -119,7 +111,7 @@ export const PersonalInfo = types
             firstName,
             lastName,
             phoneNumber,
-            dateOfBirth,
+            dateOfBirth: format(dateOfBirth as Date, 'yyyy-MM-dd O'),
             propAddr: self.address.getPostData(),
             ssn,
             authorizedCreditCheck,
@@ -141,7 +133,7 @@ export const PersonalInfo = types
         self.firstName = firstName;
         self.lastName = lastName;
         self.phoneNumber = phoneNumber;
-        self.dateOfBirth = dateOfBirth;
+        self.dateOfBirth = new Date(dateOfBirth as string);
         self.ssn = ssn;
         self.email = email;
         self.address.injectServerData(propAddr);

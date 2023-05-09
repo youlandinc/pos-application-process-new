@@ -10,7 +10,7 @@ export interface NotificationType {
 
 export const NotificationStation = types
   .model({})
-  .volatile<{ notifications: NotificationType[] }>((self) => ({
+  .volatile<{ notifications: NotificationType[] }>(() => ({
     notifications: observable([]),
   }))
   .actions((self) => ({

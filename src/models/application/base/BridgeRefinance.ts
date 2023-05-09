@@ -8,7 +8,7 @@ import {
   BridgeStarting,
 } from '@/models/application/bridge';
 
-import { VariableValue } from '@/types';
+import { BridgeCoBorrowerCondition, VariableValue } from '@/types';
 import { DenialReason } from '@/types/options';
 import { BridgeRefinanceState, VariableName } from '@/types/enum';
 import { ProcessData } from '@/types/server';
@@ -81,6 +81,24 @@ export const BridgeRefinance = types
             const value = variable.value as BorrowerData;
             const { creditScore, preApproved = false, denialReason } = value;
             self.creditScore.selfInfo.creditScore = creditScore;
+            self.preApproved = preApproved;
+            self.denialReason = denialReason;
+            break;
+          }
+          case VariableName.aboutOtherCondition: {
+            const value = variable.value as BridgeCoBorrowerCondition;
+            self.creditScore.injectServerData(value);
+            break;
+          }
+          case VariableName.aboutOtherInfo: {
+            const value = variable.value as SelfInfoData;
+            self.creditScore.coBorrowerInfo.injectServerData(value);
+            break;
+          }
+          case VariableName._otherPerson: {
+            const value = variable.value as BorrowerData;
+            const { creditScore, preApproved = false, denialReason } = value;
+            self.creditScore.coBorrowerInfo.creditScore = creditScore;
             self.preApproved = preApproved;
             self.denialReason = denialReason;
             break;

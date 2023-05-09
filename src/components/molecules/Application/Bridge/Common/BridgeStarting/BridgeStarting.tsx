@@ -92,7 +92,7 @@ export const BridgeStarting: FC<FormNodeBaseProps> = observer((props) => {
 
   return (
     <>
-      <Transitions>{renderFormNodeStep}</Transitions>
+      {renderFormNodeStep}
       <Stack
         alignItems={'center'}
         flex={1}

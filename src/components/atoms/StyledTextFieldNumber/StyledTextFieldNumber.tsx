@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { InputAdornment, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import {
   NumberFormatValues,
   NumericFormat,

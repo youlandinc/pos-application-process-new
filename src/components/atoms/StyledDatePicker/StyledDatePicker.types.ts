@@ -7,4 +7,6 @@ export interface StyledDatePickerProps {
     value: unknown,
     context: PickerChangeHandlerContext<unknown>,
   ) => void;
+  onChangeError?: (error: string | undefined) => void;
+  validate?: string[];
 }

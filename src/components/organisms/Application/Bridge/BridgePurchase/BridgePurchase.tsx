@@ -15,7 +15,7 @@ import { BridgePurchaseState, ServerTaskKey } from '@/types/enum';
 import { useAutoSave, useStoreData } from '@/hooks';
 import { _updateTask } from '@/requests';
 
-import { StyledLoading } from '@/components/atoms';
+import { StyledLoading, Transitions } from '@/components/atoms';
 
 const DynamicStarting = dynamic(
   () =>
@@ -124,32 +124,32 @@ const useGenerateComponent = () => {
                 updateState={updateState}
               />
             );
-          //case BridgePurchaseState.creditScore:
-          //  return (
-          //    <DynamicCreditScore
-          //      changeTaskState={changeTaskState}
-          //      completeTaskState={completeTaskState}
-          //      nextStep={next}
-          //      prevStep={back}
-          //      updateState={updateState}
-          //    />
-          //  );
-          //case BridgePurchaseState.whereKnowUs:
-          //  return (
-          //    <DynamicWhereKnow
-          //      changeTaskState={changeTaskState}
-          //      completeTaskState={completeTaskState}
-          //      nextStep={next}
-          //      prevStep={back}
-          //      updateState={updateState}
-          //    />
-          //  );
-          //case BridgePurchaseState.estimateRate:
-          //  return <DynamicEstimateRate nextStep={next} />;
-          //case BridgePurchaseState.celebrate:
-          //  return <DynamicCelebrate nextStep={next} />;
-          //case BridgePurchaseState.refuse:
-          //  return <DynamicRefuse nextStep={next} />;
+          case BridgePurchaseState.creditScore:
+            return (
+              <DynamicCreditScore
+                changeTaskState={changeTaskState}
+                completeTaskState={completeTaskState}
+                nextStep={next}
+                prevStep={back}
+                updateState={updateState}
+              />
+            );
+          case BridgePurchaseState.whereKnowUs:
+            return (
+              <DynamicWhereKnow
+                changeTaskState={changeTaskState}
+                completeTaskState={completeTaskState}
+                nextStep={next}
+                prevStep={back}
+                updateState={updateState}
+              />
+            );
+          case BridgePurchaseState.estimateRate:
+            return <DynamicEstimateRate nextStep={next} />;
+          case BridgePurchaseState.celebrate:
+            return <DynamicCelebrate nextStep={next} />;
+          case BridgePurchaseState.refuse:
+            return <DynamicRefuse nextStep={next} />;
         }
       },
     [state],
@@ -239,7 +239,7 @@ const useStateMachine = (
         });
       },
       back: async () => {
-        await handledPrevTask(ServerTaskKey.about_yourself, () => {
+        await handledPrevTask(ServerTaskKey.about_other, () => {
           applicationForm.formData.changeState(BridgePurchaseState.creditScore);
         });
       },
@@ -310,12 +310,15 @@ export const BridgePurchaseForm = observer(
     useAutoSave(applicationForm.formData, bpmn);
 
     return (
-      <Stack
-        alignItems={'center'}
-        flexDirection={'column'}
-        gap={6}
-        justifyContent={'center'}
-        width={'100%'}
+      <Transitions
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          width: '100%',
+          alignItems: 'center',
+          gap: 48,
+          flexDirection: 'column',
+        }}
       >
         {renderFormNode(
           next,
@@ -324,7 +327,7 @@ export const BridgePurchaseForm = observer(
           completeTaskState,
           changeTaskState,
         )}
-      </Stack>
+      </Transitions>
     );
   },
 );
