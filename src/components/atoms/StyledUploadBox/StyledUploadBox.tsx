@@ -26,7 +26,7 @@ import { POSFont } from '@/styles';
 import { POSFormatDate } from '@/utils';
 import { SUploadData } from '@/models/common/UploadFile';
 
-import UPLOAD_SVG from '@/svg/Upload/Upload.svg';
+import UPLOAD_SVG from '@/svg/upload/upload.svg';
 
 export const StyledUploadBox = (props: StyledUploadBoxProps) => {
   const {

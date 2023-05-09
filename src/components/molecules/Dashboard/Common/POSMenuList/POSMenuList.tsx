@@ -4,17 +4,16 @@ import { useRouter } from 'next/router';
 import { Box, SxProps } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
 import { ISelectedProcessData } from '@/models/base';
 import { SceneType } from '@/types';
 import { POSFont } from '@/styles';
 import {
-  AccountBalance,
-  Grading,
+  AccountBalanceOutlined,
+  GradingOutlined,
   PeopleAltOutlined,
   PublicOutlined,
   TextSnippetOutlined,
-  Timeline,
+  TimelineOutlined,
 } from '@mui/icons-material';
 
 type POSMenuListProps = {
@@ -34,25 +33,25 @@ const list: MenuItems[] = [
     label: 'Overview',
     path: 'overview',
     key: 'overview',
-    icon: <AccountBalance />,
+    icon: <AccountBalanceOutlined />,
   },
   {
     label: 'Application summary',
     path: 'application_summary',
     key: 'application_summary',
-    icon: <Grading />,
+    icon: <GradingOutlined />,
   },
   {
     label: 'Tasks',
     path: 'tasks',
     key: 'tasks',
-    icon: <Grading />,
+    icon: <GradingOutlined />,
   },
   {
     label: 'Rates',
     path: 'rates',
     key: 'rates',
-    icon: <Timeline />,
+    icon: <TimelineOutlined />,
   },
   {
     label: 'Pre-approval letter',

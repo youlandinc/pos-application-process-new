@@ -57,7 +57,7 @@ const ButtonComponent: FC = () => {
             </Box>
           </Grid>
           <Grid item xs={false}>
-            <StyledButton color="primary" variant="contained">
+            <StyledButton color="primary" loading={true} variant="contained">
               Primary
             </StyledButton>
           </Grid>

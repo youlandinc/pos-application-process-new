@@ -7,7 +7,7 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
   (
     {
       children,
-      loading = false,
+      loading,
       isIconButton = false,
       onClick,
       loadingText = 'Loading...',
