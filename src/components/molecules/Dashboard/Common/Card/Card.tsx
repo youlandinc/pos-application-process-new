@@ -64,7 +64,7 @@ export const Card: FC<CardProps> = (props) => {
   return (
     <Box className={'card_wrap'} sx={useStyles} {...rest}>
       {loading ? (
-        <StyledLoading sx={{ mb: 3 }} />
+        <StyledLoading sx={{ mb: 3, color: 'primary.main' }} />
       ) : (
         <>
           <Box className={'card_title'}>
