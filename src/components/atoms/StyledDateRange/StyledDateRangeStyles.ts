@@ -1,7 +1,6 @@
-import { SxProps } from '@mui/material';
 import { POSFont } from '@/styles';
 
-export const StyledDateRangeStyles: SxProps = {
+export const StyledDateRangeStyles = {
   '& .react-datepicker__portal': {
     bgcolor: 'rgba(0, 0, 0, 0.5)',
   },

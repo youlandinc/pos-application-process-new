@@ -6,7 +6,7 @@
 // import { useMst } from '@/models/Root';
 // import { useAsyncEffect, useSwitch } from '@/hooks';
 
-// import { Address, IAddress } from '@/models/modules';
+// // import { Address, IAddress } from '@/models/modules';
 // import { useBackBtnClasses, useNextBtnClasses } from '@/common/classes';
 // import { POSFlex, POSFont, size } from '@/common/styles/global';
 // import { PropertyOpt, UnitOpt } from '@/types/options';
@@ -36,6 +36,7 @@
 //   POSFormatLocalPercent,
 //   POSFormatPercent,
 // } from '@/utils';
+// import { Address, IAddress } from '@/models/common/Address';
 
 // const useStyles = makeStyles({
 //   formRow: {
@@ -470,8 +471,8 @@
 //                 homeValue: floatValue,
 //               })
 //             }
-//             style={{ flex: 1 }}
-//             validate={!!LTVError}
+//             sx={{ flex: 1 }}
+//             validate={LTVError}
 //             value={rateData?.homeValue}
 //           />
 //           <StyledTextFieldNumber
@@ -484,7 +485,7 @@
 //               });
 //             }}
 //             sx={{ flex: 1 }}
-//             validate={!!LTVError}
+//             validate={LTVError}
 //             value={rateData?.balance}
 //           />
 //           {!rateData?.isCor && (
@@ -537,7 +538,7 @@
 //                     cashOutAmount: floatValue,
 //                   });
 //                 }}
-//                 validate={!!LTCError}
+//                 validate={LTCError}
 //                 value={rateData?.cashOutAmount || undefined}
 //               />
 //             </Box>

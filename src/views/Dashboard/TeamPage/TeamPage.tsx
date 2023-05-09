@@ -1,5 +1,4 @@
 import { FC, useState } from 'react';
-import Image from 'next/image';
 import { Box, CircularProgress, Icon, SxProps } from '@mui/material';
 import { useAsync } from 'react-use';
 import { _fetchMyTeamData } from '@/requests/saas';
@@ -126,7 +125,7 @@ export const TeamPage: FC = () => {
         setPhone(res?.data?.extInfo?.posSettings?.phone || '');
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   });
 
