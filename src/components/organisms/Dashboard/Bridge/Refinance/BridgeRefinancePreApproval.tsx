@@ -1,18 +1,11 @@
-// import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
-// import {
-//   Box,
-//   Dialog,
-//   DialogContent,
-//   FormControlLabel,
-//   makeStyles,
-// } from '@material-ui/core';
+// import { FC, useCallback, useMemo, useRef, useState } from 'react';
+
 // import { useAsyncFn } from 'react-use';
 
 // import { observer } from 'mobx-react-lite';
 // import { useMst } from '@/models/Root';
 // import { useAsyncEffect, useSwitch } from '@/hooks';
 
-// import { utils } from '@/common/utils';
 // import { Address, IAddress } from '@/models/modules';
 // import { useBackBtnClasses, useNextBtnClasses } from '@/common/classes';
 // import { POSFlex, POSFont, size } from '@/common/styles/global';
@@ -37,6 +30,12 @@
 // import { PreApprovalEdit, PreApprovalInfo } from '@/components/molecules';
 // import { useRouter } from 'next/router';
 // import { LoanStage, UserType } from '@/types/enum';
+// import { Box, FormControlLabel } from '@mui/material';
+// import {
+//   POSFormatDollar,
+//   POSFormatLocalPercent,
+//   POSFormatPercent,
+// } from '@/utils';
 
 // const useStyles = makeStyles({
 //   formRow: {
@@ -139,8 +138,8 @@
 //   const [address, setAddress] = useState<IAddress>();
 //   const [rateData, setRateData] = useState<BREstimateRateData>();
 
-//   const [LTVError, setLTVError] = useState<string>('');
-//   const [LTCError, setLTCError] = useState<string>('');
+//   const [LTVError, setLTVError] = useState<undefined | string[]>(undefined);
+//   const [LTCError, setLTCError] = useState<undefined | string[]>(undefined);
 
 //   const [productData, setProductData] = useState<RatesProductData>();
 
@@ -166,9 +165,11 @@
 
 //   const LTV = useMemo(() => {
 //     let radio = 0.7;
-//     if (!rateData?.homeValue) return 0;
+//     if (!rateData?.homeValue) {
+//       return 0;
+//     }
 //     if (rateData?.isCor) {
-//       setLTVError('');
+//       setLTVError(undefined);
 //       return;
 //     }
 //     let total = rateData?.balance;
@@ -180,11 +181,11 @@
 //     }
 //     setLTVError(
 //       total / rateData?.homeValue <= radio
-//         ? ''
-//         : `Your LTV should be no more than ${radio * 100}%`,
+//         ? undefined
+//         : [`Your LTV should be no more than ${radio * 100}%`],
 //     );
 //     if (editLoanAmount < 150000) {
-//       setLTVError('Total loan amount must be at least $150,000');
+//       setLTVError(['Total loan amount must be at least $150,000']);
 //     }
 //     return total / rateData?.homeValue;
 //   }, [
@@ -200,13 +201,15 @@
 //     const result =
 //       rateData?.cor === 0
 //         ? 0
-//         : loanAmount / (rateData?.cor + rateData?.homeValue);
+//         : (loanAmount as number) / (rateData?.cor + rateData?.homeValue);
 //     setLTCError(
 //       !rateData?.isCor
-//         ? ''
+//         ? undefined
 //         : result > 0.75
-//         ? 'Reduce your cash out amount or rehab cost. Your Loan-to-Cost should be no more than 75%'
-//         : '',
+//         ? [
+//             'Reduce your cash out amount or rehab cost. Your Loan-to-Cost should be no more than 75%',
+//           ]
+//         : undefined,
 //     );
 //     return result;
 //   }, [loanAmount, rateData?.cor, rateData?.homeValue, rateData?.isCor]);
@@ -262,7 +265,7 @@
 //   );
 
 //   useAsyncEffect(async () => {
-//     await getInitData(lastSelectedProcessId);
+//     await getInitData(lastSelectedProcessId as string);
 //   }, [lastSelectedProcessId]);
 
 //   const onDialogSendEmailClick = useCallback(() => {
@@ -318,7 +321,7 @@
 //       open();
 //       setCheckResult(undefined);
 //       setTableStatus('view');
-//       await getInitData(lastSelectedProcessId);
+//       await getInitData(lastSelectedProcessId as string);
 //     }
 //   }, [
 //     address,
@@ -334,18 +337,26 @@
 //   const brokerPointsError = useMemo(() => {
 //     const { brokerPoints } = rateData || {};
 
-//     if (!brokerPoints) return [''];
-//     if (brokerPoints <= 5) return false;
+//     if (!brokerPoints) {
+//       return [''];
+//     }
+//     if (brokerPoints <= 5) {
+//       return undefined;
+//     }
 //     return ['Broker origination fee must be lesser than or equal to 5%.'];
 //   }, [rateData]);
 
 //   const brokerFeeError = useMemo(() => {
 //     const { brokerProcessingFee } = rateData || {};
 
-//     if (!brokerProcessingFee || !editLoanAmount) return [''];
-//     if (brokerProcessingFee <= editLoanAmount) return false;
+//     if (!brokerProcessingFee || !editLoanAmount) {
+//       return [''];
+//     }
+//     if (brokerProcessingFee <= editLoanAmount) {
+//       return undefined;
+//     }
 //     return [
-//       `Broker origination fee must be lesser than or equal to ${utils.formatDollar(
+//       `Broker origination fee must be lesser than or equal to ${POSFormatDollar(
 //         editLoanAmount,
 //       )}.`,
 //     ];
@@ -402,8 +413,8 @@
 //       <Box className={classes.resultBox}>
 //         {checkLoading ? (
 //           <StyledLoading
-//             iconSize={size(24)}
-//             style={{ justifyContent: 'flex-start' }}
+//             // iconSize={size(24)}
+//             sx={{ justifyContent: 'flex-start' }}
 //           />
 //         ) : checkResult ? (
 //           <Box>
@@ -413,23 +424,23 @@
 //               might like
 //             </Box>
 //             <Box fontWeight={700} mt={1}>
-//               {utils.formatLocalPercent(productData?.interestRateOfYear)} Rate /{' '}
+//               {POSFormatLocalPercent(productData?.interestRateOfYear)} Rate /{' '}
 //               {productData?.loanTerm} months /{' '}
-//               {utils.formatDollar(productData?.paymentOfMonth)} Monthly payment
+//               {POSFormatDollar(productData?.paymentOfMonth)} Monthly payment
 //             </Box>
 //             <StyledButton
 //               classes={nextButtonClasses}
-//               style={{ marginBlockStart: 24 }}
-//               onClick={onClickUpdate}
 //               disabled={!clickable}
+//               onClick={onClickUpdate}
+//               style={{ marginBlockStart: 24 }}
 //             >
 //               Update
 //             </StyledButton>
 //           </Box>
 //         ) : (
 //           <Box>
-//             Based on your information, we couldn't find any rate options. Please
-//             try again.
+//             Based on your information, we couldn&apos;t find any rate options.
+//             Please try again.
 //           </Box>
 //         )}
 //       </Box>
@@ -451,38 +462,38 @@
 //       <>
 //         <Box className={classes.formRow} style={{ width: '100%' }}>
 //           <StyledTextFieldNumber
-//             error={!!LTVError}
-//             label="Estimated home value"
-//             value={rateData?.homeValue}
 //             disabled={checkLoading}
-//             style={{ flex: 1 }}
+//             label="Estimated home value"
 //             onValueChange={({ floatValue }) =>
 //               setRateData({
 //                 ...rateData,
 //                 homeValue: floatValue,
 //               })
 //             }
+//             style={{ flex: 1 }}
+//             validate={!!LTVError}
+//             value={rateData?.homeValue}
 //           />
 //           <StyledTextFieldNumber
-//             error={!!LTVError}
-//             label="Remaining loan balance"
-//             value={rateData?.balance}
 //             disabled={checkLoading}
-//             style={{ flex: 1 }}
+//             label="Remaining loan balance"
 //             onValueChange={({ floatValue }) => {
 //               setRateData({
 //                 ...rateData,
 //                 balance: floatValue,
 //               });
 //             }}
+//             sx={{ flex: 1 }}
+//             validate={!!LTVError}
+//             value={rateData?.balance}
 //           />
 //           {!rateData?.isCor && (
 //             <StyledTextFieldNumber
-//               label="Loan-to-Value"
-//               value={utils.formatPercent(LTV)}
-//               prefix={''}
 //               disabled
+//               label="Loan-to-Value"
 //               onValueChange={() => undefined}
+//               prefix={''}
+//               value={POSFormatPercent(LTV)}
 //             />
 //           )}
 //         </Box>
@@ -494,21 +505,21 @@
 //           )}
 //         </Transitions>
 //         <FormControlLabel
-//           className={classes.checkbox}
-//           label={'Cash out'}
 //           checked={rateData?.isCashOut}
-//           disabled={checkLoading}
+//           className={classes.checkbox}
 //           control={
 //             <StyledCheckbox
-//               style={{ margin: 0, marginRight: '.5em' }}
 //               onChange={(e) => {
 //                 setRateData({
 //                   ...rateData,
 //                   isCashOut: e.target.checked,
 //                 });
 //               }}
+//               style={{ margin: 0, marginRight: '.5em' }}
 //             />
 //           }
+//           disabled={checkLoading}
+//           label={'Cash out'}
 //         />
 
 //         <Transitions>
@@ -518,36 +529,36 @@
 //               style={{ marginBlockEnd: 24, width: '234px' }}
 //             >
 //               <StyledTextFieldNumber
-//                 error={!!LTCError}
-//                 label={'Cash out amount'}
-//                 value={rateData?.cashOutAmount || undefined}
 //                 disabled={checkLoading}
+//                 label={'Cash out amount'}
 //                 onValueChange={({ floatValue }) => {
 //                   setRateData({
 //                     ...rateData,
 //                     cashOutAmount: floatValue,
 //                   });
 //                 }}
+//                 validate={!!LTCError}
+//                 value={rateData?.cashOutAmount || undefined}
 //               />
 //             </Box>
 //           )}
 //         </Transitions>
 //         <FormControlLabel
-//           className={classes.checkbox}
-//           label={'Rehab loan amount'}
 //           checked={rateData?.isCor}
-//           disabled={checkLoading}
+//           className={classes.checkbox}
 //           control={
 //             <StyledCheckbox
-//               style={{ margin: 0, marginRight: '.5em' }}
 //               onChange={(e) => {
 //                 setRateData({
 //                   ...rateData,
 //                   isCor: e.target.checked,
 //                 });
 //               }}
+//               style={{ margin: 0, marginRight: '.5em' }}
 //             />
 //           }
+//           disabled={checkLoading}
+//           label={'Rehab loan amount'}
 //         />
 //         <Transitions>
 //           {rateData?.isCor && (
@@ -556,35 +567,35 @@
 //               style={{ marginBlockEnd: 24, width: '100%' }}
 //             >
 //               <StyledTextFieldNumber
-//                 error={!!LTCError}
-//                 label={'Estimated rehab loan amount'}
-//                 value={rateData?.cor || undefined}
 //                 disabled={checkLoading}
+//                 // validate={!!LTCError}
+//                 label={'Estimated rehab loan amount'}
 //                 onValueChange={({ floatValue }) => {
 //                   setRateData({
 //                     ...rateData,
 //                     cor: floatValue,
 //                   });
 //                 }}
+//                 value={rateData?.cor || undefined}
 //               />
 //               <StyledTextFieldNumber
-//                 error={!!LTCError}
-//                 label={'After repair value (ARV)'}
-//                 value={rateData?.arv || undefined}
 //                 disabled={checkLoading}
+//                 // validate={!!LTCError}
+//                 label={'After repair value (ARV)'}
 //                 onValueChange={({ floatValue }) => {
 //                   setRateData({
 //                     ...rateData,
 //                     arv: floatValue,
 //                   });
 //                 }}
+//                 value={rateData?.arv || undefined}
 //               />
 //               <StyledTextFieldNumber
-//                 label={'Loan-to-Cost'}
-//                 value={utils.formatPercent(LTC)}
-//                 prefix={''}
 //                 disabled
+//                 label={'Loan-to-Cost'}
 //                 onValueChange={() => undefined}
+//                 prefix={''}
+//                 value={POSFormatPercent(LTC)}
 //               />
 //             </Box>
 //           )}
@@ -599,34 +610,34 @@
 //         {userType === UserType.BROKER && (
 //           <Box className={classes.formRow} style={{ width: '100%' }}>
 //             <StyledTextFieldNumber
-//               label="Broker origination fee "
-//               value={rateData?.brokerPoints}
-//               disabled={checkLoading}
-//               style={{ flex: 1 }}
 //               decimalScale={3}
-//               thousandSeparator={false}
-//               prefix={''}
-//               suffix={'%'}
+//               disabled={checkLoading}
+//               label="Broker origination fee"
 //               onValueChange={({ floatValue }) =>
 //                 setRateData({
 //                   ...rateData,
 //                   brokerPoints: floatValue,
 //                 })
 //               }
-//               error={brokerPointsError}
+//               prefix={''}
+//               suffix={'%'}
+//               sx={{ flex: 1 }}
+//               thousandSeparator={false}
+//               validate={brokerPointsError}
+//               value={rateData?.brokerPoints}
 //             />
 //             <StyledTextFieldNumber
-//               label="Broker processing fee"
-//               value={rateData?.brokerProcessingFee}
 //               disabled={checkLoading}
-//               style={{ flex: 1 }}
+//               label="Broker processing fee"
 //               onValueChange={({ floatValue }) => {
 //                 setRateData({
 //                   ...rateData,
 //                   brokerProcessingFee: floatValue,
 //                 });
 //               }}
-//               error={brokerFeeError}
+//               sx={{ flex: 1 }}
+//               validate={brokerFeeError}
+//               value={rateData?.brokerProcessingFee}
 //             />
 //           </Box>
 //         )}
@@ -652,31 +663,31 @@
 //     <>
 //       {tableStatus === 'view' ? (
 //         <PreApprovalInfo
-//           ref={infoRef}
-//           loanStage={loanStage}
+//           lastSelectedProcessId={lastSelectedProcessId}
 //           loading={initState.loading}
 //           loanAmount={loanAmount}
+//           loanStage={loanStage}
 //           onClickEdit={onChangeTableStatus}
-//           lastSelectedProcessId={lastSelectedProcessId}
+//           ref={infoRef}
 //         />
 //       ) : (
 //         <>
 //           <PreApprovalEdit
 //             address={address}
-//             propertyType={propertyType}
-//             propertyUnit={propertyUnit}
-//             onTypeChange={setPropertyType}
-//             onUnitChange={setPropertyUnit}
-//             onClickCancel={onChangeTableStatus}
-//             onClickCheck={onClickCheck}
+//             children={renderEditChildren}
 //             clickable={!clickable}
 //             editable={checkLoading}
-//             children={renderEditChildren}
+//             onClickCancel={onChangeTableStatus}
+//             onClickCheck={onClickCheck}
+//             onTypeChange={setPropertyType}
+//             onUnitChange={setPropertyUnit}
+//             propertyType={propertyType}
+//             propertyUnit={propertyUnit}
 //             resultList={renderResultList}
 //           />
 //         </>
 //       )}
-//       <Dialog
+//       {/* <Dialog
 //         open={visible}
 //         classes={{ paper: classes.dialogPaper }}
 //         onClose={close}
@@ -705,7 +716,7 @@
 //             </StyledButton>
 //           </Box>
 //         </DialogContent>
-//       </Dialog>
+//       </Dialog> */}
 //     </>
 //   );
 // });

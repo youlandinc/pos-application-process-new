@@ -1,15 +1,15 @@
-// import React, { FC, useCallback, useState } from 'react';
-// import { Box, makeStyles } from '@material-ui/core';
+// import { FC, useCallback, useState } from 'react';
+
 // import { useAsync } from 'react-use';
 
 // import { observer } from 'mobx-react-lite';
 // import { useMst } from '@/models/Root';
 
 // import { useSwitch } from '@/hooks';
-// import { Encompass } from '@/types/variable';
+// 、
 // import { LoanStage } from '@/types/enum';
-// import { POSFlex } from '@/common/styles/global';
-// import { RatesProductData } from '@/types/dashboardData';
+// import { POSFlex } from '@/styles';
+
 // import {
 //   _fetchRatesLoanInfo,
 //   _fetchRatesProduct,
@@ -23,6 +23,8 @@
 //   BRRatesDrawer,
 //   BRRatesSearch,
 // } from '@/components/molecules';
+// import { Box } from '@mui/material';
+// import { Encompass, RatesProductData } from '@/types';
 
 // const initialize: BRQueryData = {
 //   homeValue: undefined,

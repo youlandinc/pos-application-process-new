@@ -8,9 +8,11 @@ export interface StyledTextFieldNumberProps {
   prefix?: string;
   suffix?: string;
   label?: string;
-  value: number;
+  value: number | string;
   sx?: SxProps;
   required?: boolean;
   placeholder?: string;
   decimalScale?: number;
+  disabled?: boolean;
+  validate?: undefined | string[];
 }
