@@ -57,25 +57,25 @@ const DynamicWhereKnow = dynamic(
   },
 );
 
-const DynamicEstimateRate = dynamic(
-  () =>
-    import('@/components/molecules/Application/Bridge/Purchase').then(
-      (mod) => mod.BridgePurchaseEstimateRate,
-    ),
-  {
-    loading: () => <StyledLoading />,
-  },
-);
-
-const DynamicCelebrate = dynamic(
-  () =>
-    import('@/components/molecules/Application/Bridge/Common').then(
-      (mod) => mod.BridgeCelebrate,
-    ),
-  {
-    loading: () => <StyledLoading />,
-  },
-);
+//const DynamicEstimateRate = dynamic(
+//  () =>
+//    import('@/components/molecules/Application/Bridge/Purchase').then(
+//      (mod) => mod.BridgePurchaseEstimateRate,
+//    ),
+//  {
+//    loading: () => <StyledLoading />,
+//  },
+//);
+//
+//const DynamicCelebrate = dynamic(
+//  () =>
+//    import('@/components/molecules/Application/Bridge/Common').then(
+//      (mod) => mod.BridgeCelebrate,
+//    ),
+//  {
+//    loading: () => <StyledLoading />,
+//  },
+//);
 
 const DynamicRefuse = dynamic(
   () =>
@@ -144,10 +144,10 @@ const useGenerateComponent = () => {
                 updateState={updateState}
               />
             );
-          case BridgePurchaseState.estimateRate:
-            return <DynamicEstimateRate nextStep={next} />;
-          case BridgePurchaseState.celebrate:
-            return <DynamicCelebrate nextStep={next} />;
+          //case BridgePurchaseState.estimateRate:
+          //return <DynamicEstimateRate nextStep={next} />;
+          //case BridgePurchaseState.celebrate:
+          //return <DynamicCelebrate nextStep={next} />;
           case BridgePurchaseState.refuse:
             return <DynamicRefuse nextStep={next} />;
         }
