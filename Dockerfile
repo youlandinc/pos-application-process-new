@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY package.json package.json
 
-COPY pnpm-lock.yaml pnpm-lock.yaml
 
 RUN npm cache clean --force
 RUN rm -rf node_modules
