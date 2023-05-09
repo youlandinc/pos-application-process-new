@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useRef } from 'react';
-import { Stack } from '@mui/material';
 import { NextRouter, useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { useSnackbar } from 'notistack';
