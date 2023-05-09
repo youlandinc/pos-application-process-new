@@ -1,4 +1,4 @@
-export const PasswordChangeSchema = {
+export const ChangePasswordSchema = {
   confirmedPassword: {
     equality: {
       attribute: 'password',

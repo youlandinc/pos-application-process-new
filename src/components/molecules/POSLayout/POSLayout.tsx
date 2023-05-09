@@ -34,8 +34,7 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
             <POSMenuList
               info={store.selectedProcessData}
               scene={
-                (store.selectedProcessData.scene as SceneType) ||
-                'bridge refinance'
+                store.selectedProcessData.scene || SceneType.bridge_purchase
               }
             />
           </Box>

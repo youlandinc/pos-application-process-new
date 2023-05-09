@@ -13,6 +13,7 @@ import {
   StyledHeaderLogo,
 } from '@/components';
 import { useBreakpoints } from '@/hooks';
+import { SceneType } from '@/types';
 
 type SideDrawerProps = {
   visible: boolean;
@@ -42,7 +43,7 @@ export const SideDrawer: FC<SideDrawerProps> = observer(
           <>
             <POSMenuList
               info={selectedProcessData}
-              scene={selectedProcessData.scene || 'bridge refinance'}
+              scene={selectedProcessData.scene || SceneType.bridge_purchase}
             />
           </>
         }

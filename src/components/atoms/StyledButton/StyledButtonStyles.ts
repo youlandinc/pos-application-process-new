@@ -1,7 +1,6 @@
 import { POSFont } from '@/styles';
-import { SxProps } from '@mui/material';
 
-export const StyledButtonStyles: SxProps = {
+export const StyledButtonStyles = {
   '&.MuiButton-root': {
     ...POSFont(16, 600, 1.5),
     textTransform: 'none',

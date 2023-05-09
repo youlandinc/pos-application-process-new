@@ -14,6 +14,7 @@ import {
 } from '@/components';
 import { useBreakpoints } from '@/hooks';
 import { TransitionProps } from '@mui/material/transitions';
+import { SceneType } from '@/types';
 
 type SideDialogProps = {
   visible: boolean;
@@ -52,7 +53,7 @@ export const SideDialog: FC<SideDialogProps> = observer(
           <>
             <POSMenuList
               info={selectedProcessData}
-              scene={selectedProcessData.scene || 'bridge refinance'}
+              scene={selectedProcessData.scene || SceneType.bridge_purchase}
             />
           </>
         }

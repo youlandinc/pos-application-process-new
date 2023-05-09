@@ -43,19 +43,15 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
               }
             }}
             ref={ref}
-            sx={Object.assign(
-              {
-                '&.MuiButton-root, &.MuiIconButton-root ': {
-                  '&:hover': {
-                    bgcolor: handledSx(),
-                  },
+            sx={{
+              '&.MuiButton-root, &.MuiIconButton-root ': {
+                '&:hover': {
+                  bgcolor: handledSx(),
                 },
               },
-              {
-                ...StyledButtonStyles,
-                ...sx,
-              },
-            )}
+              ...StyledButtonStyles,
+              ...sx,
+            }}
             {...rest}
           >
             <>{loading ? loadingText : children}</>
@@ -70,19 +66,15 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
               }
             }}
             ref={ref}
-            sx={Object.assign(
-              {
-                '&.MuiButton-root': {
-                  '&:hover': {
-                    bgcolor: handledSx(),
-                  },
+            sx={{
+              ...StyledButtonStyles,
+              ...sx,
+              '&.MuiButton-root': {
+                '&:hover': {
+                  bgcolor: handledSx(),
                 },
               },
-              {
-                ...StyledButtonStyles,
-                ...sx,
-              },
-            )}
+            }}
             variant={variant}
             {...rest}
           >
