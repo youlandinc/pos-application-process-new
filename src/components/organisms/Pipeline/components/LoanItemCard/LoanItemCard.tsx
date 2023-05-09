@@ -1,12 +1,12 @@
-import { StyledBadge, StyledButton } from '@/components';
-import { POSFlex } from '@/styles';
-import { UserType } from '@/types';
-import { POSFormatDollar, POSFormatPercent } from '@/utils';
 import {
-  DeleteForeverOutlined,
-  MoreVertOutlined,
-  RemoveRedEyeOutlined,
-} from '@mui/icons-material';
+  FC,
+  MouseEvent,
+  ReactNode,
+  SyntheticEvent,
+  useCallback,
+  useRef,
+  useState,
+} from 'react';
 import {
   Box,
   ClickAwayListener,
@@ -20,17 +20,40 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { format } from 'date-fns';
 import {
-  FC,
-  MouseEvent,
-  SyntheticEvent,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
+  DeleteForeverOutlined,
+  MoreVertOutlined,
+  RemoveRedEyeOutlined,
+} from '@mui/icons-material';
+import { format } from 'date-fns';
 
-import { LoanItemCardProps } from './index';
+import { POSFlex } from '@/styles';
+import { LoanStage, LoanType, UserType } from '@/types';
+import { POSFormatDollar, POSFormatPercent } from '@/utils';
+
+import { StyledBadge, StyledButton } from '@/components';
+
+export interface LoanItemCardProps {
+  formData: {
+    address: string;
+    productType: LoanType;
+    loanAmount: number;
+    applicationTime: Date | string;
+    loanStage: LoanStage;
+    brokerOriginationFee?: number;
+    brokerProcessingFee?: number;
+    brokerPoints?: number;
+    officerOriginationFee?: number;
+    officerProcessingFee?: number;
+    officerPoints?: number;
+    youlandId: string;
+    agentFee?: number;
+  };
+  userType: UserType | undefined;
+  children?: ReactNode;
+  onDelete: () => void;
+  onView: () => void;
+}
 
 export const LoanItemCard: FC<LoanItemCardProps> = ({
   formData,
@@ -214,7 +237,6 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
         {(userType === UserType.BROKER ||
           userType === UserType.LOAN_OFFICER) && (
           <>
-            {' '}
             <Box className={'product_item'}>
               <Box>Origination Fee</Box>
               <Typography variant={'subtitle1'}>

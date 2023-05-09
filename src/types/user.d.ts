@@ -110,5 +110,18 @@ declare namespace User {
     email: string;
   }
 
+  interface TenantConfigRequest {
+    id: number;
+    tenantId: string;
+    logoUrl: string;
+    organizationName: string;
+    organizationInfo: OrganizationInfo;
+    phone: string;
+    signOffEmail: string;
+    replyEmail: string;
+    saasUrl: string;
+    extInfo: ExtInfo$3Type;
+  }
+
   type UserUploadRequest = TaskFiles;
 }

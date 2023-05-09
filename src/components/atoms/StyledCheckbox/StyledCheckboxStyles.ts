@@ -1,10 +1,11 @@
 import { POSFont } from '@/styles';
-import { SxProps } from '@mui/material';
 
-export const StyledCheckboxStyles: SxProps = {
+export const StyledCheckboxStyles = {
   alignItems: 'flex-start',
+  width: '100%',
+  maxWidth: 600,
   '& .MuiFormControlLabel-label': {
-    width: 200,
+    width: '100%',
     ml: 1.5,
     wordBreak: 'break-word',
     whiteSpace: 'normal',
@@ -27,4 +28,4 @@ export const StyledCheckboxStyles: SxProps = {
       fill: '#CDCDCD !important',
     },
   },
-};
+} as const;

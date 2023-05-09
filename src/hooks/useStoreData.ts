@@ -1,19 +1,24 @@
 import { useAsyncFn } from 'react-use';
+import { useSnackbar } from 'notistack';
+
 import { useMst } from '@/models/Root';
 
 import { _bindProcess, _updateTask, _updateTaskVariables } from '@/requests';
 import { ServerTaskKey } from '@/types/enum';
-import { usePersistFn } from '@/hooks/usePersistFn';
+import { usePersistFn } from './index';
 
 export const useStoreData = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const { bpmn } = useMst();
   const { taskId } = bpmn;
+
   const [updateState, updateTaskVariables] = useAsyncFn(
     async (variables: Variable<any>[]) => {
       return await _updateTaskVariables(taskId as string, variables)
         .then((res) => res)
         .catch((err) => {
-          console.log(err);
+          enqueueSnackbar(err as string, { variant: 'error' });
         });
     },
     [taskId],
@@ -24,7 +29,7 @@ export const useStoreData = () => {
       return await _updateTask(tId || (taskId as string), 'complete')
         .then((res) => res)
         .catch((err) => {
-          console.log(err);
+          enqueueSnackbar(err as string, { variant: 'error' });
         });
     },
     [taskId],
@@ -35,16 +40,19 @@ export const useStoreData = () => {
       return await _updateTask(taskId, 'change', newActivityKey)
         .then((res) => res)
         .catch((err) => {
-          console.log(err);
+          enqueueSnackbar(err as string, { variant: 'error' });
         });
     },
     [taskId],
   );
 
   const handledNextTask = usePersistFn(
-    async (variables: Variable<any>[], successCb?: (TaskData: any) => void) => {
+    async (
+      variables: Variable<any>[],
+      successCb?: (TaskData: any) => void,
+    ): Promise<void> => {
       const res = await updateTaskVariables(variables).catch((err) => {
-        console.log(err);
+        enqueueSnackbar(err as string, { variant: 'error' });
       });
       if (res) {
         const nextTask = await completeTask();
@@ -64,7 +72,10 @@ export const useStoreData = () => {
   );
 
   const handledPrevTask = usePersistFn(
-    async (targetKey: ServerTaskKey, successCb?: (task: TaskData) => void) => {
+    async (
+      targetKey: ServerTaskKey,
+      successCb?: (task: TaskData) => void,
+    ): Promise<void> => {
       const prevTask = await changeTask(targetKey, taskId);
       if (prevTask) {
         const {
@@ -83,10 +94,10 @@ export const useStoreData = () => {
   const bindProcess = usePersistFn(() => {
     _bindProcess(bpmn.processId as string)
       .then((res) => {
-        console.log(res);
+        console.log(res, 'bindSuccess');
       })
       .catch((err) => {
-        console.log(err);
+        enqueueSnackbar(err as string, { variant: 'error' });
       });
   });
 

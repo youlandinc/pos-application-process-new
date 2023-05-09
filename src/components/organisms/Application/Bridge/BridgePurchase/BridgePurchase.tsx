@@ -1,9 +1,8 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { Box } from '@mui/material';
-import { useSnackbar } from 'notistack';
-
-import dynamic from 'next/dynamic';
+import { useCallback, useMemo, useRef } from 'react';
+import { Stack } from '@mui/material';
 import { NextRouter, useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
+import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -61,7 +60,7 @@ const DynamicWhereKnow = dynamic(
 const DynamicEstimateRate = dynamic(
   () =>
     import('@/components/molecules/Application/Bridge/Purchase').then(
-      (mod) => mod.BPEstimateRate,
+      (mod) => mod.BridgePurchaseEstimateRate,
     ),
   {
     loading: () => <StyledLoading />,
@@ -125,32 +124,32 @@ const useGenerateComponent = () => {
                 updateState={updateState}
               />
             );
-          case BridgePurchaseState.creditScore:
-            return (
-              <DynamicCreditScore
-                changeTaskState={changeTaskState}
-                completeTaskState={completeTaskState}
-                nextStep={next}
-                prevStep={back}
-                updateState={updateState}
-              />
-            );
-          case BridgePurchaseState.whereKnowUs:
-            return (
-              <DynamicWhereKnow
-                changeTaskState={changeTaskState}
-                completeTaskState={completeTaskState}
-                nextStep={next}
-                prevStep={back}
-                updateState={updateState}
-              />
-            );
-          case BridgePurchaseState.estimateRate:
-            return <DynamicEstimateRate nextStep={next} />;
-          case BridgePurchaseState.celebrate:
-            return <DynamicCelebrate nextStep={next} />;
-          case BridgePurchaseState.refuse:
-            return <DynamicRefuse nextStep={next} />;
+          //case BridgePurchaseState.creditScore:
+          //  return (
+          //    <DynamicCreditScore
+          //      changeTaskState={changeTaskState}
+          //      completeTaskState={completeTaskState}
+          //      nextStep={next}
+          //      prevStep={back}
+          //      updateState={updateState}
+          //    />
+          //  );
+          //case BridgePurchaseState.whereKnowUs:
+          //  return (
+          //    <DynamicWhereKnow
+          //      changeTaskState={changeTaskState}
+          //      completeTaskState={completeTaskState}
+          //      nextStep={next}
+          //      prevStep={back}
+          //      updateState={updateState}
+          //    />
+          //  );
+          //case BridgePurchaseState.estimateRate:
+          //  return <DynamicEstimateRate nextStep={next} />;
+          //case BridgePurchaseState.celebrate:
+          //  return <DynamicCelebrate nextStep={next} />;
+          //case BridgePurchaseState.refuse:
+          //  return <DynamicRefuse nextStep={next} />;
         }
       },
     [state],
@@ -170,7 +169,7 @@ const useStateMachine = (
   userSetting: IUserSetting,
 ) => {
   const state = applicationForm.formData.state as BridgePurchaseState;
-  const starting = applicationForm.formData.starting as IBStarting;
+  const starting = applicationForm.formData.starting as IBridgeStarting;
   const whereKnowUs = applicationForm.formData.whereKnowUs as IWhereKnowUs;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -178,10 +177,11 @@ const useStateMachine = (
     updateState,
     changeTaskState,
     completeTaskState,
-    handleNextTask,
-    handlePrevTask,
+    handledNextTask,
+    handledPrevTask,
     changeTask,
   } = useStoreData();
+
   const transitions = useRef<
     Record<
       BridgePurchaseState,
@@ -194,7 +194,7 @@ const useStateMachine = (
     starting: {
       next: async () => {
         const postData = starting.getPostData();
-        await handleNextTask([postData], () => {
+        await handledNextTask([postData], () => {
           if (session) {
             applicationForm.formData.changeState(
               BridgePurchaseState.creditScore,
@@ -213,7 +213,7 @@ const useStateMachine = (
         applicationForm.formData.changeState(BridgePurchaseState.creditScore);
       },
       back: async () => {
-        await handlePrevTask(ServerTaskKey.starting, () => {
+        await handledPrevTask(ServerTaskKey.starting, () => {
           applicationForm.formData.changeState(BridgePurchaseState.starting);
         });
         applicationForm.formData.changeState(BridgePurchaseState.starting);
@@ -224,7 +224,7 @@ const useStateMachine = (
         applicationForm.formData.changeState(BridgePurchaseState.whereKnowUs);
       },
       back: async () => {
-        await handlePrevTask(ServerTaskKey.starting, () => {
+        await handledPrevTask(ServerTaskKey.starting, () => {
           applicationForm.formData.changeState(BridgePurchaseState.starting);
         });
       },
@@ -232,14 +232,14 @@ const useStateMachine = (
     whereKnowUs: {
       next: async () => {
         const postData = whereKnowUs.getPostData();
-        await handleNextTask([postData], () => {
+        await handledNextTask([postData], () => {
           applicationForm.formData.changeState(
             BridgePurchaseState.estimateRate,
           );
         });
       },
       back: async () => {
-        await handlePrevTask(ServerTaskKey.about_yourself, () => {
+        await handledPrevTask(ServerTaskKey.about_yourself, () => {
           applicationForm.formData.changeState(BridgePurchaseState.creditScore);
         });
       },
@@ -247,7 +247,7 @@ const useStateMachine = (
     estimateRate: {
       next: async () => {
         const { taskId } = bpmn;
-        await _updateTask(taskId, 'complete')
+        await _updateTask(taskId as string, 'complete')
           .then(() => {
             applicationForm.formData.changeState(BridgePurchaseState.celebrate);
           })
@@ -275,7 +275,7 @@ const useStateMachine = (
   }, [state]);
 
   const back = useCallback(() => {
-    transitions.current[state].back();
+    transitions.current[state].back?.();
   }, [state]);
 
   return {
@@ -298,7 +298,7 @@ export const BridgePurchaseForm = observer(
     const { next, back, updateState, changeTaskState, completeTaskState } =
       useStateMachine(
         applicationForm,
-        session,
+        session as UserSession,
         bpmn,
         handleBack,
         router,
@@ -310,7 +310,13 @@ export const BridgePurchaseForm = observer(
     useAutoSave(applicationForm.formData, bpmn);
 
     return (
-      <Box style={{ padding: '120px 7.5vw' }}>
+      <Stack
+        alignItems={'center'}
+        flexDirection={'column'}
+        gap={6}
+        justifyContent={'center'}
+        width={'100%'}
+      >
         {renderFormNode(
           next,
           back,
@@ -318,7 +324,7 @@ export const BridgePurchaseForm = observer(
           completeTaskState,
           changeTaskState,
         )}
-      </Box>
+      </Stack>
     );
   },
 );

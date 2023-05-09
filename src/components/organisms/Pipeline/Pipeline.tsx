@@ -13,14 +13,14 @@ import { _deleteProcess, _fetchAllProcesses } from '@/requests';
 import { useSwitch } from '@/hooks';
 import { LoanStage, UserType } from '@/types';
 import { AUTO_HIDE_DURATION, PAGE_SIZE } from '@/constants';
+import { StyledButton, StyledDialog, StyledLoading } from '@/components';
+
 import {
   LoanItemCard,
   LoanItemCardProps,
   SearchBar,
   SearchBarProps,
-} from '@/components/organisms/Pipeline/components';
-
-import { StyledButton, StyledDialog, StyledLoading } from '@/components';
+} from './components';
 
 import PIPELINE_NO_RESULT from '@/svg/pipeline/pipeline_no_result.svg';
 
@@ -178,6 +178,7 @@ export const Pipeline: FC = observer(() => {
     } finally {
       close();
       setDeleteLoading(false);
+      setIsChange(false);
     }
   }, [close, deleteId, enqueueSnackbar, getListData]);
 

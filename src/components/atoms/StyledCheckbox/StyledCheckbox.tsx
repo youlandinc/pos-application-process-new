@@ -37,7 +37,7 @@ export const StyledCheckbox: FC<StyledCheckboxProps> = ({
           />
         }
         label={label}
-        sx={Object.assign({}, { ...StyledCheckboxStyles, ...sx })}
+        sx={{ ...StyledCheckboxStyles, ...sx }}
       />
     </>
   );

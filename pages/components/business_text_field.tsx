@@ -17,7 +17,7 @@ const BusinessTextFieldComponent: FC = () => {
   const [value2, setValue2] = useState<number>(0);
   const [value3, setValue3] = useState('');
   const [ssn, setSSN] = useState<string>('123456789');
-  const [phone, setPhone] = useState<string | number>('1234567890');
+  const [phone, setPhone] = useState<string | number>('1111111');
 
   return (
     <Box
@@ -146,6 +146,7 @@ const BusinessTextFieldComponent: FC = () => {
                 }}
                 placeholder={'placeholder'}
                 sx={{ width: 180 }}
+                validate={['error 1', 'error 2']}
                 value={phone}
               />
               <Typography

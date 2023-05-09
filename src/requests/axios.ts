@@ -41,12 +41,12 @@ service.interceptors.response.use(
       rootStore.logout();
     }
 
-    rootStore.notificationStation.enqueueSnackbar({
-      message: message,
-      options: {
-        variant: 'error',
-      },
-    });
+    //rootStore.notificationStation.enqueueSnackbar({
+    //  message: message,
+    //  options: {
+    //    variant: 'error',
+    //  },
+    //});
     return Promise.reject(message);
   },
 );

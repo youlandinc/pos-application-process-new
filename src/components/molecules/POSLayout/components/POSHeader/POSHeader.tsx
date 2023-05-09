@@ -3,6 +3,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Box, Icon, Typography } from '@mui/material';
 import {
   CloseOutlined,
+  DehazeOutlined,
   PostAddOutlined,
   WidgetsOutlined,
 } from '@mui/icons-material';
@@ -17,6 +18,7 @@ import { useBreakpoints, usePersistFn, useStoreData, useSwitch } from '@/hooks';
 import {
   ForgotPassword,
   Login,
+  SideDrawer,
   SignUp,
   StyledButton,
   StyledDialog,
@@ -28,6 +30,11 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
 
   const { bindProcess } = useStoreData();
   const { visible, open, close } = useSwitch(false);
+  const {
+    visible: closeVisible,
+    open: sideOpen,
+    close: sideClose,
+  } = useSwitch();
   const breakpoint = useBreakpoints();
 
   const {
@@ -358,9 +365,20 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
       }}
     >
       <Box sx={POSHeaderStyles}>
-        <StyledHeaderLogo />
+        {scene === 'dashboard' ? (
+          ['xs', 'sm', 'md'].includes(breakpoint) ? (
+            <StyledButton isIconButton onClick={sideOpen}>
+              <DehazeOutlined />
+            </StyledButton>
+          ) : (
+            <StyledHeaderLogo />
+          )
+        ) : (
+          <StyledHeaderLogo />
+        )}
         <Box sx={{ ml: 'auto' }}>{renderButton}</Box>
       </Box>
+      <SideDrawer close={sideClose} visible={closeVisible} />
       <StyledDialog
         content={renderDialog.content}
         disableEscapeKeyDown

@@ -31,8 +31,20 @@ export type OverviewSummaryData =
   | BPOverviewSummaryData
   | BROverviewSummaryData;
 
-export type BaseOverviewSummaryData = {
+type OverviewBaseSummaryData = {
   loanAmount: number;
+};
+
+export type OverviewBRSummaryData = OverviewBaseSummaryData & {
+  homeValue: number;
+  balance: number;
+  cashOutAmount: number;
+  cor: number;
+  firstName: string;
+  lastName: string;
+  address: string;
+  isCor: boolean;
+  isCashOut: boolean;
 };
 
 // summary

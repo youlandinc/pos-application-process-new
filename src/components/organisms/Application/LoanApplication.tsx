@@ -1,28 +1,26 @@
-import { POSFlex, POSFont } from '@/styles';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box, Stack } from '@mui/material';
-//import { Box, CircularProgress, makeStyles } from '@material-ui/core';
-//import { flexCenter, size, POSFont } from '@/common/styles/global';
-//import { MortgagePurchaseForm, MortgageRefinanceForm } from './Mortgage';
-//import { BridgePurchaseForm, BridgeRefinanceForm } from './Bridge';
-//import { useNextBtnClasses } from '@/common/classes';
-
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import { useAsyncFn } from 'react-use';
+
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
 import {
   StyledButton,
   StyledFormItem,
   StyledLoading,
 } from '@/components/atoms';
-import { useAsyncFn } from 'react-use';
 import { useNotification } from '@/hooks/useNotification';
 
+import { _fetchProcessData, _startProcess } from '@/requests';
 import { usePersistFn, useStoreData } from '@/hooks';
 import { POSFindSpecificVariable } from '@/utils';
-import { _fetchProcessData, _startProcess } from '@/requests';
 
-import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { POSFlex, POSFont } from '@/styles';
+
 import {
   SBridgePurchase,
   SBridgeRefinance,
@@ -36,6 +34,9 @@ import {
   VariableName,
 } from '@/types';
 
+//import { MortgagePurchaseForm, MortgageRefinanceForm } from './Mortgage';
+import { BridgePurchaseForm, BridgeRefinanceForm } from './Bridge';
+
 export interface LoanApplicationProps {
   productCategory: ProductCategory;
   applicationType: ApplicationType;
@@ -46,6 +47,7 @@ const useInitProcessData = (
   productType: ApplicationType,
 ) => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const store = useMst();
   const { bpmn, applicationForm, session } = store;
@@ -66,6 +68,7 @@ const useInitProcessData = (
 
   const [lastSelectedType, setLastSelectedType] = useState<ApplicationType>();
 
+  // todo : saas
   //const getTenantConfig = utils.getTenantConfig();
 
   // start new progress
@@ -78,7 +81,10 @@ const useInitProcessData = (
       // todo : tenantId should replace params
       return await _startProcess(productName, '1000052022092800000102').catch(
         (err) => {
-          console.log(err);
+          enqueueSnackbar(err, {
+            variant: 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+          });
           return;
         },
       );
@@ -89,7 +95,10 @@ const useInitProcessData = (
   const [loadState, fetchProcessData] = useAsyncFn(
     async (processId: string) => {
       return await _fetchProcessData(processId).catch((err) => {
-        console.log(err);
+        enqueueSnackbar(err, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
         return;
       });
     },
@@ -123,18 +132,25 @@ const useInitProcessData = (
         setLastSelectedType(applicationType);
         setApplicationType(applicationType);
       } else {
-        console.error(
+        enqueueSnackbar(
           "Can't find the client process data, unable to initialize the application",
+          {
+            variant: 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+          },
         );
       }
     },
-    [applicationForm],
+    [applicationForm, enqueueSnackbar],
   );
 
-  // if has session & processId (This progress must belong to the current login user)
+  // if it has session & processId (This progress must belong to the current login user)
   const handleLoadProcess = usePersistFn(async (processId: string) => {
     const processData = await fetchProcessData(processId).catch((err) => {
-      console.log(err);
+      enqueueSnackbar(err, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
       return;
     });
     if (!processData) {
@@ -255,8 +271,7 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
           return null;
         }
         if (productType === 'purchase' || applicationType === 'purchase') {
-          return <>purchase</>;
-          //return <BridgePurchaseForm handleBack={handleBack} />;
+          return <BridgePurchaseForm handleBack={handleBack} />;
         }
         if (productType === 'refinance' || applicationType === 'refinance') {
           return <>refinance</>;
