@@ -58,13 +58,10 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
         onValueChange={handledChange}
         prefix={prefix}
         suffix={suffix}
-        sx={Object.assign(
-          {},
-          {
-            ...StyledTextFieldStyles,
-            ...sx,
-          },
-        )}
+        sx={{
+          ...StyledTextFieldStyles,
+          ...sx,
+        }}
         thousandSeparator={thousandSeparator}
         variant={'outlined'}
         {...rest}

@@ -21,13 +21,10 @@ export const StyledRadio: FC<StyledStyledRadioProps> = ({
     <FormControl>
       <FormLabel>{label}</FormLabel>
       <RadioGroup
-        sx={Object.assign(
-          {},
-          {
-            ...StyledRadioStyles,
-            ...sx,
-          },
-        )}
+        sx={{
+          ...StyledRadioStyles,
+          ...sx,
+        }}
         value={value}
         {...rest}
       >

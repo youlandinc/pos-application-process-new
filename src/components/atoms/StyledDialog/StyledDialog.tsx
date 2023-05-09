@@ -37,10 +37,10 @@ export const StyledDialog: FC<StyledDialogProps> = ({
     <Dialog
       fullWidth={true}
       open={open}
-      sx={Object.assign({
+      sx={{
         ...StyledDialogStyles,
         ...sx,
-      })}
+      }}
       {...rest}
     >
       {header && (

@@ -81,13 +81,10 @@ export const StyledTextFieldSocialNumber: FC<
         onChange={handledChange}
         onFocus={handledFocus}
         placeholder={'Social Security Number'}
-        sx={Object.assign(
-          {},
-          {
-            ...StyledTextFieldStyles,
-            ...sx,
-          },
-        )}
+        sx={{
+          ...StyledTextFieldStyles,
+          ...sx,
+        }}
         value={text}
         variant={'outlined'}
         {...rest}

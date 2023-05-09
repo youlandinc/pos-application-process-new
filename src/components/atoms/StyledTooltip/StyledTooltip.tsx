@@ -15,10 +15,10 @@ export const StyledTooltip: FC<StyledTooltipProps> = ({
       classes={{ tooltip: theme }}
       componentsProps={{
         tooltip: {
-          sx: Object.assign({
+          sx: {
             ...StyledTooltipStyles,
             ...sx,
-          }),
+          },
         },
       }}
       {...rest}

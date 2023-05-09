@@ -16,18 +16,14 @@ export const StyledDrawer: FC<StyledDrawerProps> = ({
   return (
     <Drawer
       open={open}
-      sx={Object.assign(
-        {
-          '& .MuiPaper-root': {
-            maxWidth,
-            minWidth,
-          },
+      sx={{
+        ...StyledDrawerStyles,
+        '& .MuiPaper-root': {
+          maxWidth,
+          minWidth,
         },
-        {
-          ...StyledDrawerStyles,
-          ...sx,
-        },
-      )}
+        ...sx,
+      }}
       {...rest}
     >
       {header && <Box className={'drawer_header'}>{header}</Box>}
