@@ -1,6 +1,4 @@
-import { SxProps } from '@mui/material';
-
-export const StyledDialogStyles: SxProps = {
+export const StyledDialogStyles = {
   '&.MuiDialog-root': {
     '& .MuiDialogTitle-root, & .MuiDialogContent-root, & .MuiDialogActions-root':
       {

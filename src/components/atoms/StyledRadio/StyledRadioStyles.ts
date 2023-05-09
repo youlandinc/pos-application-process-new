@@ -1,6 +1,4 @@
-import { SxProps } from '@mui/material';
-
-export const StyledRadioStyles: SxProps = {
+export const StyledRadioStyles = {
   '& .MuiRadio-root': {
     color: 'text.secondary',
     boxShadow: 'none',
@@ -24,4 +22,4 @@ export const StyledRadioStyles: SxProps = {
       fontSize: 14,
     },
   },
-};
+} as const;

@@ -1,6 +1,4 @@
-import { SxProps } from '@mui/material';
-
-export const StyledDrawerStyles: SxProps = {
+export const StyledDrawerStyles = {
   '&.MuiDrawer-root': {
     '& .drawer_header': {
       // minHeight: 76,

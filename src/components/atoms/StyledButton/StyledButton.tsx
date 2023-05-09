@@ -67,13 +67,11 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
             }}
             ref={ref}
             sx={{
+              '&:hover': {
+                bgcolor: handledSx(),
+              },
               ...StyledButtonStyles,
               ...sx,
-              '&.MuiButton-root': {
-                '&:hover': {
-                  bgcolor: handledSx(),
-                },
-              },
             }}
             variant={variant}
             {...rest}

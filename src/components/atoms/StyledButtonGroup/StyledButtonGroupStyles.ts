@@ -1,6 +1,4 @@
-import { SxProps } from '@mui/material';
-
-export const StyledButtonGroupStyles: SxProps = {
+export const StyledButtonGroupStyles = {
   '& .MuiToggleButton-root': {
     width: '100%',
     textTransform: 'capitalize',
@@ -29,4 +27,4 @@ export const StyledButtonGroupStyles: SxProps = {
       fontSize: 14,
     },
   },
-};
+} as const;

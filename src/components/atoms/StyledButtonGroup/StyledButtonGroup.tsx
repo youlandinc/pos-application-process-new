@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import { StyledButtonGroupProps, StyledButtonGroupStyles } from './index';
@@ -14,13 +14,10 @@ export const StyledButtonGroup: FC<StyledButtonGroupProps> = ({
     <ToggleButtonGroup
       color={color}
       exclusive
-      sx={Object.assign(
-        {},
-        {
-          ...StyledButtonGroupStyles,
-          ...sx,
-        },
-      )}
+      sx={{
+        ...StyledButtonGroupStyles,
+        ...sx,
+      }}
       value={value === undefined ? '' : value ? 'yes' : 'no'}
       {...rest}
     >

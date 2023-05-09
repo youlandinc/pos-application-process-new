@@ -1,6 +1,4 @@
-import { SxProps } from '@mui/material';
-
-export const StyledTooltipStyles: SxProps = {
+export const StyledTooltipStyles = {
   fontSize: 12,
   fontWeight: 400,
   '&.dark': {
@@ -9,4 +7,4 @@ export const StyledTooltipStyles: SxProps = {
       color: 'text.primary',
     },
   },
-};
+} as const;
