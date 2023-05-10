@@ -1,10 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
-import {
-  NumberFormatValues,
-  NumericFormat,
-  numericFormatter,
-} from 'react-number-format';
+import { NumberFormatValues, NumericFormat } from 'react-number-format';
+
+import { POSFormatDollar, POSFormatPercent } from '@/utils';
 
 import {
   StyledTextFieldNumberProps,
@@ -20,19 +18,15 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
   sx,
   decimalScale = 2,
   thousandSeparator = true,
+  percentage = false,
   ...rest
 }) => {
-  const [text, setText] = useState<number | string>(value);
+  const [text, setText] = useState(value);
 
   useEffect(
     () => {
       if (value) {
-        setText(
-          numericFormatter(value.toString(), {
-            fixedDecimalScale: true,
-            decimalScale,
-          }),
-        );
+        setText(percentage ? POSFormatPercent(value) : POSFormatDollar(value));
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
