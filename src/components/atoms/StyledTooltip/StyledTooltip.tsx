@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC, useState } from 'react';
 import { Box, Tooltip } from '@mui/material';
 
 import { StyledTooltipProps, StyledTooltipStyles } from './index';
@@ -9,6 +9,16 @@ export const StyledTooltip: FC<StyledTooltipProps> = ({
   theme = 'main',
   ...rest
 }) => {
+  const [open, setOpen] = useState(false);
+
+  const handledTooltipClose = () => {
+    setOpen(false);
+  };
+
+  const handledTooltipOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <Tooltip
       arrow
@@ -21,9 +31,12 @@ export const StyledTooltip: FC<StyledTooltipProps> = ({
           },
         },
       }}
+      onClick={handledTooltipOpen}
+      onClose={handledTooltipClose}
+      open={open}
       {...rest}
     >
-      <Box>{children ? children : <span>{rest.title}</span>}</Box>
+      {children ? children : <span>{rest.title}</span>}
     </Tooltip>
   );
 };
