@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
+// import { useMst } from '@/models/Root';
 
 import { BridgePropertyNumberOpt } from '@/types';
 import { IBridgePurpose } from '@/models/application/bridge';
@@ -24,10 +24,10 @@ export const BridgePurpose: FC<BridgePurposeProps> = observer((props) => {
     values: { address, propertyNumber },
   } = purpose;
 
-  const {
-    applicationForm: { applicationType },
-    userType,
-  } = useMst();
+  // const {
+  //   applicationForm: { applicationType },
+  //   userType,
+  // } = useMst();
 
   return (
     <Stack

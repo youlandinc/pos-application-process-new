@@ -93,6 +93,7 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                   address.changeFieldValue('state', e.target.value as string);
                 }}
                 options={OPTIONS_COMMON_STATE}
+                sx={{ maxWidth: '100%' }}
                 value={address.state}
               />
             </Box>

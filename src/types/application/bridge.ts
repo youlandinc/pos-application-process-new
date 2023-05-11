@@ -50,14 +50,25 @@ export interface BPEstimateRateData {
   brokerProcessingFee?: number | undefined;
 }
 
+// export interface BREstimateRateData {
+//   homeValue: number | undefined;
+//   balance: number | undefined;
+//   isCashOut: boolean | undefined;
+//   cashOutAmount: number | undefined;
+//   isCor: boolean | undefined;
+//   cor: number | undefined;
+//   arv: number | undefined;
+//   brokerPoints?: number | undefined;
+//   brokerProcessingFee?: number | undefined;
+// }
 export interface BREstimateRateData {
-  homeValue: number | undefined;
-  balance: number | undefined;
-  isCashOut: boolean | undefined;
-  cashOutAmount: number | undefined;
-  isCor: boolean | undefined;
-  cor: number | undefined;
-  arv: number | undefined;
-  brokerPoints?: number | undefined;
-  brokerProcessingFee?: number | undefined;
+  homeValue?: number;
+  balance?: number;
+  isCashOut?: boolean;
+  cashOutAmount?: number;
+  isCor?: boolean;
+  cor?: number;
+  arv?: number;
+  brokerPoints?: number;
+  brokerProcessingFee?: number;
 }

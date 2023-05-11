@@ -46,7 +46,7 @@
 //     '& > *': {
 //       flex: 1,
 //     },
-//     '& > :last-child:nth-child(2)': {
+//     '& > :last-child:nth-of-type(2)': {
 //       flex: 0.4545,
 //     },
 //   },
@@ -75,7 +75,7 @@
 //   dialogContent: {
 //     lineHeight: 1.5,
 //     textAlign: 'center',
-//     '&, &:first-child': {
+//     '&, &:first-of-type': {
 //       padding: 48,
 //     },
 //   },

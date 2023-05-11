@@ -26,7 +26,7 @@ export const BridgePersonInfo: FC = observer(() => {
     applicationForm: {
       formData: { creditScore },
     },
-    userType,
+    // userType,
   } = useMst();
 
   const selfInfo: IPersonalInfo = creditScore.selfInfo;
