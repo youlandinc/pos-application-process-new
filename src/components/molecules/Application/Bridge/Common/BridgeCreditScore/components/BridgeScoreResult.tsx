@@ -44,8 +44,8 @@ export const BridgeScoreResult: FC<{ role: 'self' | 'coBorrower' }> = observer(
         }
         const { run } = POSCreateDebounceFunction(handledAnimate, 300);
         handledAnimate();
-        window.addEventListener('resize', handledAnimate);
-        return () => window.removeEventListener('resize', handledAnimate);
+        window.addEventListener('resize', run);
+        return () => window.removeEventListener('resize', run);
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [],

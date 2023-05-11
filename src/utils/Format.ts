@@ -1,5 +1,5 @@
 import { POSTypeOf } from './TypeOf';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 
 export const POSFormatDollar = (
   amount: number | undefined | string,

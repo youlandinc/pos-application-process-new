@@ -1,8 +1,10 @@
 import { FC, useState } from 'react';
+import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { AUTO_HIDE_DURATION } from '@/constants';
 import { useSwitch } from '@/hooks';
 import { _updateProcessVariables } from '@/requests';
 import {
@@ -82,6 +84,7 @@ export const BridgePurchaseEstimateRate: FC<{ nextStep?: () => void }> =
       userType,
     } = useMst();
 
+    const { enqueueSnackbar } = useSnackbar();
     const { open, visible, close } = useSwitch(false);
     const [loading, setLoading] = useState(false);
     const [searchForm, setSearchForm] = useState<BPQueryData>(initialize);
@@ -110,7 +113,7 @@ export const BridgePurchaseEstimateRate: FC<{ nextStep?: () => void }> =
       for (const [key, value] of Object.entries(searchForm)) {
         estimateRate.changeFieldValue(key, value);
       }
-      await _updateProcessVariables(processId, [postData])
+      await _updateProcessVariables(processId as string, [postData])
         .then(async () => {
           const res = await _fetchRatesProductPreview(processId, searchForm);
           if (res.status === 200) {
@@ -123,16 +126,24 @@ export const BridgePurchaseEstimateRate: FC<{ nextStep?: () => void }> =
           setLoading(false);
         })
         .catch((err) => {
-          console.log(err);
+          enqueueSnackbar(err, {
+            variant: 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+          });
           setLoading(false);
         });
     };
 
-    const onListItemClick = async (item) => {
+    const onListItemClick = async (
+      item: BPLoanInfo &
+        Pick<
+          RatesProductData,
+          'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm' | 'id'
+        >,
+    ) => {
       const { paymentOfMonth, interestRateOfYear, loanTerm, id } = item;
-      console.log(productInfo);
       setSelectedItem(
-        Object.assign(productInfo, {
+        Object.assign(productInfo as BPLoanInfo, {
           paymentOfMonth,
           interestRateOfYear,
           loanTerm,
@@ -142,10 +153,15 @@ export const BridgePurchaseEstimateRate: FC<{ nextStep?: () => void }> =
       open();
     };
 
-    const nextStepWrap = async (id) => {
+    const nextStepWrap = async (id: string) => {
       await _updateRatesProductSelected(processId, { id })
-        .then(() => nextStep())
-        .catch((err) => console.log(err));
+        .then(() => nextStep?.())
+        .catch((err) =>
+          enqueueSnackbar(err, {
+            variant: 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+          }),
+        );
     };
 
     return (

@@ -34,9 +34,9 @@ export const BREstimateRate = types
         value: {
           homeValue,
           balance,
-          isCashOut,
+          isCashOut: isCashOut as boolean,
           cashOutAmount,
-          isCor,
+          isCor: isCor as boolean,
           cor,
           arv,
         },

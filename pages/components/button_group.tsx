@@ -54,7 +54,6 @@ const ButtonGroupComponent: FC = () => {
                 event: React.MouseEvent<HTMLElement>,
                 newAlignment: string,
               ) => {
-                console.log({ newAlignment });
                 setValue(newAlignment);
               }}
               options={[

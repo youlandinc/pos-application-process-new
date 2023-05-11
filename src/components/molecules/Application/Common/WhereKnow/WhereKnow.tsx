@@ -32,8 +32,8 @@ export const WhereKnow: FC<FormNodeBaseProps> = observer(
               whereKnowUs.changeFieldValue('reference', e.target.value)
             }
             options={OPTIONS_BRIDGE_CHANNEL}
-            value={whereKnowUs.reference}
             sx={{ maxWidth: 600 }}
+            value={whereKnowUs.reference}
           />
         </StyledFormItem>
         <Stack

@@ -1,25 +1,25 @@
 import validate from 'validate.js';
 import { addYears, compareAsc, isValid } from 'date-fns';
 
-validate.validators.optional = (
-  value,
-  options: {
-    parentsConditions: Record<string, any>;
-    required: boolean;
-  },
-  attr,
-  formState,
-) => {
-  for (const key in options.parentsConditions) {
-    if (formState[key] !== options.parentsConditions[key]) {
-      return;
-    }
-  }
-  if (options.required && validate.isEmpty(formState[attr])) {
-    return 'Must not be empty';
-  }
-  return;
-};
+//validate.validators.optional = (
+//  value,
+//  options: {
+//    parentsConditions: Record<string, any>;
+//    required: boolean;
+//  },
+//  attr,
+//  formState,
+//) => {
+//  for (const key in options.parentsConditions) {
+//    if (formState[key] !== options.parentsConditions[key]) {
+//      return;
+//    }
+//  }
+//  if (options.required && validate.isEmpty(formState[attr])) {
+//    return 'Must not be empty';
+//  }
+//  return;
+//};
 
 validate.validators.date = (
   value: Date | null,

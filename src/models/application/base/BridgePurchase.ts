@@ -13,9 +13,9 @@ import { BridgePurchaseState, VariableName } from '@/types/enum';
 import { ProcessData } from '@/types/server';
 import {
   BorrowerData,
-  BridgePurchaseEstimateRateData,
   BridgeApplicationProcessSnapshot,
   BridgeCoBorrowerCondition,
+  BridgePurchaseEstimateRateData,
   BridgeStartingData,
   SelfInfoData,
   WhereKnowUsData,

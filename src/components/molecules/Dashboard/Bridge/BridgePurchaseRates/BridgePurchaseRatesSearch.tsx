@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
 
 import { BPQueryData } from '@/requests/dashboard';
@@ -38,26 +38,29 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
 
   const {
     isCor,
-    purchasePrice = 0,
-    cor = 0,
-    arv = 0,
-    purchaseLoanAmount = 0,
-    brokerPoints = 0,
-    brokerProcessingFee = 0,
-    officerPoints = 0,
-    officerProcessingFee = 0,
-    agentFee = 0,
+    purchasePrice,
+    cor,
+    arv,
+    purchaseLoanAmount,
+    brokerPoints,
+    brokerProcessingFee,
+    officerPoints,
+    officerProcessingFee,
+    agentFee,
   } = searchForm;
 
   const [LTVError, setLTVError] = useState<string>('');
   const [LTCError, setLTCError] = useState<string>('');
 
   const loanAmount = useMemo(() => {
-    return isCor ? purchaseLoanAmount + cor : purchaseLoanAmount;
+    return isCor
+      ? (purchaseLoanAmount as number) + (cor as number)
+      : purchaseLoanAmount;
   }, [purchaseLoanAmount, cor, isCor]);
 
   const LTV = useMemo(() => {
     if (!purchaseLoanAmount || !purchasePrice) {
+      setLTVError('');
       return 0;
     }
     setLTVError(
@@ -78,7 +81,8 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
       setLTCError('');
       return;
     }
-    const result = loanAmount / (cor + purchasePrice);
+    const result =
+      (loanAmount as number) / ((cor as number) + (purchasePrice as number));
     setLTCError(
       result > 0.75
         ? 'Reduce your purchase loan amount or rehab loan amount. Your Loan-to-Cost should be no more than 75%'
@@ -92,8 +96,8 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
     if (!POSNotUndefined(points)) {
       return [''];
     }
-    if (points <= 5) {
-      return false;
+    if ((points as number) <= 5) {
+      return undefined;
     }
     return [
       `${
@@ -108,8 +112,8 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
     if (!POSNotUndefined(fee) || !loanAmount) {
       return [''];
     }
-    if (fee <= loanAmount) {
-      return false;
+    if ((fee as number) <= loanAmount) {
+      return undefined;
     }
     return [
       `${
@@ -124,8 +128,8 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
     if (!POSNotUndefined(agentFee) || !loanAmount) {
       return [''];
     }
-    if (agentFee <= loanAmount) {
-      return false;
+    if ((agentFee as number) <= loanAmount) {
+      return undefined;
     }
     return [
       `Real estate agent fee must be lesser than or equal to ${POSFormatDollar(
@@ -133,7 +137,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
       )}.`,
     ];
   }, [agentFee, loanAmount]);
-  //
+
   const isValid = useMemo(() => {
     let flag: boolean;
 
@@ -188,8 +192,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
     brokerProcessingFee,
   ]);
 
-  const [value, setValue] = useState(100);
-
   const renderByUserType = useMemo(() => {
     switch (userType) {
       case UserType.BROKER:
@@ -203,28 +205,38 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
             <Stack
               flexDirection={{ lg: 'row', xs: 'column' }}
               gap={3}
+              maxWidth={600}
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
                 <Typography>Broker Origination Fee</Typography>
                 <StyledTextFieldNumber
                   decimalScale={3}
-                  onValueChange={(v) => {
-                    setValue(v.floatValue || 0);
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      brokerPoints: floatValue,
+                    });
                   }}
                   percentage
                   suffix={'%'}
-                  value={value}
+                  thousandSeparator={false}
+                  validate={pointsError}
+                  value={brokerPoints}
                 />
               </Stack>
               <Stack flex={1} gap={1}>
                 <Typography>Broker Processing Fee</Typography>
                 <StyledTextFieldNumber
-                  onValueChange={(v) => {
-                    setValue(v.floatValue || 0);
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      brokerProcessingFee: floatValue,
+                    });
                   }}
                   prefix={'$'}
-                  value={value}
+                  validate={processingFeeError}
+                  value={brokerProcessingFee}
                 />
               </Stack>
             </Stack>
@@ -241,28 +253,38 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
             <Stack
               flexDirection={{ lg: 'row', xs: 'column' }}
               gap={3}
+              maxWidth={600}
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
                 <Typography>Loan Officer Origination Compensation</Typography>
                 <StyledTextFieldNumber
                   decimalScale={3}
-                  onValueChange={(v) => {
-                    setValue(v.floatValue || 0);
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      officerPoints: floatValue,
+                    });
                   }}
                   percentage
                   suffix={'%'}
-                  value={value}
+                  thousandSeparator={false}
+                  validate={pointsError}
+                  value={officerPoints}
                 />
               </Stack>
               <Stack flex={1} gap={1}>
                 <Typography>Loan Officer Processing Fee</Typography>
                 <StyledTextFieldNumber
-                  onValueChange={(v) => {
-                    setValue(v.floatValue || 0);
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      officerProcessingFee: floatValue,
+                    });
                   }}
                   prefix={'$'}
-                  value={value}
+                  validate={processingFeeError}
+                  value={officerProcessingFee}
                 />
               </Stack>
             </Stack>
@@ -279,17 +301,21 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
             <Stack
               flexDirection={{ lg: 'row', xs: 'column' }}
               gap={3}
+              maxWidth={600}
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
                 <Typography>Loan Officer Origination Compensation</Typography>
                 <StyledTextFieldNumber
-                  onValueChange={(v) => {
-                    setValue(v.floatValue || 0);
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      agentFee: floatValue,
+                    });
                   }}
-                  percentage
                   prefix={'$'}
-                  value={value}
+                  value={agentFee}
+                  validate={agentFeeError}
                 />
               </Stack>
             </Stack>
@@ -324,6 +350,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
           gap={3}
           label={`Total Loan Amount: ${POSFormatDollar(loanAmount)}`}
           labelSx={{ textAlign: 'center', width: '100%' }}
+          maxWidth={600}
           mt={3}
           sub
           width={'100%'}
@@ -337,23 +364,29 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
               <Stack flex={1} gap={1}>
                 <Typography variant={'body1'}>Purchase Price</Typography>
                 <StyledTextFieldNumber
-                  onValueChange={(v) => {
-                    setValue(v.floatValue || 0);
+                  disabled={loading || loanStage === LoanStage.Approved}
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      purchasePrice: floatValue,
+                    });
                   }}
                   prefix={'$'}
-                  value={value}
+                  value={purchasePrice}
                 />
               </Stack>
               <Stack flex={1} gap={1}>
                 <Typography variant={'body1'}>Purchase Loan Amount</Typography>
                 <StyledTextFieldNumber
-                  decimalScale={3}
-                  onValueChange={(v) => {
-                    setValue(v.floatValue || 0);
+                  disabled={loading || loanStage === LoanStage.Approved}
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      purchaseLoanAmount: floatValue,
+                    });
                   }}
-                  percentage
-                  suffix={'%'}
-                  value={value}
+                  prefix={'$'}
+                  value={purchaseLoanAmount}
                 />
               </Stack>
             </Stack>
@@ -374,6 +407,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
                 {POSFormatPercent(LTV)}
               </Typography>
             </Stack>
+
             <Transitions>
               {LTVError && !isCor && (
                 <Typography color={'error'} variant={'body3'}>
@@ -382,70 +416,98 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
               )}
             </Transitions>
           </Stack>
-          <StyledCheckbox label={'Rehab Loan Amount'} />
-          <Stack gap={1} width={'100%'}>
-            <Stack
-              flexDirection={{ lg: 'row', xs: 'column' }}
-              gap={3}
-              width={'100%'}
-            >
-              <Stack flex={1} gap={1}>
-                <Typography variant={'body1'}>
-                  Estimated Rehab Loan Amount
-                </Typography>
-                <StyledTextFieldNumber
-                  onValueChange={(v) => {
-                    setValue(v.floatValue || 0);
-                  }}
-                  prefix={'$'}
-                  value={value}
-                />
-              </Stack>
-              <Stack flex={1} gap={1}>
-                <Typography variant={'body1'}>
-                  After Repair Value (ARV){' '}
+
+          <StyledCheckbox
+            checked={isCor}
+            disabled={loading || loanStage === LoanStage.Approved}
+            label={'Rehab Loan Amount'}
+            onChange={(e) => {
+              setSearchForm({
+                ...searchForm,
+                isCor: e.target.checked,
+              });
+            }}
+          />
+
+          <Transitions
+            style={{
+              width: '100%',
+            }}
+          >
+            {isCor && (
+              <Stack gap={1} maxWidth={600} width={'100%'}>
+                <Stack
+                  flexDirection={{ lg: 'row', xs: 'column' }}
+                  gap={3}
+                  width={'100%'}
+                >
+                  <Stack flex={1} gap={1}>
+                    <Typography variant={'body1'}>
+                      Estimated Rehab Loan Amount
+                    </Typography>
+                    <StyledTextFieldNumber
+                      disabled={loading || loanStage === LoanStage.Approved}
+                      onValueChange={({ floatValue }) => {
+                        setSearchForm({
+                          ...searchForm,
+                          cor: floatValue,
+                        });
+                      }}
+                      prefix={'$'}
+                      value={cor || undefined}
+                    />
+                  </Stack>
+                  <Stack flex={1} gap={1}>
+                    <Typography variant={'body1'}>
+                      After Repair Value (ARV){' '}
+                      <StyledTooltip
+                        title={
+                          'ARV (Purchase price + Estimated rehab loan amount)'
+                        }
+                      >
+                        <InfoOutlined sx={{ width: 16, height: 16 }} />
+                      </StyledTooltip>
+                    </Typography>
+                    <StyledTextFieldNumber
+                      disabled={loading || loanStage === LoanStage.Approved}
+                      onValueChange={({ floatValue }) => {
+                        setSearchForm({
+                          ...searchForm,
+                          arv: floatValue,
+                        });
+                      }}
+                      prefix={'$'}
+                      value={arv}
+                    />
+                  </Stack>
+                </Stack>
+                <Stack
+                  alignItems={'center'}
+                  flexDirection={'row'}
+                  gap={1}
+                  justifyContent={'flex-start'}
+                  width={'calc(50% - 12px)'}
+                >
+                  <Typography variant={'body1'}>Loan to Cost</Typography>
                   <StyledTooltip
                     title={'ARV (Purchase price + Estimated rehab loan amount)'}
                   >
                     <InfoOutlined sx={{ width: 16, height: 16 }} />
                   </StyledTooltip>
-                </Typography>
-                <StyledTextFieldNumber
-                  decimalScale={3}
-                  onValueChange={(v) => {
-                    setValue(v.floatValue || 0);
-                  }}
-                  percentage
-                  suffix={'%'}
-                  value={value}
-                />
+                  <Typography ml={'auto'} variant={'body1'}>
+                    {POSFormatPercent(LTC)}
+                  </Typography>
+                </Stack>
+                <Transitions>
+                  {LTCError && (
+                    <Typography color={'error'} variant={'body3'}>
+                      {LTCError}
+                    </Typography>
+                  )}
+                </Transitions>
               </Stack>
-            </Stack>
-            <Stack
-              alignItems={'center'}
-              flexDirection={'row'}
-              gap={1}
-              justifyContent={'flex-start'}
-              width={'calc(50% - 12px)'}
-            >
-              <Typography variant={'body1'}>Loan to Cost</Typography>
-              <StyledTooltip
-                title={'ARV (Purchase price + Estimated rehab loan amount)'}
-              >
-                <InfoOutlined sx={{ width: 16, height: 16 }} />
-              </StyledTooltip>
-              <Typography ml={'auto'} variant={'body1'}>
-                {POSFormatPercent(LTC)}
-              </Typography>
-            </Stack>
-            <Transitions>
-              {LTCError && (
-                <Typography color={'error'} variant={'body3'}>
-                  {LTCError}
-                </Typography>
-              )}
-            </Transitions>
-          </Stack>
+            )}
+          </Transitions>
         </StyledFormItem>
 
         {renderByUserType}
@@ -453,7 +515,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
         <StyledButton
           disabled={!isValid || loading || loanStage === LoanStage.Approved}
           onClick={onCheck}
-          style={{ marginBlockStart: 48, width: 180 }}
+          sx={{ width: 200 }}
         >
           Check
         </StyledButton>

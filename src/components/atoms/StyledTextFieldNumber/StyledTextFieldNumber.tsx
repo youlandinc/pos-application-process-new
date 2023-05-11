@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from 'react';
-import { TextField } from '@mui/material';
 import { NumberFormatValues, NumericFormat } from 'react-number-format';
 
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
 
 import {
+  StyledTextField,
   StyledTextFieldNumberProps,
   StyledTextFieldStyles,
 } from '@/components/atoms';
@@ -43,7 +43,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
       <NumericFormat
         allowedDecimalSeparators={['.']}
         allowNegative={allowNegative}
-        customInput={TextField}
+        customInput={StyledTextField}
         decimalScale={decimalScale}
         fixedDecimalScale
         InputProps={{
