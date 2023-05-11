@@ -52,11 +52,10 @@ export const PipelineQuestionnaire: FC = observer(() => {
 
   const {
     pipelineTask: {
-      formData: { BROKER_QUESTIONNAIRE, error },
+      formData: { BROKER_QUESTIONNAIRE },
     },
   } = useMst();
 
-  console.log({ BROKER_QUESTIONNAIRE });
   // const tenantConfig = utils.getTenantConfig();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -70,23 +69,28 @@ export const PipelineQuestionnaire: FC = observer(() => {
   const { renderFile } = useRenderPdf(pdfFile);
 
   const handledCompleteTaskAndBackToSummary = async () => {
-    // setLoading(true);
+    if (BROKER_QUESTIONNAIRE.validateSelfInfo()) {
+      return;
+    }
+    setLoading(true);
     const data = BROKER_QUESTIONNAIRE.getPostData();
-    BROKER_QUESTIONNAIRE.validateSelfInfo();
-    // try {
-    //   await _completePipelineTask(data);
-    //   await router.push('/pipeline/profile');
-    // } catch (err) {
-    //   enqueueSnackbar(err as string, {
-    //     variant: 'error',
-    //     autoHideDuration: AUTO_HIDE_DURATION,
-    //   });
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      await _completePipelineTask(data);
+      await router.push('/pipeline/profile');
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const generateFile = async () => {
+    if (BROKER_QUESTIONNAIRE.validateSelfInfo()) {
+      return;
+    }
     setGenLoading(true);
     const data = BROKER_QUESTIONNAIRE.getGenerateFileData();
     try {
@@ -108,7 +112,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
   const handledSaveFile = async () => {
     setAgreeLoading(true);
     const data = BROKER_QUESTIONNAIRE.getPostData();
-    BROKER_QUESTIONNAIRE.validateSelfInfo();
+
     try {
       const res = await _fetchLegalFile(data.taskId);
       await BROKER_QUESTIONNAIRE.changeFieldValue('documentFile', res.data);
@@ -126,7 +130,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
   const isAddLicense = useMemo(() => {
     return BROKER_QUESTIONNAIRE.taskForm.licenses.length >= 4;
   }, [BROKER_QUESTIONNAIRE.taskForm.licenses.length]);
-  console.log(BROKER_QUESTIONNAIRE.checkLicensesValid, '111', error);
+
   return (
     <>
       <Stack alignItems={'center'} justifyContent={'center'}>
@@ -136,7 +140,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
           tip={`Please indicate the states in which you are licensed to broker
                 loans and the type of license you hold in each state`}
         >
-          <Transitions>
+          <Transitions style={{ width: '100%' }}>
             {BROKER_QUESTIONNAIRE.taskForm?.licenses?.map(
               (item: PipelineQuestionnaireOwner, index: number) => (
                 <Stack
@@ -215,8 +219,8 @@ export const PipelineQuestionnaire: FC = observer(() => {
                         );
                       }}
                       validate={
-                        BROKER_QUESTIONNAIRE.error &&
-                        BROKER_QUESTIONNAIRE.error[index]?.ssn
+                        BROKER_QUESTIONNAIRE.errors &&
+                        BROKER_QUESTIONNAIRE.errors[index]?.ssn
                       }
                       value={item.ssn}
                     />
@@ -237,11 +241,12 @@ export const PipelineQuestionnaire: FC = observer(() => {
                         );
                       }}
                       validate={
-                        BROKER_QUESTIONNAIRE.error &&
-                        BROKER_QUESTIONNAIRE.error[index]?.birthday
+                        BROKER_QUESTIONNAIRE.errors &&
+                        BROKER_QUESTIONNAIRE.errors[index]?.dateOfBirth
                       }
                       value={item.birthday}
                     />
+
                     <StyledSelect
                       label={'State'}
                       onChange={(e) => {

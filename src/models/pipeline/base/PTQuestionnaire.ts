@@ -66,21 +66,6 @@ export const PTQuestionnaire = types
             !!item.ssn &&
             !!item.state,
         );
-      // return (
-      //   !!licenses.length &&
-      //   licenses.some((item) => {
-      //     // const result = validate(
-      //     //   { ssn: item.ssn, dateOfBirth: item.birthday },
-      //     //   {
-      //     //     ssn: CreditScoreSchema.selfInfo.ssn,
-      //     //     dateOfBirth: CreditScoreSchema.selfInfo.dateOfBirth,
-      //     //   },
-      //     // );
-      //     // !result &&
-      //     console.log({item});
-      //     return Object.values(item).find((value) => !value);
-      //   })
-      // );
       return flag;
     },
     checkArrayIsValid(item: SPQOwnerData) {
@@ -117,17 +102,9 @@ export const PTQuestionnaire = types
         }
       },
       validateSelfInfo() {
+        let flag = false;
         if (self.taskForm.licenses.length) {
           self.taskForm.licenses.forEach((item, index) => {
-            // self.errors?.push(
-            //   validate(
-            //     { ssn: item.ssn, dateOfBirth: item.birthday },
-            //     {
-            //       ssn: CreditScoreSchema.selfInfo.ssn,
-            //       dateOfBirth: CreditScoreSchema.selfInfo.dateOfBirth,
-            //     },
-            //   ),
-            // );
             self.errors[index] =
               validate(
                 { ssn: item.ssn, dateOfBirth: item.birthday },
@@ -136,19 +113,20 @@ export const PTQuestionnaire = types
                   dateOfBirth: CreditScoreSchema.selfInfo.dateOfBirth,
                 },
               ) || {};
-            console.log(
+            if (
               validate(
                 { ssn: item.ssn, dateOfBirth: item.birthday },
                 {
                   ssn: CreditScoreSchema.selfInfo.ssn,
                   dateOfBirth: CreditScoreSchema.selfInfo.dateOfBirth,
                 },
-              ),
-            );
+              )
+            ) {
+              flag = true;
+            }
           });
         }
-
-        console.log(self.errors);
+        return flag;
       },
       changeFieldValue<K extends keyof typeof self.taskForm>(
         key: K,
