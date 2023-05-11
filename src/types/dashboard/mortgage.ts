@@ -1,5 +1,5 @@
 import {
-  BridgeRefinanceEstimateRateData,
+  BridgePurchaseEstimateRateData,
   BridgeRefinanceEstimateRateData,
   BridgeStartingData,
   MortgageFinancialSituationData,
@@ -33,7 +33,7 @@ export type MPPreApprovalLetterData = BasePreApprovalLetterData &
   Pick<MortgageStartingData, 'propertyOpt' | 'numberOfUnits' | 'propAddr'>;
 
 export type MPPreApprovalLetterBPData = BasePreApprovalLetterData &
-  BridgeRefinanceEstimateRateData &
+  BridgePurchaseEstimateRateData &
   Pick<BridgeStartingData, 'propertyType' | 'propertyUnit' | 'propAddr'>;
 
 export type MPPreApprovalLetterBRData = BasePreApprovalLetterData &
