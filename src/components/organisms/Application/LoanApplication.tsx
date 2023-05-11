@@ -22,12 +22,6 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFlex, POSFont } from '@/styles';
 
 import {
-  SBridgePurchase,
-  SBridgeRefinance,
-  SMortgagePurchase,
-  SMortgageRefinance,
-} from '@/models/application/base';
-import {
   BridgeApplicationProcessSnapshot,
   MortgageApplicationProcessSnapshot,
   ProcessData,
@@ -173,12 +167,7 @@ const useInitProcessData = (
         return;
       }
       if (applicationType !== lastSelectedType) {
-        applicationForm.initForm<
-          | SMortgagePurchase
-          | SMortgageRefinance
-          | SBridgePurchase
-          | SBridgeRefinance
-        >(productCategory, applicationType);
+        applicationForm.initForm(productCategory, applicationType);
         setLastSelectedType(applicationType);
         if (res) {
           loadServerTaskProgress(res.data);

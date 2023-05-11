@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
@@ -255,12 +255,11 @@ export const PipelineProfile: FC = observer(() => {
       width={'100%'}
     >
       <Stack
-        width={'100%'}
-        gap={1.5}
         border={'1px solid #D2D6E1'}
         borderRadius={2}
-        py={{ xs: 3 }}
+        gap={1.5}
         px={{ lg: 6, xs: 3 }}
+        py={{ xs: 3 }}
         sx={{
           '& .task_item': {
             pt: 1.5,
@@ -279,6 +278,7 @@ export const PipelineProfile: FC = observer(() => {
             },
           },
         }}
+        width={'100%'}
       >
         {renderTaskList}
         <StyledButton
