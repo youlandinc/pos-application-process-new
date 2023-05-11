@@ -31,7 +31,7 @@ export type OverviewSummaryData =
   | BPOverviewSummaryData
   | BROverviewSummaryData;
 
-type OverviewBaseSummaryData = {
+export type OverviewBaseSummaryData = {
   loanAmount: number;
 };
 

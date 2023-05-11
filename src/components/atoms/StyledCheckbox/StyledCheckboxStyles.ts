@@ -3,7 +3,6 @@ import { POSFont } from '@/styles';
 export const StyledCheckboxStyles = {
   alignItems: 'flex-start',
   width: '100%',
-  maxWidth: 600,
   '& .MuiFormControlLabel-label': {
     width: '100%',
     ml: 1.5,

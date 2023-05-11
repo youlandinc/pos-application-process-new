@@ -139,16 +139,17 @@ const useStateMachine = (
       coBorrowerInfo: {
         next: async () => {
           const postData = creditScore.getCoborrowerConditionPostData();
-          await handledNextTask(
-            [
-              postData,
-              {
+          const params: any[] = [postData];
+          if (creditScore.coBorrowerCondition.isCoBorrower) {
+            coBorrowerInfo.validateSelfInfo();
+            if (coBorrowerInfo.isValid) {
+              params.push({
                 ...coBorrowerInfo.getPostData(),
                 name: VariableName.aboutOtherInfo,
-              },
-            ],
-            () => nextStep(),
-          );
+              });
+            }
+          }
+          await handledNextTask(params, () => nextStep());
         },
         back: async () => {
           await handledPrevTask(ServerTaskKey.about_yourself, () => {

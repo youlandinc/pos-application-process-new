@@ -40,7 +40,7 @@ export interface BridgeCoBorrowerCondition {
   isCoBorrower: boolean | undefined;
 }
 
-export interface BPEstimateRateData {
+export interface BridgePurchaseEstimateRateData {
   purchasePrice: number | undefined;
   purchaseLoanAmount: number | undefined;
   isCor: boolean | undefined;
@@ -48,16 +48,22 @@ export interface BPEstimateRateData {
   arv: number | undefined;
   brokerPoints?: number | undefined;
   brokerProcessingFee?: number | undefined;
+  officerPoints?: number | undefined;
+  officerProcessingFee?: number | undefined;
+  agentFee?: number | undefined;
 }
 
-export interface BREstimateRateData {
+export interface BridgeRefinanceEstimateRateData {
   homeValue: number | undefined;
   balance: number | undefined;
-  isCashOut: boolean | undefined;
+  isCashOut: boolean;
   cashOutAmount: number | undefined;
-  isCor: boolean | undefined;
+  isCor: boolean;
   cor: number | undefined;
   arv: number | undefined;
   brokerPoints?: number | undefined;
   brokerProcessingFee?: number | undefined;
+  officerPoints?: number | undefined;
+  officerProcessingFee?: number | undefined;
+  agentFee?: number | undefined;
 }

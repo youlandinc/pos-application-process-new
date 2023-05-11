@@ -3,8 +3,8 @@ import {
   BorrowerData,
   BorrowerDebtRecordData,
   BorrowerDebtSummaryData,
-  BPEstimateRateData,
-  BREstimateRateData,
+  BridgePurchaseEstimateRateData,
+  BridgeRefinanceEstimateRateData,
   BridgeApplicationProcessSnapshot,
   BridgeStartingData,
   IncomeData,
@@ -71,5 +71,5 @@ export type VariableValue =
   // bridge
   | BridgeApplicationProcessSnapshot
   | BridgeStartingData
-  | BPEstimateRateData
-  | BREstimateRateData;
+  | BridgePurchaseEstimateRateData
+  | BridgeRefinanceEstimateRateData;

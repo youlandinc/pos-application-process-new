@@ -1,6 +1,6 @@
 import {
-  BPEstimateRateData,
-  BREstimateRateData,
+  BridgePurchaseEstimateRateData,
+  BridgeRefinanceEstimateRateData,
   BridgeStartingData,
 } from '@/types/application';
 import { BaseOverviewSummaryData, BasePreApprovalLetterData } from '@/types';
@@ -39,14 +39,14 @@ export type BPOverviewSummaryData = BaseOverviewSummaryData & {
 };
 
 export type BPRatesLoanInfo = Pick<
-  BPEstimateRateData,
+  BridgePurchaseEstimateRateData,
   'purchasePrice' | 'purchaseLoanAmount' | 'cor'
 > & {
   totalLoanAmount: number;
 };
 
 export type BPPreApprovalLetterData = BasePreApprovalLetterData &
-  BPEstimateRateData &
+  BridgePurchaseEstimateRateData &
   Pick<BridgeStartingData, 'propertyType' | 'propertyUnit' | 'propAddr'>;
 
 export type BROverviewSummaryData = BaseOverviewSummaryData & {
@@ -62,12 +62,12 @@ export type BROverviewSummaryData = BaseOverviewSummaryData & {
 };
 
 export type BRRatesLoanInfo = Pick<
-  BREstimateRateData,
+  BridgeRefinanceEstimateRateData,
   'balance' | 'cashOutAmount' | 'cor'
 > & {
   totalLoanAmount: number;
 };
 
 export type BRPreApprovalLetterData = BasePreApprovalLetterData &
-  BREstimateRateData &
+  BridgeRefinanceEstimateRateData &
   Pick<BridgeStartingData, 'propertyType' | 'propertyUnit' | 'propAddr'>;

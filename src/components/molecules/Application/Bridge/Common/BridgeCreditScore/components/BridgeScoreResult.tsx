@@ -1,4 +1,5 @@
-import { FC, useEffect } from 'react';
+import { POSCreateDebounceFunction } from '@/utils';
+import { FC, useCallback, useEffect } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import dynamic from 'next/dynamic';
 
@@ -24,10 +25,7 @@ export const BridgeScoreResult: FC<{ role: 'self' | 'coBorrower' }> = observer(
     const info: IPersonalInfo =
       creditScore[role === 'self' ? 'selfInfo' : 'coBorrowerInfo'];
 
-    useEffect(() => {
-      if (!creditScore) {
-        return;
-      }
+    const handledAnimate = useCallback(() => {
       const SCORE_BUOY_DIVIDER = document.getElementById('SCORE_BUOY_DIVIDER');
       const SCORE_BUOY_ICON = document.getElementById('SCORE_BUOY_ICON');
       const px =
@@ -38,6 +36,20 @@ export const BridgeScoreResult: FC<{ role: 'self' | 'coBorrower' }> = observer(
       SCORE_BUOY_ICON!.style.transform = 'translateX(0px)';
       SCORE_BUOY_ICON!.style.transform = `translateX(${px}px)`;
     }, [creditScore, role]);
+
+    useEffect(
+      () => {
+        if (!creditScore) {
+          return;
+        }
+        const { run } = POSCreateDebounceFunction(handledAnimate, 300);
+        handledAnimate();
+        window.addEventListener('resize', handledAnimate);
+        return () => window.removeEventListener('resize', handledAnimate);
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [],
+    );
 
     return (
       <>

@@ -33,6 +33,7 @@ export const WhereKnow: FC<FormNodeBaseProps> = observer(
             }
             options={OPTIONS_BRIDGE_CHANNEL}
             value={whereKnowUs.reference}
+            sx={{ maxWidth: 600 }}
           />
         </StyledFormItem>
         <Stack

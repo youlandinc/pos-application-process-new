@@ -111,7 +111,11 @@ export const BridgeStarting: FC<FormNodeBaseProps> = observer((props) => {
           Back
         </StyledButton>
         <StyledButton
-          disabled={!starting[starting.state].checkIsValid}
+          disabled={
+            !starting[starting.state].checkIsValid ||
+            updateState.loading ||
+            completeTaskState.loading
+          }
           loading={updateState.loading || completeTaskState.loading}
           onClick={next}
           sx={{ flex: 1 }}

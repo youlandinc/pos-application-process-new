@@ -91,10 +91,12 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
       >
         <StyledButtonGroup
           onChange={(e, value) => {
-            creditScore.changeCoBorrowerCondition(
-              'isCoBorrower',
-              value === 'yes',
-            );
+            if (value !== null) {
+              creditScore.changeCoBorrowerCondition(
+                'isCoBorrower',
+                value === 'yes',
+              );
+            }
           }}
           options={OPTIONS_COMMON_YES_OR_NO}
           sx={{ width: '100%', maxWidth: 600 }}
@@ -119,7 +121,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
                 "By entering your phone number,  you're authorizing YouLand to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may."
               }
             >
-              <Stack gap={3} width={'100%'}>
+              <Stack gap={3} maxWidth={600} width={'100%'}>
                 <Stack flexDirection={'row'} gap={3}>
                   <StyledTextField
                     label={'First Name'}
@@ -163,17 +165,21 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
               </Stack>
             </StyledFormItem>
             <StyledFormItem label={'Current Address'} sub>
-              <StyledGoogleAutoComplete address={coBorrowerInfo.address} />
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledGoogleAutoComplete address={coBorrowerInfo.address} />
+              </Stack>
             </StyledFormItem>
             <StyledFormItem
               label={'Your Co-borrower Social Security Number'}
               sub
             >
-              <StyledTextFieldSocialNumber
-                onValueChange={changeFieldValue('ssn')}
-                validate={coBorrowerInfo.errors.ssn}
-                value={coBorrowerInfo.ssn}
-              />
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledTextFieldSocialNumber
+                  onValueChange={changeFieldValue('ssn')}
+                  validate={coBorrowerInfo.errors.ssn}
+                  value={coBorrowerInfo.ssn}
+                />
+              </Stack>
             </StyledFormItem>
             <StyledCheckbox
               checked={coBorrowerInfo.authorizedCreditCheck}
@@ -226,7 +232,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
                   e.target.checked,
                 )
               }
-              sx={{ maxWidth: 'auto' }}
+              sx={{ maxWidth: 600 }}
             />
           </StyledFormItem>
         )}

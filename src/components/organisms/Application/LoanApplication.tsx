@@ -326,7 +326,7 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
                     Refinancing?
                   </Box>
                   <StyledButton
-                    disabled={!applicationType}
+                    disabled={!applicationType || initState.loading}
                     loading={initState.loading}
                     onClick={handleInitForm}
                     sx={{ width: '100%', maxWidth: 600, mt: 3 }}

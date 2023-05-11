@@ -36,7 +36,7 @@ export const OPTIONS_MORTGAGE_PROPERTY: Option[] = [
   {
     key: PropertyOpt.singleFamily,
     value: PropertyOpt.singleFamily,
-    label: 'Single family',
+    label: 'Single Family',
   },
   {
     key: PropertyOpt.townhouse,

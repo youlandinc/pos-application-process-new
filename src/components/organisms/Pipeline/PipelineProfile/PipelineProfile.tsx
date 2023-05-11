@@ -246,57 +246,52 @@ export const PipelineProfile: FC = observer(() => {
   ]);
 
   return (
-    <Box>
-      <StyledFormItem
-        label={'Broker Tasks'}
-        sx={{ m: '0 auto' }}
-        tip={
-          'Please fill in the information that is needed for payment upon loan close.'
-        }
+    <StyledFormItem
+      label={'Broker Tasks'}
+      sx={{ m: '0 auto' }}
+      tip={
+        'Please fill in the information that is needed for payment upon loan close.'
+      }
+      width={'100%'}
+    >
+      <Stack
+        width={'100%'}
+        gap={1.5}
+        border={'1px solid #D2D6E1'}
+        borderRadius={2}
+        py={{ xs: 3 }}
+        px={{ lg: 6, xs: 3 }}
+        sx={{
+          '& .task_item': {
+            pt: 1.5,
+            pb: 3,
+            borderBottom: '1px solid #D2D6E1',
+            transition: 'border-color .3s',
+            cursor: 'pointer',
+            '&:first-of-type': {
+              pt: 0,
+            },
+            '&:hover': {
+              borderBottomColor: 'text.primary',
+            },
+            '& .task_label': {
+              fontSize: 'clamp(12px,1.6vw,16px) !important',
+            },
+          },
+        }}
       >
-        <Stack
-          gap={1.5}
-          sx={{
-            border: '1px solid #D2D6E1',
-            borderRadius: 2,
-            py: {
-              xs: 3,
-            },
-            px: {
-              lg: 6,
-              xs: 3,
-            },
-            '& .task_item': {
-              pt: 1.5,
-              pb: 3,
-              borderBottom: '1px solid #D2D6E1',
-              transition: 'border-color .3s',
-              cursor: 'pointer',
-              '&:first-of-type': {
-                pt: 0,
-              },
-              '&:hover': {
-                borderBottomColor: 'text.primary',
-              },
-              '& .task_label': {
-                fontSize: 'clamp(12px,1.6vw,16px) !important',
-              },
-            },
-          }}
+        {renderTaskList}
+        <StyledButton
+          disabled={!pipelineStatus}
+          onClick={() => router.push('/')}
+          size={
+            ['xs', 'sm', 'md', 'lg'].includes(breakpoint) ? 'small' : 'large'
+          }
+          sx={{ mt: 2 }}
         >
-          {renderTaskList}
-          <StyledButton
-            disabled={!pipelineStatus}
-            onClick={() => router.push('/')}
-            size={
-              ['xs', 'sm', 'md', 'lg'].includes(breakpoint) ? 'small' : 'large'
-            }
-            sx={{ mt: 2 }}
-          >
-            Start New Loan
-          </StyledButton>
-        </Stack>
-      </StyledFormItem>
-    </Box>
+          Start New Loan
+        </StyledButton>
+      </Stack>
+    </StyledFormItem>
   );
 });

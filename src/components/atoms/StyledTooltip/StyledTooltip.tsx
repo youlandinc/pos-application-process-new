@@ -1,12 +1,12 @@
 import { FC, useState } from 'react';
-import { Box, Tooltip } from '@mui/material';
+import { Tooltip } from '@mui/material';
 
 import { StyledTooltipProps, StyledTooltipStyles } from './index';
 
 export const StyledTooltip: FC<StyledTooltipProps> = ({
   sx,
   children,
-  theme = 'main',
+  theme = 'dark',
   ...rest
 }) => {
   const [open, setOpen] = useState(false);
@@ -24,6 +24,8 @@ export const StyledTooltip: FC<StyledTooltipProps> = ({
       arrow
       classes={{ tooltip: theme }}
       componentsProps={{
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         tooltip: {
           sx: {
             ...StyledTooltipStyles,

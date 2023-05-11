@@ -1,8 +1,8 @@
 import { get, post, put } from '../axios';
 import { RatesProductData } from '@/types/dashboard';
 import {
-  BPEstimateRateData,
-  BREstimateRateData,
+  BridgePurchaseEstimateRateData,
+  BridgeRefinanceEstimateRateData,
   MortgagePropertyNewData,
   MortgageStartingData,
   MRStartingData,
@@ -32,9 +32,9 @@ export type MRQueryData = Pick<MRStartingData, 'homeValue'> & {
   upfrontCost: string;
 };
 
-export type BPQueryData = BPEstimateRateData;
+export type BPQueryData = BridgePurchaseEstimateRateData;
 
-export type BRQueryData = BREstimateRateData;
+export type BRQueryData = BridgeRefinanceEstimateRateData;
 
 export const _fetchRatesProductPreview = (
   processInsId = '',

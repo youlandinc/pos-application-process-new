@@ -17,7 +17,7 @@
 // import { useBackBtnClasses, useNextBtnClasses } from '@/common/classes';
 // import { POSFlex, POSFont, size } from '@/common/styles/global';
 // import { PropertyOpt, UnitOpt } from '@/types/options';
-// import { BPEstimateRateData } from '@/types/variable';
+// import { BridgePurchaseEstimateRateData } from '@/types/variable';
 // import {
 //   PreApprovalLetterBPData,
 //   RatesProductData,
@@ -137,7 +137,7 @@
 //     PropertyOpt.default,
 //   );
 //   const [address, setAddress] = useState<IAddress>();
-//   const [rateData, setRateData] = useState<BPEstimateRateData>();
+//   const [rateData, setRateData] = useState<BridgePurchaseEstimateRateData>();
 
 //   const [LTVError, setLTVError] = useState<string>('');
 //   const [LTCError, setLTCError] = useState<string>('');

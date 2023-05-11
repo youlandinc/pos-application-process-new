@@ -80,7 +80,7 @@ export const BridgePersonInfo: FC = observer(() => {
             "By entering your phone number,  you're authorizing YouLand to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may."
           }
         >
-          <Stack gap={3} width={'100%'}>
+          <Stack gap={3} maxWidth={600} width={'100%'}>
             <Stack flexDirection={'row'} gap={3}>
               <StyledTextField
                 label={'First Name'}
@@ -124,14 +124,18 @@ export const BridgePersonInfo: FC = observer(() => {
           </Stack>
         </StyledFormItem>
         <StyledFormItem label={'Current Address'} sub>
-          <StyledGoogleAutoComplete address={selfInfo.address} />
+          <Stack gap={3} maxWidth={600} width={'100%'}>
+            <StyledGoogleAutoComplete address={selfInfo.address} />
+          </Stack>
         </StyledFormItem>
         <StyledFormItem label={'Your self Social Security Number'} sub>
-          <StyledTextFieldSocialNumber
-            onValueChange={changeFieldValue('ssn')}
-            validate={selfInfo.errors.ssn}
-            value={selfInfo.ssn}
-          />
+          <Stack gap={3} maxWidth={600} width={'100%'}>
+            <StyledTextFieldSocialNumber
+              onValueChange={changeFieldValue('ssn')}
+              validate={selfInfo.errors.ssn}
+              value={selfInfo.ssn}
+            />
+          </Stack>
         </StyledFormItem>
         <StyledCheckbox
           checked={selfInfo.authorizedCreditCheck}
@@ -180,7 +184,7 @@ export const BridgePersonInfo: FC = observer(() => {
           onChange={(e) =>
             selfInfo.changeSelfInfo('authorizedCreditCheck', e.target.checked)
           }
-          sx={{ maxWidth: 'auto' }}
+          sx={{ maxWidth: 600 }}
         />
       </StyledFormItem>
     </>

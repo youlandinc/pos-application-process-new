@@ -1,3 +1,4 @@
+import { TypographyStyle } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
 declare module '@mui/material/styles' {
@@ -8,6 +9,20 @@ declare module '@mui/material/styles' {
     lg: true;
     xl: true;
     xxl: true;
+  }
+
+  interface TypographyVariants {
+    body3: React.CSSProperties;
+  }
+
+  interface TypographyVariantsOptions {
+    body3?: React.CSSProperties;
+  }
+}
+
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    body3: true;
   }
 }
 
@@ -32,12 +47,6 @@ declare module '@mui/material/styles/createPalette' {
 
   interface TypeAction {
     default: string;
-  }
-}
-
-declare module '@mui/material/styles/createTypography' {
-  interface TypographyOptions {
-    body3: TypographyStyle;
   }
 }
 

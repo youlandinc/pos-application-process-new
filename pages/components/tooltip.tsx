@@ -56,7 +56,11 @@ const TooltipComponent: FC = () => {
               <StyledTooltip placement="top" theme="dark" title="Add">
                 <StyledButton sx={{ mx: 3 }}>dark top</StyledButton>
               </StyledTooltip>
-              <StyledTooltip placement="top-end" theme="dark" title="Add">
+              <StyledTooltip
+                placement="top-end"
+                theme="dark"
+                title="dark top-enddark top-enddark top-enddark top-enddark top-enddark top-enddark top-enddark top-end"
+              >
                 <StyledButton>dark top-end</StyledButton>
               </StyledTooltip>
             </Grid>

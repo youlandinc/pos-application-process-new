@@ -77,7 +77,7 @@ export const OPTIONS_BRIDGE_PROPERTY_NUMBER: Option[] = [
   {
     key: BridgePropertyNumberOpt.zero,
     value: BridgePropertyNumberOpt.zero,
-    label: 'none',
+    label: 'None',
   },
   {
     key: BridgePropertyNumberOpt.one_to_four,

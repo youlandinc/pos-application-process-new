@@ -33,28 +33,35 @@ export const BridgeProperty: FC<PropertyProps> = observer((props) => {
       width={'100%'}
     >
       <StyledFormItem label={'What is the property type?'}>
-        <StyledSelectOption
-          onChange={(value) => {
-            property.changeFieldValue('propertyType', value as PropertyOpt);
-            property.changeFieldValue('propertyUnit', PropertyUnitOpt.default);
-          }}
-          options={OPTIONS_MORTGAGE_PROPERTY}
-          value={propertyType}
-        />
+        <Stack maxWidth={600} width={'100%'}>
+          <StyledSelectOption
+            onChange={(value) => {
+              property.changeFieldValue('propertyType', value as PropertyOpt);
+              property.changeFieldValue(
+                'propertyUnit',
+                PropertyUnitOpt.default,
+              );
+            }}
+            options={OPTIONS_MORTGAGE_PROPERTY}
+            value={propertyType}
+          />
+        </Stack>
       </StyledFormItem>
       <Transitions>
         {propertyType === PropertyOpt.twoToFourFamily && (
           <StyledFormItem label={'How many units will the property have?'}>
-            <StyledSelectOption
-              onChange={(value) => {
-                property.changeFieldValue(
-                  'propertyUnit',
-                  value as PropertyUnitOpt,
-                );
-              }}
-              options={OPTIONS_MORTGAGE_UNIT}
-              value={propertyUnit}
-            />
+            <Stack maxWidth={600} width={'100%'}>
+              <StyledSelectOption
+                onChange={(value) => {
+                  property.changeFieldValue(
+                    'propertyUnit',
+                    value as PropertyUnitOpt,
+                  );
+                }}
+                options={OPTIONS_MORTGAGE_UNIT}
+                value={propertyUnit}
+              />
+            </Stack>
           </StyledFormItem>
         )}
       </Transitions>
@@ -67,6 +74,7 @@ export const BridgeProperty: FC<PropertyProps> = observer((props) => {
             e.target.checked as unknown as boolean,
           )
         }
+        sx={{ maxWidth: 600 }}
       />
     </Stack>
   );

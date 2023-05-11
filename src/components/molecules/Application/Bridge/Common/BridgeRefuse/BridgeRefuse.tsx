@@ -1,5 +1,6 @@
+import { POSCreateDebounceFunction } from '@/utils';
 import dynamic from 'next/dynamic';
-import { FC, useEffect } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 import { Box, Icon, Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
@@ -25,17 +26,30 @@ export const BridgeRefuse: FC<{ nextStep: () => void }> = observer(
       },
     } = useMst();
 
-    useEffect(() => {
-      if (!score) {
-        return;
-      }
+    const handledAnimate = useCallback(() => {
       const SCORE_BUOY_DIVIDER = document.getElementById('SCORE_BUOY_DIVIDER');
       const SCORE_BUOY_ICON = document.getElementById('SCORE_BUOY_ICON');
       const px =
         (score / 850) * SCORE_BUOY_DIVIDER!.getBoundingClientRect().width;
+      SCORE_BUOY_ICON!.getBoundingClientRect();
       SCORE_BUOY_ICON!.style.transform = 'translateX(0px)';
+      SCORE_BUOY_ICON!.getBoundingClientRect();
       SCORE_BUOY_ICON!.style.transform = `translateX(${px}px)`;
     }, [score]);
+
+    useEffect(
+      () => {
+        if (!score) {
+          return;
+        }
+        const { run } = POSCreateDebounceFunction(handledAnimate, 300);
+        handledAnimate();
+        window.addEventListener('resize', run);
+        return () => window.removeEventListener('resize', run);
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [],
+    );
 
     return (
       <>

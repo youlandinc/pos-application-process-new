@@ -1,14 +1,18 @@
 import { POSTypeOf } from './TypeOf';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 export const POSFormatDollar = (
-  amount: number | undefined,
+  amount: number | undefined | string,
   radix = 2,
 ): string => {
   if (!amount) {
     return '$0.00';
   }
-  return amount.toLocaleString('en-US', {
+  let target = amount;
+  if (POSTypeOf(target) === 'String') {
+    target = parseFloat(target as string);
+  }
+  return target.toLocaleString('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: radix,
@@ -16,15 +20,20 @@ export const POSFormatDollar = (
 };
 
 export const POSFormatPercent = (
-  percentageValue: number | undefined,
+  percentageValue: number | undefined | string,
   radix = 3,
 ): string => {
   if (!percentageValue) {
     return '0.000%';
   }
+  let target = percentageValue;
+  if (POSTypeOf(target) === 'String') {
+    target = parseFloat(target as string);
+  }
   return (
-    ((Math.floor(percentageValue * 1000000) / 1000000) * 100).toFixed(radix) +
-    '%'
+    ((Math.floor((target as number) * 1000000) / 1000000) * 100).toFixed(
+      radix,
+    ) + '%'
   );
 };
 

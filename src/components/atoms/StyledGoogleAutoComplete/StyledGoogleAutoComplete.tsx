@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from 'react';
-import { Autocomplete, Box, Grid, Typography } from '@mui/material';
+import { Autocomplete, Box, Stack, Grid, Typography } from '@mui/material';
 import { LocationOnOutlined } from '@mui/icons-material';
 import parse from 'autosuggest-highlight/parse';
 import { observer } from 'mobx-react-lite';
@@ -56,10 +56,10 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
     }, []);
 
     return (
-      <Box>
+      <Stack width={'100%'}>
         {fullAddress ? (
-          <Box>
-            <Box sx={StyledGoogleAutoCompleteStyles.outside.autoCompleteWrap}>
+          <Stack width={'100%'}>
+            <Stack width={'100%'}>
               <_StyledGoogleAutoComplete
                 disabled={disabled}
                 fullAddress={fullAddress}
@@ -75,8 +75,15 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                 }}
                 value={formatAddress}
               />
-            </Box>
-            <Box sx={StyledGoogleAutoCompleteStyles.outside.inputWrap}>
+            </Stack>
+            <Stack
+              alignItems={'center'}
+              flexDirection={{ lg: 'row', xs: 'column' }}
+              gap={3}
+              justifyContent={'flex-start'}
+              mt={3}
+              width={'100%'}
+            >
               <StyledTextField
                 disabled={disabled}
                 label={'City'}
@@ -84,6 +91,7 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                   address.changeFieldValue('city', e.target.value)
                 }
                 placeholder={'City'}
+                sx={{ flex: 1 }}
                 value={address.city}
               />
               <StyledSelect
@@ -93,10 +101,18 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                   address.changeFieldValue('state', e.target.value as string);
                 }}
                 options={OPTIONS_COMMON_STATE}
+                sx={{ flex: 1 }}
                 value={address.state}
               />
-            </Box>
-            <Box sx={StyledGoogleAutoCompleteStyles.outside.inputWrap}>
+            </Stack>
+            <Stack
+              alignItems={'center'}
+              flexDirection={{ lg: 'row', xs: 'column' }}
+              gap={3}
+              justifyContent={'flex-start'}
+              mt={3}
+              width={'100%'}
+            >
               <StyledTextField
                 disabled={disabled}
                 label={'Apt/Unit'}
@@ -104,6 +120,7 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                   address.changeFieldValue('aptNumber', e.target.value)
                 }
                 placeholder={'Apt/Unit'}
+                sx={{ flex: 1 }}
                 value={address.aptNumber}
               />
               <StyledTextField
@@ -113,12 +130,13 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                   address.changeFieldValue('postcode', e.target.value)
                 }
                 placeholder={'Zip code'}
+                sx={{ flex: 1 }}
                 value={address.postcode}
               />
-            </Box>
-          </Box>
+            </Stack>
+          </Stack>
         ) : (
-          <Box>
+          <Stack>
             <_StyledGoogleAutoComplete
               disabled={disabled}
               fullAddress={fullAddress}
@@ -129,9 +147,9 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
               }
               value={formatAddress}
             />
-          </Box>
+          </Stack>
         )}
-      </Box>
+      </Stack>
     );
   });
 
