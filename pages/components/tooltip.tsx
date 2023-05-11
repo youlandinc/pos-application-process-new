@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Box, Divider, Grid, Typography } from '@mui/material';
 
 import { StyledButton, StyledTooltip } from '@/components/atoms';
+import { CloseOutlined } from '@mui/icons-material';
 
 const TooltipComponent: FC = () => {
   const router = useRouter();
@@ -44,14 +45,15 @@ const TooltipComponent: FC = () => {
         <Divider className={'divider'} />
         <Box className={'component_item'}>
           <Grid container justifyContent="center">
-            <Grid container item justifyContent="center">
+            <Grid container item justifyContent="center" sx={{ height: 24 }}>
               <StyledTooltip
                 open={true}
-                placement="top-start"
+                placement="bottom-start"
                 theme="dark"
                 title="Add"
               >
-                <StyledButton>dark top-start</StyledButton>
+                <CloseOutlined />
+                {/* <StyledButton>dark top-start</StyledButton> */}
               </StyledTooltip>
               <StyledTooltip placement="top" theme="dark" title="Add">
                 <StyledButton sx={{ mx: 3 }}>dark top</StyledButton>

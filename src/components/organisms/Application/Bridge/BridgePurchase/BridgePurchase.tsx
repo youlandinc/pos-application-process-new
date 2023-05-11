@@ -178,7 +178,7 @@ const useStateMachine = (
     completeTaskState,
     handledNextTask,
     handledPrevTask,
-    changeTask,
+    // changeTask,
   } = useStoreData();
 
   const transitions = useRef<

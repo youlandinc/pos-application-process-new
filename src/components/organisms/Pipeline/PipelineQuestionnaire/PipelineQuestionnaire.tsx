@@ -52,10 +52,11 @@ export const PipelineQuestionnaire: FC = observer(() => {
 
   const {
     pipelineTask: {
-      formData: { BROKER_QUESTIONNAIRE },
+      formData: { BROKER_QUESTIONNAIRE, error },
     },
   } = useMst();
 
+  console.log({ BROKER_QUESTIONNAIRE });
   // const tenantConfig = utils.getTenantConfig();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -69,19 +70,20 @@ export const PipelineQuestionnaire: FC = observer(() => {
   const { renderFile } = useRenderPdf(pdfFile);
 
   const handledCompleteTaskAndBackToSummary = async () => {
-    setLoading(true);
+    // setLoading(true);
     const data = BROKER_QUESTIONNAIRE.getPostData();
-    try {
-      await _completePipelineTask(data);
-      await router.push('/pipeline/profile');
-    } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-      });
-    } finally {
-      setLoading(false);
-    }
+    BROKER_QUESTIONNAIRE.validateSelfInfo();
+    // try {
+    //   await _completePipelineTask(data);
+    //   await router.push('/pipeline/profile');
+    // } catch (err) {
+    //   enqueueSnackbar(err as string, {
+    //     variant: 'error',
+    //     autoHideDuration: AUTO_HIDE_DURATION,
+    //   });
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   const generateFile = async () => {
@@ -106,6 +108,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
   const handledSaveFile = async () => {
     setAgreeLoading(true);
     const data = BROKER_QUESTIONNAIRE.getPostData();
+    BROKER_QUESTIONNAIRE.validateSelfInfo();
     try {
       const res = await _fetchLegalFile(data.taskId);
       await BROKER_QUESTIONNAIRE.changeFieldValue('documentFile', res.data);
@@ -123,7 +126,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
   const isAddLicense = useMemo(() => {
     return BROKER_QUESTIONNAIRE.taskForm.licenses.length >= 4;
   }, [BROKER_QUESTIONNAIRE.taskForm.licenses.length]);
-
+  console.log(BROKER_QUESTIONNAIRE.checkLicensesValid, '111', error);
   return (
     <>
       <Stack alignItems={'center'} justifyContent={'center'}>
@@ -211,7 +214,11 @@ export const PipelineQuestionnaire: FC = observer(() => {
                           index,
                         );
                       }}
-                      value={item?.ssn}
+                      validate={
+                        BROKER_QUESTIONNAIRE.error &&
+                        BROKER_QUESTIONNAIRE.error[index]?.ssn
+                      }
+                      value={item.ssn}
                     />
                   </Stack>
 
@@ -229,6 +236,10 @@ export const PipelineQuestionnaire: FC = observer(() => {
                           index,
                         );
                       }}
+                      validate={
+                        BROKER_QUESTIONNAIRE.error &&
+                        BROKER_QUESTIONNAIRE.error[index]?.birthday
+                      }
                       value={item.birthday}
                     />
                     <StyledSelect

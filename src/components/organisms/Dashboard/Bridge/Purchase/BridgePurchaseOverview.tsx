@@ -19,12 +19,19 @@ import {
 
 import { BPOverviewSummaryData } from '@/types';
 import { OPTIONS_MORTGAGE_PROPERTY } from '@/constants/options/mortgage';
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { useSnackbar } from 'notistack';
 
 const useStyles = {
   '&.container': {
     ...POSFlex('flex-start', 'center', 'column'),
     px: {
-      lg: '7.5vw',
+      lg: 3,
+      xs: 0,
+    },
+    maxWidth: 900,
+    mx: {
+      lg: 'auto',
       xs: 0,
     },
   },
@@ -56,6 +63,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
   } = useMst();
 
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
   // const tenantConfig = utils.getTenantConfig();
 
   const [summary, setSummary] = useState<BridgeOverviewInfo>();
@@ -195,7 +203,10 @@ export const BridgePurchaseOverview: FC = observer(() => {
       })
       .catch((err) => {
         // todo, lee this error need to handler
-        console.log(err);
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
       });
   });
 

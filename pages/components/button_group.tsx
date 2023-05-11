@@ -7,7 +7,7 @@ import { StyledButton, StyledButtonGroup } from '@/components/atoms';
 const ButtonGroupComponent: FC = () => {
   const router = useRouter();
 
-  const [value, setValue] = useState('no');
+  const [value, setValue] = useState('');
 
   return (
     <Box
@@ -54,6 +54,7 @@ const ButtonGroupComponent: FC = () => {
                 event: React.MouseEvent<HTMLElement>,
                 newAlignment: string,
               ) => {
+                console.log({ newAlignment });
                 setValue(newAlignment);
               }}
               options={[

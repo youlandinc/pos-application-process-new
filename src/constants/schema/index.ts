@@ -7,3 +7,4 @@ export * from './sign_up';
 export * from './forgot_password';
 export * from './email_schema';
 export * from './password_change';
+export * from './licenses';

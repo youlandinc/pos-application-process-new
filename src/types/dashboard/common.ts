@@ -31,11 +31,11 @@ export type OverviewSummaryData =
   | BPOverviewSummaryData
   | BROverviewSummaryData;
 
-export type OverviewBaseSummaryData = {
+export type BaseOverviewSummaryData = {
   loanAmount: number;
 };
 
-export type OverviewBRSummaryData = OverviewBaseSummaryData & {
+export type OverviewBRSummaryData = BaseOverviewSummaryData & {
   homeValue: number;
   balance: number;
   cashOutAmount: number;

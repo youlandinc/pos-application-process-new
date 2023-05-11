@@ -1,4 +1,7 @@
 import {
+  BridgeRefinanceEstimateRateData,
+  BridgeRefinanceEstimateRateData,
+  BridgeStartingData,
   MortgageFinancialSituationData,
   MortgagePropertyNewData,
   MortgageStartingData,
@@ -28,6 +31,14 @@ export type MPRatesLoanInfo = MortgagePropertyNewData &
 export type MPPreApprovalLetterData = BasePreApprovalLetterData &
   MortgagePropertyNewData &
   Pick<MortgageStartingData, 'propertyOpt' | 'numberOfUnits' | 'propAddr'>;
+
+export type MPPreApprovalLetterBPData = BasePreApprovalLetterData &
+  BridgeRefinanceEstimateRateData &
+  Pick<BridgeStartingData, 'propertyType' | 'propertyUnit' | 'propAddr'>;
+
+export type MPPreApprovalLetterBRData = BasePreApprovalLetterData &
+  BridgeRefinanceEstimateRateData &
+  Pick<BridgeStartingData, 'propertyType' | 'propertyUnit' | 'propAddr'>;
 
 export type MROverviewSummaryData = BaseOverviewSummaryData & {
   cashOut: number;

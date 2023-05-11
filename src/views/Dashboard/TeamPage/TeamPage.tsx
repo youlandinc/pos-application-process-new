@@ -83,7 +83,7 @@ const useStyles: SxProps = {
     alignItems: 'center',
     justifyContent: 'flex-start',
     ...POSFont({ md: 16, xs: 12 }, 600, 1.5, 'text.primary'),
-    '&:first-child': {
+    '&:first-of-type': {
       marginTop: 0,
     },
   },

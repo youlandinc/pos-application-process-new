@@ -37,6 +37,15 @@ export const PTQuestionnaire = types
       documentFile: types.maybe(UploadData),
       licenses: types.array(PQOwnerData),
     }),
+    errors: types.array(
+      types.optional(
+        types.model({
+          dateOfBirth: types.maybe(types.array(types.string)),
+          ssn: types.maybe(types.array(types.string)),
+        }),
+        {},
+      ),
+    ),
   })
   .views((self) => ({
     get checkTaskFormValid() {
@@ -46,19 +55,33 @@ export const PTQuestionnaire = types
       const {
         taskForm: { licenses },
       } = self;
-      return (
+      const flag =
         !!licenses.length &&
-        licenses.some((item) => {
-          const result = validate(
-            { ssn: item.ssn, dateOfBirth: item.birthday },
-            {
-              ssn: CreditScoreSchema.selfInfo.ssn,
-              dateOfBirth: CreditScoreSchema.selfInfo.dateOfBirth,
-            },
-          );
-          return !result && Object.values(item).find((value) => !!value);
-        })
-      );
+        licenses.every(
+          (item) =>
+            !!item.birthday &&
+            !!item.license &&
+            !!item.licenseType &&
+            !!item.ownerName &&
+            !!item.ssn &&
+            !!item.state,
+        );
+      // return (
+      //   !!licenses.length &&
+      //   licenses.some((item) => {
+      //     // const result = validate(
+      //     //   { ssn: item.ssn, dateOfBirth: item.birthday },
+      //     //   {
+      //     //     ssn: CreditScoreSchema.selfInfo.ssn,
+      //     //     dateOfBirth: CreditScoreSchema.selfInfo.dateOfBirth,
+      //     //   },
+      //     // );
+      //     // !result &&
+      //     console.log({item});
+      //     return Object.values(item).find((value) => !value);
+      //   })
+      // );
+      return flag;
     },
     checkArrayIsValid(item: SPQOwnerData) {
       for (const [, value] of Object.entries(item)) {
@@ -93,6 +116,40 @@ export const PTQuestionnaire = types
           );
         }
       },
+      validateSelfInfo() {
+        if (self.taskForm.licenses.length) {
+          self.taskForm.licenses.forEach((item, index) => {
+            // self.errors?.push(
+            //   validate(
+            //     { ssn: item.ssn, dateOfBirth: item.birthday },
+            //     {
+            //       ssn: CreditScoreSchema.selfInfo.ssn,
+            //       dateOfBirth: CreditScoreSchema.selfInfo.dateOfBirth,
+            //     },
+            //   ),
+            // );
+            self.errors[index] =
+              validate(
+                { ssn: item.ssn, dateOfBirth: item.birthday },
+                {
+                  ssn: CreditScoreSchema.selfInfo.ssn,
+                  dateOfBirth: CreditScoreSchema.selfInfo.dateOfBirth,
+                },
+              ) || {};
+            console.log(
+              validate(
+                { ssn: item.ssn, dateOfBirth: item.birthday },
+                {
+                  ssn: CreditScoreSchema.selfInfo.ssn,
+                  dateOfBirth: CreditScoreSchema.selfInfo.dateOfBirth,
+                },
+              ),
+            );
+          });
+        }
+
+        console.log(self.errors);
+      },
       changeFieldValue<K extends keyof typeof self.taskForm>(
         key: K,
         value: (typeof self.taskForm)[K],
@@ -119,7 +176,8 @@ export const PTQuestionnaire = types
         } = self;
         const newLicenses = JSON.parse(JSON.stringify(licenses));
         newLicenses.forEach((item: PipelineQuestionnaireOwner) => {
-          item.birthday = format(item.birthday as Date, 'yyyy-MM-dd O');
+          item.birthday =
+            item.birthday && format(item.birthday as Date, 'yyyy-MM-dd O');
         });
 
         return {
@@ -131,7 +189,8 @@ export const PTQuestionnaire = types
         const { taskId } = self;
         const licenses = JSON.parse(JSON.stringify(self.taskForm.licenses));
         licenses.forEach((item: PipelineQuestionnaireOwner) => {
-          item.birthday = format(item.birthday as Date, 'yyyy-MM-dd O');
+          item.birthday =
+            item.birthday && format(item.birthday as Date, 'yyyy-MM-dd O');
         });
         return {
           taskId,
