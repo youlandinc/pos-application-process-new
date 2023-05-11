@@ -212,6 +212,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
                 <Typography>Broker Origination Fee</Typography>
                 <StyledTextFieldNumber
                   decimalScale={3}
+                  disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
                       ...searchForm,
@@ -228,6 +229,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
               <Stack flex={1} gap={1}>
                 <Typography>Broker Processing Fee</Typography>
                 <StyledTextFieldNumber
+                  disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
                       ...searchForm,
@@ -259,6 +261,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
               <Stack flex={1} gap={1}>
                 <Typography>Loan Officer Origination Compensation</Typography>
                 <StyledTextFieldNumber
+                  disabled={loading || loanStage === LoanStage.Approved}
                   decimalScale={3}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
@@ -276,6 +279,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
               <Stack flex={1} gap={1}>
                 <Typography>Loan Officer Processing Fee</Typography>
                 <StyledTextFieldNumber
+                  disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
                       ...searchForm,
@@ -307,6 +311,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
               <Stack flex={1} gap={1}>
                 <Typography>Loan Officer Origination Compensation</Typography>
                 <StyledTextFieldNumber
+                  disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
                       ...searchForm,
@@ -314,8 +319,8 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
                     });
                   }}
                   prefix={'$'}
-                  value={agentFee}
                   validate={agentFeeError}
+                  value={agentFee}
                 />
               </Stack>
             </Stack>
