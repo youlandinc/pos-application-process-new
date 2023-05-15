@@ -34,7 +34,6 @@ export const StyledDrawerStyles = {
     },
 
     '& .MuiPaper-root': {
-      width: '100%',
       boxShadow:
         '0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
     },

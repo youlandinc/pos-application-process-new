@@ -9,6 +9,7 @@ export const StyledDrawer: FC<StyledDrawerProps> = ({
   footer,
   maxWidth = 310,
   minWidth = 210,
+  width = '100%',
   sx,
   open,
   ...rest
@@ -21,6 +22,7 @@ export const StyledDrawer: FC<StyledDrawerProps> = ({
         '& .MuiPaper-root': {
           maxWidth,
           minWidth,
+          width,
         },
         ...sx,
       }}
