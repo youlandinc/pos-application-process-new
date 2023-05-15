@@ -1,553 +1,388 @@
-//import  { FC, useEffect, useMemo, useState } from 'react';
-//
-//import { StyledButton } from '@/components/atoms';
-//import {
-//  BPLoanInfo,
-//  MortgagePropertyOptions,
-//  ProductItem,
-//} from '@/components/molecules';
-//import { RatesProductData } from '@/types/dashboardData';
-//import { LoanStage, UserType } from '@/types/enum';
-//import { Box, Button, Drawer, makeStyles } from '@material-ui/core';
-//import CloseIcon from '@material-ui/icons/Close';
-//import { useRouter } from 'next/router';
-//
-//const useStyles = makeStyles({
-//  drawerWrap: {
-//    width: 560,
-//  },
-//  drawerHeader: {
-//    width: '100%',
-//    position: 'sticky',
-//    top: 0,
-//    background: '#ffffff',
-//    padding: '24px 0',
-//    zIndex: 1,
-//    borderBottom: '1px solid rgba(0,0,0,.1)',
-//    display: 'flex',
-//    justifyContent: 'space-between',
-//    alignItems: 'center',
-//  },
-//  closeButtonWrapContent: {
-//    marginLeft: 24,
-//    fontSize: 24,
-//    lineHeight: 1.5,
-//  },
-//  closeButton: {
-//    width: 48,
-//    minWidth: 48,
-//    height: 48,
-//    border: '2px solid rgba(0,0,0,.6)',
-//    padding: 0,
-//    borderRadius: 8,
-//    marginRight: 24,
-//    '&:hover': {
-//      borderColor: '#3F81E9',
-//      background: 'transparent',
-//    },
-//  },
-//  closeIcon: {
-//    fontSize: 16,
-//    color: 'rgba(0,0,0,.6)',
-//  },
-//  drawerMain: {
-//    padding: '12px 48px 24px 48px',
-//    height: 'calc(100vh - 194px)',
-//    overflow: 'auto',
-//  },
-//  drawerInfoSummaryBox: {
-//    lineHeight: 1.5,
-//    color: 'rgba(0,0,0,.87)',
-//    fontWeight: 700,
-//  },
-//  drawerInfoSummaryTitle: {
-//    marginTop: 12,
-//    fontSize: 30,
-//    lineHeight: 1.5,
-//  },
-//  drawerInfoSummarySubtitle: {
-//    marginTop: 12,
-//    fontSize: 16,
-//    color: 'rgba(0,0,0,.6)',
-//    fontWeight: 400,
-//  },
-//  drawerInfoSubInfoBox: {
-//    marginTop: 48,
-//  },
-//  drawerInfoSubInfoTitle: {
-//    color: 'rgba(0,0,0,.87)',
-//    fontWeight: 700,
-//    fontSize: 16,
-//    display: 'flex',
-//    justifyContent: 'space-between',
-//    alignItems: 'center',
-//  },
-//  drawerInfoSubInfoCard: {
-//    boxShadow: '1px 1px 5px rgba(0, 0, 0, 0.25)',
-//    marginTop: 12,
-//    borderRadius: 8,
-//    fontSize: 16,
-//    color: 'rgba(0,0,0,.87)',
-//    padding: 12,
-//    lineHeight: 1.5,
-//  },
-//  drawerInfoSubInfoCardItem: {
-//    display: 'flex',
-//    justifyContent: 'space-between',
-//    alignItems: 'center',
-//    flexShrink: 0,
-//    marginTop: 12,
-//    '&:first-child': {
-//      marginTop: 0,
-//    },
-//  },
-//  drawerInfoSubInfoSubCard: {
-//    marginTop: 12,
-//    '&:first-child': {
-//      marginTop: 0,
-//    },
-//  },
-//  drawerInfoSubInfoSubCardItemTitle: {
-//    display: 'flex',
-//    justifyContent: 'space-between',
-//    alignItems: 'center',
-//    fontWeight: 700,
-//  },
-//  drawerInfoSubInfoSubCardItem: {
-//    paddingLeft: 12,
-//    display: 'flex',
-//    justifyContent: 'space-between',
-//    alignItems: 'center',
-//    lineHeight: 1.5,
-//    marginTop: 12,
-//    '&:first-child': {
-//      marginTop: 0,
-//    },
-//  },
-//  drawerFooter: {
-//    position: 'sticky',
-//    background: '#ffffff',
-//    bottom: 0,
-//    padding: '24px 0',
-//    borderTop: '1px solid rgba(0,0,0,.1)',
-//    display: 'flex',
-//    justifyContent: 'center',
-//    alignItems: 'center',
-//  },
-//  productItem: {
-//    ...POSFont(16, 400, 1.5, 'rgba(0,0,0,.87)'),
-//    ...POSFlex('flex-start', 'space-between', 'row'),
-//    marginBlockStart: 12,
-//    '&:first-of-type': {
-//      marginBlockStart: 0,
-//    },
-//  },
-//});
-//
-//interface BPRatesDrawerProps {
-//  onCancel: () => void;
-//  selectedItem: BPLoanInfo &
-//    Pick<
-//      RatesProductData,
-//      'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm' | 'id'
-//    >;
-//  visible: boolean;
-//  nextStep?: (string) => void;
-//  userType: UserType;
-//  loanStage?: LoanStage;
-//}
-//
-//export const BPRatesDrawer: FC<BPRatesDrawerProps> = (props) => {
-//  const {
-//    onCancel,
-//    visible,
-//    selectedItem,
-//    nextStep,
-//    userType,
-//    loanStage = LoanStage.Application,
-//  } = props;
-//
-//  const router = useRouter();
-//
-//  const classes = useStyles();
-//  const nextButtonClasses = useNextBtnClasses();
-//  const [line_1, setLine_1] = useState<string>();
-//  const [line_2, setLine_2] = useState<string>();
-//  useEffect(() => {
-//    if (selectedItem?.address) {
-//      const [LINE_1, LINE_2] = selectedItem.address.split('NEW_LINE');
-//      setLine_1(LINE_1);
-//      setLine_2(LINE_2);
-//    }
-//  }, [selectedItem?.address]);
-//
-//  const renderByUserType = useMemo(() => {
-//    switch (userType) {
-//      case UserType.BROKER:
-//        return (
-//          <>
-//            <ProductItem
-//              className={classes.productItem}
-//              info={
-//                <Box fontSize={16} fontWeight={400}>
-//                  {utils.formatDollar(selectedItem?.brokerOriginationFee)}(
-//                  {utils.formatPercent(selectedItem?.brokerPoints / 100)})
-//                </Box>
-//              }
-//              label={'Broker origination fee'}
-//            />
-//            <ProductItem
-//              className={classes.productItem}
-//              info={
-//                <Box fontSize={16} fontWeight={400}>
-//                  {utils.formatDollar(selectedItem?.brokerProcessingFee)}
-//                </Box>
-//              }
-//              label={'Broker processing fee'}
-//            />
-//          </>
-//        );
-//      case UserType.LOAN_OFFICER:
-//        return (
-//          <>
-//            <ProductItem
-//              className={classes.productItem}
-//              info={
-//                <Box fontSize={16} fontWeight={400}>
-//                  {utils.formatDollar(selectedItem?.officerOriginationFee)}(
-//                  {utils.formatPercent(selectedItem?.officerPoints / 100)})
-//                </Box>
-//              }
-//              label={'Loan officer origination fee'}
-//            />
-//            <ProductItem
-//              className={classes.productItem}
-//              info={
-//                <Box fontSize={16} fontWeight={400}>
-//                  {utils.formatDollar(selectedItem?.officerProcessingFee)}
-//                </Box>
-//              }
-//              label={'Loan officer processing fee'}
-//            />
-//          </>
-//        );
-//      case UserType.REAL_ESTATE_AGENT:
-//        return (
-//          <>
-//            <ProductItem
-//              className={classes.productItem}
-//              info={
-//                <Box fontSize={16} fontWeight={400}>
-//                  {utils.formatDollar(selectedItem?.agentFee)}
-//                </Box>
-//              }
-//              label={'Referral fee'}
-//            />
-//          </>
-//        );
-//      default:
-//        return null;
-//    }
-//  }, [
-//    classes.productItem,
-//    selectedItem?.agentFee,
-//    selectedItem?.brokerOriginationFee,
-//    selectedItem?.brokerPoints,
-//    selectedItem?.brokerProcessingFee,
-//    selectedItem?.officerOriginationFee,
-//    selectedItem?.officerPoints,
-//    selectedItem?.officerProcessingFee,
-//    userType,
-//  ]);
-//
-//  return (
-//    <Drawer anchor={'right'} open={visible}>
-//      <Box className={classes.drawerWrap}>
-//        <Box className={classes.drawerHeader}>
-//          <Box className={classes.closeButtonWrapContent}>Rate Summary</Box>
-//          <Button
-//            className={classes.closeButton}
-//            component="div"
-//            onClick={onCancel}
-//          >
-//            <CloseIcon className={classes.closeIcon} />
-//          </Button>
-//        </Box>
-//        <Box className={classes.drawerMain}>
-//          <Box className={classes.drawerInfoSummaryBox}>
-//            <Box className={classes.drawerInfoSummaryTitle}>
-//              Get a closer look at all your costs
-//            </Box>
-//          </Box>
-//          <Box className={classes.drawerInfoSubInfoBox}>
-//            <Box className={classes.drawerInfoSubInfoTitle}>
-//              <Box>Purchase</Box>
-//            </Box>
-//            <Box className={classes.drawerInfoSubInfoCard}>
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {`${selectedItem?.firstName} ${selectedItem?.lastName}`}
-//                  </Box>
-//                }
-//                label={'Borrower'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box
-//                    fontSize={16}
-//                    fontWeight={400}
-//                    style={{ wordBreak: 'break-word', textAlign: 'right' }}
-//                    width={180}
-//                  >
-//                    <Box>{line_1}</Box>
-//                    <Box>{line_2}</Box>
-//                  </Box>
-//                }
-//                label={'Address'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {utils.formatDollar(selectedItem?.totalLoanAmount)}
-//                  </Box>
-//                }
-//                label={'Total loan amount'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {utils.formatDollar(selectedItem?.purchasePrice)}
-//                  </Box>
-//                }
-//                label={'Purchase price'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {utils.formatDollar(selectedItem?.purchaseLoanAmount)}
-//                  </Box>
-//                }
-//                label={'Purchase loan amount'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {selectedItem?.cor
-//                      ? utils.formatDollar(selectedItem?.cor)
-//                      : 'N/A'}
-//                  </Box>
-//                }
-//                label={'Rehab loan amount'}
-//              />
-//            </Box>
-//          </Box>
-//          <Box className={classes.drawerInfoSubInfoBox}>
-//            <Box className={classes.drawerInfoSubInfoTitle}>
-//              <Box>Loan details</Box>
-//            </Box>
-//            <Box className={classes.drawerInfoSubInfoCard}>
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {selectedItem?.amortization}
-//                  </Box>
-//                }
-//                label={'Amortization'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {utils.findLabel(
-//                      MortgagePropertyOptions.propertyOpt,
-//                      selectedItem?.propertyType,
-//                    )}
-//                  </Box>
-//                }
-//                label={'Property type'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {selectedItem?.closeDate}
-//                  </Box>
-//                }
-//                label={'Preferred close date'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {selectedItem?.lien}
-//                  </Box>
-//                }
-//                label={'Lien'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {selectedItem?.arv
-//                      ? utils.formatDollar(selectedItem?.arv)
-//                      : 'N/A'}
-//                  </Box>
-//                }
-//                label={'Estimated ARV'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {utils.formatPercent(
-//                      selectedItem?.isCor
-//                        ? selectedItem?.ltc
-//                        : selectedItem?.ltv,
-//                    )}
-//                  </Box>
-//                }
-//                label={`${
-//                  selectedItem?.isCor ? 'Loan-to-Cost' : 'Loan-to-Value (LTV)'
-//                }`}
-//              />
-//            </Box>
-//          </Box>
-//          <Box className={classes.drawerInfoSubInfoBox}>
-//            <Box className={classes.drawerInfoSubInfoTitle}>
-//              <Box>Rate</Box>
-//            </Box>
-//            <Box className={classes.drawerInfoSubInfoCard}>
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {utils.formatLocalPercent(selectedItem?.interestRateOfYear)}
-//                  </Box>
-//                }
-//                label={'Interest rate'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {selectedItem?.loanTerm} months
-//                  </Box>
-//                }
-//                label={'Loan term'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {utils.formatDollar(selectedItem?.paymentOfMonth)}
-//                  </Box>
-//                }
-//                label={'Monthly payment'}
-//              />
-//            </Box>
-//          </Box>
-//          <Box className={classes.drawerInfoSubInfoBox}>
-//            <Box className={classes.drawerInfoSubInfoTitle}>
-//              <Box>Est. Cash required at closing</Box>
-//              <Box>
-//                {utils.formatDollar(
-//                  selectedItem?.totalClosingCash -
-//                    selectedItem?.proRatedInterest +
-//                    selectedItem?.paymentOfMonth / 30,
-//                )}
-//              </Box>
-//            </Box>
-//            <Box className={classes.drawerInfoSubInfoCard}>
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {utils.formatDollar(selectedItem?.downPayment)}
-//                  </Box>
-//                }
-//                label={'Down payment'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {`${utils.formatDollar(
-//                      selectedItem?.originationFee,
-//                    )}(${utils.formatPercent(
-//                      selectedItem?.originationFeePer || 0.015,
-//                    )})`}
-//                  </Box>
-//                }
-//                label={'Origination fee'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {utils.formatDollar(selectedItem?.underwritingFee)}
-//                  </Box>
-//                }
-//                label={'Underwriting fee'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {utils.formatDollar(selectedItem?.docPreparationFee)}
-//                  </Box>
-//                }
-//                label={'Document preparation fee'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {utils.formatDollar(selectedItem?.paymentOfMonth / 30)}
-//                  </Box>
-//                }
-//                label={'Pro-rated interest'}
-//              />
-//              <ProductItem
-//                className={classes.productItem}
-//                info={
-//                  <Box fontSize={16} fontWeight={400}>
-//                    {selectedItem?.thirdPartyCosts}
-//                  </Box>
-//                }
-//                label={'Third-party costs'}
-//              />
-//              {renderByUserType}
-//            </Box>
-//          </Box>
-//        </Box>
-//        <Box className={classes.drawerFooter}>
-//          {nextStep ? (
-//            <StyledButton
-//              classes={nextButtonClasses}
-//              onClick={() => nextStep(selectedItem?.id)}
-//              style={{ width: 'calc(100% - 96px)' }}
-//            >
-//              Check my pre-approval
-//            </StyledButton>
-//          ) : (
-//            <StyledButton
-//              classes={nextButtonClasses}
-//              onClick={() => router.push('/dashboard/tasks')}
-//              style={{ width: 'calc(100% - 96px)' }}
-//            >
-//              Confirm Rate
-//            </StyledButton>
-//          )}
-//        </Box>
-//      </Box>
-//    </Drawer>
-//  );
-//};
+import { useBreakpoints } from '@/hooks';
+import { FC, ReactNode, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Stack, Typography } from '@mui/material';
+import { CloseOutlined } from '@mui/icons-material';
+
+import { BridgePurchaseLoanInfo } from '@/components/molecules/Application';
+import { RatesProductData } from '@/types';
+import { LoanStage, UserType } from '@/types/enum';
+import { POSFindLabel, POSFormatDollar, POSFormatPercent } from '@/utils';
+import { OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
+
+import { StyledButton, StyledDrawer } from '@/components/atoms';
+
+interface BridgePurchaseRatesDrawerProps {
+  onCancel: () => void;
+  selectedItem:
+    | (BridgePurchaseLoanInfo &
+        Pick<
+          RatesProductData,
+          'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm' | 'id'
+        >)
+    | undefined;
+  visible: boolean;
+  nextStep?: (id: string) => void;
+  userType: UserType;
+}
+
+export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
+  props,
+) => {
+  const { onCancel, visible, selectedItem, nextStep, userType } = props;
+
+  const router = useRouter();
+  const breakpoints = useBreakpoints();
+
+  const [line_1, setLine_1] = useState<string>();
+  const [line_2, setLine_2] = useState<string>();
+  useEffect(() => {
+    if (selectedItem?.address) {
+      const [LINE_1, LINE_2] = selectedItem.address.split('NEW_LINE');
+      setLine_1(LINE_1);
+      setLine_2(LINE_2);
+    }
+  }, [selectedItem?.address]);
+
+  const renderByUserType = useMemo(() => {
+    switch (userType) {
+      case UserType.BROKER:
+        return (
+          <>
+            <CardItem
+              info={`${POSFormatDollar(
+                selectedItem?.brokerOriginationFee,
+              )}(${POSFormatPercent(
+                (selectedItem?.brokerPoints as number) / 100,
+              )})`}
+              label={'Broker Origination Fee'}
+            />
+            <CardItem
+              info={POSFormatDollar(selectedItem?.brokerProcessingFee)}
+              label={'Broker Processing Fee'}
+            />
+          </>
+        );
+      case UserType.LOAN_OFFICER:
+        return (
+          <>
+            <CardItem
+              info={`${POSFormatDollar(
+                selectedItem?.officerOriginationFee,
+              )}(${POSFormatPercent(
+                (selectedItem?.officerPoints as number) / 100,
+              )})`}
+              label={'Loan Officer Origination Fee'}
+            />
+            <CardItem
+              info={POSFormatDollar(selectedItem?.officerProcessingFee)}
+              label={'Loan Officer Processing Fee'}
+            />
+          </>
+        );
+      case UserType.REAL_ESTATE_AGENT:
+        return (
+          <>
+            <CardItem
+              info={POSFormatDollar(selectedItem?.agentFee)}
+              label={'Referral Fee'}
+            />
+          </>
+        );
+      default:
+        return null;
+    }
+  }, [
+    selectedItem?.agentFee,
+    selectedItem?.brokerOriginationFee,
+    selectedItem?.brokerPoints,
+    selectedItem?.brokerProcessingFee,
+    selectedItem?.officerOriginationFee,
+    selectedItem?.officerPoints,
+    selectedItem?.officerProcessingFee,
+    userType,
+  ]);
+
+  return (
+    <StyledDrawer
+      anchor={'right'}
+      content={
+        <Stack gap={3} px={{ md: 6, xs: 1.5 }} py={3} width={'100%'}>
+          <Typography
+            variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
+          >
+            Get a closer look at all your costs
+          </Typography>
+
+          <Stack gap={1.5} width={'100%'}>
+            <Typography
+              variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
+            >
+              Purchase
+            </Typography>
+
+            <Stack
+              border={'1px solid #D2D6E1'}
+              borderRadius={2}
+              gap={1.5}
+              p={1.5}
+              width={'100%'}
+            >
+              <CardItem
+                info={
+                  <Typography variant={'inherit'}>
+                    {`${selectedItem?.firstName} ${selectedItem?.lastName}`}
+                  </Typography>
+                }
+                label={'Borrower'}
+              />
+              <CardItem
+                info={
+                  <Typography
+                    component={'div'}
+                    textAlign={'right'}
+                    variant={'inherit'}
+                  >
+                    <Typography component={'div'} variant={'inherit'}>
+                      {line_1}
+                    </Typography>
+                    <Typography component={'div'} variant={'inherit'}>
+                      {line_2}
+                    </Typography>
+                  </Typography>
+                }
+                label={'Address'}
+              />
+              <CardItem
+                info={POSFormatDollar(selectedItem?.totalLoanAmount)}
+                label={'Total Loan Amount'}
+              />
+              <CardItem
+                info={POSFormatDollar(selectedItem?.purchasePrice)}
+                label={'Purchase Price'}
+              />
+              <CardItem
+                info={POSFormatDollar(selectedItem?.purchaseLoanAmount)}
+                label={'Purchase Loan Amount'}
+              />
+              <CardItem
+                info={
+                  selectedItem?.cor
+                    ? POSFormatDollar(selectedItem?.purchaseLoanAmount)
+                    : 'N/A'
+                }
+                label={'Rehab Loan Amount'}
+              />
+            </Stack>
+          </Stack>
+
+          <Stack gap={1.5} width={'100%'}>
+            <Typography
+              variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
+            >
+              Loan Details
+            </Typography>
+
+            <Stack
+              border={'1px solid #D2D6E1'}
+              borderRadius={2}
+              gap={1.5}
+              p={1.5}
+              width={'100%'}
+            >
+              <CardItem
+                info={selectedItem?.amortization}
+                label={'Amortization'}
+              />
+              <CardItem
+                info={POSFindLabel(
+                  OPTIONS_MORTGAGE_PROPERTY,
+                  selectedItem?.propertyType as string,
+                )}
+                label={'Property Type'}
+              />
+              <CardItem
+                info={selectedItem?.closeDate}
+                label={'Preferred Close Date'}
+              />
+              <CardItem info={selectedItem?.lien} label={'Lien'} />
+              <CardItem
+                info={
+                  selectedItem?.arv ? POSFormatDollar(selectedItem?.arv) : 'N/A'
+                }
+                label={'Estimated ARV'}
+              />
+              <CardItem
+                info={POSFormatPercent(
+                  selectedItem?.isCor ? selectedItem?.ltc : selectedItem?.ltv,
+                )}
+                label={
+                  selectedItem?.isCor ? 'Loan-to-Cost' : 'Loan-to-Value (LTV)'
+                }
+              />
+            </Stack>
+          </Stack>
+
+          <Stack gap={1.5} width={'100%'}>
+            <Typography
+              variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
+            >
+              Rate
+            </Typography>
+
+            <Stack
+              border={'1px solid #D2D6E1'}
+              borderRadius={2}
+              gap={1.5}
+              p={1.5}
+              width={'100%'}
+            >
+              <CardItem
+                info={POSFormatPercent(selectedItem?.interestRateOfYear)}
+                label={'Interest Rate'}
+              />
+              <CardItem
+                info={`${selectedItem?.loanTerm} months`}
+                label={'Loan Term'}
+              />
+              <CardItem
+                info={POSFormatDollar(selectedItem?.paymentOfMonth)}
+                label={'Monthly Payment'}
+              />
+            </Stack>
+          </Stack>
+
+          <Stack gap={1.5} width={'100%'}>
+            <Typography
+              component={'div'}
+              display={'flex'}
+              justifyContent={'space-between'}
+              variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
+            >
+              Est. Cash Required at Closing
+              <Typography
+                component={'span'}
+                variant={
+                  ['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'
+                }
+              >
+                {POSFormatDollar(
+                  (selectedItem?.totalClosingCash as number) -
+                    (selectedItem?.proRatedInterest as number) +
+                    (selectedItem?.paymentOfMonth as number) / 30,
+                )}
+              </Typography>
+            </Typography>
+
+            <Stack
+              border={'1px solid #D2D6E1'}
+              borderRadius={2}
+              gap={1.5}
+              p={1.5}
+              width={'100%'}
+            >
+              <CardItem
+                info={POSFormatDollar(selectedItem?.downPayment)}
+                label={'Down Payment'}
+              />
+              <CardItem
+                info={`${POSFormatDollar(
+                  selectedItem?.originationFee,
+                )}(${POSFormatPercent(
+                  selectedItem?.originationFeePer || 0.015,
+                )})`}
+                label={'Lender Origination Fee'}
+              />
+              <CardItem
+                info={POSFormatDollar(selectedItem?.underwritingFee)}
+                label={'Underwriting Fee'}
+              />
+              <CardItem
+                info={POSFormatDollar(selectedItem?.docPreparationFee)}
+                label={'Document Preparation Fee'}
+              />
+              <CardItem
+                info={POSFormatDollar(
+                  (selectedItem?.paymentOfMonth as number) / 30,
+                )}
+                label={'Pro-rated Interest'}
+              />
+              <CardItem
+                info={selectedItem?.thirdPartyCosts}
+                label={'Third-party Costs'}
+              />
+              {renderByUserType}
+            </Stack>
+          </Stack>
+        </Stack>
+      }
+      footer={
+        <Stack width={'100%'}>
+          {nextStep ? (
+            <StyledButton
+              onClick={() => nextStep(selectedItem?.id as string)}
+              size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
+            >
+              Check My Pre-approval
+            </StyledButton>
+          ) : (
+            <StyledButton
+              onClick={() => router.push('/dashboard/tasks')}
+              size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
+            >
+              Confirm Rate
+            </StyledButton>
+          )}
+        </Stack>
+      }
+      header={
+        <Stack
+          alignItems={'center'}
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+          width={'100%'}
+        >
+          <Typography
+            variant={['xs', 'sm'].includes(breakpoints) ? 'h4' : 'h5'}
+          >
+            Rate Summary
+          </Typography>
+          <StyledButton isIconButton onClick={onCancel}>
+            <CloseOutlined />
+          </StyledButton>
+        </Stack>
+      }
+      maxWidth={560}
+      minWidth={327}
+      open={visible}
+      width={{ md: 560, xs: '30%' }}
+    />
+  );
+};
+
+const CardItem: FC<{ label: string; info: ReactNode }> = ({ label, info }) => {
+  const breakpoints = useBreakpoints();
+
+  return (
+    <Stack
+      alignItems={'flex-start'}
+      flexDirection={'row'}
+      justifyContent={'space-between'}
+      width={'100%'}
+    >
+      <Typography
+        component={'div'}
+        variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body1'}
+      >
+        {label}
+      </Typography>
+      <Typography
+        component={'div'}
+        fontWeight={600}
+        variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'subtitle1'}
+      >
+        {info}
+      </Typography>
+    </Stack>
+  );
+};

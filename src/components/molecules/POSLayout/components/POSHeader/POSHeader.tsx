@@ -103,6 +103,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 setAuthType('sign_up');
                 open();
               }}
+              size={'small'}
               variant={'text'}
             >
               Sign Up
@@ -113,6 +114,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 setAuthType('login');
                 open();
               }}
+              size={'small'}
               variant={'text'}
             >
               Log In
@@ -385,6 +387,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         header={renderDialog.header}
         onClose={handledClose}
         open={visible}
+        scroll={'body'}
       />
     </Box>
   );

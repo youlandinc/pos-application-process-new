@@ -1,5 +1,5 @@
 import { CSSProperties, ReactNode } from 'react';
-import { DrawerProps } from '@mui/material';
+import { DrawerProps, SxProps } from '@mui/material';
 
 export interface StyledDrawerProps
   extends Omit<
@@ -9,7 +9,7 @@ export interface StyledDrawerProps
   header?: ReactNode;
   content: ReactNode;
   footer?: ReactNode;
-  maxWidth?: CSSProperties['maxWidth'];
-  minWidth?: CSSProperties['minWidth'];
-  width?: CSSProperties['width'];
+  maxWidth?: CSSProperties['maxWidth'] | Omit<SxProps, 'maxWidth'>;
+  minWidth?: CSSProperties['minWidth'] | Omit<SxProps, 'minWidth'>;
+  width?: CSSProperties['width'] | Omit<SxProps, 'width'>;
 }

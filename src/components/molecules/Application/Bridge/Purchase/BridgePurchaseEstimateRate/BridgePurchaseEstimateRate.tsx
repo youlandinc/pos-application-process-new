@@ -11,6 +11,7 @@ import {
   BridgePurchaseEstimateRateData,
   PropertyOpt,
   RatesProductData,
+  UserType,
   VariableName,
 } from '@/types';
 import {
@@ -20,9 +21,9 @@ import {
   BPQueryData,
 } from '@/requests/dashboard';
 import {
-  //BPRatesDrawer,
-  //BridgeRatesList,
+  BridgePurchaseRatesDrawer,
   BridgePurchaseRatesSearch,
+  BridgeRatesList,
 } from '@/components/molecules';
 
 const initialize: BPQueryData = {
@@ -35,7 +36,7 @@ const initialize: BPQueryData = {
   brokerProcessingFee: undefined,
 };
 
-export interface BPLoanInfo {
+export interface BridgePurchaseLoanInfo {
   // refinance
   firstName: string;
   lastName: string;
@@ -91,9 +92,9 @@ export const BridgePurchaseEstimateRate: FC<{ nextStep?: () => void }> =
     const [productList, setProductList] = useState<RatesProductData[]>();
     const [isFirstSearch, setIsFirstSearch] = useState<boolean>(true);
 
-    const [productInfo, setProductInfo] = useState<BPLoanInfo>();
+    const [productInfo, setProductInfo] = useState<BridgePurchaseLoanInfo>();
     const [selectedItem, setSelectedItem] = useState<
-      BPLoanInfo &
+      BridgePurchaseLoanInfo &
         Pick<
           RatesProductData,
           'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm' | 'id'
@@ -117,7 +118,7 @@ export const BridgePurchaseEstimateRate: FC<{ nextStep?: () => void }> =
         .then(async () => {
           const res = await _fetchRatesProductPreview(processId, searchForm);
           if (res.status === 200) {
-            setProductList(res.data.products);
+            setProductList(res.data.products as RatesProductData[]);
           }
           const infoRes = await _fetchRatesLoanInfo(processId);
           if (infoRes.status === 200) {
@@ -134,16 +135,18 @@ export const BridgePurchaseEstimateRate: FC<{ nextStep?: () => void }> =
         });
     };
 
-    const onListItemClick = async (
-      item: BPLoanInfo &
-        Pick<
-          RatesProductData,
-          'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm' | 'id'
-        >,
-    ) => {
+    const onListItemClick = async (item: RatesProductData) => {
       const { paymentOfMonth, interestRateOfYear, loanTerm, id } = item;
+      if (nextStep) {
+        const temp = productList!.map((item) => {
+          item.selected = false;
+          return item;
+        });
+        setProductList(temp);
+        item.selected = true;
+      }
       setSelectedItem(
-        Object.assign(productInfo as BPLoanInfo, {
+        Object.assign(productInfo as BridgePurchaseLoanInfo, {
           paymentOfMonth,
           interestRateOfYear,
           loanTerm,
@@ -173,20 +176,20 @@ export const BridgePurchaseEstimateRate: FC<{ nextStep?: () => void }> =
           setSearchForm={setSearchForm}
           userType={userType}
         />
-        {/*<BridgeRatesList*/}
-        {/*  productList={productList}*/}
-        {/*  onClick={onListItemClick}*/}
-        {/*  isFirstSearch={isFirstSearch}*/}
-        {/*  loading={loading}*/}
-        {/*  userType={userType}*/}
-        {/*/>*/}
-        {/*<BPRatesDrawer*/}
-        {/*  visible={visible}*/}
-        {/*  onCancel={close}*/}
-        {/*  selectedItem={selectedItem}*/}
-        {/*  nextStep={nextStepWrap}*/}
-        {/*  userType={userType}*/}
-        {/*/>*/}
+        <BridgeRatesList
+          isFirstSearch={isFirstSearch}
+          loading={loading}
+          onClick={onListItemClick}
+          productList={productList as RatesProductData[]}
+          userType={userType}
+        />
+        <BridgePurchaseRatesDrawer
+          nextStep={nextStepWrap}
+          onCancel={close}
+          selectedItem={selectedItem}
+          userType={userType!}
+          visible={visible}
+        />
       </>
     );
   });

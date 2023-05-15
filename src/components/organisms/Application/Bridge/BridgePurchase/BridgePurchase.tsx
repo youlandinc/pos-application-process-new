@@ -145,8 +145,8 @@ const useGenerateComponent = () => {
             );
           case BridgePurchaseState.estimateRate:
             return <DynamicEstimateRate nextStep={next} />;
-          //case BridgePurchaseState.celebrate:
-          //return <DynamicCelebrate nextStep={next} />;
+          case BridgePurchaseState.celebrate:
+            return <DynamicCelebrate nextStep={next} />;
           case BridgePurchaseState.refuse:
             return <DynamicRefuse nextStep={next} />;
         }

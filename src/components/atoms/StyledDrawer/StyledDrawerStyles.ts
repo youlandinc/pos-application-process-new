@@ -10,6 +10,7 @@ export const StyledDrawerStyles = {
       color: 'text.primary',
       borderBottom: '1px solid',
       borderColor: 'background.border_default',
+      bgcolor: 'background.white',
       py: 3,
       px: {
         md: 6,
@@ -23,6 +24,7 @@ export const StyledDrawerStyles = {
       bottom: 0,
       borderTop: '1px solid',
       borderColor: 'background.border_default',
+      bgcolor: 'background.white',
       py: 3,
       px: {
         md: 6,
@@ -31,6 +33,7 @@ export const StyledDrawerStyles = {
     },
     '& .drawer_content': {
       flexGrow: 1,
+      bgcolor: 'background.white',
     },
 
     '& .MuiPaper-root': {

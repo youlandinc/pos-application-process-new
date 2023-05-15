@@ -205,7 +205,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
             <Stack
               flexDirection={{ lg: 'row', xs: 'column' }}
               gap={3}
-              maxWidth={600}
+              maxWidth={900}
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
@@ -255,7 +255,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
             <Stack
               flexDirection={{ lg: 'row', xs: 'column' }}
               gap={3}
-              maxWidth={600}
+              maxWidth={900}
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
@@ -305,7 +305,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
             <Stack
               flexDirection={{ lg: 'row', xs: 'column' }}
               gap={3}
-              maxWidth={600}
+              maxWidth={900}
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
@@ -355,7 +355,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
           gap={3}
           label={`Total Loan Amount: ${POSFormatDollar(loanAmount)}`}
           labelSx={{ textAlign: 'center', width: '100%' }}
-          maxWidth={600}
+          maxWidth={900}
           mt={3}
           sub
           width={'100%'}
@@ -440,7 +440,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
             }}
           >
             {isCor && (
-              <Stack gap={1} maxWidth={600} width={'100%'}>
+              <Stack gap={1} width={'100%'}>
                 <Stack
                   flexDirection={{ lg: 'row', xs: 'column' }}
                   gap={3}
@@ -520,7 +520,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
         <StyledButton
           disabled={!isValid || loading || loanStage === LoanStage.Approved}
           onClick={onCheck}
-          sx={{ width: 200 }}
+          sx={{ width: 200, mt: 3 }}
         >
           Check
         </StyledButton>

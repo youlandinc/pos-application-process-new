@@ -79,6 +79,8 @@ export interface RatesProductData {
   //broker
   totalBorrowerFees?: number;
   totalBorrowerPoints?: number;
+  // agent
+  agentFee?: number;
 }
 
 export type RatesProductMap = Partial<Record<LoanType, RatesProductData[]>>;

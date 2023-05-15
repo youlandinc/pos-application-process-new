@@ -16,7 +16,7 @@
 //   BPQueryData,
 // } from '@/requests/dashboard';
 // import {
-//   BPLoanInfo,
+//   BridgePurchaseLoanInfo,
 //   BPRatesDrawer,
 //   BPRatesSearch,
 //   BridgeRatesList,
@@ -61,9 +61,9 @@
 //   const [encompassData, setEncompassData] = useState<Encompass>();
 //   const [searchForm, setSearchForm] = useState<BPQueryData>(initialize);
 //   const [productList, setProductList] = useState<RatesProductData[]>();
-//   const [loanInfo, setLoanInfo] = useState<BPLoanInfo>();
+//   const [loanInfo, setLoanInfo] = useState<BridgePurchaseLoanInfo>();
 //   const [selectedItem, setSelectedItem] = useState<
-//     BPLoanInfo &
+//     BridgePurchaseLoanInfo &
 //       Pick<
 //         RatesProductData,
 //         'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm' | 'id'
