@@ -115,7 +115,7 @@ export const PipelineProfile: FC = observer(() => {
                   sx={{ color: 'info.A100', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
-                  (optional)
+                  (Optional)
                 </Typography>
               </Typography>
               <StyledStatus status={BROKER_QUESTIONNAIRE.taskStatus} />

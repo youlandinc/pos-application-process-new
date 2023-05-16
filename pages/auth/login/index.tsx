@@ -1,18 +1,25 @@
 import { FC } from 'react';
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
+import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
 
 import { useCheckHasLoggedIn } from '@/hooks';
 
-import { Login } from '@/components';
+const DynamicLogin = dynamic(
+  () => import('@/components/molecules/Auth/Login').then((mod) => mod.Login),
+  {
+    ssr: false,
+    loading: () => <CircularProgress />,
+  },
+);
 
 const LoginPage: FC = observer((): JSX.Element => {
   useCheckHasLoggedIn();
 
   return (
     <Box>
-      <Login to={'/pipeline'} />
+      <DynamicLogin to={'/pipeline'} />
     </Box>
   );
 });

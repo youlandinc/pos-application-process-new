@@ -1,16 +1,24 @@
 import { FC } from 'react';
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { observer } from 'mobx-react-lite';
+import dynamic from 'next/dynamic';
 
-import { SignUp } from '@/components/molecules';
 import { useCheckHasLoggedIn } from '@/hooks';
+
+const DynamicSignUp = dynamic(
+  () => import('@/components/molecules/Auth/SignUp').then((mod) => mod.SignUp),
+  {
+    ssr: false,
+    loading: () => <CircularProgress />,
+  },
+);
 
 const SignUpPage: FC = observer((): JSX.Element => {
   useCheckHasLoggedIn();
 
   return (
     <Box>
-      <SignUp />
+      <DynamicSignUp />
     </Box>
   );
 });
