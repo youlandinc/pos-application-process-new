@@ -400,7 +400,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
               flexDirection={'row'}
               gap={1}
               justifyContent={'flex-start'}
-              width={'calc(50% - 12px)'}
+              width={{ md: 'calc(50% - 12px)', xs: '100%' }}
             >
               <Typography variant={'body1'}>Loan to Value</Typography>
               <StyledTooltip
@@ -491,7 +491,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
                   flexDirection={'row'}
                   gap={1}
                   justifyContent={'flex-start'}
-                  width={'calc(50% - 12px)'}
+                  width={{ md: 'calc(50% - 12px)', xs: '100%' }}
                 >
                   <Typography variant={'body1'}>Loan to Cost</Typography>
                   <StyledTooltip

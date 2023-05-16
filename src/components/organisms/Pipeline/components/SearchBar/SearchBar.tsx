@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import { UserType } from '@/types';
+import { FC, useMemo } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { Close, FilterAltOutlined, SearchOutlined } from '@mui/icons-material';
 
@@ -25,16 +26,31 @@ export interface SearchBarProps {
     v: string | string[] | [Date | null, Date | null] | boolean,
   ) => void;
   onValueChange: (v: boolean) => void;
+  userType: UserType;
 }
 
 export const SearchBar: FC<SearchBarProps> = ({
   searchForm,
   onParamsChange,
   onValueChange,
+  userType,
 }) => {
   const breakpoint = useBreakpoints();
 
   const { visible, open, close } = useSwitch(false);
+
+  const role = useMemo(() => {
+    switch (userType) {
+      case UserType.BROKER:
+        return 'for Broker';
+      case UserType.LOAN_OFFICER:
+        return 'for Loan Officer';
+      case UserType.REAL_ESTATE_AGENT:
+        return 'for Real Estate Agent';
+      default:
+        return '';
+    }
+  }, [userType]);
 
   return (
     <Stack
@@ -42,7 +58,12 @@ export const SearchBar: FC<SearchBarProps> = ({
       flexDirection={{ xs: 'row', lg: 'column' }}
       justifyContent={{ xs: 'space-between', lg: 'unset' }}
     >
-      <Typography variant={'h4'}>Pipeline</Typography>
+      <Typography variant={'h4'}>
+        Pipeline{' '}
+        <Typography color={'#9DAEEB'} component={'span'} variant={'inherit'}>
+          {role}
+        </Typography>
+      </Typography>
       {['xs', 'sm', 'md'].includes(breakpoint) ? (
         <>
           <StyledButton

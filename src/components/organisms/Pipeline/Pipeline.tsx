@@ -208,6 +208,7 @@ export const Pipeline: FC = observer(() => {
         }
         onValueChange={(v) => setIsChange(v)}
         searchForm={searchForm}
+        userType={userType!}
       />
 
       {firstLoading && (

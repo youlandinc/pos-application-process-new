@@ -82,11 +82,11 @@ export const OPTIONS_BRIDGE_PROPERTY_NUMBER: Option[] = [
   {
     key: BridgePropertyNumberOpt.one_to_four,
     value: BridgePropertyNumberOpt.one_to_four,
-    label: '1-4 properties',
+    label: '1-4 Properties',
   },
   {
     key: BridgePropertyNumberOpt.five_more,
     value: BridgePropertyNumberOpt.five_more,
-    label: '5+ properties',
+    label: '5+ Properties',
   },
 ];
