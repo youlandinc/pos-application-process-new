@@ -1,9 +1,18 @@
-import { Entrance } from '@/components';
+import dynamic from 'next/dynamic';
 
+import { StyledLoading } from '@/components';
+
+const DynamicEntrance = dynamic(
+  () => import('@/components/organisms/Entrance').then((mod) => mod.Entrance),
+  {
+    loading: () => <StyledLoading sx={{ color: 'black' }} />,
+    ssr: false,
+  },
+);
 export const EntrancePage = () => {
   return (
     <>
-      <Entrance />
+      <DynamicEntrance />
     </>
   );
 };

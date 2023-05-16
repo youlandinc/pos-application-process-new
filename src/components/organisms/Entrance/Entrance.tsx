@@ -1,15 +1,13 @@
-import { POSFlex, POSFont } from '@/styles';
+import { POSFont } from '@/styles';
 import { useMemo } from 'react';
 import { Box } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { EntranceStyles } from './index';
 import { UserType } from '@/types';
 
 import {
-  StyledBoxWrap,
   StyledButton,
   StyledFormItem,
   StyledHeaderLogo,
@@ -51,9 +49,15 @@ export const Entrance = observer(() => {
     <Box sx={{ bgcolor: '#F5F8FA' }}>
       <Box
         sx={{
-          ...POSFlex('center', 'center', 'row'),
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'row',
           '& .entrance_header_inside': {
-            ...POSFlex('center', 'flex-start', 'row'),
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            flexDirection: 'row',
             height: 92,
             width: {
               xxl: 1440,
@@ -72,10 +76,20 @@ export const Entrance = observer(() => {
           <StyledHeaderLogo />
         </Box>
       </Box>
-      <Box sx={{ ...POSFlex('center', 'center', 'row') }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'row',
+        }}
+      >
         <Box
           sx={{
-            ...POSFlex('center', 'flex-start', 'column'),
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            flexDirection: 'column',
             minHeight: 'calc(100vh - 92px)',
             width: {
               xxl: 1440,
