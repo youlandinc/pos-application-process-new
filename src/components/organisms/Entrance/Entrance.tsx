@@ -49,38 +49,74 @@ export const Entrance = observer(() => {
 
   return (
     <Box sx={{ bgcolor: '#F5F8FA' }}>
-      <Box sx={EntranceStyles.header}>
+      <Box
+        sx={{
+          ...POSFlex('center', 'center', 'row'),
+          '& .entrance_header_inside': {
+            ...POSFlex('center', 'flex-start', 'row'),
+            height: 92,
+            width: {
+              xxl: 1440,
+              xl: 1240,
+              lg: 938,
+              xs: '100%',
+            },
+            px: {
+              lg: 0,
+              xs: 'clamp(24px,6.4vw,80px)',
+            },
+          },
+        }}
+      >
         <Box className={'entrance_header_inside'}>
           <StyledHeaderLogo />
         </Box>
       </Box>
-      <StyledBoxWrap sx={{ ...POSFlex('center', 'flex-start', 'column') }}>
-        <StyledFormItem
-          alignItems={'center'}
-          gap={3}
-          label={'Which product are you interested in?'}
-          labelSx={{ m: 0 }}
+      <Box sx={{ ...POSFlex('center', 'center', 'row') }}>
+        <Box
+          sx={{
+            ...POSFlex('center', 'flex-start', 'column'),
+            minHeight: 'calc(100vh - 92px)',
+            width: {
+              xxl: 1440,
+              xl: 1240,
+              lg: 938,
+              xs: '100%',
+            },
+            py: 'clamp(40px,7vw,80px) ',
+            px: {
+              lg: 0,
+              xs: 'clamp(24px,6.4vw,80px)',
+            },
+          }}
         >
-          {computedArray.map((item, index) => {
-            return (
-              <StyledButton
-                color={'info'}
-                key={item.name + index}
-                onClick={() => (window.location.href = item.url)}
-                sx={{
-                  width: { md: 600, xs: '100%' },
-                  height: 64,
-                  ...POSFont(20, 600, 1.5, 'text.primary'),
-                  fontSize: '20px !important',
-                }}
-                variant={'outlined'}
-              >
-                {item.name}
-              </StyledButton>
-            );
-          })}
-        </StyledFormItem>
-      </StyledBoxWrap>
+          <StyledFormItem
+            alignItems={'center'}
+            gap={3}
+            label={'Which product are you interested in?'}
+            labelSx={{ m: 0 }}
+          >
+            {computedArray.map((item, index) => {
+              return (
+                <StyledButton
+                  color={'info'}
+                  key={item.name + index}
+                  onClick={() => (window.location.href = item.url)}
+                  sx={{
+                    width: { md: 600, xs: '100%' },
+                    height: 64,
+                    ...POSFont(20, 600, 1.5, 'text.primary'),
+                    fontSize: '20px !important',
+                  }}
+                  variant={'outlined'}
+                >
+                  {item.name}
+                </StyledButton>
+              );
+            })}
+          </StyledFormItem>
+        </Box>
+      </Box>
     </Box>
   );
 });
