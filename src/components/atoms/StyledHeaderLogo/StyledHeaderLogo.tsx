@@ -10,12 +10,13 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
   logoUrl = '/images/logo/logo_blue.svg',
 }) => {
   const router = useRouter();
+
   return (
     <Box
       onClick={() => router.push('/')}
       sx={{ ...StyledHeaderLogoStyles, ...sx }}
     >
-      <Image alt="" fill priority src={logoUrl} />
+      <Image alt="" fill priority src={logoUrl} style={{ maxWidth: 180 }} />
     </Box>
   );
 };

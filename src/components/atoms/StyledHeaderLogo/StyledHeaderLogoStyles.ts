@@ -8,5 +8,7 @@ export const StyledHeaderLogoStyles = {
     xs: 118,
     md: 160,
   },
+  maxWidth: 160,
+  maxHeight: 32,
   cursor: 'pointer',
 } as const;
