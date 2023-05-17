@@ -38,7 +38,7 @@ export type BPOverviewSummaryData = BaseOverviewSummaryData & {
   isCor: boolean;
 };
 
-export type BPRatesLoanInfo = Pick<
+export type BridgePurchaseRatesLoanInfo = Pick<
   BridgePurchaseEstimateRateData,
   'purchasePrice' | 'purchaseLoanAmount' | 'cor'
 > & {

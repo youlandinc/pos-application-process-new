@@ -7,14 +7,14 @@ import { useMst } from '@/models/Root';
 
 import { ParseProcess } from '@/services/ParseProcess';
 import { POSFlex, POSFont, POSSize } from '@/styles';
-// import { BPPaymentSummary, PaymentTask } from '@/components/molecules';
-import { BPRatesLoanInfo, RatesProductData } from '@/types';
+// import { BridgePurchasePaymentSummary, PaymentTask } from '@/components/molecules';
+import { BridgePurchaseRatesLoanInfo, RatesProductData } from '@/types';
 import {
   _fetchRatesLoanInfo,
   _fetchRatesProductSelected,
 } from '@/requests/dashboard';
 import {
-  //  BPPaymentSummary,
+  //  BridgePurchasePaymentSummary,
   PaymentTask,
 } from '@/components/molecules';
 import { Box } from '@mui/material';
@@ -94,7 +94,7 @@ export const BridgePurchaseTask: FC = observer(() => {
 
   const { data: processData } = selectedProcessData;
 
-  const [loanInfo, setLoanInfo] = useState<BPRatesLoanInfo>();
+  const [loanInfo, setLoanInfo] = useState<BridgePurchaseRatesLoanInfo>();
   const [productInfo, setProductInfo] = useState<RatesProductData>();
   const [taskId, setTaskId] = useState<string>('');
 
@@ -123,7 +123,7 @@ export const BridgePurchaseTask: FC = observer(() => {
       <Box className={'pageMain'}>
         <PaymentTask
           loanDetail={
-            // <BPPaymentSummary
+            // <BridgePurchasePaymentSummary
             //   loading={loading}
             //   loanInfo={loanInfo}
             //   productInfo={productInfo}

@@ -9,55 +9,7 @@ import {
   StyledPaymentCard,
   StyledPaymentCardRef,
 } from '@/components/atoms';
-import { POSFlex, POSFont } from '@/styles';
-
-const PaymentTableStyle = {
-  '&.container': {
-    ...POSFlex('center', 'center', 'column'),
-  },
-  '& .title': {
-    ...POSFont(36, 700, 1, 'rgba(0,0,0,.87)'),
-    // mt: 9,
-  },
-  '& .titleAddition': {
-    mt: 1.5,
-    color: 'rgba(0,0,0,.6)',
-  },
-  '& .subTitle': {
-    ...POSFont(24, 400, 1.5, 'rgba(0,0,0,.87)'),
-    mt: 6,
-    overflow: 'hidden',
-  },
-  '& .subTitleAddition': {
-    mt: 1,
-    color: 'rgba(0,0,0,.6)',
-  },
-  subTitleAdditionBox: {},
-  '& .subTitleAdditionLi': {
-    display: 'flex',
-    color: 'rgba(0,0,0,.6)',
-  },
-  '& .paymentOrderBox': {
-    // ...POSFlex('center', 'center', 'row'),
-    mt: 6,
-    width: '100%',
-    maxWidth: 600,
-  },
-  '& .confirmBox': {
-    mt: 6,
-    marginLeft: 0,
-    width: '100%',
-    fontSize: 16,
-    color: 'rgba(0,0,0,.38)',
-    cursor: 'pointer',
-    userSelect: 'none',
-    alignItems: 'flex-start',
-    '& .MuiButtonBase-root': {
-      mt: 1,
-    },
-  },
-};
-
+import { POSFlex } from '@/styles';
 interface PaymentTableProps extends PaymentTaskBaseComponentProps {
   paymentDetail: SPaymentDetails;
   loading?: boolean;
@@ -126,3 +78,15 @@ export const PaymentTable = forwardRef<StyledPaymentCardRef, PaymentTableProps>(
     );
   },
 );
+
+const PaymentTableStyle = {
+  '&.container': {
+    ...POSFlex('center', 'center', 'column'),
+  },
+  '& .paymentOrderBox': {
+    // ...POSFlex('center', 'center', 'row'),
+    mt: 6,
+    width: '100%',
+    maxWidth: 600,
+  },
+};
