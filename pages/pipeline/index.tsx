@@ -1,13 +1,37 @@
 import { FC } from 'react';
+import dynamic from 'next/dynamic';
+import { CircularProgress } from '@mui/material';
 
-import { PipelineListPage, PipelinePage } from '@/views';
+import { observer } from 'mobx-react-lite';
 
-const PipelineProfileModule: FC = () => {
+const DynamicPipelinePage = dynamic(
+  () =>
+    import('@/views/Pipeline/PipelinePage/PipelinePage').then(
+      (mod) => mod.PipelinePage,
+    ),
+  {
+    loading: () => <CircularProgress />,
+    ssr: false,
+  },
+);
+
+const DynamicPipelineListPage = dynamic(
+  () =>
+    import('@/views/Pipeline/PipelinePage/PipelinePage').then(
+      (mod) => mod.PipelinePage,
+    ),
+  {
+    loading: () => <CircularProgress />,
+    ssr: false,
+  },
+);
+
+const PipelineProfileModule: FC = observer(() => {
   return (
-    <PipelinePage>
-      <PipelineListPage />
-    </PipelinePage>
+    <DynamicPipelinePage>
+      <DynamicPipelineListPage />
+    </DynamicPipelinePage>
   );
-};
+});
 
 export default PipelineProfileModule;

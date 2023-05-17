@@ -1,23 +1,11 @@
 import { FC } from 'react';
-import dynamic from 'next/dynamic';
 
-import { StyledLoading } from '@/components';
-
-const DynamicPipelineList = dynamic(
-  () =>
-    import('@/components/organisms/Pipeline/Pipeline').then(
-      (mod) => mod.Pipeline,
-    ),
-  {
-    loading: () => <StyledLoading />,
-    ssr: false,
-  },
-);
+import { Pipeline } from '@/components/organisms';
 
 export const PipelineListPage: FC = () => {
   return (
     <>
-      <DynamicPipelineList />
+      <Pipeline />
     </>
   );
 };

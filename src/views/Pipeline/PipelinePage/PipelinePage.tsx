@@ -18,8 +18,8 @@ export const PipelinePage: FC<{ children?: ReactNode }> = observer(
 
     // await fetch user setting
     useEffect(() => {
-      fetchUserSetting();
-      fetchPipelineStatus();
+      fetchUserSetting().then();
+      fetchPipelineStatus().then();
     }, [fetchUserSetting, fetchPipelineStatus]);
 
     // await fetch task item status
@@ -30,7 +30,7 @@ export const PipelinePage: FC<{ children?: ReactNode }> = observer(
       if (!pipelineTask.pipelineInitialized) {
         pipelineTask.initPipelineTaskForm();
       }
-      pipelineTask.fetchPipelineTaskData();
+      pipelineTask.fetchPipelineTaskData().then();
     }, [pipelineTask, pipelineTask.pipelineInitialized, initialized, userType]);
 
     return !initialized && !pipelineTask.pipelineInitialized ? (

@@ -1,13 +1,26 @@
-import { ChangeEmail } from '@/components/molecules';
-import { Box } from '@mui/material';
 import { FC } from 'react';
+import { Box, CircularProgress } from '@mui/material';
+import dynamic from 'next/dynamic';
 
-const ChangeEmailPage: FC = (): JSX.Element => {
+import { observer } from 'mobx-react-lite';
+
+const DynamicChangeEmail = dynamic(
+  () =>
+    import('@/components/molecules/Auth/ChangeEmail').then(
+      (mod) => mod.ChangeEmail,
+    ),
+  {
+    loading: () => <CircularProgress />,
+    ssr: false,
+  },
+);
+
+const ChangeEmailPage: FC = observer((): JSX.Element => {
   return (
     <Box>
-      <ChangeEmail />
+      <DynamicChangeEmail />
     </Box>
   );
-};
+});
 
 export default ChangeEmailPage;

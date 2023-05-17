@@ -1,13 +1,26 @@
-import { ChangePassword } from '@/components/molecules';
-import { Box } from '@mui/material';
 import { FC } from 'react';
+import { Box, CircularProgress } from '@mui/material';
+import dynamic from 'next/dynamic';
 
-const ChangePasswordPage: FC = (): JSX.Element => {
+import { observer } from 'mobx-react-lite';
+
+const DynamicChangePassword = dynamic(
+  () =>
+    import('@/components/molecules/Auth/ChangePassword').then(
+      (mod) => mod.ChangePassword,
+    ),
+  {
+    loading: () => <CircularProgress />,
+    ssr: false,
+  },
+);
+
+const ChangePasswordPage: FC = observer((): JSX.Element => {
   return (
     <Box>
-      <ChangePassword />
+      <DynamicChangePassword />
     </Box>
   );
-};
+});
 
 export default ChangePasswordPage;

@@ -8,8 +8,8 @@ import { useCheckHasLoggedIn } from '@/hooks';
 const DynamicSignUp = dynamic(
   () => import('@/components/molecules/Auth/SignUp').then((mod) => mod.SignUp),
   {
-    ssr: false,
     loading: () => <CircularProgress />,
+    ssr: false,
   },
 );
 

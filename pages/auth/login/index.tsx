@@ -9,8 +9,8 @@ import { useCheckHasLoggedIn } from '@/hooks';
 const DynamicLogin = dynamic(
   () => import('@/components/molecules/Auth/Login').then((mod) => mod.Login),
   {
-    ssr: false,
     loading: () => <CircularProgress />,
+    ssr: false,
   },
 );
 

@@ -1,13 +1,25 @@
-import { ForgotPassword } from '@/components/molecules';
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
+import dynamic from 'next/dynamic';
 import { FC } from 'react';
+import { observer } from 'mobx-react-lite';
 
-const ForgotPasswordPage: FC = (): JSX.Element => {
+const DynamicForgotPasswordPage = dynamic(
+  () =>
+    import('@/components/molecules/Auth/ForgotPassword').then(
+      (mod) => mod.ForgotPassword,
+    ),
+  {
+    loading: () => <CircularProgress />,
+    ssr: false,
+  },
+);
+
+const ForgotPasswordPage: FC = observer((): JSX.Element => {
   return (
     <Box>
-      <ForgotPassword />
+      <DynamicForgotPasswordPage />
     </Box>
   );
-};
+});
 
 export default ForgotPasswordPage;
