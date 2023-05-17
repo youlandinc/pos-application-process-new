@@ -1,7 +1,7 @@
 import { DashboardPage, PreapprovalLetterPage } from '@/views';
 import { FC } from 'react';
 
-const PreappovalLetter: FC = () => {
+const PreApprovalLetter: FC = () => {
   return (
     <>
       <DashboardPage>
@@ -11,4 +11,4 @@ const PreappovalLetter: FC = () => {
   );
 };
 
-export default PreappovalLetter;
+export default PreApprovalLetter;

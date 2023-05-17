@@ -10,6 +10,7 @@ const DynamicPipelineGovernment = dynamic(
     ),
   {
     loading: () => <StyledLoading />,
+    ssr: false,
   },
 );
 

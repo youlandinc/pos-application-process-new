@@ -9,7 +9,7 @@ import {
 } from '@/components/organisms';
 import { useMst } from '@/models/Root';
 
-export const PreapprovalLetterPage: FC = observer(() => {
+export const PreApprovalLetterPage: FC = observer(() => {
   const {
     selectedProcessData: { scene },
   } = useMst();

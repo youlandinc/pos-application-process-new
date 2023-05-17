@@ -10,6 +10,7 @@ const DynamicPipelineLicense = dynamic(
     ),
   {
     loading: () => <StyledLoading />,
+    ssr: false,
   },
 );
 

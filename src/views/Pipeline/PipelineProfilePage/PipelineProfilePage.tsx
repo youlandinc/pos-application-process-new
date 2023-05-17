@@ -10,6 +10,7 @@ const DynamicPipelineProfile = dynamic(
     ),
   {
     loading: () => <StyledLoading />,
+    ssr: false,
   },
 );
 

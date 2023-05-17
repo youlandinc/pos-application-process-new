@@ -10,6 +10,7 @@ const DynamicPipelineQuestionnaire = dynamic(
     ),
   {
     loading: () => <StyledLoading />,
+    ssr: false,
   },
 );
 

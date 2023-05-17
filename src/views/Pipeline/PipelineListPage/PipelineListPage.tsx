@@ -10,6 +10,7 @@ const DynamicPipelineList = dynamic(
     ),
   {
     loading: () => <StyledLoading />,
+    ssr: false,
   },
 );
 

@@ -10,6 +10,7 @@ const DynamicPipelineW9 = dynamic(
     ),
   {
     loading: () => <StyledLoading />,
+    ssr: false,
   },
 );
 

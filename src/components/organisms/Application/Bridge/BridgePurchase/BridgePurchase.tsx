@@ -23,6 +23,7 @@ const DynamicStarting = dynamic(
     ),
   {
     loading: () => <StyledLoading />,
+    ssr: false,
   },
 );
 
@@ -33,6 +34,7 @@ const DynamicAuth = dynamic(
     ),
   {
     loading: () => <StyledLoading />,
+    ssr: false,
   },
 );
 
@@ -43,6 +45,7 @@ const DynamicCreditScore = dynamic(
     ),
   {
     loading: () => <StyledLoading />,
+    ssr: false,
   },
 );
 
@@ -53,6 +56,7 @@ const DynamicWhereKnow = dynamic(
     ),
   {
     loading: () => <StyledLoading />,
+    ssr: false,
   },
 );
 
@@ -63,6 +67,7 @@ const DynamicEstimateRate = dynamic(
     ),
   {
     loading: () => <StyledLoading />,
+    ssr: false,
   },
 );
 
@@ -73,6 +78,7 @@ const DynamicCelebrate = dynamic(
     ),
   {
     loading: () => <StyledLoading />,
+    ssr: false,
   },
 );
 
@@ -83,6 +89,7 @@ const DynamicRefuse = dynamic(
     ),
   {
     loading: () => <StyledLoading />,
+    ssr: false,
   },
 );
 

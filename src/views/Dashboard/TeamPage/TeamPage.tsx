@@ -15,6 +15,101 @@ import {
 import { POSFormatUSPhone } from '@/utils';
 import MY_TEAM from '@/svg/dashboard/my_team.svg';
 
+export interface TeamMemberData {
+  name: string;
+  title: string;
+  avatar: string;
+  phone: string;
+  email: string;
+}
+
+export const TeamPage: FC = () => {
+  const [teamList, setTeamList] = useState<TeamMemberData[]>();
+  const [slogan, setSlogan] = useState<string>('');
+  const [workTime, setWorkTime] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+
+  const { loading } = useAsync(async () => {
+    await _fetchMyTeamData()
+      .then((res) => {
+        setTeamList(res?.data?.extInfo?.posSettings?.members || []);
+        setSlogan(
+          res?.data?.extInfo?.posSettings?.workingDays ||
+            "We're available 7 days a week",
+        );
+        setWorkTime(
+          res?.data?.extInfo?.posSettings?.workingHours || '9AM - 6PM PT',
+        );
+        setEmail(res?.data?.extInfo?.posSettings?.email || '');
+        setPhone(res?.data?.extInfo?.posSettings?.phone || '');
+      })
+      .catch((err) => {
+        // console.log(err);
+      });
+  });
+
+  return (
+    <Box className={'container'} sx={useStyles}>
+      {loading ? (
+        <CircularProgress
+          style={{ color: '#fff', ...POSSize(24), marginRight: 3 }}
+        />
+      ) : (
+        <>
+          <PageHeader
+            subTitle={` From choosing a rate to scheduling closing, you have a dedicated
+              team of specialists. Along the way, new faces will show up so be sure to check back
+              often and drop a line if you need anything.`}
+            title={"We're here with you every step of the way"}
+          />
+          <Box className={'pageFooter'}>
+            <Box className={'otherWrap'}>
+              <Box className={'otherInfoBox'}>
+                <Box className={'otherInfoTitle'}>Hours of Operation</Box>
+                <Box className={'otherInfoTip'}>
+                  If your current expert isn&apos;t available, you can leave a
+                  message for them or speak with someone else.
+                </Box>
+                <Box className={'otherInfoContact'}>
+                  <PhoneEnabledOutlined className={'logo'} />
+                  {POSFormatUSPhone(phone)}
+                </Box>
+                <Box className={'otherInfoContact'}>
+                  <MailOutlineOutlined className={'logo'} />
+                  {email}
+                </Box>
+                <Box className={'otherInfoContact'} mt={'8px'}>
+                  <SupportAgentOutlined className={'logo'} />
+                  {slogan}
+                </Box>
+                <Box className={'otherInfoContact'}>
+                  {' '}
+                  <WatchLaterOutlined className={'logo'} /> {workTime}
+                </Box>
+              </Box>
+              {/* <Image
+                   alt={''}
+                   height={140}
+                   src={'/my_team_footer.png'}
+                   width={216}
+                   /> */}
+              <Icon className={'my_team_svg'} component={MY_TEAM} />
+            </Box>
+          </Box>
+          <Box className={'pageMain'}>
+            <Box className={'cardListWrap'}>
+              {teamList?.map((item, index) => (
+                <ServiceCardList data={item} key={index} />
+              ))}
+            </Box>
+          </Box>
+        </>
+      )}
+    </Box>
+  );
+};
+
 const useStyles: SxProps = {
   '&.container': {
     width: '100%',
@@ -93,99 +188,4 @@ const useStyles: SxProps = {
     mr: 1.5,
     color: 'text.primary',
   },
-};
-
-export interface TeamMemberData {
-  name: string;
-  title: string;
-  avatar: string;
-  phone: string;
-  email: string;
-}
-
-export const TeamPage: FC = () => {
-  const [teamList, setTeamList] = useState<TeamMemberData[]>();
-  const [slogan, setSlogan] = useState<string>('');
-  const [workTime, setWorkTime] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
-
-  const { loading } = useAsync(async () => {
-    await _fetchMyTeamData()
-      .then((res) => {
-        setTeamList(res?.data?.extInfo?.posSettings?.members || []);
-        setSlogan(
-          res?.data?.extInfo?.posSettings?.workingDays ||
-            "We're available 7 days a week",
-        );
-        setWorkTime(
-          res?.data?.extInfo?.posSettings?.workingHours || '9AM - 6PM PT',
-        );
-        setEmail(res?.data?.extInfo?.posSettings?.email || '');
-        setPhone(res?.data?.extInfo?.posSettings?.phone || '');
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
-  });
-
-  return (
-    <Box className={'container'} sx={useStyles}>
-      {loading ? (
-        <CircularProgress
-          style={{ color: '#fff', ...POSSize(24), marginRight: 3 }}
-        />
-      ) : (
-        <>
-          <PageHeader
-            subTitle={` From choosing a rate to scheduling closing, you have a dedicated
-              team of specialists. Along the way, new faces will show up so be sure to check back
-              often and drop a line if you need anything.`}
-            title={"We're here with you every step of the way"}
-          />
-          <Box className={'pageFooter'}>
-            <Box className={'otherWrap'}>
-              <Box className={'otherInfoBox'}>
-                <Box className={'otherInfoTitle'}>Hours of Operation</Box>
-                <Box className={'otherInfoTip'}>
-                  If your current expert isn&apos;t available, you can leave a
-                  message for them or speak with someone else.
-                </Box>
-                <Box className={'otherInfoContact'}>
-                  <PhoneEnabledOutlined className={'logo'} />
-                  {POSFormatUSPhone(phone)}
-                </Box>
-                <Box className={'otherInfoContact'}>
-                  <MailOutlineOutlined className={'logo'} />
-                  {email}
-                </Box>
-                <Box className={'otherInfoContact'} mt={'8px'}>
-                  <SupportAgentOutlined className={'logo'} />
-                  {slogan}
-                </Box>
-                <Box className={'otherInfoContact'}>
-                  {' '}
-                  <WatchLaterOutlined className={'logo'} /> {workTime}
-                </Box>
-              </Box>
-              {/* <Image
-                alt={''}
-                height={140}
-                src={'/my_team_footer.png'}
-                width={216}
-              /> */}
-              <Icon className={'my_team_svg'} component={MY_TEAM} />
-            </Box>
-          </Box>
-          <Box className={'pageMain'}>
-            <Box className={'cardListWrap'}>
-              {teamList?.map((item, index) => (
-                <ServiceCardList data={item} key={index} />
-              ))}
-            </Box>
-          </Box>
-        </>
-      )}
-    </Box>
-  );
 };
