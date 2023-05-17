@@ -130,8 +130,8 @@ export const BridgePurchaseRates: FC = observer(() => {
         enqueueSnackbar(err as string, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
-        }),
-          setLoading(false);
+        });
+        setLoading(false);
       });
   };
 
