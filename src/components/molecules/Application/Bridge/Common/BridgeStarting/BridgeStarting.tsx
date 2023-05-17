@@ -10,6 +10,8 @@ import { IBridgeStarting } from '@/models/application/bridge';
 
 import { StyledButton, StyledLoading } from '@/components/atoms';
 
+import { BridgePurpose, BridgeProperty } from './components';
+
 const DynamicPurpose = dynamic(
   () => import('./components/BridgePurpose').then((mod) => mod.BridgePurpose),
   {
@@ -84,9 +86,9 @@ export const BridgeStarting: FC<FormNodeBaseProps> = observer((props) => {
   const renderFormNodeStep = useMemo(() => {
     switch (starting.state) {
       case StartingState.purpose:
-        return <DynamicPurpose purpose={starting.purpose} />;
+        return <BridgePurpose purpose={starting.purpose} />;
       case StartingState.property:
-        return <DynamicProperty property={starting.property} />;
+        return <BridgeProperty property={starting.property} />;
     }
   }, [starting.property, starting.purpose, starting.state]);
 

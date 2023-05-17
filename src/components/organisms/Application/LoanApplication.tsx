@@ -281,51 +281,47 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
 
   return (
     <>
-      {initialized ? (
+      {loadState.loading.toString()}
+      <Box>{initialized.toString()}</Box>
+      {loadState.loading ? (
+        <StyledLoading />
+      ) : initialized ? (
         renderApplicationForm
       ) : (
         <Box width={'100%'}>
-          {loadState.loading ? (
-            <StyledLoading />
-          ) : (
-            <Stack
-              alignItems={'center'}
-              justifyContent={'center'}
-              width={'100%'}
-            >
-              <StyledFormItem label={renderLabel} width={'100%'}>
-                <Stack
-                  alignItems={'center'}
-                  gap={3}
-                  justifyContent={'center'}
-                  width={'100%'}
+          <Stack alignItems={'center'} justifyContent={'center'} width={'100%'}>
+            <StyledFormItem label={renderLabel} width={'100%'}>
+              <Stack
+                alignItems={'center'}
+                gap={3}
+                justifyContent={'center'}
+                width={'100%'}
+              >
+                <Box
+                  className={applicationType === 'purchase' ? 'active' : ''}
+                  onClick={() => setApplicationType('purchase')}
+                  sx={LoanApplicationButtonStyles}
                 >
-                  <Box
-                    className={applicationType === 'purchase' ? 'active' : ''}
-                    onClick={() => setApplicationType('purchase')}
-                    sx={LoanApplicationButtonStyles}
-                  >
-                    Are you buying?
-                  </Box>
-                  <Box
-                    className={applicationType === 'refinance' ? 'active' : ''}
-                    onClick={() => setApplicationType('refinance')}
-                    sx={LoanApplicationButtonStyles}
-                  >
-                    Refinancing?
-                  </Box>
-                  <StyledButton
-                    disabled={!applicationType || initState.loading}
-                    loading={initState.loading}
-                    onClick={handleInitForm}
-                    sx={{ width: '100%', maxWidth: 600, mt: 3 }}
-                  >
-                    Next
-                  </StyledButton>
-                </Stack>
-              </StyledFormItem>
-            </Stack>
-          )}
+                  Are you buying?
+                </Box>
+                <Box
+                  className={applicationType === 'refinance' ? 'active' : ''}
+                  onClick={() => setApplicationType('refinance')}
+                  sx={LoanApplicationButtonStyles}
+                >
+                  Refinancing?
+                </Box>
+                <StyledButton
+                  disabled={!applicationType || initState.loading}
+                  loading={initState.loading}
+                  onClick={handleInitForm}
+                  sx={{ width: '100%', maxWidth: 600, mt: 3 }}
+                >
+                  Next
+                </StyledButton>
+              </Stack>
+            </StyledFormItem>
+          </Stack>
         </Box>
       )}
     </>

@@ -16,6 +16,8 @@ import { _updateTask } from '@/requests';
 
 import { StyledLoading, Transitions } from '@/components/atoms';
 
+import { BridgeStarting } from '@/components/molecules/Application/Bridge';
+
 const DynamicStarting = dynamic(
   () =>
     import('@/components/molecules/Application/Bridge/Common').then(
@@ -112,7 +114,7 @@ const useGenerateComponent = () => {
         switch (state as BridgePurchaseState) {
           case BridgePurchaseState.starting:
             return (
-              <DynamicStarting
+              <BridgeStarting
                 changeTaskState={changeTaskState}
                 completeTaskState={completeTaskState}
                 nextStep={next}

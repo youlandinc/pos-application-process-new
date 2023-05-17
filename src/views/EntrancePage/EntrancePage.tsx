@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 
-import { StyledLoading } from '@/components';
+import { StyledLoading } from '@/components/atoms';
 
 const DynamicEntrance = dynamic(
   () => import('@/components/organisms/Entrance').then((mod) => mod.Entrance),
