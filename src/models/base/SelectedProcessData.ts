@@ -7,7 +7,7 @@ import { AxiosResponse } from 'axios';
 import { ProcessData } from '@/types/server';
 import { enqueueSnackbar } from 'notistack';
 import { AUTO_HIDE_DURATION } from '@/constants';
-//import { ParseProcess } from '@/services/ParseProcess';
+import { ParseProcess } from '@/services/ParseProcess';
 
 export const SelectedProcessData = types
   .model({
@@ -35,13 +35,16 @@ export const SelectedProcessData = types
       self.loading = true;
       try {
         const rootStore = getParent(self, 1);
+
         if (
           rootStore.userSetting &&
           rootStore.userSetting.setting.lastSelectedProcessId !== ''
         ) {
+          console.log(rootStore.userSetting);
           const res: AxiosResponse<ProcessData> = yield _fetchProcessData(
             rootStore.userSetting.setting.lastSelectedProcessId,
           );
+
           self.loading = false;
           self.setProcessData(res.data);
           self.setScene(new ParseProcess(res.data).productType);

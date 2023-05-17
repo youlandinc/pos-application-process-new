@@ -30,7 +30,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [percentage, value],
   );
 
   const handledChange = (v: NumberFormatValues) => {
