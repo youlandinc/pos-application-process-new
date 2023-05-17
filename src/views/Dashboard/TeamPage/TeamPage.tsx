@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { Box, CircularProgress, Icon, SxProps } from '@mui/material';
 import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 import { _fetchMyTeamData } from '@/requests/saas';
 
 import { POSFont, POSSize } from '@/styles';
@@ -14,6 +15,7 @@ import {
 } from '@mui/icons-material';
 import { POSFormatUSPhoneToText } from '@/utils';
 import MY_TEAM from '@/svg/dashboard/my_team.svg';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 export interface TeamMemberData {
   name: string;
@@ -24,6 +26,7 @@ export interface TeamMemberData {
 }
 
 export const TeamPage: FC = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const [teamList, setTeamList] = useState<TeamMemberData[]>();
   const [slogan, setSlogan] = useState<string>('');
   const [workTime, setWorkTime] = useState<string>('');
@@ -45,7 +48,10 @@ export const TeamPage: FC = () => {
         setPhone(res?.data?.extInfo?.posSettings?.phone || '');
       })
       .catch((err) => {
-        // console.log(err);
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
       });
   });
 
@@ -123,7 +129,7 @@ const useStyles: SxProps = {
     },
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
 
   '& .pageMain': {

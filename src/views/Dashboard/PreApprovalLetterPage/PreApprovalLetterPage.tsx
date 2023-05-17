@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 
 import { useMst } from '@/models/Root';
 import { observer } from 'mobx-react-lite';

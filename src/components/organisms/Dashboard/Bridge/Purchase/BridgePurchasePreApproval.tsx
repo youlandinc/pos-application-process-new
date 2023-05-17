@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 import { useAsyncEffect, useSwitch } from '@/hooks';
 
+import { useSnackbar } from 'notistack';
 import { Address, IAddress } from '@/models/common/Address';
 
 import { POSFont } from '@/styles';
@@ -18,10 +19,6 @@ import {
   RatesProductData,
 } from '@/types';
 
-// import {
-//   PreApprovalLetterBPData,
-//   RatesProductData,
-// } from '@/types/dashboardData';
 import {
   _fetchPreApprovedLetterCheck,
   _fetchPreApprovedLetterInfo,
@@ -44,6 +41,7 @@ import {
   POSFormatLocalPercent,
   POSNotUndefined,
 } from '@/utils';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 const useStyles = {
   mx: { lg: 'auto', xs: 0 },
@@ -80,6 +78,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
   } = useMst();
 
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { open, visible, close } = useSwitch(false);
 
@@ -201,7 +200,12 @@ export const BridgePurchasePreApproval: FC = observer(() => {
             brokerProcessingFee,
           });
         })
-        .catch((err) => console.log(err));
+        .catch((err) =>
+          enqueueSnackbar(err as string, {
+            variant: 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+          }),
+        );
     },
     [],
   );

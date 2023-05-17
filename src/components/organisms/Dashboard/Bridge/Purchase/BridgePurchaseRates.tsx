@@ -1,11 +1,15 @@
 import { FC, useCallback, useState } from 'react';
-
+import { Box } from '@mui/material';
 import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { useSwitch } from '@/hooks';
+
+import { BridgePurchaseLoanInfo } from '@/components/molecules/Application';
+
+import { useSnackbar } from 'notistack';
 import { POSFlex } from '@/styles';
 import {
   BridgePurchaseEstimateRateData,
@@ -13,6 +17,7 @@ import {
   Encompass,
   RatesProductData,
 } from '@/types';
+import { LoanStage, UserType } from '@/types/enum';
 import {
   _fetchRatesLoanInfo,
   _fetchRatesProduct,
@@ -27,9 +32,7 @@ import {
   BridgePurchaseRatesSearch,
   BridgeRatesList,
 } from '@/components/molecules';
-import { LoanStage, UserType } from '@/types/enum';
-import { Box } from '@mui/material';
-import { BridgePurchaseLoanInfo } from '@/components/molecules/Application';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 const initialize: BPQueryData = {
   purchasePrice: undefined,
@@ -44,20 +47,6 @@ const initialize: BPQueryData = {
   agentFee: undefined,
 };
 
-const useStyles = {
-  width: '100%',
-  px: {
-    lg: 3,
-    xs: 0,
-  },
-  maxWidth: 900,
-  mx: {
-    lg: 'auto',
-    xs: 0,
-  },
-  ...POSFlex(undefined, 'center', 'column'),
-};
-
 export const BridgePurchaseRates: FC = observer(() => {
   const {
     userSetting: {
@@ -65,6 +54,7 @@ export const BridgePurchaseRates: FC = observer(() => {
     },
     userType,
   } = useMst();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { open, visible, close } = useSwitch(false);
 
@@ -120,7 +110,12 @@ export const BridgePurchaseRates: FC = observer(() => {
           agentFee,
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
   });
 
   const onCheckGetList = async () => {
@@ -132,8 +127,11 @@ export const BridgePurchaseRates: FC = observer(() => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
-        setLoading(false);
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+          setLoading(false);
       });
   };
 
@@ -183,14 +181,13 @@ export const BridgePurchaseRates: FC = observer(() => {
         lastSelectedProcessId,
         postData,
       );
-      console.log(res);
     },
     [lastSelectedProcessId],
   );
 
   return (
     <>
-      <Box sx={useStyles}>
+      <Box sx={BridgePurchaseRatesStyles}>
         <BridgePurchaseRatesSearch
           loading={loading || initLoading}
           loanStage={loanStage}
@@ -217,3 +214,17 @@ export const BridgePurchaseRates: FC = observer(() => {
     </>
   );
 });
+
+const BridgePurchaseRatesStyles = {
+  width: '100%',
+  px: {
+    lg: 3,
+    xs: 0,
+  },
+  maxWidth: 900,
+  mx: {
+    lg: 'auto',
+    xs: 0,
+  },
+  ...POSFlex('flex-start', 'flex-start', 'column'),
+};

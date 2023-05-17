@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Box, SxProps, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
+// import { useMst } from '@/models/Root';
 
 import { StyledButton } from '@/components/atoms';
 import { PageHeader } from '@/components/molecules';
@@ -100,9 +100,9 @@ export interface CheckListProps {
 }
 
 export const CheckList: FC<CheckListProps> = observer(({ updateState }) => {
-  const {
-    selectedProcessData: { scene },
-  } = useMst();
+  // const {
+  //   selectedProcessData: { scene },
+  // } = useMst();
 
   const CheckListStyles: SxProps = {
     maxWidth: 900,

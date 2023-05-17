@@ -1,4 +1,4 @@
-import { POSFormatDollar } from '@/utils';
+// import { POSFormatDollar } from '@/utils';
 import {
   FormEvent,
   forwardRef,
@@ -80,7 +80,7 @@ const _StyledPaymentCard = forwardRef<
   (
     {
       secret,
-      amount,
+      // amount,
       // title = 'Pay with card',
       // subtitle = 'Safe and instant payments using your credit card.',
       title,

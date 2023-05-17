@@ -12,7 +12,6 @@ export const OverviewPage: FC = observer(() => {
   const {
     selectedProcessData: { scene },
   } = useMst();
-  console.log({ scene });
   const renderOverPage = useMemo(() => {
     switch (scene) {
       // to do

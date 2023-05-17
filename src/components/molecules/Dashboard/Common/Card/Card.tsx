@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import { Box, BoxProps, Divider, SxProps } from '@mui/material';
 
 import { POSFont } from '@/styles';

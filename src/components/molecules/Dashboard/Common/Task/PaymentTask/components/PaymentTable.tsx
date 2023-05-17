@@ -1,6 +1,5 @@
 import { ChangeEvent, forwardRef, ReactNode } from 'react';
-// import { makeStyles, Box, FormControlLabel } from '@material-ui/core';
-// import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import { Box, Typography } from '@mui/material';
 
 import { PaymentTaskBaseComponentProps } from '@/components/molecules';
 import { SPaymentDetails } from '@/requests/dashboard';
@@ -10,12 +9,9 @@ import {
   StyledPaymentCard,
   StyledPaymentCardRef,
 } from '@/components/atoms';
-import { POSFlex, POSFont, POSSize } from '@/styles';
-import { POSFormatDollar } from '@/utils';
-import { Box, FormControlLabel, Typography } from '@mui/material';
-import { FiberManualRecord } from '@mui/icons-material';
+import { POSFlex, POSFont } from '@/styles';
 
-const useStyle = {
+const PaymentTableStyle = {
   '&.container': {
     ...POSFlex('center', 'center', 'column'),
   },
@@ -78,16 +74,15 @@ export const PaymentTable = forwardRef<StyledPaymentCardRef, PaymentTableProps>(
       check,
       onCheckValueChange,
       loanDetail,
-      productType,
+      // productType,
     } = props;
-    // const classes = useStyle();
     // const tenantConfig = utils.getTenantConfig();
 
     return (
       <StyledFormItem
         alignItems={'center'}
         label={'You need to make payment of $' + paymentDetail?.amount}
-        sx={useStyle}
+        sx={PaymentTableStyle}
         tip={
           <>
             <Typography color={'info.main'} variant={'body1'}>

@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  ReactNode,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { FC, ReactNode, useCallback, useMemo, useRef, useState } from 'react';
 import { Box, SxProps } from '@mui/material';
 import { useAsync } from 'react-use';
 
@@ -89,13 +82,16 @@ const useStateMachine = (
       PaymentTableState,
       {
         next?: () => void;
-        back?: () => void;
+        back: () => void;
       }
     >
   >({
     checklist: {
       next() {
         // updateState('payment');
+      },
+      back() {
+        //  backToList && backToList();
       },
     },
     confirm: {

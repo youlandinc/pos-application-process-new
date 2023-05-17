@@ -31,9 +31,10 @@ export const BridgeRatesList: FC<RatesProductListProps> = ({
       ) : (
         <>
           <Typography
-            color={'info.main'}
+            // color={'info.main'}
+            mt={6}
             textAlign={'center'}
-            variant={'body1'}
+            variant={'h4'}
           >
             The following loan programs are available for you
           </Typography>
@@ -108,7 +109,12 @@ const ProductCard: FC<{
       default:
         return null;
     }
-  }, [product.paymentOfMonth, userType]);
+  }, [
+    product.paymentOfMonth,
+    userType,
+    product.agentFee,
+    product.totalBorrowerPoints,
+  ]);
 
   return (
     <Stack

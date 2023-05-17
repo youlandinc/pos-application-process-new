@@ -1,5 +1,5 @@
 import { Dispatch, FC, ReactNode, SetStateAction } from 'react';
-import { Box, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import { PropertyOpt, PropertyUnitOpt } from '@/types';
 import { IAddress } from '@/models/common/Address';
