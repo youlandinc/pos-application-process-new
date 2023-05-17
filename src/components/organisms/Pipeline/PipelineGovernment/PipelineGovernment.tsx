@@ -105,7 +105,7 @@ export const PipelineGovernment: FC = observer(() => {
   return (
     <Stack alignItems={'center'} justifyContent={'center'}>
       <StyledFormItem
-        label={"Broker's government ID"}
+        label={"Broker's Government ID"}
         sx={{ width: '100%' }}
         tip={`Please upload your driver's license or government issued ID
             (driver's license, US passport, US military ID) to verify your

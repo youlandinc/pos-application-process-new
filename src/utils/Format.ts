@@ -79,3 +79,19 @@ export const POSFormatDate = (
 ): string => {
   return format(new Date(date), timeFormat, options);
 };
+
+export const POSFormatUSPhoneToText = (entry = '') => {
+  if (POSTypeOf(entry) === 'Null') {
+    return '';
+  }
+  const cleaned: string = ('' + entry).replace(/\D/g, '');
+  const match: RegExpMatchArray | null = cleaned.match(
+    /^(\d{3})?(\d{3})(\d{4})$/,
+  );
+  if (match) {
+    const areaCode: string = match[1] ? `(${match[1]}) ` : '';
+    const formattedNumber = `${areaCode}${match[2]}-${match[3]}`;
+    return formattedNumber;
+  }
+  return cleaned;
+};

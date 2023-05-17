@@ -99,7 +99,7 @@ export const PipelineLicense: FC = observer(() => {
   return (
     <Stack alignItems={'center'} justifyContent={'center'}>
       <StyledFormItem
-        label={'Broker license'}
+        label={'Broker License'}
         sx={{ width: '100%' }}
         tip={`If you're looking to broker bridge loans in AZ, CA, MN, NC, NJ,
             NV, NY, OR, or UT, please upload your broker license for each

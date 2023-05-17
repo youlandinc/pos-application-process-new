@@ -45,26 +45,6 @@ import { POSFlex, POSFont } from '@/styles';
 
 const useStyles = {
   mx: { lg: 'auto', xs: 0 },
-  '& .formRow': {
-    ...POSFlex('flex-start', 'space-between', 'row'),
-    gap: 50,
-    marginBlockEnd: 24,
-    '& > *': {
-      flex: 1,
-    },
-    '& > :last-child:nth-of-type(2)': {
-      flex: 0.4545,
-    },
-  },
-  '& .checkbox': {
-    ...POSFlex('center', 'flex-start', 'row'),
-    ...POSFont(16, 400, 1.5, 'rgba(0,0,0,.87)'),
-    marginLeft: 0,
-    marginBottom: 24,
-    width: 400,
-    cursor: 'pointer',
-    userSelect: 'none',
-  },
   '& .resultBox': {
     ...POSFont(16, 400, 1.5, '#3F51B5'),
     mt: 3,
@@ -73,17 +53,7 @@ const useStyles = {
     p: 3,
     borderRadius: 2,
   },
-  '& .dialogPaper': {
-    maxWidth: 500,
-    borderRadius: 8,
-  },
-  '& .dialogContent': {
-    lineHeight: 1.5,
-    textAlign: 'center',
-    '&, &:first-of-type': {
-      padding: 48,
-    },
-  },
+
   '& .updatedImage': {
     display: 'inline-block',
     width: 192,
@@ -96,25 +66,6 @@ const useStyles = {
     ...POSFont(16, 700, 1.5, 'rgba(0, 0, 0, 0.87)'),
     paddingInline: 60,
     fontSize: 24,
-  },
-  '& .updatedActions': {
-    display: 'flex',
-    gap: 9,
-    marginBlockStart: 48,
-    '& > *': {
-      flex: 1,
-    },
-  },
-  '& .secondButton': {
-    ...POSFont(16, 700, 1.5, '#ffffff'),
-    textTransform: 'none',
-    background: '#7B96B5',
-    minWidth: 200,
-    height: 50,
-    borderRadius: 8,
-    '&:hover': {
-      background: '#446B99',
-    },
   },
 } as const;
 
@@ -454,7 +405,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
                 color={'primary'}
                 disabled={!clickable}
                 onClick={onClickUpdate}
-                style={{ marginBlockStart: 24 }}
+                sx={{ mt: 3 }}
                 variant={'contained'}
               >
                 Update
@@ -525,7 +476,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
         </Stack>
         <Transitions>
           {LTVError && (
-            <Stack color={'#ef5350'} width={'100%'}>
+            <Stack color={'error.main'} width={'100%'}>
               {LTVError}
             </Stack>
           )}
@@ -630,7 +581,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
 
         <Transitions>
           {LTCError && (
-            <Stack color={'#ef5350'} mt={'24px'} width={'100%'}>
+            <Stack color={'error.main'} mt={'24px'} width={'100%'}>
               {LTCError}
             </Stack>
           )}
@@ -702,7 +653,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
         <>
           <PreApprovalEdit
             address={address}
-            // children={renderEditChildren}
             clickable={!clickable}
             editable={checkLoading}
             onClickCancel={onChangeTableStatus}

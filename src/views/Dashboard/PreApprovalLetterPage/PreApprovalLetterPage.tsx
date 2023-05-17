@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 
 import {
   // MortgagePurchasePreApproval,
-  // BridgePurchasePreApproval,
+  BridgePurchasePreApproval,
   BridgeRefinancePreApproval,
 } from '@/components/organisms';
 import { useMst } from '@/models/Root';
@@ -18,8 +18,8 @@ export const PreApprovalLetterPage: FC = observer(() => {
     switch (scene) {
       // case 'mortgage purchase':
       //   return <MortgagePurchasePreApproval />;
-      // case 'bridge purchase':
-      //   return <BridgePurchasePreApproval />;
+      case 'bridge purchase':
+        return <BridgePurchasePreApproval />;
       case 'bridge refinance':
         return <BridgeRefinancePreApproval />;
       default:

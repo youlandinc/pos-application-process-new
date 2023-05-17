@@ -6,3 +6,4 @@ export * from './PageHeader';
 export * from './ServiceCardList';
 export * from './PreApprovalEdit';
 export * from './PreApprovalInfo';
+export * from './Task';

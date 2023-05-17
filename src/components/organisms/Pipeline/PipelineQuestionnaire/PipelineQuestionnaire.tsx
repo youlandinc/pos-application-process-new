@@ -135,11 +135,22 @@ export const PipelineQuestionnaire: FC = observer(() => {
     <>
       <Stack alignItems={'center'} justifyContent={'center'}>
         <StyledFormItem
-          label={'Broker questionnaire（optional）'}
+          label={'Broker Questionnaire (Optional)'}
           sx={{ width: '100%' }}
           tip={`Please indicate the states in which you are licensed to broker
                 loans and the type of license you hold in each state`}
         >
+          <Stack alignItems={'center'} justifyContent={'center'} width={'100%'}>
+            <StyledButton
+              color={'info'}
+              onClick={() => router.back()}
+              sx={{ flex: 1, width: '30%' }}
+              variant={'outlined'}
+            >
+              Skip
+            </StyledButton>
+          </Stack>
+
           <Transitions style={{ width: '100%' }}>
             {BROKER_QUESTIONNAIRE.taskForm?.licenses?.map(
               (item: PipelineQuestionnaireOwner, index: number) => (

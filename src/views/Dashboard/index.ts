@@ -1,4 +1,6 @@
 export * from './DashboardPage';
 export * from './OverviewPage';
 export * from './TeamPage';
-export * from './PreapprovalLetterPage';
+export * from './PreApprovalLetterPage';
+export * from './TaskPage';
+export * from './RatesPage';

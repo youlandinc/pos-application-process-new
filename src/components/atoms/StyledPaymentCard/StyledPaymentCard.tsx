@@ -81,8 +81,10 @@ const _StyledPaymentCard = forwardRef<
     {
       secret,
       amount,
-      title = 'Pay with card',
-      subtitle = 'Safe and instant payments using your credit card.',
+      // title = 'Pay with card',
+      // subtitle = 'Safe and instant payments using your credit card.',
+      title,
+      subtitle,
     },
     ref,
   ) => {
@@ -219,9 +221,9 @@ const _StyledPaymentCard = forwardRef<
               </Box>
             </Box>
           </Box>
-          <Box className={'payment_summary'}>
+          {/* <Box className={'payment_summary'}>
             Total payment:{POSFormatDollar(amount)}
-          </Box>
+          </Box> */}
         </Box>
       </>
     );
@@ -236,8 +238,10 @@ export const StyledPaymentCard = forwardRef<
     {
       secret,
       amount,
-      title = 'Pay with card',
-      subtitle = 'Safe and instant payments using your credit card.',
+      // title = 'Pay with card',
+      // subtitle = 'Safe and instant payments using your credit card.',
+      title,
+      subtitle,
     },
     ref,
   ) => {

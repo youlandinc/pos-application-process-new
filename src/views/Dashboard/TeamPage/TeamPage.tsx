@@ -12,7 +12,7 @@ import {
   SupportAgentOutlined,
   WatchLaterOutlined,
 } from '@mui/icons-material';
-import { POSFormatUSPhone } from '@/utils';
+import { POSFormatUSPhoneToText } from '@/utils';
 import MY_TEAM from '@/svg/dashboard/my_team.svg';
 
 export interface TeamMemberData {
@@ -73,7 +73,7 @@ export const TeamPage: FC = () => {
                 </Box>
                 <Box className={'otherInfoContact'}>
                   <PhoneEnabledOutlined className={'logo'} />
-                  {POSFormatUSPhone(phone)}
+                  {POSFormatUSPhoneToText(phone)}
                 </Box>
                 <Box className={'otherInfoContact'}>
                   <MailOutlineOutlined className={'logo'} />
@@ -89,11 +89,11 @@ export const TeamPage: FC = () => {
                 </Box>
               </Box>
               {/* <Image
-                   alt={''}
-                   height={140}
-                   src={'/my_team_footer.png'}
-                   width={216}
-                   /> */}
+                alt={''}
+                height={140}
+                src={'/my_team_footer.png'}
+                width={216}
+              /> */}
               <Icon className={'my_team_svg'} component={MY_TEAM} />
             </Box>
           </Box>
@@ -112,8 +112,15 @@ export const TeamPage: FC = () => {
 
 const useStyles: SxProps = {
   '&.container': {
-    width: '100%',
-    padding: '48px 7.5vw',
+    px: {
+      lg: 3,
+      xs: 0,
+    },
+    maxWidth: 900,
+    mx: {
+      lg: 'auto',
+      xs: 0,
+    },
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',

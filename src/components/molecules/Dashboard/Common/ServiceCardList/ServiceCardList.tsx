@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { MailOutlineOutlined, PhoneEnabledOutlined } from '@mui/icons-material';
 
 import { TeamMemberData } from '@/views';
-import { POSFormatUSPhone } from '@/utils';
+import { POSFormatUSPhoneToText } from '@/utils';
 import { POSFont } from '@/styles';
 
 interface TeamCardProps {
@@ -68,7 +68,7 @@ export const ServiceCardList: FC<TeamCardProps> = (props) => {
       <Box className={'teamCardRight'}>
         <Box className={'teamCardContact'}>
           <PhoneEnabledOutlined className={'logo'} />
-          {POSFormatUSPhone(phone)}
+          {POSFormatUSPhoneToText(phone)}
         </Box>
         <Box className={'teamCardContact'}>
           <MailOutlineOutlined className={'logo'} />

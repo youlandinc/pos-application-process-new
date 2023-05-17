@@ -1,11 +1,11 @@
-import { DashboardPage, PreapprovalLetterPage } from '@/views';
+import { DashboardPage, PreApprovalLetterPage } from '@/views';
 import { FC } from 'react';
 
 const PreApprovalLetter: FC = () => {
   return (
     <>
       <DashboardPage>
-        <PreapprovalLetterPage />
+        <PreApprovalLetterPage />
       </DashboardPage>
     </>
   );
