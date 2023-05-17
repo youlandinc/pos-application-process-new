@@ -1,6 +1,5 @@
 import { FC, useCallback, useMemo } from 'react';
 import { Stack } from '@mui/material';
-import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -17,42 +16,14 @@ import {
   VariableName,
 } from '@/types';
 
-import { StyledButton, StyledLoading } from '@/components/atoms';
+import { StyledButton } from '@/components/atoms';
 
-const DynamicNotice = dynamic(
-  () => import('./components/BridgeNotice').then((mod) => mod.BridgeNotice),
-  {
-    loading: () => <StyledLoading />,
-  },
-);
-
-const DynamicPersonInfo = dynamic(
-  () =>
-    import('./components/BridgePersonInfo').then((mod) => mod.BridgePersonInfo),
-  {
-    loading: () => <StyledLoading />,
-  },
-);
-
-const DynamicScore = dynamic(
-  () =>
-    import('./components/BridgeScoreResult').then(
-      (mod) => mod.BridgeScoreResult,
-    ),
-  {
-    loading: () => <StyledLoading />,
-  },
-);
-
-const DynamicCoBorrowerInfo = dynamic(
-  () =>
-    import('./components/BridgeCoBorrowerInfo').then(
-      (mod) => mod.BridgeCoBorrowerInfo,
-    ),
-  {
-    loading: () => <StyledLoading />,
-  },
-);
+import {
+  BridgeCoBorrowerInfo,
+  BridgeNotice,
+  BridgePersonInfo,
+  BridgeScoreResult,
+} from './components';
 
 const useStateMachine = (
   creditScore: IBridgeCreditScore,
@@ -206,13 +177,13 @@ export const BridgeCreditScore: FC<FormNodeBaseProps> = observer((props) => {
   const renderFormNodeStep = useMemo(() => {
     switch (creditScore.state) {
       case BridgeCreditScoreState.notice:
-        return <DynamicNotice />;
+        return <BridgeNotice />;
       case BridgeCreditScoreState.selfInfo:
-        return <DynamicPersonInfo />;
+        return <BridgePersonInfo />;
       case BridgeCreditScoreState.creditScore:
-        return <DynamicScore role={'self'} />;
+        return <BridgeScoreResult role={'self'} />;
       case BridgeCreditScoreState.coBorrowerInfo:
-        return <DynamicCoBorrowerInfo />;
+        return <BridgeCoBorrowerInfo />;
     }
   }, [creditScore.state]);
 

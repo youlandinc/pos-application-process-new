@@ -281,8 +281,6 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
 
   return (
     <>
-      {loadState.loading.toString()}
-      <Box>{initialized.toString()}</Box>
       {loadState.loading ? (
         <StyledLoading />
       ) : initialized ? (

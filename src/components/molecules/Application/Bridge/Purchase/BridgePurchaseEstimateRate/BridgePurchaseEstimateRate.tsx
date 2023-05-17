@@ -11,7 +11,6 @@ import {
   BridgePurchaseEstimateRateData,
   PropertyOpt,
   RatesProductData,
-  UserType,
   VariableName,
 } from '@/types';
 import {

@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useRef } from 'react';
 import { NextRouter, useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
@@ -14,86 +13,17 @@ import { BridgePurchaseState, ServerTaskKey } from '@/types/enum';
 import { useAutoSave, useStoreData } from '@/hooks';
 import { _updateTask } from '@/requests';
 
-import { StyledLoading, Transitions } from '@/components/atoms';
+import { Transitions } from '@/components/atoms';
 
-import { BridgeStarting } from '@/components/molecules/Application/Bridge';
-
-const DynamicStarting = dynamic(
-  () =>
-    import('@/components/molecules/Application/Bridge/Common').then(
-      (mod) => mod.BridgeStarting,
-    ),
-  {
-    loading: () => <StyledLoading />,
-    ssr: false,
-  },
-);
-
-const DynamicAuth = dynamic(
-  () =>
-    import('@/components/molecules/Application/Common/Auth').then(
-      (mod) => mod.Auth,
-    ),
-  {
-    loading: () => <StyledLoading />,
-    ssr: false,
-  },
-);
-
-const DynamicCreditScore = dynamic(
-  () =>
-    import('@/components/molecules/Application/Bridge/Common').then(
-      (mod) => mod.BridgeCreditScore,
-    ),
-  {
-    loading: () => <StyledLoading />,
-    ssr: false,
-  },
-);
-
-const DynamicWhereKnow = dynamic(
-  () =>
-    import('@/components/molecules/Application/Common').then(
-      (mod) => mod.WhereKnow,
-    ),
-  {
-    loading: () => <StyledLoading />,
-    ssr: false,
-  },
-);
-
-const DynamicEstimateRate = dynamic(
-  () =>
-    import('@/components/molecules/Application/Bridge/Purchase').then(
-      (mod) => mod.BridgePurchaseEstimateRate,
-    ),
-  {
-    loading: () => <StyledLoading />,
-    ssr: false,
-  },
-);
-
-const DynamicCelebrate = dynamic(
-  () =>
-    import('@/components/molecules/Application/Bridge/Common').then(
-      (mod) => mod.BridgeCelebrate,
-    ),
-  {
-    loading: () => <StyledLoading />,
-    ssr: false,
-  },
-);
-
-const DynamicRefuse = dynamic(
-  () =>
-    import('@/components/molecules/Application/Bridge/Common').then(
-      (mod) => mod.BridgeRefuse,
-    ),
-  {
-    loading: () => <StyledLoading />,
-    ssr: false,
-  },
-);
+import {
+  Auth,
+  BridgeCelebrate,
+  BridgeCreditScore,
+  BridgePurchaseEstimateRate,
+  BridgeRefuse,
+  BridgeStarting,
+  WhereKnow,
+} from '@/components/molecules/Application';
 
 const useGenerateComponent = () => {
   const {
@@ -124,7 +54,7 @@ const useGenerateComponent = () => {
             );
           case BridgePurchaseState.auth:
             return (
-              <DynamicAuth
+              <Auth
                 changeTaskState={changeTaskState}
                 completeTaskState={completeTaskState}
                 nextStep={next}
@@ -134,7 +64,7 @@ const useGenerateComponent = () => {
             );
           case BridgePurchaseState.creditScore:
             return (
-              <DynamicCreditScore
+              <BridgeCreditScore
                 changeTaskState={changeTaskState}
                 completeTaskState={completeTaskState}
                 nextStep={next}
@@ -144,7 +74,7 @@ const useGenerateComponent = () => {
             );
           case BridgePurchaseState.whereKnowUs:
             return (
-              <DynamicWhereKnow
+              <WhereKnow
                 changeTaskState={changeTaskState}
                 completeTaskState={completeTaskState}
                 nextStep={next}
@@ -153,11 +83,11 @@ const useGenerateComponent = () => {
               />
             );
           case BridgePurchaseState.estimateRate:
-            return <DynamicEstimateRate nextStep={next} />;
+            return <BridgePurchaseEstimateRate nextStep={next} />;
           case BridgePurchaseState.celebrate:
-            return <DynamicCelebrate nextStep={next} />;
+            return <BridgeCelebrate nextStep={next} />;
           case BridgePurchaseState.refuse:
-            return <DynamicRefuse nextStep={next} />;
+            return <BridgeRefuse nextStep={next} />;
         }
       },
     [state],

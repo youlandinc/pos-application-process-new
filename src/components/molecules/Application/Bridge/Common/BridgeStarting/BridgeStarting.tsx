@@ -1,6 +1,5 @@
 import { FC, useCallback, useMemo } from 'react';
 import { Stack } from '@mui/material';
-import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -8,22 +7,9 @@ import { useMst } from '@/models/Root';
 import { StartingState } from '@/types/enum';
 import { IBridgeStarting } from '@/models/application/bridge';
 
-import { StyledButton, StyledLoading } from '@/components/atoms';
+import { StyledButton } from '@/components/atoms';
 
-import { BridgePurpose, BridgeProperty } from './components';
-
-const DynamicPurpose = dynamic(
-  () => import('./components/BridgePurpose').then((mod) => mod.BridgePurpose),
-  {
-    loading: () => <StyledLoading />,
-  },
-);
-const DynamicProperty = dynamic(
-  () => import('./components/BridgeProperty').then((mod) => mod.BridgeProperty),
-  {
-    loading: () => <StyledLoading />,
-  },
-);
+import { BridgeProperty, BridgePurpose } from './components';
 
 const useStateMachine = (
   starting: IBridgeStarting,
