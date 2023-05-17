@@ -3,7 +3,8 @@ import { Box, SxProps, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { PageHeader, StyledButton } from '@/components';
+import { StyledButton } from '@/components/atoms';
+import { PageHeader } from '@/components/molecules';
 import { POSFlex, POSFont } from '@/styles';
 import { CheckCircle } from '@mui/icons-material';
 
@@ -93,6 +94,7 @@ const list = [
     ],
   },
 ];
+
 export interface CheckListProps {
   updateState: () => void;
 }

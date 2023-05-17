@@ -8,7 +8,7 @@ import { useMst } from '@/models/Root';
 import { useBreakpoints } from '@/hooks';
 import { UserType } from '@/types';
 
-import { StyledButton, StyledFormItem, StyledStatus } from '@/components';
+import { StyledButton, StyledFormItem, StyledStatus } from '@/components/atoms';
 
 export const PipelineProfile: FC = observer(() => {
   const router = useRouter();

@@ -19,7 +19,7 @@ import {
   StyledSelect,
   StyledTextField,
   Transitions,
-} from '@/components';
+} from '@/components/atoms';
 
 import {
   _completePipelineTask,

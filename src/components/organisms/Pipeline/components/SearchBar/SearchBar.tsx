@@ -12,7 +12,7 @@ import {
   StyledDrawer,
   StyledSelectMultiple,
   StyledTextField,
-} from '@/components';
+} from '@/components/atoms';
 
 export interface SearchBarProps {
   searchForm: {

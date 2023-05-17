@@ -3,7 +3,8 @@ import React, { FC, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 import { Box, SxProps, Typography } from '@mui/material';
-import { BridgePurchaseTask, PageHeader } from '@/components';
+import { PageHeader } from '@/components/molecules';
+import { BridgePurchaseTask } from '@/components/organisms';
 import { POSFlex, POSFont } from '@/styles';
 import { CheckCircle } from '@mui/icons-material';
 
@@ -173,40 +174,40 @@ export const TaskPage: FC = observer(() => {
   return (
     <Box sx={TaskPageStyles}>
       {/* <PageHeader
-        subTitle={
-          'You can make updates to the task before the loan is approved.'
-        }
-        title={'Your Tasks Checklist'}
-      /> */}
+         subTitle={
+         'You can make updates to the task before the loan is approved.'
+         }
+         title={'Your Tasks Checklist'}
+         /> */}
       {renderTaskPage}
       {/* {list.map((item) => (
-        <Box className={'card_box'} key={item.title}>
-          <Box>
-            <Typography
-              // component={'div'}
-              // mt={3}
-              variant={'h6'}
-            >
-              {item.title}
-            </Typography>
-            <Box className={item.status}>{item.status}</Box>
-          </Box>
-          {item.children.map((sonItem) => (
-            <Box key={sonItem.title} px={3}>
-              <Typography
-                // component={'div'}
-                // mt={3}
-                variant={'body1'}
-              >
-                {sonItem.title}
-              </Typography>
-              {sonItem.status === 'Finish' && (
-                <CheckCircle className={sonItem.status} />
-              )}
-            </Box>
-          ))}
-        </Box>
-      ))} */}
+         <Box className={'card_box'} key={item.title}>
+         <Box>
+         <Typography
+         // component={'div'}
+         // mt={3}
+         variant={'h6'}
+         >
+         {item.title}
+         </Typography>
+         <Box className={item.status}>{item.status}</Box>
+         </Box>
+         {item.children.map((sonItem) => (
+         <Box key={sonItem.title} px={3}>
+         <Typography
+         // component={'div'}
+         // mt={3}
+         variant={'body1'}
+         >
+         {sonItem.title}
+         </Typography>
+         {sonItem.status === 'Finish' && (
+         <CheckCircle className={sonItem.status} />
+         )}
+         </Box>
+         ))}
+         </Box>
+         ))} */}
     </Box>
   );
 });

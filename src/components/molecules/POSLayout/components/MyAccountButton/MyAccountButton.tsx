@@ -1,4 +1,3 @@
-import { StyledButton } from '@/components';
 import { userpool } from '@/constants';
 
 import { useBreakpoints } from '@/hooks';
@@ -24,6 +23,8 @@ import {
 } from 'react';
 
 import { MyAccountButtonProps, MyAccountStyles } from './index';
+
+import { StyledButton } from '@/components/atoms';
 
 const MENU_LIST_CUSTOMER = [
   { label: 'Change Email', url: '/auth/change_email' },

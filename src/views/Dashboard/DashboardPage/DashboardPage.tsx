@@ -1,8 +1,10 @@
 import { FC, ReactNode, useEffect } from 'react';
 
-import { POSLayout, StyledLoading } from '@/components/';
 import { useMst } from '@/models/Root';
 import { observer } from 'mobx-react-lite';
+
+import { StyledLoading } from '@/components/atoms';
+import { POSLayout } from '@/components/molecules';
 
 export const DashboardPage: FC<{ children?: ReactNode }> = observer(
   ({ children }) => {

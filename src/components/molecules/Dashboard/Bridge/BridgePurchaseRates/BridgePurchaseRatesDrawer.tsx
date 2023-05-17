@@ -6,7 +6,7 @@ import { CloseOutlined } from '@mui/icons-material';
 
 import { BridgePurchaseLoanInfo } from '@/components/molecules/Application';
 import { RatesProductData } from '@/types';
-import { LoanStage, UserType } from '@/types/enum';
+import { UserType } from '@/types/enum';
 import { POSFindLabel, POSFormatDollar, POSFormatPercent } from '@/utils';
 import { OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
 

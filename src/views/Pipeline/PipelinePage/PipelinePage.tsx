@@ -6,7 +6,7 @@ import { useMst } from '@/models/Root';
 
 import { UserType } from '@/types';
 
-import { POSLayout } from '@/components';
+import { POSLayout } from '@/components/molecules';
 
 export const PipelinePage: FC<{ children?: ReactNode }> = observer(
   ({ children }) => {

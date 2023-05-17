@@ -34,7 +34,7 @@ import {
   StyledTextFieldNumber,
   Transitions,
 } from '@/components/atoms';
-import { PreApprovalEdit, PreApprovalInfo } from '@/components';
+import { PreApprovalEdit, PreApprovalInfo } from '@/components/molecules';
 
 import {
   POSFormatDollar,

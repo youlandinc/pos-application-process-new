@@ -8,7 +8,7 @@ import { usePersistFn } from '@/hooks';
 import { ForgotPassword, Login, SignUp } from '@/components/molecules';
 import { _bindProcess } from '@/requests';
 
-import { StyledButton, StyledFormItem, Transitions } from '@/components';
+import { StyledButton, StyledFormItem, Transitions } from '@/components/atoms';
 
 export const Auth: FC<FormNodeBaseProps> = observer((props) => {
   const { prevStep, nextStep } = props;

@@ -1,17 +1,16 @@
 import { FC } from 'react';
 import { Close } from '@mui/icons-material';
-
 import { Box, SxProps } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import {
-  POSMenuList,
   StyledButton,
   StyledDrawer,
   StyledHeaderLogo,
-} from '@/components';
+} from '@/components/atoms';
+import { POSMenuList } from '@/components/molecules';
 import { useBreakpoints } from '@/hooks';
 import { SceneType } from '@/types';
 

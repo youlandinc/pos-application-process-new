@@ -13,7 +13,7 @@ import { _deleteProcess, _fetchAllProcesses } from '@/requests';
 import { useSwitch } from '@/hooks';
 import { LoanStage, UserType } from '@/types';
 import { AUTO_HIDE_DURATION, PAGE_SIZE } from '@/constants';
-import { StyledButton, StyledDialog, StyledLoading } from '@/components';
+import { StyledButton, StyledDialog, StyledLoading } from '@/components/atoms';
 
 import {
   LoanItemCard,

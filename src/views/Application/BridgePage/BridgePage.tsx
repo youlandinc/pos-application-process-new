@@ -3,7 +3,8 @@ import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { LoanApplication, POSLayout } from '@/components';
+import { POSLayout } from '@/components/molecules';
+import { LoanApplication } from '@/components/organisms';
 
 export const BridgePage: FC = observer(() => {
   const {

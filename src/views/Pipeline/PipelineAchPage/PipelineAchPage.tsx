@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import dynamic from 'next/dynamic';
 
-import { StyledLoading } from '@/components';
+import { StyledLoading } from '@/components/atoms';
 
 const DynamicPipelineW9 = dynamic(
   () =>

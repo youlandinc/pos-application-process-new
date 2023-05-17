@@ -31,7 +31,7 @@ import { POSFlex } from '@/styles';
 import { LoanStage, LoanType, UserType } from '@/types';
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
 
-import { StyledBadge, StyledButton } from '@/components';
+import { StyledBadge, StyledButton } from '@/components/atoms';
 
 export interface LoanItemCardProps {
   formData: {

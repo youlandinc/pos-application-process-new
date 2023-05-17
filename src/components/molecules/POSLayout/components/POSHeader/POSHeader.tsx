@@ -16,14 +16,16 @@ import { MyAccountButton } from '../MyAccountButton';
 import { POSFlex } from '@/styles';
 import { useBreakpoints, usePersistFn, useStoreData, useSwitch } from '@/hooks';
 import {
+  StyledButton,
+  StyledDialog,
+  StyledHeaderLogo,
+} from '@/components/atoms';
+import {
   ForgotPassword,
   Login,
   SideDrawer,
   SignUp,
-  StyledButton,
-  StyledDialog,
-  StyledHeaderLogo,
-} from '@/components';
+} from '@/components/molecules';
 
 export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const router = useRouter();

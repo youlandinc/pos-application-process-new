@@ -25,7 +25,7 @@ import {
   StyledTextField,
   StyledTextFieldPhone,
   Transitions,
-} from '@/components';
+} from '@/components/atoms';
 
 export const PipelineAgreement: FC = observer(() => {
   const router = useRouter();

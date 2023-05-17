@@ -5,7 +5,7 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { StyledButton, StyledFormItem, StyledSelect } from '@/components';
+import { StyledButton, StyledFormItem, StyledSelect } from '@/components/atoms';
 
 export const WhereKnow: FC<FormNodeBaseProps> = observer(
   ({

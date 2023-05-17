@@ -5,7 +5,7 @@ import { _fetchMyTeamData } from '@/requests/saas';
 
 import { POSFont, POSSize } from '@/styles';
 
-import { PageHeader, ServiceCardList } from '@/components';
+import { PageHeader, ServiceCardList } from '@/components/molecules';
 import {
   MailOutlineOutlined,
   PhoneEnabledOutlined,
@@ -89,11 +89,11 @@ export const TeamPage: FC = () => {
                 </Box>
               </Box>
               {/* <Image
-                alt={''}
-                height={140}
-                src={'/my_team_footer.png'}
-                width={216}
-              /> */}
+                   alt={''}
+                   height={140}
+                   src={'/my_team_footer.png'}
+                   width={216}
+                   /> */}
               <Icon className={'my_team_svg'} component={MY_TEAM} />
             </Box>
           </Box>

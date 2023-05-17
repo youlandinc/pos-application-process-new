@@ -12,7 +12,8 @@ import {
 
 import { POSLayoutProps } from './index';
 import { POSHeader } from './components/POSHeader';
-import { POSMenuList, StyledBoxWrap } from '@/components';
+import { StyledBoxWrap } from '@/components/atoms';
+import { POSMenuList } from '@/components/molecules';
 import { SceneType } from '@/types';
 
 export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
