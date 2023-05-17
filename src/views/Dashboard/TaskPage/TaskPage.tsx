@@ -22,7 +22,7 @@ export const TaskPage: FC = observer(() => {
     },
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   };
   const renderTaskPage = useMemo(() => {
     switch (scene) {

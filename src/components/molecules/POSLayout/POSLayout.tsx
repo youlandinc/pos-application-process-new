@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Box } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
@@ -21,6 +21,10 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
   const breakpoint = useBreakpoints();
   useCheckIsLogin();
   useCheckInfoIsComplete();
+  useEffect(() => {
+    const { fetchProcessData } = store.selectedProcessData;
+    fetchProcessData();
+  }, [store.selectedProcessData]);
 
   return (
     <Box sx={{ height: '100%' }}>

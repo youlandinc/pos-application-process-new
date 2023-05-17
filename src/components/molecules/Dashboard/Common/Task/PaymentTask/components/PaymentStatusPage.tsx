@@ -70,12 +70,12 @@ export const PaymentStatusPage: FC<PaymentStatusPageProps> = (props) => {
                 <span className={'link_style'}>
                   {/* todo sass */}
                   {/* {tenantConfig.extInfo?.posSettings?.email ||
-                    'borrow@youland.com'}{' '} */}
+                    'borrow@youland.com'}{' '} */}{' '}
                   borrow@youland.com
                 </span>
                 or call toll free at
                 <span className={'link_style'}>
-                  {/* {tenantConfig.extInfo?.posSettings?.phone || '1-833-968-5263'} */}
+                  {/* {tenantConfig.extInfo?.posSettings?.phone || '1-833-968-5263'} */}{' '}
                   1-833-968-5263
                 </span>
               </Box>
@@ -142,14 +142,14 @@ export const PaymentStatusPage: FC<PaymentStatusPageProps> = (props) => {
               free at{' '}
               <span className={'link_style'}>
                 {/* todo sass */}
-                {/* {tenantConfig.extInfo?.posSettings?.phone || '1-833-968-5263'} */}
+                {/* {tenantConfig.extInfo?.posSettings?.phone || '1-833-968-5263'} */}{' '}
                 1-833-968-5263
               </span>{' '}
               or email us at
               <span className={'link_style'}>
                 {/* todo sass */}
                 {/* {tenantConfig.extInfo?.posSettings?.email ||
-                  'borrow@youland.com'} */}
+                  'borrow@youland.com'} */}{' '}
                 borrow@youland.com
               </span>
               . We can help you with the refund.
