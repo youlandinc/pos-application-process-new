@@ -17,8 +17,8 @@ const DynamicPipelinePage = dynamic(
 
 const DynamicPipelineListPage = dynamic(
   () =>
-    import('@/views/Pipeline/PipelinePage/PipelinePage').then(
-      (mod) => mod.PipelinePage,
+    import('@/views/Pipeline/PipelineListPage/PipelineListPage').then(
+      (mod) => mod.PipelineListPage,
     ),
   {
     loading: () => <CircularProgress />,
