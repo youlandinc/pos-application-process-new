@@ -1,14 +1,32 @@
 import { FC } from 'react';
-import { DashboardPage, RatesPage } from '@/views';
+import { observer } from 'mobx-react-lite';
+import dynamic from 'next/dynamic';
+import { CircularProgress } from '@mui/material';
 
-const Rates: FC = () => {
+const DynamicDashboardPage = dynamic(
+  () =>
+    import('@/views/Dashboard/DashboardPage').then((mod) => mod.DashboardPage),
+  {
+    loading: () => <CircularProgress />,
+    ssr: false,
+  },
+);
+
+const DynamicRatesPage = dynamic(
+  () => import('@/views/Dashboard/RatesPage').then((mod) => mod.RatesPage),
+  {
+    loading: () => <CircularProgress />,
+    ssr: false,
+  },
+);
+const Rates: FC = observer(() => {
   return (
     <>
-      <DashboardPage>
-        <RatesPage />
-      </DashboardPage>
+      <DynamicDashboardPage>
+        <DynamicRatesPage />
+      </DynamicDashboardPage>
     </>
   );
-};
+});
 
 export default Rates;

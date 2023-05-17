@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Box } from '@mui/material';
 
 import { POSFlex, POSFont } from '@/styles';
-import { BPRatesLoanInfo } from '@/types';
+import { BridgePurchaseRatesLoanInfo } from '@/types';
 import { StyledLoading } from '@/components/atoms';
 import {
   PaymentTaskBaseComponentProps,
@@ -33,12 +33,14 @@ const useStyle = {
   },
 };
 
-interface BPPaymentSummary
-  extends PaymentTaskBaseComponentProps<BPRatesLoanInfo> {
+interface BridgePurchasePaymentSummary
+  extends PaymentTaskBaseComponentProps<BridgePurchaseRatesLoanInfo> {
   loading?: boolean;
 }
 
-export const BPPaymentSummary: FC<BPPaymentSummary> = (props) => {
+export const BridgePurchasePaymentSummary: FC<BridgePurchasePaymentSummary> = (
+  props,
+) => {
   const { loading, loanInfo, productInfo } = props;
 
   return (

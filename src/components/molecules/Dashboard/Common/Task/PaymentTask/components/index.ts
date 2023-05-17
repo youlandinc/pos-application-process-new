@@ -2,5 +2,5 @@
 // export * from './NoticeTable';
 export * from './PaymentTable';
 export * from './PaymentStatusPage';
-export * from './BPPaymentSummary';
+export * from './BridgePurchasePaymentSummary';
 export * from './CheckList';
