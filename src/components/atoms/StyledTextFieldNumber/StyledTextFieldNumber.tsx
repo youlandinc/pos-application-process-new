@@ -23,15 +23,15 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
 }) => {
   const [text, setText] = useState(value);
 
-  useEffect(
-    () => {
-      if (value) {
-        setText(percentage ? POSFormatPercent(value) : POSFormatDollar(value));
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [percentage, value],
-  );
+  useEffect(() => {
+    if (value) {
+      setText(
+        percentage
+          ? POSFormatPercent((value as number) / 100)
+          : POSFormatDollar(value),
+      );
+    }
+  }, [percentage, value]);
 
   const handledChange = (v: NumberFormatValues) => {
     setText(v.formattedValue);

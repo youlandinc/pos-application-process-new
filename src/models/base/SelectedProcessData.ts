@@ -40,7 +40,6 @@ export const SelectedProcessData = types
           rootStore.userSetting &&
           rootStore.userSetting.setting.lastSelectedProcessId !== ''
         ) {
-          console.log(rootStore.userSetting);
           const res: AxiosResponse<ProcessData> = yield _fetchProcessData(
             rootStore.userSetting.setting.lastSelectedProcessId,
           );

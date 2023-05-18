@@ -31,10 +31,9 @@ export const BridgeRatesList: FC<RatesProductListProps> = ({
       ) : (
         <>
           <Typography
-            // color={'info.main'}
-            mt={6}
+            color={'info.main'}
             textAlign={'center'}
-            variant={'h4'}
+            variant={'body1'}
           >
             The following loan programs are available for you
           </Typography>
