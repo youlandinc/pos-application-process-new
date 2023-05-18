@@ -447,10 +447,13 @@ export const BridgePurchasePreApproval: FC = observer(() => {
           />
           {/* {!rateData?.isCor && ( */}
           <StyledTextFieldNumber
+            decimalScale={3}
             disabled
             label="Loan-to-Value"
             onValueChange={() => undefined}
-            prefix={''}
+            percentage
+            suffix={'%'}
+            thousandSeparator={false}
             value={POSFormatLocalPercent(LTV)}
           />
           {/* )} */}
@@ -498,6 +501,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
                       cor: floatValue,
                     });
                   }}
+                  prefix={'$'}
                   validate={LTCError}
                   value={rateData?.cor || undefined}
                 />
@@ -510,13 +514,16 @@ export const BridgePurchasePreApproval: FC = observer(() => {
                       arv: floatValue,
                     });
                   }}
+                  prefix={'$'}
                   validate={LTCError}
                   value={rateData?.arv || undefined}
                 />
                 <StyledTextFieldNumber
+                  decimalScale={3}
                   disabled
                   label={'Loan-to-Cost'}
                   onValueChange={() => undefined}
+                  percentage={true}
                   suffix={'%'}
                   thousandSeparator={false}
                   value={POSFormatLocalPercent(LTC)}
@@ -548,13 +555,14 @@ export const BridgePurchasePreApproval: FC = observer(() => {
                 <StyledTextFieldNumber
                   decimalScale={3}
                   disabled={checkLoading}
-                  label="Broker origination fee "
+                  label="Broker origination fee"
                   onValueChange={({ floatValue }) =>
                     setRateData({
                       ...(rateData as BridgePurchaseEstimateRateData),
                       brokerPoints: floatValue,
                     })
                   }
+                  percentage
                   suffix={'%'}
                   thousandSeparator={false}
                   validate={brokerPointsError}
