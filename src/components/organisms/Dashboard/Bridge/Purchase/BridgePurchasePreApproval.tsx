@@ -441,13 +441,16 @@ export const BridgePurchasePreApproval: FC = observer(() => {
             />
           )}
         </Stack>
-        <Transitions>
-          {LTVError && (
-            <Stack color={'error.main'} width={'100%'}>
-              {LTVError}
-            </Stack>
-          )}
-        </Transitions>
+        <Stack sx={{ display: LTVError ? 'block' : 'none' }} width={'100%'}>
+          <Transitions>
+            {LTVError && (
+              <Stack color={'error.main'} width={'100%'}>
+                {LTVError}
+              </Stack>
+            )}
+          </Transitions>
+        </Stack>
+
         <Stack width={'100%'}>
           <StyledCheckbox
             checked={rateData?.isCor}
@@ -507,49 +510,57 @@ export const BridgePurchasePreApproval: FC = observer(() => {
             )}
           </Transitions>
         </Stack>
-
-        <Transitions>
-          {LTCError && (
-            <Stack color={'error.main'} width={'100%'}>
-              {LTCError}
-            </Stack>
-          )}
-        </Transitions>
-        {userType === UserType.BROKER && (
-          <Stack
-            flexDirection={{ lg: 'row', xs: 'column' }}
-            gap={3}
-            width={'100%'}
-          >
-            <StyledTextFieldNumber
-              decimalScale={3}
-              disabled={checkLoading}
-              label="Broker origination fee "
-              onValueChange={({ floatValue }) =>
-                setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
-                  brokerPoints: floatValue,
-                })
-              }
-              suffix={'%'}
-              thousandSeparator={false}
-              validate={brokerPointsError}
-              value={rateData?.brokerPoints}
-            />
-            <StyledTextFieldNumber
-              disabled={checkLoading}
-              label="Broker processing fee"
-              onValueChange={({ floatValue }) => {
-                setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
-                  brokerProcessingFee: floatValue,
-                });
-              }}
-              validate={brokerFeeError}
-              value={rateData?.brokerProcessingFee}
-            />
-          </Stack>
-        )}
+        <Stack sx={{ display: LTCError ? 'block' : 'none' }} width={'100%'}>
+          <Transitions>
+            {LTCError && (
+              <Stack color={'error.main'} width={'100%'}>
+                {LTCError}
+              </Stack>
+            )}
+          </Transitions>
+        </Stack>
+        <Stack
+          sx={{ display: userType === UserType.BROKER ? 'block' : 'none' }}
+          width={'100%'}
+        >
+          <Transitions>
+            {userType === UserType.BROKER && (
+              <Stack
+                flexDirection={{ lg: 'row', xs: 'column' }}
+                gap={3}
+                width={'100%'}
+              >
+                <StyledTextFieldNumber
+                  decimalScale={3}
+                  disabled={checkLoading}
+                  label="Broker origination fee "
+                  onValueChange={({ floatValue }) =>
+                    setRateData({
+                      ...(rateData as BridgePurchaseEstimateRateData),
+                      brokerPoints: floatValue,
+                    })
+                  }
+                  suffix={'%'}
+                  thousandSeparator={false}
+                  validate={brokerPointsError}
+                  value={rateData?.brokerPoints}
+                />
+                <StyledTextFieldNumber
+                  disabled={checkLoading}
+                  label="Broker processing fee"
+                  onValueChange={({ floatValue }) => {
+                    setRateData({
+                      ...(rateData as BridgePurchaseEstimateRateData),
+                      brokerProcessingFee: floatValue,
+                    });
+                  }}
+                  validate={brokerFeeError}
+                  value={rateData?.brokerProcessingFee}
+                />
+              </Stack>
+            )}
+          </Transitions>
+        </Stack>
       </>
     );
   }, [

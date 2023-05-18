@@ -31,10 +31,10 @@ export const ProductItem: FC<ProductItemProps> = (props) => {
 
   return (
     <Box className={'container'} sx={productItemStyle} {...rest}>
-      <Box className={'label'} style={labelStyle}>
+      <Box className={'label'} sx={labelStyle}>
         {label}
       </Box>
-      <Box className={'info'} style={infoStyle}>
+      <Box className={'info'} sx={infoStyle}>
         {info}
       </Box>
     </Box>

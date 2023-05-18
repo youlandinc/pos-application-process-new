@@ -106,12 +106,12 @@ export const BridgePurchaseOverview: FC = observer(() => {
               info: (
                 <Box
                   style={{
-                    ...POSFlex('flex-end', 'center', 'column'),
+                    ...POSFlex('flex-start', 'center', 'column'),
                     width: '100%',
                   }}
                 >
                   <Box
-                    style={{
+                    sx={{
                       wordBreak: 'break-all',
                       whiteSpace: 'break-spaces',
                       lineHeight: 1.5,
