@@ -1,5 +1,9 @@
-import { FC, useEffect, useState } from 'react';
-import { NumberFormatValues, NumericFormat } from 'react-number-format';
+import { FC, forwardRef, useEffect, useLayoutEffect, useState } from 'react';
+import {
+  NumberFormatValues,
+  NumericFormat,
+  NumericFormatProps,
+} from 'react-number-format';
 
 import { POSFormatDollar, POSFormatPercent, POSNotUndefined } from '@/utils';
 
@@ -21,45 +25,85 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
   percentage = false,
   ...rest
 }) => {
-  const [text, setText] = useState(value);
+  const [text, setText] = useState(value ?? 0);
 
   useEffect(() => {
-    if (POSNotUndefined(value)) {
+    if (POSNotUndefined(value) && value) {
       setText(
         percentage
           ? POSFormatPercent((value as number) / 100)
           : POSFormatDollar(value),
       );
+    } else {
+      setText('');
     }
   }, [percentage, value]);
 
-  const handledChange = (v: NumberFormatValues) => {
-    setText(v.formattedValue);
-    onValueChange(v);
+  const handledChange = (e: {
+    target: { name: string; value: NumberFormatValues };
+  }) => {
+    onValueChange(e.target.value);
   };
 
   return (
     <>
-      <NumericFormat
-        allowedDecimalSeparators={['.']}
-        allowNegative={allowNegative}
-        customInput={StyledTextField}
-        decimalScale={decimalScale}
-        fixedDecimalScale
+      <StyledTextField
+        {...rest}
+        id="formatted-numberformat-input"
         InputProps={{
-          value: text ? (thousandSeparator ? text.toLocaleString() : text) : '',
+          inputComponent: NumericFormatCustom as any,
+          inputProps: {
+            allowNegative,
+            onValueChange,
+            prefix,
+            suffix,
+            value,
+            sx,
+            decimalScale,
+            thousandSeparator,
+          },
         }}
-        onValueChange={handledChange}
-        prefix={prefix}
-        suffix={suffix}
+        name="numberformat"
+        //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        onChange={handledChange}
         sx={{
           ...StyledTextFieldStyles,
           ...sx,
         }}
-        thousandSeparator={thousandSeparator}
-        variant={'outlined'}
-        {...rest}
+        value={text}
+        variant="outlined"
       />
     </>
   );
 };
+
+interface CustomProps {
+  onChange: (event: {
+    target: { name: string; value: NumberFormatValues };
+  }) => void;
+  name: string;
+}
+
+const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
+  function NumericFormatCustom(props, ref) {
+    const { onChange, ...other } = props;
+
+    return (
+      <NumericFormat
+        fixedDecimalScale
+        getInputRef={ref}
+        onValueChange={(values) => {
+          onChange({
+            target: {
+              name: props.name,
+              value: values,
+            },
+          });
+        }}
+        valueIsNumericString
+        {...other}
+      />
+    );
+  },
+);
