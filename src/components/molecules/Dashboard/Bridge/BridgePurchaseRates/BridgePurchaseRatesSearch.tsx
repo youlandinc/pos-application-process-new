@@ -437,6 +437,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
           <Transitions
             style={{
               width: '100%',
+              display: isCor ? 'block' : 'none',
             }}
           >
             {isCor && (

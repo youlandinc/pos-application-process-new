@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, ReactNode, useMemo } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
@@ -13,6 +13,7 @@ interface RatesProductListProps {
   isFirstSearch?: boolean;
   userType?: UserType;
   loanStage?: LoanStage;
+  label?: ReactNode;
 }
 
 export const BridgeRatesList: FC<RatesProductListProps> = ({
@@ -21,6 +22,7 @@ export const BridgeRatesList: FC<RatesProductListProps> = ({
   loading,
   isFirstSearch = false,
   userType,
+  label,
 }) => {
   return (
     <Stack maxWidth={900} width={'100%'}>
@@ -30,13 +32,19 @@ export const BridgeRatesList: FC<RatesProductListProps> = ({
         <StyledLoading sx={{ color: 'primary.main' }} />
       ) : (
         <>
-          <Typography
-            color={'info.main'}
-            textAlign={'center'}
-            variant={'body1'}
-          >
-            The following loan programs are available for you
-          </Typography>
+          {label ? (
+            label
+          ) : (
+            <Typography
+              color={'info.main'}
+              mt={3}
+              textAlign={'center'}
+              variant={'body1'}
+            >
+              The following loan programs are available for you
+            </Typography>
+          )}
+
           <Stack
             flexDirection={'row'}
             flexWrap={'wrap'}

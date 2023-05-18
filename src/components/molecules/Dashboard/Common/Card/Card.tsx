@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { Box, BoxProps, Divider, SxProps } from '@mui/material';
 
-import { POSFont } from '@/styles';
+import { POSFlex, POSFont } from '@/styles';
 
 import { StyledLoading } from '@/components/atoms';
 import { ProductItem } from '@/components/molecules';

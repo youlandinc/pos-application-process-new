@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
@@ -197,6 +197,28 @@ export const BridgePurchaseRates: FC = observer(() => {
           userType={userType}
         />
         <BridgeRatesList
+          label={
+            <>
+              <Typography
+                color={'info.main'}
+                mt={6}
+                textAlign={'center'}
+                variant={'body1'}
+              >
+                The following loan programs are available for you
+              </Typography>
+              <Typography
+                color={'info.main'}
+                mt={1.5}
+                textAlign={'center'}
+                variant={'body3'}
+              >
+                {/* todo sass */}
+                Rates displayed are subject to rate lock and are not to be
+                considered an extension or offer of credit by {'Youland'}.
+              </Typography>
+            </>
+          }
           loading={loading || initLoading}
           loanStage={loanStage}
           onClick={onListItemClick}

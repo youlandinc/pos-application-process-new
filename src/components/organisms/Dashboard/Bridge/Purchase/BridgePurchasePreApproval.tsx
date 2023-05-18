@@ -10,7 +10,7 @@ import { useAsyncEffect, useSwitch } from '@/hooks';
 import { useSnackbar } from 'notistack';
 import { Address, IAddress } from '@/models/common/Address';
 
-import { POSFont } from '@/styles';
+import { POSFlex, POSFont } from '@/styles';
 import {
   BridgePurchaseEstimateRateData,
   MPPreApprovalLetterBPData,
@@ -358,26 +358,37 @@ export const BridgePurchasePreApproval: FC = observer(() => {
             sx={{ justifyContent: 'flex-start' }}
           />
         ) : checkResult ? (
-          <Box>
-            <Box fontWeight={700}>Your updated loan product</Box>
-            <Box mt={1}>
-              Based on that new info, here&apos;s an updated rate and loan you
-              might like
+          <Box
+            sx={{
+              ...POSFlex('center', 'space-between', {
+                xl: 'row',
+                xs: 'column',
+              }),
+            }}
+          >
+            <Box>
+              <Box fontWeight={700}>Your updated loan product</Box>
+              <Box mt={1}>
+                Based on that new info, here&apos;s an updated rate and loan you
+                might like
+              </Box>
+              <Box fontWeight={700} mt={1}>
+                {POSFormatLocalPercent(productData?.interestRateOfYear)} Rate /{' '}
+                {productData?.loanTerm} months /{' '}
+                {POSFormatDollar(productData?.paymentOfMonth)} Monthly payment
+              </Box>
             </Box>
-            <Box fontWeight={700} mt={1}>
-              {POSFormatLocalPercent(productData?.interestRateOfYear)} Rate /{' '}
-              {productData?.loanTerm} months /{' '}
-              {POSFormatDollar(productData?.paymentOfMonth)} Monthly payment
+            <Box>
+              <StyledButton
+                color={'primary'}
+                disabled={!clickable}
+                onClick={onClickUpdate}
+                sx={{ width: 200, mt: { xl: 0, xs: 3 } }}
+                variant={'contained'}
+              >
+                Update
+              </StyledButton>
             </Box>
-            <StyledButton
-              color={'primary'}
-              disabled={!clickable}
-              onClick={onClickUpdate}
-              sx={{ mt: 3 }}
-              variant={'contained'}
-            >
-              Update
-            </StyledButton>
           </Box>
         ) : (
           <Box>
@@ -431,15 +442,15 @@ export const BridgePurchasePreApproval: FC = observer(() => {
             validate={LTVError}
             value={rateData?.purchaseLoanAmount}
           />
-          {!rateData?.isCor && (
-            <StyledTextFieldNumber
-              disabled
-              label="Loan-to-Value"
-              onValueChange={() => undefined}
-              prefix={''}
-              value={POSFormatLocalPercent(LTV)}
-            />
-          )}
+          {/* {!rateData?.isCor && ( */}
+          <StyledTextFieldNumber
+            disabled
+            label="Loan-to-Value"
+            onValueChange={() => undefined}
+            prefix={''}
+            value={POSFormatLocalPercent(LTV)}
+          />
+          {/* )} */}
         </Stack>
         <Stack sx={{ display: LTVError ? 'block' : 'none' }} width={'100%'}>
           <Transitions>

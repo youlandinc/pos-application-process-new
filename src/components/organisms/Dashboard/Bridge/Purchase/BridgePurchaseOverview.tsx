@@ -26,6 +26,7 @@ const useStyles = {
   '&.container': {
     ...POSFlex('flex-start', 'center', 'column'),
     px: {
+      xl: 0,
       lg: 3,
       xs: 0,
     },

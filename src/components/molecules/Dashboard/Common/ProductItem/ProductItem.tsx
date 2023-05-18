@@ -5,7 +5,7 @@ import { POSFlex, POSFont } from '@/styles';
 
 const productItemStyle = {
   '&.container': {
-    ...POSFlex('center', 'space-between', undefined),
+    ...POSFlex('', 'space-between', undefined),
 
     width: '100%',
   },
@@ -30,7 +30,14 @@ export const ProductItem: FC<ProductItemProps> = (props) => {
   const { label, info, labelStyle, infoStyle, ...rest } = props;
 
   return (
-    <Box className={'container'} sx={productItemStyle} {...rest}>
+    <Box
+      className={'container'}
+      sx={{
+        ...productItemStyle,
+        alignItems: label === 'Address' ? 'flex-start' : 'center',
+      }}
+      {...rest}
+    >
       <Box className={'label'} sx={labelStyle}>
         {label}
       </Box>
