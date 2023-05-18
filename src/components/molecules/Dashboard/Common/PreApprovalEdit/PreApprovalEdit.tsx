@@ -115,26 +115,32 @@ export const PreApprovalEdit: FC<PreApprovalEditProps> = (props) => {
           />
         </Stack>
         {children}
-      </Stack>
-      <Stack
-        alignItems={'center'}
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'center'}
-        width={'100%'}
-      >
-        <StyledButton onClick={onClickCancel} variant={'outlined'}>
-          Cancel
-        </StyledButton>
-        <StyledButton
-          color={'primary'}
-          disabled={clickable}
-          onClick={onClickCheck}
-          variant={'contained'}
+        <Stack
+          alignItems={'center'}
+          flexDirection={'row'}
+          gap={3}
+          justifyContent={'center'}
+          width={'100%'}
         >
-          Check
-        </StyledButton>
+          <StyledButton
+            onClick={onClickCancel}
+            sx={{ width: 130 }}
+            variant={'outlined'}
+          >
+            Cancel
+          </StyledButton>
+          <StyledButton
+            color={'primary'}
+            disabled={clickable}
+            onClick={onClickCheck}
+            sx={{ width: 130 }}
+            variant={'contained'}
+          >
+            Check
+          </StyledButton>
+        </Stack>
       </Stack>
+
       {resultList}
     </Stack>
   );
