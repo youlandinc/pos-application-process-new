@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { NumberFormatValues, NumericFormat } from 'react-number-format';
 
-import { POSFormatDollar, POSFormatPercent } from '@/utils';
+import { POSFormatDollar, POSFormatPercent, POSNotUndefined } from '@/utils';
 
 import {
   StyledTextField,
@@ -24,7 +24,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
   const [text, setText] = useState(value);
 
   useEffect(() => {
-    if (value) {
+    if (POSNotUndefined(value)) {
       setText(
         percentage
           ? POSFormatPercent((value as number) / 100)
