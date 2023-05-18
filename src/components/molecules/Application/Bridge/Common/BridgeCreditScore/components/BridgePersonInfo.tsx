@@ -128,7 +128,7 @@ export const BridgePersonInfo: FC = observer(() => {
             <StyledGoogleAutoComplete address={selfInfo.address} />
           </Stack>
         </StyledFormItem>
-        <StyledFormItem label={'Your self Social Security Number'} sub>
+        <StyledFormItem label={'Your Social Security Number'} sub>
           <Stack gap={3} maxWidth={600} width={'100%'}>
             <StyledTextFieldSocialNumber
               onValueChange={changeFieldValue('ssn')}
