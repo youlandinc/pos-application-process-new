@@ -232,7 +232,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
               className={'cardButton'}
               color={'primary'}
               onClick={async () =>
-                await router.push('/dashboard/preapproval_letter')
+                await router.push('/dashboard/pre_approval_letter')
               }
               variant={'contained'}
             >

@@ -1,11 +1,11 @@
 import { FC, useCallback, useMemo, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { Box, Stack } from '@mui/material';
 import { useAsyncFn } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
-import { useAsyncEffect, useSwitch } from '@/hooks';
+import { useAsyncEffect } from '@/hooks';
 
 import { useSnackbar } from 'notistack';
 import { Address, IAddress } from '@/models/common/Address';
@@ -28,7 +28,7 @@ import {
 import {
   StyledButton,
   StyledCheckbox,
-  StyledDialog,
+  // StyledDialog,
   StyledLoading,
   StyledTextFieldNumber,
   Transitions,
@@ -77,10 +77,10 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     userType,
   } = useMst();
 
-  const router = useRouter();
+  // const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { open, visible, close } = useSwitch(false);
+  // const { open, visible, close } = useSwitch(false);
 
   const [loanStage, setLoanStage] = useState<LoanStage | undefined>(
     LoanStage.PreApproved,
@@ -214,12 +214,12 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     await getInitData(lastSelectedProcessId as string);
   }, [lastSelectedProcessId]);
 
-  const onDialogSendEmailClick = useCallback(() => {
-    close();
-    setTimeout(() => {
-      infoRef.current?.focus();
-    });
-  }, [close]);
+  // const onDialogSendEmailClick = useCallback(() => {
+  //   close();
+  //   setTimeout(() => {
+  //     infoRef.current?.focus();
+  //   });
+  // }, [close]);
 
   const onChangeTableStatus = useCallback(() => {
     setTableStatus(tableStatus === 'edit' ? 'view' : 'edit');
@@ -264,16 +264,19 @@ export const BridgePurchasePreApproval: FC = observer(() => {
       postData as UpdateRatesPostData,
     );
     if (res.status === 200) {
-      open();
       setCheckResult(undefined);
       setTableStatus('view');
       await getInitData(lastSelectedProcessId as string);
+      enqueueSnackbar('Update Successfully!' as string, {
+        variant: 'success',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
     }
   }, [
     address,
+    enqueueSnackbar,
     getInitData,
     lastSelectedProcessId,
-    open,
     productData?.id,
     propertyType,
     propertyUnit,
@@ -514,7 +517,8 @@ export const BridgePurchasePreApproval: FC = observer(() => {
                   disabled
                   label={'Loan-to-Cost'}
                   onValueChange={() => undefined}
-                  prefix={''}
+                  suffix={'%'}
+                  thousandSeparator={false}
                   value={POSFormatLocalPercent(LTC)}
                 />
               </Stack>
@@ -617,7 +621,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
           </PreApprovalEdit>
         </>
       )}
-      <StyledDialog
+      {/* <StyledDialog
         content={
           <>
             <Box className={'updatedImage'} />
@@ -646,7 +650,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
         }
         onClose={close}
         open={visible}
-      />
+      /> */}
     </Box>
   );
 });

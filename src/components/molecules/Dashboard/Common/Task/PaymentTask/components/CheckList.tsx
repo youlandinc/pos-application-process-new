@@ -52,16 +52,16 @@ const list = [
       },
     ],
   },
-  {
-    title: 'Set up auto Pay',
-    status: 'Unfinished',
-    children: [
-      {
-        title: 'Plaid or ACH Debit',
-        status: 'Unfinished',
-      },
-    ],
-  },
+  // {
+  //   title: 'Set up auto Pay',
+  //   status: 'Unfinished',
+  //   children: [
+  //     {
+  //       title: 'Plaid or ACH Debit',
+  //       status: 'Unfinished',
+  //     },
+  //   ],
+  // },
   {
     title: 'Agreements & document',
     status: 'Unfinished',
@@ -154,7 +154,7 @@ export const CheckList: FC<CheckListProps> = observer(({ updateState }) => {
       mt: 1,
       bgcolor: 'warning.A200',
       gap: 3,
-      ...POSFlex('center', 'space-between', 'row'),
+      ...POSFlex('center', 'space-between', { md: 'row', xs: 'column' }),
     },
   };
 
@@ -173,11 +173,17 @@ export const CheckList: FC<CheckListProps> = observer(({ updateState }) => {
             <Typography
               // component={'div'}
               // mt={3}
+              sx={{
+                fontSize: {
+                  md: 18,
+                  xs: 16,
+                },
+              }}
               variant={'h6'}
             >
               {item.title}
             </Typography>
-            <Box className={item.status}>{item.status}</Box>
+            {/* <Box className={item.status}>{item.status}</Box> */}
           </Box>
           {item.children.map((sonItem) => (
             <Box
@@ -185,11 +191,17 @@ export const CheckList: FC<CheckListProps> = observer(({ updateState }) => {
               onClick={() =>
                 item.title === 'Property Appraisal' && updateState()
               }
-              px={3}
+              px={{ md: 3, xs: 0 }}
             >
               <Typography
                 // component={'div'}
                 // mt={3}
+                sx={{
+                  fontSize: {
+                    md: 16,
+                    xs: 12,
+                  },
+                }}
                 variant={'body1'}
               >
                 {sonItem.title}
@@ -205,17 +217,25 @@ export const CheckList: FC<CheckListProps> = observer(({ updateState }) => {
       <Box className={'footer'}>
         <Box>
           <Typography
-            // component={'div'}
-            // mt={3}
             color={'warning.main'}
+            sx={{
+              fontSize: {
+                md: 18,
+                xs: 16,
+              },
+            }}
             variant={'h6'}
           >
             Update your progress with your loan officer
           </Typography>
           <Typography
-            // component={'div'}
-            // mt={3}
             color={'warning.main'}
+            sx={{
+              fontSize: {
+                md: 16,
+                xs: 12,
+              },
+            }}
             variant={'body2'}
           >
             We will notify your loan officer to review the tasks you have

@@ -156,13 +156,13 @@ export const BridgePurchaseRates: FC = observer(() => {
         >,
     );
     open();
-    if (!item.selected) {
-      productList?.forEach((item) => (item.selected = false));
-      item.selected = true;
-      if (loanStage !== LoanStage.Approved) {
-        await updateSelectedProduct(postData);
-      }
+    // if (!item.selected) {
+    productList?.forEach((item) => (item.selected = false));
+    item.selected = true;
+    if (loanStage !== LoanStage.Approved) {
+      await updateSelectedProduct(postData);
     }
+    // }
   };
 
   const updateSelectedProduct = useCallback(
