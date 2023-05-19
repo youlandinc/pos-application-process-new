@@ -58,7 +58,7 @@ export const PaymentStatusPage: FC<PaymentStatusPageProps> = (props) => {
           <>
             <Box className={'title'} color={'rgba(79, 191, 103, 1)'}>
               <CheckCircleOutlineOutlined className={'iconStyle'} />
-              Payment successful!
+              Payment Successful!
             </Box>
             <Box className={'subTitle'}>
               <Box>
@@ -75,7 +75,7 @@ export const PaymentStatusPage: FC<PaymentStatusPageProps> = (props) => {
                 or call toll free at
                 <span className={'link_style'}>
                   {' '}
-                  {POSFormatUSPhoneToText(state.extInfo?.posSettings?.phone) ||
+                  {POSFormatUSPhoneToText(state?.extInfo?.posSettings?.phone) ||
                     '1-833-968-5263'}{' '}
                 </span>
               </Box>
@@ -85,7 +85,7 @@ export const PaymentStatusPage: FC<PaymentStatusPageProps> = (props) => {
                 onClick={async () => await router.push('/dashboard/overview')}
                 sx={{ width: '100%' }}
               >
-                Go to overview
+                Go to Overview
               </StyledButton>
             </Box>
           </>
@@ -95,7 +95,7 @@ export const PaymentStatusPage: FC<PaymentStatusPageProps> = (props) => {
           <>
             <Box className={'title'} color={'rgba(191, 63, 56, 1)'}>
               <HighlightOffOutlined className={'iconStyle'} />
-              Payment failed!
+              Payment Failed!
             </Box>
             <Box className={'subTitle'} mt={'24px'}>
               It seems we have not received money. You may contact your payment
@@ -112,7 +112,7 @@ export const PaymentStatusPage: FC<PaymentStatusPageProps> = (props) => {
                 }}
                 sx={{ width: '100%' }}
               >
-                Go to tasks
+                Go to Tasks
               </StyledButton>
               <StyledButton
                 onClick={() => {
@@ -124,7 +124,7 @@ export const PaymentStatusPage: FC<PaymentStatusPageProps> = (props) => {
                 }}
                 sx={{ width: '100%' }}
               >
-                Try again
+                Try Again
               </StyledButton>
             </Box>
           </>
@@ -142,7 +142,7 @@ export const PaymentStatusPage: FC<PaymentStatusPageProps> = (props) => {
               free at{' '}
               <span className={'link_style'}>
                 {/* todo sass */}{' '}
-                {POSFormatUSPhoneToText(state.extInfo?.posSettings?.phone) ||
+                {POSFormatUSPhoneToText(state?.extInfo?.posSettings?.phone) ||
                   '1-833-968-5263'}{' '}
               </span>{' '}
               or email us at
@@ -157,13 +157,19 @@ export const PaymentStatusPage: FC<PaymentStatusPageProps> = (props) => {
                 onClick={async () => await router.push('/dashboard/overview')}
                 sx={{ width: '100%' }}
               >
-                Go to overview
+                Go to Overview
               </StyledButton>
             </Box>
           </>
         );
     }
-  }, [paymentStatus, router, task]);
+  }, [
+    paymentStatus,
+    router,
+    state?.extInfo?.posSettings?.email,
+    state?.extInfo?.posSettings?.phone,
+    task,
+  ]);
   return (
     <Box className={'container'} sx={useStyle}>
       {renderResult}

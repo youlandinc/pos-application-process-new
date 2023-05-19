@@ -162,14 +162,14 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
 
   const sendButtonText = useMemo(() => {
     if (seconds < 60) {
-      return ['xs', 'sm', 'md', 'lg'].includes(breakpoint)
+      return ['xs', 'sm', 'md', 'lg'].includes(breakpoint) || isNestForm
         ? `00:${seconds}`
         : `Resend in 00:${seconds}`;
     }
-    return ['xs', 'sm', 'md', 'lg'].includes(breakpoint)
+    return ['xs', 'sm', 'md', 'lg'].includes(breakpoint) || isNestForm
       ? 'Send'
       : 'Send Verification Code';
-  }, [breakpoint, seconds]);
+  }, [breakpoint, isNestForm, seconds]);
 
   const isDisabled = useMemo(() => {
     for (const [, value] of Object.entries(passwordError)) {

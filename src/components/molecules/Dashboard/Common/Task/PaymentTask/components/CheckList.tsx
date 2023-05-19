@@ -10,7 +10,7 @@ import { CheckCircle } from '@mui/icons-material';
 
 const list = [
   {
-    title: 'Application information',
+    title: 'Application Information',
     status: 'Finish',
     children: [
       { title: 'Loan Details', status: 'Finish' },
@@ -63,7 +63,7 @@ const list = [
   //   ],
   // },
   {
-    title: 'Agreements & document',
+    title: 'Agreements & Document',
     status: 'Unfinished',
     children: [
       {
@@ -75,11 +75,11 @@ const list = [
         status: 'Unfinished',
       },
       {
-        title: 'Upload Property Pictures (optional)',
+        title: 'Upload Property Pictures (Optional)',
         status: 'Unfinished',
       },
       {
-        title: 'Upload Order Appraisal (optional)',
+        title: 'Upload Order Appraisal (Optional)',
         status: 'Unfinished',
       },
 

@@ -11,7 +11,7 @@ export const StyledHeaderLogoStyles = {
   //   xs: '50%',
   //   md: '50%',
   // },
-  flex: 1,
+  // maxWidth: 'auto',
   // maxWidth: 160,
   maxHeight: 32,
   cursor: 'pointer',
