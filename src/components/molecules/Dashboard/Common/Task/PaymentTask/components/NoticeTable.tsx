@@ -11,7 +11,7 @@ const useStyle = {
   '& .confirmBox': {
     marginTop: 3,
     marginLeft: 0,
-    width: '100%',
+    // width: '100%',
     display: 'flex',
     alignItems: 'center',
     fontSize: 16,

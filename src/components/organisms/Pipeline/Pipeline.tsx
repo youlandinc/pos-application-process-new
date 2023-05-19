@@ -282,12 +282,14 @@ export const Pipeline: FC = observer(() => {
             <StyledButton
               className={'POS_mr_1'}
               color={'error'}
+              disabled={deleteLoading}
               onClick={close}
               size={'small'}
             >
               Cancel
             </StyledButton>
             <StyledButton
+              disabled={deleteLoading}
               onClick={handledConfirmDelete}
               size={'small'}
               variant={'outlined'}
