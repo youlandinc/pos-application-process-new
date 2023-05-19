@@ -14,7 +14,7 @@ const productItemStyle = {
   },
   '& .info': {
     ...POSFont({ md: 16, xs: 12 }, 600, 1.5, 'text.primary'),
-    maxWidth: '50%',
+    maxWidth: '75%',
     textAlign: 'right',
   },
 } as const;

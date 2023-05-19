@@ -41,7 +41,7 @@ export const BridgePurpose: FC<BridgePurposeProps> = observer((props) => {
       {/*todo : saas*/}
       <StyledFormItem
         label={
-          'How many property have you flipped / exited in the last 24 months?'
+          'How many properties have you flipped / exited in the last 24 months?'
         }
       >
         <Stack maxWidth={600} width={'100%'}>
