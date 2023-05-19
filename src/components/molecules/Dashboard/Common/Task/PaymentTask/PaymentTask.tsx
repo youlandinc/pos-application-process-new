@@ -9,8 +9,8 @@ import { RatesProductData } from '@/types';
 import { StyledButton, StyledLoading } from '@/components/atoms';
 import {
   CheckList,
-  // ConfirmTable,
-  // NoticeTable,
+  ConfirmTable,
+  NoticeTable,
   PaymentStatusPage,
   PaymentTable,
 } from './components';
@@ -22,6 +22,7 @@ import {
 } from '@/requests/dashboard';
 import { IDTask } from '@/models/base';
 import { POSFlex } from '@/styles';
+import { useSnackbar } from 'notistack';
 
 const useStyle: SxProps = {
   ...POSFlex('center', 'center', 'column'),
@@ -96,7 +97,8 @@ const useStateMachine = (
     },
     confirm: {
       back() {
-        backToList && backToList();
+        updateState('checklist');
+        // backToList && backToList();
       },
       next() {
         updateState('notice');
@@ -112,7 +114,7 @@ const useStateMachine = (
     },
     payment: {
       back() {
-        updateState('checklist');
+        updateState('notice');
       },
     },
   });
@@ -150,6 +152,7 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
     productType = 'mortgage',
     backToList,
   } = props;
+  const { enqueueSnackbar } = useSnackbar();
 
   const paymentCardFormRef = useRef(null);
 
@@ -198,7 +201,7 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
       })
       .catch((err) => {
         // todo, lee this error need to handler
-        console.log(err);
+        enqueueSnackbar(err, { variant: 'error' });
       });
   }, [task.taskInitialized, paymentStatus]);
 
@@ -211,28 +214,28 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
   const renderPaymentTaskComponent = useMemo(() => {
     switch (tableStatus) {
       case 'checklist':
-        return <CheckList updateState={() => setTableStatus('payment')} />;
-      // case 'confirm':
-      //   return (
-      //     <ConfirmTable
-      //       check={confirmCheck}
-      //       onCheckValueChange={(e) => setConfirmCheck(e.target.checked)}
-      //     />
-      //   );
-      // case 'notice':
-      //   return (
-      //     <NoticeTable
-      //       check={noticeCheck}
-      //       loanDetail={loanDetail}
-      //       onCheckValueChange={(e) => setNoticeCheck(e.target.checked)}
-      //       productType={productType}
-      //     />
-      //   );
+        return <CheckList updateState={() => setTableStatus('confirm')} />;
+      case 'confirm':
+        return (
+          <ConfirmTable
+            check={confirmCheck}
+            onCheckValueChange={(e) => setConfirmCheck(e.target.checked)}
+          />
+        );
+      case 'notice':
+        return (
+          <NoticeTable
+            check={noticeCheck}
+            loanDetail={loanDetail}
+            onCheckValueChange={(e) => setNoticeCheck(e.target.checked)}
+            productType={productType}
+          />
+        );
       case 'payment':
         return (
           <PaymentTable
             check={paymentCheck}
-            loanDetail={loanDetail}
+            // loanDetail={loanDetail}
             onCheckValueChange={(e) => setPaymentCheck(e.target.checked)}
             paymentDetail={paymentDetail as SPaymentDetails}
             productType={productType}
@@ -240,7 +243,15 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
           />
         );
     }
-  }, [tableStatus, productType, loanDetail, paymentDetail, paymentCheck]);
+  }, [
+    tableStatus,
+    confirmCheck,
+    noticeCheck,
+    loanDetail,
+    productType,
+    paymentCheck,
+    paymentDetail,
+  ]);
 
   const disabledButton = useMemo(() => {
     switch (tableStatus) {

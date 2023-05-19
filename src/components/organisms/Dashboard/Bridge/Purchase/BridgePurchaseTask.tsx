@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { ParseProcess } from '@/services/ParseProcess';
-import { POSFlex, POSFont, POSSize } from '@/styles';
+import { POSFlex, POSFont } from '@/styles';
 // import { BridgePurchasePaymentSummary, PaymentTask } from '@/components/molecules';
 import { BridgePurchaseRatesLoanInfo, RatesProductData } from '@/types';
 import {
@@ -14,72 +14,20 @@ import {
   _fetchRatesProductSelected,
 } from '@/requests/dashboard';
 import {
-  //  BridgePurchasePaymentSummary,
+  BridgePurchasePaymentSummary,
   PaymentTask,
 } from '@/components/molecules';
 import { Box } from '@mui/material';
+import { useSnackbar } from 'notistack';
 
 const useStyles = {
   '&.container': {
     ...POSFlex('flex-start', 'center', 'column'),
-    // px: {
-    //   lg: 3,
-    //   xs: 0,
-    // },
-    // maxWidth: 900,
-    // mx: {
-    //   lg: 'auto',
-    //   xs: 0,
-    // },
   },
   '& .pageMain': {
     width: '100%',
-    //marginTop: 48,
-    // minWidth: 904,
     maxWidth: 900,
-    //boxShadow: '1px 1px 15px rgba(0, 0, 0, 0.15)',
     borderRadius: 8,
-    //padding: '24px 48px',
-  },
-  '& .pageMainTitle': {
-    ...POSFont(24, 700, 1.5, 'rgba(0,0,0,.87)'),
-  },
-  '& .listBox': {
-    padding: '24px 0',
-    borderBottom: '1px solid #C4C4C4',
-    '&:last-of-type': {
-      borderBottom: 'none',
-    },
-  },
-  '& .listTitle': {
-    ...POSFont(24, 700, 1.5, 'rgba(0,0,0,.6)'),
-    ...POSFlex('center', 'space-between', 'row'),
-  },
-  '& .listTitleState': {
-    ...POSFlex('center', 'space-between', 'row'),
-    ...POSFont(12, 400, 1.5, 'rgba(0,0,0,.87)'),
-    background: '#F5F8FA',
-    borderRadius: 4,
-    padding: '8px 16px',
-    width: 100,
-  },
-  '& .circle': {
-    flexShrink: 0,
-    ...POSSize(10),
-    borderRadius: '50%',
-    marginRight: 8,
-  },
-  '& .listItem': {
-    marginTop: 12,
-    width: '100%',
-    whiteSpace: 'break-spaces',
-    wordBreak: 'break-word',
-    color: 'rgba(0,0,0,.6)',
-    transition: 'all .3s',
-    cursor: 'default',
-    '&:hover': {
-      color: '#3F81E9',
-    },
   },
 };
 
@@ -91,6 +39,7 @@ export const BridgePurchaseTask: FC = observer(() => {
       setting: { lastSelectedProcessId },
     },
   } = useMst();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { data: processData } = selectedProcessData;
 
@@ -108,7 +57,7 @@ export const BridgePurchaseTask: FC = observer(() => {
         setLoanInfo(info);
         setProductInfo(res[1].data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => enqueueSnackbar(err, { variant: 'error' }));
   }, [lastSelectedProcessId]);
 
   useEffect(() => {
@@ -123,12 +72,11 @@ export const BridgePurchaseTask: FC = observer(() => {
       <Box className={'pageMain'}>
         <PaymentTask
           loanDetail={
-            // <BridgePurchasePaymentSummary
-            //   loading={loading}
-            //   loanInfo={loanInfo}
-            //   productInfo={productInfo}
-            // />
-            <></>
+            <BridgePurchasePaymentSummary
+              loading={loading}
+              loanInfo={loanInfo}
+              productInfo={productInfo}
+            />
           }
           paymentStatus={dashboardTask.paymentStatus}
           processId={lastSelectedProcessId as string}

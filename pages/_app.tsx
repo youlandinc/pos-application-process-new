@@ -4,6 +4,8 @@ import { AppProps } from 'next/app';
 import { Router } from 'next/router';
 import Script from 'next/script';
 
+import { useAsync } from 'react-use';
+
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import {
   Color,
@@ -17,7 +19,11 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import en from 'date-fns/locale/en-US';
 
 import NProgress from 'nprogress';
-import { MaterialDesignContent, SnackbarProvider } from 'notistack';
+import {
+  MaterialDesignContent,
+  SnackbarProvider,
+  useSnackbar,
+} from 'notistack';
 
 import 'normalize.css';
 import 'reset.css';
@@ -29,6 +35,10 @@ import { theme } from '@/theme';
 import { ProviderDetectActive, ProviderPersistData } from '@/components/atoms';
 import { Provider, rootStore } from '@/models/Root';
 
+import { _fetchSaasConfig } from '@/requests/saas';
+import { useSessionStorageState } from '@/hooks';
+import { AUTO_HIDE_DURATION } from '@/constants';
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
@@ -38,6 +48,21 @@ interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const { enqueueSnackbar } = useSnackbar();
+  const { setItem } = useSessionStorageState('tenantConfig');
+  useAsync(async () => {
+    return await _fetchSaasConfig()
+      .then(({ data }) => {
+        setItem(data);
+      })
+      .catch((err) =>
+        enqueueSnackbar(err, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, []);
+
   useEffect(() => {
     const handledRouteStart = () => NProgress.start();
     const handledRouteDone = () => NProgress.done();

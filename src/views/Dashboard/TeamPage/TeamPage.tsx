@@ -146,7 +146,7 @@ const useStyles: SxProps = {
     marginTop: 3,
     fontSize: 16,
     lineHeight: 1.5,
-    color: 'rgba(0,0,0,.6)',
+    color: 'text.primary',
     width: '100%',
     maxWidth: 1312,
   },

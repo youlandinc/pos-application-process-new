@@ -21,6 +21,7 @@ import { BPOverviewSummaryData } from '@/types';
 import { OPTIONS_MORTGAGE_PROPERTY } from '@/constants/options/mortgage';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { useSnackbar } from 'notistack';
+import { useSessionStorageState } from '@/hooks';
 
 const useStyles = {
   '&.container': {
@@ -65,7 +66,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
 
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  // const tenantConfig = utils.getTenantConfig();
+  const { state } = useSessionStorageState('tenantConfig');
 
   const [summary, setSummary] = useState<BridgeOverviewInfo>();
   const [product, setProduct] = useState<BridgeOverviewInfo>();
@@ -107,7 +108,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
               info: (
                 <Box
                   style={{
-                    ...POSFlex('flex-start', 'center', 'column'),
+                    ...POSFlex('flex-end', 'center', 'column'),
                     width: '100%',
                   }}
                 >
@@ -303,8 +304,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
             considered an extension or offer of credit by
             {
               // todo: sass
-              // ' ' + tenantConfig.organizationName ||
-              ' Youland'
+              ' ' + state?.organizationName || ' Youland'
             }
             .
           </Box>

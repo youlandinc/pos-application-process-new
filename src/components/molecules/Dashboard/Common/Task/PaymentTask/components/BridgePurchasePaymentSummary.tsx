@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Box } from '@mui/material';
+import { Box, SxProps } from '@mui/material';
 
 import { POSFlex, POSFont } from '@/styles';
 import { BridgePurchaseRatesLoanInfo } from '@/types';
@@ -10,26 +10,27 @@ import {
 } from '@/components/molecules';
 import { POSFormatDollar, POSFormatLocalPercent } from '@/utils';
 
-const useStyle = {
-  '&.paymentBox': {
-    background: '#FFFFFF',
-    boxShadow: '1px 1px 15px rgba(0, 0, 0, 0.15)',
-    borderRadius: 8,
-    padding: '24px 48px',
-  },
+const useStyle: SxProps = {
+  bgcolor: 'info.A100',
+  width: '100%',
+
+  borderRadius: 2,
+  p: 3,
+  color: 'text.white',
   '& .paymentBoxTitle': {
-    color: 'background: rgba(0, 0, 0, 0.87)',
-    fontSize: 24,
-    fontWeight: 700,
-    lineHeight: 1.5,
+    textAlign: 'center',
+    ...POSFont(24, 700, 1.5, 'text.white'),
   },
   '& .paymentInfoBox': {
-    marginTop: 24,
+    mt: 3,
   },
   '& .paymentInfoItem': {
     ...POSFlex('center', 'space-between', 'row'),
-    ...POSFont(16, 400, 1.5, 'rgba(0,0,0,.6)'),
+    ...POSFont(16, 400, 1.5, 'text.white'),
     padding: '12px 0',
+    '& .info, & .label': {
+      color: 'text.white',
+    },
   },
 };
 
@@ -52,19 +53,19 @@ export const BridgePurchasePaymentSummary: FC<BridgePurchasePaymentSummary> = (
           <Box className={'paymentBoxTitle'}>Your rate</Box>
           <Box className={'paymentInfoBox'}>
             <ProductItem
+              borderBottom={'1px solid #C4C4C4'}
               className={'paymentInfoItem'}
               info={
-                <Box fontSize={20} fontWeight={700}>
+                <Box fontSize={24} fontWeight={700}>
                   {POSFormatLocalPercent(productInfo?.interestRateOfYear)}
                 </Box>
               }
               label={'Rate'}
             />
             <ProductItem
-              borderBottom={'1px solid #C4C4C4'}
               className={'paymentInfoItem'}
               info={
-                <Box fontSize={20} fontWeight={700}>
+                <Box fontSize={16} fontWeight={600}>
                   {productInfo?.loanTerm} months
                 </Box>
               }
@@ -73,7 +74,7 @@ export const BridgePurchasePaymentSummary: FC<BridgePurchasePaymentSummary> = (
             <ProductItem
               className={'paymentInfoItem'}
               info={
-                <Box fontSize={20} fontWeight={700}>
+                <Box fontSize={16} fontWeight={600}>
                   {POSFormatDollar(loanInfo?.purchaseLoanAmount)}
                 </Box>
               }
@@ -82,7 +83,7 @@ export const BridgePurchasePaymentSummary: FC<BridgePurchasePaymentSummary> = (
             <ProductItem
               className={'paymentInfoItem'}
               info={
-                <Box fontSize={20} fontWeight={700}>
+                <Box fontSize={16} fontWeight={600}>
                   {POSFormatDollar(loanInfo?.cor)}
                 </Box>
               }
@@ -91,7 +92,7 @@ export const BridgePurchasePaymentSummary: FC<BridgePurchasePaymentSummary> = (
             <ProductItem
               className={'paymentInfoItem'}
               info={
-                <Box fontSize={20} fontWeight={700}>
+                <Box fontSize={16} fontWeight={600}>
                   {POSFormatDollar(loanInfo?.totalLoanAmount)}
                 </Box>
               }
@@ -100,7 +101,7 @@ export const BridgePurchasePaymentSummary: FC<BridgePurchasePaymentSummary> = (
             <ProductItem
               className={'paymentInfoItem'}
               info={
-                <Box fontSize={20} fontWeight={700}>
+                <Box fontSize={16} fontWeight={600}>
                   {POSFormatDollar(productInfo?.paymentOfMonth)}
                 </Box>
               }

@@ -167,9 +167,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               />
               <CardItem
                 info={
-                  selectedItem?.cor
-                    ? POSFormatDollar(selectedItem?.purchaseLoanAmount)
-                    : 'N/A'
+                  selectedItem?.cor ? POSFormatDollar(selectedItem?.cor) : 'N/A'
                 }
                 label={'Rehab Loan Amount'}
               />

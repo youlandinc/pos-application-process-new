@@ -15,7 +15,7 @@ interface PaymentTableProps extends PaymentTaskBaseComponentProps {
   loading?: boolean;
   onCheckValueChange: (e: ChangeEvent<HTMLInputElement>) => void;
   check: boolean;
-  loanDetail: ReactNode;
+  loanDetail?: ReactNode;
   productType: ProductCategory;
 }
 

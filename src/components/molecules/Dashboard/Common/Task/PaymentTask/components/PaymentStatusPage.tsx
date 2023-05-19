@@ -13,6 +13,8 @@ import { StyledButton } from '@/components/atoms';
 import { IDTask } from '@/models/base';
 import { STaskItemStatus } from '@/requests/dashboard';
 import { POSFlex } from '@/styles';
+import { useSessionStorageState } from '@/hooks';
+import { POSFormatUSPhoneToText } from '@/utils';
 
 const useStyle = {
   '&.container': {
@@ -47,8 +49,7 @@ export const PaymentStatusPage: FC<PaymentStatusPageProps> = (props) => {
   const { paymentStatus, task } = props;
 
   const router = useRouter();
-
-  // const tenantConfig = utils.getTenantConfig();
+  const { state } = useSessionStorageState('tenantConfig');
 
   const renderResult = useMemo(() => {
     switch (paymentStatus) {
@@ -68,15 +69,14 @@ export const PaymentStatusPage: FC<PaymentStatusPageProps> = (props) => {
               <Box>
                 Should you require additional assistance, email us at
                 <span className={'link_style'}>
-                  {/* todo sass */}
-                  {/* {tenantConfig.extInfo?.posSettings?.email ||
-                    'borrow@youland.com'}{' '} */}{' '}
-                  borrow@youland.com
+                  {/* todo sass */}{' '}
+                  {state?.extInfo?.posSettings?.email || 'borrow@youland.com'}{' '}
                 </span>
                 or call toll free at
                 <span className={'link_style'}>
-                  {/* {tenantConfig.extInfo?.posSettings?.phone || '1-833-968-5263'} */}{' '}
-                  1-833-968-5263
+                  {' '}
+                  {POSFormatUSPhoneToText(state.extInfo?.posSettings?.phone) ||
+                    '1-833-968-5263'}{' '}
                 </span>
               </Box>
             </Box>
@@ -141,16 +141,14 @@ export const PaymentStatusPage: FC<PaymentStatusPageProps> = (props) => {
               is safe! If money was debited from your account, you can call toll
               free at{' '}
               <span className={'link_style'}>
-                {/* todo sass */}
-                {/* {tenantConfig.extInfo?.posSettings?.phone || '1-833-968-5263'} */}{' '}
-                1-833-968-5263
+                {/* todo sass */}{' '}
+                {POSFormatUSPhoneToText(state.extInfo?.posSettings?.phone) ||
+                  '1-833-968-5263'}{' '}
               </span>{' '}
               or email us at
               <span className={'link_style'}>
-                {/* todo sass */}
-                {/* {tenantConfig.extInfo?.posSettings?.email ||
-                  'borrow@youland.com'} */}{' '}
-                borrow@youland.com
+                {/* todo sass */}{' '}
+                {state?.extInfo?.posSettings?.email || 'borrow@youland.com'}{' '}
               </span>
               . We can help you with the refund.
             </Box>

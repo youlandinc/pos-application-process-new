@@ -117,7 +117,7 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ scene }) => {
     (path: string, key: string): (() => void) => {
       return () => {
         if (key === 'resources') {
-          window.open('https://www.youland.com/company/faq/', '_blank');
+          window.open('https://youland.com/company/newsroom/', '_blank');
         }
         if (key === activeKey) {
           return;

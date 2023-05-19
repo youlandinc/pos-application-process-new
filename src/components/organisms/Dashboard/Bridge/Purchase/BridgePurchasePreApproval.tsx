@@ -577,6 +577,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
                       brokerProcessingFee: floatValue,
                     });
                   }}
+                  prefix={'$'}
                   validate={brokerFeeError}
                   value={rateData?.brokerProcessingFee}
                 />

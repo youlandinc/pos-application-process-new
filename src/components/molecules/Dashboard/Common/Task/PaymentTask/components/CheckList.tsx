@@ -104,60 +104,6 @@ export const CheckList: FC<CheckListProps> = observer(({ updateState }) => {
   //   selectedProcessData: { scene },
   // } = useMst();
 
-  const CheckListStyles: SxProps = {
-    maxWidth: 900,
-    width: '100%',
-
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    '& .card_box': {
-      px: 3,
-      py: 4.5,
-      border: '1px solid',
-      borderColor: 'background.border_default',
-      mb: 3,
-      borderRadius: 2,
-      '& .Finish': {
-        color: 'success.main',
-      },
-      '& div': {
-        height: 48,
-        ...POSFlex('center', 'space-between', 'row'),
-        '&:hover': {
-          cursor: 'pointer',
-          borderRadius: 1,
-          bgcolor: '#C5D1FF',
-        },
-        '&:first-of-type': {
-          '&:hover': {
-            bgcolor: 'transparent',
-          },
-        },
-        '& >div': {
-          width: 120,
-          height: 24,
-          borderRadius: 1,
-          bgcolor: 'success.A200',
-          ...POSFlex('center', 'center', 'row'),
-          ...POSFont(12, 600, 1.5, 'success.main'),
-          '&.Unfinished': {
-            bgcolor: 'info.A200',
-            color: 'info.main',
-          },
-        },
-      },
-    },
-    '& .footer': {
-      p: 3,
-      borderRadius: 2,
-      mt: 1,
-      bgcolor: 'warning.A200',
-      gap: 3,
-      ...POSFlex('center', 'space-between', { md: 'row', xs: 'column' }),
-    },
-  };
-
   return (
     <Box sx={CheckListStyles}>
       <PageHeader
@@ -251,3 +197,56 @@ export const CheckList: FC<CheckListProps> = observer(({ updateState }) => {
     </Box>
   );
 });
+
+const CheckListStyles: SxProps = {
+  maxWidth: 900,
+  width: '100%',
+
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  '& .card_box': {
+    p: 3,
+    border: '1px solid',
+    borderColor: 'background.border_default',
+    mb: 3,
+    borderRadius: 2,
+    '& .Finish': {
+      color: 'success.main',
+    },
+    '& div': {
+      height: 48,
+      ...POSFlex('center', 'space-between', 'row'),
+      '&:hover': {
+        cursor: 'pointer',
+        borderRadius: 1,
+        bgcolor: '#C5D1FF',
+      },
+      '&:first-of-type': {
+        '&:hover': {
+          bgcolor: 'transparent',
+        },
+      },
+      '& >div': {
+        width: 120,
+        height: 24,
+        borderRadius: 1,
+        bgcolor: 'success.A200',
+        ...POSFlex('center', 'center', 'row'),
+        ...POSFont(12, 600, 1.5, 'success.main'),
+        '&.Unfinished': {
+          bgcolor: 'info.A200',
+          color: 'info.main',
+        },
+      },
+    },
+  },
+  '& .footer': {
+    p: 3,
+    borderRadius: 2,
+    mt: 1,
+    bgcolor: 'warning.A200',
+    gap: 3,
+    ...POSFlex('center', 'space-between', { md: 'row', xs: 'column' }),
+  },
+};

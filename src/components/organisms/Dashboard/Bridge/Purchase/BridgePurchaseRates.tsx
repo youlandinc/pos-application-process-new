@@ -5,7 +5,7 @@ import { useAsync } from 'react-use';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useSwitch } from '@/hooks';
+import { useSessionStorageState, useSwitch } from '@/hooks';
 
 import { BridgePurchaseLoanInfo } from '@/components/molecules/Application';
 
@@ -55,6 +55,7 @@ export const BridgePurchaseRates: FC = observer(() => {
     userType,
   } = useMst();
   const { enqueueSnackbar } = useSnackbar();
+  const { state } = useSessionStorageState('tenantConfig');
 
   const { open, visible, close } = useSwitch(false);
 
@@ -215,7 +216,8 @@ export const BridgePurchaseRates: FC = observer(() => {
               >
                 {/* todo sass */}
                 Rates displayed are subject to rate lock and are not to be
-                considered an extension or offer of credit by {'Youland'}.
+                considered an extension or offer of credit by{' '}
+                {state?.organizationName || 'YouLand'}.
               </Typography>
             </>
           }
