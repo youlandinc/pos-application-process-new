@@ -92,7 +92,7 @@ export const Pipeline: FC = observer(() => {
         setIsLoadMore(
           temp.length !== res.data.totalElements
             ? res.data.totalElements - PAGE_SIZE > 0
-              ? (res.data.totalElements - PAGE_SIZE) % PAGE_SIZE !== 0
+              ? (res.data.totalElements - PAGE_SIZE) % PAGE_SIZE === 0
               : false
             : false,
         );
