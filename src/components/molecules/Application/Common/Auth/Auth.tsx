@@ -54,7 +54,7 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
         }`}
         sx={{ maxWidth: 600 }}
       >
-        <Transitions>
+        <Transitions style={{ width: '100%' }}>
           {authType === 'sign_up' ? (
             <>
               <SignUp
