@@ -106,7 +106,7 @@ export interface PipelineQuestionnaire {
 
 export interface PipelineACH {
   documentFile?: TaskFiles;
-  propAddr: AddressData;
+  address: AddressData;
   bankName: string;
   accountName: string;
   routingNumber: string;
