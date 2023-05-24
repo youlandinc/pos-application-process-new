@@ -2,7 +2,10 @@ import { FC, useMemo } from 'react';
 import { Box, SxProps } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
-import { BridgePurchaseTask } from '@/components/organisms';
+import {
+  BridgePurchaseTask,
+  BridgeRefinanceTask,
+} from '@/components/organisms';
 
 export const TaskPage: FC = observer(() => {
   const {
@@ -35,9 +38,9 @@ export const TaskPage: FC = observer(() => {
       case 'bridge purchase': {
         return <BridgePurchaseTask />;
       }
-      //  case 'bridge refinance': {
-      //    return <BridgeRefinanceTask />;
-      //  }
+      case 'bridge refinance': {
+        return <BridgeRefinanceTask />;
+      }
       default:
         return <BridgePurchaseTask />;
     }

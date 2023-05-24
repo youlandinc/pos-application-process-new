@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import {
   // MortgagePurchasePreApproval,
   BridgePurchasePreApproval,
-  // BridgeRefinancePreApproval,
+  BridgeRefinancePreApproval,
 } from '@/components/organisms';
 
 export const PreApprovalLetterPage: FC = observer(() => {
@@ -20,8 +20,8 @@ export const PreApprovalLetterPage: FC = observer(() => {
       //   return <MortgagePurchasePreApproval />;
       case 'bridge purchase':
         return <BridgePurchasePreApproval />;
-      // case 'bridge refinance':
-      //   return <BridgeRefinancePreApproval />;
+      case 'bridge refinance':
+        return <BridgeRefinancePreApproval />;
       default:
         return <BridgePurchasePreApproval />;
     }

@@ -7,7 +7,7 @@ import {
   // MortgagePurchaseRates,
   // MortgageRefinanceRates,
   BridgePurchaseRates,
-  // BridgeRefinanceRates,
+  BridgeRefinanceRates,
 } from '@/components/organisms';
 
 export const RatesPage: FC = observer(() => {
@@ -26,9 +26,9 @@ export const RatesPage: FC = observer(() => {
       case 'bridge purchase': {
         return <BridgePurchaseRates />;
       }
-      // case 'bridge refinance': {
-      //   return <BridgeRefinanceRates />;
-      // }
+      case 'bridge refinance': {
+        return <BridgeRefinanceRates />;
+      }
       default:
         return <BridgePurchaseRates />;
     }

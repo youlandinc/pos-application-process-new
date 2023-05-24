@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Box, SxProps } from '@mui/material';
 
 import { POSFlex, POSFont } from '@/styles';
-import { BridgePurchaseRatesLoanInfo } from '@/types';
+import { BRRatesLoanInfo, BridgePurchaseRatesLoanInfo } from '@/types';
 import { StyledLoading } from '@/components/atoms';
 import {
   PaymentTaskBaseComponentProps,
@@ -35,7 +35,9 @@ const useStyle: SxProps = {
 };
 
 interface BridgePurchasePaymentSummary
-  extends PaymentTaskBaseComponentProps<BridgePurchaseRatesLoanInfo> {
+  extends PaymentTaskBaseComponentProps<
+    BridgePurchaseRatesLoanInfo | BRRatesLoanInfo
+  > {
   loading?: boolean;
 }
 

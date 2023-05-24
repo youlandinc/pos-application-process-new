@@ -1,3 +1,11 @@
+import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
+import { Stack, Typography } from '@mui/material';
+import { InfoOutlined } from '@mui/icons-material';
+import { BPQueryData } from '@/requests/dashboard';
+import { LoanStage, UserType } from '@/types/enum';
+
+import { POSFormatDollar, POSFormatPercent, POSNotUndefined } from '@/utils';
+
 import {
   StyledButton,
   StyledCheckbox,
@@ -6,14 +14,6 @@ import {
   StyledTooltip,
   Transitions,
 } from '@/components/atoms';
-
-import { BPQueryData } from '@/requests/dashboard';
-import { LoanStage, UserType } from '@/types/enum';
-
-import { POSFormatDollar, POSFormatPercent, POSNotUndefined } from '@/utils';
-import { InfoOutlined } from '@mui/icons-material';
-import { Stack, Typography } from '@mui/material';
-import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 
 interface BridgePurchaseRatesSearchProps {
   loading: boolean;

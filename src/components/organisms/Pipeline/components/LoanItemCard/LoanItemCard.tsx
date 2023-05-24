@@ -136,6 +136,12 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
         '&:hover': {
           borderColor: 'primary.main',
         },
+        '& .MuiTypography-subtitle1': {
+          fontSize: {
+            md: 16,
+            xs: 12,
+          },
+        },
       }}
     >
       <Stack
@@ -207,7 +213,12 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
         sx={{
           '& .product_item': {
             ...POSFlex('center', 'space-between', 'row'),
+            fontSize: {
+              md: 16,
+              xs: 12,
+            },
             mt: 3,
+
             '&:first-of-type': {
               mt: 0,
             },

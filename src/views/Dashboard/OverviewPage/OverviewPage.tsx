@@ -24,9 +24,9 @@ export const OverviewPage: FC = observer(() => {
       case 'bridge purchase': {
         return <BridgePurchaseOverview />;
       }
-      // case 'bridge refinance': {
-      //   return <BridgeRefinanceOverview />;
-      // }
+      case 'bridge refinance': {
+        return <BridgeRefinanceOverview />;
+      }
       default:
         return <BridgePurchaseOverview />;
     }
