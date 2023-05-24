@@ -178,7 +178,7 @@ export const Pipeline: FC = observer(() => {
       close();
       setDeleteLoading(false);
     }
-  }, [close, deleteId, enqueueSnackbar, getListData]);
+  }, [close, deleteId, enqueueSnackbar]);
 
   useEffect(() => {
     if (isChange) {
