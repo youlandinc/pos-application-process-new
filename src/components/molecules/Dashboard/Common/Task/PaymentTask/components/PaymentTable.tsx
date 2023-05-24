@@ -10,6 +10,7 @@ import {
   StyledPaymentCardRef,
 } from '@/components/atoms';
 import { POSFlex } from '@/styles';
+import { format } from 'date-fns';
 interface PaymentTableProps extends PaymentTaskBaseComponentProps {
   paymentDetail: SPaymentDetails;
   loading?: boolean;
@@ -39,8 +40,10 @@ export const PaymentTable = forwardRef<StyledPaymentCardRef, PaymentTableProps>(
           <>
             <Typography color={'info.main'} variant={'body1'}>
               Please pay the appraisal cost of ${paymentDetail?.amount} by{' '}
-              {'{today+3days}'}, We will help you lock the rate upon receipt of
-              payment.
+              <Box className={'link_style'} component={'span'}>
+                {format(new Date(), 'MM/dd/yyyy')}
+              </Box>
+              , We will help you lock the rate upon receipt of payment.
             </Typography>
             <Typography color={'info.main'} mt={1.5} variant={'body1'}>
               We’ll reach out to schedule your appraisal, which is when someone
