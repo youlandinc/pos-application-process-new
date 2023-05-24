@@ -1,6 +1,6 @@
 import { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { Box, Stack } from '@mui/material';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { useAsyncFn } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { useSnackbar } from 'notistack';
 
 import { useMst } from '@/models/Root';
-import { useAsyncEffect, useSwitch } from '@/hooks';
+import { useAsyncEffect } from '@/hooks';
 
 import { Address, IAddress } from '@/models/common/Address';
 import {
@@ -32,7 +32,6 @@ import {
 import {
   StyledButton,
   StyledCheckbox,
-  StyledDialog,
   StyledLoading,
   StyledTextFieldNumber,
   Transitions,
@@ -81,10 +80,10 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     userType,
   } = useMst();
 
-  const router = useRouter();
+  // const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { open, visible, close } = useSwitch(false);
+  // const { open, visible, close } = useSwitch(false);
 
   const [loanStage, setLoanStage] = useState<LoanStage | undefined>(
     LoanStage.PreApproved,
@@ -248,12 +247,12 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     await getInitData(lastSelectedProcessId as string);
   }, [lastSelectedProcessId]);
 
-  const onDialogSendEmailClick = useCallback(() => {
-    close();
-    setTimeout(() => {
-      infoRef.current?.focus();
-    });
-  }, [close]);
+  // const onDialogSendEmailClick = useCallback(() => {
+  //   close();
+  //   setTimeout(() => {
+  //     infoRef.current?.focus();
+  //   });
+  // }, [close]);
 
   const onChangeTableStatus = useCallback(() => {
     setTableStatus(tableStatus === 'edit' ? 'view' : 'edit');
@@ -300,7 +299,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
       postData as UpdateRatesPostData,
     );
     if (res.status === 200) {
-      open();
+      // open();
       setCheckResult(undefined);
       setTableStatus('view');
       await getInitData(lastSelectedProcessId as string);
@@ -309,7 +308,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     address,
     getInitData,
     lastSelectedProcessId,
-    open,
     productData?.id,
     propertyType,
     propertyUnit,
@@ -474,23 +472,27 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             validate={LTVError}
             value={rateData?.balance}
           />
-          {!rateData?.isCor && (
-            <StyledTextFieldNumber
-              disabled
-              label="Loan-to-Value"
-              onValueChange={() => undefined}
-              suffix={'%'}
-              value={POSFormatPercent(LTV)}
-            />
-          )}
+          {/* {!rateData?.isCor && ( */}
+          <StyledTextFieldNumber
+            disabled
+            label="Loan-to-Value"
+            onValueChange={() => undefined}
+            percentage
+            suffix={'%'}
+            thousandSeparator={false}
+            value={POSFormatPercent(LTV)}
+          />
+          {/* )} */}
         </Stack>
-        <Transitions>
-          {LTVError && (
-            <Stack color={'error.main'} width={'100%'}>
-              {LTVError}
-            </Stack>
-          )}
-        </Transitions>
+        <Stack sx={{ display: LTVError ? 'block' : 'none' }} width={'100%'}>
+          <Transitions>
+            {LTVError && (
+              <Stack color={'error.main'} width={'100%'}>
+                {LTVError}
+              </Stack>
+            )}
+          </Transitions>
+        </Stack>
         <Stack width={'100%'}>
           <StyledCheckbox
             checked={rateData?.isCashOut}
@@ -578,10 +580,13 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
                   value={rateData?.arv || undefined}
                 />
                 <StyledTextFieldNumber
+                  decimalScale={3}
                   disabled
                   label={'Loan-to-Cost'}
                   onValueChange={() => undefined}
+                  percentage={true}
                   suffix={'%'}
+                  thousandSeparator={false}
                   value={POSFormatPercent(LTC)}
                 />
               </Stack>
@@ -589,49 +594,58 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           </Transitions>
         </Stack>
 
-        <Transitions>
-          {LTCError && (
-            <Stack color={'error.main'} mt={'24px'} width={'100%'}>
-              {LTCError}
-            </Stack>
-          )}
-        </Transitions>
-        {userType === UserType.BROKER && (
-          <Stack
-            flexDirection={{ lg: 'row', xs: 'column' }}
-            gap={3}
-            width={'100%'}
-          >
-            <StyledTextFieldNumber
-              decimalScale={3}
-              disabled={checkLoading}
-              label="Broker origination fee"
-              onValueChange={({ floatValue }) =>
-                setRateData({
-                  ...(rateData as BridgeRefinanceEstimateRateData),
-                  brokerPoints: floatValue,
-                })
-              }
-              suffix={'%'}
-              thousandSeparator={false}
-              validate={brokerPointsError}
-              value={rateData?.brokerPoints}
-            />
-            <StyledTextFieldNumber
-              disabled={checkLoading}
-              label="Broker processing fee"
-              onValueChange={({ floatValue }) => {
-                setRateData({
-                  ...(rateData as BridgeRefinanceEstimateRateData),
-                  brokerProcessingFee: floatValue,
-                });
-              }}
-              prefix={'$'}
-              validate={brokerFeeError}
-              value={rateData?.brokerProcessingFee}
-            />
-          </Stack>
-        )}
+        <Stack sx={{ display: LTCError ? 'block' : 'none' }} width={'100%'}>
+          <Transitions>
+            {LTCError && (
+              <Stack color={'error.main'} width={'100%'}>
+                {LTCError}
+              </Stack>
+            )}
+          </Transitions>
+        </Stack>
+        <Stack
+          sx={{ display: userType === UserType.BROKER ? 'block' : 'none' }}
+          width={'100%'}
+        >
+          <Transitions>
+            {userType === UserType.BROKER && (
+              <Stack
+                flexDirection={{ lg: 'row', xs: 'column' }}
+                gap={3}
+                width={'100%'}
+              >
+                <StyledTextFieldNumber
+                  decimalScale={3}
+                  disabled={checkLoading}
+                  label="Broker origination fee"
+                  onValueChange={({ floatValue }) =>
+                    setRateData({
+                      ...(rateData as BridgeRefinanceEstimateRateData),
+                      brokerPoints: floatValue,
+                    })
+                  }
+                  suffix={'%'}
+                  thousandSeparator={false}
+                  validate={brokerPointsError}
+                  value={rateData?.brokerPoints}
+                />
+                <StyledTextFieldNumber
+                  disabled={checkLoading}
+                  label="Broker processing fee"
+                  onValueChange={({ floatValue }) => {
+                    setRateData({
+                      ...(rateData as BridgeRefinanceEstimateRateData),
+                      brokerProcessingFee: floatValue,
+                    });
+                  }}
+                  prefix={'$'}
+                  validate={brokerFeeError}
+                  value={rateData?.brokerProcessingFee}
+                />
+              </Stack>
+            )}
+          </Transitions>
+        </Stack>
       </>
     );
   }, [
@@ -677,7 +691,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           </PreApprovalEdit>
         </>
       )}
-      <StyledDialog
+      {/* <StyledDialog
         content={
           <>
             <Box className={'updatedImage'} />
@@ -706,7 +720,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
         }
         onClose={close}
         open={visible}
-      ></StyledDialog>
+      ></StyledDialog> */}
     </Box>
   );
 });

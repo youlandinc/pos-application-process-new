@@ -61,7 +61,7 @@ export type BROverviewSummaryData = BaseOverviewSummaryData & {
   isCashOut: boolean;
 };
 
-export type BRRatesLoanInfo = Pick<
+export type BridgeRefinanceRatesLoanInfo = Pick<
   BridgeRefinanceEstimateRateData,
   'balance' | 'cashOutAmount' | 'cor'
 > & {

@@ -8,7 +8,7 @@ import { useMst } from '@/models/Root';
 import { ParseProcess } from '@/services/ParseProcess';
 import { POSFlex } from '@/styles';
 import {
-  BridgePurchasePaymentSummary,
+  BridgeRefinancePaymentSummary,
   PaymentTask,
 } from '@/components/molecules';
 import { BridgePurchaseRatesLoanInfo, RatesProductData } from '@/types';
@@ -71,7 +71,7 @@ export const BridgeRefinanceTask: FC = observer(() => {
       <Box className={'pageMain'}>
         <PaymentTask
           loanDetail={
-            <BridgePurchasePaymentSummary
+            <BridgeRefinancePaymentSummary
               loading={loading}
               loanInfo={loanInfo}
               productInfo={productInfo}

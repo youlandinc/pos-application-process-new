@@ -5,6 +5,7 @@ import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
+import { useSnackbar } from 'notistack';
 
 import { POSFlex, POSFont } from '@/styles';
 import { StyledButton } from '@/components/atoms';
@@ -19,11 +20,15 @@ import {
 } from '@/utils';
 import { OverviewBRSummaryData } from '@/types';
 import { OPTIONS_MORTGAGE_PROPERTY } from '@/constants/options/mortgage';
+import { AUTO_HIDE_DURATION } from '@/constants';
+
+import { useSessionStorageState } from '@/hooks';
 
 const useStyles = {
   '&.container': {
     ...POSFlex('flex-start', 'center', 'column'),
     px: {
+      xl: 0,
       lg: 3,
       xs: 0,
     },
@@ -61,7 +66,8 @@ export const BridgeRefinanceOverview: FC = observer(() => {
   } = useMst();
 
   const router = useRouter();
-
+  const { enqueueSnackbar } = useSnackbar();
+  const { state } = useSessionStorageState('tenantConfig');
   // const tenantConfig = utils.getTenantConfig();
 
   const [summary, setSummary] = useState<BridgeOverviewInfo>();
@@ -104,7 +110,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
               info: (
                 <Box
                   style={{
-                    ...POSFlex('flex-start', 'center', 'column'),
+                    ...POSFlex('flex-end', 'center', 'column'),
                     width: '100%',
                   }}
                 >
@@ -209,7 +215,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
         subTitle={
           'Everything about your loan found in one place. Get updates and see what needs to be done before you close.'
         }
-        title={'Your loan overview'}
+        title={'Your Loan Overview'}
       />
       <Box className={'content'}>
         <Box className={'contentItem'} mr={'24px'}>
@@ -233,7 +239,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
               onClick={async () => await router.push('/dashboard/rates')}
               variant={'contained'}
             >
-              Explore rate
+              Explore Rate
             </StyledButton>
           </Card>
         </Box>
@@ -281,8 +287,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
             considered an extension or offer of credit by
             {
               // todo: sass
-              // ' ' + tenantConfig.organizationName ||
-              ' Youland'
+              ' ' + state?.organizationName || ' Youland'
             }
             .
           </Box>
