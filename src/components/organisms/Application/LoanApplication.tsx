@@ -263,8 +263,7 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
           return <BridgePurchaseForm handleBack={handleBack} />;
         }
         if (productType === 'refinance' || applicationType === 'refinance') {
-          return <>refinance</>;
-          //return <BridgeRefinanceForm handleBack={handleBack} />;
+          return <BridgeRefinanceForm handleBack={handleBack} />;
         }
         break;
       }

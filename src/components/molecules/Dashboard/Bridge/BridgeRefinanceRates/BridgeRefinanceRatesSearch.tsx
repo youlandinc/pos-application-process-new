@@ -1,3 +1,9 @@
+import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
+import { Stack, Typography } from '@mui/material';
+import { InfoOutlined } from '@mui/icons-material';
+
+import { BRQueryData } from '@/requests/dashboard';
+import { LoanStage, UserType } from '@/types/enum';
 import {
   StyledButton,
   StyledCheckbox,
@@ -7,24 +13,18 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-import { BPQueryData } from '@/requests/dashboard';
-import { LoanStage, UserType } from '@/types/enum';
-
 import { POSFormatDollar, POSFormatPercent, POSNotUndefined } from '@/utils';
-import { InfoOutlined } from '@mui/icons-material';
-import { Stack, Typography } from '@mui/material';
-import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 
-interface BridgePurchaseRatesSearchProps {
-  loading: boolean;
+interface BridgeRefinanceRatesSearchProps {
   onCheck: () => void;
-  searchForm: BPQueryData;
-  setSearchForm: Dispatch<SetStateAction<BPQueryData>>;
-  userType?: UserType;
+  searchForm: BRQueryData;
+  setSearchForm: Dispatch<SetStateAction<BRQueryData>>;
+  loading: boolean;
+  userType: UserType;
   loanStage?: LoanStage;
 }
 
-export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
+export const BridgeRefinanceRatesSearch: FC<BridgeRefinanceRatesSearchProps> = (
   props,
 ) => {
   const {
@@ -37,11 +37,13 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
   } = props;
 
   const {
-    isCor,
-    purchasePrice,
     cor,
+    isCor,
+    isCashOut,
+    cashOutAmount,
+    balance,
+    homeValue,
     arv,
-    purchaseLoanAmount,
     brokerPoints,
     brokerProcessingFee,
     officerPoints,
@@ -53,50 +55,60 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
   const [LTCError, setLTCError] = useState<string>('');
 
   const loanAmount = useMemo(() => {
-    return isCor
-      ? (purchaseLoanAmount as number) + (cor as number)
-      : purchaseLoanAmount;
-  }, [purchaseLoanAmount, cor, isCor]);
+    let total = balance;
+    if (isCor) {
+      total! += cor || 0;
+    }
+    if (isCashOut) {
+      total! += cashOutAmount || 0;
+    }
+    return total;
+  }, [balance, cashOutAmount, cor, isCashOut, isCor]);
 
   const LTV = useMemo(() => {
-    if (!purchaseLoanAmount || !purchasePrice) {
-      setLTVError('');
+    let radio = 0.7;
+    if (!homeValue) {
       return 0;
     }
-    setLTVError(
-      purchaseLoanAmount / purchasePrice <= 0.75
-        ? ''
-        : 'Your LTV should be no more than 75%',
-    );
-    if (purchaseLoanAmount < 150000) {
-      setLTVError(
-        'Adjust your down payment. Total loan amount must be at least $150,000',
-      );
+    if (isCor) {
+      setLTVError('');
     }
-    return purchaseLoanAmount ? purchaseLoanAmount / purchasePrice : 0;
-  }, [purchaseLoanAmount, purchasePrice]);
+    let total = balance || 0;
+    if (isCashOut) {
+      total += cashOutAmount || 0;
+      radio = 0.65;
+    } else {
+      radio = 0.7;
+    }
+    setLTVError(
+      total / homeValue <= radio
+        ? ''
+        : `Your LTV should be no more than ${radio * 100}%`,
+    );
+    if (loanAmount! < 150000) {
+      setLTVError('Total loan amount must be at least $150,000');
+    }
+    return total / homeValue;
+  }, [homeValue, balance, isCor, isCashOut, loanAmount, cashOutAmount]);
 
   const LTC = useMemo(() => {
-    if (!isCor) {
-      setLTCError('');
-      return;
-    }
-    const result =
-      (loanAmount as number) / ((cor as number) + (purchasePrice as number));
+    const result = cor === 0 ? 0 : loanAmount! / (cor! + homeValue!);
     setLTCError(
-      result > 0.75
-        ? 'Reduce your purchase loan amount or rehab loan amount. Your Loan-to-Cost should be no more than 75%'
+      !isCor
+        ? ''
+        : result > 0.75
+        ? 'Reduce your loan amount or rehab cost. Your Loan-to-Cost should be no more than 75%'
         : '',
     );
     return result;
-  }, [isCor, loanAmount, cor, purchasePrice]);
+  }, [cor, homeValue, isCor, loanAmount]);
 
   const pointsError = useMemo(() => {
     const points = userType === UserType.BROKER ? brokerPoints : officerPoints;
     if (!POSNotUndefined(points)) {
       return [''];
     }
-    if ((points as number) <= 5) {
+    if (points! <= 5) {
       return undefined;
     }
     return [
@@ -112,7 +124,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
     if (!POSNotUndefined(fee) || !loanAmount) {
       return [''];
     }
-    if ((fee as number) <= loanAmount) {
+    if (fee! <= loanAmount) {
       return undefined;
     }
     return [
@@ -128,7 +140,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
     if (!POSNotUndefined(agentFee) || !loanAmount) {
       return [''];
     }
-    if ((agentFee as number) <= loanAmount) {
+    if (agentFee! <= loanAmount) {
       return undefined;
     }
     return [
@@ -170,18 +182,31 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
     if (LTVError || LTCError) {
       return false;
     }
-    return isCor
-      ? cor && arv && purchasePrice && purchaseLoanAmount && flag
-      : purchasePrice && purchaseLoanAmount && flag;
+    if (!isCor && !isCashOut) {
+      return homeValue && POSNotUndefined(balance) && flag;
+    } else if (isCor || isCashOut) {
+      if (isCor && isCashOut) {
+        return (
+          homeValue &&
+          POSNotUndefined(balance) &&
+          cashOutAmount &&
+          cor &&
+          arv &&
+          flag
+        );
+      } else if (isCashOut) {
+        return homeValue && cashOutAmount && flag;
+      } else if (isCor) {
+        return homeValue && cor && arv && flag;
+      }
+    }
+    return true;
   }, [
     userType,
     LTVError,
     LTCError,
     isCor,
-    cor,
-    arv,
-    purchasePrice,
-    purchaseLoanAmount,
+    isCashOut,
     agentFee,
     agentFeeError,
     officerPoints,
@@ -190,6 +215,11 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
     processingFeeError,
     brokerPoints,
     brokerProcessingFee,
+    homeValue,
+    balance,
+    cashOutAmount,
+    cor,
+    arv,
   ]);
 
   const renderByUserType = useMemo(() => {
@@ -371,31 +401,33 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography variant={'body1'}>Purchase Price</Typography>
+                <Typography variant={'body1'}>Estimated Home Value</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
                       ...searchForm,
-                      purchasePrice: floatValue,
+                      homeValue: floatValue,
                     });
                   }}
                   prefix={'$'}
-                  value={purchasePrice}
+                  value={homeValue}
                 />
               </Stack>
               <Stack flex={1} gap={1}>
-                <Typography variant={'body1'}>Purchase Loan Amount</Typography>
+                <Typography variant={'body1'}>
+                  Remaining Loan Balance
+                </Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
                       ...searchForm,
-                      purchaseLoanAmount: floatValue,
+                      balance: floatValue,
                     });
                   }}
                   prefix={'$'}
-                  value={purchaseLoanAmount}
+                  value={balance}
                 />
               </Stack>
             </Stack>
@@ -408,7 +440,9 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
             >
               <Typography variant={'body1'}>Loan to Value</Typography>
               <StyledTooltip
-                title={'LTV (purchase loan amount to purchase price)'}
+                title={
+                  'LTV [Remaining Balance + Cash Out (if any)] / Home Value'
+                }
               >
                 <InfoOutlined sx={{ width: 16, height: 16 }} />
               </StyledTooltip>
@@ -427,6 +461,42 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
           </Stack>
 
           <StyledCheckbox
+            checked={isCashOut}
+            disabled={loading || loanStage === LoanStage.Approved}
+            label={'Cash Out Amount'}
+            onChange={(e) => {
+              setSearchForm({
+                ...searchForm,
+                isCashOut: e.target.checked,
+              });
+            }}
+          />
+
+          <Transitions
+            style={{
+              width: '100%',
+              display: isCashOut ? 'block' : 'none',
+            }}
+          >
+            {isCashOut && (
+              <Stack flex={1} gap={1}>
+                <Typography variant={'body1'}>Cash Out Amount</Typography>
+                <StyledTextFieldNumber
+                  disabled={loading || loanStage === LoanStage.Approved}
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      cashOutAmount: floatValue,
+                    });
+                  }}
+                  prefix={'$'}
+                  value={cashOutAmount || undefined}
+                />
+              </Stack>
+            )}
+          </Transitions>
+
+          <StyledCheckbox
             checked={isCor}
             disabled={loading || loanStage === LoanStage.Approved}
             label={'Rehab Loan Amount'}
@@ -441,7 +511,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
           <Transitions
             style={{
               width: '100%',
-              display: isCor ? 'block' : 'none',
+              display: isCashOut ? 'block' : 'none',
             }}
           >
             {isCor && (
@@ -472,7 +542,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
                       After Repair Value (ARV){' '}
                       <StyledTooltip
                         title={
-                          'ARV (Purchase price + Estimated rehab loan amount)'
+                          'ARV (Estimated Home Value + Estimated Rehab Loan Amount)'
                         }
                       >
                         <InfoOutlined sx={{ width: 16, height: 16 }} />
@@ -518,9 +588,9 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
               </Stack>
             )}
           </Transitions>
-        </StyledFormItem>
 
-        {renderByUserType}
+          {renderByUserType}
+        </StyledFormItem>
 
         <StyledButton
           disabled={!isValid || loading || loanStage === LoanStage.Approved}
