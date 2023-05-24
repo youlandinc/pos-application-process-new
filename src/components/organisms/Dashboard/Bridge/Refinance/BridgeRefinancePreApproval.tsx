@@ -140,10 +140,9 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     if (!rateData?.homeValue) {
       return 0;
     }
-    if (rateData?.isCor) {
-      setLTVError(undefined);
-      return;
-    }
+    // if (rateData?.isCor) {
+    //   setLTVError(undefined);
+    // }
     let total = rateData?.balance || 0;
     if (rateData?.isCashOut) {
       total += rateData?.cashOutAmount || 0;
@@ -166,7 +165,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     rateData?.cashOutAmount,
     rateData?.homeValue,
     rateData?.isCashOut,
-    rateData?.isCor,
   ]);
 
   const LTC = useMemo(() => {
