@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { useSessionStorageState, useSwitch } from '@/hooks';
-import { LoanStage } from '@/types/enum';
+import { LoanStage, UserType } from '@/types/enum';
 import { POSFlex } from '@/styles';
 
 import {
@@ -16,21 +16,24 @@ import {
   _fetchRatesProductPreview,
   _updateRatesProductSelected,
   BRQueryData,
+  MPQueryData,
+  MRQueryData,
 } from '@/requests/dashboard';
-// import {
-//   BridgeRefinanceLoanInfo,
-//   BridgeRatesList,
-//   BridgePurchaseRatesDrawer,
-//   BridgePurchaseRatesSearch,
-// } from '@/components/molecules';
+
 import {
-  BridgePurchaseRatesDrawer,
-  BridgePurchaseRatesSearch,
   BridgeRatesList,
+  BridgeRefinanceRatesDrawer,
+  BridgeRefinanceRatesSearch,
 } from '@/components/molecules';
 
-import { Encompass, RatesProductData } from '@/types';
+import {
+  BridgePurchaseEstimateRateData,
+  BridgeRefinanceEstimateRateData,
+  Encompass,
+  RatesProductData,
+} from '@/types';
 import { BridgeRefinanceLoanInfo } from '@/components/molecules/Application';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 const initialize: BRQueryData = {
   homeValue: undefined,
@@ -114,7 +117,12 @@ export const BridgeRefinanceRates: FC = observer(() => {
           agentFee,
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>
+        enqueueSnackbar(err, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
   });
 
   const onCheckGetList = async () => {
@@ -126,12 +134,15 @@ export const BridgeRefinanceRates: FC = observer(() => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
         setLoading(false);
       });
   };
 
-  const onListItemClick = async (item) => {
+  const onListItemClick = async (item: RatesProductData) => {
     const { paymentOfMonth, interestRateOfYear, loanTerm, id } = item;
     const postData = {
       id,
@@ -140,7 +151,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
       },
     };
     setSelectedItem(
-      Object.assign(loanInfo, {
+      Object.assign(loanInfo as BridgeRefinanceLoanInfo, {
         paymentOfMonth,
         interestRateOfYear,
         loanTerm,
@@ -149,7 +160,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
     );
     open();
     if (!item.selected) {
-      productList.forEach((item) => (item.selected = false));
+      productList?.forEach((item) => (item.selected = false));
       item.selected = true;
       if (loanStage !== LoanStage.Approved) {
         await updateSelectedProduct(postData);
@@ -158,40 +169,72 @@ export const BridgeRefinanceRates: FC = observer(() => {
   };
 
   const updateSelectedProduct = useCallback(
-    async (postData) => {
+    async (
+      postData: Partial<
+        Pick<RatesProductData, 'id'> & {
+          queryParams:
+            | BridgeRefinanceEstimateRateData
+            | BridgePurchaseEstimateRateData
+            | MPQueryData
+            | MRQueryData;
+        }
+      >,
+    ) => {
       const res = await _updateRatesProductSelected(
         lastSelectedProcessId,
         postData,
       );
-      console.log(res);
     },
     [lastSelectedProcessId],
   );
 
   return (
     <>
-      <Box className={classes.container}>
-        <BridgePurchaseRatesSearch
+      <Box className={'container'} sx={BridgeRefinanceRatesStyles}>
+        <BridgeRefinanceRatesSearch
           loading={loading || initLoading}
+          loanStage={loanStage}
           onCheck={onCheckGetList}
           searchForm={searchForm}
           setSearchForm={setSearchForm}
-          userType={userType}
-          loanStage={loanStage}
+          userType={userType as UserType}
         />
         <BridgeRatesList
-          productList={productList}
-          onClick={onListItemClick}
+          label={
+            <>
+              <Typography
+                color={'info.main'}
+                mt={6}
+                textAlign={'center'}
+                variant={'body1'}
+              >
+                The following loan programs are available for you
+              </Typography>
+              <Typography
+                color={'info.main'}
+                mt={1.5}
+                textAlign={'center'}
+                variant={'body3'}
+              >
+                {/* todo sass */}
+                Rates displayed are subject to rate lock and are not to be
+                considered an extension or offer of credit by{' '}
+                {state?.organizationName || 'YouLand'}.
+              </Typography>
+            </>
+          }
           loading={loading || initLoading}
-          userType={userType}
           loanStage={loanStage}
+          onClick={onListItemClick}
+          productList={productList || []}
+          userType={userType}
         />
-        <BridgePurchaseRatesDrawer
-          visible={visible}
+        <BridgeRefinanceRatesDrawer
+          // loanStage={loanStage}
           onCancel={close}
           selectedItem={selectedItem}
-          userType={userType}
-          loanStage={loanStage}
+          userType={userType as UserType}
+          visible={visible}
         />
       </Box>
     </>

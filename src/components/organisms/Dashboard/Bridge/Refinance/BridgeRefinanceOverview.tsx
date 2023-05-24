@@ -196,8 +196,10 @@ export const BridgeRefinanceOverview: FC = observer(() => {
         });
       })
       .catch((err) => {
-        // todo, lee this error need to handler
-        console.log(err);
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
       });
   });
 

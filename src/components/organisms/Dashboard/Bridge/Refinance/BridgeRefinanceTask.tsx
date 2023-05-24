@@ -11,7 +11,7 @@ import {
   BridgePurchasePaymentSummary,
   PaymentTask,
 } from '@/components/molecules';
-import { BRRatesLoanInfo, RatesProductData } from '@/types';
+import { BridgePurchaseRatesLoanInfo, RatesProductData } from '@/types';
 import {
   _fetchRatesLoanInfo,
   _fetchRatesProductSelected,
@@ -41,7 +41,7 @@ export const BridgeRefinanceTask: FC = observer(() => {
 
   const { data: processData } = selectedProcessData;
 
-  const [loanInfo, setLoanInfo] = useState<BRRatesLoanInfo>();
+  const [loanInfo, setLoanInfo] = useState<BridgePurchaseRatesLoanInfo>();
   const [productInfo, setProductInfo] = useState<RatesProductData>();
   const [taskId, setTaskId] = useState<string>('');
 

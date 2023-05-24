@@ -4,6 +4,9 @@ import { useRouter } from 'next/router';
 import { useAsyncFn } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
+
+import { useSnackbar } from 'notistack';
+
 import { useMst } from '@/models/Root';
 import { useAsyncEffect, useSwitch } from '@/hooks';
 
@@ -41,7 +44,8 @@ import {
   POSFormatLocalPercent,
   POSFormatPercent,
 } from '@/utils';
-import { POSFlex, POSFont } from '@/styles';
+import { POSFont } from '@/styles';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 const useStyles = {
   mx: { lg: 'auto', xs: 0 },
@@ -78,6 +82,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
   } = useMst();
 
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { open, visible, close } = useSwitch(false);
 
@@ -229,7 +234,12 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             brokerProcessingFee,
           });
         })
-        .catch((err) => console.log(err));
+        .catch((err) =>
+          enqueueSnackbar(err as string, {
+            variant: 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+          }),
+        );
     },
     [],
   );

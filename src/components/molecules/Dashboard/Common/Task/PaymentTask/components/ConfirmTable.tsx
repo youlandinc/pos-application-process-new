@@ -1,6 +1,6 @@
 import { ChangeEvent, FC } from 'react';
-import { Box, FormControlLabel, Typography } from '@mui/material';
-import { CallOutlined, MailOutlineOutlined } from '@mui/icons-material';
+import { Box, Typography } from '@mui/material';
+// import { CallOutlined, MailOutlineOutlined } from '@mui/icons-material';
 import { StyledCheckbox, StyledFormItem } from '@/components/atoms';
 
 import { POSFlex, POSFont } from '@/styles';
