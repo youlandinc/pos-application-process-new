@@ -218,7 +218,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
         subTitle={
           'Everything about your loan found in one place. Get updates and see what needs to be done before you close.'
         }
-        title={'Your loan overview'}
+        title={'Your Loan Overview'}
       />
       <Box className={'content'}>
         <Box className={'contentItem'} mr={'24px'}>
@@ -237,7 +237,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
               }
               variant={'contained'}
             >
-              View letter
+              View Letter
             </StyledButton>
           </Card>
           <Card
@@ -253,7 +253,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
               onClick={async () => await router.push('/dashboard/rates')}
               variant={'contained'}
             >
-              Explore rate
+              Explore Rate
             </StyledButton>
           </Card>
         </Box>

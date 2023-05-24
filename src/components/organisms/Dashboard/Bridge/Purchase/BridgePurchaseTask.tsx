@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { ParseProcess } from '@/services/ParseProcess';
-import { POSFlex, POSFont } from '@/styles';
+import { POSFlex } from '@/styles';
 // import { BridgePurchasePaymentSummary, PaymentTask } from '@/components/molecules';
 import { BridgePurchaseRatesLoanInfo, RatesProductData } from '@/types';
 import {

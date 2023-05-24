@@ -1,4 +1,4 @@
-import { FC, forwardRef, useEffect, useLayoutEffect, useState } from 'react';
+import { FC, forwardRef, useEffect, useState } from 'react';
 import {
   NumberFormatValues,
   NumericFormat,

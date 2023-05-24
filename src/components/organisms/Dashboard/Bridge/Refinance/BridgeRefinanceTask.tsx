@@ -8,10 +8,10 @@ import { useMst } from '@/models/Root';
 import { ParseProcess } from '@/services/ParseProcess';
 import { POSFlex } from '@/styles';
 import {
-  BridgePurchasePaymentSummary,
+  BridgeRefinancePaymentSummary,
   PaymentTask,
 } from '@/components/molecules';
-import { BRRatesLoanInfo, RatesProductData } from '@/types';
+import { BridgePurchaseRatesLoanInfo, RatesProductData } from '@/types';
 import {
   _fetchRatesLoanInfo,
   _fetchRatesProductSelected,
@@ -41,7 +41,7 @@ export const BridgeRefinanceTask: FC = observer(() => {
 
   const { data: processData } = selectedProcessData;
 
-  const [loanInfo, setLoanInfo] = useState<BRRatesLoanInfo>();
+  const [loanInfo, setLoanInfo] = useState<BridgePurchaseRatesLoanInfo>();
   const [productInfo, setProductInfo] = useState<RatesProductData>();
   const [taskId, setTaskId] = useState<string>('');
 
@@ -71,7 +71,7 @@ export const BridgeRefinanceTask: FC = observer(() => {
       <Box className={'pageMain'}>
         <PaymentTask
           loanDetail={
-            <BridgePurchasePaymentSummary
+            <BridgeRefinancePaymentSummary
               loading={loading}
               loanInfo={loanInfo}
               productInfo={productInfo}
