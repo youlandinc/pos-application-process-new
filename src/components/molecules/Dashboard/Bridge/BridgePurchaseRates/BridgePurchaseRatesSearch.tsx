@@ -309,7 +309,9 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography>Loan Officer Origination Compensation</Typography>
+                <Typography>
+                  Real Estate Agent Origination Compensation
+                </Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
