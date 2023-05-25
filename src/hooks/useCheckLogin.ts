@@ -19,10 +19,8 @@ export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
     enqueueSnackbar('You have logged in and are now ready for you', {
       variant: 'success',
       autoHideDuration: AUTO_HIDE_DURATION,
-      onClose: () => {
-        router.push(jumpPath);
-      },
     });
+    router.push(jumpPath);
   });
   useEffect(() => {
     check();

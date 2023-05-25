@@ -81,7 +81,7 @@ export const BridgePersonInfo: FC = observer(() => {
           }
         >
           <Stack gap={3} maxWidth={600} width={'100%'}>
-            <Stack flexDirection={'row'} gap={3}>
+            <Stack>
               <StyledTextField
                 label={'First Name'}
                 onChange={changeFieldValue('firstName')}
@@ -89,6 +89,8 @@ export const BridgePersonInfo: FC = observer(() => {
                 validate={selfInfo.errors.firstName}
                 value={selfInfo.firstName}
               />
+            </Stack>
+            <Stack>
               <StyledTextField
                 label={'Last Name'}
                 onChange={changeFieldValue('lastName')}
@@ -105,7 +107,7 @@ export const BridgePersonInfo: FC = observer(() => {
                 value={selfInfo.dateOfBirth}
               />
             </Stack>
-            <Stack flexDirection={'row'} gap={3}>
+            <Stack>
               <StyledTextFieldPhone
                 label={'Phone Number'}
                 onValueChange={changeFieldValue('phoneNumber')}
@@ -113,6 +115,8 @@ export const BridgePersonInfo: FC = observer(() => {
                 validate={selfInfo.errors.phoneNumber}
                 value={selfInfo.phoneNumber}
               />
+            </Stack>
+            <Stack>
               <StyledTextField
                 label={'Email'}
                 onChange={changeFieldValue('email')}
