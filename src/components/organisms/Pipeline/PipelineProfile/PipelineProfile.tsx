@@ -245,9 +245,20 @@ export const PipelineProfile: FC = observer(() => {
     userType,
   ]);
 
+  const userTask = useMemo(() => {
+    switch (userType) {
+      case UserType.BROKER:
+        return 'Broker Tasks';
+      case UserType.LOAN_OFFICER:
+        return 'Loan Officer Tasks';
+      case UserType.REAL_ESTATE_AGENT:
+        return 'Real Estate Agent Tasks';
+    }
+  }, [userType]);
+
   return (
     <StyledFormItem
-      label={'Broker Tasks'}
+      label={userTask}
       sx={{ m: '0 auto' }}
       tip={
         'Please fill in the information that is needed for payment upon loan close.'
