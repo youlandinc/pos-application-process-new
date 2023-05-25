@@ -1,3 +1,12 @@
+export enum SceneType {
+  default = '',
+  unknown = 'Unknown',
+  mortgage_purchase = 'mortgage purchase',
+  mortgage_refinance = 'mortgage refinance',
+  bridge_purchase = 'bridge purchase',
+  bridge_refinance = 'bridge refinance',
+}
+
 export enum ServerTaskKey {
   // common task
   // starting,refuse,about_yourself,income,about_other,income_of_other...
@@ -116,6 +125,7 @@ export enum VariableName {
 
   // bridge
   estimateRate = 'estimateRate',
+  aboutOtherCondition = 'aboutOtherCondition',
 }
 
 export enum LoanType {
@@ -135,7 +145,7 @@ export enum LoanStage {
   PreApproved = 'Pre Approved',
   RateLocking = 'Rate Locking',
   RateLocked = 'Rate Locked',
-  Approval = 'Approval',
+  Approved = 'Approved',
   FinalClosing = 'Final Closing',
   Refusal = 'Rejected',
 }
@@ -196,6 +206,7 @@ export enum BridgeCreditScoreState {
   notice = 'notice',
   selfInfo = 'selfInfo',
   creditScore = 'creditScore',
+  coBorrowerInfo = 'coBorrowerInfo',
 }
 
 export enum BizType {
@@ -209,6 +220,7 @@ export enum BizType {
 export enum LoginType {
   YLACCOUNT_LOGIN = 'YLACCOUNT_LOGIN',
   GOOGLE_LOGIN = 'GOOGLE_LOGIN',
+  DEFAULT = '',
 }
 
 export enum UserType {
@@ -216,32 +228,4 @@ export enum UserType {
   BROKER = 'BROKER',
   REAL_ESTATE_AGENT = 'REAL_ESTATE_AGENT',
   LOAN_OFFICER = 'LOAN_OFFICER',
-}
-
-export enum PipelineTaskItemStatus {
-  UNFINISHED = 'unfinished',
-  FINISHED = 'finished',
-  CONFIRMED = 'confirmed',
-}
-
-export enum PipelineTaskName {
-  BROKER_LICENSE = 'Broker License',
-  ACH_INFORMATION = 'ACH Information',
-  BROKER_QUESTIONNAIRE = 'Broker Questionnaire',
-  BROKER_AGREEMENT = 'Broker Agreement',
-  BROKER_GOVERNMENT_ID = 'Broker Government ID',
-  W9_FORM = 'W9 Form',
-  LOAN_OFFICER_AGREEMENT = 'Loan Officer information',
-  REAL_ESTATE_AGENT_AGREEMENT = 'Real Estate Agent information',
-}
-
-export enum PipelineTaskKey {
-  BL = 'BROKER_LICENSE',
-  AI = 'ACH_INFORMATION',
-  BQ = 'BROKER_QUESTIONNAIRE',
-  BA = 'BROKER_AGREEMENT',
-  BG = 'BROKER_GOVERNMENT_ID',
-  WF = 'W9_FORM',
-  LOA = 'LOAN_OFFICER_AGREEMENT',
-  REAA = 'REAL_ESTATE_AGENT_AGREEMENT',
 }

@@ -1,6 +1,6 @@
-import { AddressData } from '@/types/variable';
-import { BizType, LoginType, UserType } from '@/types/enum';
-import { TaskFiles } from '@/types/myApplicationData';
+import { AddressData } from '@/types/application';
+import { TaskFiles } from '@/types/pipeline';
+import { BizType, LoginType, UserType } from './enum';
 
 declare namespace User {
   interface BaseUserInfo {
@@ -54,11 +54,11 @@ declare namespace User {
   interface UserProfile {
     account: string;
     avatar: string | null;
-    email: string;
+    email: string | undefined;
     loginType: LoginType;
     name: string;
     tenantId: string;
-    userId: string;
+    userId: string | undefined;
     userType: UserType;
   }
 
@@ -108,6 +108,19 @@ declare namespace User {
     appkey: string;
     verifyCode: string;
     email: string;
+  }
+
+  interface TenantConfigRequest {
+    id: number;
+    tenantId: string;
+    logoUrl: string;
+    organizationName: string;
+    organizationInfo: OrganizationInfo;
+    phone: string;
+    signOffEmail: string;
+    replyEmail: string;
+    saasUrl: string;
+    extInfo: ExtInfo$3Type;
   }
 
   type UserUploadRequest = TaskFiles;

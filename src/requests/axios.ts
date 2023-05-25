@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { REQUEST_TIMEOUT } from '@/constants';
+
 import { rootStore } from '@/models/Root';
+import { REQUEST_TIMEOUT } from '@/constants';
 import { HttpErrorType } from '@/types/server';
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8';
@@ -34,18 +35,18 @@ service.interceptors.response.use(
       return Promise.reject(error.message);
     }
     //HTTP STATUS CODE 401 means that landing privileges are invalid, 403 does not have permission access to the current login state
-    const { message, code, status } = error.response.data;
+    const { message, code } = error.response.data;
     // if token expired
     if (code === HttpErrorType.tokenExpired) {
       rootStore.logout();
     }
 
-    rootStore.notificationStation.enqueueSnackbar({
-      message: message,
-      options: {
-        variant: 'error',
-      },
-    });
+    //rootStore.notificationStation.enqueueSnackbar({
+    //  message: message,
+    //  options: {
+    //    variant: 'error',
+    //  },
+    //});
     return Promise.reject(message);
   },
 );

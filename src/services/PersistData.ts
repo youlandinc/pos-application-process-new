@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { RootModel, rootStore } from '@/models/Root';
 import { User } from '@/types/user';
 import { IReactionPublic, reaction } from 'mobx';

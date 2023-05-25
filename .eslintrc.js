@@ -75,6 +75,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 1,
     'no-void': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
   },
   settings: {
     react: {

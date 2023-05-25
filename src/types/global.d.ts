@@ -1,17 +1,9 @@
-type ProductCategory = 'mortgage' | 'bridge';
+type ProductCategory = 'mortgage' | 'bridge' | undefined;
 // | 'mortgageAlter'
 // | 'rental'
 // | 'jumbo';
 
-type ApplicationType = 'purchase' | 'refinance';
-
-type SceneType =
-  | 'mortgage purchase'
-  | 'mortgage refinance'
-  | 'bridge purchase'
-  | 'bridge refinance'
-  | 'Unknown'
-  | '';
+type ApplicationType = 'purchase' | 'refinance' | undefined;
 
 interface Option {
   key: string;
@@ -70,7 +62,7 @@ interface BaseExtra {
 }
 
 // This is a bit of a big change to specify a type, I don't have time for this, but I'll see what happens
-interface Variable<T extends any = any> {
+interface Variable<T> {
   name: string;
   type: VariableType;
   value: T;
@@ -140,8 +132,8 @@ interface UserSession {
 }
 
 interface ClientUserProfile {
-  username: string;
-  email: string;
-  userType: import('@/types/enum.ts').UserType;
-  loginType: import('@/types/enum').LoginType;
+  username?: string | undefined;
+  email?: string | undefined;
+  userType?: import('@/types/enum.ts').UserType | undefined;
+  loginType?: import('@/types/enum').LoginType | undefined;
 }

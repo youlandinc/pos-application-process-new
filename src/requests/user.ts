@@ -43,6 +43,6 @@ export const _userResetPassword = (params: User.UserResetPassParams) => {
   return post<any>('/usercenter/api/user/resetPass', params);
 };
 
-export const _userUpload = (params) => {
-  return post<User.UserUploadRequest[]>('/dashboard/user/upload ', params);
-};
+// export const _userUpload = (params) => {
+//   return post<User.UserUploadRequest[]>('/dashboard/user/upload ', params);
+// };

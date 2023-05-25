@@ -1,7 +1,13 @@
 import { get, post } from '../axios';
 
-export type STaskItemStatus = 'undone' | 'processing' | 'complete';
-interface STaskItemsStatusResponse {
+export enum STaskItemStatus {
+  UNDONE = 'undone',
+  PROCESSING = 'processing',
+  COMPLETE = 'complete',
+  FAIL = 'fail',
+}
+
+export interface STaskItemsStatusResponse {
   [key: string]: STaskItemStatus;
 }
 
