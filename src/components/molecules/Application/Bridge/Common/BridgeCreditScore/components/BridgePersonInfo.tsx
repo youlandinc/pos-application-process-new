@@ -19,6 +19,7 @@ import {
   StyledTextFieldSocialNumber,
 } from '@/components/atoms';
 import { NumberFormatValues } from 'react-number-format';
+import { useSessionStorageState } from '@/hooks';
 
 // todo : saas
 export const BridgePersonInfo: FC = observer(() => {
@@ -28,6 +29,7 @@ export const BridgePersonInfo: FC = observer(() => {
     },
     // userType,
   } = useMst();
+  const { state } = useSessionStorageState('tenantConfig');
 
   const selfInfo: IPersonalInfo = creditScore.selfInfo;
 
@@ -76,12 +78,13 @@ export const BridgePersonInfo: FC = observer(() => {
         <StyledFormItem
           label={'Personal Information'}
           sub
-          tip={
-            "By entering your phone number,  you're authorizing YouLand to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may."
-          }
+          tip={`By entering your phone number,  you're authorizing ${
+            //sass
+            ' ' + state?.organizationName || ' YouLand'
+          } to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may.`}
         >
           <Stack gap={3} maxWidth={600} width={'100%'}>
-            <Stack flexDirection={'row'} gap={3}>
+            <Stack>
               <StyledTextField
                 label={'First Name'}
                 onChange={changeFieldValue('firstName')}
@@ -89,6 +92,8 @@ export const BridgePersonInfo: FC = observer(() => {
                 validate={selfInfo.errors.firstName}
                 value={selfInfo.firstName}
               />
+            </Stack>
+            <Stack>
               <StyledTextField
                 label={'Last Name'}
                 onChange={changeFieldValue('lastName')}
@@ -105,7 +110,7 @@ export const BridgePersonInfo: FC = observer(() => {
                 value={selfInfo.dateOfBirth}
               />
             </Stack>
-            <Stack flexDirection={'row'} gap={3}>
+            <Stack>
               <StyledTextFieldPhone
                 label={'Phone Number'}
                 onValueChange={changeFieldValue('phoneNumber')}
@@ -113,6 +118,8 @@ export const BridgePersonInfo: FC = observer(() => {
                 validate={selfInfo.errors.phoneNumber}
                 value={selfInfo.phoneNumber}
               />
+            </Stack>
+            <Stack>
               <StyledTextField
                 label={'Email'}
                 onChange={changeFieldValue('email')}
@@ -147,8 +154,17 @@ export const BridgePersonInfo: FC = observer(() => {
               variant={'body2'}
             >
               I, {selfInfo.firstName || 'borrower'}{' '}
-              {selfInfo.lastName || 'name'} , authorize YouLand to verify my
-              credit. I&apos;ve also read and agreed to YouLand&apos;s{' '}
+              {selfInfo.lastName || 'name'} , authorize{' '}
+              {
+                //sass
+                ' ' + state?.organizationName || ' YouLand'
+              }{' '}
+              to verify my credit. I&apos;ve also read and agreed to
+              {
+                //sass
+                ' ' + state?.organizationName || ' YouLand'
+              }
+              &apos;s{' '}
               <Typography
                 className={'link_style'}
                 component={'span'}

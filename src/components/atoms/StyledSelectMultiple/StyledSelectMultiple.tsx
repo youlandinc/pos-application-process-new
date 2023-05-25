@@ -71,6 +71,9 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
             },
           }}
           label={label}
+          MenuProps={{
+            disableScrollLock: true,
+          }}
           multiple
           onChange={handledChange}
           renderValue={(selected: any) =>

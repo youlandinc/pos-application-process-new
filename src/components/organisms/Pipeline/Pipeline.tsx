@@ -266,7 +266,12 @@ export const Pipeline: FC = observer(() => {
       )}
       <StyledDialog
         content={
-          <Typography mt={3} sx={{ color: 'info.A100' }} variant={'body2'}>
+          <Typography
+            component={'div'}
+            mt={3}
+            sx={{ color: 'info.A100' }}
+            variant={'body2'}
+          >
             {deleteLoading
               ? 'Deleting...'
               : `Are you sure you want to delete ${

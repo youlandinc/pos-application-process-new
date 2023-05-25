@@ -54,7 +54,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
 
   const loanAmount = useMemo(() => {
     return isCor
-      ? (purchaseLoanAmount as number) + (cor as number)
+      ? (purchaseLoanAmount as number) + (cor || 0)
       : purchaseLoanAmount;
   }, [purchaseLoanAmount, cor, isCor]);
 
@@ -500,7 +500,9 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
                 >
                   <Typography variant={'body1'}>Loan to Cost</Typography>
                   <StyledTooltip
-                    title={'ARV (Purchase price + Estimated rehab loan amount)'}
+                    title={
+                      'LTC (Total loan amount / [Purchase price + Rehab loan amount])'
+                    }
                   >
                     <InfoOutlined sx={{ width: 16, height: 16 }} />
                   </StyledTooltip>

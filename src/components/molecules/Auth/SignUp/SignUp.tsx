@@ -15,7 +15,7 @@ import { validate } from 'validate.js';
 
 import { observer } from 'mobx-react-lite';
 
-import { useSwitch } from '@/hooks';
+import { useSessionStorageState, useSwitch } from '@/hooks';
 import { SignUpProps, SignUpStyles } from './index';
 import { POSFlex } from '@/styles';
 import {
@@ -44,7 +44,7 @@ import SIGN_UP_SVG from '@/svg/auth/sign_up.svg';
 export const SignUp: FC<SignUpProps> = observer(
   ({ isNestForm = false, isRedirect = true, successCb }) => {
     const router = useRouter();
-
+    const { state } = useSessionStorageState('tenantConfig');
     const { enqueueSnackbar } = useSnackbar();
 
     const [email, setEmail] = useState('');
@@ -335,8 +335,12 @@ export const SignUp: FC<SignUpProps> = observer(
                     >
                       Term of Use{' '}
                     </Link>
-                    and to receive YouLand emails & updates and acknowledge that
-                    you read our{' '}
+                    and to receive
+                    {
+                      //sass
+                      ' ' + state?.organizationName || ' YouLand'
+                    }{' '}
+                    emails & updates and acknowledge that you read our{' '}
                     <Link
                       className="link_style"
                       href={'https://www.youland.com/legal/privacy/'}

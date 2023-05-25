@@ -4,7 +4,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { usePersistFn } from '@/hooks';
+import { usePersistFn, useSessionStorageState } from '@/hooks';
 import { ForgotPassword, Login, SignUp } from '@/components/molecules';
 import { _bindProcess } from '@/requests';
 
@@ -12,6 +12,7 @@ import { StyledButton, StyledFormItem, Transitions } from '@/components/atoms';
 
 export const Auth: FC<FormNodeBaseProps> = observer((props) => {
   const { prevStep, nextStep } = props;
+  const { state } = useSessionStorageState('tenantConfig');
   const { session, bpmn } = useMst();
   const [authType, setAuthType] = useState<
     'login' | 'sign_up' | 'reset_password'
@@ -47,7 +48,10 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
       <StyledFormItem
         label={`${
           authType === 'login'
-            ? 'Welcome to YouLand!'
+            ? `Welcome to ${
+                //sass
+                ' ' + state?.organizationName || ' YouLand'
+              }!`
             : authType === 'sign_up'
             ? 'Sign Up'
             : 'Rest Password'

@@ -41,14 +41,22 @@ export const StyledTextFieldPhone: FC<StyledTextFieldPhoneProps> = ({
           borderRadius: 2,
           boxShadow: 'none',
           input: {
+            color: !value ? 'info.main' : 'text.primary',
             '&::placeholder': {
               color: 'text.placeholder',
             },
-            color: !value ? 'info.main' : 'text.primary',
             lineHeight: 1,
-            '&:focus': {
-              color: 'text.primary',
-            },
+          },
+          '& fieldset': {
+            borderColor: 'background.border_default',
+          },
+          '&:hover fieldset': {
+            borderColor: 'background.border_hover',
+            color: 'background.border_hover',
+          },
+          '&.Mui-focused fieldset': {
+            border: '1px solid',
+            borderColor: 'background.border_focus',
           },
         },
         ...sx,

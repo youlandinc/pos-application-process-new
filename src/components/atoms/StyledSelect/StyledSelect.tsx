@@ -52,6 +52,9 @@ export const StyledSelect: FC<StyledSelectProps> = ({
             },
           }}
           label={label}
+          MenuProps={{
+            disableScrollLock: true,
+          }}
           onChange={onChange}
           value={value}
           {...rest}

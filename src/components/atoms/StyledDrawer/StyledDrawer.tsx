@@ -16,6 +16,9 @@ export const StyledDrawer: FC<StyledDrawerProps> = ({
 }) => {
   return (
     <Drawer
+      ModalProps={{
+        disableScrollLock: true,
+      }}
       open={open}
       sx={{
         ...StyledDrawerStyles,
