@@ -7,6 +7,7 @@ import { useMst } from '@/models/Root';
 import { POSFormatDollar } from '@/utils';
 import { StyledButton, StyledFormItem } from '@/components/atoms';
 import { UserType } from '@/types/enum';
+import { useSessionStorageState } from '@/hooks';
 
 // saas
 export const BridgeCelebrate: FC<{ nextStep: () => void }> = observer(
@@ -25,6 +26,7 @@ export const BridgeCelebrate: FC<{ nextStep: () => void }> = observer(
       },
       userType,
     } = useMst();
+    const { state } = useSessionStorageState('tenantConfig');
 
     const loanAmount = useMemo(() => {
       let total = 0;
@@ -77,8 +79,12 @@ export const BridgeCelebrate: FC<{ nextStep: () => void }> = observer(
 
           <Typography color={'info.main'} variant={'body1'}>
             The next step is for you to complete your loan application. Before
-            final approval of your loan, YouLand must underwrite and verify all
-            of your provided information.
+            final approval of your loan,{' '}
+            {
+              //sass
+              ' ' + state?.organizationName || ' YouLand'
+            }{' '}
+            must underwrite and verify all of your provided information.
           </Typography>
 
           <StyledButton

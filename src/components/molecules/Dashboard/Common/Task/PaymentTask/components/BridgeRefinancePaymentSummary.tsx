@@ -47,7 +47,7 @@ export const BridgeRefinancePaymentSummary: FC<BRPaymentSummary> = (props) => {
         <StyledLoading />
       ) : (
         <>
-          <Box className={'paymentBoxTitle'}>Your rate</Box>
+          <Box className={'paymentBoxTitle'}>Your Rate</Box>
           <Box className={'paymentInfoBox'}>
             <ProductItem
               borderBottom={'1px solid #C4C4C4'}
@@ -66,7 +66,7 @@ export const BridgeRefinancePaymentSummary: FC<BRPaymentSummary> = (props) => {
                   {productInfo?.loanTerm} months
                 </Box>
               }
-              label={'Loan term'}
+              label={'Loan Term'}
             />
             <ProductItem
               className={'paymentInfoItem'}
@@ -75,7 +75,7 @@ export const BridgeRefinancePaymentSummary: FC<BRPaymentSummary> = (props) => {
                   {POSFormatDollar(loanInfo?.totalLoanAmount)}
                 </Box>
               }
-              label={'Total loan amount'}
+              label={'Total Loan Amount'}
             />
             <ProductItem
               className={'paymentInfoItem'}
@@ -84,7 +84,7 @@ export const BridgeRefinancePaymentSummary: FC<BRPaymentSummary> = (props) => {
                   {POSFormatDollar(loanInfo?.balance)}
                 </Box>
               }
-              label={'Remaining balance'}
+              label={'Remaining Balance'}
             />
             <ProductItem
               className={'paymentInfoItem'}
@@ -93,7 +93,7 @@ export const BridgeRefinancePaymentSummary: FC<BRPaymentSummary> = (props) => {
                   {POSFormatDollar(loanInfo?.cashOutAmount)}
                 </Box>
               }
-              label={'Cash out amount'}
+              label={'Cash Out Amount'}
             />
             <ProductItem
               className={'paymentInfoItem'}
@@ -102,7 +102,7 @@ export const BridgeRefinancePaymentSummary: FC<BRPaymentSummary> = (props) => {
                   {loanInfo?.cor ? POSFormatDollar(loanInfo.cor) : 'N/A'}
                 </Box>
               }
-              label={'Rehab loan amount'}
+              label={'Rehab Loan Amount'}
             />
             <ProductItem
               className={'paymentInfoItem'}
@@ -111,7 +111,7 @@ export const BridgeRefinancePaymentSummary: FC<BRPaymentSummary> = (props) => {
                   {POSFormatDollar(productInfo?.paymentOfMonth)}
                 </Box>
               }
-              label={'Monthly payment'}
+              label={'Monthly Payment'}
             />
           </Box>
         </>

@@ -23,12 +23,13 @@ import {
 } from '@/components/atoms';
 
 import LOG_IN_SVG from '@/svg/auth/log_in.svg';
+import { useSessionStorageState } from '@/hooks';
 
 export const Login: FC<LoginProps> = observer(
   ({ to, successCb, isNestForm = false }) => {
     const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
-
+    const { state } = useSessionStorageState('tenantConfig');
     const store = useMst();
     const { detectUserActiveService } = store;
 
@@ -157,7 +158,12 @@ export const Login: FC<LoginProps> = observer(
 
               <Box className="sign_in_form">
                 <Typography className="form_title" variant="h3">
-                  Welcome to YouLand!
+                  Welcome to
+                  {
+                    //sass
+                    ' ' + state?.organizationName || ' YouLand'
+                  }{' '}
+                  !
                 </Typography>
                 {FormBody}
                 <Box className="form_foot">

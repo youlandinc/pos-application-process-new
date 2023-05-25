@@ -22,6 +22,7 @@ import {
   Transitions,
 } from '@/components/atoms';
 import { NumberFormatValues } from 'react-number-format';
+import { useSessionStorageState } from '@/hooks';
 
 export const BridgeCoBorrowerInfo: FC = observer(() => {
   const {
@@ -30,6 +31,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
     },
     // userType,
   } = useMst();
+  const { state } = useSessionStorageState('tenantConfig');
 
   const coBorrowerInfo: IPersonalInfo = creditScore.coBorrowerInfo;
   const {
@@ -117,9 +119,10 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
             <StyledFormItem
               label={'Personal Information'}
               sub
-              tip={
-                "By entering your phone number,  you're authorizing YouLand to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may."
-              }
+              tip={`By entering your phone number,  you're authorizing ${
+                //sass
+                ' ' + state?.organizationName || ' YouLand'
+              } to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may.`}
             >
               <Stack gap={3} maxWidth={600} width={'100%'}>
                 <Stack flexDirection={'row'} gap={3}>
@@ -191,9 +194,17 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
                   variant={'body2'}
                 >
                   I, {coBorrowerInfo.firstName || 'borrower'}{' '}
-                  {coBorrowerInfo.lastName || 'name'} , authorize YouLand to
-                  verify my credit. I&apos;ve also read and agreed to
-                  YouLand&apos;s{' '}
+                  {coBorrowerInfo.lastName || 'name'} , authorize
+                  {
+                    //sass
+                    ' ' + state?.organizationName || ' YouLand'
+                  }{' '}
+                  to verify my credit. I&apos;ve also read and agreed to
+                  {
+                    //sass
+                    ' ' + state?.organizationName || ' YouLand'
+                  }{' '}
+                  &apos;s{' '}
                   <Typography
                     className={'link_style'}
                     component={'span'}
