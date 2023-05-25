@@ -50,7 +50,7 @@ export const BridgePurchasePaymentSummary: FC<BridgePurchasePaymentSummary> = (
         <StyledLoading />
       ) : (
         <>
-          <Box className={'paymentBoxTitle'}>Your rate</Box>
+          <Box className={'paymentBoxTitle'}>Your Rate</Box>
           <Box className={'paymentInfoBox'}>
             <ProductItem
               borderBottom={'1px solid #C4C4C4'}
@@ -69,7 +69,7 @@ export const BridgePurchasePaymentSummary: FC<BridgePurchasePaymentSummary> = (
                   {productInfo?.loanTerm} months
                 </Box>
               }
-              label={'Loan term'}
+              label={'Loan Term'}
             />
             <ProductItem
               className={'paymentInfoItem'}
@@ -78,7 +78,7 @@ export const BridgePurchasePaymentSummary: FC<BridgePurchasePaymentSummary> = (
                   {POSFormatDollar(loanInfo?.purchaseLoanAmount)}
                 </Box>
               }
-              label={'Purchase loan amount'}
+              label={'Purchase Loan Amount'}
             />
             <ProductItem
               className={'paymentInfoItem'}
@@ -87,7 +87,7 @@ export const BridgePurchasePaymentSummary: FC<BridgePurchasePaymentSummary> = (
                   {POSFormatDollar(loanInfo?.cor)}
                 </Box>
               }
-              label={'Rehab loan amount'}
+              label={'Rehab Loan Amount'}
             />
             <ProductItem
               className={'paymentInfoItem'}
@@ -96,7 +96,7 @@ export const BridgePurchasePaymentSummary: FC<BridgePurchasePaymentSummary> = (
                   {POSFormatDollar(loanInfo?.totalLoanAmount)}
                 </Box>
               }
-              label={'Total loan amount'}
+              label={'Total Loan Amount'}
             />
             <ProductItem
               className={'paymentInfoItem'}
@@ -105,7 +105,7 @@ export const BridgePurchasePaymentSummary: FC<BridgePurchasePaymentSummary> = (
                   {POSFormatDollar(productInfo?.paymentOfMonth)}
                 </Box>
               }
-              label={'Monthly payment'}
+              label={'Monthly Payment'}
             />
           </Box>
         </>

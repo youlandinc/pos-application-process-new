@@ -18,6 +18,7 @@ export const StyledDialogStyles = {
     },
     '& .dialog_content': {
       px: 3,
+      overflowY: 'hidden',
     },
     '& .MuiDialog-paper': {
       width: {

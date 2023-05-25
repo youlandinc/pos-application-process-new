@@ -14,7 +14,13 @@ import { observer } from 'mobx-react-lite';
 import { POSHeaderProps, POSHeaderStyles } from './index';
 import { MyAccountButton } from '../MyAccountButton';
 import { POSFlex } from '@/styles';
-import { useBreakpoints, usePersistFn, useStoreData, useSwitch } from '@/hooks';
+import {
+  useBreakpoints,
+  usePersistFn,
+  useSessionStorageState,
+  useStoreData,
+  useSwitch,
+} from '@/hooks';
 import {
   StyledButton,
   StyledDialog,
@@ -37,6 +43,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     open: sideOpen,
     close: sideClose,
   } = useSwitch();
+  const { state } = useSessionStorageState('tenantConfig');
   const breakpoint = useBreakpoints();
 
   const {
@@ -230,7 +237,14 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         return {
           header: (
             <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
-              <Typography variant={'h6'}>Welcome to YouLand!</Typography>
+              <Typography variant={'h6'}>
+                Welcome to
+                {
+                  //sass
+                  ' ' + state?.organizationName || ' YouLand'
+                }{' '}
+                !
+              </Typography>
               <StyledButton color={'info'} isIconButton onClick={close}>
                 <CloseOutlined />
               </StyledButton>
@@ -338,8 +352,12 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 >
                   Term of Use{' '}
                 </Link>
-                and to receive YouLand emails & updates and acknowledge that you
-                read our{' '}
+                and to receive
+                {
+                  //sass
+                  ' ' + state?.organizationName || ' YouLand'
+                }{' '}
+                emails & updates and acknowledge that you read our{' '}
                 <Link
                   className="link_style"
                   href={'https://www.youland.com/legal/privacy/'}
@@ -358,6 +376,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     close,
     handledLoginSuccess,
     handledSignUpAndResetSuccess,
+    state?.organizationName,
     target,
   ]);
 

@@ -304,7 +304,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
             considered an extension or offer of credit by
             {
               // todo: sass
-              ' ' + state?.organizationName || ' Youland'
+              ' ' + state?.organizationName || ' YouLand'
             }
             .
           </Box>

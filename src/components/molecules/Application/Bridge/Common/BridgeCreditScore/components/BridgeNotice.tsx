@@ -2,8 +2,10 @@ import { FC } from 'react';
 import { Typography } from '@mui/material';
 
 import { StyledFormItem } from '@/components/atoms';
+import { useSessionStorageState } from '@/hooks';
 
 export const BridgeNotice: FC = () => {
+  const { state } = useSessionStorageState('tenantConfig');
   return (
     <>
       <StyledFormItem label={"Let's check your credit."}>
@@ -19,8 +21,12 @@ export const BridgeNotice: FC = () => {
           textAlign={'center'}
           variant={'body1'}
         >
-          By clicking Next, you are authorizing YouLand to do a soft pull on
-          your credit.
+          By clicking Next, you are authorizing
+          {
+            //sass
+            ' ' + state?.organizationName || ' YouLand'
+          }{' '}
+          to do a soft pull on your credit.
         </Typography>
       </StyledFormItem>
     </>
