@@ -570,7 +570,9 @@ export const BridgeRefinanceRatesSearch: FC<BridgeRefinanceRatesSearchProps> = (
                 >
                   <Typography variant={'body1'}>Loan to Cost</Typography>
                   <StyledTooltip
-                    title={'ARV (Purchase price + Estimated rehab loan amount)'}
+                    title={
+                      'LTC (Total Loan Amount / [Home value + Estimated Rehab Loan Amount])'
+                    }
                   >
                     <InfoOutlined sx={{ width: 16, height: 16 }} />
                   </StyledTooltip>

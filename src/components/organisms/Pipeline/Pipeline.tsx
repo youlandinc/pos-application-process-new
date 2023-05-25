@@ -92,7 +92,7 @@ export const Pipeline: FC = observer(() => {
         setIsLoadMore(
           temp.length !== res.data.totalElements
             ? res.data.totalElements - PAGE_SIZE > 0
-              ? (res.data.totalElements - PAGE_SIZE) / PAGE_SIZE >= 1
+              ? res.data.totalElements / PAGE_SIZE >= 1
               : false
             : false,
         );
@@ -165,11 +165,10 @@ export const Pipeline: FC = observer(() => {
   );
 
   const handledConfirmDelete = useCallback(async () => {
-    setIsChange(true);
-    setDeleteLoading(true);
+    await setIsChange(true);
+    await setDeleteLoading(true);
     try {
       await _deleteProcess(deleteId);
-      await getListData();
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
@@ -178,19 +177,18 @@ export const Pipeline: FC = observer(() => {
     } finally {
       close();
       setDeleteLoading(false);
-      setIsChange(false);
     }
-  }, [close, deleteId, enqueueSnackbar, getListData]);
-
-  useEffect(() => {
-    getListData();
-  }, [getListData, page]);
+  }, [close, deleteId, enqueueSnackbar]);
 
   useEffect(() => {
     if (isChange) {
       setPage(1);
     }
   }, [isChange]);
+
+  useEffect(() => {
+    getListData();
+  }, [getListData, page]);
 
   return (!pipelineInitialized ||
     !pipelineStatusInitialized ||
@@ -268,7 +266,12 @@ export const Pipeline: FC = observer(() => {
       )}
       <StyledDialog
         content={
-          <Typography mt={3} sx={{ color: 'info.A100' }} variant={'body2'}>
+          <Typography
+            component={'div'}
+            mt={3}
+            sx={{ color: 'info.A100' }}
+            variant={'body2'}
+          >
             {deleteLoading
               ? 'Deleting...'
               : `Are you sure you want to delete ${

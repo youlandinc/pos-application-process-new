@@ -125,7 +125,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
               } to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may.`}
             >
               <Stack gap={3} maxWidth={600} width={'100%'}>
-                <Stack flexDirection={'row'} gap={3}>
+                <Stack>
                   <StyledTextField
                     label={'First Name'}
                     onChange={changeFieldValue('firstName')}
@@ -133,6 +133,8 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
                     validate={coBorrowerInfo.errors.firstName}
                     value={coBorrowerInfo.firstName}
                   />
+                </Stack>
+                <Stack>
                   <StyledTextField
                     label={'Last Name'}
                     onChange={changeFieldValue('lastName')}
@@ -149,7 +151,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
                     value={coBorrowerInfo.dateOfBirth}
                   />
                 </Stack>
-                <Stack flexDirection={'row'} gap={3}>
+                <Stack>
                   <StyledTextFieldPhone
                     label={'Phone Number'}
                     onValueChange={changeFieldValue('phoneNumber')}
@@ -157,6 +159,8 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
                     validate={coBorrowerInfo.errors.phoneNumber}
                     value={coBorrowerInfo.phoneNumber}
                   />
+                </Stack>
+                <Stack>
                   <StyledTextField
                     label={'Email'}
                     onChange={changeFieldValue('email')}

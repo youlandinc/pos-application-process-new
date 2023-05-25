@@ -65,7 +65,7 @@ export const PTACH = types
           routingNumber,
           accountName,
           bankName,
-          propAddr,
+          address,
           documentFile,
         } = taskForm;
         self.taskForm.documentFile = documentFile;
@@ -74,8 +74,8 @@ export const PTACH = types
         self.taskForm.routingNumber = routingNumber;
         self.taskForm.bankName = bankName;
         self.taskForm.accountName = accountName;
-        if (propAddr) {
-          self.taskForm.address.injectServerData(propAddr);
+        if (address) {
+          self.taskForm.address.injectServerData(address);
         }
       },
       changeFieldValue<K extends keyof typeof self.taskForm>(

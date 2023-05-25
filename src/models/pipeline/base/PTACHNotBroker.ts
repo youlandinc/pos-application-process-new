@@ -64,15 +64,15 @@ export const PTACHNotBroker = types
           routingNumber,
           accountName,
           bankName,
-          propAddr,
+          address,
         } = taskForm;
         self.taskForm.accountType = accountType;
         self.taskForm.accountNumber = accountNumber;
         self.taskForm.routingNumber = routingNumber;
         self.taskForm.bankName = bankName;
         self.taskForm.accountName = accountName;
-        if (propAddr) {
-          self.taskForm.address.injectServerData(propAddr);
+        if (address) {
+          self.taskForm.address.injectServerData(address);
         }
       },
       changeFieldValue<K extends keyof typeof self.taskForm>(
