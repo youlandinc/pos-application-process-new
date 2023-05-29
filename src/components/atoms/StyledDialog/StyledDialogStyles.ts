@@ -2,7 +2,7 @@ export const StyledDialogStyles = {
   '&.MuiDialog-root': {
     '& .MuiDialogTitle-root, & .MuiDialogContent-root, & .MuiDialogActions-root':
       {
-        p: 0,
+        //p: 0,
       },
     '& .dialog_header': {
       px: 3,
@@ -18,7 +18,6 @@ export const StyledDialogStyles = {
     },
     '& .dialog_content': {
       px: 3,
-      overflowY: 'hidden',
     },
     '& .MuiDialog-paper': {
       width: {
