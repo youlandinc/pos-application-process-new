@@ -225,7 +225,18 @@ export const BridgeRefinanceOverview: FC = observer(() => {
             subInfo={summary?.subInfo}
             subTitle={summary?.subTitle}
             title={summary?.title}
-          />
+          >
+            <StyledButton
+              className={'cardButton'}
+              color={'primary'}
+              onClick={async () =>
+                await router.push('/dashboard/pre_approval_letter')
+              }
+              variant={'contained'}
+            >
+              View Letter
+            </StyledButton>
+          </Card>
           <Card
             dataList={product?.info}
             loading={loading}
@@ -283,7 +294,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
             potential costs, please contact your settlement agent.
           </Box>
           <Box mt={1}>
-            Rates displayed are subject to rate lock and are not to be
+            Rates displayed are subject to rate confirm and are not to be
             considered an extension or offer of credit by
             {
               // todo: sass

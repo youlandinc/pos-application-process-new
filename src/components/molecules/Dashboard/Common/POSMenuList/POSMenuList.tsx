@@ -1,12 +1,19 @@
-import { FC, ReactNode, useCallback, useMemo, useState } from 'react';
+import {
+  FC,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useRouter } from 'next/router';
 
-import { Box, SxProps } from '@mui/material';
+import { Box, SxProps, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { ISelectedProcessData } from '@/models/base';
 import { SceneType } from '@/types';
-import { POSFont } from '@/styles';
+import { POSFlex, POSFont } from '@/styles';
 import {
   AccountBalanceOutlined,
   GradingOutlined,
@@ -15,6 +22,13 @@ import {
   TextSnippetOutlined,
   TimelineOutlined,
 } from '@mui/icons-material';
+import { ParseProcess } from '@/services/ParseProcess';
+import {
+  OPTIONS_COMMON_STATE,
+  OPTIONS_MORTGAGE_OCCUPANCY,
+  OPTIONS_MORTGAGE_PROPERTY,
+} from '@/constants';
+import { POSFindLabel } from '@/utils';
 
 type POSMenuListProps = {
   info: ISelectedProcessData;
@@ -108,7 +122,7 @@ const POSMenuListStyles: SxProps = {
   },
 } as const;
 
-export const POSMenuList: FC<POSMenuListProps> = observer(({ scene }) => {
+export const POSMenuList: FC<POSMenuListProps> = observer(({ scene, info }) => {
   // const store = useMst();
   const router = useRouter();
   const [activeKey, setActiveKey] = useState(router.pathname.split('/')[2]);
@@ -168,5 +182,133 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ scene }) => {
     });
   }, [activeKey, scene, selectMenu]);
 
-  return <Box sx={POSMenuListStyles}>{renderMenuList}</Box>;
+  return (
+    <>
+      <Box sx={POSMenuListStyles}>{renderMenuList}</Box>
+      <SidebarInfoBox info={info} />
+    </>
+  );
 });
+
+interface SidebarInfoBoxProps {
+  info: ISelectedProcessData;
+}
+
+interface IBorrowerSummaryData {
+  productType: string;
+  address: string | ReactNode;
+  occupancyType: string;
+  propertyType: string;
+}
+
+const SidebarInfoBox: FC<SidebarInfoBoxProps> = observer((props) => {
+  const { info } = props;
+  const { data } = info;
+
+  const [borrowerSummaryData, setBorrowerSummaryData] =
+    useState<IBorrowerSummaryData>();
+
+  useEffect(() => {
+    if (data) {
+      const parsedData = new ParseProcess(data);
+
+      setBorrowerSummaryData({
+        productType: parsedData.productType
+          ?.toLowerCase()
+          ?.replace(/( |^)[a-z]/g, (L) => L.toUpperCase()),
+        address:
+          parsedData.propertyAddress && parsedData.propertyAddress.address ? (
+            <Box
+              style={{
+                ...POSFlex('flex-start', 'center', 'column'),
+                width: '100%',
+              }}
+            >
+              <Box
+                style={{
+                  wordBreak: 'break-all',
+                  whiteSpace: 'break-spaces',
+                  lineHeight: 1.5,
+                }}
+              >{`${parsedData.propertyAddress.address} ${
+                parsedData.propertyAddress.aptNumber &&
+                `, #${parsedData.propertyAddress.aptNumber}`
+              }`}</Box>
+              <Box>{`${
+                parsedData.propertyAddress.city &&
+                `${parsedData.propertyAddress.city}, `
+              } ${parsedData.propertyAddress.state} ${
+                parsedData.propertyAddress.postcode
+              }`}</Box>
+            </Box>
+          ) : (
+            OPTIONS_COMMON_STATE.find(
+              (item) =>
+                item.value ===
+                (parsedData.propertyAddress &&
+                  parsedData.propertyAddress.state),
+            )?.label || ''
+          ),
+        occupancyType: POSFindLabel(
+          OPTIONS_MORTGAGE_OCCUPANCY,
+          parsedData.occupancyOpt || '',
+        ),
+        propertyType: POSFindLabel(
+          OPTIONS_MORTGAGE_PROPERTY,
+          parsedData.propertyOpt || '',
+        ),
+      });
+    }
+  }, [data]);
+
+  return (
+    <>
+      {data && (
+        <Box className={'product_card'} sx={useStyles}>
+          <Typography mb={1} variant={'subtitle1'}>
+            {borrowerSummaryData?.productType}
+          </Typography>
+          <Box className={'customInfo_list'} component={'ul'}>
+            {borrowerSummaryData?.address && (
+              <Box className={'customInfo_item'} component={'li'}>
+                {borrowerSummaryData.address}
+              </Box>
+            )}
+            {borrowerSummaryData?.occupancyType && (
+              <Box className={'customInfo_item'} component={'li'}>
+                {borrowerSummaryData.occupancyType}
+              </Box>
+            )}
+            {borrowerSummaryData?.propertyType && (
+              <Box className={'customInfo_item'} component={'li'} mt={1}>
+                {borrowerSummaryData.propertyType}
+              </Box>
+            )}
+          </Box>
+        </Box>
+      )}
+    </>
+  );
+});
+
+const useStyles = {
+  '&.product_card': {
+    mt: 3,
+    width: '100%',
+    borderRadius: 2,
+    p: 3,
+    bgcolor: 'action.hover',
+  },
+  '& .customInfo_list': {
+    width: '100%',
+    padding: 0,
+    listStyle: 'none',
+  },
+  '& .customInfo_item': {
+    color: 'text.primary',
+    lineHeight: 1.5,
+    width: '100%',
+    fontSize: 14,
+    display: 'flex',
+  },
+};

@@ -217,7 +217,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
                 variant={'body3'}
               >
                 {/* todo sass */}
-                Rates displayed are subject to rate lock and are not to be
+                Rates displayed are subject to rate confirm and are not to be
                 considered an extension or offer of credit by{' '}
                 {state?.organizationName || 'YouLand'}.
               </Typography>

@@ -43,7 +43,7 @@ export const PaymentTable = forwardRef<StyledPaymentCardRef, PaymentTableProps>(
               <Box className={'link_style'} component={'span'}>
                 {format(new Date(), 'MM/dd/yyyy')}
               </Box>
-              , We will help you lock the rate upon receipt of payment.
+              , We will help you confirm the rate upon receipt of payment.
             </Typography>
             <Typography color={'info.main'} mt={1.5} variant={'body1'}>
               We’ll reach out to schedule your appraisal, which is when someone
