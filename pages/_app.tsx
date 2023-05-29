@@ -190,6 +190,12 @@ export default function MyApp(props: MyAppProps) {
         //strategy={'beforeInteractive'}
         type="text/javascript"
       />
+      {/*<Script*/}
+      {/*  onLoad={() => {*/}
+      {/*    const vConsole = new window.VConsole();*/}
+      {/*  }}*/}
+      {/*  src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"*/}
+      {/*/>*/}
     </>
   );
 }
