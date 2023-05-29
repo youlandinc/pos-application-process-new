@@ -23,6 +23,8 @@ export class DetectActiveService {
     document.body.removeEventListener('mousemove', this._debouncedUpdate);
     document.body.removeEventListener('mousedown', this._debouncedUpdate);
     document.body.removeEventListener('keydown', this._debouncedUpdate);
+    document.body.removeEventListener('scroll', this._debouncedUpdate);
+    document.body.removeEventListener('touchmove', this._debouncedUpdate);
     this._clearDebouncedUpdate();
   }
 
@@ -90,5 +92,7 @@ export class DetectActiveService {
     document.body.addEventListener('mousemove', this._debouncedUpdate);
     document.body.addEventListener('mousedown', this._debouncedUpdate);
     document.body.addEventListener('keydown', this._debouncedUpdate);
+    document.body.addEventListener('scroll', this._debouncedUpdate);
+    document.body.addEventListener('touchmove', this._debouncedUpdate);
   }
 }
