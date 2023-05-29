@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
-// import { useMst } from '@/models/Root';
+import { useMst } from '@/models/Root';
 
 import { BridgePropertyNumberOpt } from '@/types';
 import { IBridgePurpose } from '@/models/application/bridge';
@@ -24,10 +24,9 @@ export const BridgePurpose: FC<BridgePurposeProps> = observer((props) => {
     values: { address, propertyNumber },
   } = purpose;
 
-  // const {
-  //   applicationForm: { applicationType },
-  //   userType,
-  // } = useMst();
+  const {
+    applicationForm: { applicationType },
+  } = useMst();
 
   return (
     <Stack
@@ -62,7 +61,7 @@ export const BridgePurpose: FC<BridgePurposeProps> = observer((props) => {
           //  todo : saas
           <StyledFormItem
             alignItems={'center'}
-            label={"What's the address of the property you'd like to purchase?"}
+            label={`What's the address of the property you'd like to ${applicationType}?`}
             width={'100%'}
           >
             <Stack maxWidth={600} width={'100%'}>
