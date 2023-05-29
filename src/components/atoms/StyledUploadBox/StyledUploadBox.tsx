@@ -242,6 +242,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
               ...POSFont(14, 400, 1.5, 'info.main'),
               wordBreak: 'break-all',
               py: 3,
+              overflow: 'hidden',
             }}
           >
             {`Are you sure you want to delete ${fileList[deleteIndex]?.originalFileName}`}

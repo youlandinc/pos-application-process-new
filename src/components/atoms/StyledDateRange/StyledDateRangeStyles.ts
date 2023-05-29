@@ -69,7 +69,7 @@ export const StyledDateRangeStyles = {
       bgcolor: 'background.white',
       border: 'none',
       '& .MuiIconButton-root': {
-        px: 0,
+        // p: 0,
       },
     },
     '& .years-box': {
