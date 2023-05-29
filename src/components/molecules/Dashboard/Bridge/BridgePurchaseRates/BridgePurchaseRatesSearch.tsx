@@ -410,7 +410,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
             >
               <Typography variant={'body1'}>Loan to Value</Typography>
               <StyledTooltip
-                title={'LTV (purchase loan amount to purchase price)'}
+                title={'LTV (Purchase Loan Amount to Purchase Price)'}
               >
                 <InfoOutlined sx={{ width: 16, height: 16 }} />
               </StyledTooltip>
