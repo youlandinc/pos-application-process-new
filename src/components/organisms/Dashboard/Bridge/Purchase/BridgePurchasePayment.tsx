@@ -31,7 +31,7 @@ const useStyles = {
   },
 };
 
-export const BridgePurchaseTask: FC = observer(() => {
+export const BridgePurchasePayment: FC = observer(() => {
   const {
     selectedProcessData,
     dashboardTask,

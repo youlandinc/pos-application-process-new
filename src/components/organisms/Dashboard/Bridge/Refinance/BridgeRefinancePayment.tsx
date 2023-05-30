@@ -30,7 +30,7 @@ const useStyles = {
   },
 };
 
-export const BridgeRefinanceTask: FC = observer(() => {
+export const BridgeRefinancePayment: FC = observer(() => {
   const {
     selectedProcessData,
     dashboardTask,

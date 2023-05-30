@@ -1,13 +1,14 @@
 import { FC, useMemo } from 'react';
 import { Box, SxProps, Typography } from '@mui/material';
+import { CheckCircle } from '@mui/icons-material';
+import { useRouter } from 'next/router';
+
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { StyledButton } from '@/components/atoms';
 import { PageHeader } from '@/components/molecules';
 import { POSFlex, POSFont } from '@/styles';
-import { CheckCircle } from '@mui/icons-material';
-import { useRouter } from 'next/router';
 
 const listObj = {
   ApplicationInformation: {
@@ -100,7 +101,7 @@ export const TaskList: FC = observer(() => {
     selectedProcessData: { scene },
   } = useMst();
   const router = useRouter();
-  scene;
+
   const renderTaskList = useMemo(() => {
     return (
       <>

@@ -12,8 +12,11 @@ const DynamicDashboardPage = dynamic(
   },
 );
 
-const DynamicTaskPage = dynamic(
-  () => import('@/views/Dashboard/TaskPage').then((mod) => mod.TaskPage),
+const DynamicPaymentPage = dynamic(
+  () =>
+    import('@/views/Dashboard/TaskPage/PaymentPage').then(
+      (mod) => mod.PaymentPage,
+    ),
   {
     loading: () => <CircularProgress />,
     ssr: false,
@@ -23,7 +26,7 @@ const Task: FC = observer(() => {
   return (
     <>
       <DynamicDashboardPage>
-        <DynamicTaskPage />
+        <DynamicPaymentPage />
       </DynamicDashboardPage>
     </>
   );

@@ -3,16 +3,16 @@ import { Box, SxProps } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 import {
-  BridgePurchaseTask,
-  BridgeRefinanceTask,
+  BridgePurchasePayment,
+  BridgeRefinancePayment,
 } from '@/components/organisms';
 
-export const TaskPage: FC = observer(() => {
+export const PaymentPage: FC = observer(() => {
   const {
     selectedProcessData: { scene },
   } = useMst();
 
-  const TaskPageStyles: SxProps = {
+  const PaymentPageStyles: SxProps = {
     px: {
       lg: 3,
       xs: 0,
@@ -27,7 +27,7 @@ export const TaskPage: FC = observer(() => {
     flexDirection: 'column',
     justifyContent: 'flex-start',
   };
-  const renderTaskPage = useMemo(() => {
+  const renderPaymentPage = useMemo(() => {
     switch (scene) {
       //  case 'mortgage purchase': {
       //    return <MortgagePurchaseTask />;
@@ -36,15 +36,15 @@ export const TaskPage: FC = observer(() => {
       //    return <MortgageRefinanceTask />;
       //  }
       case 'bridge purchase': {
-        return <BridgePurchaseTask />;
+        return <BridgePurchasePayment />;
       }
       case 'bridge refinance': {
-        return <BridgeRefinanceTask />;
+        return <BridgeRefinancePayment />;
       }
       default:
-        return <BridgePurchaseTask />;
+        return <BridgePurchasePayment />;
     }
   }, [scene]);
 
-  return <Box sx={TaskPageStyles}>{renderTaskPage}</Box>;
+  return <Box sx={PaymentPageStyles}>{renderPaymentPage}</Box>;
 });

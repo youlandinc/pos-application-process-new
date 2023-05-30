@@ -3,5 +3,5 @@ export * from './BridgeRefinanceRates';
 
 export * from './BridgeRatesList';
 
-export * from './BridgePurchaseTask';
+export * from './BridgePurchaseTasks';
 export * from './BridgeRefinanceTasks';
