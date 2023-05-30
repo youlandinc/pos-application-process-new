@@ -7,6 +7,7 @@ import { StyledButton } from '@/components/atoms';
 import { PageHeader } from '@/components/molecules';
 import { POSFlex, POSFont } from '@/styles';
 import { CheckCircle } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 
 const list = [
   {
@@ -95,17 +96,14 @@ const list = [
   },
 ];
 
-export interface CheckListProps {
-  updateState: () => void;
-}
-
-export const CheckList: FC<CheckListProps> = observer(({ updateState }) => {
+export const TaskListPage: FC = observer(() => {
   // const {
   //   selectedProcessData: { scene },
   // } = useMst();
+  const router = useRouter();
 
   return (
-    <Box sx={CheckListStyles}>
+    <Box sx={TaskListPageStyles}>
       <PageHeader
         subTitle={
           'You can make updates to the task before the loan is approved.'
@@ -134,8 +132,9 @@ export const CheckList: FC<CheckListProps> = observer(({ updateState }) => {
           {item.children.map((sonItem) => (
             <Box
               key={sonItem.title}
-              onClick={() =>
-                item.title === 'Property Appraisal' && updateState()
+              onClick={async () =>
+                item.title === 'Property Appraisal' &&
+                (await router.push('/dashboard/tasks/pay'))
               }
               px={{ md: 3, xs: 0 }}
             >
@@ -198,10 +197,17 @@ export const CheckList: FC<CheckListProps> = observer(({ updateState }) => {
   );
 });
 
-const CheckListStyles: SxProps = {
+const TaskListPageStyles: SxProps = {
   maxWidth: 900,
   width: '100%',
-
+  px: {
+    lg: 3,
+    xs: 0,
+  },
+  mx: {
+    lg: 'auto',
+    xs: 0,
+  },
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
