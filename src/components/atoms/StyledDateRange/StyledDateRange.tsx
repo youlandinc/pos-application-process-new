@@ -29,6 +29,7 @@ import { StyledDateRangeProps, StyledDateRangeStyles } from './index';
 
 import { StyledTextFieldStyles } from '../StyledTextField';
 import { useBreakpoints, useSwitch } from '@/hooks';
+import { StyledButton } from '../StyledButton';
 
 export const StyledDateRange: FC<StyledDateRangeProps> = ({
   sx,
@@ -45,7 +46,11 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
   const onOpen = () => {
     toggle();
     setTimeout(() => {
-      selected.current?.scrollIntoView();
+      selected.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+        inline: 'nearest',
+      });
     }, 100);
   };
 
@@ -78,6 +83,7 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
         sx={{
           py: 2,
           px: 3,
+          mt: visible ? 1 : 0,
           display: 'flex',
           justifyContent: 'space-between',
         }}
@@ -85,9 +91,9 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
         <Typography onClick={onOpen} variant={'subtitle1'}>
           {months[getMonth(date)]}
           {'  ' + getYear(date)}
-          <IconButton>
+          <StyledButton isIconButton>
             {visible ? <ArrowDropDown /> : <ArrowDropUp />}
-          </IconButton>
+          </StyledButton>
         </Typography>
         {!visible && (
           <Box>

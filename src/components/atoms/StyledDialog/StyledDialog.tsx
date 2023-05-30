@@ -21,15 +21,15 @@ export const StyledDialog: FC<StyledDialogProps> = ({
       // case 'contained':
       //   return props.color + '.A100';
       case 'dialog_header':
-        return `dialog_header ${content || footer ? '' : ' POS_pb_3'}`;
+        return `dialog_header ${content || footer ? 'POS_pb_0' : ' POS_pb_3'}`;
 
       case 'dialog_content':
-        return `dialog_content ${header ? '' : ' POS_pt_3'} ${
-          footer ? '' : ' POS_pb_3'
+        return `dialog_content ${header ? 'POS_pt_0' : ' POS_pt_3'} ${
+          footer ? 'POS_pb_0' : ' POS_pb_3'
         }`;
 
       case 'dialog_footer':
-        return `dialog_footer ${content || header ? '' : ' POS_pt_3'}`;
+        return `dialog_footer ${content || header ? 'POS_pt_0' : ' POS_pt_3'}`;
     }
   };
 
