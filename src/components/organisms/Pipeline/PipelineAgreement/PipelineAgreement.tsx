@@ -333,7 +333,7 @@ export const PipelineAgreement: FC = observer(() => {
             flexDirection={{ xs: 'column', lg: 'row' }}
             gap={3}
             justifyContent={{ lg: 'space-between', xs: 'center' }}
-            mt={3}
+            pt={3}
             textAlign={'left'}
             width={'100%'}
           >
@@ -356,6 +356,7 @@ export const PipelineAgreement: FC = observer(() => {
             alignItems={'center'}
             flexDirection={'row'}
             justifyContent={'space-between'}
+            pb={3}
           >
             <Typography variant={'h6'}>Broker Agreement</Typography>
             <StyledButton disabled={agreeLoading} isIconButton onClick={close}>
