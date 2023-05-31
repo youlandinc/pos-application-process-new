@@ -1,1 +1,2 @@
-export * from './TaskPage';
+export * from './PaymentPage';
+export * from './TaskListPage';

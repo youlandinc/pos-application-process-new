@@ -8,7 +8,6 @@ import { RatesProductData } from '@/types';
 
 import { StyledButton, StyledLoading } from '@/components/atoms';
 import {
-  CheckList,
   ConfirmTable,
   NoticeTable,
   PaymentStatusPage,
@@ -71,7 +70,7 @@ export interface PaymentTaskBaseComponentProps<T = any> {
   loanInfo?: T;
 }
 
-type PaymentTableState = 'checklist' | 'confirm' | 'notice' | 'payment';
+type PaymentTableState = 'confirm' | 'notice' | 'payment';
 
 const useStateMachine = (
   state: PaymentTableState,
@@ -87,18 +86,9 @@ const useStateMachine = (
       }
     >
   >({
-    checklist: {
-      next() {
-        // updateState('payment');
-      },
-      back() {
-        //  backToList && backToList();
-      },
-    },
     confirm: {
       back() {
-        updateState('checklist');
-        // backToList && backToList();
+        backToList && backToList();
       },
       next() {
         updateState('notice');
@@ -157,7 +147,7 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
   const paymentCardFormRef = useRef(null);
 
   const resetTable = useCallback(() => {
-    setTableStatus('checklist');
+    setTableStatus('confirm');
     setConfirmCheck(false);
     setNoticeCheck(false);
     setPaymentCheck(false);
@@ -182,8 +172,7 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
     [resetTable, task, taskId],
   );
 
-  const [tableStatus, setTableStatus] =
-    useState<PaymentTableState>('checklist');
+  const [tableStatus, setTableStatus] = useState<PaymentTableState>('confirm');
   const [confirmCheck, setConfirmCheck] = useState<boolean>(false);
   const [noticeCheck, setNoticeCheck] = useState<boolean>(false);
   const [paymentCheck, setPaymentCheck] = useState<boolean>(false);
@@ -213,8 +202,6 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
 
   const renderPaymentTaskComponent = useMemo(() => {
     switch (tableStatus) {
-      case 'checklist':
-        return <CheckList updateState={() => setTableStatus('confirm')} />;
       case 'confirm':
         return (
           <ConfirmTable
@@ -273,8 +260,6 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
 
   const renderButton = useMemo(() => {
     switch (tableStatus) {
-      case 'checklist':
-        return <></>;
       case 'confirm':
       case 'notice':
         return (

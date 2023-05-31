@@ -12,8 +12,11 @@ const DynamicDashboardPage = dynamic(
   },
 );
 
-const DynamicTaskPage = dynamic(
-  () => import('@/views/Dashboard/TaskPage').then((mod) => mod.TaskPage),
+const DynamicTaskListPage = dynamic(
+  () =>
+    import('@/views/Dashboard/TaskPage/TaskListPage').then(
+      (mod) => mod.TaskListPage,
+    ),
   {
     loading: () => <CircularProgress />,
     ssr: false,
@@ -23,7 +26,7 @@ const Task: FC = observer(() => {
   return (
     <>
       <DynamicDashboardPage>
-        <DynamicTaskPage />
+        <DynamicTaskListPage />
       </DynamicDashboardPage>
     </>
   );

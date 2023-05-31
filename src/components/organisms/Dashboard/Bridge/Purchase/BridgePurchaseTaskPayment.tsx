@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 
 import { useAsync } from 'react-use';
-
+import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
@@ -18,7 +19,6 @@ import {
   PaymentTask,
 } from '@/components/molecules';
 import { Box } from '@mui/material';
-import { useSnackbar } from 'notistack';
 
 const useStyles = {
   '&.container': {
@@ -31,7 +31,7 @@ const useStyles = {
   },
 };
 
-export const BridgePurchaseTask: FC = observer(() => {
+export const BridgePurchaseTaskPayment: FC = observer(() => {
   const {
     selectedProcessData,
     dashboardTask,
@@ -40,6 +40,7 @@ export const BridgePurchaseTask: FC = observer(() => {
     },
   } = useMst();
   const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
 
   const { data: processData } = selectedProcessData;
 
@@ -71,6 +72,7 @@ export const BridgePurchaseTask: FC = observer(() => {
     <Box className={'container'} sx={useStyles}>
       <Box className={'pageMain'}>
         <PaymentTask
+          backToList={() => router.push('/dashboard/tasks/list')}
           loanDetail={
             <BridgePurchasePaymentSummary
               loading={loading}

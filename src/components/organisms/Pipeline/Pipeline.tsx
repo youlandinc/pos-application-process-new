@@ -54,6 +54,7 @@ export const Pipeline: FC = observer(() => {
     dateRange: [null, null],
     loanSpecies: [],
     loanStage: [],
+    loanPurpose: [],
   });
 
   const [, getListData] = useAsyncFn(async () => {
@@ -75,6 +76,7 @@ export const Pipeline: FC = observer(() => {
         ? format(searchForm.dateRange[1], "yyyy-MM-dd'T'") + '23:59:59Z'
         : '',
       loanType: searchForm.loanSpecies,
+      loanPurpose: searchForm.loanPurpose,
       stage: searchForm.loanStage,
     };
     setFetchLoading(true);

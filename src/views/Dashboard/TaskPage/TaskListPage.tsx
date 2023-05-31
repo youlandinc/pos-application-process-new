@@ -1,32 +1,17 @@
 import { FC, useMemo } from 'react';
-import { Box, SxProps } from '@mui/material';
+import { Box } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 import {
-  BridgePurchaseTask,
-  BridgeRefinanceTask,
+  BridgePurchaseTaskList,
+  BridgeRefinanceTaskList,
 } from '@/components/organisms';
 
-export const TaskPage: FC = observer(() => {
+export const TaskListPage: FC = observer(() => {
   const {
     selectedProcessData: { scene },
   } = useMst();
 
-  const TaskPageStyles: SxProps = {
-    px: {
-      lg: 3,
-      xs: 0,
-    },
-    maxWidth: 900,
-    width: '100%',
-    mx: {
-      lg: 'auto',
-      xs: 0,
-    },
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-  };
   const renderTaskPage = useMemo(() => {
     switch (scene) {
       //  case 'mortgage purchase': {
@@ -36,15 +21,15 @@ export const TaskPage: FC = observer(() => {
       //    return <MortgageRefinanceTask />;
       //  }
       case 'bridge purchase': {
-        return <BridgePurchaseTask />;
+        return <BridgePurchaseTaskList />;
       }
       case 'bridge refinance': {
-        return <BridgeRefinanceTask />;
+        return <BridgeRefinanceTaskList />;
       }
       default:
-        return <BridgePurchaseTask />;
+        return <BridgePurchaseTaskList />;
     }
   }, [scene]);
 
-  return <Box sx={TaskPageStyles}>{renderTaskPage}</Box>;
+  return <Box sx={{ width: '100%' }}>{renderTaskPage}</Box>;
 });
