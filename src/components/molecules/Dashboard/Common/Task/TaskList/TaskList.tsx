@@ -190,8 +190,8 @@ export const TaskList: FC = observer(() => {
           {listObj.PropertyAppraisal.children.map((sonItem) => (
             <Box
               key={sonItem.title}
-              px={{ md: 3, xs: 0 }}
               onClick={async () => await router.push('/dashboard/tasks/pay')}
+              px={{ md: 3, xs: 0 }}
             >
               <Typography
                 sx={{
