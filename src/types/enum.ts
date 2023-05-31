@@ -155,6 +155,11 @@ export enum LoanSpecies {
   Bridge = 'Bridge',
 }
 
+export enum LoanPurpose {
+  Purchase = 'Purchase',
+  Refinance = 'Refinance',
+}
+
 // mortgage refinance, short-name is mr
 export enum MortgageRefinanceState {
   starting = 'starting',

@@ -3,7 +3,11 @@ import { FC, useMemo } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { Close, FilterAltOutlined, SearchOutlined } from '@mui/icons-material';
 
-import { OPTIONS_LOAN_SPECIES, OPTIONS_LOAN_STAGE } from '@/constants';
+import {
+  OPTIONS_LOAN_PURPOSE,
+  OPTIONS_LOAN_SPECIES,
+  OPTIONS_LOAN_STAGE,
+} from '@/constants';
 
 import { useBreakpoints, useSwitch } from '@/hooks';
 import {
@@ -19,6 +23,7 @@ export interface SearchBarProps {
     propertyAddress: string;
     loanStage: string[];
     loanSpecies: string[];
+    loanPurpose: string[];
     dateRange: [Date | null, Date | null];
   };
   onParamsChange: (
@@ -54,9 +59,9 @@ export const SearchBar: FC<SearchBarProps> = ({
 
   return (
     <Stack
-      alignItems={{ xs: 'center', lg: 'unset' }}
-      flexDirection={{ xs: 'row', lg: 'column' }}
-      justifyContent={{ xs: 'space-between', lg: 'unset' }}
+      alignItems={{ xs: 'center', xl: 'unset' }}
+      flexDirection={{ xs: 'row', xl: 'column' }}
+      justifyContent={{ xs: 'space-between', xl: 'unset' }}
     >
       <Typography variant={'h4'}>
         Pipeline{' '}
@@ -64,7 +69,7 @@ export const SearchBar: FC<SearchBarProps> = ({
           {role}
         </Typography>
       </Typography>
-      {['xs', 'sm', 'md'].includes(breakpoint) ? (
+      {['xs', 'sm', 'md', 'lg'].includes(breakpoint) ? (
         <>
           <StyledButton
             color={'info'}
@@ -115,6 +120,17 @@ export const SearchBar: FC<SearchBarProps> = ({
                     }}
                     options={OPTIONS_LOAN_SPECIES}
                     value={searchForm.loanSpecies}
+                  />
+                </Box>
+                <Box className={'search_condition'}>
+                  <StyledSelectMultiple
+                    label={'Loan Purpose'}
+                    onValueChange={(e) => {
+                      onParamsChange('loanPurpose', e);
+                      onValueChange(true);
+                    }}
+                    options={OPTIONS_LOAN_PURPOSE}
+                    value={searchForm.loanPurpose}
                   />
                 </Box>
                 <Box className={'search_condition'}>
@@ -196,6 +212,17 @@ export const SearchBar: FC<SearchBarProps> = ({
               }}
               options={OPTIONS_LOAN_SPECIES}
               value={searchForm.loanSpecies}
+            />
+          </Box>
+          <Box className={'search_condition'}>
+            <StyledSelectMultiple
+              label={'Loan Purpose'}
+              onValueChange={(e) => {
+                onParamsChange('loanPurpose', e);
+                onValueChange(true);
+              }}
+              options={OPTIONS_LOAN_PURPOSE}
+              value={searchForm.loanPurpose}
             />
           </Box>
           <Box className={'search_condition'}>
