@@ -81,7 +81,7 @@ export const BridgePurchaseRates: FC = observer(() => {
       .then((res) => {
         const { products } = res[0].data;
         setProductList(products);
-        const { info, encompass, loanStage } = res[1].data;
+        const { info, loanStage } = res[1].data;
         setEncompassData(encompassData);
         setLoanStage(loanStage);
         setLoanInfo(info);
@@ -178,10 +178,7 @@ export const BridgePurchaseRates: FC = observer(() => {
         }
       >,
     ) => {
-      const res = await _updateRatesProductSelected(
-        lastSelectedProcessId,
-        postData,
-      );
+      await _updateRatesProductSelected(lastSelectedProcessId, postData);
     },
     [lastSelectedProcessId],
   );

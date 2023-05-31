@@ -180,10 +180,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
         }
       >,
     ) => {
-      const res = await _updateRatesProductSelected(
-        lastSelectedProcessId,
-        postData,
-      );
+      await _updateRatesProductSelected(lastSelectedProcessId, postData);
     },
     [lastSelectedProcessId],
   );

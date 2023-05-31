@@ -285,7 +285,7 @@ export const TaskList: FC = observer(() => {
         </Box>
       </>
     );
-  }, []);
+  }, [router, scene]);
 
   return (
     <Box sx={TaskListStyles}>
