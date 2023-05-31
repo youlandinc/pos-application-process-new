@@ -3,8 +3,8 @@ import { Box, SxProps } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 import {
-  BridgePurchasePayment,
-  BridgeRefinancePayment,
+  BridgePurchaseTaskPayment,
+  BridgeRefinanceTaskPayment,
 } from '@/components/organisms';
 
 export const PaymentPage: FC = observer(() => {
@@ -36,13 +36,13 @@ export const PaymentPage: FC = observer(() => {
       //    return <MortgageRefinanceTask />;
       //  }
       case 'bridge purchase': {
-        return <BridgePurchasePayment />;
+        return <BridgePurchaseTaskPayment />;
       }
       case 'bridge refinance': {
-        return <BridgeRefinancePayment />;
+        return <BridgeRefinanceTaskPayment />;
       }
       default:
-        return <BridgePurchasePayment />;
+        return <BridgePurchaseTaskPayment />;
     }
   }, [scene]);
 

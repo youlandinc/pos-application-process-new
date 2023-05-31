@@ -1,5 +1,5 @@
 export * from './BridgeRefinanceRates';
 export * from './BridgeRefinanceOverview';
-export * from './BridgeRefinancePayment';
+export * from './BridgeRefinanceTaskPayment';
 export * from './BridgeRefinancePreApproval';
 export * from './BridgeRefinanceTaskList';
