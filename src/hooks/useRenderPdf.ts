@@ -5,7 +5,6 @@ export const useRenderPdf = (
 ) => {
   const renderFile = useCallback(
     (string: string) => {
-      console.log(element.current);
       if (!element.current?.shadowRoot) {
         element.current?.attachShadow({ mode: 'open' });
       }
