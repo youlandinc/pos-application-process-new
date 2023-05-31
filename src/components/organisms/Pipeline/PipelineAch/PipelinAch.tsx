@@ -304,6 +304,7 @@ export const PipelineAch: FC = observer(() => {
             flexDirection={{ xs: 'column', lg: 'row' }}
             gap={3}
             justifyContent={{ lg: 'space-between', xs: 'center' }}
+            pb={3}
             textAlign={'left'}
             width={'100%'}
           >
@@ -326,8 +327,9 @@ export const PipelineAch: FC = observer(() => {
             alignItems={'center'}
             flexDirection={'row'}
             justifyContent={'space-between'}
+            pb={3}
           >
-            <Typography variant={'h6'}>Broker Agreement</Typography>
+            <Typography variant={'h6'}>ACH Information</Typography>
             <StyledButton disabled={agreeLoading} isIconButton onClick={close}>
               <CloseOutlined />
             </StyledButton>
