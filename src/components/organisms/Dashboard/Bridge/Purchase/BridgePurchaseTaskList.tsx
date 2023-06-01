@@ -32,7 +32,7 @@ type BridgePurchaseTaskCode =
 
 interface TaskItem {
   title: string;
-  children: Array<BridgePurchaseTaskCode>;
+  children: Array<{ code: BridgePurchaseTaskCode; url: string }>;
 }
 
 interface taskObj {
@@ -46,39 +46,86 @@ const taskObj: taskObj = {
   ApplicationInformation: {
     title: 'Application Information',
     children: [
-      'BP_APPLICATION_LOAN',
-      'BP_APPLICATION_PROPERTY',
-      'BP_APPLICATION_INVESTMENT',
+      {
+        code: 'BP_APPLICATION_LOAN',
+        url: '',
+      },
+      {
+        code: 'BP_APPLICATION_PROPERTY',
+        url: '',
+      },
+      {
+        code: 'BP_APPLICATION_INVESTMENT',
+        url: '',
+      },
     ],
   },
   BorrowerInformation: {
     title: 'Borrower Information',
     children: [
-      'BP_BORROWER_PERSONAL',
-      'BP_BORROWER_DEMOGRAPHICS',
-      'BP_BORROWER_CO_BORROWER',
-      'BP_BORROWER_GUARANTOR',
+      {
+        code: 'BP_BORROWER_PERSONAL',
+        url: '',
+      },
+      {
+        code: 'BP_BORROWER_DEMOGRAPHICS',
+        url: '',
+      },
+      {
+        code: 'BP_BORROWER_CO_BORROWER',
+        url: '',
+      },
+      {
+        code: 'BP_BORROWER_GUARANTOR',
+        url: '',
+      },
     ],
   },
   PropertyAppraisal: {
     title: 'Property Appraisal',
-    children: ['BP_APPRAISAL_PROPERTY_DETAILS'],
+    children: [
+      {
+        code: 'BP_APPRAISAL_PROPERTY_DETAILS',
+        url: '/dashboard/tasks/pay',
+      },
+    ],
   },
   ThirdPartyInformation: {
     title: 'Third-party Information',
     children: [
-      'BP_THIRD_CLOSING',
-      'BP_THIRD_INSURANCE',
-      'BP_APPLICATION_INVESTMENT',
+      {
+        code: 'BP_THIRD_CLOSING',
+        url: '',
+      },
+      {
+        code: 'BP_THIRD_INSURANCE',
+        url: '',
+      },
+      {
+        code: 'BP_APPLICATION_INVESTMENT',
+        url: '',
+      },
     ],
   },
   DocumentsMaterials: {
     title: 'Documents & Materials',
     children: [
-      'BP_DOCUMENTS_CONTRACT',
-      'BP_DOCUMENTS_PICTURES',
-      'BP_DOCUMENTS_REVIEW',
-      'BP_DOCUMENTS_DOCUMENTS',
+      {
+        code: 'BP_DOCUMENTS_CONTRACT',
+        url: '',
+      },
+      {
+        code: 'BP_DOCUMENTS_PICTURES',
+        url: '',
+      },
+      {
+        code: 'BP_DOCUMENTS_REVIEW',
+        url: '',
+      },
+      {
+        code: 'BP_DOCUMENTS_DOCUMENTS',
+        url: '',
+      },
     ],
   },
 };
@@ -124,7 +171,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
           </Box>
 
           {taskObj.ApplicationInformation.children.map((sonItem) => (
-            <Box key={sonItem} px={{ md: 3, xs: 0 }}>
+            <Box key={sonItem.code} px={{ md: 3, xs: 0 }}>
               <Typography
                 sx={{
                   fontSize: {
@@ -134,11 +181,13 @@ export const BridgePurchaseTaskList: FC = observer(() => {
                 }}
                 variant={'body1'}
               >
-                {taskDetails[sonItem]?.taskName}
+                {taskDetails[sonItem.code]?.taskName}
               </Typography>
-              {taskDetails[sonItem]?.finished && (
+              {taskDetails[sonItem.code]?.finished && (
                 <CheckCircle
-                  className={taskDetails[sonItem]?.finished ? 'Finish' : ''}
+                  className={
+                    taskDetails[sonItem.code]?.finished ? 'Finish' : ''
+                  }
                 />
               )}
             </Box>
@@ -160,7 +209,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             </Typography>
           </Box>
           {taskObj.BorrowerInformation.children.map((sonItem) => (
-            <Box key={sonItem} px={{ md: 3, xs: 0 }}>
+            <Box key={sonItem.code} px={{ md: 3, xs: 0 }}>
               <Typography
                 sx={{
                   fontSize: {
@@ -170,11 +219,13 @@ export const BridgePurchaseTaskList: FC = observer(() => {
                 }}
                 variant={'body1'}
               >
-                {taskDetails[sonItem]?.taskName}
+                {taskDetails[sonItem.code]?.taskName}
               </Typography>
-              {taskDetails[sonItem]?.finished && (
+              {taskDetails[sonItem.code]?.finished && (
                 <CheckCircle
-                  className={taskDetails[sonItem]?.finished ? 'Finish' : ''}
+                  className={
+                    taskDetails[sonItem.code]?.finished ? 'Finish' : ''
+                  }
                 />
               )}
             </Box>
@@ -197,8 +248,8 @@ export const BridgePurchaseTaskList: FC = observer(() => {
           </Box>
           {taskObj.PropertyAppraisal.children.map((sonItem) => (
             <Box
-              key={sonItem}
-              onClick={async () => await router.push('/dashboard/tasks/pay')}
+              key={sonItem.code}
+              onClick={async () => await router.push(sonItem.url)}
               px={{ md: 3, xs: 0 }}
             >
               <Typography
@@ -210,11 +261,13 @@ export const BridgePurchaseTaskList: FC = observer(() => {
                 }}
                 variant={'body1'}
               >
-                {taskDetails[sonItem]?.taskName}
+                {taskDetails[sonItem.code]?.taskName}
               </Typography>
-              {taskDetails[sonItem]?.finished && (
+              {taskDetails[sonItem.code]?.finished && (
                 <CheckCircle
-                  className={taskDetails[sonItem]?.finished ? 'Finish' : ''}
+                  className={
+                    taskDetails[sonItem.code]?.finished ? 'Finish' : ''
+                  }
                 />
               )}
             </Box>
@@ -236,7 +289,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             </Typography>
           </Box>
           {taskObj.ThirdPartyInformation.children.map((sonItem) => (
-            <Box key={sonItem} px={{ md: 3, xs: 0 }}>
+            <Box key={sonItem.code} px={{ md: 3, xs: 0 }}>
               <Typography
                 sx={{
                   fontSize: {
@@ -246,11 +299,13 @@ export const BridgePurchaseTaskList: FC = observer(() => {
                 }}
                 variant={'body1'}
               >
-                {taskDetails[sonItem]?.taskName}
+                {taskDetails[sonItem.code]?.taskName}
               </Typography>
-              {taskDetails[sonItem]?.finished && (
+              {taskDetails[sonItem.code]?.finished && (
                 <CheckCircle
-                  className={taskDetails[sonItem]?.finished ? 'Finish' : ''}
+                  className={
+                    taskDetails[sonItem.code]?.finished ? 'Finish' : ''
+                  }
                 />
               )}
             </Box>
@@ -272,7 +327,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             </Typography>
           </Box>
           {taskObj.DocumentsMaterials.children.map((sonItem) => (
-            <Box key={sonItem} px={{ md: 3, xs: 0 }}>
+            <Box key={sonItem.code} px={{ md: 3, xs: 0 }}>
               <Typography
                 sx={{
                   fontSize: {
@@ -282,11 +337,13 @@ export const BridgePurchaseTaskList: FC = observer(() => {
                 }}
                 variant={'body1'}
               >
-                {taskDetails[sonItem]?.taskName}
+                {taskDetails[sonItem.code]?.taskName}
               </Typography>
-              {taskDetails[sonItem]?.finished && (
+              {taskDetails[sonItem.code]?.finished && (
                 <CheckCircle
-                  className={taskDetails[sonItem]?.finished ? 'Finish' : ''}
+                  className={
+                    taskDetails[sonItem.code]?.finished ? 'Finish' : ''
+                  }
                 />
               )}
             </Box>
