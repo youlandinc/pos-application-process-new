@@ -57,7 +57,7 @@ const taskObj: taskObj = {
       },
       {
         code: 'BP_APPLICATION_INVESTMENT',
-        url: '',
+        url: '/dashboard/tasks/investment_experience',
       },
     ],
   },
