@@ -1,3 +1,4 @@
+import { LoanTask } from '@/types';
 import { get, post } from '../axios';
 
 export enum STaskItemStatus {
@@ -31,4 +32,8 @@ export interface SPaymentDetails {
 
 export const _fetchPaymentDetails = (paymentData: PostPayment) => {
   return post<SPaymentDetails>('/dashboard/pay/appraisal', paymentData);
+};
+
+export const _fetchLoanTask = (processId = '') => {
+  return get<LoanTask>(`/dashboard/loan/task/${processId}`);
 };

@@ -9,6 +9,9 @@ import { useMst } from '@/models/Root';
 import { StyledButton } from '@/components/atoms';
 import { PageHeader } from '@/components/molecules';
 import { POSFlex, POSFont } from '@/styles';
+import { _fetchLoanTask } from '@/requests/dashboard';
+import { useAsync, useSetState } from 'react-use';
+import { useSnackbar } from 'notistack';
 
 const listObj = {
   ApplicationInformation: {
@@ -98,9 +101,28 @@ const listObj = {
 
 export const TaskList: FC = observer(() => {
   const {
+    userSetting: {
+      setting: { lastSelectedProcessId },
+    },
     selectedProcessData: { scene },
   } = useMst();
+
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [list, setList] = useSetState();
+
+  const { loading } = useAsync(async () => {
+    return await _fetchLoanTask(lastSelectedProcessId)
+      .then((res) => {
+        console.log({ res });
+        setList(res.data);
+      })
+      .catch((err) => {
+        // todo, lee this error need to handler
+        enqueueSnackbar(err, { variant: 'error' });
+      });
+  }, []);
 
   const renderTaskList = useMemo(() => {
     return (
