@@ -244,7 +244,7 @@ ul {
 
 /* padding */
 .POS_pr_0 {
-  padding-right: 0  !important;
+  padding-right: 0 !important;
 }
 .POS_pr_1 {
   padding-right: var(--POS--gap) !important;

@@ -4,9 +4,9 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { BridgePurchaseTaskLoanDetails } from '@/components/organisms';
+import { BridgePurchaseTaskPropertyDetails } from '@/components/organisms';
 
-export const LoanDetailsPage: FC = observer(() => {
+export const PropertyDetailsPage: FC = observer(() => {
   const {
     selectedProcessData: { scene },
   } = useMst();
@@ -20,13 +20,13 @@ export const LoanDetailsPage: FC = observer(() => {
       //    return <MortgageRefinanceTask />;
       //  }
       case 'bridge purchase': {
-        return <BridgePurchaseTaskLoanDetails />;
+        return <BridgePurchaseTaskPropertyDetails />;
       }
       //case 'bridge refinance': {
       //  return <BridgeRefinanceTaskLoanDetails />;
       //}
       default:
-        return <BridgePurchaseTaskLoanDetails />;
+        return <BridgePurchaseTaskPropertyDetails />;
     }
   }, [scene]);
 

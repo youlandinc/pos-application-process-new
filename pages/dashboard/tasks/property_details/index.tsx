@@ -14,24 +14,24 @@ const DynamicDashboardPage = dynamic(
   },
 );
 
-const DynamicLoanDetailsPage = dynamic(
+const DynamicPropertyDetailsPage = dynamic(
   () =>
-    import('@/views/Dashboard/TaskPage/LoanDetailsPage').then(
-      (mod) => mod.LoanDetailsPage,
+    import('@/views/Dashboard/TaskPage/PropertyDetailsPage').then(
+      (mod) => mod.PropertyDetailsPage,
     ),
   {
     loading: () => <CircularProgress />,
     ssr: false,
   },
 );
-const TaskLoanDetails: FC = observer(() => {
+const TaskPropertyDetails: FC = observer(() => {
   return (
     <>
       <DynamicDashboardPage>
-        <DynamicLoanDetailsPage />
+        <DynamicPropertyDetailsPage />
       </DynamicDashboardPage>
     </>
   );
 });
 
-export default TaskLoanDetails;
+export default TaskPropertyDetails;

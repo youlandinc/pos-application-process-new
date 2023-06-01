@@ -53,7 +53,7 @@ const taskObj: taskObj = {
       },
       {
         code: 'BP_APPLICATION_PROPERTY',
-        url: '',
+        url: '/dashboard/tasks/property_details',
       },
       {
         code: 'BP_APPLICATION_INVESTMENT',
