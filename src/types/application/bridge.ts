@@ -67,3 +67,35 @@ export interface BridgeRefinanceEstimateRateData {
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
 }
+
+interface TaskInfo {
+  taskId: string;
+  taskName: string;
+  taskForm: null;
+  finished: boolean;
+}
+
+export interface BridgePurchaseTasks {
+  BP_APPLICATION_LOAN: TaskInfo;
+  BP_APPRAISAL_PROPERTY_DETAILS: TaskInfo;
+  BP_BORROWER_GUARANTOR: TaskInfo;
+  BP_BORROWER_PERSONAL: TaskInfo;
+  BP_APPRAISAL_COST: TaskInfo;
+  BP_BORROWER_DEMOGRAPHICS: TaskInfo;
+  BP_BORROWER_CO_BORROWER: TaskInfo;
+  BP_APPLICATION_PROPERTY: TaskInfo;
+  BP_AUTOPAY_ACH: TaskInfo;
+  BP_THIRD_CLOSING: TaskInfo;
+  BP_THIRD_INSURANCE: TaskInfo;
+  BP_DOCUMENTS_DOCUMENTS: TaskInfo;
+  BP_DOCUMENTS_CONTRACT: TaskInfo;
+  BP_DOCUMENTS_REVIEW: TaskInfo;
+  BP_DOCUMENTS_PICTURES: TaskInfo;
+  BP_APPLICATION_INVESTMENT: TaskInfo;
+}
+
+export interface LoanTask {
+  processId: string;
+  stage: string;
+  tasks: BridgePurchaseTasks;
+}
