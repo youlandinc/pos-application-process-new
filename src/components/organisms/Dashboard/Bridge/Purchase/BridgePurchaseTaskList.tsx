@@ -42,13 +42,14 @@ interface taskObj {
   ThirdPartyInformation: TaskItem;
   DocumentsMaterials: TaskItem;
 }
+
 const taskObj: taskObj = {
   ApplicationInformation: {
     title: 'Application Information',
     children: [
       {
         code: 'BP_APPLICATION_LOAN',
-        url: '',
+        url: '/dashboard/tasks/loan_details',
       },
       {
         code: 'BP_APPLICATION_PROPERTY',
@@ -171,7 +172,11 @@ export const BridgePurchaseTaskList: FC = observer(() => {
           </Box>
 
           {taskObj.ApplicationInformation.children.map((sonItem) => (
-            <Box key={sonItem.code} px={{ md: 3, xs: 0 }}>
+            <Box
+              key={sonItem.code}
+              onClick={() => router.push(sonItem.url)}
+              px={{ md: 3, xs: 0 }}
+            >
               <Typography
                 sx={{
                   fontSize: {

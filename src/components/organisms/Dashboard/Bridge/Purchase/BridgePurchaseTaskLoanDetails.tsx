@@ -7,9 +7,12 @@ import {
 } from '@/components/atoms';
 import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
 import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 
 export const BridgePurchaseTaskLoanDetails: FC = () => {
+  const router = useRouter();
+
   const [purchasePrice, setPurchasePrice] = useState<number | undefined>(0);
   const [propertyPrice, setPropertyPrice] = useState<number | undefined>(0);
   const [rehabFunds, setRehabFunds] = useState<boolean>(false);
@@ -133,7 +136,12 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
         maxWidth={600}
         width={'100%'}
       >
-        <StyledButton color={'info'} variant={'text'} sx={{ flex: 1 }}>
+        <StyledButton
+          color={'info'}
+          onClick={() => router.push('/dashboard/tasks')}
+          sx={{ flex: 1 }}
+          variant={'text'}
+        >
           Back
         </StyledButton>
         <StyledButton sx={{ flex: 1 }}>Save</StyledButton>
