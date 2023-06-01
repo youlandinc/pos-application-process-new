@@ -96,15 +96,11 @@ const taskObj: taskObj = {
     children: [
       {
         code: 'BP_THIRD_CLOSING',
-        url: '',
+        url: '/dashboard/tasks/company_information',
       },
       {
         code: 'BP_THIRD_INSURANCE',
-        url: '',
-      },
-      {
-        code: 'BP_APPLICATION_INVESTMENT',
-        url: '',
+        url: '/dashboard/tasks/provider_information',
       },
     ],
   },
@@ -117,7 +113,7 @@ const taskObj: taskObj = {
       },
       {
         code: 'BP_DOCUMENTS_PICTURES',
-        url: '',
+        url: '/dashboard/tasks/upload_pictures',
       },
       {
         code: 'BP_DOCUMENTS_REVIEW',
@@ -294,7 +290,11 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             </Typography>
           </Box>
           {taskObj.ThirdPartyInformation.children.map((sonItem) => (
-            <Box key={sonItem.code} px={{ md: 3, xs: 0 }}>
+            <Box
+              key={sonItem.code}
+              onClick={() => router.push(sonItem.url)}
+              px={{ md: 3, xs: 0 }}
+            >
               <Typography
                 sx={{
                   fontSize: {
