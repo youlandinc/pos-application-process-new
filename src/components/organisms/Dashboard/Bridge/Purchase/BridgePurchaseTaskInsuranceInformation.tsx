@@ -19,7 +19,7 @@ import {
 
 import { Address, IAddress } from '@/models/common/Address';
 
-export const BridgePurchaseTaskProviderInformation: FC = observer(() => {
+export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
   // const {
 
   // } = useMst();
@@ -113,8 +113,12 @@ export const BridgePurchaseTaskProviderInformation: FC = observer(() => {
       >
         <StyledUploadBox
           fileList={[]}
-          onSuccess={() => {}}
-          onDelete={() => {}}
+          onDelete={() => {
+            console.log('onDelete');
+          }}
+          onSuccess={() => {
+            console.log('onSuccess');
+          }}
         />
       </StyledFormItem>
 

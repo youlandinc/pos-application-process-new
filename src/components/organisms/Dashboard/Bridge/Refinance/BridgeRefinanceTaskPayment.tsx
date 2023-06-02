@@ -72,7 +72,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
     <Box className={'container'} sx={useStyles}>
       <Box className={'pageMain'}>
         <PaymentTask
-          backToList={() => router.push('/dashboard/tasks/list')}
+          backToList={() => router.push('/dashboard/tasks')}
           loanDetail={
             <BridgeRefinancePaymentSummary
               loading={loading}

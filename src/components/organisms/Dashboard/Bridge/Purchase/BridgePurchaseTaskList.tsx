@@ -28,7 +28,8 @@ type BridgePurchaseTaskCode =
   | 'BP_DOCUMENTS_CONTRACT'
   | 'BP_DOCUMENTS_PICTURES'
   | 'BP_DOCUMENTS_REVIEW'
-  | 'BP_DOCUMENTS_DOCUMENTS';
+  | 'BP_DOCUMENTS_DOCUMENTS'
+  | 'BP_APPRAISAL_COST';
 
 interface TaskItem {
   title: string;
@@ -41,6 +42,7 @@ interface taskObj {
   PropertyAppraisal: TaskItem;
   ThirdPartyInformation: TaskItem;
   DocumentsMaterials: TaskItem;
+  // SetUpAutoPay: TaskItem;
 }
 
 const taskObj: taskObj = {
@@ -87,7 +89,11 @@ const taskObj: taskObj = {
     children: [
       {
         code: 'BP_APPRAISAL_PROPERTY_DETAILS',
-        url: '/dashboard/tasks/pay',
+        url: '/dashboard/tasks/property_inspection',
+      },
+      {
+        code: 'BP_APPRAISAL_COST',
+        url: '/dashboard/tasks/cost',
       },
     ],
   },
@@ -100,16 +106,26 @@ const taskObj: taskObj = {
       },
       {
         code: 'BP_THIRD_INSURANCE',
-        url: '/dashboard/tasks/provider_information',
+        url: '/dashboard/tasks/insurance_information',
       },
     ],
   },
+  // SetUpAutoPay: {
+  //   title: 'Set up auto Pay',
+  //   children: [
+  //     {
+  //       code: 'BP_THIRD_CLOSING',
+  //       url: '/dashboard/tasks/company_information',
+  //     },
+
+  //   ],
+  // },
   DocumentsMaterials: {
     title: 'Documents & Materials',
     children: [
       {
         code: 'BP_DOCUMENTS_CONTRACT',
-        url: '',
+        url: '/dashboard/tasks/contract',
       },
       {
         code: 'BP_DOCUMENTS_PICTURES',
@@ -117,11 +133,11 @@ const taskObj: taskObj = {
       },
       {
         code: 'BP_DOCUMENTS_REVIEW',
-        url: '',
+        url: '/dashboard/tasks/agreements',
       },
       {
         code: 'BP_DOCUMENTS_DOCUMENTS',
-        url: '',
+        url: '/dashboard/tasks/documents',
       },
     ],
   },
@@ -332,7 +348,11 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             </Typography>
           </Box>
           {taskObj.DocumentsMaterials.children.map((sonItem) => (
-            <Box key={sonItem.code} px={{ md: 3, xs: 0 }}>
+            <Box
+              key={sonItem.code}
+              onClick={async () => await router.push(sonItem.url)}
+              px={{ md: 3, xs: 0 }}
+            >
               <Typography
                 sx={{
                   fontSize: {
@@ -370,43 +390,44 @@ export const BridgePurchaseTaskList: FC = observer(() => {
       {loading ? (
         <StyledLoading sx={{ color: 'primary.main' }} />
       ) : (
-        renderTaskList
+        <>
+          {renderTaskList}
+          <Box className={'footer'}>
+            <Box>
+              <Typography
+                color={'warning.main'}
+                sx={{
+                  fontSize: {
+                    md: 18,
+                    xs: 16,
+                  },
+                }}
+                variant={'h6'}
+              >
+                Update your progress with your loan officer
+              </Typography>
+              <Typography
+                color={'warning.main'}
+                sx={{
+                  fontSize: {
+                    md: 16,
+                    xs: 12,
+                  },
+                }}
+                variant={'body2'}
+              >
+                We will notify your loan officer to review the tasks you have
+                completed. If you have any questions or concerns, please reach
+                out to your loan officer to ensure that the tasks are completed
+                accurately.
+              </Typography>
+            </Box>
+            <Box sx={{ width: '100px' }}>
+              <StyledButton color={'warning'}>Update</StyledButton>
+            </Box>
+          </Box>
+        </>
       )}
-
-      <Box className={'footer'}>
-        <Box>
-          <Typography
-            color={'warning.main'}
-            sx={{
-              fontSize: {
-                md: 18,
-                xs: 16,
-              },
-            }}
-            variant={'h6'}
-          >
-            Update your progress with your loan officer
-          </Typography>
-          <Typography
-            color={'warning.main'}
-            sx={{
-              fontSize: {
-                md: 16,
-                xs: 12,
-              },
-            }}
-            variant={'body2'}
-          >
-            We will notify your loan officer to review the tasks you have
-            completed. If you have any questions or concerns, please reach out
-            to your loan officer to ensure that the tasks are completed
-            accurately.
-          </Typography>
-        </Box>
-        <Box sx={{ width: '100px' }}>
-          <StyledButton color={'warning'}>Update</StyledButton>
-        </Box>
-      </Box>
     </Box>
   );
 });

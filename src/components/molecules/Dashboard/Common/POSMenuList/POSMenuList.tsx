@@ -57,7 +57,7 @@ const list: MenuItems[] = [
   },
   {
     label: 'Tasks',
-    path: 'tasks/list',
+    path: 'tasks',
     key: 'tasks',
     icon: <GradingOutlined />,
   },

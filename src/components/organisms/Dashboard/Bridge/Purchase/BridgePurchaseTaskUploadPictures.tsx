@@ -57,16 +57,20 @@ export const BridgePurchaseTaskUploadPictures: FC = observer(() => {
     >
       <StyledFormItem
         label={'Please upload the following:'}
+        maxWidth={900}
+        sub
         tip={
           'Kitchen (2-3), 2. Bedroom, 3. Bathroom, 4. Front of house, 5. Back of house, 6. Sides of house, 7. General (optional)'
         }
-        maxWidth={900}
-        sub
       >
         <StyledUploadBox
           fileList={[]}
-          onSuccess={() => {}}
-          onDelete={() => {}}
+          onDelete={() => {
+            console.log('onDelete');
+          }}
+          onSuccess={() => {
+            console.log('onSuccess');
+          }}
         />
       </StyledFormItem>
 

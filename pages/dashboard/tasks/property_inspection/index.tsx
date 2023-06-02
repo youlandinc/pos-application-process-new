@@ -12,10 +12,10 @@ const DynamicDashboardPage = dynamic(
   },
 );
 
-const DynamicProviderInformationPage = dynamic(
+const DynamicPropertyInspectionPage = dynamic(
   () =>
-    import('@/views/Dashboard/TaskPage/ProviderInformationPage').then(
-      (mod) => mod.ProviderInformationPage,
+    import('@/views/Dashboard/TaskPage/PropertyInspectionPage').then(
+      (mod) => mod.PropertyInspectionPage,
     ),
   {
     loading: () => <CircularProgress />,
@@ -26,7 +26,7 @@ const Task: FC = observer(() => {
   return (
     <>
       <DynamicDashboardPage>
-        <DynamicProviderInformationPage />
+        <DynamicPropertyInspectionPage />
       </DynamicDashboardPage>
     </>
   );
