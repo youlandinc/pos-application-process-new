@@ -1,4 +1,10 @@
-import { BridgePropertyNumberOpt, ChannelOpt } from '@/types';
+import {
+  BridgeBehalfTypeOpt,
+  BridgeManagingLoanClosingOpt,
+  BridgePropertyNumberOpt,
+  ChannelOpt,
+  PaymentTypeOpt,
+} from '@/types';
 
 export const OPTIONS_BRIDGE_CHANNEL: Option[] = [
   {
@@ -88,5 +94,49 @@ export const OPTIONS_BRIDGE_PROPERTY_NUMBER: Option[] = [
     key: BridgePropertyNumberOpt.five_more,
     value: BridgePropertyNumberOpt.five_more,
     label: '5+ Properties',
+  },
+];
+
+export const OPTIONS_BRIDGE_BEHALF_TYPE: Option[] = [
+  {
+    key: BridgeBehalfTypeOpt.TitleOfficer,
+    value: BridgeBehalfTypeOpt.TitleOfficer,
+    label: 'Title Officer',
+  },
+  {
+    key: BridgeBehalfTypeOpt.IssuingAgent,
+    value: BridgeBehalfTypeOpt.IssuingAgent,
+    label: 'Issuing Agent',
+  },
+  {
+    key: BridgeBehalfTypeOpt.ClosingAttorney,
+    value: BridgeBehalfTypeOpt.ClosingAttorney,
+    label: 'Closing Attorney',
+  },
+];
+
+export const OPTIONS_BRIDGE_MANAGING_LOAN_CLOSING: Option[] = [
+  {
+    key: BridgeManagingLoanClosingOpt.EscrowCompany,
+    value: BridgeManagingLoanClosingOpt.EscrowCompany,
+    label: 'Escrow Company',
+  },
+  {
+    key: BridgeManagingLoanClosingOpt.ClosingAttorney,
+    value: BridgeManagingLoanClosingOpt.ClosingAttorney,
+    label: 'Closing Attorney',
+  },
+];
+
+export const OPTIONS_BRIDGE_PAYMENT_TYPE: Option[] = [
+  {
+    key: PaymentTypeOpt.Plaid,
+    value: PaymentTypeOpt.Plaid,
+    label: 'Plaid',
+  },
+  {
+    key: PaymentTypeOpt.ACHDebit,
+    value: PaymentTypeOpt.ACHDebit,
+    label: 'ACH Debit',
   },
 ];

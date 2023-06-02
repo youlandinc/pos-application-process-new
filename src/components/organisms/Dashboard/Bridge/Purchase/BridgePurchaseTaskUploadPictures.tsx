@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
@@ -9,15 +9,9 @@ import { observer } from 'mobx-react-lite';
 import { Stack } from '@mui/material';
 import {
   StyledButton,
-  StyledDatePicker,
   StyledFormItem,
-  StyledGoogleAutoComplete,
-  StyledTextField,
-  StyledTextFieldPhone,
   StyledUploadBox,
 } from '@/components/atoms';
-
-import { Address, IAddress } from '@/models/common/Address';
 
 export const BridgePurchaseTaskUploadPictures: FC = observer(() => {
   // const {
@@ -25,26 +19,6 @@ export const BridgePurchaseTaskUploadPictures: FC = observer(() => {
   // } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [titleOrderNumber, settitleOrderNumber] = useState('');
-  const [date, setDate] = useState<string | Date>('');
-  const [address, setAddress] = useState<IAddress>(
-    Address.create({
-      formatAddress: '',
-      state: '',
-      street: '',
-      city: '',
-      aptNumber: '',
-      postcode: '',
-      isValid: false,
-      errors: {},
-    }),
-  );
 
   return (
     <StyledFormItem

@@ -22,7 +22,7 @@ const DynamicDocumentsPage = dynamic(
     ssr: false,
   },
 );
-const Task: FC = observer(() => {
+const TaskDocuments: FC = observer(() => {
   return (
     <>
       <DynamicDashboardPage>
@@ -32,4 +32,4 @@ const Task: FC = observer(() => {
   );
 });
 
-export default Task;
+export default TaskDocuments;
