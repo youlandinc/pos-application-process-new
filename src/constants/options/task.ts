@@ -1,6 +1,8 @@
 import {
+  DashboardTaskBorrowerEntityType,
   DashboardTaskBorrowerType,
   DashboardTaskCitizenshipStatus,
+  DashboardTaskGender,
   DashboardTaskMaritalStatus,
 } from '@/types';
 
@@ -49,5 +51,51 @@ export const OPTIONS_TASK_BORROWER_TYPE: Option[] = [
     key: DashboardTaskBorrowerType.entity,
     value: DashboardTaskBorrowerType.entity,
     label: 'Entity',
+  },
+];
+
+export const OPTIONS_TASK_ENTITY_TYPE: Option[] = [
+  {
+    key: DashboardTaskBorrowerEntityType.limited_liability_company,
+    value: DashboardTaskBorrowerEntityType.limited_liability_company,
+    label: 'Limited Liability Company',
+  },
+  {
+    key: DashboardTaskBorrowerEntityType.corporation,
+    value: DashboardTaskBorrowerEntityType.corporation,
+    label: 'Corporation',
+  },
+  {
+    key: DashboardTaskBorrowerEntityType.limited_partnership,
+    value: DashboardTaskBorrowerEntityType.limited_partnership,
+    label: 'Limited Partnership',
+  },
+  {
+    key: DashboardTaskBorrowerEntityType.limited_company,
+    value: DashboardTaskBorrowerEntityType.limited_company,
+    label: 'Limited Company',
+  },
+  {
+    key: DashboardTaskBorrowerEntityType.individual,
+    value: DashboardTaskBorrowerEntityType.individual,
+    label: 'Individual',
+  },
+];
+
+export const OPTIONS_TASK_GENDER: Option[] = [
+  {
+    key: DashboardTaskGender.male,
+    value: DashboardTaskGender.male,
+    label: 'Male',
+  },
+  {
+    key: DashboardTaskGender.female,
+    value: DashboardTaskGender.female,
+    label: 'Female',
+  },
+  {
+    key: DashboardTaskGender.not_provide,
+    value: DashboardTaskGender.not_provide,
+    label: 'I do not wish to provide this information',
   },
 ];

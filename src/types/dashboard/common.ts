@@ -140,3 +140,17 @@ export enum DashboardTaskBorrowerType {
   individual = 'INDIVIDUAL',
   entity = 'ENTITY',
 }
+
+export enum DashboardTaskBorrowerEntityType {
+  limited_liability_company = 'LIMITED_LIABILITY_COMPANY',
+  corporation = 'CORPORATION',
+  limited_partnership = 'LIMITED_PARTNERSHIP',
+  limited_company = 'LIMITED_COMPANY',
+  individual = 'INDIVIDUAL',
+}
+
+export enum DashboardTaskGender {
+  male = 'MALE',
+  female = 'FEMALE',
+  not_provide = 'NOT_PROVIDE',
+}
