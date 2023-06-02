@@ -123,3 +123,20 @@ export enum DashboardTaskKey {
 
   // bridge refinance
 }
+
+export enum DashboardTaskCitizenshipStatus {
+  us_citizen = 'US_CITIZEN',
+  permanent_resident_alien = 'PERMANENT_RESIDENT_ALIEN',
+  non_permanent_resident_alien = 'NON_PERMANENT_RESIDENT_ALIEN',
+}
+
+export enum DashboardTaskMaritalStatus {
+  unmarried = 'UNMARRIED',
+  married = 'MARRIED',
+  separated = 'SEPARATED',
+}
+
+export enum DashboardTaskBorrowerType {
+  individual = 'INDIVIDUAL',
+  entity = 'ENTITY',
+}

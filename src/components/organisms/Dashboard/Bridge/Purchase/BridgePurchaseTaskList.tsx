@@ -66,19 +66,19 @@ const taskObj: taskObj = {
     children: [
       {
         code: 'BP_BORROWER_PERSONAL',
-        url: '',
+        url: '/dashboard/tasks/personal_details',
       },
       {
         code: 'BP_BORROWER_DEMOGRAPHICS',
-        url: '',
-      },
-      {
-        code: 'BP_BORROWER_CO_BORROWER',
-        url: '',
+        url: '/dashboard/tasks/demographics_information',
       },
       {
         code: 'BP_BORROWER_GUARANTOR',
-        url: '',
+        url: '/dashboard/tasks/guarantor_personal',
+      },
+      {
+        code: 'BP_BORROWER_CO_BORROWER',
+        url: '/dashboard/tasks/co_borrower_details',
       },
     ],
   },
@@ -210,7 +210,11 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             </Typography>
           </Box>
           {taskObj.BorrowerInformation.children.map((sonItem) => (
-            <Box key={sonItem.code} px={{ md: 3, xs: 0 }}>
+            <Box
+              key={sonItem.code}
+              onClick={() => router.push(sonItem.url)}
+              px={{ md: 3, xs: 0 }}
+            >
               <Typography
                 sx={{
                   fontSize: {

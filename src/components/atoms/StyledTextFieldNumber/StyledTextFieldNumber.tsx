@@ -29,15 +29,19 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
 
   useEffect(() => {
     if (POSNotUndefined(value) && value) {
-      setText(
-        percentage
-          ? POSFormatPercent((value as number) / 100)
-          : POSFormatDollar(value),
-      );
+      if (thousandSeparator) {
+        setText(
+          percentage
+            ? POSFormatPercent((value as number) / 100)
+            : POSFormatDollar(value),
+        );
+      } else {
+        setText(value);
+      }
     } else {
       setText('');
     }
-  }, [percentage, value]);
+  }, [percentage, thousandSeparator, value]);
 
   const handledChange = (e: {
     target: { name: string; value: NumberFormatValues };

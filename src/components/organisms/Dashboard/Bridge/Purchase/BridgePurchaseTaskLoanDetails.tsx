@@ -100,15 +100,16 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
                 'Total cost that you would like {Organization Name} to finance.'
               }
             >
-              <Stack maxWidth={600} width={'100%'}></Stack>
-              <StyledTextFieldNumber
-                label={'Estimated Rehab Loan Amount'}
-                onValueChange={({ floatValue }) => {
-                  setLoanAmount(floatValue);
-                }}
-                prefix={'$'}
-                value={loanAmount}
-              />
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledTextFieldNumber
+                  label={'Estimated Rehab Loan Amount'}
+                  onValueChange={({ floatValue }) => {
+                    setLoanAmount(floatValue);
+                  }}
+                  prefix={'$'}
+                  value={loanAmount}
+                />
+              </Stack>
             </StyledFormItem>
             <StyledFormItem
               label={'Estimated date to finish your rehab project'}

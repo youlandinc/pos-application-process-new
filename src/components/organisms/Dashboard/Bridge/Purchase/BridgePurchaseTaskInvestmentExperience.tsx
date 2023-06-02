@@ -5,7 +5,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import {
   StyledButton,
   StyledFormItem,
-  StyledTextField,
+  StyledTextFieldNumber,
   StyledUploadBox,
 } from '@/components/atoms';
 
@@ -25,11 +25,11 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
     >
       <StyledFormItem label={'Number of properties exited last 24 months'} sub>
         <Stack maxWidth={600} width={'100%'}>
-          <StyledTextField
-            InputProps={{ inputProps: { min: 0, max: 1000 } }}
+          <StyledTextFieldNumber
             label={'Track Record'}
-            onChange={(e) => setTrackRecord(e.target.value)}
-            type="number"
+            onValueChange={({ formattedValue }) =>
+              setTrackRecord(formattedValue)
+            }
             value={trackRecord}
           />
         </Stack>
@@ -65,6 +65,7 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
           <Typography color={'text.primary'} variant={'body1'}>
             Example documents:
           </Typography>
+
           <Typography
             className={'link_style'}
             component={'span'}
@@ -77,6 +78,7 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
           >
             Sample project experience template
           </Typography>
+
           <Typography
             color={'info.main'}
             mt={1.5}
@@ -94,6 +96,7 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
             count vacant land or your current home towards your experience
             verification.
           </Typography>
+
           <Box mt={3}>
             <StyledUploadBox
               fileList={[]}

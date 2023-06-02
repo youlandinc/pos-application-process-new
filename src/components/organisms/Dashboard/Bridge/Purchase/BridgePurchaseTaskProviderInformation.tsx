@@ -113,8 +113,8 @@ export const BridgePurchaseTaskProviderInformation: FC = observer(() => {
       >
         <StyledUploadBox
           fileList={[]}
-          onSuccess={() => {}}
           onDelete={() => {}}
+          onSuccess={() => {}}
         />
       </StyledFormItem>
 

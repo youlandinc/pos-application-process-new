@@ -2,6 +2,8 @@ import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Stack } from '@mui/material';
 
+import { observer } from 'mobx-react-lite';
+
 import { OPTIONS_MORTGAGE_PROPERTY, OPTIONS_MORTGAGE_UNIT } from '@/constants';
 import { Address, IAddress } from '@/models/common/Address';
 import { PropertyOpt, PropertyUnitOpt } from '@/types';
@@ -14,9 +16,9 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-export const BridgePurchaseTaskPropertyDetails: FC = () => {
+export const BridgePurchaseTaskPropertyDetails: FC = observer(() => {
   const router = useRouter();
-  const [address, setAddress] = useState<IAddress>(
+  const [address] = useState<IAddress>(
     Address.create({
       formatAddress: '',
       state: '',
@@ -63,7 +65,12 @@ export const BridgePurchaseTaskPropertyDetails: FC = () => {
         </Stack>
       </StyledFormItem>
 
-      <Transitions>
+      <Transitions
+        style={{
+          display:
+            propertyType === PropertyOpt.twoToFourFamily ? 'block' : 'none',
+        }}
+      >
         {propertyType === PropertyOpt.twoToFourFamily && (
           <StyledFormItem label={'How many units will the property have?'}>
             <Stack maxWidth={600} width={'100%'}>
@@ -98,4 +105,4 @@ export const BridgePurchaseTaskPropertyDetails: FC = () => {
       </Stack>
     </StyledFormItem>
   );
-};
+});
