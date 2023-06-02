@@ -20,7 +20,11 @@ import {
 } from '@/components/atoms';
 
 import { Address, IAddress } from '@/models/common/Address';
-import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
+import {
+  OPTIONS_BRIDGE_BEHALF_TYPE,
+  OPTIONS_BRIDGE_MANAGING_LOAN_CLOSING,
+  OPTIONS_COMMON_YES_OR_NO,
+} from '@/constants';
 
 export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
   // const {
@@ -121,23 +125,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
         <Stack maxWidth={600} width={'100%'}>
           <StyledSelectOption
             onChange={(value) => setInstructions(value)}
-            options={[
-              {
-                key: 'Title Officer',
-                value: 'Title Officer',
-                label: 'Title Officer',
-              },
-              {
-                key: 'Issuing Agent',
-                value: 'Issuing Agent',
-                label: 'Issuing Agent',
-              },
-              {
-                key: 'Closing Attorney',
-                value: 'Closing Attorney',
-                label: 'Closing Attorney',
-              },
-            ]}
+            options={OPTIONS_BRIDGE_BEHALF_TYPE}
             value={instructions}
           />
         </Stack>
@@ -175,18 +163,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
               <Stack maxWidth={600} width={'100%'}>
                 <StyledSelectOption
                   onChange={(value) => steWhoIsManaging(value)}
-                  options={[
-                    {
-                      key: 'Escrow Company',
-                      value: 'Escrow Company',
-                      label: 'Escrow Company',
-                    },
-                    {
-                      key: 'Closing Attorney',
-                      value: 'Closing Attorney',
-                      label: 'Closing Attorney',
-                    },
-                  ]}
+                  options={OPTIONS_BRIDGE_MANAGING_LOAN_CLOSING}
                   value={whoIsManaging}
                 />
               </Stack>

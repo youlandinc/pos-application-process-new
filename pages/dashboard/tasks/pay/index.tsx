@@ -12,24 +12,21 @@ const DynamicDashboardPage = dynamic(
   },
 );
 
-const DynamicCompanyInformationPage = dynamic(
-  () =>
-    import('@/views/Dashboard/TaskPage/CompanyInformationPage').then(
-      (mod) => mod.CompanyInformationPage,
-    ),
+const DynamicPayPage = dynamic(
+  () => import('@/views/Dashboard/TaskPage/PayPage').then((mod) => mod.PayPage),
   {
     loading: () => <CircularProgress />,
     ssr: false,
   },
 );
-const TaskCompanyInformation: FC = observer(() => {
+const TaskPay: FC = observer(() => {
   return (
     <>
       <DynamicDashboardPage>
-        <DynamicCompanyInformationPage />
+        <DynamicPayPage />
       </DynamicDashboardPage>
     </>
   );
 });
 
-export default TaskCompanyInformation;
+export default TaskPay;

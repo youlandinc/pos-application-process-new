@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 
 // import { BridgePurchasePaymentSummary, PaymentTask } from '@/components/molecules';
 
-import { Box, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import {
   StyledButton,
   StyledFormItem,
@@ -19,9 +19,6 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
   // } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-
-  const [accepted, setAccepted] = useState(true);
-  const [date, setDate] = useState<string | Date>('');
 
   return (
     <StyledFormItem gap={3} label={'Documents & Materials'}>

@@ -11,6 +11,8 @@ export * from './BridgePurchaseTaskInvestmentExperience';
 export * from './BridgePurchaseTaskCompanyInformation';
 export * from './BridgePurchaseTaskInsuranceInformation';
 
+export * from './BridgePurchaseTaskPay';
+
 export * from './BridgePurchaseTaskContract';
 export * from './BridgePurchaseTaskUploadPictures';
 export * from './BridgePurchaseTaskAgreements';

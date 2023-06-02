@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
@@ -15,9 +15,6 @@ export const BridgePurchaseTaskAgreements: FC = observer(() => {
   // } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-
-  const [accepted, setAccepted] = useState(true);
-  const [date, setDate] = useState<string | Date>('');
 
   return (
     <StyledFormItem gap={3} label={'Agreements'}>

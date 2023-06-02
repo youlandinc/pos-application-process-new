@@ -22,7 +22,7 @@ const DynamicContractPage = dynamic(
     ssr: false,
   },
 );
-const Task: FC = observer(() => {
+const TaskContract: FC = observer(() => {
   return (
     <>
       <DynamicDashboardPage>
@@ -32,4 +32,4 @@ const Task: FC = observer(() => {
   );
 });
 
-export default Task;
+export default TaskContract;
