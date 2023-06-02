@@ -10,3 +10,11 @@ export * from './GuarantorPersonalPage';
 export * from './CoBorrowerDetailsPage';
 
 export * from './PaymentPage';
+
+export * from './CompanyInformationPage';
+export * from './InsuranceInformationPage';
+
+export * from './ContractPage';
+export * from './UploadPicturesPage';
+export * from './AgreementsPage';
+export * from './DocumentsPage';

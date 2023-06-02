@@ -65,8 +65,12 @@ export const BridgePurchaseTaskUploadPictures: FC = observer(() => {
       >
         <StyledUploadBox
           fileList={[]}
-          onDelete={() => {}}
-          onSuccess={() => {}}
+          onDelete={() => {
+            console.log('onDelete');
+          }}
+          onSuccess={() => {
+            console.log('onSuccess');
+          }}
         />
       </StyledFormItem>
 

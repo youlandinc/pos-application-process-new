@@ -13,8 +13,14 @@ export * from './BridgePurchaseTaskDemographicsInformation';
 export * from './BridgePurchaseTaskGuarantorPersonal';
 export * from './BridgePurchaseTaskCoBorrowerDetails';
 
+
 export * from './BridgePurchaseTaskCompanyInformation';
-export * from './BridgePurchaseTaskProviderInformation';
+export * from './BridgePurchaseTaskInsuranceInformation';
+
+export * from './BridgePurchaseTaskContract';
 export * from './BridgePurchaseTaskUploadPictures';
+export * from './BridgePurchaseTaskAgreements';
+export * from './BridgePurchaseTaskDocuments';
 
 export * from './BridgePurchaseTaskPayment';
+export * from './BridgePurchaseTaskPropertyInspection';
