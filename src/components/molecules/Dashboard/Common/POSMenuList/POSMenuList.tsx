@@ -133,7 +133,7 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ scene, info }) => {
         if (key === 'resources') {
           window.open('https://youland.com/company/newsroom/', '_blank');
         }
-        if (key === activeKey) {
+        if (key === activeKey && key !== 'tasks') {
           return;
         }
         setActiveKey(key);
