@@ -143,7 +143,10 @@ export const Pipeline: FC = observer(() => {
         break;
       default:
         await changeSettingField('lastSelectedProcessId', row.youlandId + '');
-        await router.push('/dashboard/overview');
+        await router.push({
+          pathname: '/dashboard/overview',
+          query: { processId: row.youlandId },
+        });
         break;
     }
   };
@@ -167,10 +170,10 @@ export const Pipeline: FC = observer(() => {
   );
 
   const handledConfirmDelete = useCallback(async () => {
-    await setIsChange(true);
     await setDeleteLoading(true);
     try {
       await _deleteProcess(deleteId);
+      await getListData();
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
@@ -180,7 +183,7 @@ export const Pipeline: FC = observer(() => {
       close();
       setDeleteLoading(false);
     }
-  }, [close, deleteId, enqueueSnackbar]);
+  }, [close, deleteId, enqueueSnackbar, getListData]);
 
   useEffect(() => {
     if (isChange) {

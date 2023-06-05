@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -15,6 +15,10 @@ import {
 
 export const BridgePurchaseTaskLoanDetails: FC = () => {
   const router = useRouter();
+
+  useEffect(() => {
+    console.log(router.query.taskId);
+  }, [router.query.taskId]);
 
   const [purchasePrice, setPurchasePrice] = useState<number | undefined>(0);
   const [propertyPrice, setPropertyPrice] = useState<number | undefined>(0);
