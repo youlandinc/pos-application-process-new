@@ -275,17 +275,26 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
                   <StyledCheckbox
                     checked={hawaiian}
                     label={'Native Hawaiian'}
-                    onChange={(e) => setHawaiian(e.target.checked)}
+                    onChange={(e) => {
+                      handledResetRace(true);
+                      setHawaiian(e.target.checked);
+                    }}
                   />
                   <StyledCheckbox
                     checked={chamorro}
                     label={'Native Hawaiian'}
-                    onChange={(e) => setChamorro(e.target.checked)}
+                    onChange={(e) => {
+                      handledResetRace(true);
+                      setChamorro(e.target.checked);
+                    }}
                   />
                   <StyledCheckbox
                     checked={samoan}
                     label={'Native Hawaiian'}
-                    onChange={(e) => setSamoan(e.target.checked)}
+                    onChange={(e) => {
+                      handledResetRace(true);
+                      setSamoan(e.target.checked);
+                    }}
                   />
                 </Stack>
                 <Box mt={1}>

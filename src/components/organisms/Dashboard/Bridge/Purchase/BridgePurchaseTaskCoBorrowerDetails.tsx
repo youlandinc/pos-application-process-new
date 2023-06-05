@@ -192,9 +192,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
           />
           <StyledTextFieldPhone
             label={'Phone Number'}
-            onValueChange={({ formattedValue }) =>
-              setPhoneNumber(formattedValue)
-            }
+            onValueChange={({ value }) => setPhoneNumber(value)}
             value={phoneNumber}
           />
           <StyledTextField
