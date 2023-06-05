@@ -1,19 +1,17 @@
 import { FC, useState } from 'react';
 
-import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 
-import { Stack } from '@mui/material';
 import {
   StyledButton,
-  StyledDatePicker,
   StyledFormItem,
   StyledGoogleAutoComplete,
   StyledTextField,
   StyledTextFieldPhone,
-  // StyledUploadBox,
 } from '@/components/atoms';
+import { Stack } from '@mui/material';
 
 import { Address, IAddress } from '@/models/common/Address';
 
