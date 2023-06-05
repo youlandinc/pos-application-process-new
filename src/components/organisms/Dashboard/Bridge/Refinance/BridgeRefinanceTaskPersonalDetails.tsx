@@ -83,7 +83,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
         </Stack>
       </StyledFormItem>
 
-      <StyledFormItem label={'Mailing address'} sub>
+      <StyledFormItem label={'Current Address'} sub>
         <Stack maxWidth={600} width={'100%'}>
           <StyledGoogleAutoComplete address={address} />
         </Stack>
