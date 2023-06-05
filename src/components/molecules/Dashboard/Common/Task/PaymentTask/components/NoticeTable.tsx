@@ -25,6 +25,7 @@ interface NoticeTableProps extends PaymentTaskBaseComponentProps {
   onCheckValueChange: (e: ChangeEvent<HTMLInputElement>) => void;
   check: boolean;
   loanDetail: ReactNode;
+  rateForm: ReactNode;
   productType?: ProductCategory;
 }
 
@@ -34,6 +35,7 @@ export const NoticeTable: FC<NoticeTableProps> = (props) => {
     onCheckValueChange,
     productType = 'mortgage',
     loanDetail,
+    rateForm,
   } = props;
 
   return (
@@ -53,13 +55,13 @@ export const NoticeTable: FC<NoticeTableProps> = (props) => {
           label={`I agree
           to the terms above and would like to ${
             productType === 'mortgage' ? 'lock' : 'confirm'
-          } this rate ${
+          } this rate${
             productType === 'mortgage' ? 'for the next 30 days' : ''
           }.`}
           onChange={onCheckValueChange}
-          style={{ marginRight: 1 }}
         />
       </Box>
+      {rateForm}
     </StyledFormItem>
   );
 };
