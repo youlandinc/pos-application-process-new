@@ -117,7 +117,7 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledDatePicker
-                  label={'Date of Birth'}
+                  label={'MM/DD/YYYY'}
                   onChange={(date) => {
                     setDate(date);
                   }}
