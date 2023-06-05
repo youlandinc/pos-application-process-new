@@ -1,7 +1,3 @@
-import {
-  DashboardTaskExitStrategy,
-  DashboardTaskPrimaryReasonRefinance,
-} from '@/types';
 import { FC, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -11,6 +7,10 @@ import {
   OPTIONS_TASK_EXIT_STRATEGY,
   OPTIONS_TASK_PRIMARY_REASON,
 } from '@/constants';
+import {
+  DashboardTaskExitStrategy,
+  DashboardTaskPrimaryReasonRefinance,
+} from '@/types';
 
 import {
   StyledButton,
@@ -18,6 +18,7 @@ import {
   StyledDatePicker,
   StyledFormItem,
   StyledSelectOption,
+  StyledTextField,
   StyledTextFieldNumber,
   Transitions,
 } from '@/components/atoms';
@@ -25,10 +26,15 @@ import {
 export const BridgeRefinanceTaskLoanDetails: FC = () => {
   const router = useRouter();
 
-  const [purchasePrice, setPurchasePrice] = useState<number | undefined>();
-  const [propertyPrice, setPropertyPrice] = useState<number | undefined>();
-  const [rehabFunds, setRehabFunds] = useState<boolean>(false);
+  const [homeValue, setHomeValue] = useState<number | undefined>();
+  const [balance, setBalance] = useState<number | undefined>();
+
+  const [isCashOut, setIsCashOut] = useState<boolean | undefined>();
+  const [cashOutAmount, setCashOutAmount] = useState<number | undefined>();
+
+  const [isCor, setIsCor] = useState<boolean | undefined>();
   const [loanAmount, setLoanAmount] = useState<number | undefined>();
+
   const [date, setDate] = useState<unknown | Date | null>();
   const [repairCosts, setRepairCosts] = useState<number | undefined>();
   const [primaryReason, setPrimaryReason] = useState<
@@ -47,70 +53,97 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
       }
       tipSx={{ mb: 0 }}
     >
-      <StyledFormItem
-        label={'Purchase price'}
-        sub
-        tip={
-          'The price you paid or are paying for the property that the loan is for.'
-        }
-      >
+      <StyledFormItem label={'Estimated Home Value'} sub>
         <Stack maxWidth={600} width={'100%'}>
           <StyledTextFieldNumber
-            label={'Purchase Price'}
+            label={'Estimated Home Value'}
             onValueChange={({ floatValue }) => {
-              setPurchasePrice(floatValue);
+              setHomeValue(floatValue);
             }}
             prefix={'$'}
-            value={purchasePrice}
+            value={homeValue}
           />
         </Stack>
       </StyledFormItem>
 
-      <StyledFormItem
-        label={'As-is property value'}
-        sub
-        tip={
-          'Your estimate of the current value of the property (before any rehabilitation).'
-        }
-      >
+      <StyledFormItem label={'Remaining Loan Balance'} sub>
         <Stack maxWidth={600} width={'100%'}>
           <StyledTextFieldNumber
-            label={'As-is Property Value'}
+            label={'Remaining Loan Balance'}
             onValueChange={({ floatValue }) => {
-              setPropertyPrice(floatValue);
+              setBalance(floatValue);
             }}
             prefix={'$'}
-            value={propertyPrice}
+            value={balance}
           />
         </Stack>
       </StyledFormItem>
 
-      <StyledFormItem label={'Will you request rehab funds?'} sub>
+      <StyledFormItem label={'Will you request cash out?'} sub>
         <Stack maxWidth={600} width={'100%'}>
           <StyledButtonGroup
             onChange={(e, value) => {
               if (value !== null) {
-                setRehabFunds(value === 'yes');
+                setIsCashOut(value === 'yes');
               }
             }}
             options={OPTIONS_COMMON_YES_OR_NO}
             sx={{ width: '100%', maxWidth: 600 }}
-            value={rehabFunds}
+            value={isCashOut}
           />
         </Stack>
       </StyledFormItem>
 
       <Transitions
         style={{
-          display: rehabFunds ? 'flex' : 'none',
+          display: isCashOut ? 'flex' : 'none',
+          flexDirection: 'column',
+          gap: 48,
+          width: '100%',
+        }}
+      >
+        {isCashOut && (
+          <StyledFormItem label={'Will you request cash out?'} sub>
+            <Stack maxWidth={600} width={'100%'}>
+              <StyledTextFieldNumber
+                label={'Remaining Loan Balance'}
+                onValueChange={({ floatValue }) => {
+                  setCashOutAmount(floatValue);
+                }}
+                prefix={'$'}
+                value={cashOutAmount}
+              />
+            </Stack>
+          </StyledFormItem>
+        )}
+      </Transitions>
+
+      <StyledFormItem label={'Will you request rehab funds?'} sub>
+        <Stack maxWidth={600} width={'100%'}>
+          <StyledButtonGroup
+            onChange={(e, value) => {
+              if (value !== null) {
+                setIsCor(value === 'yes');
+              }
+            }}
+            options={OPTIONS_COMMON_YES_OR_NO}
+            sx={{ width: '100%', maxWidth: 600 }}
+            value={isCor}
+          />
+        </Stack>
+      </StyledFormItem>
+
+      <Transitions
+        style={{
+          display: isCor ? 'flex' : 'none',
           flexDirection: 'column',
           gap: 48,
         }}
       >
-        {rehabFunds && (
+        {isCor && (
           <>
             <StyledFormItem
-              label={'Estimated rehab loan amount'}
+              label={'Cash Out Amount'}
               sub
               tip={
                 'Total cost that you would like {Organization Name} to finance.'
@@ -118,7 +151,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldNumber
-                  label={'Estimated Rehab Loan Amount'}
+                  label={'Cash Out Amount'}
                   onValueChange={({ floatValue }) => {
                     setLoanAmount(floatValue);
                   }}
@@ -133,7 +166,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledDatePicker
-                  label={'Date of Birth'}
+                  label={'MM/DD/YYYY'}
                   onChange={(date) => {
                     setDate(date);
                   }}

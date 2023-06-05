@@ -37,3 +37,11 @@ export const _fetchPaymentDetails = (paymentData: PostPayment) => {
 export const _fetchLoanTask = (processId = '') => {
   return get<LoanTask>(`/dashboard/loan/task/${processId}`);
 };
+
+export const _fetchTaskFormInfo = (taskId: string) => {
+  return get(`/dashboard/loan/task/detail/${taskId}`);
+};
+
+export const _updateTaskFormInfo = (taskId: string, data: any) => {
+  return post('/dashboard/loan/task/', { taskId, data });
+};

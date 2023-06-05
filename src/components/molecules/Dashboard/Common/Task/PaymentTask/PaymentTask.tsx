@@ -1,12 +1,21 @@
 import { FC, ReactNode, useCallback, useMemo, useRef, useState } from 'react';
-import { Box, SxProps } from '@mui/material';
+import { Box, Stack, SxProps } from '@mui/material';
 import { useAsync } from 'react-use';
 
 import { RatesProductData } from '@/types';
 
 // import { IDashboardTask } from '@/models/DashboardTask';
 
-import { StyledButton, StyledLoading } from '@/components/atoms';
+import {
+  StyledButton,
+  StyledButtonGroup,
+  StyledDatePicker,
+  StyledFormItem,
+  StyledLoading,
+  StyledTextField,
+  StyledUploadBox,
+  Transitions,
+} from '@/components/atoms';
 import {
   ConfirmTable,
   NoticeTable,
@@ -22,6 +31,7 @@ import {
 import { IDTask } from '@/models/base';
 import { POSFlex } from '@/styles';
 import { useSnackbar } from 'notistack';
+import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
 
 const useStyle: SxProps = {
   ...POSFlex('center', 'center', 'column'),
@@ -130,6 +140,7 @@ interface PaymentTaskProps {
   loanDetail: ReactNode;
   backToList?: () => void;
   productType?: ProductCategory;
+  sceneType?: 'purchase' | 'refinance';
 }
 
 export const PaymentTask: FC<PaymentTaskProps> = (props) => {
@@ -140,6 +151,7 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
     taskId,
     loanDetail,
     productType = 'mortgage',
+    sceneType = 'purchase',
     backToList,
   } = props;
   const { enqueueSnackbar } = useSnackbar();
@@ -177,6 +189,9 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
   const [noticeCheck, setNoticeCheck] = useState<boolean>(false);
   const [paymentCheck, setPaymentCheck] = useState<boolean>(false);
   const [clickable, setClickable] = useState<boolean>(true);
+  const [appraisal, setAppraisal] = useState<boolean>(false);
+  const [appraisalCompany, setAppraisalCompany] = useState('');
+  const [appraisalDate, setAppraisalDate] = useState<string | Date>('');
 
   const [paymentDetail, setPaymentDetail] = useState<SPaymentDetails>();
 
@@ -200,6 +215,81 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
     backToList as () => void,
   );
 
+  const renderRateForm = useMemo(() => {
+    return (
+      <Stack gap={3}>
+        <StyledFormItem
+          label={'Do you have a recent Property Appraisal？'}
+          maxWidth={600}
+          mt={3}
+          sub
+        >
+          <StyledButtonGroup
+            onChange={(e, value) => {
+              if (value !== null) {
+                setAppraisal(value === 'yes');
+              }
+            }}
+            options={OPTIONS_COMMON_YES_OR_NO}
+            sx={{ width: '100%', maxWidth: 600 }}
+            value={appraisal}
+          />
+        </StyledFormItem>
+        <Transitions style={{ width: '100%' }}>
+          {appraisal && (
+            <>
+              {sceneType === 'refinance' && (
+                <StyledFormItem
+                  gap={3}
+                  label={'Appraisal Information'}
+                  labelSx={{ mb: 0 }}
+                  sub
+                >
+                  <Stack
+                    flexDirection={{ lg: 'row', xs: 'column' }}
+                    gap={3}
+                    mt={3}
+                    width={'100%'}
+                  >
+                    <StyledTextField
+                      label={'Appraisal Company'}
+                      onChange={(e) => setAppraisalCompany(e.target.value)}
+                      value={appraisalCompany}
+                    />
+                    <StyledDatePicker
+                      label={'Appraisal Due Date'}
+                      onChange={(date) =>
+                        setAppraisalDate(date as string | Date)
+                      }
+                      value={appraisalDate}
+                    />
+                  </Stack>
+                </StyledFormItem>
+              )}
+
+              <StyledFormItem
+                label={'Upload Property Appraisal'}
+                maxWidth={900}
+                sub
+                tip={'Next, fill out your Experience Verification Sheet'}
+              >
+                <StyledUploadBox
+                  fileList={[]}
+                  onDelete={() => {
+                    console.log('onDelete');
+                  }}
+                  onSuccess={() => {
+                    console.log('onSuccess');
+                  }}
+                />
+              </StyledFormItem>
+            </>
+          )}
+        </Transitions>
+      </Stack>
+    );
+  }, [appraisal, appraisalCompany, appraisalDate, sceneType]);
+
   const renderPaymentTaskComponent = useMemo(() => {
     switch (tableStatus) {
       case 'confirm':
@@ -216,6 +306,7 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
             loanDetail={loanDetail}
             onCheckValueChange={(e) => setNoticeCheck(e.target.checked)}
             productType={productType}
+            rateForm={renderRateForm}
           />
         );
       case 'payment':
@@ -236,6 +327,7 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
     noticeCheck,
     loanDetail,
     productType,
+    renderRateForm,
     paymentCheck,
     paymentDetail,
   ]);
