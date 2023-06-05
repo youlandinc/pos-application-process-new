@@ -21,9 +21,9 @@ import {
 
 import { Address, IAddress } from '@/models/common/Address';
 import {
-  OPTIONS_BRIDGE_BEHALF_TYPE,
-  OPTIONS_BRIDGE_MANAGING_LOAN_CLOSING,
   OPTIONS_COMMON_YES_OR_NO,
+  OPTIONS_TASK_BEHALF_TYPE,
+  OPTIONS_TASK_MANAGING_LOAN_CLOSING,
 } from '@/constants';
 
 export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
@@ -36,7 +36,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [companyName, setCompanyName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [titleOrderNumber, settitleOrderNumber] = useState('');
   const [date, setDate] = useState<string | Date>('');
@@ -82,15 +82,11 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
           <StyledTextField label={'Contact Last Name'} value={lastName} />
         </Stack>
 
-        <Stack
-          flexDirection={{ lg: 'row', xs: 'column' }}
-          gap={3}
-          width={'100%'}
-        >
+        <Stack gap={3} width={'100%'}>
           <StyledTextFieldPhone
             label={'Phone Number'}
-            onValueChange={({ value }) => setPhone(value)}
-            value={phone}
+            onValueChange={({ value }) => setPhoneNumber(value)}
+            value={phoneNumber}
           />
           <StyledTextField label={'Email'} value={email} />
         </Stack>
@@ -125,7 +121,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
         <Stack maxWidth={600} width={'100%'}>
           <StyledSelectOption
             onChange={(value) => setInstructions(value)}
-            options={OPTIONS_BRIDGE_BEHALF_TYPE}
+            options={OPTIONS_TASK_BEHALF_TYPE}
             value={instructions}
           />
         </Stack>
@@ -163,7 +159,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
               <Stack maxWidth={600} width={'100%'}>
                 <StyledSelectOption
                   onChange={(value) => steWhoIsManaging(value)}
-                  options={OPTIONS_BRIDGE_MANAGING_LOAN_CLOSING}
+                  options={OPTIONS_TASK_MANAGING_LOAN_CLOSING}
                   value={whoIsManaging}
                 />
               </Stack>
@@ -187,8 +183,8 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
               >
                 <StyledTextFieldPhone
                   label={'Phone Number'}
-                  onValueChange={({ value }) => setPhone(value)}
-                  value={phone}
+                  onValueChange={({ value }) => setPhoneNumber(value)}
+                  value={phoneNumber}
                 />
                 <StyledTextField label={'Email'} value={email} />
               </Stack>

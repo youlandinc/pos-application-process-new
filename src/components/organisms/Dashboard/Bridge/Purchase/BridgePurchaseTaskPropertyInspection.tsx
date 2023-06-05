@@ -23,7 +23,7 @@ export const BridgePurchaseTaskPropertyInspection: FC = observer(() => {
 
   const [contactName, setContactName] = useState('');
 
-  const [phone, setPhone] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
 
   const [instructions, setInstructions] = useState<string | number>('');
@@ -45,15 +45,11 @@ export const BridgePurchaseTaskPropertyInspection: FC = observer(() => {
           <StyledTextField label={'Contact Name'} value={contactName} />
         </Stack>
 
-        <Stack
-          flexDirection={{ lg: 'row', xs: 'column' }}
-          gap={3}
-          width={'100%'}
-        >
+        <Stack gap={3} width={'100%'}>
           <StyledTextFieldPhone
             label={'Phone Number'}
-            onValueChange={({ value }) => setPhone(value)}
-            value={phone}
+            onValueChange={({ value }) => setPhoneNumber(value)}
+            value={phoneNumber}
           />
           <StyledTextField label={'Email'} value={email} />
         </Stack>
