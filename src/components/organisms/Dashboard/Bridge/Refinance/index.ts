@@ -13,3 +13,13 @@ export * from './BridgeRefinanceTaskPersonalDetails';
 export * from './BridgeRefinanceTaskDemograhpicsInformation';
 export * from './BridgeRefinanceTaskCoBorrower';
 export * from './BridgeRefinanceTaskGuarantorPersonal';
+
+export * from './BridgeRefinanceTaskCompanyInformation';
+export * from './BridgeRefinanceTaskInsuranceInformation';
+
+export * from './BridgeRefinanceTaskPropertyInspection';
+export * from './BridgeRefinanceTaskPay';
+
+export * from './BridgeRefinanceTaskUploadPictures';
+export * from './BridgeRefinanceTaskAgreements';
+export * from './BridgeRefinanceTaskDocuments';

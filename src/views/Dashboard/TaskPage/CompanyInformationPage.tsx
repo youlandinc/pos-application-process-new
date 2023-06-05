@@ -2,7 +2,10 @@ import { FC, useMemo } from 'react';
 import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
-import { BridgePurchaseTaskCompanyInformation } from '@/components/organisms';
+import {
+  BridgePurchaseTaskCompanyInformation,
+  BridgeRefinanceTaskCompanyInformation,
+} from '@/components/organisms';
 
 export const CompanyInformationPage: FC = observer(() => {
   const {
@@ -20,9 +23,9 @@ export const CompanyInformationPage: FC = observer(() => {
       case 'bridge purchase': {
         return <BridgePurchaseTaskCompanyInformation />;
       }
-      //case 'bridge refinance': {
-      //  return <BridgeRefinanceTaskLoanDetails />;
-      //}
+      case 'bridge refinance': {
+        return <BridgeRefinanceTaskCompanyInformation />;
+      }
       default:
         return <BridgePurchaseTaskCompanyInformation />;
     }

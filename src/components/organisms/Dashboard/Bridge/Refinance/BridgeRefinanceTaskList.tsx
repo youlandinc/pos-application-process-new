@@ -110,16 +110,15 @@ const taskObj: taskObj = {
       },
     ],
   },
-  // SetUpAutoPay: {
-  //   title: 'Set up auto Pay',
-  //   children: [
-  //     {
-  //       code: 'BR_THIRD_CLOSING',
-  //       url: '/dashboard/tasks/company_information',
-  //     },
-
-  //   ],
-  // },
+  //SetUpAutoPay: {
+  //  title: 'Set up auto Pay',
+  //  children: [
+  //    {
+  //      code: 'BR_THIRD_CLOSING',
+  //      url: '/dashboard/tasks/company_information',
+  //    },
+  //  ],
+  //},
   DocumentsMaterials: {
     title: 'Documents & Materials',
     children: [
