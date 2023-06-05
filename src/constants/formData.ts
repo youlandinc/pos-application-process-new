@@ -781,4 +781,5 @@ export const FormData = {
       },
     },
   },
+  task: {},
 };

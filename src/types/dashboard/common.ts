@@ -97,3 +97,75 @@ export type BasePreApprovalLetterData = {
 };
 
 // task
+export enum DashboardTaskKey {
+  // bridge purchase
+  BP_AL = 'BP_APPLICATION_LOAN',
+  BP_AP = 'BP_APPLICATION_PROPERTY',
+  BP_AI = 'BP_APPLICATION_INVESTMENT',
+
+  BP_BP = 'BP_BORROWER_PERSONAL',
+  BP_BD = 'BP_BORROWER_DEMOGRAPHICS',
+  BP_BCB = 'BP_BORROWER_CO_BORROWER',
+  BP_BG = 'BP_BORROWER_GUARANTOR',
+
+  BP_AC = 'BP_APPRAISAL_COST',
+  BP_APD = 'BP_APPRAISAL_PROPERTY_DETAILS',
+
+  BP_TC = 'BP_THIRD_CLOSING',
+  BP_TI = 'BP_THIRD_INSURANCE',
+
+  BP_AA = 'BP_AUTOPAY_ACH',
+
+  BP_DC = 'BP_DOCUMENTS_CONTRACT',
+  BP_DP = 'BP_DOCUMENTS_PICTURES',
+  BP_DR = 'BP_DOCUMENTS_REVIEW',
+  BP_DD = 'BP_DOCUMENTS_DOCUMENTS',
+
+  // bridge refinance
+}
+
+export enum DashboardTaskCitizenshipStatus {
+  us_citizen = 'US_CITIZEN',
+  permanent_resident_alien = 'PERMANENT_RESIDENT_ALIEN',
+  non_permanent_resident_alien = 'NON_PERMANENT_RESIDENT_ALIEN',
+}
+
+export enum DashboardTaskMaritalStatus {
+  unmarried = 'UNMARRIED',
+  married = 'MARRIED',
+  separated = 'SEPARATED',
+}
+
+export enum DashboardTaskBorrowerType {
+  individual = 'INDIVIDUAL',
+  entity = 'ENTITY',
+}
+
+export enum DashboardTaskBorrowerEntityType {
+  limited_liability_company = 'LIMITED_LIABILITY_COMPANY',
+  corporation = 'CORPORATION',
+  limited_partnership = 'LIMITED_PARTNERSHIP',
+  limited_company = 'LIMITED_COMPANY',
+  individual = 'INDIVIDUAL',
+}
+
+export enum DashboardTaskGender {
+  male = 'MALE',
+  female = 'FEMALE',
+  not_provide = 'NOT_PROVIDE',
+}
+
+export enum DashboardTaskPrimaryReasonRefinance {
+  no_cash_out = 'NO_CASH_OUT',
+  delayed_purchase_refinance = 'DELAYED_PURCHASE_REFINANCE',
+  currently_rent_out = 'CURRENTLY_RENT_OUT',
+  finish_property_rehab = 'FINISH_PROPERTY_REHAB',
+  buy_other_property = 'BUY_OTHER_PROPERTY',
+  other = 'OTHER',
+}
+
+export enum DashboardTaskExitStrategy {
+  rehab_and_sell = 'REHAB_AND_SELL',
+  rehab_rent_refinance = 'REHAB_RENT_REFINANCE',
+  other = 'OTHER',
+}

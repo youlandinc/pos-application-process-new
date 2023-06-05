@@ -45,3 +45,4 @@ export * from './StyledBadge';
 export * from './StyledStatus';
 
 export * from './StyledUploadBox';
+export * from './StyledUploadButtonBox';

@@ -72,7 +72,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
     <Box className={'container'} sx={useStyles}>
       <Box className={'pageMain'}>
         <PaymentTask
-          backToList={() => router.push('/dashboard/tasks/list')}
+          backToList={() => router.push('/dashboard/tasks')}
           loanDetail={
             <BridgePurchasePaymentSummary
               loading={loading}
@@ -90,73 +90,3 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
     </Box>
   );
 });
-
-//const temp = [
-//  {
-//    status: false,
-//    label: 'Application information',
-//    key: '1',
-//    parentKey: '',
-//    children: [
-//      { label: 'Loan details', status: true, key: '1-1', parentKey: '1' },
-//      {
-//        label: 'Property details',
-//        status: false,
-//        key: '1-2',
-//        parentKey: '1',
-//      },
-//      {
-//        label: 'Real estate investment experience',
-//        status: false,
-//        key: '1-3',
-//        parentKey: '1',
-//      },
-//      { label: 'Purchase details', status: true, key: '1-4', parentKey: '1' },
-//    ],
-//  },
-//  {
-//    label: 'Payment',
-//    status: false,
-//    key: 'BPPayment',
-//    parentKey: '',
-//    children: [
-//      {
-//        label: 'Pay for property appraisal and lock your rate',
-//        status: false,
-//        key: 'BPPayment_pay',
-//        parentKey: 'BPPayment',
-//      },
-//    ],
-//  },
-//];
-//
-//const [activeKey, setActiveKey] = useState<string>();
-//
-//const onItemClick = useCallback((item: StatusTreeNode) => {
-//  setActiveKey(item.key);
-//}, []);
-//
-//const renderTaskItem = useMemo(() => {
-//  switch (activeKey) {
-//    case 'BPPayment_pay':
-//      return <MortgagePurchaseTask />;
-//  }
-//}, [activeKey]);
-
-//<>
-//  {!activeKey && (
-//    <Box className={classes.container}>
-//      <PageHeader
-//        title={'Your loan checklist'}
-//        subTitle={
-//          'Just a couple more questions we need to ask before approving your loan.'
-//        }
-//      />
-//      <Box className={classes.pageMain}>
-//        <Box className={classes.pageMainTitle}>Your loan task</Box>
-//        <StatusTask data={temp} onItemClick={onItemClick} />
-//      </Box>
-//    </Box>
-//  )}
-//  {renderTaskItem}
-//</>
