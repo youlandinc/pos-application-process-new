@@ -50,11 +50,6 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
 
   const handledResetEthnicity = useCallback((isAll = false) => {
     if (isAll) {
-      setMexican(false);
-      setPuertoRican(false);
-      setCuban(false);
-      setOtherLatino(false);
-      setOtherLatinoText('');
       setNotLatino(false);
       setNotProvideEthnicity(false);
       return;

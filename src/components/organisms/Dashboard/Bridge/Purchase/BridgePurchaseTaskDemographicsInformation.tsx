@@ -58,11 +58,6 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
 
   const handledResetEthnicity = useCallback((isAll = false) => {
     if (isAll) {
-      setMexican(false);
-      setPuertoRican(false);
-      setCuban(false);
-      setOtherLatino(false);
-      setOtherLatinoText('');
       setNotLatino(false);
       setNotProvideEthnicity(false);
       return;
@@ -74,19 +69,6 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
 
   const handledResetRace = useCallback((isAll = false) => {
     if (isAll) {
-      setOtherIslander(false);
-      setHawaiian(false);
-      setChamorro(false);
-      setSamoan(false);
-      setOtherIslanderText('');
-
-      setOtherAsian(false);
-      setJapanese(false);
-      setFilipino(false);
-      setChinese(false);
-      setKorean(false);
-      setAsianIndian(false);
-
       setAmerican(false);
       setTribe('');
       setBlack(false);
