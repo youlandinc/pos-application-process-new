@@ -1,9 +1,12 @@
 import {
+  BridgeBehalfTypeOpt,
+  BridgeManagingLoanClosingOpt,
   DashboardTaskBorrowerEntityType,
   DashboardTaskBorrowerType,
   DashboardTaskCitizenshipStatus,
   DashboardTaskGender,
   DashboardTaskMaritalStatus,
+  PaymentTypeOpt,
 } from '@/types';
 
 export const OPTIONS_TASK_CITIZENSHIP_STATUS: Option[] = [
@@ -97,5 +100,49 @@ export const OPTIONS_TASK_GENDER: Option[] = [
     key: DashboardTaskGender.not_provide,
     value: DashboardTaskGender.not_provide,
     label: 'I do not wish to provide this information',
+  },
+];
+
+export const OPTIONS_TASK_BEHALF_TYPE: Option[] = [
+  {
+    key: BridgeBehalfTypeOpt.TitleOfficer,
+    value: BridgeBehalfTypeOpt.TitleOfficer,
+    label: 'Title Officer',
+  },
+  {
+    key: BridgeBehalfTypeOpt.IssuingAgent,
+    value: BridgeBehalfTypeOpt.IssuingAgent,
+    label: 'Issuing Agent',
+  },
+  {
+    key: BridgeBehalfTypeOpt.ClosingAttorney,
+    value: BridgeBehalfTypeOpt.ClosingAttorney,
+    label: 'Closing Attorney',
+  },
+];
+
+export const OPTIONS_TASK_MANAGING_LOAN_CLOSING: Option[] = [
+  {
+    key: BridgeManagingLoanClosingOpt.EscrowCompany,
+    value: BridgeManagingLoanClosingOpt.EscrowCompany,
+    label: 'Escrow Company',
+  },
+  {
+    key: BridgeManagingLoanClosingOpt.ClosingAttorney,
+    value: BridgeManagingLoanClosingOpt.ClosingAttorney,
+    label: 'Closing Attorney',
+  },
+];
+
+export const OPTIONS_TASK_PAYMENT_TYPE: Option[] = [
+  {
+    key: PaymentTypeOpt.Plaid,
+    value: PaymentTypeOpt.Plaid,
+    label: 'Plaid',
+  },
+  {
+    key: PaymentTypeOpt.ACHDebit,
+    value: PaymentTypeOpt.ACHDebit,
+    label: 'ACH Debit',
   },
 ];

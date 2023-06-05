@@ -17,7 +17,7 @@ import {
 } from '@/components/atoms';
 
 import { Address, IAddress } from '@/models/common/Address';
-import { OPTIONS_ACCOUNT_TYPE, OPTIONS_BRIDGE_PAYMENT_TYPE } from '@/constants';
+import { OPTIONS_ACCOUNT_TYPE, OPTIONS_TASK_PAYMENT_TYPE } from '@/constants';
 import { useRenderPdf, useSwitch } from '@/hooks';
 
 export const BridgePurchaseTaskPay: FC = observer(() => {
@@ -62,7 +62,7 @@ export const BridgePurchaseTaskPay: FC = observer(() => {
         <Stack maxWidth={600} width={'100%'}>
           <StyledSelectOption
             onChange={(value) => setPaymentType(value)}
-            options={OPTIONS_BRIDGE_PAYMENT_TYPE}
+            options={OPTIONS_TASK_PAYMENT_TYPE}
             value={paymentType}
           />
         </Stack>

@@ -29,7 +29,7 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [companyName, setCompanyName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [titleOrderNumber, settitleOrderNumber] = useState('');
   const [date, setDate] = useState<string | Date>('');
@@ -71,15 +71,11 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
           <StyledTextField label={'Contact Last Name'} value={lastName} />
         </Stack>
 
-        <Stack
-          flexDirection={{ lg: 'row', xs: 'column' }}
-          gap={3}
-          width={'100%'}
-        >
+        <Stack gap={3} width={'100%'}>
           <StyledTextFieldPhone
             label={'Phone Number'}
-            onValueChange={({ value }) => setPhone(value)}
-            value={phone}
+            onValueChange={({ value }) => setPhoneNumber(value)}
+            value={phoneNumber}
           />
           <StyledTextField label={'Email'} value={email} />
         </Stack>
