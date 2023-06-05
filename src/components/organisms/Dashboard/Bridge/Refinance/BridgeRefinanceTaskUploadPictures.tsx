@@ -32,7 +32,7 @@ export const BridgeRefinanceTaskUploadPictures: FC = observer(() => {
         maxWidth={900}
         sub
         tip={
-          'Kitchen (2-3), 2. Bedroom, 3. Bathroom, 4. Front of house, 5. Back of house, 6. Sides of house, 7. General (optional)'
+          '1.Kitchen (2-3), 2. Bedroom, 3. Bathroom, 4. Front of house, 5. Back of house, 6. Sides of house, 7. General (optional)'
         }
       >
         <StyledUploadBox

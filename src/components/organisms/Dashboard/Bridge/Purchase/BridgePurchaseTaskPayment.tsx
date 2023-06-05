@@ -83,6 +83,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
           paymentStatus={dashboardTask.paymentStatus}
           processId={lastSelectedProcessId as string}
           productType={'bridge'}
+          sceneType={'purchase'}
           task={dashboardTask}
           taskId={taskId}
         />

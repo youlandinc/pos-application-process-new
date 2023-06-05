@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 
 import { Box, Stack } from '@mui/material';
 import { StyledButton, StyledFormItem } from '@/components/atoms';
+import { useSessionStorageState } from '@/hooks';
 
 export const BridgeRefinanceTaskAgreements: FC = observer(() => {
   // const {
@@ -13,11 +14,14 @@ export const BridgeRefinanceTaskAgreements: FC = observer(() => {
   // } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-
+  const { state } = useSessionStorageState('tenantConfig');
   return (
     <StyledFormItem gap={3} label={'Agreements'}>
       <StyledFormItem
-        label={"Review and accept YouLand's construction holdback process"}
+        label={`Review and accept ${
+          //sass
+          state?.organizationName || ' YouLand'
+        }'s construction holdback process`}
         maxWidth={900}
         sub
       >
