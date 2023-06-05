@@ -70,7 +70,12 @@ export const BridgePurchaseTaskPropertyInspection: FC = observer(() => {
       >
         <StyledButton
           color={'info'}
-          onClick={() => router.push('/dashboard/tasks')}
+          onClick={() =>
+            router.push({
+              pathname: '/dashboard/tasks',
+              query: { processId: router.query.processId },
+            })
+          }
           sx={{ flex: 1 }}
           variant={'text'}
         >

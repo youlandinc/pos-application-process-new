@@ -186,7 +186,15 @@ export const BridgePurchaseTaskList: FC = observer(() => {
           {taskObj.ApplicationInformation.children.map((sonItem) => (
             <Box
               key={sonItem.code}
-              onClick={() => router.push(sonItem.url)}
+              onClick={() =>
+                router.push({
+                  pathname: sonItem.url,
+                  query: {
+                    ...router.query,
+                    taskId: taskDetails[sonItem.code].taskId,
+                  },
+                })
+              }
               px={{ md: 3, xs: 0 }}
             >
               <Typography
@@ -228,7 +236,15 @@ export const BridgePurchaseTaskList: FC = observer(() => {
           {taskObj.BorrowerInformation.children.map((sonItem) => (
             <Box
               key={sonItem.code}
-              onClick={() => router.push(sonItem.url)}
+              onClick={() =>
+                router.push({
+                  pathname: sonItem.url,
+                  query: {
+                    ...router.query,
+                    taskId: taskDetails[sonItem.code].taskId,
+                  },
+                })
+              }
               px={{ md: 3, xs: 0 }}
             >
               <Typography
@@ -270,7 +286,15 @@ export const BridgePurchaseTaskList: FC = observer(() => {
           {taskObj.PropertyAppraisal.children.map((sonItem) => (
             <Box
               key={sonItem.code}
-              onClick={async () => await router.push(sonItem.url)}
+              onClick={() =>
+                router.push({
+                  pathname: sonItem.url,
+                  query: {
+                    ...router.query,
+                    taskId: taskDetails[sonItem.code].taskId,
+                  },
+                })
+              }
               px={{ md: 3, xs: 0 }}
             >
               <Typography
@@ -312,7 +336,15 @@ export const BridgePurchaseTaskList: FC = observer(() => {
           {taskObj.ThirdPartyInformation.children.map((sonItem) => (
             <Box
               key={sonItem.code}
-              onClick={() => router.push(sonItem.url)}
+              onClick={() =>
+                router.push({
+                  pathname: sonItem.url,
+                  query: {
+                    ...router.query,
+                    taskId: taskDetails[sonItem.code].taskId,
+                  },
+                })
+              }
               px={{ md: 3, xs: 0 }}
             >
               <Typography
@@ -354,7 +386,15 @@ export const BridgePurchaseTaskList: FC = observer(() => {
           {taskObj.DocumentsMaterials.children.map((sonItem) => (
             <Box
               key={sonItem.code}
-              onClick={async () => await router.push(sonItem.url)}
+              onClick={() =>
+                router.push({
+                  pathname: sonItem.url,
+                  query: {
+                    ...router.query,
+                    taskId: taskDetails[sonItem.code].taskId,
+                  },
+                })
+              }
               px={{ md: 3, xs: 0 }}
             >
               <Typography
