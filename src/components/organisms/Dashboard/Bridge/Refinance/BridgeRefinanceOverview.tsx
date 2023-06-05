@@ -230,7 +230,10 @@ export const BridgeRefinanceOverview: FC = observer(() => {
               className={'cardButton'}
               color={'primary'}
               onClick={async () =>
-                await router.push('/dashboard/pre_approval_letter')
+                await router.push({
+                  pathname: '/dashboard/pre_approval_letter',
+                  query: router.query,
+                })
               }
               variant={'contained'}
             >
@@ -247,7 +250,12 @@ export const BridgeRefinanceOverview: FC = observer(() => {
             <StyledButton
               className={'cardButton'}
               color={'primary'}
-              onClick={async () => await router.push('/dashboard/rates')}
+              onClick={async () =>
+                await router.push({
+                  pathname: '/dashboard/rates',
+                  query: router.query,
+                })
+              }
               variant={'contained'}
             >
               Explore Rate
@@ -279,7 +287,12 @@ export const BridgeRefinanceOverview: FC = observer(() => {
           <Box
             className={'link_style'}
             component={'span'}
-            onClick={() => router.push('/dashboard/tasks')}
+            onClick={() =>
+              router.push({
+                pathname: '/dashboard/tasks',
+                query: router.query,
+              })
+            }
           >
             Tasks
           </Box>{' '}

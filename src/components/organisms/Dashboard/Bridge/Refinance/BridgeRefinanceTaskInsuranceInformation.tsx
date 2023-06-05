@@ -24,7 +24,7 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
-  const [agentNameName, setAgentNameName] = useState('');
+  const [agentName, setAgentName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
@@ -81,20 +81,20 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
       </StyledFormItem>
 
       {/* <StyledFormItem
-        label={'Upload your evidence of insurance'}
-        maxWidth={900}
-        sub
-      >
-        <StyledUploadBox
-          fileList={[]}
-          onDelete={() => {
-            console.log('onDelete');
-          }}
-          onSuccess={() => {
-            console.log('onSuccess');
-          }}
-        />
-      </StyledFormItem> */}
+         label={'Upload your evidence of insurance'}
+         maxWidth={900}
+         sub
+         >
+         <StyledUploadBox
+         fileList={[]}
+         onDelete={() => {
+         console.log('onDelete');
+         }}
+         onSuccess={() => {
+         console.log('onSuccess');
+         }}
+         />
+         </StyledFormItem> */}
 
       <Stack
         flexDirection={'row'}
@@ -105,7 +105,12 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
       >
         <StyledButton
           color={'info'}
-          onClick={() => router.push('/dashboard/tasks')}
+          onClick={() =>
+            router.push({
+              pathname: '/dashboard/tasks',
+              query: { processId: router.query.processId },
+            })
+          }
           sx={{ flex: 1 }}
           variant={'text'}
         >
