@@ -4,7 +4,10 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { BridgePurchaseTaskInvestmentExperience } from '@/components/organisms';
+import {
+  BridgePurchaseTaskInvestmentExperience,
+  BridgeRefinanceTaskInvestmentExperience,
+} from '@/components/organisms';
 
 export const InvestmentExperiencePage: FC = observer(() => {
   const {
@@ -22,9 +25,9 @@ export const InvestmentExperiencePage: FC = observer(() => {
       case 'bridge purchase': {
         return <BridgePurchaseTaskInvestmentExperience />;
       }
-      //case 'bridge refinance': {
-      //  return <BridgeRefinanceTaskLoanDetails />;
-      //}
+      case 'bridge refinance': {
+        return <BridgeRefinanceTaskInvestmentExperience />;
+      }
       default:
         return <BridgePurchaseTaskInvestmentExperience />;
     }

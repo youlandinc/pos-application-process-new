@@ -1,27 +1,42 @@
+import {
+  DashboardTaskExitStrategy,
+  DashboardTaskPrimaryReasonRefinance,
+} from '@/types';
 import { FC, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
-import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
+import {
+  OPTIONS_COMMON_YES_OR_NO,
+  OPTIONS_TASK_EXIT_STRATEGY,
+  OPTIONS_TASK_PRIMARY_REASON,
+} from '@/constants';
 
 import {
   StyledButton,
   StyledButtonGroup,
   StyledDatePicker,
   StyledFormItem,
+  StyledSelectOption,
   StyledTextFieldNumber,
   Transitions,
 } from '@/components/atoms';
 
-export const BridgePurchaseTaskLoanDetails: FC = () => {
+export const BridgeRefinanceTaskLoanDetails: FC = () => {
   const router = useRouter();
 
-  const [purchasePrice, setPurchasePrice] = useState<number | undefined>(0);
-  const [propertyPrice, setPropertyPrice] = useState<number | undefined>(0);
+  const [purchasePrice, setPurchasePrice] = useState<number | undefined>();
+  const [propertyPrice, setPropertyPrice] = useState<number | undefined>();
   const [rehabFunds, setRehabFunds] = useState<boolean>(false);
-  const [loanAmount, setLoanAmount] = useState<number | undefined>(0);
+  const [loanAmount, setLoanAmount] = useState<number | undefined>();
   const [date, setDate] = useState<unknown | Date | null>();
-  const [repairCosts, setRepairCosts] = useState<number | undefined>(0);
+  const [repairCosts, setRepairCosts] = useState<number | undefined>();
+  const [primaryReason, setPrimaryReason] = useState<
+    DashboardTaskPrimaryReasonRefinance | undefined
+  >();
+  const [exitStrategy, setExitStrategy] = useState<
+    DashboardTaskExitStrategy | undefined
+  >();
 
   return (
     <StyledFormItem
@@ -69,6 +84,7 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
           />
         </Stack>
       </StyledFormItem>
+
       <StyledFormItem label={'Will you request rehab funds?'} sub>
         <Stack maxWidth={600} width={'100%'}>
           <StyledButtonGroup
@@ -147,6 +163,38 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
           </>
         )}
       </Transitions>
+
+      <StyledFormItem
+        label={
+          'What is your primary reason for refinancing your current mortgage?'
+        }
+        sub
+        tip={
+          'When you refinance, you can take out cash from your home equity to help you pay for home improvements, pay off higher-interest debts (this is known as debt consolidation), or pay for other expenses.'
+        }
+      >
+        <Stack maxWidth={600} width={'100%'}>
+          <StyledSelectOption
+            onChange={(value) => {
+              setPrimaryReason(value as DashboardTaskPrimaryReasonRefinance);
+            }}
+            options={OPTIONS_TASK_PRIMARY_REASON}
+            value={primaryReason}
+          />
+        </Stack>
+      </StyledFormItem>
+
+      <StyledFormItem label={'Exit strategy'} sub>
+        <Stack maxWidth={600} width={'100%'}>
+          <StyledSelectOption
+            onChange={(value) => {
+              setExitStrategy(value as DashboardTaskExitStrategy);
+            }}
+            options={OPTIONS_TASK_EXIT_STRATEGY}
+            value={exitStrategy}
+          />
+        </Stack>
+      </StyledFormItem>
 
       <Stack
         flexDirection={'row'}

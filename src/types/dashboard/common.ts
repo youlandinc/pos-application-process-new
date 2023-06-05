@@ -154,3 +154,18 @@ export enum DashboardTaskGender {
   female = 'FEMALE',
   not_provide = 'NOT_PROVIDE',
 }
+
+export enum DashboardTaskPrimaryReasonRefinance {
+  no_cash_out = 'NO_CASH_OUT',
+  delayed_purchase_refinance = 'DELAYED_PURCHASE_REFINANCE',
+  currently_rent_out = 'CURRENTLY_RENT_OUT',
+  finish_property_rehab = 'FINISH_PROPERTY_REHAB',
+  buy_other_property = 'BUY_OTHER_PROPERTY',
+  other = 'OTHER',
+}
+
+export enum DashboardTaskExitStrategy {
+  rehab_and_sell = 'REHAB_AND_SELL',
+  rehab_rent_refinance = 'REHAB_RENT_REFINANCE',
+  other = 'OTHER',
+}
