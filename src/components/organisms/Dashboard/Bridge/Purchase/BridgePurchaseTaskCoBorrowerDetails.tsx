@@ -207,6 +207,8 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
                   ? 'flex'
                   : 'none',
               width: '100%',
+              flexDirection: 'column',
+              gap: 24,
             }}
           >
             {borrowerType === DashboardTaskBorrowerType.entity && (
