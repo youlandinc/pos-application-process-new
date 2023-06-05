@@ -165,9 +165,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
       </Transitions>
 
       <StyledFormItem
-        label={
-          'What is your primary reason for refinancing your current mortgage?'
-        }
+        label={'What is your primary reason for refinancing your current loan?'}
         sub
         tip={
           'When you refinance, you can take out cash from your home equity to help you pay for home improvements, pay off higher-interest debts (this is known as debt consolidation), or pay for other expenses.'
