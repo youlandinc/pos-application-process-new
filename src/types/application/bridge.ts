@@ -94,8 +94,27 @@ export interface BridgePurchaseTasks {
   BP_APPLICATION_INVESTMENT: TaskInfo;
 }
 
+export interface BridgeRefinanceTasks {
+  BR_APPLICATION_LOAN: TaskInfo;
+  BR_APPRAISAL_PROPERTY_DETAILS: TaskInfo;
+  BR_BORROWER_GUARANTOR: TaskInfo;
+  BR_BORROWER_PERSONAL: TaskInfo;
+  BR_APPRAISAL_COST: TaskInfo;
+  BR_BORROWER_DEMOGRAPHICS: TaskInfo;
+  BR_BORROWER_CO_BORROWER: TaskInfo;
+  BR_APPLICATION_PROPERTY: TaskInfo;
+  BR_AUTOPAY_ACH: TaskInfo;
+  BR_THIRD_CLOSING: TaskInfo;
+  BR_THIRD_INSURANCE: TaskInfo;
+  BR_DOCUMENTS_DOCUMENTS: TaskInfo;
+  BR_DOCUMENTS_CONTRACT: TaskInfo;
+  BR_DOCUMENTS_REVIEW: TaskInfo;
+  BR_DOCUMENTS_PICTURES: TaskInfo;
+  BR_APPLICATION_INVESTMENT: TaskInfo;
+}
+
 export interface LoanTask {
   processId: string;
   stage: string;
-  tasks: BridgePurchaseTasks;
+  tasks: BridgePurchaseTasks & BridgeRefinanceTasks;
 }
