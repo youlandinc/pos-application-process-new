@@ -34,7 +34,15 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
   const [american, setAmerican] = useState<boolean>(false);
   const [tribe, setTribe] = useState<string>('');
 
-  const [asian, setAsian] = useState<boolean>(false);
+  const [isAsian, setIsAsian] = useState<boolean>(false);
+  const [asianIndian, setAsianIndian] = useState<boolean>(false);
+  const [chinese, setChinese] = useState<boolean>(false);
+  const [filipino, setFilipino] = useState<boolean>(false);
+  const [japanese, setJapanese] = useState<boolean>(false);
+  const [korean, setKorean] = useState<boolean>(false);
+  const [otherAsian, setOtherAsian] = useState<boolean>(false);
+  const [otherAsianText, setOtherAsianText] = useState<string>('');
+
   const [black, setBlack] = useState<boolean>(false);
   const [islander, setIslander] = useState<boolean>(false);
   const [hawaiian, setHawaiian] = useState<boolean>(false);
@@ -61,15 +69,8 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
 
   const handledResetRace = useCallback((isAll = false) => {
     if (isAll) {
-      setOtherIslander(false);
-      setHawaiian(false);
-      setChamorro(false);
-      setSamoan(false);
-      setOtherIslanderText('');
-
       setAmerican(false);
       setTribe('');
-      setAsian(false);
       setBlack(false);
       setWhite(false);
       setNotProvideRace(false);
@@ -77,7 +78,7 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
     }
     setAmerican(false);
     setTribe('');
-    setAsian(false);
+    setIsAsian(false);
     setBlack(false);
     setIslander(false);
     setWhite(false);
@@ -161,6 +162,7 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
                         <StyledTextField
                           maxRows={4}
                           multiline
+                          onChange={(e) => setOtherLatinoText(e.target.value)}
                           rows={2}
                           value={otherLatinoText}
                         />
@@ -233,13 +235,110 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
           </Box>
 
           <StyledCheckbox
-            checked={asian}
+            checked={isAsian}
             label={'Asian'}
             onChange={(e) => {
               handledResetRace();
-              setAsian(e.target.checked);
+              setIsAsian(e.target.checked);
             }}
           />
+
+          <Transitions
+            style={{
+              display: isAsian ? 'flex' : 'none',
+              width: '100%',
+              flexDirection: 'column',
+              padding: '0 24px',
+            }}
+          >
+            {isAsian && (
+              <>
+                <Stack flexDirection={'row'} flexWrap={'wrap'} gap={1}>
+                  <StyledCheckbox
+                    checked={asianIndian}
+                    label={'Asian Indian'}
+                    onChange={(e) => {
+                      handledResetRace(true);
+                      setAsianIndian(e.target.checked);
+                    }}
+                  />
+                  <StyledCheckbox
+                    checked={chinese}
+                    label={'Chinese'}
+                    onChange={(e) => {
+                      handledResetRace(true);
+                      setChinese(e.target.checked);
+                    }}
+                  />
+                  <StyledCheckbox
+                    checked={filipino}
+                    label={'Filipino'}
+                    onChange={(e) => {
+                      handledResetRace(true);
+                      setFilipino(e.target.checked);
+                    }}
+                  />
+                  <StyledCheckbox
+                    checked={japanese}
+                    label={'Japanese'}
+                    onChange={(e) => {
+                      handledResetRace(true);
+                      setJapanese(e.target.checked);
+                    }}
+                  />
+                  <StyledCheckbox
+                    checked={korean}
+                    label={'Korean'}
+                    onChange={(e) => {
+                      handledResetRace(true);
+                      setKorean(e.target.checked);
+                    }}
+                  />
+                </Stack>
+                <Box mt={1}>
+                  <StyledCheckbox
+                    checked={otherAsian}
+                    label={'Other Hispanic or Latino'}
+                    onChange={(e) => {
+                      handledResetRace(true);
+                      setOtherAsian(e.target.checked);
+                    }}
+                  />
+                  <Transitions
+                    style={{
+                      display: otherAsian ? 'block' : 'none',
+                      width: '100%',
+                    }}
+                  >
+                    {otherAsian && (
+                      <>
+                        <StyledTextField
+                          maxRows={4}
+                          multiline
+                          onChange={(e) => {
+                            setOtherAsianText(e.target.value);
+                          }}
+                          rows={2}
+                          value={otherAsianText}
+                        />
+                        <Typography
+                          color={'info.main'}
+                          component={'div'}
+                          mt={1}
+                          textAlign={'center'}
+                          variant={'body3'}
+                        >
+                          For example, Argentinian, Colombian, Nicaraguan, El
+                          Salvadoran, Venezuelan, etc.
+                        </Typography>
+                      </>
+                    )}
+                  </Transitions>
+                </Box>
+              </>
+            )}
+          </Transitions>
+
           <StyledCheckbox
             checked={black}
             label={'Black or African American'}
@@ -312,6 +411,9 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
                         <StyledTextField
                           maxRows={4}
                           multiline
+                          onChange={(e) => {
+                            setOtherIslanderText(e.target.value);
+                          }}
                           rows={2}
                           value={otherIslanderText}
                         />
