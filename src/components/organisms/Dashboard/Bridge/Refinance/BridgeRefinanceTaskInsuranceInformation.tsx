@@ -24,13 +24,10 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [agentNameName, setAgentNameName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
-  const [titleOrderNumber, settitleOrderNumber] = useState('');
-  const [date, setDate] = useState<string | Date>('');
   const [address, setAddress] = useState<IAddress>(
     Address.create({
       formatAddress: '',
@@ -65,8 +62,8 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
           gap={3}
           width={'100%'}
         >
-          <StyledTextField label={'Contact First Name'} value={firstName} />
-          <StyledTextField label={'Contact Last Name'} value={lastName} />
+          <StyledTextField label={'Company Name'} value={companyName} />
+          <StyledTextField label={'Agent Name'} value={agentName} />
         </Stack>
 
         <Stack gap={3} width={'100%'}>
@@ -77,24 +74,7 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
           />
           <StyledTextField label={'Email'} value={email} />
         </Stack>
-        <Stack
-          flexDirection={{ lg: 'row', xs: 'column' }}
-          gap={3}
-          width={'100%'}
-        >
-          <StyledTextField label={'Company Name'} value={companyName} />
-          <StyledTextField
-            label={'Title Order Number'}
-            value={titleOrderNumber}
-          />
-        </Stack>
-        <Stack width={'100%'}>
-          <StyledDatePicker
-            label={'MM/DD/YYYY'}
-            onChange={(date) => setDate(date as string | Date)}
-            value={date}
-          />
-        </Stack>
+
         <Stack width={'100%'}>
           <StyledGoogleAutoComplete address={address} />
         </Stack>
