@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
@@ -18,10 +18,6 @@ import {
 
 export const BridgePurchaseTaskLoanDetails: FC = () => {
   const router = useRouter();
-
-  useEffect(() => {
-    console.log(router.query.taskId);
-  }, [router.query.taskId]);
 
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)

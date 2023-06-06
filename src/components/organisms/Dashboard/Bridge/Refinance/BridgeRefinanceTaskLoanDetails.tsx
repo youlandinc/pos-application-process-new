@@ -1,3 +1,4 @@
+import { _fetchTaskFormInfo } from '@/requests/dashboard';
 import { FC, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -17,14 +18,21 @@ import {
   StyledButtonGroup,
   StyledDatePicker,
   StyledFormItem,
+  StyledLoading,
   StyledSelectOption,
-  StyledTextField,
   StyledTextFieldNumber,
   Transitions,
 } from '@/components/atoms';
+import { useAsync } from 'react-use';
 
 export const BridgeRefinanceTaskLoanDetails: FC = () => {
   const router = useRouter();
+
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => console.log(res))
+      .then((err) => console.log(err));
+  }, [router.query.taskId]);
 
   const [homeValue, setHomeValue] = useState<number | undefined>();
   const [balance, setBalance] = useState<number | undefined>();
@@ -44,7 +52,9 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
     DashboardTaskExitStrategy | undefined
   >();
 
-  return (
+  return loading ? (
+    <StyledLoading sx={{ color: 'primary.main' }} />
+  ) : (
     <StyledFormItem
       gap={6}
       label={'Loan Details'}
@@ -103,7 +113,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
         }}
       >
         {isCashOut && (
-          <StyledFormItem label={'Will you request cash out?'} sub>
+          <StyledFormItem label={'Cash Out Amount'} sub>
             <Stack maxWidth={600} width={'100%'}>
               <StyledTextFieldNumber
                 label={'Remaining Loan Balance'}
@@ -143,7 +153,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
         {isCor && (
           <>
             <StyledFormItem
-              label={'Cash Out Amount'}
+              label={'Estimated Rehab Loan Amount'}
               sub
               tip={
                 'Total cost that you would like {Organization Name} to finance.'
