@@ -25,12 +25,12 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
       .then((err) => console.log(err));
   }, [router.query.taskId]);
 
-  const [purchasePrice, setPurchasePrice] = useState<number | undefined>(0);
-  const [propertyPrice, setPropertyPrice] = useState<number | undefined>(0);
-  const [rehabFunds, setRehabFunds] = useState<boolean>(false);
-  const [loanAmount, setLoanAmount] = useState<number | undefined>(0);
+  const [purchasePrice, setPurchasePrice] = useState<number | undefined>();
+  const [propertyPrice, setPropertyPrice] = useState<number | undefined>();
+  const [rehabFunds, setRehabFunds] = useState<boolean>();
+  const [loanAmount, setLoanAmount] = useState<number | undefined>();
   const [date, setDate] = useState<unknown | Date | null>();
-  const [repairCosts, setRepairCosts] = useState<number | undefined>(0);
+  const [repairCosts, setRepairCosts] = useState<number | undefined>();
 
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
