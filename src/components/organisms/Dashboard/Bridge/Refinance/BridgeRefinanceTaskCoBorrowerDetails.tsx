@@ -38,7 +38,7 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
+export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   const router = useRouter();
 
   const [isCoBorrower, setIsCoBorrower] = useState<boolean>(false);
