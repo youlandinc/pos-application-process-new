@@ -182,96 +182,93 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
               )}
             </Transitions>
 
-            <StyledFormItem
-              label={'Personal Information'}
-              sub
-              tip={
-                "By entering your phone number,  you're authorizing {Organization Name} to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may."
-              }
-            >
-              <Stack gap={3} maxWidth={600} width={'100%'}>
-                <StyledTextField
-                  label={'First Name'}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  value={firstName}
+      <StyledFormItem
+        label={'Personal Information'}
+        sub
+        tip={
+          "By entering your phone number,  you're authorizing {Organization Name} to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may."
+        }
+      >
+        <Stack gap={3} maxWidth={600} width={'100%'}>
+          <StyledTextField
+            label={'First Name'}
+            onChange={(e) => setFirstName(e.target.value)}
+            value={firstName}
+          />
+          <StyledTextField
+            label={'Last Name'}
+            onChange={(e) => setLastName(e.target.value)}
+            value={lastName}
+          />
+          <StyledDatePicker
+            label={'MM/DD/YY'}
+            onChange={(value) => setDate(value)}
+            value={date}
+          />
+          <StyledTextFieldPhone
+            label={'Phone Number'}
+            onValueChange={({ value }) => setPhoneNumber(value)}
+            value={phoneNumber}
+          />
+          <StyledTextField
+            label={'Email'}
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+          />
+          <Transitions
+            style={{
+              display:
+                borrowerType === DashboardTaskBorrowerType.entity
+                  ? 'flex'
+                  : 'none',
+              width: '100%',
+              flexDirection: 'column',
+              gap: 24,
+            }}
+          >
+            {borrowerType === DashboardTaskBorrowerType.entity && (
+              <>
+                <StyledSelect
+                  label={'Gender'}
+                  onChange={(e) =>
+                    setGender(e.target.value as string as DashboardTaskGender)
+                  }
+                  options={OPTIONS_TASK_GENDER}
+                  value={gender}
                 />
-                <StyledTextField
-                  label={'Last Name'}
-                  onChange={(e) => setLastName(e.target.value)}
-                  value={lastName}
+                <StyledSelect
+                  label={'Marital Status'}
+                  onChange={(e) =>
+                    setMaritalStatus(
+                      e.target.value as string as DashboardTaskMaritalStatus,
+                    )
+                  }
+                  options={OPTIONS_TASK_MARTIAL_STATUS}
+                  value={maritalStatus}
                 />
-                <StyledDatePicker
-                  label={'MM/DD/YYYY'}
-                  onChange={(value) => setDate(value)}
-                  value={date}
+                <StyledSelect
+                  label={'Residency Status'}
+                  onChange={(e) =>
+                    setResidencyStatus(
+                      e.target
+                        .value as string as DashboardTaskCitizenshipStatus,
+                    )
+                  }
+                  options={OPTIONS_TASK_CITIZENSHIP_STATUS}
+                  value={residencyStatus}
                 />
-                <StyledTextFieldPhone
-                  label={'Phone Number'}
-                  onValueChange={({ value }) => setPhoneNumber(value)}
-                  value={phoneNumber}
+                <StyledTextFieldNumber
+                  label={'Track Record'}
+                  onValueChange={({ formattedValue }) =>
+                    setTrackRecord(formattedValue)
+                  }
+                  value={trackRecord}
                 />
-                <StyledTextField
-                  label={'Email'}
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
-                />
-                <Transitions
-                  style={{
-                    display:
-                      borrowerType === DashboardTaskBorrowerType.entity
-                        ? 'flex'
-                        : 'none',
-                    width: '100%',
-                    flexDirection: 'column',
-                    gap: 24,
-                  }}
-                >
-                  {borrowerType === DashboardTaskBorrowerType.entity && (
-                    <>
-                      <StyledSelect
-                        label={'Gender'}
-                        onChange={(e) =>
-                          setGender(
-                            e.target.value as string as DashboardTaskGender,
-                          )
-                        }
-                        options={OPTIONS_TASK_GENDER}
-                        value={gender}
-                      />
-                      <StyledSelect
-                        label={'Marital Status'}
-                        onChange={(e) =>
-                          setMaritalStatus(
-                            e.target
-                              .value as string as DashboardTaskMaritalStatus,
-                          )
-                        }
-                        options={OPTIONS_TASK_MARTIAL_STATUS}
-                        value={maritalStatus}
-                      />
-                      <StyledSelect
-                        label={'Residency Status'}
-                        onChange={(e) =>
-                          setResidencyStatus(
-                            e.target
-                              .value as string as DashboardTaskCitizenshipStatus,
-                          )
-                        }
-                        options={OPTIONS_TASK_CITIZENSHIP_STATUS}
-                        value={residencyStatus}
-                      />
-                      <StyledTextFieldNumber
-                        label={'Track Record'}
-                        onValueChange={({ formattedValue }) =>
-                          setTrackRecord(formattedValue)
-                        }
-                        value={trackRecord}
-                      />
-                    </>
-                  )}
-                </Transitions>
-              </Stack>
-            </StyledFormItem>
+              </>
+            )}
+          </Transitions>
+        </Stack>
+      </StyledFormItem>
 
             <StyledFormItem label={'Current Address'} sub>
               <Stack maxWidth={600} width={'100%'}>

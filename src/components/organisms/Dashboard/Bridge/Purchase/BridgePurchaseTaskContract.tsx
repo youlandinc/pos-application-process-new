@@ -36,11 +36,7 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
       }
       tipSx={{ mb: 0 }}
     >
-      <StyledFormItem
-        label={'Is the title company also managing loan closing?'}
-        maxWidth={600}
-        sub
-      >
+      <StyledFormItem label={'Accepted purchase contract?'} maxWidth={600} sub>
         <StyledButtonGroup
           onChange={(e, value) => {
             if (value !== null) {
@@ -53,7 +49,14 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
         />
       </StyledFormItem>
 
-      <StyledFormItem label={'Contract end date'} maxWidth={600} sub>
+      <StyledFormItem
+        label={'Contract end date'}
+        maxWidth={600}
+        sub
+        tip={
+          'For a purchase, on which date does your purchase contract expire? For refinance, on what date did you originally acquire the property?'
+        }
+      >
         <StyledDatePicker
           label={'MM/DD/YYYY'}
           onChange={(date) => setDate(date as string | Date)}
