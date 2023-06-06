@@ -186,7 +186,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
             value={lastName}
           />
           <StyledDatePicker
-            label={'MM/DD/YY'}
+            label={'MM/DD/YYYY'}
             onChange={(value) => setDate(value)}
             value={date}
           />
