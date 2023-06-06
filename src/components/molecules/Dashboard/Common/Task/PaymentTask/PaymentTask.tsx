@@ -238,11 +238,12 @@ export const PaymentTask: FC<PaymentTaskProps> = (props) => {
         <Transitions style={{ width: '100%' }}>
           {appraisal && (
             <>
-              {sceneType === 'refinance' && (
+              {sceneType !== 'refinance' && (
                 <StyledFormItem
                   gap={3}
                   label={'Appraisal Information'}
                   labelSx={{ mb: 0 }}
+                  mb={3}
                   sub
                 >
                   <Stack

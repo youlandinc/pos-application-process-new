@@ -1,14 +1,17 @@
 import { FC, useEffect, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useAsync } from 'react-use';
 
 import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
+import { _fetchTaskFormInfo } from '@/requests/dashboard';
 
 import {
   StyledButton,
   StyledButtonGroup,
   StyledDatePicker,
   StyledFormItem,
+  StyledLoading,
   StyledTextFieldNumber,
   Transitions,
 } from '@/components/atoms';
@@ -20,6 +23,12 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
     console.log(router.query.taskId);
   }, [router.query.taskId]);
 
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => console.log(res))
+      .then((err) => console.log(err));
+  }, [router.query.taskId]);
+
   const [purchasePrice, setPurchasePrice] = useState<number | undefined>(0);
   const [propertyPrice, setPropertyPrice] = useState<number | undefined>(0);
   const [rehabFunds, setRehabFunds] = useState<boolean>(false);
@@ -27,7 +36,9 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
   const [date, setDate] = useState<unknown | Date | null>();
   const [repairCosts, setRepairCosts] = useState<number | undefined>(0);
 
-  return (
+  return loading ? (
+    <StyledLoading sx={{ color: 'primary.main' }} />
+  ) : (
     <StyledFormItem
       gap={6}
       label={'Loan Details'}
