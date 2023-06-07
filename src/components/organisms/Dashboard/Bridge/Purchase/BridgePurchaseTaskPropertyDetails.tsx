@@ -1,10 +1,17 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Stack } from '@mui/material';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 
-import { OPTIONS_MORTGAGE_PROPERTY, OPTIONS_MORTGAGE_UNIT } from '@/constants';
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
+import {
+  AUTO_HIDE_DURATION,
+  OPTIONS_MORTGAGE_PROPERTY,
+  OPTIONS_MORTGAGE_UNIT,
+} from '@/constants';
 import { Address, IAddress } from '@/models/common/Address';
 import { PropertyOpt, PropertyUnitOpt } from '@/types';
 
@@ -12,12 +19,15 @@ import {
   StyledButton,
   StyledFormItem,
   StyledGoogleAutoComplete,
+  StyledLoading,
   StyledSelectOption,
   Transitions,
 } from '@/components/atoms';
 
 export const BridgePurchaseTaskPropertyDetails: FC = observer(() => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
   const [address] = useState<IAddress>(
     Address.create({
       formatAddress: '',
@@ -31,23 +41,89 @@ export const BridgePurchaseTaskPropertyDetails: FC = observer(() => {
     }),
   );
 
-  const [propertyType, setPropertyType] = useState<PropertyOpt>(
-    PropertyOpt.default,
-  );
-  const [propertyUnit, setPropertyUnit] = useState<PropertyUnitOpt>(
-    PropertyUnitOpt.default,
-  );
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
 
-  return (
+  const [propertyType, setPropertyType] = useState<PropertyOpt | undefined>();
+  const [propertyUnit, setPropertyUnit] = useState<
+    PropertyUnitOpt | undefined
+  >();
+
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => {
+        const { propAddr, propertyType, propertyUnit } = res.data;
+        setPropertyType(propertyType);
+        setPropertyUnit(propertyUnit);
+        setTimeout(() => {
+          address.injectServerData({
+            formatAddress: '',
+            state: '',
+            street: '',
+            city: '',
+            aptNumber: '',
+            postcode: '',
+            ...propAddr,
+          });
+        });
+      })
+      .catch((err) =>
+        enqueueSnackbar(err, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, [router.query.taskId]);
+
+  const isDisabled = useMemo(() => {
+    return propertyType === PropertyOpt.twoToFourFamily
+      ? address.checkAddressValid && !!propertyUnit
+      : !!propertyType && address.checkAddressValid;
+  }, [address.checkAddressValid, propertyType, propertyUnit]);
+
+  const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm: {
+        propAddr: address.getPostData(),
+        propertyType,
+        propertyUnit,
+      },
+    };
+    try {
+      await _updateTaskFormInfo(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [address, enqueueSnackbar, propertyType, propertyUnit, router]);
+
+  return loading ? (
+    <StyledLoading sx={{ color: 'primary.main' }} />
+  ) : (
     <StyledFormItem
       gap={6}
-      label={'Loan Details'}
+      label={'Property Details'}
       tip={
-        'Below are all of the details we have about your deal. If you have to change these details you may do so below, please note that changes may affect your Loan-to-Value or your rate.'
+        'To revise the address on this loan application please reach out to your account manager.'
       }
       tipSx={{ mb: 0 }}
     >
-      <StyledFormItem label={'Purchase price'} sub>
+      <StyledFormItem
+        label={'Property address'}
+        sub
+        tip={
+          'The price you paid or are paying for the property that the loan is for.'
+        }
+      >
         <Stack maxWidth={600} width={'100%'}>
           <StyledGoogleAutoComplete address={address} />
         </Stack>
@@ -106,7 +182,15 @@ export const BridgePurchaseTaskPropertyDetails: FC = observer(() => {
         >
           Back
         </StyledButton>
-        <StyledButton sx={{ flex: 1 }}>Save</StyledButton>
+        <StyledButton
+          disabled={!isDisabled || saveLoading}
+          loading={saveLoading}
+          loadingText={'Saving...'}
+          onClick={handledSubmit}
+          sx={{ flex: 1 }}
+        >
+          Save
+        </StyledButton>
       </Stack>
     </StyledFormItem>
   );

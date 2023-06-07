@@ -446,7 +446,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
         >
           <StyledTextFieldNumber
             disabled={checkLoading}
-            label="Estimated home value"
+            label="As-is Property Value"
             onValueChange={({ floatValue }) =>
               setRateData({
                 ...(rateData as BridgeRefinanceEstimateRateData),
@@ -459,7 +459,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           />
           <StyledTextFieldNumber
             disabled={checkLoading}
-            label="Remaining loan balance"
+            label="Payoff Amount"
             onValueChange={({ floatValue }) => {
               setRateData({
                 ...(rateData as BridgeRefinanceEstimateRateData),
@@ -690,35 +690,35 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
         </>
       )}
       {/* <StyledDialog
-        content={
-          <>
-            <Box className={'updatedImage'} />
-            <Box className={'updatedTip'}>
-              Your pre-approval letter has already been updated!
-            </Box>
-          </>
-        }
-        footer={
-          <>
-            <StyledButton
-              onClick={() => router.push('/dashboard/rates')}
-              variant={'outlined'}
-            >
-              Go to Rates
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disableElevation
-              onClick={onDialogSendEmailClick}
-              variant={'contained'}
-            >
-              Send Email
-            </StyledButton>
-          </>
-        }
-        onClose={close}
-        open={visible}
-      ></StyledDialog> */}
+         content={
+         <>
+         <Box className={'updatedImage'} />
+         <Box className={'updatedTip'}>
+         Your pre-approval letter has already been updated!
+         </Box>
+         </>
+         }
+         footer={
+         <>
+         <StyledButton
+         onClick={() => router.push('/dashboard/rates')}
+         variant={'outlined'}
+         >
+         Go to Rates
+         </StyledButton>
+         <StyledButton
+         color={'primary'}
+         disableElevation
+         onClick={onDialogSendEmailClick}
+         variant={'contained'}
+         >
+         Send Email
+         </StyledButton>
+         </>
+         }
+         onClose={close}
+         open={visible}
+         ></StyledDialog> */}
     </Box>
   );
 });

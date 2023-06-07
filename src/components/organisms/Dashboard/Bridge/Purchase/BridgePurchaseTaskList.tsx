@@ -9,7 +9,7 @@ import { useMst } from '@/models/Root';
 import { StyledButton, StyledLoading } from '@/components/atoms';
 import { PageHeader } from '@/components/molecules';
 import { POSFlex, POSFont } from '@/styles';
-import { _fetchLoanTask } from '@/requests/dashboard';
+import { _fetchLoanTask, _notifyTaskUpdate } from '@/requests/dashboard';
 import { useAsync, useSetState } from 'react-use';
 import { useSnackbar } from 'notistack';
 import { BridgePurchaseTasks } from '@/types';

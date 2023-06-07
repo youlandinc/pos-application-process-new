@@ -1,20 +1,69 @@
-import { FC, useState } from 'react';
-import { useRouter } from 'next/router';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
+import { AUTO_HIDE_DURATION } from '@/constants';
 import {
   StyledButton,
   StyledFormItem,
+  StyledLoading,
   StyledTextFieldNumber,
   StyledUploadBox,
 } from '@/components/atoms';
 
 export const BridgePurchaseTaskInvestmentExperience: FC = () => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [trackRecord, setTrackRecord] = useState('');
 
-  return (
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
+
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, [router.query.taskId]);
+
+  const isDisabled = useMemo(() => {
+    return false;
+  }, []);
+
+  const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm: {},
+    };
+    try {
+      await _updateTaskFormInfo(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [enqueueSnackbar, router]);
+
+  return loading ? (
+    <StyledLoading sx={{ color: 'primary.main' }} />
+  ) : (
     <StyledFormItem
       gap={6}
       label={'Real Estate Investment Experience'}
@@ -131,7 +180,15 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
         >
           Back
         </StyledButton>
-        <StyledButton sx={{ flex: 1 }}>Save</StyledButton>
+        <StyledButton
+          disabled={!isDisabled || saveLoading}
+          loading={saveLoading}
+          loadingText={'Saving...'}
+          onClick={handledSubmit}
+          sx={{ flex: 1 }}
+        >
+          Save
+        </StyledButton>
       </Stack>
     </StyledFormItem>
   );

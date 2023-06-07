@@ -42,6 +42,13 @@ export const _fetchTaskFormInfo = (taskId: string) => {
   return get(`/dashboard/loan/task/detail/${taskId}`);
 };
 
-export const _updateTaskFormInfo = (taskId: string, data: any) => {
-  return post('/dashboard/loan/task/', { taskId, data });
+export const _updateTaskFormInfo = (data: {
+  taskId: string;
+  taskForm: any;
+}) => {
+  return post('/dashboard/loan/task/', data);
+};
+
+export const _notifyTaskUpdate = (processId: string) => {
+  return post(`/loan/task/notify/${processId}`);
 };

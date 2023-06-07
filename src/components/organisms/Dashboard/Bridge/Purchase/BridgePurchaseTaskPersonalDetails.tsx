@@ -1,11 +1,16 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
+import { format, isDate, isValid } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
 
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 import { Address, IAddress } from '@/models/common/Address';
 import {
+  AUTO_HIDE_DURATION,
   OPTIONS_TASK_CITIZENSHIP_STATUS,
   OPTIONS_TASK_MARTIAL_STATUS,
 } from '@/constants';
@@ -19,19 +24,14 @@ import {
   StyledDatePicker,
   StyledFormItem,
   StyledGoogleAutoComplete,
+  StyledLoading,
   StyledSelectOption,
   StyledTextFieldNumber,
 } from '@/components/atoms';
 
 export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
   const router = useRouter();
-
-  const [citizenshipStatus, setCitizenshipStatus] = useState<
-    DashboardTaskCitizenshipStatus | undefined
-  >();
-  const [maritalStatus, setMaritalStatus] = useState<
-    DashboardTaskMaritalStatus | undefined
-  >();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [address] = useState<IAddress>(
     Address.create({
@@ -45,10 +45,110 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
       errors: {},
     }),
   );
-  const [delinquentTimes, setDelinquentTimes] = useState<string | undefined>();
-  const [date, setDate] = useState<unknown | Date | null>();
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
 
-  return (
+  const [citizenship, setCitizenship] = useState<
+    DashboardTaskCitizenshipStatus | undefined
+  >();
+  const [marital, setMarital] = useState<
+    DashboardTaskMaritalStatus | undefined
+  >();
+  const [delinquentTimes, setDelinquentTimes] = useState<string | undefined>();
+  const [dischargeDate, setDischargeDate] = useState<unknown | Date | null>();
+
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => {
+        const {
+          propAddr,
+          marital,
+          dischargeDate,
+          delinquentTimes,
+          citizenship,
+        } = res.data;
+        setCitizenship(citizenship as DashboardTaskCitizenshipStatus);
+        setMarital(marital as DashboardTaskMaritalStatus);
+        setDelinquentTimes(delinquentTimes as string);
+        if (dischargeDate) {
+          setDischargeDate(new Date(dischargeDate));
+        }
+        setTimeout(() => {
+          address.injectServerData({
+            formatAddress: '',
+            state: '',
+            street: '',
+            city: '',
+            aptNumber: '',
+            postcode: '',
+            ...propAddr,
+          });
+        });
+      })
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, [router.query.taskId]);
+
+  const isDisabled = useMemo(() => {
+    const dateValid = isValid(dischargeDate) && isDate(dischargeDate);
+
+    return (
+      address.checkAddressValid &&
+      !!marital &&
+      !!citizenship &&
+      !!delinquentTimes &&
+      dateValid
+    );
+  }, [
+    address.checkAddressValid,
+    citizenship,
+    delinquentTimes,
+    dischargeDate,
+    marital,
+  ]);
+
+  const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm: {
+        propAddr: address.getPostData(),
+        dischargeDate: format(dischargeDate as Date, 'yyyy-MM-dd O'),
+        marital,
+        delinquentTimes,
+        citizenship,
+      },
+    };
+    try {
+      await _updateTaskFormInfo(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [
+    address,
+    citizenship,
+    delinquentTimes,
+    dischargeDate,
+    enqueueSnackbar,
+    marital,
+    router,
+  ]);
+
+  return loading ? (
+    <StyledLoading sx={{ color: 'primary.main' }} />
+  ) : (
     <StyledFormItem
       gap={6}
       label={'Personal Details'}
@@ -61,12 +161,10 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
         <Stack maxWidth={600} width={'100%'}>
           <StyledSelectOption
             onChange={(value) =>
-              setCitizenshipStatus(
-                value as string as DashboardTaskCitizenshipStatus,
-              )
+              setCitizenship(value as string as DashboardTaskCitizenshipStatus)
             }
             options={OPTIONS_TASK_CITIZENSHIP_STATUS}
-            value={citizenshipStatus}
+            value={citizenship}
           />
         </Stack>
       </StyledFormItem>
@@ -75,10 +173,10 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
         <Stack maxWidth={600} width={'100%'}>
           <StyledSelectOption
             onChange={(value) =>
-              setMaritalStatus(value as string as DashboardTaskMaritalStatus)
+              setMarital(value as string as DashboardTaskMaritalStatus)
             }
             options={OPTIONS_TASK_MARTIAL_STATUS}
-            value={maritalStatus}
+            value={marital}
           />
         </Stack>
       </StyledFormItem>
@@ -118,10 +216,10 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
           <StyledDatePicker
             label={'MM/DD/YYYY'}
             onChange={(date) => {
-              setDate(date);
+              setDischargeDate(date);
             }}
             //validate={}
-            value={date}
+            value={dischargeDate}
           />
         </Stack>
       </StyledFormItem>
@@ -145,7 +243,15 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
         >
           Back
         </StyledButton>
-        <StyledButton sx={{ flex: 1 }}>Save</StyledButton>
+        <StyledButton
+          disabled={!isDisabled || saveLoading}
+          loading={saveLoading}
+          loadingText={'Saving...'}
+          onClick={handledSubmit}
+          sx={{ flex: 1 }}
+        >
+          Save
+        </StyledButton>
       </Stack>
     </StyledFormItem>
   );
