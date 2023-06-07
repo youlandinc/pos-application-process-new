@@ -156,11 +156,11 @@ export const BridgeRefinanceRatesDrawer: FC<
               />
               <CardItem
                 info={POSFormatDollar(selectedItem?.homeValue)}
-                label={'Estimated Home Value'}
+                label={'As-is Property Value'}
               />
               <CardItem
                 info={POSFormatDollar(selectedItem?.balance)}
-                label={'Remaining Loan Balance'}
+                label={'Payoff Amount'}
               />
               <CardItem
                 info={POSFormatDollar(selectedItem?.cashOutAmount)}

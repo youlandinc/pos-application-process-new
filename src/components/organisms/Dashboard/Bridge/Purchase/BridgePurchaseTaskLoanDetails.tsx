@@ -1,10 +1,13 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
+import { format, isDate, isValid } from 'date-fns';
 
-import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
-import { _fetchTaskFormInfo } from '@/requests/dashboard';
+import { AUTO_HIDE_DURATION, OPTIONS_COMMON_YES_OR_NO } from '@/constants';
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
+import { POSNotUndefined } from '@/utils';
 
 import {
   StyledButton,
@@ -18,19 +21,86 @@ import {
 
 export const BridgePurchaseTaskLoanDetails: FC = () => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
+
+  const [purchasePrice, setPurchasePrice] = useState<number | undefined>();
+  const [propertyValue, setPropertyValue] = useState<number | undefined>();
+  const [isCor, setIsCor] = useState<boolean>();
+  const [cor, setCor] = useState<number | undefined>();
+  const [corDate, setCorDate] = useState<unknown | Date | null>();
+  const [arv, setArv] = useState<number | undefined>();
 
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
-      .then((res) => console.log(res))
-      .then((err) => console.log(err));
+      .then((res) => {
+        const { purchasePrice, propertyValue, isCor, corDate, cor, arv } =
+          res.data;
+        setPurchasePrice(purchasePrice);
+        setPropertyValue(propertyValue);
+        setIsCor(isCor);
+        setCorDate(corDate ? new Date(corDate) : undefined);
+        setCor(cor);
+        setArv(arv);
+      })
+      .catch((err) => {
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
+      });
   }, [router.query.taskId]);
 
-  const [purchasePrice, setPurchasePrice] = useState<number | undefined>();
-  const [propertyPrice, setPropertyPrice] = useState<number | undefined>();
-  const [rehabFunds, setRehabFunds] = useState<boolean>();
-  const [loanAmount, setLoanAmount] = useState<number | undefined>();
-  const [date, setDate] = useState<unknown | Date | null>();
-  const [repairCosts, setRepairCosts] = useState<number | undefined>();
+  const isDisabled = useMemo(() => {
+    const dateValid = isValid(corDate) && isDate(corDate);
+    const condition = POSNotUndefined(isCor);
+    if (!condition) {
+      return false;
+    }
+    if (isCor) {
+      return !!purchasePrice && !!propertyValue && dateValid && !!cor && !!arv;
+    }
+    return !!purchasePrice && !!propertyValue;
+  }, [arv, corDate, isCor, propertyValue, purchasePrice, cor]);
+
+  const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm: {
+        cor,
+        corDate: format(corDate as Date, 'yyyy-MM-dd O'),
+        isCor,
+        purchasePrice,
+        propertyValue,
+        arv,
+      },
+    };
+    try {
+      await _updateTaskFormInfo(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [
+    arv,
+    cor,
+    corDate,
+    enqueueSnackbar,
+    isCor,
+    propertyValue,
+    purchasePrice,
+    router,
+  ]);
 
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
@@ -73,10 +143,10 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
           <StyledTextFieldNumber
             label={'As-is Property Value'}
             onValueChange={({ floatValue }) => {
-              setPropertyPrice(floatValue);
+              setPropertyValue(floatValue);
             }}
             prefix={'$'}
-            value={propertyPrice}
+            value={propertyValue}
           />
         </Stack>
       </StyledFormItem>
@@ -85,24 +155,24 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
           <StyledButtonGroup
             onChange={(e, value) => {
               if (value !== null) {
-                setRehabFunds(value === 'yes');
+                setIsCor(value === 'yes');
               }
             }}
             options={OPTIONS_COMMON_YES_OR_NO}
             sx={{ width: '100%', maxWidth: 600 }}
-            value={rehabFunds}
+            value={isCor}
           />
         </Stack>
       </StyledFormItem>
 
       <Transitions
         style={{
-          display: rehabFunds ? 'flex' : 'none',
+          display: isCor ? 'flex' : 'none',
           flexDirection: 'column',
           gap: 48,
         }}
       >
-        {rehabFunds && (
+        {isCor && (
           <>
             <StyledFormItem
               label={'Estimated rehab loan amount'}
@@ -115,10 +185,10 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
                 <StyledTextFieldNumber
                   label={'Estimated Rehab Loan Amount'}
                   onValueChange={({ floatValue }) => {
-                    setLoanAmount(floatValue);
+                    setCor(floatValue);
                   }}
                   prefix={'$'}
-                  value={loanAmount}
+                  value={cor}
                 />
               </Stack>
             </StyledFormItem>
@@ -130,10 +200,10 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
                 <StyledDatePicker
                   label={'MM/DD/YYYY'}
                   onChange={(date) => {
-                    setDate(date);
+                    setCorDate(date);
                   }}
                   //validate={}
-                  value={date}
+                  value={corDate}
                 />
               </Stack>
             </StyledFormItem>
@@ -148,10 +218,10 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
                 <StyledTextFieldNumber
                   label={'After repair property value'}
                   onValueChange={({ floatValue }) => {
-                    setRepairCosts(floatValue);
+                    setArv(floatValue);
                   }}
                   prefix={'$'}
-                  value={repairCosts}
+                  value={arv}
                 />
               </Stack>
             </StyledFormItem>
@@ -179,7 +249,15 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
         >
           Back
         </StyledButton>
-        <StyledButton sx={{ flex: 1 }}>Save</StyledButton>
+        <StyledButton
+          disabled={!isDisabled || saveLoading}
+          loading={saveLoading}
+          loadingText={'Saving...'}
+          onClick={handledSubmit}
+          sx={{ flex: 1 }}
+        >
+          Save
+        </StyledButton>
       </Stack>
     </StyledFormItem>
   );

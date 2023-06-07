@@ -403,7 +403,7 @@ export const BridgeRefinanceRatesSearch: FC<BridgeRefinanceRatesSearchProps> = (
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography variant={'body1'}>Estimated Home Value</Typography>
+                <Typography variant={'body1'}>As-is Property Value</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
@@ -417,9 +417,7 @@ export const BridgeRefinanceRatesSearch: FC<BridgeRefinanceRatesSearchProps> = (
                 />
               </Stack>
               <Stack flex={1} gap={1}>
-                <Typography variant={'body1'}>
-                  Remaining Loan Balance
-                </Typography>
+                <Typography variant={'body1'}>Payoff Amount</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
@@ -544,7 +542,7 @@ export const BridgeRefinanceRatesSearch: FC<BridgeRefinanceRatesSearchProps> = (
                       After Repair Value (ARV){' '}
                       <StyledTooltip
                         title={
-                          'ARV (Estimated Home Value + Estimated Rehab Loan Amount)'
+                          'ARV (As-is Property Value + Estimated Rehab Loan Amount)'
                         }
                       >
                         <InfoOutlined sx={{ width: 16, height: 16 }} />

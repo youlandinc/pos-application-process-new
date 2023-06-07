@@ -1,11 +1,15 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 import { Address, IAddress } from '@/models/common/Address';
 import {
+  AUTO_HIDE_DURATION,
   OPTIONS_COMMON_STATE,
   OPTIONS_COMMON_YES_OR_NO,
   OPTIONS_TASK_BORROWER_TYPE,
@@ -29,6 +33,7 @@ import {
   StyledDatePicker,
   StyledFormItem,
   StyledGoogleAutoComplete,
+  StyledLoading,
   StyledSelect,
   StyledSelectOption,
   StyledTextField,
@@ -40,26 +45,9 @@ import {
 
 export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [isCoBorrower, setIsCoBorrower] = useState<boolean>(false);
-  const [borrowerType, setBorrowerType] = useState<
-    DashboardTaskBorrowerType | undefined
-  >();
-
-  const [signatory, setSignatory] = useState<string | undefined>();
-  const [entityType, setEntityType] = useState<string | undefined>();
-  const [stateId, setStateId] = useState<string | undefined>();
-  const [formationState, setFormationState] = useState<string | undefined>();
-
-  const [firstName, setFirstName] = useState<string | undefined>();
-  const [lastName, setLastName] = useState<string | undefined>();
-  const [date, setDate] = useState<unknown | Date | null>();
-  const [phoneNumber, setPhoneNumber] = useState<string | number>('');
-  const [email, setEmail] = useState<string | undefined>();
-  const [gender, setGender] = useState<string | undefined>();
-  const [maritalStatus, setMaritalStatus] = useState<string | undefined>();
-  const [residencyStatus, setResidencyStatus] = useState<string | undefined>();
-  const [trackRecord, setTrackRecord] = useState<string | undefined>();
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
 
   const [address] = useState<IAddress>(
     Address.create({
@@ -74,10 +62,116 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
     }),
   );
 
-  const [ssn, setSsn] = useState<string>('');
-  const [isCheck, setIsCheck] = useState(false);
+  const [isCoBorrower, setIsCoBorrower] = useState<boolean>();
+  const [borrowerType, setBorrowerType] = useState<
+    DashboardTaskBorrowerType | undefined
+  >();
 
-  return (
+  const [signatoryTitle, setSignatoryTitle] = useState<string | undefined>();
+  const [entityType, setEntityType] = useState<string | undefined>();
+  const [stateId, setStateId] = useState<string | undefined>();
+  const [entityState, setEntityState] = useState<string | undefined>();
+
+  const [firstName, setFirstName] = useState<string | undefined>();
+  const [lastName, setLastName] = useState<string | undefined>();
+  const [dateOfBirth, setDateOfBirth] = useState<unknown | Date | null>();
+  const [phoneNumber, setPhoneNumber] = useState<string | number>('');
+  const [email, setEmail] = useState<string | undefined>();
+  const [gender, setGender] = useState<string | undefined>();
+  const [marital, setMarital] = useState<string | undefined>();
+  const [residency, setResidency] = useState<string | undefined>();
+  const [trackRecord, setTrackRecord] = useState<string | undefined>();
+
+  const [ssn, setSsn] = useState<string>('');
+  const [authorizedCreditCheck, setAuthorizedCreditCheck] = useState(false);
+
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => {
+        const {
+          isCoBorrower,
+          authorizedCreditCheck,
+          borrowerType,
+          dateOfBirth,
+          email,
+          entityState,
+          entityType,
+          firstName,
+          lastName,
+          gender,
+          marital,
+          phoneNumber,
+          propAddr,
+          residency,
+          signatoryTitle,
+          ssn,
+          stateId,
+          trackRecord,
+        } = res.data;
+        if (dateOfBirth) {
+          setDateOfBirth(new Date(dateOfBirth));
+        }
+        setIsCoBorrower(isCoBorrower);
+        setBorrowerType(borrowerType);
+
+        setEntityType(entityType);
+        setEntityState(entityState);
+        setStateId(stateId);
+        setSignatoryTitle(signatoryTitle);
+
+        setFirstName(firstName);
+        setLastName(lastName);
+        setPhoneNumber(phoneNumber);
+        setEmail(email);
+        setTrackRecord(trackRecord);
+        setResidency(residency);
+        setMarital(marital);
+        setGender(gender);
+        setSsn(ssn);
+
+        setAuthorizedCreditCheck(authorizedCreditCheck);
+
+        setTimeout(() => {
+          address.injectServerData(propAddr);
+        });
+      })
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, [router.query.taskId]);
+
+  const isDisabled = useMemo(() => {
+    return false;
+  }, []);
+
+  const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm: {},
+    };
+    try {
+      await _updateTaskFormInfo(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [enqueueSnackbar, router]);
+
+  return loading ? (
+    <StyledLoading sx={{ color: 'primary.main' }} />
+  ) : (
     <StyledFormItem
       gap={6}
       label={'Co-borrower Details'}
@@ -108,6 +202,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
           display: isCoBorrower ? 'flex' : 'none',
           flexDirection: 'column',
           gap: 48,
+          alignItems: 'center',
         }}
       >
         {isCoBorrower && (
@@ -151,8 +246,8 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
                   >
                     <StyledTextField
                       label={'Authorized Signatory Title'}
-                      onChange={(e) => setSignatory(e.target.value)}
-                      value={signatory}
+                      onChange={(e) => setSignatoryTitle(e.target.value)}
+                      value={signatoryTitle}
                     />
                     <StyledSelect
                       label={'Entity Type'}
@@ -171,104 +266,105 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
                     />
                     <StyledSelect
                       label={'Formation State'}
-                      onChange={(e) =>
-                        setFormationState(e.target.value as string)
-                      }
+                      onChange={(e) => setEntityState(e.target.value as string)}
                       options={OPTIONS_COMMON_STATE}
-                      value={formationState}
+                      value={entityState}
                     />
                   </Stack>
                 </StyledFormItem>
               )}
             </Transitions>
 
-      <StyledFormItem
-        label={'Personal Information'}
-        sub
-        tip={
-          "By entering your phone number,  you're authorizing {Organization Name} to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may."
-        }
-      >
-        <Stack gap={3} maxWidth={600} width={'100%'}>
-          <StyledTextField
-            label={'First Name'}
-            onChange={(e) => setFirstName(e.target.value)}
-            value={firstName}
-          />
-          <StyledTextField
-            label={'Last Name'}
-            onChange={(e) => setLastName(e.target.value)}
-            value={lastName}
-          />
-          <StyledDatePicker
-            label={'MM/DD/YY'}
-            onChange={(value) => setDate(value)}
-            value={date}
-          />
-          <StyledTextFieldPhone
-            label={'Phone Number'}
-            onValueChange={({ value }) => setPhoneNumber(value)}
-            value={phoneNumber}
-          />
-          <StyledTextField
-            label={'Email'}
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          />
-          <Transitions
-            style={{
-              display:
-                borrowerType === DashboardTaskBorrowerType.entity
-                  ? 'flex'
-                  : 'none',
-              width: '100%',
-              flexDirection: 'column',
-              gap: 24,
-            }}
-          >
-            {borrowerType === DashboardTaskBorrowerType.entity && (
-              <>
-                <StyledSelect
-                  label={'Gender'}
-                  onChange={(e) =>
-                    setGender(e.target.value as string as DashboardTaskGender)
-                  }
-                  options={OPTIONS_TASK_GENDER}
-                  value={gender}
+            <StyledFormItem
+              label={'Personal Information'}
+              sub
+              tip={
+                "By entering your phone number,  you're authorizing {Organization Name} to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may."
+              }
+            >
+              <Stack gap={3} maxWidth={600} width={'100%'}>
+                <StyledTextField
+                  label={'First Name'}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  value={firstName}
                 />
-                <StyledSelect
-                  label={'Marital Status'}
-                  onChange={(e) =>
-                    setMaritalStatus(
-                      e.target.value as string as DashboardTaskMaritalStatus,
-                    )
-                  }
-                  options={OPTIONS_TASK_MARTIAL_STATUS}
-                  value={maritalStatus}
+                <StyledTextField
+                  label={'Last Name'}
+                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName}
                 />
-                <StyledSelect
-                  label={'Residency Status'}
-                  onChange={(e) =>
-                    setResidencyStatus(
-                      e.target
-                        .value as string as DashboardTaskCitizenshipStatus,
-                    )
-                  }
-                  options={OPTIONS_TASK_CITIZENSHIP_STATUS}
-                  value={residencyStatus}
+                <StyledDatePicker
+                  label={'MM/DD/YYYY'}
+                  onChange={(value) => setDateOfBirth(value)}
+                  value={dateOfBirth}
                 />
-                <StyledTextFieldNumber
-                  label={'Track Record'}
-                  onValueChange={({ formattedValue }) =>
-                    setTrackRecord(formattedValue)
-                  }
-                  value={trackRecord}
+                <StyledTextFieldPhone
+                  label={'Phone Number'}
+                  onValueChange={({ value }) => setPhoneNumber(value)}
+                  value={phoneNumber}
                 />
-              </>
-            )}
-          </Transitions>
-        </Stack>
-      </StyledFormItem>
+                <StyledTextField
+                  label={'Email'}
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                />
+                <Transitions
+                  style={{
+                    display:
+                      borrowerType === DashboardTaskBorrowerType.entity
+                        ? 'flex'
+                        : 'none',
+                    width: '100%',
+                    flexDirection: 'column',
+                    gap: 24,
+                  }}
+                >
+                  {borrowerType === DashboardTaskBorrowerType.entity && (
+                    <>
+                      <StyledSelect
+                        label={'Gender'}
+                        onChange={(e) =>
+                          setGender(
+                            e.target.value as string as DashboardTaskGender,
+                          )
+                        }
+                        options={OPTIONS_TASK_GENDER}
+                        value={gender}
+                      />
+                      <StyledSelect
+                        label={'Marital Status'}
+                        onChange={(e) =>
+                          setMarital(
+                            e.target
+                              .value as string as DashboardTaskMaritalStatus,
+                          )
+                        }
+                        options={OPTIONS_TASK_MARTIAL_STATUS}
+                        value={marital}
+                      />
+                      <StyledSelect
+                        label={'Residency Status'}
+                        onChange={(e) =>
+                          setResidency(
+                            e.target
+                              .value as string as DashboardTaskCitizenshipStatus,
+                          )
+                        }
+                        options={OPTIONS_TASK_CITIZENSHIP_STATUS}
+                        value={residency}
+                      />
+                      <StyledTextFieldNumber
+                        label={'Track Record'}
+                        onValueChange={({ formattedValue }) =>
+                          setTrackRecord(formattedValue)
+                        }
+                        value={trackRecord}
+                      />
+                    </>
+                  )}
+                </Transitions>
+              </Stack>
+            </StyledFormItem>
 
             <StyledFormItem label={'Current Address'} sub>
               <Stack maxWidth={600} width={'100%'}>
@@ -290,7 +386,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
             </StyledFormItem>
 
             <StyledCheckbox
-              checked={isCheck}
+              checked={authorizedCreditCheck}
               label={
                 <Typography
                   color={'text.primary'}
@@ -341,7 +437,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
                   .
                 </Typography>
               }
-              onChange={(e) => setIsCheck(e.target.checked)}
+              onChange={(e) => setAuthorizedCreditCheck(e.target.checked)}
               sx={{ maxWidth: 600 }}
             />
           </>
@@ -368,7 +464,15 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
         >
           Back
         </StyledButton>
-        <StyledButton sx={{ flex: 1 }}>Save</StyledButton>
+        <StyledButton
+          disabled={isDisabled || saveLoading}
+          loading={saveLoading}
+          loadingText={'Saving...'}
+          onClick={handledSubmit}
+          sx={{ flex: 1 }}
+        >
+          Save
+        </StyledButton>
       </Stack>
     </StyledFormItem>
   );

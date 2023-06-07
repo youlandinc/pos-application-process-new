@@ -1,9 +1,13 @@
-import { _fetchTaskFormInfo } from '@/requests/dashboard';
-import { FC, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
+import { format, isDate, isValid } from 'date-fns';
 
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 import {
+  AUTO_HIDE_DURATION,
   OPTIONS_COMMON_YES_OR_NO,
   OPTIONS_TASK_EXIT_STRATEGY,
   OPTIONS_TASK_PRIMARY_REASON,
@@ -12,6 +16,7 @@ import {
   DashboardTaskExitStrategy,
   DashboardTaskPrimaryReasonRefinance,
 } from '@/types';
+import { POSNotUndefined } from '@/utils';
 
 import {
   StyledButton,
@@ -23,16 +28,12 @@ import {
   StyledTextFieldNumber,
   Transitions,
 } from '@/components/atoms';
-import { useAsync } from 'react-use';
 
 export const BridgeRefinanceTaskLoanDetails: FC = () => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const { loading } = useAsync(async () => {
-    return await _fetchTaskFormInfo(router.query.taskId as string)
-      .then((res) => console.log(res))
-      .then((err) => console.log(err));
-  }, [router.query.taskId]);
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
 
   const [homeValue, setHomeValue] = useState<number | undefined>();
   const [balance, setBalance] = useState<number | undefined>();
@@ -41,16 +42,150 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
   const [cashOutAmount, setCashOutAmount] = useState<number | undefined>();
 
   const [isCor, setIsCor] = useState<boolean | undefined>();
-  const [loanAmount, setLoanAmount] = useState<number | undefined>();
+  const [cor, setCor] = useState<number | undefined>();
+  const [corDate, setCorDate] = useState<unknown | Date | null>();
+  const [arv, setArv] = useState<number | undefined>();
 
-  const [date, setDate] = useState<unknown | Date | null>();
-  const [repairCosts, setRepairCosts] = useState<number | undefined>();
   const [primaryReason, setPrimaryReason] = useState<
     DashboardTaskPrimaryReasonRefinance | undefined
   >();
   const [exitStrategy, setExitStrategy] = useState<
     DashboardTaskExitStrategy | undefined
   >();
+
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => {
+        const {
+          homeValue,
+          balance,
+          isCashOut,
+          cashOutAmount,
+          isCor,
+          cor,
+          corDate,
+          arv,
+          primaryReason,
+          exitStrategy,
+        } = res.data;
+        setHomeValue(homeValue);
+        setBalance(balance);
+        setIsCashOut(isCashOut);
+        setCashOutAmount(cashOutAmount);
+        setIsCor(isCor);
+        setCor(cor);
+        if (corDate) {
+          setCorDate(new Date(corDate));
+        }
+        setArv(arv);
+        setPrimaryReason(primaryReason as DashboardTaskPrimaryReasonRefinance);
+        setExitStrategy(exitStrategy as DashboardTaskExitStrategy);
+      })
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, [router.query.taskId]);
+
+  const isDisabled = useMemo(() => {
+    const dateValid = isValid(corDate) && isDate(corDate);
+    const conditionA = POSNotUndefined(isCashOut);
+    const conditionB = POSNotUndefined(isCor);
+
+    if (!conditionA || !conditionB) {
+      return false;
+    }
+    if (isCashOut) {
+      if (!POSNotUndefined(cashOutAmount)) {
+        return false;
+      }
+      return isCor
+        ? dateValid &&
+            !!arv &&
+            !!cor &&
+            !!homeValue &&
+            !!balance &&
+            !!primaryReason &&
+            !!exitStrategy
+        : dateValid &&
+            !!homeValue &&
+            !!balance &&
+            !!primaryReason &&
+            !!exitStrategy;
+    }
+    return isCor
+      ? dateValid &&
+          !!arv &&
+          !!cor &&
+          !!homeValue &&
+          !!balance &&
+          !!primaryReason &&
+          !!exitStrategy
+      : dateValid &&
+          !!homeValue &&
+          !!balance &&
+          !!primaryReason &&
+          !!exitStrategy;
+  }, [
+    arv,
+    balance,
+    cashOutAmount,
+    cor,
+    corDate,
+    exitStrategy,
+    homeValue,
+    isCashOut,
+    isCor,
+    primaryReason,
+  ]);
+
+  const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm: {
+        arv,
+        balance,
+        cashOutAmount,
+        cor,
+        corDate: format(corDate as Date, 'yyyy-MM-dd O'),
+        exitStrategy,
+        homeValue,
+        isCashOut,
+        isCor,
+        primaryReason,
+      },
+    };
+    try {
+      await _updateTaskFormInfo(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [
+    arv,
+    balance,
+    cashOutAmount,
+    cor,
+    corDate,
+    enqueueSnackbar,
+    exitStrategy,
+    homeValue,
+    isCashOut,
+    isCor,
+    primaryReason,
+    router,
+  ]);
 
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
@@ -63,10 +198,10 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
       }
       tipSx={{ mb: 0 }}
     >
-      <StyledFormItem label={'Estimated Home Value'} sub>
+      <StyledFormItem label={'As-is Property Value'} sub>
         <Stack maxWidth={600} width={'100%'}>
           <StyledTextFieldNumber
-            label={'Estimated Home Value'}
+            label={'As-is Property Value'}
             onValueChange={({ floatValue }) => {
               setHomeValue(floatValue);
             }}
@@ -76,10 +211,10 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
         </Stack>
       </StyledFormItem>
 
-      <StyledFormItem label={'Remaining Loan Balance'} sub>
+      <StyledFormItem label={'Payoff Amount'} sub>
         <Stack maxWidth={600} width={'100%'}>
           <StyledTextFieldNumber
-            label={'Remaining Loan Balance'}
+            label={'Payoff Amount'}
             onValueChange={({ floatValue }) => {
               setBalance(floatValue);
             }}
@@ -116,7 +251,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
           <StyledFormItem label={'Cash Out Amount'} sub>
             <Stack maxWidth={600} width={'100%'}>
               <StyledTextFieldNumber
-                label={'Remaining Loan Balance'}
+                label={'Cash Out Amount'}
                 onValueChange={({ floatValue }) => {
                   setCashOutAmount(floatValue);
                 }}
@@ -161,12 +296,12 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldNumber
-                  label={'Cash Out Amount'}
+                  label={'Estimated Rehab Loan Amount'}
                   onValueChange={({ floatValue }) => {
-                    setLoanAmount(floatValue);
+                    setCor(floatValue);
                   }}
                   prefix={'$'}
-                  value={loanAmount}
+                  value={cor}
                 />
               </Stack>
             </StyledFormItem>
@@ -178,10 +313,10 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
                 <StyledDatePicker
                   label={'MM/DD/YYYY'}
                   onChange={(date) => {
-                    setDate(date);
+                    setCorDate(date);
                   }}
                   //validate={}
-                  value={date}
+                  value={corDate}
                 />
               </Stack>
             </StyledFormItem>
@@ -196,10 +331,10 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
                 <StyledTextFieldNumber
                   label={'After repair property value'}
                   onValueChange={({ floatValue }) => {
-                    setRepairCosts(floatValue);
+                    setArv(floatValue);
                   }}
                   prefix={'$'}
-                  value={repairCosts}
+                  value={arv}
                 />
               </Stack>
             </StyledFormItem>
@@ -257,7 +392,15 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
         >
           Back
         </StyledButton>
-        <StyledButton sx={{ flex: 1 }}>Save</StyledButton>
+        <StyledButton
+          disabled={!isDisabled || saveLoading}
+          loading={saveLoading}
+          loadingText={'Saving...'}
+          onClick={handledSubmit}
+          sx={{ flex: 1 }}
+        >
+          Save
+        </StyledButton>
       </Stack>
     </StyledFormItem>
   );

@@ -90,7 +90,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
           subInfo: POSFormatDollar(summary.loanAmount),
           info: [
             {
-              label: 'Remaining Loan Balance',
+              label: 'Payoff Amount',
               info: POSFormatDollar(summary.balance),
             },
             {
