@@ -9,4 +9,5 @@ export interface StyledDatePickerProps {
   ) => void;
   onChangeError?: (error: string | undefined) => void;
   validate?: string[];
+  disabled?: boolean;
 }

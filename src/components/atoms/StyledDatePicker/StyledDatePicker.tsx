@@ -3,7 +3,6 @@ import { Box } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import { StyledDatePickerProps, StyledDatePickerStyles } from './index';
-import { theme } from '@/theme';
 
 import { Transitions } from '@/components/atoms';
 
@@ -12,6 +11,7 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
   onChange,
   label = 'Date',
   validate,
+  disabled = false,
   ...rest
 }) => {
   return (
@@ -19,6 +19,7 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
       <DatePicker
         closeOnSelect
         //desktopModeMediaQuery={theme.breakpoints.up('lg')}
+        disabled={disabled}
         disableFuture
         label={label}
         minDate={null}

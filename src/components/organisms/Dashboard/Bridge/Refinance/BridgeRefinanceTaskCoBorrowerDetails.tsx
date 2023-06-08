@@ -1,15 +1,21 @@
-import { POSNotUndefined } from '@/utils';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import { format, isDate, isValid } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
 
-import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
+import { POSNotUndefined } from '@/utils';
 import { Address, IAddress } from '@/models/common/Address';
+import {
+  DashboardTaskBorrowerEntityType,
+  DashboardTaskBorrowerType,
+  DashboardTaskCitizenshipStatus,
+  DashboardTaskGender,
+  DashboardTaskMaritalStatus,
+} from '@/types';
 import {
   AUTO_HIDE_DURATION,
   OPTIONS_COMMON_STATE,
@@ -20,13 +26,7 @@ import {
   OPTIONS_TASK_GENDER,
   OPTIONS_TASK_MARTIAL_STATUS,
 } from '@/constants';
-import {
-  DashboardTaskBorrowerEntityType,
-  DashboardTaskBorrowerType,
-  DashboardTaskCitizenshipStatus,
-  DashboardTaskGender,
-  DashboardTaskMaritalStatus,
-} from '@/types';
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 
 import {
   StyledButton,
@@ -44,6 +44,8 @@ import {
   StyledTextFieldSocialNumber,
   Transitions,
 } from '@/components/atoms';
+
+import { ScoreResult } from '@/components/molecules';
 
 export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   const router = useRouter();
@@ -85,10 +87,11 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   const [residency, setResidency] = useState<string | undefined>();
   const [trackRecord, setTrackRecord] = useState<string | undefined>();
 
-  const [hasCreditScore, setHasCreditScore] = useState<boolean | undefined>();
-
   const [ssn, setSsn] = useState<string>('');
   const [authorizedCreditCheck, setAuthorizedCreditCheck] = useState(false);
+
+  const [hasCreditScore, setHasCreditScore] = useState(false);
+  const [creditScore, setCreditScore] = useState<number | undefined>();
 
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
@@ -112,6 +115,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
           ssn,
           stateId,
           trackRecord,
+          creditScore,
           hasCreditScore,
         } = res.data;
         if (dateOfBirth) {
@@ -135,7 +139,8 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
         setGender(gender || undefined);
         setSsn(ssn || undefined);
 
-        setHasCreditScore(hasCreditScore || undefined);
+        setHasCreditScore(hasCreditScore || false);
+        setCreditScore(creditScore || 0);
 
         setAuthorizedCreditCheck(authorizedCreditCheck || false);
 
@@ -229,11 +234,9 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     };
 
     try {
-      await _updateTaskFormInfo(postData);
-      //await router.push({
-      //  pathname: '/dashboard/tasks',
-      //  query: { processId: router.query.processId },
-      //});
+      const res = await _updateTaskFormInfo(postData);
+      setCreditScore(res.data);
+      setTableView('score');
     } catch (e) {
       enqueueSnackbar(e as string, {
         variant: 'error',
@@ -267,7 +270,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
 
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
-  ) : (
+  ) : tableView === 'form' ? (
     <StyledFormItem
       gap={6}
       label={'Co-borrower Details'}
@@ -282,6 +285,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
       >
         <Stack maxWidth={600} width={'100%'}>
           <StyledButtonGroup
+            disabled={hasCreditScore}
             onChange={(e, value) => {
               if (value !== null) {
                 setIsCoBorrower(value === 'yes');
@@ -312,6 +316,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledSelectOption
+                  disabled={hasCreditScore}
                   onChange={(value) =>
                     setBorrowerType(
                       value as string as DashboardTaskBorrowerType,
@@ -341,11 +346,13 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                     width={'100%'}
                   >
                     <StyledTextField
+                      disabled={hasCreditScore}
                       label={'Authorized Signatory Title'}
                       onChange={(e) => setSignatoryTitle(e.target.value)}
                       value={signatoryTitle}
                     />
                     <StyledSelect
+                      disabled={hasCreditScore}
                       label={'Entity Type'}
                       onChange={(e) =>
                         setEntityType(
@@ -356,11 +363,13 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                       value={entityType}
                     />
                     <StyledTextField
+                      disabled={hasCreditScore}
                       label={'Secretary of State ID'}
                       onChange={(e) => setStateId(e.target.value)}
                       value={stateId}
                     />
                     <StyledSelect
+                      disabled={hasCreditScore}
                       label={'Formation State'}
                       onChange={(e) => setEntityState(e.target.value as string)}
                       options={OPTIONS_COMMON_STATE}
@@ -380,31 +389,37 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
             >
               <Stack gap={3} maxWidth={600} width={'100%'}>
                 <StyledTextField
+                  disabled={hasCreditScore}
                   label={'First Name'}
                   onChange={(e) => setFirstName(e.target.value)}
                   value={firstName}
                 />
                 <StyledTextField
+                  disabled={hasCreditScore}
                   label={'Last Name'}
                   onChange={(e) => setLastName(e.target.value)}
                   value={lastName}
                 />
                 <StyledDatePicker
+                  disabled={hasCreditScore}
                   label={'MM/DD/YYYY'}
                   onChange={(value) => setDateOfBirth(value)}
                   value={dateOfBirth}
                 />
                 <StyledTextFieldPhone
+                  disabled={hasCreditScore}
                   label={'Phone Number'}
                   onValueChange={({ value }) => setPhoneNumber(value)}
                   value={phoneNumber}
                 />
                 <StyledTextField
+                  disabled={hasCreditScore}
                   label={'Email'}
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
                 />
                 <StyledSelect
+                  disabled={hasCreditScore}
                   label={'Gender'}
                   onChange={(e) =>
                     setGender(e.target.value as string as DashboardTaskGender)
@@ -413,6 +428,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                   value={gender}
                 />
                 <StyledSelect
+                  disabled={hasCreditScore}
                   label={'Marital Status'}
                   onChange={(e) =>
                     setMarital(
@@ -423,6 +439,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                   value={marital}
                 />
                 <StyledSelect
+                  disabled={hasCreditScore}
                   label={'Residency Status'}
                   onChange={(e) =>
                     setResidency(
@@ -435,6 +452,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                 />
                 <StyledTextFieldNumber
                   decimalScale={0}
+                  disabled={hasCreditScore}
                   label={'Track Record'}
                   onValueChange={({ formattedValue }) =>
                     setTrackRecord(formattedValue)
@@ -447,7 +465,10 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
 
             <StyledFormItem label={'Current Address'} sub>
               <Stack maxWidth={600} width={'100%'}>
-                <StyledGoogleAutoComplete address={address} />
+                <StyledGoogleAutoComplete
+                  address={address}
+                  disabled={hasCreditScore}
+                />
               </Stack>
             </StyledFormItem>
 
@@ -457,6 +478,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldSocialNumber
+                  disabled={hasCreditScore}
                   label={'Social Security Number'}
                   onValueChange={(v) => setSsn(v)}
                   value={ssn}
@@ -466,6 +488,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
 
             <StyledCheckbox
               checked={authorizedCreditCheck}
+              disabled={hasCreditScore}
               label={
                 <Typography
                   color={'text.primary'}
@@ -544,7 +567,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
           Back
         </StyledButton>
         <StyledButton
-          disabled={isDisabled || saveLoading}
+          disabled={!isDisabled || saveLoading}
           loading={saveLoading}
           loadingText={'Saving...'}
           onClick={handledSubmit}
@@ -554,5 +577,29 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
         </StyledButton>
       </Stack>
     </StyledFormItem>
+  ) : (
+    <Stack alignItems={'center'} gap={3}>
+      <ScoreResult score={creditScore} />
+      <StyledButton
+        disabled={!isDisabled || saveLoading}
+        loading={saveLoading}
+        loadingText={'Saving...'}
+        onClick={async () => {
+          if (creditScore && creditScore > 640) {
+            await router.push({
+              pathname: '/dashboard/tasks',
+              query: { processId: router.query.processId },
+            });
+          }
+          setTableView('form');
+        }}
+        sx={{
+          width: '100%',
+          maxWidth: 600,
+        }}
+      >
+        Back
+      </StyledButton>
+    </Stack>
   );
 });

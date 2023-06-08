@@ -18,4 +18,14 @@ export const StyledSelectOptionStyles = {
     color: 'primary.main',
     borderColor: 'primary.main',
   },
+  '&.disabled': {
+    borderColor: 'info.main',
+    color: 'info.main',
+    bgcolor: 'transparent',
+    cursor: 'not-allowed',
+  },
+  '&.disabled.active': {
+    bgcolor: '#CDCDCD',
+    cursor: 'not-allowed',
+  },
 } as const;
