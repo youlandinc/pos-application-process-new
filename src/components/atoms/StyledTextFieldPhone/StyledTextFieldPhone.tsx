@@ -11,6 +11,7 @@ export const StyledTextFieldPhone: FC<StyledTextFieldPhoneProps> = ({
   value,
   onValueChange,
   sx,
+  disabled = false,
   ...rest
 }) => {
   const [text, setText] = useState<number | string>(value);
@@ -33,6 +34,7 @@ export const StyledTextFieldPhone: FC<StyledTextFieldPhoneProps> = ({
     <PatternFormat
       allowEmptyFormatting={true}
       customInput={StyledTextField}
+      disabled={disabled}
       format={format}
       mask={mask}
       onValueChange={handledChange}

@@ -7,10 +7,11 @@ export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
   options,
   value,
   onChange,
+  disabled = false,
 }) => {
   const handledSelectChange = useCallback(
     (optionValue: Option['value']) => () => {
-      if (optionValue === value) {
+      if (optionValue === value || disabled) {
         return;
       }
       onChange(optionValue);
@@ -23,7 +24,9 @@ export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
       <>
         {options.map((opt) => (
           <Box
-            className={value === opt.value ? 'active' : ''}
+            className={`${value === opt.value ? 'active' : ''} ${
+              disabled ? 'disabled' : ''
+            }`}
             key={opt.key}
             onClick={handledSelectChange(opt.value)}
             sx={StyledSelectOptionStyles}

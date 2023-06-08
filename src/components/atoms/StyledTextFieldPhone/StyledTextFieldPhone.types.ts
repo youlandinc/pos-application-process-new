@@ -11,4 +11,5 @@ export interface StyledTextFieldPhoneProps {
   mask?: string;
   value: number | string;
   onValueChange: (values: NumberFormatValues) => void;
+  disabled?: boolean;
 }

@@ -200,7 +200,10 @@ const useStateMachine = (
           'lastSelectedProcessId',
           bpmn.processId,
         );
-        await router.push('/dashboard/overview');
+        await router.push({
+          pathname: '/dashboard/overview',
+          query: { processId: bpmn.processId },
+        });
       },
     },
     refuse: {
