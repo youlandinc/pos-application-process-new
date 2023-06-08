@@ -50,5 +50,5 @@ export const _updateTaskFormInfo = (data: {
 };
 
 export const _notifyTaskUpdate = (processId: string) => {
-  return post(`/loan/task/notify/${processId}`);
+  return post(`/dashboard/loan/task/notify/${processId}`);
 };

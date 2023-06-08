@@ -1,13 +1,21 @@
 import { FC, useCallback, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
+import { format, isDate, isValid } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
 
-import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
+import { POSNotUndefined } from '@/utils';
 import { Address, IAddress } from '@/models/common/Address';
+import {
+  DashboardTaskBorrowerEntityType,
+  DashboardTaskBorrowerType,
+  DashboardTaskCitizenshipStatus,
+  DashboardTaskGender,
+  DashboardTaskMaritalStatus,
+} from '@/types';
 import {
   AUTO_HIDE_DURATION,
   OPTIONS_COMMON_STATE,
@@ -18,13 +26,7 @@ import {
   OPTIONS_TASK_GENDER,
   OPTIONS_TASK_MARTIAL_STATUS,
 } from '@/constants';
-import {
-  DashboardTaskBorrowerEntityType,
-  DashboardTaskBorrowerType,
-  DashboardTaskCitizenshipStatus,
-  DashboardTaskGender,
-  DashboardTaskMaritalStatus,
-} from '@/types';
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 
 import {
   StyledButton,
@@ -48,6 +50,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
+  const [tableView, setTableView] = useState<'form' | 'score'>('form');
 
   const [address] = useState<IAddress>(
     Address.create({
@@ -85,6 +88,8 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
   const [ssn, setSsn] = useState<string>('');
   const [authorizedCreditCheck, setAuthorizedCreditCheck] = useState(false);
 
+  const [hasCreditScore, setHasCreditScore] = useState<boolean | undefined>();
+
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
@@ -112,24 +117,26 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
           setDateOfBirth(new Date(dateOfBirth));
         }
         setIsCoBorrower(isCoBorrower);
-        setBorrowerType(borrowerType);
+        setBorrowerType(borrowerType || undefined);
 
-        setEntityType(entityType);
-        setEntityState(entityState);
-        setStateId(stateId);
-        setSignatoryTitle(signatoryTitle);
+        setEntityType(entityType || undefined);
+        setEntityState(entityState || undefined);
+        setStateId(stateId || '');
+        setSignatoryTitle(signatoryTitle || '');
 
-        setFirstName(firstName);
-        setLastName(lastName);
-        setPhoneNumber(phoneNumber);
-        setEmail(email);
-        setTrackRecord(trackRecord);
-        setResidency(residency);
-        setMarital(marital);
-        setGender(gender);
-        setSsn(ssn);
+        setFirstName(firstName || '');
+        setLastName(lastName || '');
+        setPhoneNumber(phoneNumber || undefined);
+        setEmail(email || '');
+        setTrackRecord(trackRecord || '');
+        setResidency(residency || undefined);
+        setMarital(marital || undefined);
+        setGender(gender || undefined);
+        setSsn(ssn || undefined);
 
-        setAuthorizedCreditCheck(authorizedCreditCheck);
+        setHasCreditScore(hasCreditScore || undefined);
+
+        setAuthorizedCreditCheck(authorizedCreditCheck || false);
 
         setTimeout(() => {
           address.injectServerData(propAddr);
@@ -144,21 +151,89 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
-    return false;
-  }, []);
+    if (
+      !POSNotUndefined(isCoBorrower) ||
+      !POSNotUndefined(borrowerType) ||
+      !POSNotUndefined(authorizedCreditCheck)
+    ) {
+      return false;
+    }
+    const dateValid = isValid(dateOfBirth) && isDate(dateOfBirth);
+    const condition =
+      !!firstName &&
+      !!lastName &&
+      !!phoneNumber &&
+      !!email &&
+      dateValid &&
+      !!gender &&
+      !!marital &&
+      !!residency &&
+      !!trackRecord &&
+      address.checkAddressValid &&
+      !!ssn &&
+      authorizedCreditCheck;
+
+    return borrowerType === DashboardTaskBorrowerType.individual
+      ? condition
+      : condition &&
+          !!entityType &&
+          !!entityState &&
+          !!stateId &&
+          !!signatoryTitle;
+  }, [
+    address.checkAddressValid,
+    authorizedCreditCheck,
+    borrowerType,
+    dateOfBirth,
+    email,
+    entityState,
+    entityType,
+    firstName,
+    gender,
+    isCoBorrower,
+    lastName,
+    marital,
+    phoneNumber,
+    residency,
+    signatoryTitle,
+    ssn,
+    stateId,
+    trackRecord,
+  ]);
 
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
     const postData = {
       taskId: router.query.taskId as string,
-      taskForm: {},
+      taskForm: {
+        authorizedCreditCheck,
+        borrowerType,
+        dateOfBirth: format(dateOfBirth as Date, 'yyyy-MM-dd O'),
+        email,
+        entityState,
+        entityType,
+        firstName,
+        gender,
+        isCoBorrower,
+        lastName,
+        marital,
+        phoneNumber,
+        residency,
+        signatoryTitle,
+        ssn,
+        stateId,
+        trackRecord,
+        propAddr: address.getPostData(),
+      },
     };
+
     try {
-      await _updateTaskFormInfo(postData);
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { processId: router.query.processId },
-      });
+      const res = await _updateTaskFormInfo(postData);
+      console.log(res);
+      //await router.push({
+      //  pathname: '/dashboard/tasks',
+      //  query: { processId: router.query.processId },
+      //});
     } catch (e) {
       enqueueSnackbar(e as string, {
         variant: 'error',
@@ -167,11 +242,32 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
     } finally {
       setSaveLoading(false);
     }
-  }, [enqueueSnackbar, router]);
+  }, [
+    address,
+    authorizedCreditCheck,
+    borrowerType,
+    dateOfBirth,
+    email,
+    enqueueSnackbar,
+    entityState,
+    entityType,
+    firstName,
+    gender,
+    isCoBorrower,
+    lastName,
+    marital,
+    phoneNumber,
+    residency,
+    router.query.taskId,
+    signatoryTitle,
+    ssn,
+    stateId,
+    trackRecord,
+  ]);
 
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
-  ) : (
+  ) : tableView === 'form' ? (
     <StyledFormItem
       gap={6}
       label={'Co-borrower Details'}
@@ -308,61 +404,44 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
                 />
-                <Transitions
-                  style={{
-                    display:
-                      borrowerType === DashboardTaskBorrowerType.entity
-                        ? 'flex'
-                        : 'none',
-                    width: '100%',
-                    flexDirection: 'column',
-                    gap: 24,
-                  }}
-                >
-                  {borrowerType === DashboardTaskBorrowerType.entity && (
-                    <>
-                      <StyledSelect
-                        label={'Gender'}
-                        onChange={(e) =>
-                          setGender(
-                            e.target.value as string as DashboardTaskGender,
-                          )
-                        }
-                        options={OPTIONS_TASK_GENDER}
-                        value={gender}
-                      />
-                      <StyledSelect
-                        label={'Marital Status'}
-                        onChange={(e) =>
-                          setMarital(
-                            e.target
-                              .value as string as DashboardTaskMaritalStatus,
-                          )
-                        }
-                        options={OPTIONS_TASK_MARTIAL_STATUS}
-                        value={marital}
-                      />
-                      <StyledSelect
-                        label={'Residency Status'}
-                        onChange={(e) =>
-                          setResidency(
-                            e.target
-                              .value as string as DashboardTaskCitizenshipStatus,
-                          )
-                        }
-                        options={OPTIONS_TASK_CITIZENSHIP_STATUS}
-                        value={residency}
-                      />
-                      <StyledTextFieldNumber
-                        label={'Track Record'}
-                        onValueChange={({ formattedValue }) =>
-                          setTrackRecord(formattedValue)
-                        }
-                        value={trackRecord}
-                      />
-                    </>
-                  )}
-                </Transitions>
+                <StyledSelect
+                  label={'Gender'}
+                  onChange={(e) =>
+                    setGender(e.target.value as string as DashboardTaskGender)
+                  }
+                  options={OPTIONS_TASK_GENDER}
+                  value={gender}
+                />
+                <StyledSelect
+                  label={'Marital Status'}
+                  onChange={(e) =>
+                    setMarital(
+                      e.target.value as string as DashboardTaskMaritalStatus,
+                    )
+                  }
+                  options={OPTIONS_TASK_MARTIAL_STATUS}
+                  value={marital}
+                />
+                <StyledSelect
+                  label={'Residency Status'}
+                  onChange={(e) =>
+                    setResidency(
+                      e.target
+                        .value as string as DashboardTaskCitizenshipStatus,
+                    )
+                  }
+                  options={OPTIONS_TASK_CITIZENSHIP_STATUS}
+                  value={residency}
+                />
+                <StyledTextFieldNumber
+                  decimalScale={0}
+                  label={'Track Record'}
+                  onValueChange={({ formattedValue }) =>
+                    setTrackRecord(formattedValue)
+                  }
+                  thousandSeparator={false}
+                  value={trackRecord}
+                />
               </Stack>
             </StyledFormItem>
 
@@ -465,15 +544,17 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
           Back
         </StyledButton>
         <StyledButton
-          disabled={isDisabled || saveLoading}
+          disabled={!isDisabled || saveLoading}
           loading={saveLoading}
           loadingText={'Saving...'}
           onClick={handledSubmit}
           sx={{ flex: 1 }}
         >
-          Save
+          Next
         </StyledButton>
       </Stack>
     </StyledFormItem>
+  ) : (
+    <></>
   );
 });
