@@ -554,7 +554,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
         width={'100%'}
       >
         <StyledButton
-          color={'info'}
+          color={hasCreditScore ? 'primary' : 'info'}
           onClick={() =>
             router.push({
               pathname: '/dashboard/tasks',
@@ -562,19 +562,21 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
             })
           }
           sx={{ flex: 1 }}
-          variant={'text'}
+          variant={hasCreditScore ? 'contained' : 'text'}
         >
           Back
         </StyledButton>
-        <StyledButton
-          disabled={!isDisabled || saveLoading}
-          loading={saveLoading}
-          loadingText={'Saving...'}
-          onClick={handledSubmit}
-          sx={{ flex: 1 }}
-        >
-          Next
-        </StyledButton>
+        {!hasCreditScore && (
+          <StyledButton
+            disabled={!isDisabled || saveLoading}
+            loading={saveLoading}
+            loadingText={'Saving...'}
+            onClick={handledSubmit}
+            sx={{ flex: 1 }}
+          >
+            Next
+          </StyledButton>
+        )}
       </Stack>
     </StyledFormItem>
   ) : (
