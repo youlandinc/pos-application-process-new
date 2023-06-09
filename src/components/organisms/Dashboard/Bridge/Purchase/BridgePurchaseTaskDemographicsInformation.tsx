@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Stack, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
@@ -6,7 +6,7 @@ import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 
-import { _fetchTaskFormInfo } from '@/requests/dashboard';
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 import { AUTO_HIDE_DURATION, OPTIONS_TASK_GENDER } from '@/constants';
 import { DashboardTaskGender } from '@/types';
 
@@ -24,6 +24,8 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
+
   const [latino, setLatino] = useState<boolean>(false);
   const [mexican, setMexican] = useState<boolean>(false);
   const [puertoRican, setPuertoRican] = useState<boolean>(false);
@@ -37,7 +39,7 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
 
   // race
   const [american, setAmerican] = useState<boolean>(false);
-  const [tribe, setTribe] = useState<string>('');
+  const [tribeText, setTribeText] = useState<string>('');
 
   const [isAsian, setIsAsian] = useState<boolean>(false);
   const [asianIndian, setAsianIndian] = useState<boolean>(false);
@@ -64,7 +66,80 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
-        console.log(res);
+        const {
+          ethnicity: {
+            latino,
+            mexican,
+            puertoRican,
+            cuban,
+            otherLatino,
+            otherLatinoText,
+
+            notLatino,
+            notProvideEthnicity,
+          },
+          race: {
+            american,
+            tribeText,
+
+            isAsian,
+            asianIndian,
+            chinese,
+            filipino,
+            japanese,
+            korean,
+            otherAsian,
+            otherAsianText,
+
+            islander,
+            hawaiian,
+            chamorro,
+            samoan,
+            otherIslander,
+            otherIslanderText,
+
+            black,
+            white,
+            notProvideRace,
+          },
+          gender,
+        } = res.data;
+
+        setGender(gender ?? '');
+
+        // ethnicity
+        setLatino(latino);
+        setMexican(mexican);
+        setPuertoRican(puertoRican);
+        setCuban(cuban);
+        setOtherLatino(otherLatino);
+        setOtherLatinoText(otherLatinoText);
+        setNotLatino(notLatino);
+        setNotProvideEthnicity(notProvideEthnicity);
+
+        // race
+        setAmerican(american);
+        setTribeText(tribeText);
+
+        setIsAsian(isAsian);
+        setAsianIndian(asianIndian);
+        setChinese(chinese);
+        setFilipino(filipino);
+        setJapanese(japanese);
+        setKorean(korean);
+        setOtherAsian(otherAsian);
+        setOtherAsianText(otherAsianText);
+
+        setIslander(islander);
+        setHawaiian(hawaiian);
+        setChamorro(chamorro);
+        setSamoan(samoan);
+        setOtherIslander(otherIslander);
+        setOtherIslanderText(otherIslanderText);
+
+        setBlack(black);
+        setWhite(white);
+        setNotProvideRace(notProvideRace);
       })
       .catch((err) =>
         enqueueSnackbar(err as string, {
@@ -88,20 +163,165 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
   const handledResetRace = useCallback((isAll = false) => {
     if (isAll) {
       setAmerican(false);
-      setTribe('');
+      setTribeText('');
       setBlack(false);
       setWhite(false);
       setNotProvideRace(false);
       return;
     }
     setAmerican(false);
-    setTribe('');
+    setTribeText('');
     setIsAsian(false);
     setBlack(false);
     setIslander(false);
     setWhite(false);
     setNotProvideRace(false);
   }, []);
+
+  const isDisabled = useMemo(() => {
+    const conditionA = latino
+      ? otherLatino
+        ? !!otherLatinoText
+        : mexican || puertoRican || cuban
+      : notProvideEthnicity || notLatino;
+    const conditionB = () => {
+      if (isAsian) {
+        return otherAsian
+          ? !!otherAsianText
+          : asianIndian || chinese || filipino || japanese || korean;
+      }
+      if (islander) {
+        return otherIslander
+          ? !!otherIslanderText
+          : hawaiian || chamorro || samoan;
+      }
+      if (american) {
+        return !!tribeText;
+      }
+      return notProvideRace || black || white;
+    };
+    console.log(!!gender, conditionB(), conditionA);
+    return !!gender && conditionB() && conditionA;
+  }, [
+    american,
+    asianIndian,
+    black,
+    chamorro,
+    chinese,
+    cuban,
+    filipino,
+    gender,
+    hawaiian,
+    isAsian,
+    islander,
+    japanese,
+    korean,
+    latino,
+    mexican,
+    notLatino,
+    notProvideEthnicity,
+    notProvideRace,
+    otherAsian,
+    otherAsianText,
+    otherIslander,
+    otherIslanderText,
+    otherLatino,
+    otherLatinoText,
+    puertoRican,
+    samoan,
+    tribeText,
+    white,
+  ]);
+
+  const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm: {
+        ethnicity: {
+          latino,
+          mexican,
+          puertoRican,
+          cuban,
+          otherLatino,
+          otherLatinoText,
+
+          notLatino,
+          notProvideEthnicity,
+        },
+        race: {
+          american,
+          tribeText,
+
+          isAsian,
+          asianIndian,
+          chinese,
+          filipino,
+          japanese,
+          korean,
+          otherAsian,
+          otherAsianText,
+
+          islander,
+          hawaiian,
+          chamorro,
+          samoan,
+          otherIslander,
+          otherIslanderText,
+
+          black,
+          white,
+          notProvideRace,
+        },
+        gender,
+      },
+    };
+    try {
+      await _updateTaskFormInfo(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [
+    american,
+    asianIndian,
+    black,
+    chamorro,
+    chinese,
+    cuban,
+    enqueueSnackbar,
+    filipino,
+    gender,
+    hawaiian,
+    isAsian,
+    islander,
+    japanese,
+    korean,
+    latino,
+    mexican,
+    notLatino,
+    notProvideEthnicity,
+    notProvideRace,
+    otherAsian,
+    otherAsianText,
+    otherIslander,
+    otherIslanderText,
+    otherLatino,
+    otherLatinoText,
+    puertoRican,
+    router,
+    samoan,
+    tribeText,
+    white,
+  ]);
 
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
@@ -181,9 +401,9 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
                       <>
                         <StyledTextField
                           maxRows={4}
+                          minRows={1}
                           multiline
                           onChange={(e) => setOtherLatinoText(e.target.value)}
-                          rows={2}
                           value={otherLatinoText}
                         />
                         <Typography
@@ -247,8 +467,8 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
               {american && (
                 <StyledTextField
                   label={'Name of enrolled or principal tribe'}
-                  onChange={(e) => setTribe(e.target.value)}
-                  value={tribe}
+                  onChange={(e) => setTribeText(e.target.value)}
+                  value={tribeText}
                 />
               )}
             </Transitions>
@@ -334,11 +554,11 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
                       <>
                         <StyledTextField
                           maxRows={4}
+                          minRows={1}
                           multiline
                           onChange={(e) => {
                             setOtherAsianText(e.target.value);
                           }}
-                          rows={2}
                           value={otherAsianText}
                         />
                         <Typography
@@ -396,7 +616,7 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
                   />
                   <StyledCheckbox
                     checked={chamorro}
-                    label={'Native Hawaiian'}
+                    label={'Guamanian or Chamorro'}
                     onChange={(e) => {
                       handledResetRace(true);
                       setChamorro(e.target.checked);
@@ -404,7 +624,7 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
                   />
                   <StyledCheckbox
                     checked={samoan}
-                    label={'Native Hawaiian'}
+                    label={'Samoan'}
                     onChange={(e) => {
                       handledResetRace(true);
                       setSamoan(e.target.checked);
@@ -430,11 +650,11 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
                       <>
                         <StyledTextField
                           maxRows={4}
+                          minRows={1}
                           multiline
                           onChange={(e) => {
                             setOtherIslanderText(e.target.value);
                           }}
-                          rows={2}
                           value={otherIslanderText}
                         />
                         <Typography
@@ -504,7 +724,15 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
         >
           Back
         </StyledButton>
-        <StyledButton sx={{ flex: 1 }}>Save</StyledButton>
+        <StyledButton
+          disabled={!isDisabled || saveLoading}
+          loading={saveLoading}
+          loadingText={'Saving...'}
+          onClick={handledSubmit}
+          sx={{ flex: 1 }}
+        >
+          Save
+        </StyledButton>
       </Stack>
     </StyledFormItem>
   );

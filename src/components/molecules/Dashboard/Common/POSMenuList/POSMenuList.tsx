@@ -137,7 +137,10 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ scene, info }) => {
           return;
         }
         setActiveKey(key);
-        router.push({ pathname: `/dashboard/${path}`, query: router.query });
+        router.push({
+          pathname: `/dashboard/${path}`,
+          query: { processId: router.query.processId },
+        });
       };
     },
     [activeKey, router],

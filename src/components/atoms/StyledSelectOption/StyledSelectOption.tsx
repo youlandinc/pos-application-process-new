@@ -16,7 +16,7 @@ export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
       }
       onChange(optionValue);
     },
-    [onChange, value],
+    [disabled, onChange, value],
   );
 
   const renderOptions = useMemo(() => {
@@ -36,7 +36,7 @@ export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
         ))}
       </>
     );
-  }, [handledSelectChange, options, value]);
+  }, [disabled, handledSelectChange, options, value]);
 
   return (
     <Stack alignItems={'center'} gap={3} justifyContent={'center'}>
