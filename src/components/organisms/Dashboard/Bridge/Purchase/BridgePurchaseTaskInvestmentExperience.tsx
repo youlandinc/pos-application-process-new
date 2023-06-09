@@ -4,7 +4,13 @@ import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 
-import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
+import { TaskFiles } from '@/types';
+import {
+  _DelTaskFile,
+  _fetchTaskFormInfo,
+  _TaskFile,
+  _updateTaskFormInfo,
+} from '@/requests/dashboard';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import {
   StyledButton,
@@ -13,8 +19,6 @@ import {
   StyledTextFieldNumber,
   StyledUploadBox,
 } from '@/components/atoms';
-import { TaskFiles } from '@/types';
-import { _DelTaskFile, _TaskFile } from '@/requests';
 
 export const BridgePurchaseTaskInvestmentExperience: FC = () => {
   const router = useRouter();

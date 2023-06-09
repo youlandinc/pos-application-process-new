@@ -1,5 +1,5 @@
-import { LoanTask } from '@/types';
-import { get, post } from '../axios';
+import { LoanTask, TaskFiles } from '@/types';
+import { del, get, post, put } from '../axios';
 
 export enum STaskItemStatus {
   UNDONE = 'undone',
@@ -51,4 +51,21 @@ export const _updateTaskFormInfo = (data: {
 
 export const _notifyTaskUpdate = (processId: string) => {
   return post(`/dashboard/loan/task/notify/${processId}`);
+};
+
+export const _TaskFile = (params: FormData, taskId: string) => {
+  return put<TaskFiles[]>(`/dashboard/loan/task/${taskId}`, params, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const _DelTaskFile = (
+  taskId: string,
+  params: { fieldName: string; fileUrl: string },
+) => {
+  return del(`/dashboard/loan/task/${taskId}`, {
+    data: params,
+  });
 };
