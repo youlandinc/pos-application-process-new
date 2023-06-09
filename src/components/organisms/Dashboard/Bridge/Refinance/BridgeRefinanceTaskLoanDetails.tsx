@@ -142,6 +142,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
   ]);
 
   const handledSubmit = useCallback(async () => {
+    const dateValid = isValid(corDate) && isDate(corDate);
     setSaveLoading(true);
     const postData = {
       taskId: router.query.taskId as string,
@@ -150,7 +151,9 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
         balance,
         cashOutAmount,
         cor,
-        corDate: format(corDate as Date, 'yyyy-MM-dd O'),
+        corDate: dateValid
+          ? format(corDate as Date, 'yyyy-MM-dd O')
+          : undefined,
         exitStrategy,
         homeValue,
         isCashOut,

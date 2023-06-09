@@ -2,6 +2,7 @@ import { POSFlex, POSFont, POSTextEllipsis } from '@/styles';
 import { SxProps } from '@mui/material';
 
 export const StyledUploadBoxStyles: SxProps = {
+  width: '100%',
   '& .icon': {
     verticalAlign: '-5px',
     cursor: 'pointer',
@@ -55,7 +56,7 @@ export const StyledUploadBoxStyles: SxProps = {
     mt: 3,
   },
   '& .fileName': {
-    ...POSTextEllipsis({ xs: 200, lg: 400 }),
+    ...POSTextEllipsis({ xs: 200, lg: 260, xl: 400 }),
   },
   '& .uploadBox': {
     width: '100%',

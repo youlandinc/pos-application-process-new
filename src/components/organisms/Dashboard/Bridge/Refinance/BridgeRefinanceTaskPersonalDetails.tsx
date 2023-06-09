@@ -111,6 +111,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
   ]);
 
   const handledSubmit = useCallback(async () => {
+    const dateValid = isValid(dischargeDate) && isDate(dischargeDate);
     setSaveLoading(true);
     const postData = {
       taskId: router.query.taskId as string,
@@ -119,7 +120,9 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
         delinquentTimes,
         citizenship,
         propAddr: address.getPostData(),
-        dischargeDate: format(dischargeDate as Date, 'yyyy-MM-dd O'),
+        dischargeDate: dateValid
+          ? format(dischargeDate as Date, 'yyyy-MM-dd O')
+          : undefined,
       },
     };
     try {

@@ -13,15 +13,17 @@ import {
   StyledTextFieldNumber,
   StyledUploadBox,
 } from '@/components/atoms';
+import { TaskFiles } from '@/types';
+import { _DelTaskFile, _TaskFile } from '@/requests';
 
 export const BridgePurchaseTaskInvestmentExperience: FC = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const [trackRecord, setTrackRecord] = useState('');
-
+  const [fileList, setFileList] = useState<TaskFiles[]>([]);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
-
+  const [uploadLoading, setUploadLoading] = useState(false);
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
@@ -61,6 +63,48 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
     }
   }, [enqueueSnackbar, router]);
 
+  const onSuccess = async (files: FileList) => {
+    setUploadLoading(true);
+
+    try {
+      const formDatas = new FormData();
+      formDatas.append('fieldName', 'form1003');
+      Array.from(files, (item) => {
+        formDatas.append('files', item);
+      });
+
+      const { data } = await _TaskFile(
+        formDatas,
+        router.query.taskId as string,
+      );
+      setFileList([...fileList, ...data]);
+      setUploadLoading(false);
+    } catch (err) {
+      setUploadLoading(false);
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    }
+  };
+
+  const onDelete = async (index: number) => {
+    try {
+      await _DelTaskFile(router.query.taskId as string, {
+        fieldName: 'form1003',
+        fileUrl: fileList[index]?.url,
+      });
+      const temp = JSON.parse(JSON.stringify(fileList));
+      temp.splice(index, 1);
+      setFileList(temp);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    }
+  };
+
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
   ) : (
@@ -75,10 +119,12 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
       <StyledFormItem label={'Number of properties exited last 24 months'} sub>
         <Stack maxWidth={600} width={'100%'}>
           <StyledTextFieldNumber
+            decimalScale={0}
             label={'Track Record'}
             onValueChange={({ formattedValue }) =>
               setTrackRecord(formattedValue)
             }
+            thousandSeparator={false}
             value={trackRecord}
           />
         </Stack>
@@ -146,15 +192,12 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
             verification.
           </Typography>
 
-          <Box mt={3}>
+          <Box mt={3} width={'100%'}>
             <StyledUploadBox
-              fileList={[]}
-              onDelete={() => {
-                console.log(1);
-              }}
-              onSuccess={() => {
-                console.log(2);
-              }}
+              fileList={fileList || []}
+              loading={uploadLoading || loading}
+              onDelete={onDelete}
+              onSuccess={onSuccess}
             />
           </Box>
         </Stack>
