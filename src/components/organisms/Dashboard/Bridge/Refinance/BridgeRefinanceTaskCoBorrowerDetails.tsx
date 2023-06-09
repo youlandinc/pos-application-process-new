@@ -208,13 +208,16 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   ]);
 
   const handledSubmit = useCallback(async () => {
+    const dateValid = isValid(dateOfBirth) && isDate(dateOfBirth);
     setSaveLoading(true);
     const postData = {
       taskId: router.query.taskId as string,
       taskForm: {
         authorizedCreditCheck,
         borrowerType,
-        dateOfBirth: format(dateOfBirth as Date, 'yyyy-MM-dd O'),
+        dateOfBirth: dateValid
+          ? format(dateOfBirth as Date, 'yyyy-MM-dd O')
+          : undefined,
         email,
         entityState,
         entityType,

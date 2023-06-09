@@ -1,16 +1,20 @@
 import { FC, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Stack, Typography } from '@mui/material';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 
-import { OPTIONS_TASK_GENDER } from '@/constants';
+import { _fetchTaskFormInfo } from '@/requests/dashboard';
+import { AUTO_HIDE_DURATION, OPTIONS_TASK_GENDER } from '@/constants';
 import { DashboardTaskGender } from '@/types';
 
 import {
   StyledButton,
   StyledCheckbox,
   StyledFormItem,
+  StyledLoading,
   StyledSelectOption,
   StyledTextField,
   Transitions,
@@ -18,6 +22,7 @@ import {
 
 export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [latino, setLatino] = useState<boolean>(false);
   const [mexican, setMexican] = useState<boolean>(false);
@@ -32,7 +37,7 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
 
   // race
   const [american, setAmerican] = useState<boolean>(false);
-  const [tribe, setTribe] = useState<string>('');
+  const [tribeText, setTribeText] = useState<string>('');
 
   const [isAsian, setIsAsian] = useState<boolean>(false);
   const [asianIndian, setAsianIndian] = useState<boolean>(false);
@@ -56,6 +61,19 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
 
   const [gender, setGender] = useState<DashboardTaskGender | undefined>();
 
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, []);
+
   const handledResetEthnicity = useCallback((isAll = false) => {
     if (isAll) {
       setNotLatino(false);
@@ -70,14 +88,14 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
   const handledResetRace = useCallback((isAll = false) => {
     if (isAll) {
       setAmerican(false);
-      setTribe('');
+      setTribeText('');
       setBlack(false);
       setWhite(false);
       setNotProvideRace(false);
       return;
     }
     setAmerican(false);
-    setTribe('');
+    setTribeText('');
     setIsAsian(false);
     setBlack(false);
     setIslander(false);
@@ -85,7 +103,9 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
     setNotProvideRace(false);
   }, []);
 
-  return (
+  return loading ? (
+    <StyledLoading sx={{ color: 'primary.main' }} />
+  ) : (
     <StyledFormItem
       gap={6}
       label={'Government Requested Information for you'}
@@ -227,8 +247,8 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
               {american && (
                 <StyledTextField
                   label={'Name of enrolled or principal tribe'}
-                  onChange={(e) => setTribe(e.target.value)}
-                  value={tribe}
+                  onChange={(e) => setTribeText(e.target.value)}
+                  value={tribeText}
                 />
               )}
             </Transitions>

@@ -1,16 +1,20 @@
 import { FC, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Stack, Typography } from '@mui/material';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 
-import { OPTIONS_TASK_GENDER } from '@/constants';
+import { _fetchTaskFormInfo } from '@/requests/dashboard';
+import { AUTO_HIDE_DURATION, OPTIONS_TASK_GENDER } from '@/constants';
 import { DashboardTaskGender } from '@/types';
 
 import {
   StyledButton,
   StyledCheckbox,
   StyledFormItem,
+  StyledLoading,
   StyledSelectOption,
   StyledTextField,
   Transitions,
@@ -18,6 +22,7 @@ import {
 
 export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [latino, setLatino] = useState<boolean>(false);
   const [mexican, setMexican] = useState<boolean>(false);
@@ -56,6 +61,19 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
 
   const [gender, setGender] = useState<DashboardTaskGender | undefined>();
 
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, []);
+
   const handledResetEthnicity = useCallback((isAll = false) => {
     if (isAll) {
       setNotLatino(false);
@@ -85,7 +103,9 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
     setNotProvideRace(false);
   }, []);
 
-  return (
+  return loading ? (
+    <StyledLoading sx={{ color: 'primary.main' }} />
+  ) : (
     <StyledFormItem
       gap={6}
       label={'Government Requested Information for you'}

@@ -65,12 +65,16 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
   }, [arv, corDate, isCor, propertyValue, purchasePrice, cor]);
 
   const handledSubmit = useCallback(async () => {
+    const dateValid = isValid(corDate) && isDate(corDate);
+
     setSaveLoading(true);
     const postData = {
       taskId: router.query.taskId as string,
       taskForm: {
         cor,
-        corDate: format(corDate as Date, 'yyyy-MM-dd O'),
+        corDate: dateValid
+          ? format(corDate as Date, 'yyyy-MM-dd O')
+          : undefined,
         isCor,
         purchasePrice,
         propertyValue,

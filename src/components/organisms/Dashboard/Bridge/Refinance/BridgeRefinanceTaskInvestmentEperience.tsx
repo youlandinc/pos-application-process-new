@@ -75,10 +75,12 @@ export const BridgeRefinanceTaskInvestmentExperience: FC = () => {
       <StyledFormItem label={'Number of properties exited last 24 months'} sub>
         <Stack maxWidth={600} width={'100%'}>
           <StyledTextFieldNumber
+            decimalScale={0}
             label={'Track Record'}
             onValueChange={({ formattedValue }) =>
               setTrackRecord(formattedValue)
             }
+            thousandSeparator={false}
             value={trackRecord}
           />
         </Stack>
