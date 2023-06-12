@@ -31,47 +31,22 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
   const [propertiesNum, setPropertiesNum] = useState('');
   const [investmentFiles, setInvestmentFiles] = useState<TaskFiles[]>([]);
 
-  const { loading } = useAsync(async () => {
-    return await _fetchTaskFormInfo(router.query.taskId as string)
-      .then((res) => {
-        const { investmentFiles, propertiesNum } = res.data;
-        setInvestmentFiles(investmentFiles ?? []);
-        setPropertiesNum(propertiesNum ?? '');
-      })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-        }),
-      );
-  }, [router.query.taskId]);
-
-  const isDisabled = useMemo(() => {
-    return false;
-  }, []);
-
-  const handledSubmit = useCallback(async () => {
-    setSaveLoading(true);
-    const postData = {
-      taskId: router.query.taskId as string,
-      taskForm: {},
-    };
-
+  const handledDelete = async (index: number) => {
     try {
-      await _updateTaskFormInfo(postData);
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { processId: router.query.processId },
+      await _deleteTaskFile(router.query.taskId as string, {
+        fieldName: 'investmentFiles',
+        fileUrl: investmentFiles[index]?.url,
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
+      const temp = JSON.parse(JSON.stringify(investmentFiles));
+      temp.splice(index, 1);
+      setInvestmentFiles(temp);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
         variant: 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
       });
-    } finally {
-      setSaveLoading(false);
     }
-  }, [enqueueSnackbar, router]);
+  };
 
   const handledSuccess = async (files: FileList) => {
     setUploadLoading(true);
@@ -98,22 +73,50 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
     }
   };
 
-  const handledDelete = async (index: number) => {
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => {
+        const { investmentFiles, propertiesNum } = res.data;
+        setInvestmentFiles(investmentFiles ?? []);
+        setPropertiesNum(propertiesNum ?? '');
+      })
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, [router.query.taskId]);
+
+  const isDisabled = useMemo(() => {
+    return investmentFiles.length > 0 && !!propertiesNum;
+  }, [investmentFiles.length, propertiesNum]);
+
+  const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm: {
+        propertiesNum,
+        investmentFiles,
+      },
+    };
+
     try {
-      await _deleteTaskFile(router.query.taskId as string, {
-        fieldName: 'investmentFiles',
-        fileUrl: investmentFiles[index]?.url,
+      await _updateTaskFormInfo(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
       });
-      const temp = JSON.parse(JSON.stringify(investmentFiles));
-      temp.splice(index, 1);
-      setInvestmentFiles(temp);
-    } catch (err) {
-      enqueueSnackbar(err as string, {
+    } catch (e) {
+      enqueueSnackbar(e as string, {
         variant: 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
       });
+    } finally {
+      setSaveLoading(false);
     }
-  };
+  }, [enqueueSnackbar, investmentFiles, propertiesNum, router]);
 
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
