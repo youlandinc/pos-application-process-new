@@ -1,14 +1,14 @@
 import {
-  BridgeBehalfTypeOpt,
-  BridgeManagingLoanClosingOpt,
+  DashboardTaskAutomaticPayment,
   DashboardTaskBorrowerEntityType,
   DashboardTaskBorrowerType,
   DashboardTaskCitizenshipStatus,
   DashboardTaskExitStrategy,
   DashboardTaskGender,
+  DashboardTaskInstructions,
+  DashboardTaskLoanClosing,
   DashboardTaskMaritalStatus,
   DashboardTaskPrimaryReasonRefinance,
-  PaymentTypeOpt,
 } from '@/types';
 
 export const OPTIONS_TASK_CITIZENSHIP_STATUS: Option[] = [
@@ -105,46 +105,46 @@ export const OPTIONS_TASK_GENDER: Option[] = [
   },
 ];
 
-export const OPTIONS_TASK_BEHALF_TYPE: Option[] = [
+export const OPTIONS_TASK_INSTRUCTIONS: Option[] = [
   {
-    key: BridgeBehalfTypeOpt.TitleOfficer,
-    value: BridgeBehalfTypeOpt.TitleOfficer,
+    key: DashboardTaskInstructions.title_officer,
+    value: DashboardTaskInstructions.title_officer,
     label: 'Title Officer',
   },
   {
-    key: BridgeBehalfTypeOpt.IssuingAgent,
-    value: BridgeBehalfTypeOpt.IssuingAgent,
+    key: DashboardTaskInstructions.issuing_agent,
+    value: DashboardTaskInstructions.issuing_agent,
     label: 'Issuing Agent',
   },
   {
-    key: BridgeBehalfTypeOpt.ClosingAttorney,
-    value: BridgeBehalfTypeOpt.ClosingAttorney,
+    key: DashboardTaskInstructions.closing_attorney,
+    value: DashboardTaskInstructions.closing_attorney,
     label: 'Closing Attorney',
   },
 ];
 
 export const OPTIONS_TASK_MANAGING_LOAN_CLOSING: Option[] = [
   {
-    key: BridgeManagingLoanClosingOpt.EscrowCompany,
-    value: BridgeManagingLoanClosingOpt.EscrowCompany,
+    key: DashboardTaskLoanClosing.escrow_company,
+    value: DashboardTaskLoanClosing.escrow_company,
     label: 'Escrow Company',
   },
   {
-    key: BridgeManagingLoanClosingOpt.ClosingAttorney,
-    value: BridgeManagingLoanClosingOpt.ClosingAttorney,
+    key: DashboardTaskLoanClosing.closing_attorney,
+    value: DashboardTaskLoanClosing.closing_attorney,
     label: 'Closing Attorney',
   },
 ];
 
-export const OPTIONS_TASK_PAYMENT_TYPE: Option[] = [
+export const OPTIONS_TASK_AUTOMATIC_PAYMENT: Option[] = [
   {
-    key: PaymentTypeOpt.Plaid,
-    value: PaymentTypeOpt.Plaid,
+    key: DashboardTaskAutomaticPayment.plaid,
+    value: DashboardTaskAutomaticPayment.plaid,
     label: 'Plaid',
   },
   {
-    key: PaymentTypeOpt.ACHDebit,
-    value: PaymentTypeOpt.ACHDebit,
+    key: DashboardTaskAutomaticPayment.ach_debit,
+    value: DashboardTaskAutomaticPayment.ach_debit,
     label: 'ACH Debit',
   },
 ];

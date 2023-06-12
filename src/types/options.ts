@@ -123,23 +123,3 @@ export enum WhyRefinanceOpt {
   consolidateDebts = 'consolidate_debts',
   default = '',
 }
-
-export enum BridgeBehalfTypeOpt {
-  default = '',
-  TitleOfficer = 'title_officer',
-  IssuingAgent = 'issuing_agent',
-  ClosingAttorney = 'closing_attorney',
-}
-
-export enum BridgeManagingLoanClosingOpt {
-  default = '',
-  EscrowCompany = 'escrow_company',
-  ClosingAttorney = 'closing_attorney',
-}
-
-export enum PaymentTypeOpt {
-  default = '',
-  Plaid = 'plaid',
-  ACHDebit = 'ACH_debit',
-}
-

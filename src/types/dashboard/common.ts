@@ -169,3 +169,19 @@ export enum DashboardTaskExitStrategy {
   rehab_rent_refinance = 'REHAB_RENT_REFINANCE',
   other = 'OTHER',
 }
+
+export enum DashboardTaskInstructions {
+  title_officer = 'TITLE_OFFICER',
+  issuing_agent = 'ISSUING_AGENT',
+  closing_attorney = 'CLOSING_ATTORNEY',
+}
+
+export enum DashboardTaskLoanClosing {
+  escrow_company = 'ESCROW_COMPANY',
+  closing_attorney = 'CLOSING_ATTORNEY',
+}
+
+export enum DashboardTaskAutomaticPayment {
+  plaid = 'PLAID',
+  ach_debit = 'ACH_DEBIT',
+}
