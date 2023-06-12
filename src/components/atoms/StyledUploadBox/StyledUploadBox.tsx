@@ -44,6 +44,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
   const breakpoint = useBreakpoints();
 
   const [deleteIndex, setDeleteIndex] = useState<number>(-1);
+  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
 
   const { open, visible, close } = useSwitch(false);
   const stopDefaults = (e: DragEvent) => {
@@ -132,7 +133,13 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
   );
 
   const onDialogConfirmDelete = async () => {
-    await onDelete(deleteIndex);
+    setDeleteLoading(true);
+    try {
+      await onDelete(deleteIndex);
+    } finally {
+      setDeleteLoading(false);
+    }
+
     close();
   };
 
@@ -252,6 +259,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
           <>
             <StyledButton
               color="error"
+              disabled={deleteLoading}
               onClick={onDialogConfirmDelete}
               size="small"
               variant="contained"
@@ -261,6 +269,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
             <StyledButton
               autoFocus
               color="info"
+              disabled={deleteLoading}
               onClick={close}
               size="small"
               sx={{ ml: 3 }}
