@@ -489,62 +489,72 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
               </Stack>
             </StyledFormItem>
 
-            <StyledCheckbox
-              checked={authorizedCreditCheck}
-              disabled={hasCreditScore}
-              label={
-                <Typography
-                  color={'text.primary'}
-                  component={'div'}
-                  ml={2}
-                  variant={'body2'}
-                >
-                  I, {firstName || 'borrower'} {lastName || 'name'} , authorize
-                  {
-                    //sass
-                    ' YouLand'
-                  }{' '}
-                  to verify my credit. I&apos;ve also read and agreed to
-                  {
-                    //sass
-                    ' YouLand'
-                  }{' '}
-                  &apos;s{' '}
+            {!hasCreditScore ? (
+              <StyledCheckbox
+                checked={authorizedCreditCheck}
+                disabled={hasCreditScore}
+                label={
                   <Typography
-                    className={'link_style'}
-                    component={'span'}
-                    onClick={() =>
-                      window.open('https://www.youland.com/legal/terms/')
-                    }
+                    color={'text.primary'}
+                    component={'div'}
+                    ml={2}
+                    variant={'body2'}
                   >
-                    Terms of Use
+                    I, {firstName || 'borrower'} {lastName || 'name'} ,
+                    authorize
+                    {
+                      //sass
+                      ' YouLand'
+                    }{' '}
+                    to verify my credit. I&apos;ve also read and agreed to
+                    {
+                      //sass
+                      ' YouLand'
+                    }{' '}
+                    &apos;s{' '}
+                    <Typography
+                      className={'link_style'}
+                      component={'span'}
+                      onClick={() =>
+                        window.open('https://www.youland.com/legal/terms/')
+                      }
+                    >
+                      Terms of Use
+                    </Typography>
+                    ,{' '}
+                    <Typography
+                      className={'link_style'}
+                      component={'span'}
+                      onClick={() =>
+                        window.open('https://www.youland.com/legal/privacy/')
+                      }
+                    >
+                      Privacy Policy
+                    </Typography>{' '}
+                    and consent to{' '}
+                    <Typography
+                      className={'link_style'}
+                      component={'span'}
+                      onClick={() =>
+                        window.open('https://www.youland.com/legal/e-loan-doc/')
+                      }
+                    >
+                      Receive Electronic Loan Documents
+                    </Typography>
+                    .
                   </Typography>
-                  ,{' '}
-                  <Typography
-                    className={'link_style'}
-                    component={'span'}
-                    onClick={() =>
-                      window.open('https://www.youland.com/legal/privacy/')
-                    }
-                  >
-                    Privacy Policy
-                  </Typography>{' '}
-                  and consent to{' '}
-                  <Typography
-                    className={'link_style'}
-                    component={'span'}
-                    onClick={() =>
-                      window.open('https://www.youland.com/legal/e-loan-doc/')
-                    }
-                  >
-                    Receive Electronic Loan Documents
-                  </Typography>
-                  .
-                </Typography>
-              }
-              onChange={(e) => setAuthorizedCreditCheck(e.target.checked)}
-              sx={{ maxWidth: 600 }}
-            />
+                }
+                onChange={(e) => setAuthorizedCreditCheck(e.target.checked)}
+                sx={{ maxWidth: 600 }}
+              />
+            ) : (
+              <StyledFormItem
+                label={`Credit Score is ${creditScore}`}
+                labelSx={{ m: 0 }}
+                sub
+                tipSx={{ m: 0 }}
+              />
+            )}
           </>
         )}
       </Transitions>
