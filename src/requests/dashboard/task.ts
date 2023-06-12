@@ -53,7 +53,7 @@ export const _notifyTaskUpdate = (processId: string) => {
   return post(`/dashboard/loan/task/notify/${processId}`);
 };
 
-export const _TaskFile = (params: FormData, taskId: string) => {
+export const _uploadTaskFile = (params: FormData, taskId: string) => {
   return put<TaskFiles[]>(`/dashboard/loan/task/${taskId}`, params, {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -61,7 +61,7 @@ export const _TaskFile = (params: FormData, taskId: string) => {
   });
 };
 
-export const _DelTaskFile = (
+export const _deleteTaskFile = (
   taskId: string,
   params: { fieldName: string; fileUrl: string },
 ) => {

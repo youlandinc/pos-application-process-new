@@ -39,7 +39,12 @@ export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
   }, [disabled, handledSelectChange, options, value]);
 
   return (
-    <Stack alignItems={'center'} gap={3} justifyContent={'center'}>
+    <Stack
+      alignItems={'center'}
+      gap={3}
+      justifyContent={'center'}
+      width={'100%'}
+    >
       {renderOptions}
     </Stack>
   );

@@ -6,12 +6,13 @@ import { useSnackbar } from 'notistack';
 
 import { TaskFiles } from '@/types';
 import {
-  _DelTaskFile,
+  _deleteTaskFile,
   _fetchTaskFormInfo,
-  _TaskFile,
   _updateTaskFormInfo,
+  _uploadTaskFile,
 } from '@/requests/dashboard';
 import { AUTO_HIDE_DURATION } from '@/constants';
+
 import {
   StyledButton,
   StyledFormItem,
@@ -24,14 +25,60 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [trackRecord, setTrackRecord] = useState('');
-  const [fileList, setFileList] = useState<TaskFiles[]>([]);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState(false);
+
+  const [propertiesNum, setPropertiesNum] = useState('');
+  const [investmentFiles, setInvestmentFiles] = useState<TaskFiles[]>([]);
+
+  const handledDelete = async (index: number) => {
+    try {
+      await _deleteTaskFile(router.query.taskId as string, {
+        fieldName: 'investmentFiles',
+        fileUrl: investmentFiles[index]?.url,
+      });
+      const temp = JSON.parse(JSON.stringify(investmentFiles));
+      temp.splice(index, 1);
+      setInvestmentFiles(temp);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    }
+  };
+
+  const handledSuccess = async (files: FileList) => {
+    setUploadLoading(true);
+
+    const formData = new FormData();
+
+    formData.append('fieldName', 'investmentFiles');
+    Array.from(files, (item) => {
+      formData.append('files', item);
+    });
+    try {
+      const { data } = await _uploadTaskFile(
+        formData,
+        router.query.taskId as string,
+      );
+      setInvestmentFiles([...investmentFiles, ...data]);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setUploadLoading(false);
+    }
+  };
+
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
-        console.log(res);
+        const { investmentFiles, propertiesNum } = res.data;
+        setInvestmentFiles(investmentFiles ?? []);
+        setPropertiesNum(propertiesNum ?? '');
       })
       .catch((err) =>
         enqueueSnackbar(err as string, {
@@ -42,15 +89,19 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
-    return false;
-  }, []);
+    return investmentFiles.length > 0 && !!propertiesNum;
+  }, [investmentFiles.length, propertiesNum]);
 
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
     const postData = {
       taskId: router.query.taskId as string,
-      taskForm: {},
+      taskForm: {
+        propertiesNum,
+        investmentFiles,
+      },
     };
+
     try {
       await _updateTaskFormInfo(postData);
       await router.push({
@@ -65,49 +116,7 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
     } finally {
       setSaveLoading(false);
     }
-  }, [enqueueSnackbar, router]);
-
-  const onSuccess = async (files: FileList) => {
-    setUploadLoading(true);
-
-    try {
-      const formDatas = new FormData();
-      formDatas.append('fieldName', 'form1003');
-      Array.from(files, (item) => {
-        formDatas.append('files', item);
-      });
-
-      const { data } = await _TaskFile(
-        formDatas,
-        router.query.taskId as string,
-      );
-      setFileList([...fileList, ...data]);
-      setUploadLoading(false);
-    } catch (err) {
-      setUploadLoading(false);
-      enqueueSnackbar(err as string, {
-        variant: 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-      });
-    }
-  };
-
-  const onDelete = async (index: number) => {
-    try {
-      await _DelTaskFile(router.query.taskId as string, {
-        fieldName: 'form1003',
-        fileUrl: fileList[index]?.url,
-      });
-      const temp = JSON.parse(JSON.stringify(fileList));
-      temp.splice(index, 1);
-      setFileList(temp);
-    } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-      });
-    }
-  };
+  }, [enqueueSnackbar, investmentFiles, propertiesNum, router]);
 
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
@@ -126,10 +135,10 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
             decimalScale={0}
             label={'Track Record'}
             onValueChange={({ formattedValue }) =>
-              setTrackRecord(formattedValue)
+              setPropertiesNum(formattedValue)
             }
             thousandSeparator={false}
-            value={trackRecord}
+            value={propertiesNum}
           />
         </Stack>
       </StyledFormItem>
@@ -198,10 +207,10 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
 
           <Box mt={3} width={'100%'}>
             <StyledUploadBox
-              fileList={fileList || []}
+              fileList={investmentFiles}
               loading={uploadLoading || loading}
-              onDelete={onDelete}
-              onSuccess={onSuccess}
+              onDelete={handledDelete}
+              onSuccess={handledSuccess}
             />
           </Box>
         </Stack>

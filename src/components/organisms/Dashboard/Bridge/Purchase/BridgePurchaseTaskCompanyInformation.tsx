@@ -1,63 +1,282 @@
-import { FC, useState } from 'react';
-
-import { useSnackbar } from 'notistack';
+import { format, isDate, isValid } from 'date-fns';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
+
 import { observer } from 'mobx-react-lite';
 
-// import { BridgePurchasePaymentSummary, PaymentTask } from '@/components/molecules';
+import { POSNotUndefined } from '@/utils';
+import { DashboardTaskInstructions, DashboardTaskLoanClosing } from '@/types';
+import { Address, IAddress, SAddress } from '@/models/common/Address';
+import {
+  AUTO_HIDE_DURATION,
+  OPTIONS_COMMON_YES_OR_NO,
+  OPTIONS_TASK_INSTRUCTIONS,
+  OPTIONS_TASK_MANAGING_LOAN_CLOSING,
+} from '@/constants';
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 
-import { Stack } from '@mui/material';
 import {
   StyledButton,
   StyledButtonGroup,
   StyledDatePicker,
   StyledFormItem,
   StyledGoogleAutoComplete,
+  StyledLoading,
   StyledSelectOption,
   StyledTextField,
+  StyledTextFieldNumber,
   StyledTextFieldPhone,
   Transitions,
 } from '@/components/atoms';
 
-import { Address, IAddress } from '@/models/common/Address';
-import {
-  OPTIONS_COMMON_YES_OR_NO,
-  OPTIONS_TASK_BEHALF_TYPE,
-  OPTIONS_TASK_MANAGING_LOAN_CLOSING,
-} from '@/constants';
+const initialValues: {
+  firstName: string;
+  lastName: string;
+  companyName: string;
+  phoneNumber: string;
+  email: string;
+  titleOrderNumber: string;
+  contractDate: null | unknown | Date;
+} = {
+  firstName: '',
+  lastName: '',
+  companyName: '',
+  phoneNumber: '',
+  email: '',
+  titleOrderNumber: '',
+  contractDate: null,
+};
+
+const initialAddress: SAddress = {
+  formatAddress: '',
+  state: '',
+  street: '',
+  city: '',
+  aptNumber: '',
+  postcode: '',
+  isValid: false,
+  errors: {},
+};
+
+const resetAddress = {
+  address: '',
+  aptNumber: '',
+  city: '',
+  state: '',
+  postcode: '',
+};
 
 export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
-  // const {
-
-  // } = useMst();
-  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [titleOrderNumber, settitleOrderNumber] = useState('');
-  const [date, setDate] = useState<string | Date>('');
-  const [instructions, setInstructions] = useState<string | number>('');
-  const [loanClosing, setLoanClosing] = useState(true);
-  const [escrowNumber, setEscrowNumber] = useState('');
-  const [whoIsManaging, steWhoIsManaging] = useState<string | number>('');
-  const [address, setAddress] = useState<IAddress>(
-    Address.create({
-      formatAddress: '',
-      state: '',
-      street: '',
-      city: '',
-      aptNumber: '',
-      postcode: '',
-      isValid: false,
-      errors: {},
-    }),
+  const [saveLoading, setSaveLoading] = useState(false);
+
+  const [contactForm, setContactForm] = useState(initialValues);
+  const [manageForm, setManageForm] = useState(initialValues);
+
+  const [clientContactAddress] = useState<IAddress>(
+    Address.create(initialAddress),
+  );
+  const [clientManageAddress] = useState<IAddress>(
+    Address.create(initialAddress),
   );
 
-  return (
+  const [isLoanClosing, setIsLoanClosing] = useState<boolean | undefined>();
+  const [escrowNumber, setEscrowNumber] = useState<undefined | number>();
+  const [instructions, setInstructions] = useState<
+    DashboardTaskInstructions | undefined
+  >();
+  const [whoIsManaging, setWhoIsManaging] = useState<
+    DashboardTaskLoanClosing | undefined
+  >();
+
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => {
+        const {
+          contactForm,
+          contactAddress,
+
+          manageForm,
+          manageAddress,
+
+          isLoanClosing,
+          whoIsManaging,
+
+          escrowNumber,
+          instructions,
+        } = res.data;
+
+        setContactForm({
+          ...contactForm,
+          contractDate: contactForm.contractDate
+            ? new Date(contactForm.contractDate)
+            : null,
+        });
+        setManageForm({
+          ...manageForm,
+          contractDate: manageForm.contractDate
+            ? new Date(manageForm.contractDate)
+            : null,
+        });
+
+        setIsLoanClosing(isLoanClosing ?? undefined);
+        setEscrowNumber(escrowNumber ?? undefined);
+        setInstructions(instructions ?? '');
+        setWhoIsManaging(whoIsManaging ?? '');
+
+        setTimeout(() => {
+          clientContactAddress.injectServerData(contactAddress ?? resetAddress);
+          clientManageAddress.injectServerData(manageAddress ?? resetAddress);
+        });
+      })
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, [router.query.taskId]);
+
+  const isDisabled = useMemo(() => {
+    const dateValid = (date: any) => {
+      return isValid(date) && isDate(date);
+    };
+
+    const conditionA = () => {
+      return (
+        !!contactForm.firstName &&
+        !!contactForm.lastName &&
+        !!contactForm.email &&
+        !!contactForm.phoneNumber &&
+        !!contactForm.companyName &&
+        !!contactForm.titleOrderNumber &&
+        dateValid(contactForm.contractDate) &&
+        clientContactAddress.checkAddressValid
+      );
+    };
+    const conditionB = () => {
+      return (
+        !!manageForm.firstName &&
+        !!manageForm.lastName &&
+        !!manageForm.email &&
+        !!manageForm.phoneNumber &&
+        !!manageForm.companyName &&
+        !!manageForm.titleOrderNumber &&
+        dateValid(manageForm.contractDate) &&
+        clientManageAddress.checkAddressValid
+      );
+    };
+    if (!POSNotUndefined(isLoanClosing)) {
+      return false;
+    }
+    return isLoanClosing
+      ? conditionA() && !!instructions && !!escrowNumber
+      : conditionA() && conditionB() && whoIsManaging && !!instructions;
+  }, [
+    clientContactAddress.checkAddressValid,
+    contactForm.companyName,
+    contactForm.contractDate,
+    contactForm.email,
+    contactForm.firstName,
+    contactForm.lastName,
+    contactForm.phoneNumber,
+    contactForm.titleOrderNumber,
+    escrowNumber,
+    instructions,
+    isLoanClosing,
+    clientManageAddress.checkAddressValid,
+    manageForm.companyName,
+    manageForm.contractDate,
+    manageForm.email,
+    manageForm.firstName,
+    manageForm.lastName,
+    manageForm.phoneNumber,
+    manageForm.titleOrderNumber,
+    whoIsManaging,
+  ]);
+
+  const handledSubmit = useCallback(async () => {
+    const dateValid = (date: any) => {
+      return isValid(date) && isDate(date);
+    };
+
+    setSaveLoading(true);
+    const taskForm = isLoanClosing
+      ? {
+          contactForm: {
+            ...contactForm,
+            contractDate: dateValid(contactForm.contractDate)
+              ? format(contactForm.contractDate as Date, 'yyyy-MM-dd O')
+              : null,
+          },
+          contactAddress: clientContactAddress.getPostData(),
+          manageForm: initialValues,
+          manageAddress: resetAddress,
+          isLoanClosing,
+          whoIsManaging: undefined,
+          escrowNumber,
+          instructions,
+        }
+      : {
+          contactForm: {
+            ...contactForm,
+            contractDate: dateValid(contactForm.contractDate)
+              ? format(contactForm.contractDate as Date, 'yyyy-MM-dd O')
+              : null,
+          },
+          contactAddress: clientContactAddress.getPostData(),
+          manageForm: {
+            ...manageForm,
+            contractDate: dateValid(manageForm.contractDate)
+              ? format(manageForm.contractDate as Date, 'yyyy-MM-dd O')
+              : null,
+          },
+          manageAddress: clientManageAddress.getPostData(),
+          isLoanClosing,
+          whoIsManaging,
+          escrowNumber: undefined,
+          instructions,
+        };
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm,
+    };
+
+    try {
+      await _updateTaskFormInfo(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [
+    clientContactAddress,
+    clientManageAddress,
+    contactForm,
+    enqueueSnackbar,
+    escrowNumber,
+    instructions,
+    isLoanClosing,
+    manageForm,
+    router,
+    whoIsManaging,
+  ]);
+
+  return loading ? (
+    <StyledLoading sx={{ color: 'primary.main' }} />
+  ) : (
     <StyledFormItem
       gap={6}
       label={'Closing Agent / Title Company Information'}
@@ -73,44 +292,59 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
         maxWidth={600}
         sub
       >
-        <Stack
-          flexDirection={{ lg: 'row', xs: 'column' }}
-          gap={3}
-          width={'100%'}
-        >
-          <StyledTextField label={'Contact First Name'} value={firstName} />
-          <StyledTextField label={'Contact Last Name'} value={lastName} />
-        </Stack>
-
-        <Stack gap={3} width={'100%'}>
-          <StyledTextFieldPhone
-            label={'Phone Number'}
-            onValueChange={({ value }) => setPhoneNumber(value)}
-            value={phoneNumber}
-          />
-          <StyledTextField label={'Email'} value={email} />
-        </Stack>
-        <Stack
-          flexDirection={{ lg: 'row', xs: 'column' }}
-          gap={3}
-          width={'100%'}
-        >
-          <StyledTextField label={'Company Name'} value={companyName} />
-          <StyledTextField
-            label={'Title Order Number'}
-            value={titleOrderNumber}
-          />
-        </Stack>
-        <Stack width={'100%'}>
-          <StyledDatePicker
-            label={'MM/DD/YYYY'}
-            onChange={(date) => setDate(date as string | Date)}
-            value={date}
-          />
-        </Stack>
-        <Stack width={'100%'}>
-          <StyledGoogleAutoComplete address={address} />
-        </Stack>
+        <StyledTextField
+          label={'Contact First Name'}
+          onChange={(e) =>
+            setContactForm({ ...contactForm, firstName: e.target.value })
+          }
+          value={contactForm.firstName}
+        />
+        <StyledTextField
+          label={'Contact Last Name'}
+          onChange={(e) =>
+            setContactForm({ ...contactForm, lastName: e.target.value })
+          }
+          value={contactForm.lastName}
+        />
+        <StyledTextFieldPhone
+          label={'Phone Number'}
+          onValueChange={({ value }) => {
+            setContactForm({ ...contactForm, phoneNumber: value });
+          }}
+          value={contactForm.phoneNumber}
+        />
+        <StyledTextField
+          label={'Email'}
+          onChange={(e) =>
+            setContactForm({ ...contactForm, email: e.target.value })
+          }
+          value={contactForm.email}
+        />
+        <StyledTextField
+          label={'Company Name'}
+          onChange={(e) =>
+            setContactForm({ ...contactForm, companyName: e.target.value })
+          }
+          value={contactForm.companyName}
+        />
+        <StyledTextField
+          label={'Title Order Number'}
+          onChange={(e) =>
+            setContactForm({
+              ...contactForm,
+              titleOrderNumber: e.target.value,
+            })
+          }
+          value={contactForm.titleOrderNumber}
+        />
+        <StyledDatePicker
+          label={'MM/DD/YYYY'}
+          onChange={(date) =>
+            setContactForm({ ...contactForm, contractDate: date })
+          }
+          value={contactForm.contractDate}
+        />
+        <StyledGoogleAutoComplete address={clientContactAddress} />
       </StyledFormItem>
 
       <StyledFormItem
@@ -120,8 +354,10 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
       >
         <Stack maxWidth={600} width={'100%'}>
           <StyledSelectOption
-            onChange={(value) => setInstructions(value)}
-            options={OPTIONS_TASK_BEHALF_TYPE}
+            onChange={(value) =>
+              setInstructions(value as string as DashboardTaskInstructions)
+            }
+            options={OPTIONS_TASK_INSTRUCTIONS}
             value={instructions}
           />
         </Stack>
@@ -135,84 +371,121 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
         <StyledButtonGroup
           onChange={(e, value) => {
             if (value !== null) {
-              setLoanClosing(value === 'yes');
+              setIsLoanClosing(value === 'yes');
             }
           }}
           options={OPTIONS_COMMON_YES_OR_NO}
           sx={{ width: '100%', maxWidth: 600 }}
-          value={loanClosing}
+          value={isLoanClosing}
         />
       </StyledFormItem>
-      <Stack justifyContent={'center'} maxWidth={600} width={'100%'}>
-        <Transitions style={{ width: '100%' }}>
-          {loanClosing ? (
-            <Stack width={'100%'}>
-              <StyledTextField label={'Escrow Number'} value={escrowNumber} />
-            </Stack>
-          ) : (
+
+      <Transitions
+        style={{
+          maxWidth: 600,
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        {POSNotUndefined(isLoanClosing) ? (
+          !isLoanClosing ? (
             <StyledFormItem
               gap={3}
               label={'Who is managing loan closing?'}
               labelSx={{ mb: 0 }}
               sub
+              width={'100%'}
             >
-              <Stack maxWidth={600} width={'100%'}>
-                <StyledSelectOption
-                  onChange={(value) => steWhoIsManaging(value)}
-                  options={OPTIONS_TASK_MANAGING_LOAN_CLOSING}
-                  value={whoIsManaging}
-                />
-              </Stack>
-              <Stack
-                flexDirection={{ lg: 'row', xs: 'column' }}
-                gap={3}
-                mt={3}
-                width={'100%'}
-              >
-                <StyledTextField
-                  label={'Contact First Name'}
-                  value={firstName}
-                />
-                <StyledTextField label={'Contact Last Name'} value={lastName} />
-              </Stack>
+              <StyledSelectOption
+                onChange={(value) =>
+                  setWhoIsManaging(value as string as DashboardTaskLoanClosing)
+                }
+                options={OPTIONS_TASK_MANAGING_LOAN_CLOSING}
+                value={whoIsManaging}
+              />
 
-              <Stack
-                flexDirection={{ lg: 'row', xs: 'column' }}
-                gap={3}
-                width={'100%'}
-              >
-                <StyledTextFieldPhone
-                  label={'Phone Number'}
-                  onValueChange={({ value }) => setPhoneNumber(value)}
-                  value={phoneNumber}
-                />
-                <StyledTextField label={'Email'} value={email} />
-              </Stack>
-              <Stack
-                flexDirection={{ lg: 'row', xs: 'column' }}
-                gap={3}
-                width={'100%'}
-              >
-                <StyledTextField label={'Company Name'} value={companyName} />
-                <StyledTextField
-                  label={'Title Order Number'}
-                  value={titleOrderNumber}
-                />
-              </Stack>
-              <Stack width={'100%'}>
-                <StyledDatePicker
-                  label={'MM/DD/YYYY'}
-                  onChange={(date) => setDate(date as string | Date)}
-                  value={date}
-                />
-              </Stack>
-              <Stack width={'100%'}>
-                <StyledGoogleAutoComplete address={address} />
-              </Stack>
+              <StyledTextField
+                label={'First Name'}
+                onChange={(e) =>
+                  setManageForm({
+                    ...manageForm,
+                    firstName: e.target.value,
+                  })
+                }
+                value={manageForm.firstName}
+              />
+              <StyledTextField
+                label={'Last Name'}
+                onChange={(e) =>
+                  setManageForm({
+                    ...manageForm,
+                    lastName: e.target.value,
+                  })
+                }
+                value={manageForm.lastName}
+              />
+              <StyledTextFieldPhone
+                label={'Phone Number'}
+                onValueChange={({ value }) => {
+                  setManageForm({ ...manageForm, phoneNumber: value });
+                }}
+                value={manageForm.phoneNumber}
+              />
+              <StyledTextField
+                label={'Email'}
+                onChange={(e) =>
+                  setManageForm({
+                    ...manageForm,
+                    email: e.target.value,
+                  })
+                }
+                value={manageForm.email}
+              />
+              <StyledTextField
+                label={'Company Name'}
+                onChange={(e) =>
+                  setManageForm({
+                    ...manageForm,
+                    companyName: e.target.value,
+                  })
+                }
+                value={manageForm.companyName}
+              />
+              <StyledTextField
+                label={'Title Order Number'}
+                onChange={(e) =>
+                  setManageForm({
+                    ...manageForm,
+                    titleOrderNumber: e.target.value,
+                  })
+                }
+                value={manageForm.titleOrderNumber}
+              />
+              <StyledDatePicker
+                label={'MM/DD/YYYY'}
+                onChange={(date) =>
+                  setManageForm({
+                    ...manageForm,
+                    contractDate: date,
+                  })
+                }
+                value={manageForm.contractDate}
+              />
+              <StyledGoogleAutoComplete address={clientManageAddress} />
             </StyledFormItem>
-          )}
-        </Transitions>
-      </Stack>
+          ) : (
+            <StyledTextFieldNumber
+              decimalScale={0}
+              label={'Escrow Number'}
+              onValueChange={({ floatValue }) => setEscrowNumber(floatValue)}
+              thousandSeparator={false}
+              value={escrowNumber}
+            />
+          )
+        ) : null}
+      </Transitions>
 
       <Stack
         flexDirection={'row'}
@@ -234,7 +507,15 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
         >
           Back
         </StyledButton>
-        <StyledButton sx={{ flex: 1 }}>Save</StyledButton>
+        <StyledButton
+          disabled={!isDisabled || saveLoading}
+          loading={saveLoading}
+          loadingText={'Saving...'}
+          onClick={handledSubmit}
+          sx={{ flex: 1 }}
+        >
+          Save
+        </StyledButton>
       </Stack>
     </StyledFormItem>
   );
