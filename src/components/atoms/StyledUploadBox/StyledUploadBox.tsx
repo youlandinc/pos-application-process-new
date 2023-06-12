@@ -289,7 +289,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
         }}
         open={visible}
         transitionDuration={300}
-      ></StyledDialog>
+      />
     </Box>
   );
 };

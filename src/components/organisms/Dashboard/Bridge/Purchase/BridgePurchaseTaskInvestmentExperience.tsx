@@ -6,12 +6,13 @@ import { useSnackbar } from 'notistack';
 
 import { TaskFiles } from '@/types';
 import {
-  _DelTaskFile,
+  _deleteTaskFile,
   _fetchTaskFormInfo,
-  _TaskFile,
   _updateTaskFormInfo,
+  _uploadTaskFile,
 } from '@/requests/dashboard';
 import { AUTO_HIDE_DURATION } from '@/constants';
+
 import {
   StyledButton,
   StyledFormItem,
@@ -24,14 +25,18 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [trackRecord, setTrackRecord] = useState('');
-  const [fileList, setFileList] = useState<TaskFiles[]>([]);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState(false);
+
+  const [propertiesNum, setPropertiesNum] = useState('');
+  const [investmentFiles, setInvestmentFiles] = useState<TaskFiles[]>([]);
+
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
-        console.log(res);
+        const { investmentFiles, propertiesNum } = res.data;
+        setInvestmentFiles(investmentFiles ?? []);
+        setPropertiesNum(propertiesNum ?? '');
       })
       .catch((err) =>
         enqueueSnackbar(err as string, {
@@ -51,6 +56,7 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
       taskId: router.query.taskId as string,
       taskForm: {},
     };
+
     try {
       await _updateTaskFormInfo(postData);
       await router.push({
@@ -67,40 +73,40 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
     }
   }, [enqueueSnackbar, router]);
 
-  const onSuccess = async (files: FileList) => {
+  const handledSuccess = async (files: FileList) => {
     setUploadLoading(true);
 
-    try {
-      const formDatas = new FormData();
-      formDatas.append('fieldName', 'form1003');
-      Array.from(files, (item) => {
-        formDatas.append('files', item);
-      });
+    const formData = new FormData();
 
-      const { data } = await _TaskFile(
-        formDatas,
+    formData.append('fieldName', 'investmentFiles');
+    Array.from(files, (item) => {
+      formData.append('files', item);
+    });
+    try {
+      const { data } = await _uploadTaskFile(
+        formData,
         router.query.taskId as string,
       );
-      setFileList([...fileList, ...data]);
-      setUploadLoading(false);
+      setInvestmentFiles([...investmentFiles, ...data]);
     } catch (err) {
-      setUploadLoading(false);
       enqueueSnackbar(err as string, {
         variant: 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
       });
+    } finally {
+      setUploadLoading(false);
     }
   };
 
-  const onDelete = async (index: number) => {
+  const handledDelete = async (index: number) => {
     try {
-      await _DelTaskFile(router.query.taskId as string, {
-        fieldName: 'form1003',
-        fileUrl: fileList[index]?.url,
+      await _deleteTaskFile(router.query.taskId as string, {
+        fieldName: 'investmentFiles',
+        fileUrl: investmentFiles[index]?.url,
       });
-      const temp = JSON.parse(JSON.stringify(fileList));
+      const temp = JSON.parse(JSON.stringify(investmentFiles));
       temp.splice(index, 1);
-      setFileList(temp);
+      setInvestmentFiles(temp);
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
@@ -126,10 +132,10 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
             decimalScale={0}
             label={'Track Record'}
             onValueChange={({ formattedValue }) =>
-              setTrackRecord(formattedValue)
+              setPropertiesNum(formattedValue)
             }
             thousandSeparator={false}
-            value={trackRecord}
+            value={propertiesNum}
           />
         </Stack>
       </StyledFormItem>
@@ -198,10 +204,10 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
 
           <Box mt={3} width={'100%'}>
             <StyledUploadBox
-              fileList={fileList || []}
+              fileList={investmentFiles}
               loading={uploadLoading || loading}
-              onDelete={onDelete}
-              onSuccess={onSuccess}
+              onDelete={handledDelete}
+              onSuccess={handledSuccess}
             />
           </Box>
         </Stack>
