@@ -52,8 +52,8 @@ export const BridgePurchaseTaskPropertyDetails: FC = observer(() => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
         const { propAddr, propertyType, propertyUnit } = res.data;
-        setPropertyType(propertyType);
-        setPropertyUnit(propertyUnit);
+        setPropertyType(propertyType || undefined);
+        setPropertyUnit(propertyUnit || undefined);
         setTimeout(() => {
           address.injectServerData({
             formatAddress: '',

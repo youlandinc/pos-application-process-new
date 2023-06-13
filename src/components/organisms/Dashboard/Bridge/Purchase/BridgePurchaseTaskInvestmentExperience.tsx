@@ -77,8 +77,8 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
         const { investmentFiles, propertiesNum } = res.data;
-        setInvestmentFiles(investmentFiles ?? []);
-        setPropertiesNum(propertiesNum ?? '');
+        setInvestmentFiles(investmentFiles || []);
+        setPropertiesNum(propertiesNum || '');
       })
       .catch((err) =>
         enqueueSnackbar(err as string, {

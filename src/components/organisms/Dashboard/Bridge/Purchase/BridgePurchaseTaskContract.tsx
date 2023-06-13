@@ -1,33 +1,145 @@
-import { FC, useState } from 'react';
-
-import { useSnackbar } from 'notistack';
+import { POSNotUndefined } from '@/utils';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
+import { format, isDate, isValid } from 'date-fns';
+
 import { observer } from 'mobx-react-lite';
 
-// import { BridgePurchasePaymentSummary, PaymentTask } from '@/components/molecules';
+import { AUTO_HIDE_DURATION, OPTIONS_COMMON_YES_OR_NO } from '@/constants';
+import { TaskFiles } from '@/types';
+import {
+  _deleteTaskFile,
+  _fetchTaskFormInfo,
+  _updateTaskFormInfo,
+  _uploadTaskFile,
+} from '@/requests/dashboard';
 
-import { Box, Stack } from '@mui/material';
 import {
   StyledButton,
   StyledButtonGroup,
   StyledDatePicker,
   StyledFormItem,
+  StyledLoading,
   StyledUploadBox,
 } from '@/components/atoms';
 
-import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
-
 export const BridgePurchaseTaskContract: FC = observer(() => {
-  // const {
-
-  // } = useMst();
-  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [accepted, setAccepted] = useState(true);
-  const [date, setDate] = useState<string | Date>('');
+  const [saveLoading, setSaveLoading] = useState(false);
+  const [uploadLoading, setUploadLoading] = useState(false);
 
-  return (
+  const [isAccepted, setIsAccepted] = useState(true);
+  const [contractEndDate, setContractEndDate] = useState<
+    unknown | null | Date
+  >();
+  const [contractFiles, setContractFiles] = useState<TaskFiles[]>([]);
+
+  const handledSuccess = async (files: FileList) => {
+    setUploadLoading(true);
+
+    const formData = new FormData();
+
+    formData.append('fieldName', 'contractFiles');
+    Array.from(files, (item) => {
+      formData.append('files', item);
+    });
+    try {
+      const { data } = await _uploadTaskFile(
+        formData,
+        router.query.taskId as string,
+      );
+      setContractFiles([...contractFiles, ...data]);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setUploadLoading(false);
+    }
+  };
+
+  const handledDelete = async (index: number) => {
+    try {
+      await _deleteTaskFile(router.query.taskId as string, {
+        fieldName: 'picturesFiles',
+        fileUrl: contractFiles[index]?.url,
+      });
+      const temp = JSON.parse(JSON.stringify(contractFiles));
+      temp.splice(index, 1);
+      setContractFiles(temp);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    }
+  };
+
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => {
+        const { contractFiles, contractEndDate, isAccepted } = res.data;
+        setContractFiles(contractFiles || []);
+        setIsAccepted(isAccepted);
+        if (contractEndDate) {
+          setContractEndDate(new Date(contractEndDate));
+        }
+      })
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, [router.query.taskId]);
+
+  const isDisabled = useMemo(() => {
+    const dateValid = isValid(contractEndDate) && isDate(contractEndDate);
+    if (POSNotUndefined(isAccepted)) {
+      return false;
+    }
+    return contractFiles.length > 0 && dateValid;
+  }, [contractEndDate, contractFiles.length, isAccepted]);
+
+  const handledSubmit = useCallback(async () => {
+    const dateValid = isValid(contractEndDate) && isDate(contractEndDate);
+
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm: {
+        contractFiles,
+        contractEndDate: dateValid
+          ? format(contractEndDate as Date, 'yyyy-MM-dd O')
+          : undefined,
+        isAccepted,
+      },
+    };
+
+    try {
+      await _updateTaskFormInfo(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [contractEndDate, router, contractFiles, isAccepted, enqueueSnackbar]);
+
+  return loading ? (
+    <StyledLoading sx={{ color: 'primary.main' }} />
+  ) : (
     <StyledFormItem
       gap={6}
       label={'Upload Your Purchase Contract'}
@@ -40,12 +152,12 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
         <StyledButtonGroup
           onChange={(e, value) => {
             if (value !== null) {
-              setAccepted(value === 'yes');
+              setIsAccepted(value === 'yes');
             }
           }}
           options={OPTIONS_COMMON_YES_OR_NO}
           sx={{ width: '100%', maxWidth: 600 }}
-          value={accepted}
+          value={isAccepted}
         />
       </StyledFormItem>
 
@@ -59,8 +171,8 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
       >
         <StyledDatePicker
           label={'MM/DD/YYYY'}
-          onChange={(date) => setDate(date as string | Date)}
-          value={date}
+          onChange={(date) => setContractEndDate(date)}
+          value={contractEndDate}
         />
       </StyledFormItem>
       <StyledFormItem
@@ -86,13 +198,10 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
         }
       >
         <StyledUploadBox
-          fileList={[]}
-          onDelete={() => {
-            console.log('onDelete');
-          }}
-          onSuccess={() => {
-            console.log('onSuccess');
-          }}
+          fileList={contractFiles}
+          loading={uploadLoading}
+          onDelete={handledDelete}
+          onSuccess={handledSuccess}
         />
       </StyledFormItem>
 
@@ -116,7 +225,15 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
         >
           Back
         </StyledButton>
-        <StyledButton sx={{ flex: 1 }}>Save</StyledButton>
+        <StyledButton
+          disabled={!isDisabled || saveLoading}
+          loading={saveLoading}
+          loadingText={'Saving...'}
+          onClick={handledSubmit}
+          sx={{ flex: 1 }}
+        >
+          Save
+        </StyledButton>
       </Stack>
     </StyledFormItem>
   );

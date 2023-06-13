@@ -1,18 +1,19 @@
-import { FC, useMemo } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Box, SxProps, Typography } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
 import { useRouter } from 'next/router';
+import { useAsync, useSetState } from 'react-use';
+import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
+
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { POSFlex, POSFont } from '@/styles';
+import { _fetchLoanTask, _notifyTaskUpdate } from '@/requests/dashboard';
+import { BridgePurchaseTasks } from '@/types';
 
 import { StyledButton, StyledLoading } from '@/components/atoms';
 import { PageHeader } from '@/components/molecules';
-import { POSFlex, POSFont } from '@/styles';
-import { _fetchLoanTask, _notifyTaskUpdate } from '@/requests/dashboard';
-import { useAsync, useSetState } from 'react-use';
-import { useSnackbar } from 'notistack';
-import { BridgePurchaseTasks } from '@/types';
 
 type BridgePurchaseTaskCode =
   | 'BP_APPLICATION_LOAN'
@@ -144,26 +145,36 @@ const taskObj: taskObj = {
 };
 
 export const BridgePurchaseTaskList: FC = observer(() => {
-  const {
-    userSetting: {
-      setting: { lastSelectedProcessId },
-    },
-  } = useMst();
-
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
+  const [updateLoading, setUpdateLoading] = useState(false);
+
   const [taskDetails, setTaskDetails] = useSetState<BridgePurchaseTasks>();
 
+  const handledUpdate = useCallback(async () => {
+    setUpdateLoading(true);
+    try {
+      await _notifyTaskUpdate(router.query.processId as string);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setUpdateLoading(false);
+    }
+  }, [enqueueSnackbar, router.query.processId]);
+
   const { loading } = useAsync(async () => {
-    return await _fetchLoanTask(lastSelectedProcessId)
+    return await _fetchLoanTask(router.query.processId as string)
       .then((res) => {
         setTaskDetails(res?.data?.tasks);
       })
       .catch((err) => {
         enqueueSnackbar(err, { variant: 'error' });
       });
-  }, []);
+  }, [router.query.processId]);
 
   const renderTaskList = useMemo(() => {
     return (
@@ -467,7 +478,13 @@ export const BridgePurchaseTaskList: FC = observer(() => {
               </Typography>
             </Box>
             <Box sx={{ width: '100px' }}>
-              <StyledButton color={'warning'}>Update</StyledButton>
+              <StyledButton
+                color={'warning'}
+                disabled={updateLoading}
+                onClick={handledUpdate}
+              >
+                Update
+              </StyledButton>
             </Box>
           </Box>
         </>

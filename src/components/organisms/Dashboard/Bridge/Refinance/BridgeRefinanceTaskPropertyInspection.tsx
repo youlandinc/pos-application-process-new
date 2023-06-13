@@ -1,32 +1,86 @@
-import { FC, useState } from 'react';
-
-import { useSnackbar } from 'notistack';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
+
 import { observer } from 'mobx-react-lite';
 
-import { Stack } from '@mui/material';
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
+import { AUTO_HIDE_DURATION } from '@/constants';
+
 import {
   StyledButton,
   StyledFormItem,
+  StyledLoading,
   StyledTextField,
   StyledTextFieldPhone,
 } from '@/components/atoms';
 
 export const BridgeRefinanceTaskPropertyInspection: FC = observer(() => {
-  // const {
-
-  // } = useMst();
-  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [saveLoading, setSaveLoading] = useState(false);
 
   const [contactName, setContactName] = useState('');
-
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
-
   const [instructions, setInstructions] = useState<string | number>('');
 
-  return (
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => {
+        const { contactName, phoneNumber, email, instructions } = res.data;
+
+        setEmail(email || '');
+        setContactName(contactName || '');
+        setPhoneNumber(phoneNumber || '');
+        setInstructions(instructions || '');
+      })
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, [router.query.taskId]);
+
+  const isDisabled = useMemo(() => {
+    return !!email && !!phoneNumber && !!contactName && !!instructions;
+  }, [contactName, email, instructions, phoneNumber]);
+
+  const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm: {
+        email,
+        contactName,
+        phoneNumber,
+        instructions,
+      },
+    };
+
+    try {
+      await _updateTaskFormInfo(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [contactName, email, enqueueSnackbar, instructions, phoneNumber, router]);
+
+  return loading ? (
+    <StyledLoading sx={{ color: 'primary.main' }} />
+  ) : (
     <StyledFormItem
       gap={3}
       label={'Property Inspection Details'}
@@ -39,24 +93,27 @@ export const BridgeRefinanceTaskPropertyInspection: FC = observer(() => {
         maxWidth={600}
         sub
       >
-        <Stack width={'100%'}>
-          <StyledTextField label={'Contact Name'} value={contactName} />
-        </Stack>
+        <StyledTextField
+          label={'Contact Name'}
+          onChange={(e) => setContactName(e.target.value)}
+          value={contactName}
+        />
 
-        <Stack gap={3} width={'100%'}>
-          <StyledTextFieldPhone
-            label={'Phone Number'}
-            onValueChange={({ value }) => setPhoneNumber(value)}
-            value={phoneNumber}
-          />
-          <StyledTextField label={'Email'} value={email} />
-        </Stack>
-        <Stack width={'100%'}>
-          <StyledTextField
-            label={'Property Access Instructions'}
-            value={instructions}
-          />
-        </Stack>
+        <StyledTextFieldPhone
+          label={'Phone Number'}
+          onValueChange={({ value }) => setPhoneNumber(value)}
+          value={phoneNumber}
+        />
+        <StyledTextField
+          label={'Email'}
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+        />
+        <StyledTextField
+          label={'Property Access Instructions'}
+          onChange={(e) => setInstructions(e.target.value)}
+          value={instructions}
+        />
       </StyledFormItem>
 
       <Stack
@@ -79,7 +136,15 @@ export const BridgeRefinanceTaskPropertyInspection: FC = observer(() => {
         >
           Back
         </StyledButton>
-        <StyledButton sx={{ flex: 1 }}>Save</StyledButton>
+        <StyledButton
+          disabled={!isDisabled || saveLoading}
+          loading={saveLoading}
+          loadingText={'Saving...'}
+          onClick={handledSubmit}
+          sx={{ flex: 1 }}
+        >
+          Save
+        </StyledButton>
       </Stack>
     </StyledFormItem>
   );

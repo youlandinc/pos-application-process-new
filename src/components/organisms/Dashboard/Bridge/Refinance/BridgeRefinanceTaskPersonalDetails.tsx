@@ -33,6 +33,8 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
+
   const [address] = useState<IAddress>(
     Address.create({
       formatAddress: '',
@@ -45,7 +47,6 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
       errors: {},
     }),
   );
-  const [saveLoading, setSaveLoading] = useState<boolean>(false);
 
   const [citizenship, setCitizenship] = useState<
     DashboardTaskCitizenshipStatus | undefined
@@ -55,7 +56,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
   >();
   const [delinquentTimes, setDelinquentTimes] = useState<string | undefined>();
   const [dischargeDate, setDischargeDate] = useState<unknown | Date | null>(
-    new Date('1970-01-01'),
+    null,
   );
 
   const { loading } = useAsync(async () => {
@@ -68,10 +69,18 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
           delinquentTimes,
           citizenship,
         } = res.data;
-        setCitizenship(citizenship as DashboardTaskCitizenshipStatus);
-        setMarital(marital as DashboardTaskMaritalStatus);
+
+        setCitizenship(
+          (citizenship as DashboardTaskCitizenshipStatus) || undefined,
+        );
+        setMarital((marital as DashboardTaskMaritalStatus) || undefined);
+
+        if (dischargeDate) {
+          setDischargeDate(new Date(dischargeDate as string));
+        }
+
         setDelinquentTimes(delinquentTimes as string);
-        setDischargeDate(new Date((dischargeDate || '1970-01-01') as string));
+
         setTimeout(() => {
           address.injectServerData({
             formatAddress: '',
@@ -165,7 +174,6 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
           <StyledSelectOption
             onChange={(value) => {
               setCitizenship(value as string as DashboardTaskCitizenshipStatus);
-              console.log(value);
             }}
             options={OPTIONS_TASK_CITIZENSHIP_STATUS}
             value={citizenship}

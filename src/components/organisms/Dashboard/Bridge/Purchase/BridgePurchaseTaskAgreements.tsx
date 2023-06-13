@@ -1,22 +1,46 @@
-import { FC } from 'react';
-
+import { FC, useCallback, useState } from 'react';
+import { Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
+
 import { observer } from 'mobx-react-lite';
 
-// import { BridgePurchasePaymentSummary, PaymentTask } from '@/components/molecules';
-
-import { Box, Stack } from '@mui/material';
-import { StyledButton, StyledFormItem } from '@/components/atoms';
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { _updateTaskFormInfo } from '@/requests/dashboard';
 import { useSessionStorageState } from '@/hooks';
 
-export const BridgePurchaseTaskAgreements: FC = observer(() => {
-  // const {
+import { StyledButton, StyledFormItem } from '@/components/atoms';
 
-  // } = useMst();
-  const { enqueueSnackbar } = useSnackbar();
+export const BridgePurchaseTaskAgreements: FC = observer(() => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
   const { state } = useSessionStorageState('tenantConfig');
+
+  const [saveLoading, setSaveLoading] = useState(false);
+
+  const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm: {},
+    };
+
+    try {
+      await _updateTaskFormInfo(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [enqueueSnackbar, router]);
 
   return (
     <StyledFormItem gap={3} label={'Agreements'}>
@@ -28,7 +52,16 @@ export const BridgePurchaseTaskAgreements: FC = observer(() => {
         maxWidth={900}
         sub
       >
-        <Box className={'link_style'}>View Construction Holdback Process</Box>
+        <Typography
+          className={'link_style'}
+          component={'span'}
+          fontWeight={600}
+          onClick={() => {
+            window.open('');
+          }}
+        >
+          View Construction Holdback Process
+        </Typography>
       </StyledFormItem>
 
       <Stack
@@ -51,7 +84,15 @@ export const BridgePurchaseTaskAgreements: FC = observer(() => {
         >
           Back
         </StyledButton>
-        <StyledButton sx={{ flex: 1 }}>Save</StyledButton>
+        <StyledButton
+          disabled={saveLoading}
+          loading={saveLoading}
+          loadingText={'Saving...'}
+          onClick={handledSubmit}
+          sx={{ flex: 1 }}
+        >
+          Confirm
+        </StyledButton>
       </Stack>
     </StyledFormItem>
   );

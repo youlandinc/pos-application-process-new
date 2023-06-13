@@ -196,7 +196,7 @@ export const ChangePassword: FC = () => {
                 </Transitions>
               </Box>
               <StyledTextFieldPassword
-                label={'Confirmed Password'}
+                label={'Confirm password'}
                 onChange={(e) => setConfirmedPassword(e.target.value)}
                 placeholder={'Confirmed New Password'}
                 required
