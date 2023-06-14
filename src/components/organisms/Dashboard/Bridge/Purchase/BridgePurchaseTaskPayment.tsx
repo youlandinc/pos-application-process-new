@@ -1,24 +1,24 @@
 import { FC, useEffect, useState } from 'react';
-
-import { useAsync } from 'react-use';
-import { useSnackbar } from 'notistack';
+import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
+
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { ParseProcess } from '@/services/ParseProcess';
 import { POSFlex } from '@/styles';
-// import { BridgePurchasePaymentSummary, PaymentTask } from '@/components/molecules';
 import { BridgePurchaseRatesLoanInfo, RatesProductData } from '@/types';
 import {
   _fetchRatesLoanInfo,
   _fetchRatesProductSelected,
+  _fetchTaskFormInfo,
 } from '@/requests/dashboard';
 import {
   BridgePurchasePaymentSummary,
   PaymentTask,
 } from '@/components/molecules';
-import { Box } from '@mui/material';
 
 const useStyles = {
   '&.container': {
@@ -52,6 +52,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
     return Promise.all([
       _fetchRatesLoanInfo(lastSelectedProcessId),
       _fetchRatesProductSelected(lastSelectedProcessId),
+      _fetchTaskFormInfo(router.query.taskId as string),
     ])
       .then((res) => {
         const { info } = res[0].data;

@@ -9,15 +9,17 @@ import { useMst } from '@/models/Root';
 
 import { ParseProcess } from '@/services/ParseProcess';
 import { POSFlex } from '@/styles';
-import {
-  BridgeRefinancePaymentSummary,
-  PaymentTask,
-} from '@/components/molecules';
 import { BridgeRefinanceRatesLoanInfo, RatesProductData } from '@/types';
 import {
   _fetchRatesLoanInfo,
   _fetchRatesProductSelected,
+  _fetchTaskFormInfo,
 } from '@/requests/dashboard';
+
+import {
+  BridgeRefinancePaymentSummary,
+  PaymentTask,
+} from '@/components/molecules';
 
 const useStyles = {
   '&.container': {
@@ -51,11 +53,11 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
     return Promise.all([
       _fetchRatesLoanInfo(lastSelectedProcessId),
       _fetchRatesProductSelected(lastSelectedProcessId),
+      _fetchTaskFormInfo(router.query.taskId as string),
     ])
       .then((res) => {
         const { info } = res[0].data;
         setLoanInfo(info);
-        ('');
         setProductInfo(res[1].data);
       })
       .catch((err) => enqueueSnackbar(err, { variant: 'error' }));

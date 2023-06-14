@@ -86,7 +86,7 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
       .then((res) => {
         const { contractFiles, contractEndDate, isAccepted } = res.data;
         setContractFiles(contractFiles || []);
-        setIsAccepted(isAccepted);
+        setIsAccepted(isAccepted ?? undefined);
         if (contractEndDate) {
           setContractEndDate(new Date(contractEndDate));
         }
@@ -101,13 +101,14 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
 
   const isDisabled = useMemo(() => {
     const dateValid = isValid(contractEndDate) && isDate(contractEndDate);
-    if (POSNotUndefined(isAccepted)) {
+    if (!POSNotUndefined(isAccepted)) {
       return false;
     }
     return contractFiles.length > 0 && dateValid;
   }, [contractEndDate, contractFiles.length, isAccepted]);
 
   const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
     const dateValid = isValid(contractEndDate) && isDate(contractEndDate);
 
     const postData = {

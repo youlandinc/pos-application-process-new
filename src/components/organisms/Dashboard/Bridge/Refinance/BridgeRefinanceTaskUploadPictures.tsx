@@ -92,6 +92,7 @@ export const BridgeRefinanceTaskUploadPictures: FC = observer(() => {
   }, [picturesFiles.length]);
 
   const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
     const postData = {
       taskId: router.query.taskId as string,
       taskForm: {

@@ -1,21 +1,10 @@
 import { FC, ReactNode, useCallback, useMemo, useRef, useState } from 'react';
 import { Box, Stack, SxProps } from '@mui/material';
 import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 
 import { RatesProductData } from '@/types';
 
-// import { IDashboardTask } from '@/models/DashboardTask';
-
-import {
-  StyledButton,
-  StyledButtonGroup,
-  StyledDatePicker,
-  StyledFormItem,
-  StyledLoading,
-  StyledTextField,
-  StyledUploadBox,
-  Transitions,
-} from '@/components/atoms';
 import {
   ConfirmTable,
   NoticeTable,
@@ -30,8 +19,18 @@ import {
 } from '@/requests/dashboard';
 import { IDTask } from '@/models/base';
 import { POSFlex } from '@/styles';
-import { useSnackbar } from 'notistack';
 import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
+
+import {
+  StyledButton,
+  StyledButtonGroup,
+  StyledDatePicker,
+  StyledFormItem,
+  StyledLoading,
+  StyledTextField,
+  StyledUploadBox,
+  Transitions,
+} from '@/components/atoms';
 
 const useStyle: SxProps = {
   ...POSFlex('center', 'center', 'column'),
