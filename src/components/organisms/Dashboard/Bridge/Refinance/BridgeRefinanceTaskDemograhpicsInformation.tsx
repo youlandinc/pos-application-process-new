@@ -200,7 +200,6 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
       }
       return notProvideRace || black || white;
     };
-    console.log(!!gender, conditionB(), conditionA);
     return !!gender && conditionB() && conditionA;
   }, [
     american,

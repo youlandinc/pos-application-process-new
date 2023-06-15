@@ -1,99 +1,399 @@
-import { FC, useEffect, useState } from 'react';
-import { Box } from '@mui/material';
+import { FC, useCallback, useMemo, useRef, useState } from 'react';
+import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
 
-import { ParseProcess } from '@/services/ParseProcess';
-import { POSFlex } from '@/styles';
-import { BridgePurchaseRatesLoanInfo, RatesProductData } from '@/types';
+import { AUTO_HIDE_DURATION } from '@/constants';
 import {
-  _fetchRatesLoanInfo,
-  _fetchRatesProductSelected,
+  _fetchPaymentDetails,
   _fetchTaskFormInfo,
+  _updateTaskFormInfo,
+  SPaymentDetails,
 } from '@/requests/dashboard';
 import {
+  BridgePurchaseRatesLoanInfo,
+  DashboardTaskPaymentMethodsStatus,
+  DashboardTaskPaymentTableStatus,
+  RatesProductData,
+  TaskFiles,
+} from '@/types';
+
+import { StyledButton, StyledLoading } from '@/components/atoms';
+import {
   BridgePurchasePaymentSummary,
-  PaymentTask,
+  PaymentMethods,
+  PaymentNotice,
+  PaymentStatus,
+  PaymentSummary,
 } from '@/components/molecules';
 
-const useStyles = {
-  '&.container': {
-    ...POSFlex('flex-start', 'center', 'column'),
-  },
-  '& .pageMain': {
-    width: '100%',
-    maxWidth: 900,
-    borderRadius: 8,
-  },
+const useStateMachine = (
+  state:
+    | DashboardTaskPaymentTableStatus.notice
+    | DashboardTaskPaymentTableStatus.summary
+    | DashboardTaskPaymentTableStatus.payment,
+  updateState: React.Dispatch<
+    React.SetStateAction<DashboardTaskPaymentTableStatus>
+  >,
+) => {
+  const transitions = useRef<
+    Record<
+      | DashboardTaskPaymentTableStatus.notice
+      | DashboardTaskPaymentTableStatus.summary
+      | DashboardTaskPaymentTableStatus.payment,
+      {
+        next?: () => void;
+        back?: () => void;
+      }
+    >
+  >({
+    [DashboardTaskPaymentTableStatus.notice]: {
+      next() {
+        updateState(DashboardTaskPaymentTableStatus.summary);
+      },
+    },
+    [DashboardTaskPaymentTableStatus.summary]: {
+      back() {
+        updateState(DashboardTaskPaymentTableStatus.notice);
+      },
+      async next() {
+        updateState(DashboardTaskPaymentTableStatus.payment);
+      },
+    },
+    [DashboardTaskPaymentTableStatus.payment]: {
+      back() {
+        updateState(DashboardTaskPaymentTableStatus.summary);
+      },
+    },
+  });
+  const next = useCallback(() => {
+    transitions.current[state].next?.();
+  }, [state]);
+
+  const back = useCallback(() => {
+    transitions.current[state].back?.();
+  }, [state]);
+
+  return {
+    next,
+    back,
+  };
 };
 
 export const BridgePurchaseTaskPayment: FC = observer(() => {
-  const {
-    selectedProcessData,
-    dashboardTask,
-    userSetting: {
-      setting: { lastSelectedProcessId },
-    },
-  } = useMst();
-  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const { data: processData } = selectedProcessData;
+  const paymentCardFormRef = useRef(null);
 
-  const [loanInfo, setLoanInfo] = useState<BridgePurchaseRatesLoanInfo>();
-  const [productInfo, setProductInfo] = useState<RatesProductData>();
-  const [taskId, setTaskId] = useState<string>('');
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
+  const [uploadLoading, setUploadLoading] = useState<boolean>(false);
+
+  const [paymentStatus, setPaymentStatus] =
+    useState<DashboardTaskPaymentMethodsStatus>(
+      DashboardTaskPaymentMethodsStatus.undone,
+    );
+  const [tableStatus, setTableStatus] =
+    useState<DashboardTaskPaymentTableStatus>(
+      DashboardTaskPaymentTableStatus.notice,
+    );
+  const [noticeCheck, setNoticeCheck] = useState<boolean>(false);
+  const [summaryCheck, setSummaryCheck] = useState<boolean>(false);
+  const [paymentCheck, setPaymentCheck] = useState<boolean>(false);
+
+  const [clickable, setClickable] = useState<boolean>(true);
+
+  const [productInfo, setProductInfo] = useState<
+    BridgePurchaseRatesLoanInfo &
+      Pick<
+        RatesProductData,
+        'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm'
+      >
+  >();
+  const [haveAppraisal, setHaveAppraisal] = useState<boolean | undefined>();
+  const [appraisalFiles, setAppraisalFiles] = useState<TaskFiles[]>([]);
+  const [paymentDetail, setPaymentDetail] = useState<
+    SPaymentDetails | undefined
+  >();
 
   const { loading } = useAsync(async () => {
-    return Promise.all([
-      _fetchRatesLoanInfo(lastSelectedProcessId),
-      _fetchRatesProductSelected(lastSelectedProcessId),
-      _fetchTaskFormInfo(router.query.taskId as string),
-    ])
+    return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
-        const { info } = res[0].data;
-        setLoanInfo(info);
-        setProductInfo(res[1].data);
+        const { productInfo, haveAppraisal, appraisalFiles, paymentStatus } =
+          res.data;
+        setProductInfo(productInfo);
+        setHaveAppraisal(haveAppraisal ?? undefined);
+        setAppraisalFiles(appraisalFiles ?? []);
+        setPaymentStatus(
+          paymentStatus as string as DashboardTaskPaymentMethodsStatus,
+        );
       })
-      .catch((err) => enqueueSnackbar(err, { variant: 'error' }));
-  }, [lastSelectedProcessId]);
+      .catch((err) =>
+        enqueueSnackbar(err, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, [router.query.taskId]);
 
-  useEffect(() => {
-    if (processData) {
-      const parseProcess = new ParseProcess(processData);
-      setTaskId(parseProcess.paymentTaskId);
+  const resetTable = useCallback(() => {
+    setTableStatus(DashboardTaskPaymentTableStatus.notice);
+    setSummaryCheck(false);
+    setNoticeCheck(false);
+    setPaymentCheck(false);
+  }, []);
+
+  const handledPayment = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      setClickable(false);
+
+      const paymentRes = await (
+        paymentCardFormRef.current as unknown as any
+      ).onSubmit(e);
+      setClickable(true);
+      if (paymentRes) {
+        const { status } = paymentRes;
+        resetTable();
+        setPaymentStatus(status as string as DashboardTaskPaymentMethodsStatus);
+      }
+    },
+    [resetTable],
+  );
+
+  const disabledButton = useMemo(() => {
+    switch (tableStatus) {
+      case DashboardTaskPaymentTableStatus.notice:
+        return !noticeCheck;
+      case DashboardTaskPaymentTableStatus.summary:
+        return !summaryCheck || loading || saveLoading;
+      case DashboardTaskPaymentTableStatus.payment:
+        return !paymentCheck || !clickable || loading;
     }
-  }, [processData]);
+  }, [
+    tableStatus,
+    noticeCheck,
+    summaryCheck,
+    loading,
+    saveLoading,
+    paymentCheck,
+    clickable,
+  ]);
 
-  return (
-    <Box className={'container'} sx={useStyles}>
-      <Box className={'pageMain'}>
-        <PaymentTask
-          backToList={() =>
-            router.push({
-              pathname: '/dashboard/tasks',
-              query: { processId: router.query.processId },
-            })
-          }
-          loanDetail={
-            <BridgePurchasePaymentSummary
-              loading={loading}
-              loanInfo={loanInfo}
-              productInfo={productInfo}
-            />
-          }
-          paymentStatus={dashboardTask.paymentStatus}
-          processId={lastSelectedProcessId as string}
-          productType={'bridge'}
-          sceneType={'purchase'}
-          task={dashboardTask}
-          taskId={taskId}
-        />
-      </Box>
-    </Box>
+  const backToList = useCallback(async () => {
+    await router.push({
+      pathname: '/dashboard/tasks',
+      query: { processId: router.query.processId },
+    });
+  }, [router]);
+
+  const handledSaveFormAndGetPaymentDetail = useCallback(async () => {
+    setSaveLoading(true);
+
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm: {
+        productInfo,
+        haveAppraisal,
+        appraisalFiles,
+      },
+    };
+
+    try {
+      await _updateTaskFormInfo(postData);
+      const { data } = await _fetchPaymentDetails({
+        procInstId: router.query.processId as string,
+      });
+      setPaymentDetail(data);
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [
+    appraisalFiles,
+    enqueueSnackbar,
+    haveAppraisal,
+    productInfo,
+    router.query.processId,
+    router.query.taskId,
+  ]);
+
+  const { back, next } = useStateMachine(tableStatus, setTableStatus);
+
+  const renderNode = useMemo(() => {
+    switch (tableStatus) {
+      case DashboardTaskPaymentTableStatus.notice:
+        return (
+          <PaymentNotice
+            check={noticeCheck}
+            onCheckValueChange={(e) => setNoticeCheck(e.target.checked)}
+          />
+        );
+      case DashboardTaskPaymentTableStatus.summary:
+        return (
+          <PaymentSummary
+            check={summaryCheck}
+            fileList={appraisalFiles}
+            haveAppraisal={haveAppraisal}
+            loanSummary={
+              <BridgePurchasePaymentSummary productInfo={productInfo} />
+            }
+            onCheckValueChange={(e) => setSummaryCheck(e.target.checked)}
+            onFileListChange={setAppraisalFiles}
+            onHaveAppraisalChange={(e, value) => {
+              if (value !== null) {
+                setHaveAppraisal(value === 'yes');
+              }
+            }}
+            onUploadLoadingChange={setUploadLoading}
+            uploadLoading={uploadLoading}
+          />
+        );
+      case DashboardTaskPaymentTableStatus.payment:
+        return (
+          <PaymentMethods
+            check={paymentCheck}
+            onCheckValueChange={(e) => setPaymentCheck(e.target.checked)}
+            paymentDetail={paymentDetail}
+            ref={paymentCardFormRef}
+          />
+        );
+    }
+  }, [
+    appraisalFiles,
+    haveAppraisal,
+    noticeCheck,
+    paymentCheck,
+    paymentDetail,
+    productInfo,
+    summaryCheck,
+    tableStatus,
+    uploadLoading,
+  ]);
+
+  const renderButton = useMemo(() => {
+    switch (tableStatus) {
+      case DashboardTaskPaymentTableStatus.notice:
+        return (
+          <Stack
+            flexDirection={'row'}
+            gap={3}
+            justifyContent={'center'}
+            maxWidth={600}
+            mt={6}
+            mx={'auto'}
+            width={'100%'}
+          >
+            <StyledButton
+              color={'info'}
+              onClick={async () => {
+                await backToList();
+                back();
+              }}
+              sx={{ flex: 1 }}
+              variant={'text'}
+            >
+              Back
+            </StyledButton>
+            <StyledButton
+              color={'primary'}
+              disabled={disabledButton}
+              onClick={next}
+              sx={{ flex: 1 }}
+            >
+              Next
+            </StyledButton>
+          </Stack>
+        );
+      case DashboardTaskPaymentTableStatus.summary:
+        return (
+          <Stack
+            flexDirection={'row'}
+            gap={3}
+            justifyContent={'center'}
+            maxWidth={600}
+            mt={6}
+            mx={'auto'}
+            width={'100%'}
+          >
+            <StyledButton
+              color={'info'}
+              onClick={back}
+              sx={{ flex: 1 }}
+              variant={'text'}
+            >
+              Back
+            </StyledButton>
+            <StyledButton
+              color={'primary'}
+              disabled={disabledButton}
+              loading={saveLoading}
+              loadingText={'Saving...'}
+              onClick={async () => {
+                await handledSaveFormAndGetPaymentDetail();
+                next();
+              }}
+              sx={{ flex: 1 }}
+            >
+              Next
+            </StyledButton>
+          </Stack>
+        );
+      case DashboardTaskPaymentTableStatus.payment:
+        return (
+          <Stack
+            flexDirection={'row'}
+            gap={3}
+            justifyContent={'center'}
+            maxWidth={600}
+            mt={6}
+            mx={'auto'}
+            width={'100%'}
+          >
+            <StyledButton
+              color={'info'}
+              onClick={back}
+              sx={{ flex: 1 }}
+              variant={'text'}
+            >
+              Back
+            </StyledButton>
+            <StyledButton
+              color={'primary'}
+              disabled={disabledButton}
+              onClick={(e) => handledPayment(e)}
+              sx={{ flex: 1 }}
+            >
+              Pay now
+            </StyledButton>
+          </Stack>
+        );
+    }
+  }, [
+    back,
+    backToList,
+    disabledButton,
+    handledPayment,
+    handledSaveFormAndGetPaymentDetail,
+    next,
+    saveLoading,
+    tableStatus,
+  ]);
+
+  return loading ? (
+    <StyledLoading sx={{ color: 'primary.main' }} />
+  ) : paymentStatus === DashboardTaskPaymentMethodsStatus.undone ? (
+    <>
+      {renderNode}
+      {renderButton}
+    </>
+  ) : (
+    <PaymentStatus paymentStatus={paymentStatus} />
   );
 });

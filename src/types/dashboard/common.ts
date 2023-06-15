@@ -185,3 +185,16 @@ export enum DashboardTaskAutomaticPayment {
   plaid = 'PLAID',
   ach_debit = 'ACH_DEBIT',
 }
+
+export enum DashboardTaskPaymentTableStatus {
+  notice = 'NOTICE',
+  summary = 'SUMMARY',
+  payment = 'PAYMENT',
+}
+
+export enum DashboardTaskPaymentMethodsStatus {
+  undone = 'UNDONE',
+  processing = 'PROCESSING',
+  complete = 'COMPLETE',
+  fail = 'FAIL',
+}

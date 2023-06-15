@@ -66,7 +66,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
   const [searchForm, setSearchForm] = useState<BRQueryData>(initialize);
   const [productList, setProductList] = useState<RatesProductData[]>();
   const [loanInfo, setLoanInfo] = useState<BridgeRefinanceLoanInfo>();
-  const [encompassData, setEncompassData] = useState<Encompass>();
+  const [, setEncompassData] = useState<Encompass>();
   const [selectedItem, setSelectedItem] = useState<
     BridgeRefinanceLoanInfo &
       Pick<
