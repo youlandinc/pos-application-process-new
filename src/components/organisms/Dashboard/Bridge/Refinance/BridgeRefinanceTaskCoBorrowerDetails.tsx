@@ -79,7 +79,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
 
   const [firstName, setFirstName] = useState<string | undefined>();
   const [lastName, setLastName] = useState<string | undefined>();
-  const [dateOfBirth, setDateOfBirth] = useState<unknown | Date | null>();
+  const [dateOfBirth, setDateOfBirth] = useState<unknown | Date | null>(null);
   const [phoneNumber, setPhoneNumber] = useState<string | number>('');
   const [email, setEmail] = useState<string | undefined>();
   const [gender, setGender] = useState<string | undefined>();

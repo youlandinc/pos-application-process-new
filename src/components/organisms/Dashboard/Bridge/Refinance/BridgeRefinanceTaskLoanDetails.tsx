@@ -43,7 +43,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
 
   const [isCor, setIsCor] = useState<boolean | undefined>();
   const [cor, setCor] = useState<number | undefined>();
-  const [corDate, setCorDate] = useState<unknown | Date | null>();
+  const [corDate, setCorDate] = useState<unknown | Date | null>(null);
   const [arv, setArv] = useState<number | undefined>();
 
   const [primaryReason, setPrimaryReason] = useState<
@@ -68,18 +68,26 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
           primaryReason,
           exitStrategy,
         } = res.data;
-        setHomeValue(homeValue);
-        setBalance(balance);
-        setIsCashOut(isCashOut);
-        setCashOutAmount(cashOutAmount);
-        setIsCor(isCor);
-        setCor(cor);
+
+        setHomeValue(homeValue || undefined);
+        setBalance(balance || undefined);
+
+        setIsCashOut(isCashOut ?? undefined);
+        setCashOutAmount(cashOutAmount || undefined);
+
+        setIsCor(isCor ?? undefined);
+        setCor(cor || undefined);
         if (corDate) {
           setCorDate(new Date(corDate));
         }
-        setArv(arv);
-        setPrimaryReason(primaryReason as DashboardTaskPrimaryReasonRefinance);
-        setExitStrategy(exitStrategy as DashboardTaskExitStrategy);
+        setArv(arv || undefined);
+
+        setPrimaryReason(
+          (primaryReason as DashboardTaskPrimaryReasonRefinance) || undefined,
+        );
+        setExitStrategy(
+          (exitStrategy as DashboardTaskExitStrategy) || undefined,
+        );
       })
       .catch((err) =>
         enqueueSnackbar(err as string, {
@@ -109,12 +117,9 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
             !!balance &&
             !!primaryReason &&
             !!exitStrategy
-        : dateValid &&
-            !!homeValue &&
-            !!balance &&
-            !!primaryReason &&
-            !!exitStrategy;
+        : !!homeValue && !!balance && !!primaryReason && !!exitStrategy;
     }
+
     return isCor
       ? dateValid &&
           !!arv &&
@@ -123,11 +128,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
           !!balance &&
           !!primaryReason &&
           !!exitStrategy
-      : dateValid &&
-          !!homeValue &&
-          !!balance &&
-          !!primaryReason &&
-          !!exitStrategy;
+      : !!homeValue && !!balance && !!primaryReason && !!exitStrategy;
   }, [
     arv,
     balance,

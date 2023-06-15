@@ -3,6 +3,7 @@ import { useSnackbar } from 'notistack';
 
 import { useMst } from '@/models/Root';
 
+import { AUTO_HIDE_DURATION } from '@/constants';
 import { _bindProcess, _updateTask, _updateTaskVariables } from '@/requests';
 import { ServerTaskKey } from '@/types/enum';
 import { usePersistFn } from './index';
@@ -18,7 +19,10 @@ export const useStoreData = () => {
       return await _updateTaskVariables(taskId as string, variables)
         .then((res) => res)
         .catch((err) => {
-          enqueueSnackbar(err as string, { variant: 'error' });
+          enqueueSnackbar(err as string, {
+            variant: 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+          });
         });
     },
     [taskId],
@@ -29,7 +33,10 @@ export const useStoreData = () => {
       return await _updateTask(tId || (taskId as string), 'complete')
         .then((res) => res)
         .catch((err) => {
-          enqueueSnackbar(err as string, { variant: 'error' });
+          enqueueSnackbar(err as string, {
+            variant: 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+          });
         });
     },
     [taskId],
@@ -40,7 +47,10 @@ export const useStoreData = () => {
       return await _updateTask(taskId, 'change', newActivityKey)
         .then((res) => res)
         .catch((err) => {
-          enqueueSnackbar(err as string, { variant: 'error' });
+          enqueueSnackbar(err as string, {
+            variant: 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+          });
         });
     },
     [taskId],
@@ -52,7 +62,10 @@ export const useStoreData = () => {
       successCb?: (TaskData: any) => void,
     ): Promise<void> => {
       const res = await updateTaskVariables(variables).catch((err) => {
-        enqueueSnackbar(err as string, { variant: 'error' });
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
       });
       if (res) {
         const nextTask = await completeTask();
@@ -94,10 +107,14 @@ export const useStoreData = () => {
   const bindProcess = usePersistFn(() => {
     _bindProcess(bpmn.processId as string)
       .then((res) => {
+        //eslint-disable-next-line no-console
         console.log(res, 'bindSuccess');
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, { variant: 'error' });
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
       });
   });
 

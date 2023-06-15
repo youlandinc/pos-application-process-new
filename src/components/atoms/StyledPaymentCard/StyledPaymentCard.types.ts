@@ -1,6 +1,6 @@
 export interface StyledPaymentCardProps {
-  secret: string;
-  amount: number;
+  secret: string | undefined;
+  amount: number | undefined;
   title?: string;
   subtitle?: string;
 }

@@ -1,121 +1,137 @@
 import { FC } from 'react';
-import { Box, SxProps } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
-import { POSFlex, POSFont } from '@/styles';
-import { BridgeRefinanceRatesLoanInfo } from '@/types';
-import { StyledLoading } from '@/components/atoms';
-import {
-  PaymentTaskBaseComponentProps,
-  ProductItem,
-} from '@/components/molecules';
 import { POSFormatDollar, POSFormatLocalPercent } from '@/utils';
+import { BridgeRefinanceRatesLoanInfo, RatesProductData } from '@/types';
 
-const useStyle: SxProps = {
-  bgcolor: 'info.A100',
-  width: '100%',
-
-  borderRadius: 2,
-  p: 3,
-  color: 'text.white',
-  '& .paymentBoxTitle': {
-    textAlign: 'center',
-    ...POSFont(24, 700, 1.5, 'text.white'),
-  },
-  '& .paymentInfoBox': {
-    mt: 3,
-  },
-  '& .paymentInfoItem': {
-    ...POSFlex('center', 'space-between', 'row'),
-    ...POSFont(16, 400, 1.5, 'text.white'),
-    padding: '12px 0',
-    '& .info, & .label': {
-      color: 'text.white',
-    },
-  },
-};
-interface BRPaymentSummary
-  extends PaymentTaskBaseComponentProps<BridgeRefinanceRatesLoanInfo> {
-  loading?: boolean;
+interface BridgeRefinancePaymentSummaryProps {
+  productInfo:
+    | (BridgeRefinanceRatesLoanInfo &
+        Pick<
+          RatesProductData,
+          'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm'
+        >)
+    | undefined;
 }
 
-export const BridgeRefinancePaymentSummary: FC<BRPaymentSummary> = (props) => {
-  const { loading, loanInfo, productInfo } = props;
-
+export const BridgeRefinancePaymentSummary: FC<
+  BridgeRefinancePaymentSummaryProps
+> = ({
+  productInfo = {
+    interestRateOfYear: undefined,
+    loanTerm: undefined,
+    totalLoanAmount: undefined,
+    balance: undefined,
+    cashOutAmount: undefined,
+    cor: undefined,
+    paymentOfMonth: undefined,
+  },
+}) => {
   return (
-    <Box className={'paymentBox'} sx={useStyle}>
-      {loading ? (
-        <StyledLoading />
-      ) : (
-        <>
-          <Box className={'paymentBoxTitle'}>Your Rate</Box>
-          <Box className={'paymentInfoBox'}>
-            <ProductItem
-              borderBottom={'1px solid #C4C4C4'}
-              className={'paymentInfoItem'}
-              info={
-                <Box fontSize={20} fontWeight={700}>
-                  {POSFormatLocalPercent(productInfo?.interestRateOfYear)}
-                </Box>
-              }
-              label={'Rate'}
-            />
-            <ProductItem
-              className={'paymentInfoItem'}
-              info={
-                <Box fontSize={20} fontWeight={700}>
-                  {productInfo?.loanTerm} months
-                </Box>
-              }
-              label={'Loan Term'}
-            />
-            <ProductItem
-              className={'paymentInfoItem'}
-              info={
-                <Box fontSize={20} fontWeight={700}>
-                  {POSFormatDollar(loanInfo?.totalLoanAmount)}
-                </Box>
-              }
-              label={'Total Loan Amount'}
-            />
-            <ProductItem
-              className={'paymentInfoItem'}
-              info={
-                <Box fontSize={20} fontWeight={700}>
-                  {POSFormatDollar(loanInfo?.balance)}
-                </Box>
-              }
-              label={'Remaining Balance'}
-            />
-            <ProductItem
-              className={'paymentInfoItem'}
-              info={
-                <Box fontSize={20} fontWeight={700}>
-                  {POSFormatDollar(loanInfo?.cashOutAmount)}
-                </Box>
-              }
-              label={'Cash Out Amount'}
-            />
-            <ProductItem
-              className={'paymentInfoItem'}
-              info={
-                <Box fontSize={20} fontWeight={700}>
-                  {loanInfo?.cor ? POSFormatDollar(loanInfo.cor) : 'N/A'}
-                </Box>
-              }
-              label={'Rehab Loan Amount'}
-            />
-            <ProductItem
-              className={'paymentInfoItem'}
-              info={
-                <Box fontSize={20} fontWeight={700}>
-                  {POSFormatDollar(productInfo?.paymentOfMonth)}
-                </Box>
-              }
-              label={'Monthly Payment'}
-            />
-          </Box>
-        </>
-      )}
-    </Box>
+    <Stack
+      alignItems={'center'}
+      bgcolor={'info.A100'}
+      borderRadius={2}
+      color={'text.white'}
+      gap={1.5}
+      maxWidth={600}
+      p={3}
+      width={'100%'}
+    >
+      <Typography variant={'h4'}>Your Rate</Typography>
+      <Stack width={'100%'}>
+        <Stack
+          alignItems={'center'}
+          borderBottom={'1px solid white'}
+          flex={1}
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+          py={1.5}
+        >
+          <Typography variant={'body1'}>Interest Rate</Typography>
+          <Typography variant={'subtitle1'}>
+            {POSFormatLocalPercent(productInfo?.interestRateOfYear)}
+          </Typography>
+        </Stack>
+
+        <Stack
+          alignItems={'center'}
+          flex={1}
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+          py={1.5}
+        >
+          <Typography variant={'body1'}>Loan Term</Typography>
+          <Typography variant={'subtitle1'}>
+            {productInfo?.loanTerm} months
+          </Typography>
+        </Stack>
+
+        <Stack
+          alignItems={'center'}
+          flex={1}
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+          py={1.5}
+        >
+          <Typography variant={'body1'}>Total Loan Amount</Typography>
+          <Typography variant={'subtitle1'}>
+            {POSFormatDollar(productInfo?.totalLoanAmount)}
+          </Typography>
+        </Stack>
+
+        <Stack
+          alignItems={'center'}
+          flex={1}
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+          py={1.5}
+        >
+          <Typography variant={'body1'}>Payoff Amount</Typography>
+          <Typography variant={'subtitle1'}>
+            {POSFormatDollar(productInfo?.balance)}
+          </Typography>
+        </Stack>
+
+        <Stack
+          alignItems={'center'}
+          flex={1}
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+          py={1.5}
+        >
+          <Typography variant={'body1'}>Cash Out Amount</Typography>
+          <Typography variant={'subtitle1'}>
+            {POSFormatDollar(productInfo?.cashOutAmount)}
+          </Typography>
+        </Stack>
+
+        <Stack
+          alignItems={'center'}
+          flex={1}
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+          py={1.5}
+        >
+          <Typography variant={'body1'}>Rehab Loan Amount</Typography>
+          <Typography variant={'subtitle1'}>
+            {productInfo?.cor ? POSFormatDollar(productInfo.cor) : 'N/A'}
+          </Typography>
+        </Stack>
+
+        <Stack
+          alignItems={'center'}
+          flex={1}
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+          py={1.5}
+        >
+          <Typography variant={'body1'}>Monthly Payment</Typography>
+          <Typography variant={'subtitle1'}>
+            {POSFormatDollar(productInfo?.paymentOfMonth)}
+          </Typography>
+        </Stack>
+      </Stack>
+    </Stack>
   );
 };

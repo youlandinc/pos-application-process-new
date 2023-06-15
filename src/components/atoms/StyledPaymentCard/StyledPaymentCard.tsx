@@ -1,4 +1,3 @@
-// import { POSFormatDollar } from '@/utils';
 import {
   FormEvent,
   forwardRef,
@@ -25,6 +24,7 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 
+import { DashboardTaskPaymentMethodsStatus } from '@/types';
 import {
   StyledPaymentCardProps,
   StyledPaymentCardRef,
@@ -124,7 +124,12 @@ const _StyledPaymentCard = forwardRef<
     const onSubmit = async (e: FormEvent) => {
       e.preventDefault();
 
-      if (!stripe || !elements || !elements.getElement(CardNumberElement)) {
+      if (
+        !secret ||
+        !stripe ||
+        !elements ||
+        !elements.getElement(CardNumberElement)
+      ) {
         return;
       }
 
@@ -143,10 +148,13 @@ const _StyledPaymentCard = forwardRef<
       });
 
       if (error) {
-        return { error, status: 'fail' };
+        return { error, status: DashboardTaskPaymentMethodsStatus.fail };
       }
       if (paymentIntent?.status === 'succeeded') {
-        return { paymentIntent, status: 'complete' };
+        return {
+          paymentIntent,
+          status: DashboardTaskPaymentMethodsStatus.complete,
+        };
       }
     };
 
@@ -222,8 +230,8 @@ const _StyledPaymentCard = forwardRef<
             </Box>
           </Box>
           {/* <Box className={'payment_summary'}>
-            Total payment:{POSFormatDollar(amount)}
-          </Box> */}
+               Total payment:{POSFormatDollar(amount)}
+               </Box> */}
         </Box>
       </>
     );

@@ -261,9 +261,9 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
           </Transitions>
         </Box>
         <StyledTextFieldPassword
-          label={'Confirmed Password'}
+          label={'Confirm password'}
           onChange={(e) => setConfirmedPassword(e.target.value)}
-          placeholder={'Confirmed Password'}
+          placeholder={'Confirm password'}
           required
           validate={formError?.confirmedPassword}
           value={confirmedPassword}

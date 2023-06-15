@@ -3,7 +3,15 @@ import { Box, Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
+
 import { observer } from 'mobx-react-lite';
+
+import { Address, IAddress } from '@/models/common/Address';
+import {
+  OPTIONS_ACCOUNT_TYPE,
+  OPTIONS_TASK_AUTOMATIC_PAYMENT,
+} from '@/constants';
+import { useRenderPdf, useSwitch } from '@/hooks';
 
 import {
   StyledButton,
@@ -16,20 +24,10 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-import { Address, IAddress } from '@/models/common/Address';
-import {
-  OPTIONS_ACCOUNT_TYPE,
-  OPTIONS_TASK_AUTOMATIC_PAYMENT,
-} from '@/constants';
-import { useRenderPdf, useSwitch } from '@/hooks';
-
 export const BridgeRefinanceTaskPay: FC = observer(() => {
-  // const {
-
-  // } = useMst();
-  const { visible, open, close } = useSwitch(false);
-  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const { visible, open, close } = useSwitch(false);
 
   const [bankName, setBankName] = useState('');
   const [accountName, setAccountName] = useState('');

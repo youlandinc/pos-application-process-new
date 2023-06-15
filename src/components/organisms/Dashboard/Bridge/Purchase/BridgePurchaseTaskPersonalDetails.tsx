@@ -54,7 +54,9 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
     DashboardTaskMaritalStatus | undefined
   >();
   const [delinquentTimes, setDelinquentTimes] = useState<string | undefined>();
-  const [dischargeDate, setDischargeDate] = useState<unknown | Date | null>();
+  const [dischargeDate, setDischargeDate] = useState<unknown | Date | null>(
+    null,
+  );
 
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)

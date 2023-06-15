@@ -29,7 +29,7 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
   const [propertyValue, setPropertyValue] = useState<number | undefined>();
   const [isCor, setIsCor] = useState<boolean>();
   const [cor, setCor] = useState<number | undefined>();
-  const [corDate, setCorDate] = useState<unknown | Date | null>();
+  const [corDate, setCorDate] = useState<unknown | Date | null>(null);
   const [arv, setArv] = useState<number | undefined>();
 
   const { loading } = useAsync(async () => {
@@ -37,12 +37,14 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
       .then((res) => {
         const { purchasePrice, propertyValue, isCor, corDate, cor, arv } =
           res.data;
-        setPurchasePrice(purchasePrice);
-        setPropertyValue(propertyValue);
-        setIsCor(isCor);
-        setCorDate(corDate ? new Date(corDate) : undefined);
-        setCor(cor);
-        setArv(arv);
+        setPurchasePrice(purchasePrice || undefined);
+        setPropertyValue(propertyValue || undefined);
+        setIsCor(isCor ?? undefined);
+        if (corDate) {
+          setCorDate(new Date(corDate));
+        }
+        setCor(cor || undefined);
+        setArv(arv || undefined);
       })
       .catch((err) => {
         enqueueSnackbar(err as string, {

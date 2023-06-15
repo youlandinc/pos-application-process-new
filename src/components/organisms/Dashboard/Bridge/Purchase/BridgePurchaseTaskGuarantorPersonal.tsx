@@ -37,12 +37,12 @@ export const BridgePurchaseTaskGuarantorPersonal: FC = observer(() => {
   const [borrowerType, setBorrowerType] = useState<
     DashboardTaskBorrowerType | undefined
   >();
-  const [entityName, setEntityName] = useState<string>('');
-  const [signatoryTitle, setSignatoryTitle] = useState<string>('');
+  const [entityName, setEntityName] = useState<string | undefined>('');
+  const [signatoryTitle, setSignatoryTitle] = useState<string | undefined>('');
   const [entityType, setEntityType] = useState<
     DashboardTaskBorrowerEntityType | undefined
   >();
-  const [stateId, setStateId] = useState<string>('');
+  const [stateId, setStateId] = useState<string | undefined>('');
   const [entityState, setEntityState] = useState<string | undefined>();
 
   const { loading } = useAsync(async () => {
@@ -56,12 +56,13 @@ export const BridgePurchaseTaskGuarantorPersonal: FC = observer(() => {
           signatoryTitle,
           stateId,
         } = res.data;
-        setBorrowerType(borrowerType);
+
+        setBorrowerType(borrowerType || undefined);
         setEntityType(entityType || undefined);
-        setEntityName(entityName || '');
-        setSignatoryTitle(signatoryTitle || '');
+        setEntityName(entityName || undefined);
+        setSignatoryTitle(signatoryTitle || undefined);
         setEntityState(entityState || undefined);
-        setStateId(stateId || '');
+        setStateId(stateId || undefined);
       })
       .catch((err) =>
         enqueueSnackbar(err as string, {

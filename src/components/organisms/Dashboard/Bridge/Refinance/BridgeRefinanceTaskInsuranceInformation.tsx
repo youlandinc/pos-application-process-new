@@ -1,32 +1,39 @@
-import { FC, useState } from 'react';
+import { TaskFiles } from '@/types';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
-import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
+
+import { Address, IAddress } from '@/models/common/Address';
+import { AUTO_HIDE_DURATION } from '@/constants';
+import {
+  _deleteTaskFile,
+  _fetchTaskFormInfo,
+  _updateTaskFormInfo,
+  _uploadTaskFile,
+} from '@/requests/dashboard';
 
 import {
   StyledButton,
   StyledFormItem,
   StyledGoogleAutoComplete,
+  StyledLoading,
   StyledTextField,
   StyledTextFieldPhone,
+  StyledUploadBox,
 } from '@/components/atoms';
-import { Stack } from '@mui/material';
-
-import { Address, IAddress } from '@/models/common/Address';
 
 export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
-  // const {
-
-  // } = useMst();
-  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [agentName, setAgentName] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState<IAddress>(
+  const [saveLoading, setSaveLoading] = useState(false);
+  const [uploadLoading, setUploadLoading] = useState(false);
+
+  const [address] = useState<IAddress>(
     Address.create({
       formatAddress: '',
       state: '',
@@ -39,7 +46,129 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
     }),
   );
 
-  return (
+  const [agentName, setAgentName] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+
+  const [insuranceFiles, setInsuranceFiles] = useState<TaskFiles[]>([]);
+
+  const handledDelete = async (index: number) => {
+    try {
+      await _deleteTaskFile(router.query.taskId as string, {
+        fieldName: 'insuranceFiles',
+        fileUrl: insuranceFiles[index]?.url,
+      });
+      const temp = JSON.parse(JSON.stringify(insuranceFiles));
+      temp.splice(index, 1);
+      setInsuranceFiles(temp);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    }
+  };
+
+  const handledSuccess = async (files: FileList) => {
+    setUploadLoading(true);
+
+    const formData = new FormData();
+
+    formData.append('fieldName', 'insuranceFiles');
+    Array.from(files, (item) => {
+      formData.append('files', item);
+    });
+    try {
+      const { data } = await _uploadTaskFile(
+        formData,
+        router.query.taskId as string,
+      );
+      setInsuranceFiles([...insuranceFiles, ...data]);
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setUploadLoading(false);
+    }
+  };
+
+  const { loading } = useAsync(async () => {
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res) => {
+        const {
+          agentName,
+          companyName,
+          phoneNumber,
+          email,
+          propAddr,
+          insuranceFiles,
+        } = res.data;
+
+        setAgentName(agentName ?? '');
+        setCompanyName(companyName ?? '');
+        setPhoneNumber(phoneNumber ?? '');
+        setEmail(email ?? '');
+
+        setInsuranceFiles(insuranceFiles ?? []);
+
+        setTimeout(() => {
+          address.injectServerData(propAddr);
+        });
+      })
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, [router.query.taskId]);
+
+  const isDisabled = useMemo(() => {
+    return (
+      insuranceFiles.length > 0 &&
+      !!agentName &&
+      !!companyName &&
+      !!email &&
+      !!phoneNumber &&
+      address.checkAddressValid
+    );
+  }, [
+    address.checkAddressValid,
+    agentName,
+    companyName,
+    email,
+    insuranceFiles.length,
+    phoneNumber,
+  ]);
+
+  const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
+    const postData = {
+      taskId: router.query.taskId as string,
+      taskForm: {},
+    };
+    try {
+      await _updateTaskFormInfo(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [enqueueSnackbar, router]);
+
+  return loading ? (
+    <StyledLoading sx={{ color: 'primary.main' }} />
+  ) : (
     <StyledFormItem
       gap={6}
       label={'Homeowner Insurance Provider Information'}
@@ -55,44 +184,43 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
         maxWidth={600}
         sub
       >
-        <Stack
-          flexDirection={{ lg: 'row', xs: 'column' }}
-          gap={3}
-          width={'100%'}
-        >
-          <StyledTextField label={'Company Name'} value={companyName} />
-          <StyledTextField label={'Agent Name'} value={agentName} />
-        </Stack>
+        <StyledTextField
+          label={'Company Name'}
+          onChange={(e) => setCompanyName(e.target.value)}
+          value={companyName}
+        />
+        <StyledTextField
+          label={'Agent Name'}
+          onChange={(e) => setAgentName(e.target.value)}
+          value={agentName}
+        />
 
-        <Stack gap={3} width={'100%'}>
-          <StyledTextFieldPhone
-            label={'Phone Number'}
-            onValueChange={({ value }) => setPhoneNumber(value)}
-            value={phoneNumber}
-          />
-          <StyledTextField label={'Email'} value={email} />
-        </Stack>
+        <StyledTextFieldPhone
+          label={'Phone Number'}
+          onValueChange={({ value }) => setPhoneNumber(value)}
+          value={phoneNumber}
+        />
+        <StyledTextField
+          label={'Email'}
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+        />
 
-        <Stack width={'100%'}>
-          <StyledGoogleAutoComplete address={address} />
-        </Stack>
+        <StyledGoogleAutoComplete address={address} />
       </StyledFormItem>
 
-      {/* <StyledFormItem
-         label={'Upload your evidence of insurance'}
-         maxWidth={900}
-         sub
-         >
-         <StyledUploadBox
-         fileList={[]}
-         onDelete={() => {
-         console.log('onDelete');
-         }}
-         onSuccess={() => {
-         console.log('onSuccess');
-         }}
-         />
-         </StyledFormItem> */}
+      <StyledFormItem
+        label={'Upload your evidence of insurance'}
+        maxWidth={900}
+        sub
+      >
+        <StyledUploadBox
+          fileList={insuranceFiles}
+          loading={uploadLoading}
+          onDelete={handledDelete}
+          onSuccess={handledSuccess}
+        />
+      </StyledFormItem>
 
       <Stack
         flexDirection={'row'}
@@ -114,7 +242,15 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
         >
           Back
         </StyledButton>
-        <StyledButton sx={{ flex: 1 }}>Save</StyledButton>
+        <StyledButton
+          disabled={!isDisabled || saveLoading}
+          loading={saveLoading}
+          loadingText={'Saving...'}
+          onClick={handledSubmit}
+          sx={{ flex: 1 }}
+        >
+          Save
+        </StyledButton>
       </Stack>
     </StyledFormItem>
   );

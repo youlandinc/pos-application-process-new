@@ -69,3 +69,7 @@ export const _deleteTaskFile = (
     data: params,
   });
 };
+
+export const _restartPaymentPipeline = (taskId: string) => {
+  return post(`/dashboard/loan/task/payment/${taskId}`);
+};

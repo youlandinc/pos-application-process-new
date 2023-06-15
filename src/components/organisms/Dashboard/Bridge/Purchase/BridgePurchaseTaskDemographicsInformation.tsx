@@ -200,7 +200,6 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
       }
       return notProvideRace || black || white;
     };
-    console.log(!!gender, conditionB(), conditionA);
     return !!gender && conditionB() && conditionA;
   }, [
     american,
