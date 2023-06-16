@@ -1,3 +1,4 @@
+import { POSNotUndefined } from '@/utils';
 import { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -168,18 +169,22 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
       case DashboardTaskPaymentTableStatus.notice:
         return !noticeCheck;
       case DashboardTaskPaymentTableStatus.summary:
-        return !summaryCheck || loading || saveLoading;
+        if (!POSNotUndefined(haveAppraisal) || !summaryCheck) {
+          return false;
+        }
+        return haveAppraisal ? !appraisalFiles.length : false;
       case DashboardTaskPaymentTableStatus.payment:
         return !paymentCheck || !clickable || loading;
     }
   }, [
     tableStatus,
     noticeCheck,
+    haveAppraisal,
     summaryCheck,
-    loading,
-    saveLoading,
+    appraisalFiles.length,
     paymentCheck,
     clickable,
+    loading,
   ]);
 
   const backToList = useCallback(async () => {
