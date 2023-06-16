@@ -172,7 +172,15 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         setTaskDetails(res?.data?.tasks);
       })
       .catch((err) => {
-        enqueueSnackbar(err, { variant: 'error' });
+        enqueueSnackbar(err, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          onClose: () =>
+            router.push({
+              pathname: '/dashboard/tasks',
+              query: { processId: router.query.processId },
+            }),
+        });
       });
   }, [router.query.processId]);
 

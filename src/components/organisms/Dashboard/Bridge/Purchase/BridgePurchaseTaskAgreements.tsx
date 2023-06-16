@@ -36,6 +36,11 @@ export const BridgePurchaseTaskAgreements: FC = observer(() => {
       enqueueSnackbar(e as string, {
         variant: 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        onClose: () =>
+          router.push({
+            pathname: '/dashboard/tasks',
+            query: { processId: router.query.processId },
+          }),
       });
     } finally {
       setSaveLoading(false);

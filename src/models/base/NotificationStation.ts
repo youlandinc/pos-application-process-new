@@ -28,7 +28,7 @@ export const NotificationStation = types
         });
       }
     },
-    removeSnackbar(key) {
+    removeSnackbar(key: any) {
       self.notifications = observable(
         self.notifications.filter((notification) => notification.key !== key),
       );
