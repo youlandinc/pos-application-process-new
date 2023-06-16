@@ -135,6 +135,9 @@ export const ChangePassword: FC = () => {
               onSubmit={onSubmitClick}
             >
               <StyledTextField
+                inputProps={{
+                  autocomplete: 'new-password',
+                }}
                 label={'Existing Password'}
                 onChange={(e) => setOldPassword(e.target.value)}
                 placeholder={'Existing Password'}
@@ -150,6 +153,9 @@ export const ChangePassword: FC = () => {
                           .length > 0
                       : false
                   }
+                  inputProps={{
+                    autocomplete: 'new-password',
+                  }}
                   label={'Password'}
                   onChange={handledPasswordChange}
                   placeholder={'New Password'}
@@ -196,6 +202,9 @@ export const ChangePassword: FC = () => {
                 </Transitions>
               </Box>
               <StyledTextFieldPassword
+                inputProps={{
+                  autocomplete: 'new-password',
+                }}
                 label={'Confirm password'}
                 onChange={(e) => setConfirmedPassword(e.target.value)}
                 placeholder={'Confirmed New Password'}

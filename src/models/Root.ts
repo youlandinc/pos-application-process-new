@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react';
-import { Instance, types } from 'mobx-state-tree';
 import Router from 'next/router';
+
+import { Instance, types } from 'mobx-state-tree';
 
 import {
   ApplicationForm,
