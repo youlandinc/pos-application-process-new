@@ -216,7 +216,6 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
                     setCorDate(date);
                   }}
                   //validate={}
-                  minDate={new Date()}
                   value={corDate}
                 />
               </Stack>
