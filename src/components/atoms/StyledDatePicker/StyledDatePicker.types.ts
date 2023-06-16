@@ -10,4 +10,8 @@ export interface StyledDatePickerProps {
   onChangeError?: (error: string | undefined) => void;
   validate?: string[];
   disabled?: boolean;
+  disablePast?: boolean;
+  disableFuture?: boolean;
+  minDate?: Date;
+  maxDate?: Date;
 }
