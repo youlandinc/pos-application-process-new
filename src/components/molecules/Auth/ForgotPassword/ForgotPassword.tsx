@@ -189,6 +189,9 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
         sx={isNestForm ? ForgotPasswordStyles.form : {}}
       >
         <StyledTextField
+          inputProps={{
+            autocomplete: 'new-password',
+          }}
           label={'Email'}
           onChange={(e) => setEmail(e.target.value)}
           placeholder={'Email'}
@@ -198,6 +201,9 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
         />
         <Box className="POS_flex POS_jc_sb">
           <StyledTextField
+            inputProps={{
+              autocomplete: 'new-password',
+            }}
             label={'Verification Code'}
             onChange={(e) => setVerificationCode(e.target.value)}
             placeholder={'Verification Code'}
@@ -223,6 +229,9 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
                   0
                 : false
             }
+            inputProps={{
+              autocomplete: 'new-password',
+            }}
             label={'Password'}
             onChange={handledPasswordChange}
             placeholder={'Password'}
@@ -261,6 +270,9 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
           </Transitions>
         </Box>
         <StyledTextFieldPassword
+          inputProps={{
+            autocomplete: 'new-password',
+          }}
           label={'Confirm password'}
           onChange={(e) => setConfirmedPassword(e.target.value)}
           placeholder={'Confirm password'}
