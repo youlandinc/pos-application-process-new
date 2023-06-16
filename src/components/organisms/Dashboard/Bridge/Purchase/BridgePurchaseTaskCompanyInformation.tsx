@@ -39,7 +39,7 @@ const initialValues: {
   phoneNumber: string;
   email: string;
   titleOrderNumber: string;
-  contractDate: null | unknown | Date;
+  contractDate?: null | unknown | Date;
 } = {
   firstName: '',
   lastName: '',
@@ -117,12 +117,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
             ? new Date(contactForm.contractDate)
             : null,
         });
-        setManageForm({
-          ...manageForm,
-          contractDate: manageForm.contractDate
-            ? new Date(manageForm.contractDate)
-            : null,
-        });
+        setManageForm(manageForm);
 
         setIsLoanClosing(isLoanClosing ?? undefined);
         setEscrowNumber(escrowNumber ?? undefined);
@@ -172,7 +167,6 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
         !!manageForm.phoneNumber &&
         !!manageForm.companyName &&
         !!manageForm.titleOrderNumber &&
-        dateValid(manageForm.contractDate) &&
         clientManageAddress.checkAddressValid
       );
     };
@@ -196,7 +190,6 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
     isLoanClosing,
     clientManageAddress.checkAddressValid,
     manageForm.companyName,
-    manageForm.contractDate,
     manageForm.email,
     manageForm.firstName,
     manageForm.lastName,
@@ -235,12 +228,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
               : null,
           },
           contactAddress: clientContactAddress.getPostData(),
-          manageForm: {
-            ...manageForm,
-            contractDate: dateValid(manageForm.contractDate)
-              ? format(manageForm.contractDate as Date, 'yyyy-MM-dd O')
-              : null,
-          },
+          manageForm,
           manageAddress: clientManageAddress.getPostData(),
           isLoanClosing,
           whoIsManaging,
@@ -343,7 +331,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
           value={contactForm.titleOrderNumber}
         />
         <StyledDatePicker
-          label={'MM/DD/YYYY'}
+          label={'Title Effective Date'}
           onChange={(date) =>
             setContactForm({ ...contactForm, contractDate: date })
           }
@@ -468,16 +456,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
                 }
                 value={manageForm.titleOrderNumber}
               />
-              <StyledDatePicker
-                label={'MM/DD/YYYY'}
-                onChange={(date) =>
-                  setManageForm({
-                    ...manageForm,
-                    contractDate: date,
-                  })
-                }
-                value={manageForm.contractDate}
-              />
+
               <StyledGoogleAutoComplete address={clientManageAddress} />
             </StyledFormItem>
           ) : (
