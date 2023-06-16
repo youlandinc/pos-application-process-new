@@ -17,9 +17,6 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
   return (
     <>
       <DatePicker
-        closeOnSelect
-        //desktopModeMediaQuery={theme.breakpoints.up('lg')}
-        disabledFuture
         disabled={disabled}
         label={label}
         minDate={null}
@@ -59,6 +56,9 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
         }}
         sx={StyledDatePickerStyles}
         value={value}
+        closeOnSelect
+        //desktopModeMediaQuery={theme.breakpoints.up('lg')}
+        disabledFuture
         {...rest}
       />
     </>
