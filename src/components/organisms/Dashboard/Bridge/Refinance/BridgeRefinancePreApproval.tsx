@@ -227,6 +227,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
         enqueueSnackbar(err as string, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          onClose: () => router.push('/pipeline'),
         }),
       );
   }, []);

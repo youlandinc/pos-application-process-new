@@ -120,6 +120,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
         enqueueSnackbar(err, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          onClose: () => router.push('/pipeline'),
         }),
       );
   });
