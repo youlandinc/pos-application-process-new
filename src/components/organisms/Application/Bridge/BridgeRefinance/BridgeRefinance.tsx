@@ -5,7 +5,7 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { IApplicationForm, IBpmn, IUserSetting } from '@/models/base';
+import { IApplicationForm, IBpmn } from '@/models/base';
 import { IBridgeStarting } from '@/models/application/bridge';
 import { IWhereKnowUs } from '@/models/application/common/WhereKnowUs';
 
@@ -104,7 +104,6 @@ const useStateMachine = (
   bpmn: IBpmn,
   handleBack: () => void,
   router: NextRouter,
-  userSetting: IUserSetting,
 ) => {
   const state = applicationForm.formData.state as BridgeRefinanceState;
   const starting = applicationForm.formData.starting as IBridgeStarting;
@@ -196,10 +195,6 @@ const useStateMachine = (
     },
     celebrate: {
       next: async () => {
-        await userSetting.changeSettingField(
-          'lastSelectedProcessId',
-          bpmn.processId,
-        );
         await router.push({
           pathname: '/dashboard/overview',
           query: { processId: bpmn.processId },
@@ -236,7 +231,7 @@ export const BridgeRefinanceForm = observer(
 
     const router = useRouter();
 
-    const { applicationForm, session, bpmn, userSetting } = useMst();
+    const { applicationForm, session, bpmn } = useMst();
 
     const { next, back, updateState, changeTaskState, completeTaskState } =
       useStateMachine(
@@ -245,7 +240,6 @@ export const BridgeRefinanceForm = observer(
         bpmn,
         handleBack,
         router,
-        userSetting,
       );
 
     const { renderFormNode } = useGenerateComponent();

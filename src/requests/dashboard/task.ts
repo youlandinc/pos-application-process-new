@@ -1,23 +1,6 @@
 import { LoanTask, TaskFiles } from '@/types';
 import { del, get, post, put } from '../axios';
 
-export enum STaskItemStatus {
-  UNDONE = 'undone',
-  PROCESSING = 'processing',
-  COMPLETE = 'complete',
-  FAIL = 'fail',
-}
-
-export interface STaskItemsStatusResponse {
-  [key: string]: STaskItemStatus;
-}
-
-export const _fetchTaskItemStatus = (processId = '') => {
-  return get<STaskItemsStatusResponse>(
-    `/dashboard/user/tasks/status/${processId}`,
-  );
-};
-
 // payment
 type PostPayment = {
   procInstId: string;

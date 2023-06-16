@@ -1,8 +1,9 @@
 import { FC, useCallback, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
-
 import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/router';
+
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
@@ -51,13 +52,11 @@ const initialize: BRQueryData = {
 };
 
 export const BridgeRefinanceRates: FC = observer(() => {
-  const {
-    userSetting: {
-      setting: { lastSelectedProcessId },
-    },
-    userType,
-  } = useMst();
+  const { userType } = useMst();
+
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+
   const { state } = useSessionStorageState('tenantConfig');
   const { open, visible, close } = useSwitch(false);
 
@@ -77,8 +76,8 @@ export const BridgeRefinanceRates: FC = observer(() => {
 
   const { loading: initLoading } = useAsync(async () => {
     return Promise.all([
-      _fetchRatesProduct(lastSelectedProcessId),
-      _fetchRatesLoanInfo(lastSelectedProcessId),
+      _fetchRatesProduct(router.query.processId as string),
+      _fetchRatesLoanInfo(router.query.processId as string),
     ])
       .then((res) => {
         const { products } = res[0].data;
@@ -127,7 +126,10 @@ export const BridgeRefinanceRates: FC = observer(() => {
 
   const onCheckGetList = async () => {
     setLoading(true);
-    await _fetchRatesProductPreview(lastSelectedProcessId, searchForm)
+    await _fetchRatesProductPreview(
+      router.query.processId as string,
+      searchForm,
+    )
       .then((res) => {
         setProductList(res.data.products);
         setLoanInfo(res.data.loanInfo);
@@ -180,9 +182,12 @@ export const BridgeRefinanceRates: FC = observer(() => {
         }
       >,
     ) => {
-      await _updateRatesProductSelected(lastSelectedProcessId, postData);
+      await _updateRatesProductSelected(
+        router.query.processId as string,
+        postData,
+      );
     },
-    [lastSelectedProcessId],
+    [router.query.processId],
   );
 
   return (

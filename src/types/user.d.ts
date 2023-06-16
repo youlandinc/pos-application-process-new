@@ -20,10 +20,6 @@ declare namespace User {
     NMSLNumber?: string;
   }
 
-  interface UserSetting {
-    lastSelectedProcessId: string | undefined;
-  }
-
   interface BaseParam {
     appkey: string;
   }

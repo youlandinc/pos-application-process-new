@@ -1,5 +1,6 @@
 import { FC, useEffect } from 'react';
 import { Box } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -19,12 +20,16 @@ import { SceneType } from '@/types';
 export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
   const store = useMst();
   const breakpoint = useBreakpoints();
+  const router = useRouter();
   useCheckIsLogin();
   useCheckInfoIsComplete();
+
   useEffect(() => {
     const { fetchProcessData } = store.selectedProcessData;
-    fetchProcessData();
-  }, [store.selectedProcessData]);
+    if (!router.pathname.includes('pipeline') && router.query.processId) {
+      fetchProcessData(router.query.processId);
+    }
+  }, [router.pathname, router.query.processId, store.selectedProcessData]);
 
   return (
     <Box sx={{ height: '100%' }}>

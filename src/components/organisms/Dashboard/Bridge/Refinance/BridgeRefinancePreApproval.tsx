@@ -1,15 +1,13 @@
 import { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { Box, Stack } from '@mui/material';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useAsyncFn } from 'react-use';
-
-import { observer } from 'mobx-react-lite';
-
 import { useSnackbar } from 'notistack';
 
+import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
-import { useAsyncEffect } from '@/hooks';
 
+import { useAsyncEffect } from '@/hooks';
 import { Address, IAddress } from '@/models/common/Address';
 import {
   BPPreApprovalLetterData,
@@ -73,14 +71,9 @@ const useStyles = {
 } as const;
 
 export const BridgeRefinancePreApproval: FC = observer(() => {
-  const {
-    userSetting: {
-      setting: { lastSelectedProcessId },
-    },
-    userType,
-  } = useMst();
+  const { userType } = useMst();
 
-  // const router = useRouter();
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   // const { open, visible, close } = useSwitch(false);
@@ -185,65 +178,62 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     return result;
   }, [loanAmount, rateData?.cor, rateData?.homeValue, rateData?.isCor]);
 
-  const [initState, getInitData] = useAsyncFn(
-    async (lastSelectedProcessId: string) => {
-      return await _fetchPreApprovedLetterInfo<MPPreApprovalLetterBRData>(
-        lastSelectedProcessId,
-      )
-        .then((res) => {
-          const { data } = res;
-          setLoanStage(data?.loanStage);
-          setLoanAmount(data.loanAmount);
-          setPropertyType(data?.propertyType);
-          setPropertyUnit(data.propertyUnit);
-          setAddress(
-            Address.create({
-              formatAddress: data?.propAddr?.address,
-              state: data.propAddr?.state ?? '',
-              street: '',
-              city: data.propAddr?.city ?? '',
-              aptNumber: data.propAddr?.aptNumber ?? '',
-              postcode: data.propAddr?.postcode ?? '',
-              isValid: false,
-              errors: {},
-            }),
-          );
-          const {
-            cor,
-            isCor,
-            isCashOut,
-            cashOutAmount,
-            balance,
-            homeValue,
-            arv,
-            brokerPoints,
-            brokerProcessingFee,
-          } = data;
-          setRateData({
-            cor,
-            isCor,
-            isCashOut,
-            cashOutAmount,
-            balance,
-            homeValue,
-            arv,
-            brokerPoints,
-            brokerProcessingFee,
-          });
-        })
-        .catch((err) =>
-          enqueueSnackbar(err as string, {
-            variant: 'error',
-            autoHideDuration: AUTO_HIDE_DURATION,
+  const [initState, getInitData] = useAsyncFn(async (processId: string) => {
+    return await _fetchPreApprovedLetterInfo<MPPreApprovalLetterBRData>(
+      processId,
+    )
+      .then((res) => {
+        const { data } = res;
+        setLoanStage(data?.loanStage);
+        setLoanAmount(data.loanAmount);
+        setPropertyType(data?.propertyType);
+        setPropertyUnit(data.propertyUnit);
+        setAddress(
+          Address.create({
+            formatAddress: data?.propAddr?.address,
+            state: data.propAddr?.state ?? '',
+            street: '',
+            city: data.propAddr?.city ?? '',
+            aptNumber: data.propAddr?.aptNumber ?? '',
+            postcode: data.propAddr?.postcode ?? '',
+            isValid: false,
+            errors: {},
           }),
         );
-    },
-    [],
-  );
+        const {
+          cor,
+          isCor,
+          isCashOut,
+          cashOutAmount,
+          balance,
+          homeValue,
+          arv,
+          brokerPoints,
+          brokerProcessingFee,
+        } = data;
+        setRateData({
+          cor,
+          isCor,
+          isCashOut,
+          cashOutAmount,
+          balance,
+          homeValue,
+          arv,
+          brokerPoints,
+          brokerProcessingFee,
+        });
+      })
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, []);
 
   useAsyncEffect(async () => {
-    await getInitData(lastSelectedProcessId as string);
-  }, [lastSelectedProcessId]);
+    await getInitData(router.query.processId as string);
+  }, [router.query.processId]);
 
   // const onDialogSendEmailClick = useCallback(() => {
   //   close();
@@ -268,7 +258,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
       ...rateData,
     };
     const { data, status } = await _fetchPreApprovedLetterCheck(
-      lastSelectedProcessId,
+      router.query.processId as string,
       postData as
         | BRPreApprovalLetterData
         | BPPreApprovalLetterData
@@ -279,7 +269,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
       setProductData(data);
     }
     setCheckLoading(false);
-  }, [address, lastSelectedProcessId, propertyType, propertyUnit, rateData]);
+  }, [address, router.query.processId, propertyType, propertyUnit, rateData]);
 
   const onClickUpdate = useCallback(async () => {
     const addressData = address?.getPostData();
@@ -293,19 +283,19 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
       },
     };
     const res = await _updateRatesProductSelected(
-      lastSelectedProcessId,
+      router.query.processId as string,
       postData as UpdateRatesPostData,
     );
     if (res.status === 200) {
       // open();
       setCheckResult(undefined);
       setTableStatus('view');
-      await getInitData(lastSelectedProcessId as string);
+      await getInitData(router.query.processId as string);
     }
   }, [
     address,
     getInitData,
-    lastSelectedProcessId,
+    router.query.processId,
     productData?.id,
     propertyType,
     propertyUnit,
@@ -664,11 +654,11 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     <Box sx={useStyles}>
       {tableStatus === 'view' ? (
         <PreApprovalInfo
-          lastSelectedProcessId={lastSelectedProcessId}
           loading={initState.loading}
           loanAmount={loanAmount}
           loanStage={loanStage}
           onClickEdit={onChangeTableStatus}
+          processId={router.query.processId as string}
           ref={infoRef}
         />
       ) : (

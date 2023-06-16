@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import {
   FC,
   FormEventHandler,
@@ -63,7 +64,7 @@ interface PreApprovalInfoProps {
   loading: boolean;
   loanAmount?: number;
   onClickEdit: () => void;
-  lastSelectedProcessId?: string;
+  processId?: string;
   loanStage?: LoanStage;
 }
 
@@ -71,14 +72,9 @@ export const PreApprovalInfo = forwardRef<
   HTMLInputElement,
   PreApprovalInfoProps
 >((props, ref) => {
-  const {
-    loading,
-    loanAmount = 0,
-    onClickEdit,
-    lastSelectedProcessId,
-    loanStage,
-  } = props;
+  const { loading, loanAmount = 0, onClickEdit, processId, loanStage } = props;
 
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const [email, setEmail] = useState<string>('');
@@ -92,7 +88,7 @@ export const PreApprovalInfo = forwardRef<
 
       setSendLoading(true);
       try {
-        await _sendPreapprovalLetter(lastSelectedProcessId as string, email);
+        await _sendPreapprovalLetter(router.query.processId as string, email);
         enqueueSnackbar('Email was successfully sent', {
           variant: 'success',
         });
@@ -102,7 +98,7 @@ export const PreApprovalInfo = forwardRef<
         setSendLoading(false);
       }
     },
-    [enqueueSnackbar, lastSelectedProcessId, email],
+    [enqueueSnackbar, router.query.processId, email],
   );
 
   const onDownloadPDF = useCallback(
@@ -128,7 +124,7 @@ export const PreApprovalInfo = forwardRef<
         setDownloadLoading(false);
       };
       setDownloadLoading(true);
-      const res = await _fetchPDFFile(lastSelectedProcessId as string);
+      const res = await _fetchPDFFile(processId as string);
       const fileName = res.headers['content-disposition'].split('=')[1];
       handler(res.data, fileName);
     },
