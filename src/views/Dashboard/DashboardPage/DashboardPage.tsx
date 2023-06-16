@@ -1,3 +1,4 @@
+import { useCheckProcessId } from '@/hooks/useCheckProcessId';
 import { FC, ReactNode, useEffect } from 'react';
 
 import { useMst } from '@/models/Root';
@@ -9,38 +10,25 @@ import { POSLayout } from '@/components/molecules';
 export const DashboardPage: FC<{ children?: ReactNode }> = observer(
   ({ children }) => {
     const {
-      dashboardTask: { fetchTaskItemStatus },
-      userSetting: {
-        fetchUserSetting,
-        initialized,
-        loading,
-        fetchPipelineStatus,
-        setting: { lastSelectedProcessId },
-      },
+      userSetting: { loading, fetchPipelineStatus, pipelineStatusInitialized },
     } = useMst();
+
+    useCheckProcessId();
 
     // await fetch user setting
     useEffect(() => {
-      fetchUserSetting();
       fetchPipelineStatus();
-    }, [fetchPipelineStatus, fetchUserSetting]);
+    }, [fetchPipelineStatus]);
 
     // await fetch task item status
     useEffect(() => {
-      if (loading || !initialized) {
+      if (loading || !pipelineStatusInitialized) {
         return;
       }
-      fetchTaskItemStatus(lastSelectedProcessId);
-    }, [
-      fetchTaskItemStatus,
-      fetchUserSetting,
-      initialized,
-      lastSelectedProcessId,
-      loading,
-    ]);
+    }, [pipelineStatusInitialized, loading]);
 
-    return !initialized ? (
-      <StyledLoading />
+    return !pipelineStatusInitialized ? (
+      <StyledLoading sx={{ color: 'primary.main' }} />
     ) : (
       <POSLayout scene={'dashboard'}>
         <>{children}</>

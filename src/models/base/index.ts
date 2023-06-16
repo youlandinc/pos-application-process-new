@@ -3,8 +3,6 @@ export * from './SelectedProcessData';
 
 export * from './ApplicationForm';
 
-export * from './DTask';
-
 export * from './PTaskForm';
 
 export * from './UserSetting';

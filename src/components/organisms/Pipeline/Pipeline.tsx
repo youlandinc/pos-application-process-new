@@ -29,11 +29,7 @@ export const Pipeline: FC = observer(() => {
   const router = useRouter();
 
   const {
-    userSetting: {
-      pipelineStatus,
-      pipelineStatusInitialized,
-      changeSettingField,
-    },
+    userSetting: { pipelineStatus, pipelineStatusInitialized },
     pipelineTask: { pipelineInitialized },
     userType,
   } = useMst();
@@ -142,7 +138,6 @@ export const Pipeline: FC = observer(() => {
         );
         break;
       default:
-        await changeSettingField('lastSelectedProcessId', row.youlandId + '');
         await router.push({
           pathname: '/dashboard/overview',
           query: { processId: row.youlandId },

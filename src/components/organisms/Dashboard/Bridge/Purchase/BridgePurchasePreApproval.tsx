@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo, useRef, useState } from 'react';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { Box, Stack } from '@mui/material';
 import { useAsyncFn } from 'react-use';
 
@@ -70,14 +70,9 @@ const useStyles = {
 } as const;
 
 export const BridgePurchasePreApproval: FC = observer(() => {
-  const {
-    userSetting: {
-      setting: { lastSelectedProcessId },
-    },
-    userType,
-  } = useMst();
+  const { userType } = useMst();
 
-  // const router = useRouter();
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   // const { open, visible, close } = useSwitch(false);
@@ -158,61 +153,58 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     return result;
   }, [editLoanAmount, rateData?.cor, rateData?.isCor, rateData?.purchasePrice]);
 
-  const [initState, getInitData] = useAsyncFn(
-    async (lastSelectedProcessId: string) => {
-      return await _fetchPreApprovedLetterInfo<MPPreApprovalLetterBPData>(
-        lastSelectedProcessId,
-      )
-        .then((res) => {
-          const { data } = res;
-          setLoanStage(data?.loanStage);
-          setLoanAmount(data.loanAmount);
-          setPropertyType(data.propertyType);
-          setPropertyUnit(data.propertyUnit);
-          setAddress(
-            Address.create({
-              formatAddress: data.propAddr.address,
-              state: data.propAddr?.state ?? '',
-              street: '',
-              city: data.propAddr?.city ?? '',
-              aptNumber: data.propAddr?.aptNumber ?? '',
-              postcode: data.propAddr?.postcode ?? '',
-              isValid: false,
-              errors: {},
-            }),
-          );
-          const {
-            isCor,
-            purchasePrice,
-            purchaseLoanAmount,
-            cor,
-            arv,
-            brokerPoints,
-            brokerProcessingFee,
-          } = data;
-          setRateData({
-            isCor,
-            purchasePrice,
-            purchaseLoanAmount,
-            cor,
-            arv,
-            brokerPoints,
-            brokerProcessingFee,
-          });
-        })
-        .catch((err) =>
-          enqueueSnackbar(err as string, {
-            variant: 'error',
-            autoHideDuration: AUTO_HIDE_DURATION,
+  const [initState, getInitData] = useAsyncFn(async (processId: string) => {
+    return await _fetchPreApprovedLetterInfo<MPPreApprovalLetterBPData>(
+      processId,
+    )
+      .then((res) => {
+        const { data } = res;
+        setLoanStage(data?.loanStage);
+        setLoanAmount(data.loanAmount);
+        setPropertyType(data.propertyType);
+        setPropertyUnit(data.propertyUnit);
+        setAddress(
+          Address.create({
+            formatAddress: data.propAddr.address,
+            state: data.propAddr?.state ?? '',
+            street: '',
+            city: data.propAddr?.city ?? '',
+            aptNumber: data.propAddr?.aptNumber ?? '',
+            postcode: data.propAddr?.postcode ?? '',
+            isValid: false,
+            errors: {},
           }),
         );
-    },
-    [],
-  );
+        const {
+          isCor,
+          purchasePrice,
+          purchaseLoanAmount,
+          cor,
+          arv,
+          brokerPoints,
+          brokerProcessingFee,
+        } = data;
+        setRateData({
+          isCor,
+          purchasePrice,
+          purchaseLoanAmount,
+          cor,
+          arv,
+          brokerPoints,
+          brokerProcessingFee,
+        });
+      })
+      .catch((err) =>
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        }),
+      );
+  }, []);
 
   useAsyncEffect(async () => {
-    await getInitData(lastSelectedProcessId as string);
-  }, [lastSelectedProcessId]);
+    await getInitData(router.query.processId as string);
+  }, [router.query.processId]);
 
   // const onDialogSendEmailClick = useCallback(() => {
   //   close();
@@ -238,7 +230,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     };
     const { data, status } =
       await _fetchPreApprovedLetterCheck<MPPreApprovalLetterBPData>(
-        lastSelectedProcessId,
+        router.query.processId as string,
         postData as MPPreApprovalLetterBPData,
       );
     if (status === 200) {
@@ -246,7 +238,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
       setProductData(data);
     }
     setCheckLoading(false);
-  }, [address, lastSelectedProcessId, propertyType, propertyUnit, rateData]);
+  }, [address, router.query.processId, propertyType, propertyUnit, rateData]);
 
   const onClickUpdate = useCallback(async () => {
     const addressData = address?.getPostData();
@@ -260,13 +252,13 @@ export const BridgePurchasePreApproval: FC = observer(() => {
       },
     };
     const res = await _updateRatesProductSelected(
-      lastSelectedProcessId,
+      router.query.processId as string,
       postData as UpdateRatesPostData,
     );
     if (res.status === 200) {
       setCheckResult(undefined);
       setTableStatus('view');
-      await getInitData(lastSelectedProcessId as string);
+      await getInitData(router.query.processId as string);
       enqueueSnackbar('Update Successfully!' as string, {
         variant: 'success',
         autoHideDuration: AUTO_HIDE_DURATION,
@@ -276,7 +268,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     address,
     enqueueSnackbar,
     getInitData,
-    lastSelectedProcessId,
+    router.query.processId,
     productData?.id,
     propertyType,
     propertyUnit,
@@ -605,11 +597,11 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     <Box sx={useStyles}>
       {tableStatus === 'view' ? (
         <PreApprovalInfo
-          lastSelectedProcessId={lastSelectedProcessId}
           loading={initState.loading}
           loanAmount={loanAmount}
           loanStage={loanStage}
           onClickEdit={onChangeTableStatus}
+          processId={router.query.processId as string}
           ref={infoRef}
         />
       ) : (
@@ -631,35 +623,35 @@ export const BridgePurchasePreApproval: FC = observer(() => {
         </>
       )}
       {/* <StyledDialog
-        content={
-          <>
-            <Box className={'updatedImage'} />
-            <Box className={'updatedTip'}>
-              Your pre-approval letter has already been updated!
-            </Box>
-          </>
-        }
-        footer={
-          <>
-            <StyledButton
-              onClick={() => router.push('/dashboard/rates')}
-              variant={'outlined'}
-            >
-              Go to Rates
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disableElevation
-              onClick={onDialogSendEmailClick}
-              variant={'contained'}
-            >
-              Send Email
-            </StyledButton>
-          </>
-        }
-        onClose={close}
-        open={visible}
-      /> */}
+         content={
+         <>
+         <Box className={'updatedImage'} />
+         <Box className={'updatedTip'}>
+         Your pre-approval letter has already been updated!
+         </Box>
+         </>
+         }
+         footer={
+         <>
+         <StyledButton
+         onClick={() => router.push('/dashboard/rates')}
+         variant={'outlined'}
+         >
+         Go to Rates
+         </StyledButton>
+         <StyledButton
+         color={'primary'}
+         disableElevation
+         onClick={onDialogSendEmailClick}
+         variant={'contained'}
+         >
+         Send Email
+         </StyledButton>
+         </>
+         }
+         onClose={close}
+         open={visible}
+         /> */}
     </Box>
   );
 });

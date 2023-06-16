@@ -1,7 +1,8 @@
 import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { FormData } from '@/constants';
+import { AUTO_HIDE_DURATION, FormData } from '@/constants';
 import { PTask, SPTask } from '@/models/pipeline/PTask';
 import { _fetchPipelineTask } from '@/requests';
+import { enqueueSnackbar } from 'notistack';
 
 const Union = types.union({
   dispatcher: (snapshot: SPTask | undefined) => {
@@ -32,7 +33,10 @@ export const PTaskForm = types
         self.formData.injectPipelineTaskData(res.data);
         self.setInitialized(true);
       } catch (e) {
-        console.log(e);
+        enqueueSnackbar(e as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
       }
     });
     return {

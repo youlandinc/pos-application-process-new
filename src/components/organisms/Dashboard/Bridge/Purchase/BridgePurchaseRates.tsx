@@ -1,16 +1,17 @@
 import { FC, useCallback, useState } from 'react';
 import { Box, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { useSessionStorageState, useSwitch } from '@/hooks';
 
-import { BridgePurchaseLoanInfo } from '@/components/molecules/Application';
-
-import { useSnackbar } from 'notistack';
+import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFlex } from '@/styles';
+import { BridgePurchaseLoanInfo } from '@/components/molecules/Application';
 import {
   BridgePurchaseEstimateRateData,
   BridgeRefinanceEstimateRateData,
@@ -32,7 +33,6 @@ import {
   BridgePurchaseRatesSearch,
   BridgeRatesList,
 } from '@/components/molecules';
-import { AUTO_HIDE_DURATION } from '@/constants';
 
 const initialize: BPQueryData = {
   purchasePrice: undefined,
@@ -48,15 +48,12 @@ const initialize: BPQueryData = {
 };
 
 export const BridgePurchaseRates: FC = observer(() => {
-  const {
-    userSetting: {
-      setting: { lastSelectedProcessId },
-    },
-    userType,
-  } = useMst();
-  const { enqueueSnackbar } = useSnackbar();
-  const { state } = useSessionStorageState('tenantConfig');
+  const { userType } = useMst();
 
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { state } = useSessionStorageState('tenantConfig');
   const { open, visible, close } = useSwitch(false);
 
   const [loading, setLoading] = useState(false);
@@ -75,8 +72,8 @@ export const BridgePurchaseRates: FC = observer(() => {
 
   const { loading: initLoading } = useAsync(async () => {
     return Promise.all([
-      _fetchRatesProduct(lastSelectedProcessId),
-      _fetchRatesLoanInfo(lastSelectedProcessId),
+      _fetchRatesProduct(router.query.processId as string),
+      _fetchRatesLoanInfo(router.query.processId as string),
     ])
       .then((res) => {
         const { products } = res[0].data;
@@ -121,7 +118,10 @@ export const BridgePurchaseRates: FC = observer(() => {
 
   const onCheckGetList = async () => {
     setLoading(true);
-    await _fetchRatesProductPreview(lastSelectedProcessId, searchForm)
+    await _fetchRatesProductPreview(
+      router.query.processId as string,
+      searchForm,
+    )
       .then((res) => {
         setProductList(res.data.products);
         setLoanInfo(res.data.loanInfo);
@@ -178,9 +178,12 @@ export const BridgePurchaseRates: FC = observer(() => {
         }
       >,
     ) => {
-      await _updateRatesProductSelected(lastSelectedProcessId, postData);
+      await _updateRatesProductSelected(
+        router.query.processId as string,
+        postData,
+      );
     },
-    [lastSelectedProcessId],
+    [router.query.processId],
   );
 
   return (

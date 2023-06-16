@@ -4,7 +4,6 @@ import { Box } from '@mui/material';
 import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
 
 import { POSFlex, POSFont } from '@/styles';
 import { StyledButton } from '@/components/atoms';
@@ -58,12 +57,6 @@ const useStyles = {
 };
 
 export const BridgePurchaseOverview: FC = observer(() => {
-  const {
-    userSetting: {
-      setting: { lastSelectedProcessId },
-    },
-  } = useMst();
-
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { state } = useSessionStorageState('tenantConfig');
@@ -75,7 +68,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
 
   const { loading } = useAsync(async () => {
     return await _fetchOverviewLoanSummary<BPOverviewSummaryData>(
-      lastSelectedProcessId as string,
+      router.query.processId as string,
     )
       .then((res) => {
         const {

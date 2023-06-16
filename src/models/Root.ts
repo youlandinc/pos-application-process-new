@@ -6,7 +6,6 @@ import {
   ApplicationForm,
   Bpmn,
   DetectUserActiveService,
-  DTask,
   NotificationStation,
   PTaskForm,
   SelectedProcessData,
@@ -18,8 +17,6 @@ import {
 import { LoginType, SceneType, ServerTaskKey, UserType } from '@/types/enum';
 import { User } from '@/types/user';
 
-import { STaskItemStatus } from '@/requests/dashboard';
-
 import { userpool } from '@/constants';
 
 export const RootModel = {
@@ -30,8 +27,6 @@ export const RootModel = {
   selectedProcessData: SelectedProcessData,
 
   applicationForm: ApplicationForm,
-
-  dashboardTask: DTask,
 
   pipelineTask: PTaskForm,
 
@@ -118,7 +113,6 @@ const RootStore = types.model(RootModel).actions((self) => {
       }
       this.updateSession();
       this.updateProfile();
-      self.userSetting.setUserSetting({ lastSelectedProcessId: undefined });
       self.detectUserActiveService.setDetectUserActiveService(void 0);
       const lastAuthId = userpool.getLastAuthUserId();
       if (lastAuthId) {
@@ -153,10 +147,6 @@ const initialState = {
     scene: SceneType.default,
     loading: false,
   },
-  dashboardTask: {
-    paymentStatus: STaskItemStatus.UNDONE,
-    taskInitialized: false,
-  },
 
   pipelineTask: {
     pipelineInitialized: false,
@@ -168,9 +158,6 @@ const initialState = {
     loading: false,
     pipelineStatus: false,
     pipelineStatusInitialized: false,
-    setting: {
-      lastSelectedProcessId: '',
-    },
   },
   userType: void 0,
   loginType: void 0,
