@@ -197,10 +197,10 @@ export const BridgePurchaseOverview: FC = observer(() => {
         });
       })
       .catch((err) => {
-        // todo, lee this error need to handler
         enqueueSnackbar(err as string, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          onClose: () => router.push('/pipeline'),
         });
       });
   });

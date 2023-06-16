@@ -322,7 +322,12 @@ export const BridgeRefinanceRatesDrawer: FC<
             </StyledButton>
           ) : (
             <StyledButton
-              onClick={() => router.push('/dashboard/tasks')}
+              onClick={() =>
+                router.push({
+                  pathname: '/dashboard/tasks',
+                  query: { processId: router.query.processId },
+                })
+              }
               size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
             >
               Confirm Rate
