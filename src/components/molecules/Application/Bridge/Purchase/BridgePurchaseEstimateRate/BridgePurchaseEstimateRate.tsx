@@ -87,6 +87,8 @@ export const BridgePurchaseEstimateRate: FC<{ nextStep?: () => void }> =
     const { enqueueSnackbar } = useSnackbar();
     const { open, visible, close } = useSwitch(false);
     const [loading, setLoading] = useState(false);
+    const [checkLoading, setCheckLoading] = useState(false);
+
     const [searchForm, setSearchForm] = useState<BPQueryData>(initialize);
     const [productList, setProductList] = useState<RatesProductData[]>();
     const [isFirstSearch, setIsFirstSearch] = useState<boolean>(true);
@@ -156,14 +158,18 @@ export const BridgePurchaseEstimateRate: FC<{ nextStep?: () => void }> =
     };
 
     const nextStepWrap = async (id: string) => {
-      await _updateRatesProductSelected(processId, { id })
-        .then(() => nextStep?.())
-        .catch((err) =>
-          enqueueSnackbar(err, {
-            variant: 'error',
-            autoHideDuration: AUTO_HIDE_DURATION,
-          }),
-        );
+      setCheckLoading(true);
+      try {
+        await _updateRatesProductSelected(processId, { id });
+        nextStep && nextStep();
+      } catch (err) {
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
+      } finally {
+        setCheckLoading(false);
+      }
     };
 
     return (
@@ -183,6 +189,7 @@ export const BridgePurchaseEstimateRate: FC<{ nextStep?: () => void }> =
           userType={userType}
         />
         <BridgePurchaseRatesDrawer
+          loading={checkLoading}
           nextStep={nextStepWrap}
           onCancel={close}
           selectedItem={selectedItem}

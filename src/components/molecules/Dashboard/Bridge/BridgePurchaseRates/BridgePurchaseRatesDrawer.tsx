@@ -24,12 +24,20 @@ interface BridgePurchaseRatesDrawerProps {
   visible: boolean;
   nextStep?: (id: string) => void;
   userType: UserType;
+  loading?: boolean;
 }
 
 export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
   props,
 ) => {
-  const { onCancel, visible, selectedItem, nextStep, userType } = props;
+  const {
+    onCancel,
+    visible,
+    selectedItem,
+    nextStep,
+    userType,
+    loading = false,
+  } = props;
 
   const router = useRouter();
   const breakpoints = useBreakpoints();
@@ -318,6 +326,9 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
         <Stack width={'100%'}>
           {nextStep ? (
             <StyledButton
+              disabled={loading}
+              loading={loading}
+              loadingText={'Checking...'}
               onClick={() => nextStep(selectedItem?.id as string)}
               size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
             >
