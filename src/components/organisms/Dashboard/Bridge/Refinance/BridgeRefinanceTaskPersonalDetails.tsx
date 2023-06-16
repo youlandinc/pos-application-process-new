@@ -11,6 +11,7 @@ import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 import { Address, IAddress } from '@/models/common/Address';
 import {
   AUTO_HIDE_DURATION,
+  OPTIONS_COMMON_YES_OR_NO,
   OPTIONS_TASK_CITIZENSHIP_STATUS,
   OPTIONS_TASK_MARTIAL_STATUS,
 } from '@/constants';
@@ -21,12 +22,14 @@ import {
 
 import {
   StyledButton,
+  StyledButtonGroup,
   StyledDatePicker,
   StyledFormItem,
   StyledGoogleAutoComplete,
   StyledLoading,
   StyledSelectOption,
   StyledTextFieldNumber,
+  Transitions,
 } from '@/components/atoms';
 
 export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
@@ -55,6 +58,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
     DashboardTaskMaritalStatus | undefined
   >();
   const [delinquentTimes, setDelinquentTimes] = useState<string | undefined>();
+  const [isBankruptcy, setIsBankruptcy] = useState<boolean | undefined>();
   const [dischargeDate, setDischargeDate] = useState<unknown | Date | null>(
     null,
   );
@@ -68,12 +72,14 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
           dischargeDate,
           delinquentTimes,
           citizenship,
+          isBankruptcy,
         } = res.data;
 
         setCitizenship(
           (citizenship as DashboardTaskCitizenshipStatus) || undefined,
         );
         setMarital((marital as DashboardTaskMaritalStatus) || undefined);
+        setIsBankruptcy(isBankruptcy ?? undefined);
 
         if (dischargeDate) {
           setDischargeDate(new Date(dischargeDate as string));
@@ -219,22 +225,40 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
       </StyledFormItem>
 
       <StyledFormItem
-        label={
-          'Please provide the discharge date of your most recent bankruptcy event, If applicable.'
-        }
+        label={'Have you declared bankruptcy within the past 7 years?'}
         sub
       >
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledDatePicker
-            label={'MM/DD/YYYY'}
-            onChange={(date) => {
-              setDischargeDate(date);
-            }}
-            //validate={}
-            value={dischargeDate}
-          />
-        </Stack>
+        <StyledButtonGroup
+          onChange={(e, value) => {
+            if (value !== null) {
+              setIsBankruptcy(value === 'yes');
+            }
+          }}
+          options={OPTIONS_COMMON_YES_OR_NO}
+          sx={{ width: '100%', maxWidth: 600 }}
+          value={isBankruptcy}
+        />
+        <Transitions
+          style={{
+            display: isBankruptcy ? 'block' : 'none',
+            width: '100%',
+            maxWidth: 600,
+          }}
+        >
+          {isBankruptcy && (
+            <Stack mt={3}>
+              <StyledDatePicker
+                label={'MM/DD/YYYY'}
+                onChange={(date) => {
+                  setDischargeDate(date);
+                }}
+                value={dischargeDate}
+              />
+            </Stack>
+          )}
+        </Transitions>
       </StyledFormItem>
+
       <Stack
         flexDirection={'row'}
         gap={3}
