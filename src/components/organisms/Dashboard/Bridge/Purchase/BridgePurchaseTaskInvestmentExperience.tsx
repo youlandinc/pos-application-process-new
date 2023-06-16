@@ -207,6 +207,9 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
 
           <Box mt={3} width={'100%'}>
             <StyledUploadBox
+              accept={
+                'image/*,.pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+              }
               fileList={investmentFiles}
               loading={uploadLoading || loading}
               onDelete={handledDelete}
