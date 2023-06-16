@@ -24,11 +24,19 @@ interface BridgeRefinanceRatesDrawerProps {
   visible: boolean;
   nextStep?: (id: string) => void;
   userType: UserType;
+  loading?: boolean;
 }
 
 export const BridgeRefinanceRatesDrawer: FC<
   BridgeRefinanceRatesDrawerProps
-> = ({ onCancel, visible, selectedItem, nextStep, userType }) => {
+> = ({
+  onCancel,
+  visible,
+  selectedItem,
+  nextStep,
+  userType,
+  loading = false,
+}) => {
   const router = useRouter();
   const breakpoints = useBreakpoints();
 
@@ -315,6 +323,9 @@ export const BridgeRefinanceRatesDrawer: FC<
         <Stack width={'100%'}>
           {nextStep ? (
             <StyledButton
+              disabled={loading}
+              loading={loading}
+              loadingText={'Checking...'}
               onClick={() => nextStep(selectedItem?.id as string)}
               size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
             >
