@@ -209,11 +209,14 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledDatePicker
+                  disableFuture={false}
+                  disablePast={false}
                   label={'MM/DD/YYYY'}
                   onChange={(date) => {
                     setCorDate(date);
                   }}
                   //validate={}
+                  minDate={new Date()}
                   value={corDate}
                 />
               </Stack>

@@ -176,6 +176,8 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
         }
       >
         <StyledDatePicker
+          disableFuture={false}
+          disablePast={false}
           label={'MM/DD/YYYY'}
           onChange={(date) => setContractEndDate(date)}
           value={contractEndDate}

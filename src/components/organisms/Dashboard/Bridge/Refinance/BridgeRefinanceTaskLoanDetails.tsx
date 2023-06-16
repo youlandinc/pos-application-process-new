@@ -320,6 +320,8 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledDatePicker
+                  disableFuture={false}
+                  disablePast={false}
                   label={'MM/DD/YYYY'}
                   onChange={(date) => {
                     setCorDate(date);
