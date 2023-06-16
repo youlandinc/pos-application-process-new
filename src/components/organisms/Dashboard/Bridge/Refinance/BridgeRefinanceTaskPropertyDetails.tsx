@@ -70,6 +70,11 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
         enqueueSnackbar(err, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          onClose: () =>
+            router.push({
+              pathname: '/dashboard/tasks',
+              query: { processId: router.query.processId },
+            }),
         }),
       );
   }, [router.query.taskId]);
