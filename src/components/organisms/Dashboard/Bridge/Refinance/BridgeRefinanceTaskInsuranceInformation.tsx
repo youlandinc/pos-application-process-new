@@ -153,7 +153,14 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
     setSaveLoading(true);
     const postData = {
       taskId: router.query.taskId as string,
-      taskForm: {},
+      taskForm: {
+        agentName,
+        companyName,
+        phoneNumber,
+        email,
+        propAddr: address.getPostData(),
+        insuranceFiles,
+      },
     };
     try {
       await _updateTaskFormInfo(postData);
@@ -169,7 +176,16 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
     } finally {
       setSaveLoading(false);
     }
-  }, [enqueueSnackbar, router]);
+  }, [
+    address,
+    agentName,
+    companyName,
+    email,
+    enqueueSnackbar,
+    insuranceFiles,
+    phoneNumber,
+    router,
+  ]);
 
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
