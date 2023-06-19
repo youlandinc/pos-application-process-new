@@ -16,6 +16,11 @@ export const PipelinePage: FC<{ children?: ReactNode }> = observer(
       userSetting: { fetchPipelineStatus },
     } = useMst();
 
+    // await fetch user setting
+    useEffect(() => {
+      fetchPipelineStatus();
+    }, [fetchPipelineStatus]);
+
     // await fetch task item status
     useEffect(() => {
       if (userType === UserType.CUSTOMER) {
