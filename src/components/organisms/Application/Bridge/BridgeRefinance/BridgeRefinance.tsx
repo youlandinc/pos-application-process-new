@@ -1,4 +1,3 @@
-import { AUTO_HIDE_DURATION } from '@/constants';
 import { useCallback, useMemo, useRef } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -6,10 +5,10 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { AUTO_HIDE_DURATION } from '@/constants';
 import { IApplicationForm, IBpmn } from '@/models/base';
 import { IBridgeStarting } from '@/models/application/bridge';
 import { IWhereKnowUs } from '@/models/application/common/WhereKnowUs';
-
 import { BridgeRefinanceState, ServerTaskKey } from '@/types/enum';
 import { useAutoSave, useStoreData } from '@/hooks';
 import { _updateTask } from '@/requests';
