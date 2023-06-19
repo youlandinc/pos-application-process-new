@@ -31,6 +31,7 @@ import {
   StyledTextFieldPhone,
   Transitions,
 } from '@/components/atoms';
+import { useSessionStorageState } from '@/hooks';
 
 const initialValues: {
   firstName: string;
@@ -72,7 +73,7 @@ const resetAddress = {
 export const BridgeRefinanceTaskCompanyInformation: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-
+  const { state } = useSessionStorageState('tenantConfig');
   const [saveLoading, setSaveLoading] = useState(false);
 
   const [contactForm, setContactForm] = useState(initialValues);
@@ -273,9 +274,9 @@ export const BridgeRefinanceTaskCompanyInformation: FC = observer(() => {
     <StyledFormItem
       gap={6}
       label={'Closing Agent / Title Company Information'}
-      tip={
-        'A closing agent assists with closing and verifies there are no outstanding title issues. YouLand also orders a Title Commitment and a Title Report on the property from this agent.'
-      }
+      tip={`A closing agent assists with closing and verifies there are no outstanding title issues. ${
+        state?.organizationName || 'YouLand'
+      } also orders a Title Commitment and a Title Report on the property from this agent.`}
       tipSx={{ mb: 0 }}
     >
       <StyledFormItem

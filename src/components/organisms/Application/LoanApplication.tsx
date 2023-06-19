@@ -15,7 +15,7 @@ import {
 import { useNotification } from '@/hooks/useNotification';
 
 import { _fetchProcessData, _startProcess } from '@/requests';
-import { usePersistFn, useStoreData } from '@/hooks';
+import { usePersistFn, useSessionStorageState, useStoreData } from '@/hooks';
 import { POSFindSpecificVariable } from '@/utils';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
@@ -63,7 +63,7 @@ const useInitProcessData = (
   const [lastSelectedType, setLastSelectedType] = useState<ApplicationType>();
 
   // todo : saas
-  //const getTenantConfig = utils.getTenantConfig();
+  const { state } = useSessionStorageState('tenantConfig');
 
   // start new progress
   const [initState, startProgress] = useAsyncFn(
@@ -73,15 +73,16 @@ const useInitProcessData = (
         productName = 'mortgage';
       }
       // todo : tenantId should replace params
-      return await _startProcess(productName, '1000052022092800000102').catch(
-        (err) => {
-          enqueueSnackbar(err, {
-            variant: 'error',
-            autoHideDuration: AUTO_HIDE_DURATION,
-          });
-          return;
-        },
-      );
+      return await _startProcess(
+        productName,
+        state?.tenantId || '1000052022092800000102',
+      ).catch((err) => {
+        enqueueSnackbar(err, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
+        return;
+      });
     },
     [bpmn],
   );

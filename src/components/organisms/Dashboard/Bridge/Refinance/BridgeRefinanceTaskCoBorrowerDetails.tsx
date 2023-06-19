@@ -50,7 +50,7 @@ import { ScoreResult } from '@/components/molecules';
 export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-
+  const { state } = useSessionStorageState('tenantConfig');
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [tableView, setTableView] = useState<'form' | 'score'>('form');
 
@@ -506,15 +506,15 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                     variant={'body2'}
                   >
                     I, {firstName || 'borrower'} {lastName || 'name'} ,
-                    authorize
+                    authorize{' '}
                     {
                       //sass
-                      ' YouLand'
+                      state?.organizationName || 'YouLand'
                     }{' '}
-                    to verify my credit. I&apos;ve also read and agreed to
+                    to verify my credit. I&apos;ve also read and agreed to{' '}
                     {
                       //sass
-                      ' YouLand'
+                      state?.organizationName || 'YouLand'
                     }{' '}
                     &apos;s{' '}
                     <Typography
