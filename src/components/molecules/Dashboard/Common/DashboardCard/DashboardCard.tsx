@@ -1,38 +1,13 @@
 import { FC, ReactNode } from 'react';
-import { Box, BoxProps, Divider, SxProps } from '@mui/material';
+import { Box, Divider, Stack, StackProps } from '@mui/material';
 
 import { POSFont } from '@/styles';
 import { POSFormatDollar } from '@/utils';
 
 import { StyledLoading } from '@/components/atoms';
-import { DashboardProductItem } from '@/components/molecules';
+import { DashboardCardItem } from '@/components/molecules';
 
-const useStyles: SxProps = {
-  '&.card_wrap': {
-    width: '100%',
-
-    border: '1px solid',
-    borderColor: 'background.border_default',
-    p: 3,
-    borderRadius: 2,
-    overflow: 'hidden',
-    display: 'flex',
-    flexDirection: 'column',
-    flex: {
-      xl: 1,
-      xs: '100%',
-    },
-    minHeight: 464,
-  },
-  '& .card_title': {
-    ...POSFont({ md: 24, sx: 16 }, 600, 1.5, 'text.primary'),
-  },
-  '& .card_info': {
-    my: 1.5,
-  },
-} as const;
-
-interface CardProps extends BoxProps {
+interface DashboardCardProps extends StackProps {
   loading: boolean;
   title?: string;
   subTitle?: string;
@@ -50,26 +25,46 @@ export interface BridgeOverviewInfo {
   }[];
 }
 
-export const Card: FC<CardProps> = ({
+export const DashboardCard: FC<DashboardCardProps> = ({
   loading,
   title = 'Purchase',
   subTitle = 'Total loan amount',
   subInfo = POSFormatDollar(125000),
-  dataList = [{ label: 'Purchase Price', info: POSFormatDollar(125000) }],
+  dataList = [
+    {
+      label: 'Purchase Price',
+      info: POSFormatDollar(125000),
+    },
+  ],
   children,
   ...rest
 }) => {
   return (
-    <Box className={'card_wrap'} sx={useStyles} {...rest}>
+    <Stack
+      border={'1px solid'}
+      borderColor={'background.border_default'}
+      borderRadius={2}
+      flex={{ xl: 1, xs: '100%' }}
+      flexDirection={'column'}
+      minHeight={464}
+      overflow={'hidden'}
+      p={3}
+      width={'100%'}
+      {...rest}
+    >
       {loading ? (
         <StyledLoading sx={{ mb: 3, color: 'primary.main' }} />
       ) : (
         <>
-          <Box className={'card_title'}>
+          <Box
+            sx={{
+              ...POSFont({ md: 24, sx: 16 }, 600, 1.5, 'text.primary'),
+            }}
+          >
             <Box>{title}</Box>
           </Box>
-          <Box className={'card_info'}>
-            <DashboardProductItem
+          <Box my={1.5}>
+            <DashboardCardItem
               info={
                 <Box
                   sx={{
@@ -83,7 +78,7 @@ export const Card: FC<CardProps> = ({
             />
             <Divider sx={{ py: 1 }} />
             {dataList.map((item, index) => (
-              <DashboardProductItem
+              <DashboardCardItem
                 info={item.info}
                 key={`${index}_${item.label}_${item.info}`}
                 label={item.label}
@@ -94,6 +89,6 @@ export const Card: FC<CardProps> = ({
           {children}
         </>
       )}
-    </Box>
+    </Stack>
   );
 };

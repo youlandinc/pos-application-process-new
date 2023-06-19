@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 
 import { POSFlex, POSFont } from '@/styles';
 import { StyledButton } from '@/components/atoms';
-import { BridgeOverviewInfo, Card, PageHeader } from '@/components/molecules';
+
 import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
 import {
   POSFindLabel,
@@ -21,6 +21,12 @@ import { OPTIONS_MORTGAGE_PROPERTY } from '@/constants/options/mortgage';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { useSnackbar } from 'notistack';
 import { useSessionStorageState } from '@/hooks';
+
+import {
+  BridgeOverviewInfo,
+  DashboardCard,
+  PageHeader,
+} from '@/components/molecules';
 
 const useStyles = {
   '&.container': {
@@ -215,7 +221,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
       />
       <Box className={'content'}>
         <Box className={'contentItem'} mr={'24px'}>
-          <Card
+          <DashboardCard
             dataList={summary?.info}
             loading={loading}
             subInfo={summary?.subInfo}
@@ -235,8 +241,8 @@ export const BridgePurchaseOverview: FC = observer(() => {
             >
               View Letter
             </StyledButton>
-          </Card>
-          <Card
+          </DashboardCard>
+          <DashboardCard
             dataList={product?.info}
             loading={loading}
             subInfo={product?.subInfo}
@@ -256,10 +262,10 @@ export const BridgePurchaseOverview: FC = observer(() => {
             >
               Explore Rate
             </StyledButton>
-          </Card>
+          </DashboardCard>
         </Box>
         <Box className={'contentItem'}>
-          <Card
+          <DashboardCard
             dataList={loanDetail?.info}
             loading={loading}
             mt={'24px'}
@@ -267,7 +273,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
             subTitle={loanDetail?.subTitle}
             title={loanDetail?.title}
           />
-          <Card
+          <DashboardCard
             dataList={thirdParty?.info}
             loading={loading}
             mt={'24px'}
