@@ -190,7 +190,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
       >
         <StyledTextField
           inputProps={{
-            autocomplete: 'new-password',
+            autoComplete: 'new-password',
           }}
           label={'Email'}
           onChange={(e) => setEmail(e.target.value)}
@@ -202,7 +202,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
         <Box className="POS_flex POS_jc_sb">
           <StyledTextField
             inputProps={{
-              autocomplete: 'new-password',
+              autoComplete: 'new-password',
             }}
             label={'Verification Code'}
             onChange={(e) => setVerificationCode(e.target.value)}
@@ -230,7 +230,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
                 : false
             }
             inputProps={{
-              autocomplete: 'new-password',
+              autoComplete: 'new-password',
             }}
             label={'Password'}
             onChange={handledPasswordChange}
@@ -271,7 +271,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
         </Box>
         <StyledTextFieldPassword
           inputProps={{
-            autocomplete: 'new-password',
+            autoComplete: 'new-password',
           }}
           label={'Confirm password'}
           onChange={(e) => setConfirmedPassword(e.target.value)}

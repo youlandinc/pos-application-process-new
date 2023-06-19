@@ -136,7 +136,7 @@ export const ChangePassword: FC = () => {
             >
               <StyledTextField
                 inputProps={{
-                  autocomplete: 'new-password',
+                  autoComplete: 'new-password',
                 }}
                 label={'Existing Password'}
                 onChange={(e) => setOldPassword(e.target.value)}
@@ -154,7 +154,7 @@ export const ChangePassword: FC = () => {
                       : false
                   }
                   inputProps={{
-                    autocomplete: 'new-password',
+                    autoComplete: 'new-password',
                   }}
                   label={'Password'}
                   onChange={handledPasswordChange}
@@ -203,7 +203,7 @@ export const ChangePassword: FC = () => {
               </Box>
               <StyledTextFieldPassword
                 inputProps={{
-                  autocomplete: 'new-password',
+                  autoComplete: 'new-password',
                 }}
                 label={'Confirm password'}
                 onChange={(e) => setConfirmedPassword(e.target.value)}

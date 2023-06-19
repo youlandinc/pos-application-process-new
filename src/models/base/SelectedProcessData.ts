@@ -38,6 +38,7 @@ export const SelectedProcessData = types
 
         self.loading = false;
         self.setProcessData(res.data);
+        console.log(res.data);
         self.setScene(
           new ParseProcess(res.data).productType as string as SceneType,
         );
