@@ -1,3 +1,4 @@
+import { AUTO_HIDE_DURATION } from '@/constants';
 import { useCallback, useMemo, useRef } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -121,7 +122,7 @@ const useStateMachine = (
     Record<
       BridgeRefinanceState,
       {
-        next: () => void;
+        next: (cb?: () => void) => void;
         back?: () => void;
       }
     >
@@ -182,15 +183,21 @@ const useStateMachine = (
       },
     },
     estimateRate: {
-      next: async () => {
+      next: async (cb) => {
         const { taskId } = bpmn;
-        await _updateTask(taskId as string, 'complete')
-          .then(() => {
-            applicationForm.formData.changeState(
-              BridgeRefinanceState.celebrate,
-            );
-          })
-          .catch((err) => enqueueSnackbar(err));
+        try {
+          await _updateTask(taskId as string, 'complete');
+          await applicationForm.formData.changeState(
+            BridgeRefinanceState.celebrate,
+          );
+        } catch (err) {
+          enqueueSnackbar(err as string, {
+            variant: 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+          });
+        } finally {
+          cb?.();
+        }
       },
     },
     celebrate: {
