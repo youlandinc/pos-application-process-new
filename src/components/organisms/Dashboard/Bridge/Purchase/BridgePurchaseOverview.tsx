@@ -25,7 +25,7 @@ import { useSessionStorageState } from '@/hooks';
 import {
   BridgeOverviewInfo,
   DashboardCard,
-  PageHeader,
+  DashboardHeader,
 } from '@/components/molecules';
 
 const useStyles = {
@@ -213,7 +213,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
 
   return (
     <Box className={'container'} sx={useStyles}>
-      <PageHeader
+      <DashboardHeader
         subTitle={
           'Everything about your loan found in one place. Get updates and see what needs to be done before you close.'
         }

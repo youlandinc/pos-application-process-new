@@ -1,9 +1,9 @@
 import { FC } from 'react';
-import { PageHeader } from '@/components/molecules';
+import { DashboardHeader } from '@/components/molecules';
 
 export const ResourcesPage: FC = () => {
   return (
-    <PageHeader
+    <DashboardHeader
       sx={{
         px: {
           lg: 3,

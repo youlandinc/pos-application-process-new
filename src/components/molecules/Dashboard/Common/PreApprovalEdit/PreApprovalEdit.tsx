@@ -9,7 +9,7 @@ import {
   StyledSelect,
   Transitions,
 } from '@/components/atoms';
-import { PageHeader } from '@/components/molecules';
+import { DashboardHeader } from '@/components/molecules';
 import { OPTIONS_MORTGAGE_PROPERTY, OPTIONS_MORTGAGE_UNIT } from '@/constants';
 
 const useStyles = {
@@ -69,7 +69,7 @@ export const PreApprovalEdit: FC<PreApprovalEditProps> = (props) => {
       justifyContent={'center'}
       sx={useStyles}
     >
-      <PageHeader
+      <DashboardHeader
         subTitle={
           "You can edit the purchase price and down payment amounts on your letter so that it is personalized to a specific property when you're making offers."
         }
