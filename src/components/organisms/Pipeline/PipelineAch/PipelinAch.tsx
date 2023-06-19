@@ -304,7 +304,7 @@ export const PipelineAch: FC = observer(() => {
             flexDirection={{ xs: 'column', lg: 'row' }}
             gap={3}
             justifyContent={{ lg: 'space-between', xs: 'center' }}
-            pb={3}
+            pt={3}
             textAlign={'left'}
             width={'100%'}
           >
