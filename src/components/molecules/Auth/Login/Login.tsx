@@ -29,7 +29,7 @@ export const Login: FC<LoginProps> = observer(
   ({ to, successCb, isNestForm = false }) => {
     const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
-    const { state } = useSessionStorageState('tenantConfig');
+    const { saasState } = useSessionStorageState('tenantConfig');
     const store = useMst();
     const { detectUserActiveService } = store;
 
@@ -167,7 +167,7 @@ export const Login: FC<LoginProps> = observer(
                   Welcome to
                   {
                     //sass
-                    ' ' + state?.organizationName || ' YouLand'
+                    ' ' + saasState?.organizationName || ' YouLand'
                   }{' '}
                   !
                 </Typography>

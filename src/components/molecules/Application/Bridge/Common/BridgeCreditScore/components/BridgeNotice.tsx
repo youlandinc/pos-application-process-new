@@ -5,7 +5,7 @@ import { StyledFormItem } from '@/components/atoms';
 import { useSessionStorageState } from '@/hooks';
 
 export const BridgeNotice: FC = () => {
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
   return (
     <>
       <StyledFormItem label={"Let's check your credit."}>
@@ -24,7 +24,7 @@ export const BridgeNotice: FC = () => {
           By clicking Next, you are authorizing
           {
             //sass
-            ' ' + state?.organizationName || ' YouLand'
+            ' ' + saasState?.organizationName || ' YouLand'
           }{' '}
           to do a soft pull on your credit.
         </Typography>

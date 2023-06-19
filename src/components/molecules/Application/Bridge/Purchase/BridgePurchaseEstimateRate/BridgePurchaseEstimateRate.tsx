@@ -74,128 +74,130 @@ export interface BridgePurchaseLoanInfo {
   agentFee: number;
 }
 
-export const BridgePurchaseEstimateRate: FC<{ nextStep?: () => void }> =
-  observer(({ nextStep }) => {
-    const {
-      bpmn: { processId },
-      applicationForm: {
-        formData: { estimateRate },
+export const BridgePurchaseEstimateRate: FC<{
+  nextStep?: (cb?: () => void) => void;
+}> = observer(({ nextStep }) => {
+  const {
+    bpmn: { processId },
+    applicationForm: {
+      formData: { estimateRate },
+    },
+    userType,
+  } = useMst();
+
+  const { enqueueSnackbar } = useSnackbar();
+  const { open, visible, close } = useSwitch(false);
+  const [loading, setLoading] = useState(false);
+  const [checkLoading, setCheckLoading] = useState(false);
+
+  const [searchForm, setSearchForm] = useState<BPQueryData>(initialize);
+  const [productList, setProductList] = useState<RatesProductData[]>();
+  const [isFirstSearch, setIsFirstSearch] = useState<boolean>(true);
+
+  const [productInfo, setProductInfo] = useState<BridgePurchaseLoanInfo>();
+  const [selectedItem, setSelectedItem] = useState<
+    BridgePurchaseLoanInfo &
+      Pick<
+        RatesProductData,
+        'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm' | 'id'
+      >
+  >();
+
+  const onCheckGetList = async () => {
+    setIsFirstSearch(false);
+    setLoading(true);
+    const postData: Variable<BridgePurchaseEstimateRateData> = {
+      name: VariableName.estimateRate,
+      type: 'json',
+      value: {
+        ...searchForm,
       },
-      userType,
-    } = useMst();
-
-    const { enqueueSnackbar } = useSnackbar();
-    const { open, visible, close } = useSwitch(false);
-    const [loading, setLoading] = useState(false);
-    const [checkLoading, setCheckLoading] = useState(false);
-
-    const [searchForm, setSearchForm] = useState<BPQueryData>(initialize);
-    const [productList, setProductList] = useState<RatesProductData[]>();
-    const [isFirstSearch, setIsFirstSearch] = useState<boolean>(true);
-
-    const [productInfo, setProductInfo] = useState<BridgePurchaseLoanInfo>();
-    const [selectedItem, setSelectedItem] = useState<
-      BridgePurchaseLoanInfo &
-        Pick<
-          RatesProductData,
-          'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm' | 'id'
-        >
-    >();
-
-    const onCheckGetList = async () => {
-      setIsFirstSearch(false);
-      setLoading(true);
-      const postData: Variable<BridgePurchaseEstimateRateData> = {
-        name: VariableName.estimateRate,
-        type: 'json',
-        value: {
-          ...searchForm,
-        },
-      };
-      for (const [key, value] of Object.entries(searchForm)) {
-        estimateRate.changeFieldValue(key, value);
-      }
-      await _updateProcessVariables(processId as string, [postData])
-        .then(async () => {
-          const res = await _fetchRatesProductPreview(processId, searchForm);
-          if (res.status === 200) {
-            setProductList(res.data.products as RatesProductData[]);
-          }
-          const infoRes = await _fetchRatesLoanInfo(processId);
-          if (infoRes.status === 200) {
-            setProductInfo(infoRes.data.info);
-          }
-          setLoading(false);
-        })
-        .catch((err) => {
-          enqueueSnackbar(err, {
-            variant: 'error',
-            autoHideDuration: AUTO_HIDE_DURATION,
-          });
-          setLoading(false);
-        });
     };
-
-    const onListItemClick = async (item: RatesProductData) => {
-      const { paymentOfMonth, interestRateOfYear, loanTerm, id } = item;
-      if (nextStep) {
-        const temp = productList!.map((item) => {
-          item.selected = false;
-          return item;
-        });
-        setProductList(temp);
-        item.selected = true;
-      }
-      setSelectedItem(
-        Object.assign(productInfo as BridgePurchaseLoanInfo, {
-          paymentOfMonth,
-          interestRateOfYear,
-          loanTerm,
-          id,
-        }),
-      );
-      open();
-    };
-
-    const nextStepWrap = async (id: string) => {
-      setCheckLoading(true);
-      try {
-        await _updateRatesProductSelected(processId, { id });
-        nextStep && nextStep();
-      } catch (err) {
-        enqueueSnackbar(err as string, {
+    for (const [key, value] of Object.entries(searchForm)) {
+      estimateRate.changeFieldValue(key, value);
+    }
+    await _updateProcessVariables(processId as string, [postData])
+      .then(async () => {
+        const res = await _fetchRatesProductPreview(processId, searchForm);
+        if (res.status === 200) {
+          setProductList(res.data.products as RatesProductData[]);
+        }
+        const infoRes = await _fetchRatesLoanInfo(processId);
+        if (infoRes.status === 200) {
+          setProductInfo(infoRes.data.info);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        enqueueSnackbar(err, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
         });
-      } finally {
-        setCheckLoading(false);
-      }
-    };
+        setLoading(false);
+      });
+  };
 
-    return (
-      <>
-        <BridgePurchaseRatesSearch
-          loading={loading}
-          onCheck={onCheckGetList}
-          searchForm={searchForm}
-          setSearchForm={setSearchForm}
-          userType={userType}
-        />
-        <BridgeRatesList
-          isFirstSearch={isFirstSearch}
-          loading={loading}
-          onClick={onListItemClick}
-          productList={productList as RatesProductData[]}
-          userType={userType}
-        />
-        <BridgePurchaseRatesDrawer
-          loading={checkLoading}
-          nextStep={nextStepWrap}
-          onCancel={close}
-          selectedItem={selectedItem}
-          userType={userType!}
-          visible={visible}
-        />
-      </>
+  const onListItemClick = async (item: RatesProductData) => {
+    const { paymentOfMonth, interestRateOfYear, loanTerm, id } = item;
+    if (nextStep) {
+      const temp = productList!.map((item) => {
+        item.selected = false;
+        return item;
+      });
+      setProductList(temp);
+      item.selected = true;
+    }
+    setSelectedItem(
+      Object.assign(productInfo as BridgePurchaseLoanInfo, {
+        paymentOfMonth,
+        interestRateOfYear,
+        loanTerm,
+        id,
+      }),
     );
-  });
+    open();
+  };
+
+  const nextStepWrap = async (id: string) => {
+    setCheckLoading(true);
+    try {
+      await _updateRatesProductSelected(processId, { id });
+      if (nextStep) {
+        await nextStep(() => setCheckLoading(false));
+      }
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        onClose: () => setCheckLoading(false),
+      });
+    }
+  };
+
+  return (
+    <>
+      <BridgePurchaseRatesSearch
+        loading={loading}
+        onCheck={onCheckGetList}
+        searchForm={searchForm}
+        setSearchForm={setSearchForm}
+        userType={userType}
+      />
+      <BridgeRatesList
+        isFirstSearch={isFirstSearch}
+        loading={loading}
+        onClick={onListItemClick}
+        productList={productList as RatesProductData[]}
+        userType={userType}
+      />
+      <BridgePurchaseRatesDrawer
+        loading={checkLoading}
+        nextStep={nextStepWrap}
+        onCancel={close}
+        selectedItem={selectedItem}
+        userType={userType!}
+        visible={visible}
+      />
+    </>
+  );
+});

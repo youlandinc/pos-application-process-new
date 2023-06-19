@@ -1,7 +1,7 @@
 import { SetStateAction, useCallback, useEffect, useState } from 'react';
 
 export const useSessionStorageState = (key: string) => {
-  const [state, setState] = useState<any>(undefined);
+  const [saasState, setSaasState] = useState<any>(undefined);
 
   const removeItem = useCallback(() => {
     sessionStorage.removeItem(key);
@@ -16,11 +16,11 @@ export const useSessionStorageState = (key: string) => {
       return;
     }
     if (window.sessionStorage.getItem(key)) {
-      setState(JSON.parse(window.sessionStorage.getItem(key) as string));
+      setSaasState(JSON.parse(window.sessionStorage.getItem(key) as string));
     }
 
     if (typeof window !== 'undefined') {
-      setState(JSON.parse(window.sessionStorage.getItem(key) as string));
+      setSaasState(JSON.parse(window.sessionStorage.getItem(key) as string));
     }
   }, [key]);
 
@@ -28,7 +28,7 @@ export const useSessionStorageState = (key: string) => {
     (data: SetStateAction<any>) => {
       if (typeof window !== 'undefined') {
         sessionStorage.setItem(key, JSON.stringify(data));
-        setState(data);
+        setSaasState(data);
       }
     },
     [key],
@@ -39,7 +39,7 @@ export const useSessionStorageState = (key: string) => {
   }, [getItem]);
 
   return {
-    state,
+    saasState,
     removeItem,
     clear,
     setItem,

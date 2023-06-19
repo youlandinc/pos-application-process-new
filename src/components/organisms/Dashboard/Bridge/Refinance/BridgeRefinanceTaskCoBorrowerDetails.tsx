@@ -51,7 +51,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [tableView, setTableView] = useState<'form' | 'score'>('form');
@@ -511,12 +511,12 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                     authorize{' '}
                     {
                       //sass
-                      state?.organizationName || 'YouLand'
+                      saasState?.organizationName || 'YouLand'
                     }{' '}
                     to verify my credit. I&apos;ve also read and agreed to{' '}
                     {
                       //sass
-                      state?.organizationName || 'YouLand'
+                      saasState?.organizationName || 'YouLand'
                     }{' '}
                     &apos;s{' '}
                     <Typography

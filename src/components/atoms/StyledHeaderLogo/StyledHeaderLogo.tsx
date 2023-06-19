@@ -10,15 +10,15 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
   logoUrl = '/images/logo/logo_blue.svg',
 }) => {
   const router = useRouter();
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const Logo = useMemo(() => {
-    if (state?.logoUrl) {
+    if (saasState?.logoUrl) {
       // eslint-disable-next-line @next/next/no-img-element
-      return <img alt="" height={'100%'} src={state?.logoUrl || logoUrl} />;
+      return <img alt="" height={'100%'} src={saasState?.logoUrl || logoUrl} />;
     }
-    return <Box className={'logo_name'}>{state?.organizationName}</Box>;
-  }, [logoUrl, state?.logoUrl, state?.organizationName]);
+    return <Box className={'logo_name'}>{saasState?.organizationName}</Box>;
+  }, [logoUrl, saasState?.logoUrl, saasState?.organizationName]);
 
   return (
     <Box
@@ -30,7 +30,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
         alt=""
         fill
         priority
-        src={state?.logoUrl || logoUrl}
+        src={saasState?.logoUrl || logoUrl}
         style={{ maxWidth: 180 }}
       /> */}
     </Box>

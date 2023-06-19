@@ -81,7 +81,7 @@ export interface BridgeRefinanceLoanInfo {
 }
 
 export const BridgeRefinanceEstimateRate: FC<{
-  nextStep?: () => void;
+  nextStep?: (cb?: () => void) => void;
 }> = observer(({ nextStep }) => {
   const {
     bpmn: { processId },
@@ -168,14 +168,17 @@ export const BridgeRefinanceEstimateRate: FC<{
     setCheckLoading(true);
     try {
       await _updateRatesProductSelected(processId, { id });
-      nextStep && nextStep();
+      if (nextStep) {
+        await nextStep(() => setCheckLoading(false));
+      }
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        onClose: () => {
+          setCheckLoading(false);
+        },
       });
-    } finally {
-      setCheckLoading(false);
     }
   };
 

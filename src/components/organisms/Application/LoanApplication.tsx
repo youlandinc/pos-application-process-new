@@ -63,7 +63,7 @@ const useInitProcessData = (
   const [lastSelectedType, setLastSelectedType] = useState<ApplicationType>();
 
   // todo : saas
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   // start new progress
   const [initState, startProgress] = useAsyncFn(
@@ -75,7 +75,7 @@ const useInitProcessData = (
       // todo : tenantId should replace params
       return await _startProcess(
         productName,
-        state?.tenantId || '1000052022092800000102',
+        saasState?.tenantId || '1000052022092800000102',
       ).catch((err) => {
         enqueueSnackbar(err, {
           variant: 'error',
