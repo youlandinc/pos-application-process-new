@@ -2,10 +2,10 @@ import { FC, ReactNode } from 'react';
 import { Box, BoxProps, Divider, SxProps } from '@mui/material';
 
 import { POSFont } from '@/styles';
+import { POSFormatDollar } from '@/utils';
 
 import { StyledLoading } from '@/components/atoms';
-import { ProductItem } from '@/components/molecules';
-import { POSFormatDollar } from '@/utils';
+import { DashboardProductItem } from '@/components/molecules';
 
 const useStyles: SxProps = {
   '&.card_wrap': {
@@ -50,17 +50,15 @@ export interface BridgeOverviewInfo {
   }[];
 }
 
-export const Card: FC<CardProps> = (props) => {
-  const {
-    loading,
-    title = 'Purchase',
-    subTitle = 'Total loan amount',
-    subInfo = POSFormatDollar(125000),
-    dataList = [{ label: 'Purchase price', info: POSFormatDollar(125000) }],
-    children,
-    ...rest
-  } = props;
-
+export const Card: FC<CardProps> = ({
+  loading,
+  title = 'Purchase',
+  subTitle = 'Total loan amount',
+  subInfo = POSFormatDollar(125000),
+  dataList = [{ label: 'Purchase Price', info: POSFormatDollar(125000) }],
+  children,
+  ...rest
+}) => {
   return (
     <Box className={'card_wrap'} sx={useStyles} {...rest}>
       {loading ? (
@@ -71,7 +69,7 @@ export const Card: FC<CardProps> = (props) => {
             <Box>{title}</Box>
           </Box>
           <Box className={'card_info'}>
-            <ProductItem
+            <DashboardProductItem
               info={
                 <Box
                   sx={{
@@ -85,7 +83,7 @@ export const Card: FC<CardProps> = (props) => {
             />
             <Divider sx={{ py: 1 }} />
             {dataList.map((item, index) => (
-              <ProductItem
+              <DashboardProductItem
                 info={item.info}
                 key={`${index}_${item.label}_${item.info}`}
                 label={item.label}
