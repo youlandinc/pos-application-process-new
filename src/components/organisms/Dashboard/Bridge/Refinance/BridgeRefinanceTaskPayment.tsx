@@ -175,9 +175,9 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
         return !noticeCheck;
       case DashboardTaskPaymentTableStatus.summary:
         if (!POSNotUndefined(haveAppraisal) || !summaryCheck) {
-          return false;
+          return true;
         }
-        return haveAppraisal ? !appraisalFiles.length : false;
+        return haveAppraisal ? !appraisalFiles.length || saveLoading : false;
       case DashboardTaskPaymentTableStatus.payment:
         return !paymentCheck || !clickable || loading;
     }
@@ -187,6 +187,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
     haveAppraisal,
     summaryCheck,
     appraisalFiles.length,
+    saveLoading,
     paymentCheck,
     clickable,
     loading,
@@ -351,7 +352,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
               }}
               sx={{ flex: 1 }}
             >
-              Next
+              {haveAppraisal ? 'Save' : 'Next'}
             </StyledButton>
           </Stack>
         );
@@ -391,6 +392,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
     disabledButton,
     handledPayment,
     handledSaveFormAndGetPaymentDetail,
+    haveAppraisal,
     next,
     saveLoading,
     tableStatus,

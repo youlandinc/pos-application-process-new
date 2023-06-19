@@ -1,9 +1,9 @@
-import { useCheckProcessId } from '@/hooks/useCheckProcessId';
 import { FC, ReactNode, useEffect } from 'react';
 
 import { useMst } from '@/models/Root';
 import { observer } from 'mobx-react-lite';
 
+import { useCheckProcessId } from '@/hooks';
 import { StyledLoading } from '@/components/atoms';
 import { POSLayout } from '@/components/molecules';
 
