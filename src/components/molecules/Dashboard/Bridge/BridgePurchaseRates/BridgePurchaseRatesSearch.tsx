@@ -24,18 +24,14 @@ interface BridgePurchaseRatesSearchProps {
   loanStage?: LoanStage;
 }
 
-export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
-  props,
-) => {
-  const {
-    onCheck,
-    searchForm,
-    setSearchForm,
-    loading,
-    userType,
-    loanStage = LoanStage.Application,
-  } = props;
-
+export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
+  onCheck,
+  searchForm,
+  setSearchForm,
+  loading,
+  userType,
+  loanStage = LoanStage.Application,
+}) => {
   const {
     isCor,
     purchasePrice,
@@ -430,7 +426,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = (
 
           <StyledCheckbox
             checked={isCor}
-            disabled={loading || loanStage === LoanStage.Approved}
+            disabled={loading || loanStage === LoanStage.Approved || !!LTVError}
             label={'Rehab Loan Amount'}
             onChange={(e) => {
               setSearchForm({
