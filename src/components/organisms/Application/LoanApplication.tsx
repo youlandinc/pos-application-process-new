@@ -101,13 +101,15 @@ const useInitProcessData = (
 
   const loadServerTaskProgress = useCallback(
     (processData: ProcessData) => {
-      bpmn.setProcessId(processData.extra.id);
+      bpmn.setProcessId(
+        processData.extra.id || (router.query.processId as string),
+      );
       bpmn.setTaskKey(processData.currentTasks[0].bpmn.key);
       bpmn.setTaskId(processData.currentTasks[0].extra.id);
       bpmn.setOwners(processData.owners);
       applicationForm.formData.loadProcessData(processData);
     },
-    [applicationForm.formData, bpmn],
+    [applicationForm.formData, bpmn, router.query.processId],
   );
 
   const loadClientTaskProgressAndData = useCallback(
