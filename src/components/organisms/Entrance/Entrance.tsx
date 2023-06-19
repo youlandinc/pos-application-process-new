@@ -1,10 +1,10 @@
-import { POSFont } from '@/styles';
-import { useMemo } from 'react';
-import { Box } from '@mui/material';
+import { FC, useMemo } from 'react';
+import { Box, Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { POSFont } from '@/styles';
 import { UserType } from '@/types';
 
 import {
@@ -31,7 +31,7 @@ const productList = [
   //{ name: 'Crypto loan', url: '/application/crypto_loan' },
 ];
 
-export const Entrance = observer(() => {
+export const Entrance: FC = observer(() => {
   const { userType } = useMst();
 
   const computedArray = useMemo(() => {
@@ -47,90 +47,71 @@ export const Entrance = observer(() => {
 
   return (
     <Box sx={{ bgcolor: '#F5F8FA' }}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'row',
-          '& .entrance_header_inside': {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            flexDirection: 'row',
-            height: 92,
-            width: {
-              xxl: 1440,
-              xl: 1240,
-              lg: 938,
-              xs: '100%',
-            },
-            px: {
-              lg: 0,
-              xs: 'clamp(24px,6.4vw,80px)',
-            },
-          },
-        }}
+      <Stack
+        alignItems={'center'}
+        flexDirection={'row'}
+        justifyContent={'center'}
       >
-        <Box className={'entrance_header_inside'}>
-          <StyledHeaderLogo />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'row',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            flexDirection: 'column',
-            minHeight: 'calc(100vh - 92px)',
-            width: {
-              xxl: 1440,
-              xl: 1240,
-              lg: 938,
-              xs: '100%',
-            },
-            py: 'clamp(40px,7vw,80px) ',
-            px: {
-              lg: 0,
-              xs: 'clamp(24px,6.4vw,80px)',
-            },
-          }}
+        <Stack
+          alignItems={'center'}
+          flexDirection={'row'}
+          height={92}
+          justifyContent={'flex-start'}
+          px={{ lg: 0, xs: 'clamp(24px,6.4vw,80px)' }}
+          width={{ xxl: 1440, xl: 1240, lg: 938, xs: '100%' }}
         >
-          <StyledFormItem
+          <StyledHeaderLogo />
+        </Stack>
+      </Stack>
+
+      <Stack
+        alignItems={'center'}
+        flexDirection={'row'}
+        justifyContent={'center'}
+        width={'100%'}
+      >
+        <Stack
+          alignItems={'center'}
+          flexDirection={'column'}
+          justifyContent={'flex-start'}
+          width={'100%'}
+        >
+          <Stack
             alignItems={'center'}
-            gap={3}
-            label={'Which product are you interested in?'}
-            labelSx={{ m: 0 }}
+            flexDirection={'column'}
+            justifyContent={'flex-start'}
+            minHeight={'calc(100vh - 92px)'}
+            px={{ lg: 0, xs: 'clamp(24px,6.4vw,80px)' }}
+            py={'clamp(40px,7vw,80px) '}
+            width={{ xxl: 1440, xl: 1240, lg: 938, xs: '100%' }}
           >
-            {computedArray.map((item, index) => {
-              return (
-                <StyledButton
-                  color={'info'}
-                  key={item.name + index}
-                  onClick={() => (window.location.href = item.url)}
-                  sx={{
-                    width: { md: 600, xs: '100%' },
-                    height: 64,
-                    ...POSFont(20, 600, 1.5, 'text.primary'),
-                    fontSize: '20px !important',
-                  }}
-                  variant={'outlined'}
-                >
-                  {item.name}
-                </StyledButton>
-              );
-            })}
-          </StyledFormItem>
-        </Box>
-      </Box>
+            <StyledFormItem
+              alignItems={'center'}
+              gap={3}
+              label={'Which product are you interested in?'}
+              labelSx={{ m: 0 }}
+            >
+              {computedArray.map((item, index) => {
+                return (
+                  <StyledButton
+                    color={'info'}
+                    key={item.name + index}
+                    onClick={() => (window.location.href = item.url)}
+                    sx={{
+                      ...POSFont('20px !important', 600, 1.5, 'text.primary'),
+                      width: { md: 600, xs: '100%' },
+                      height: 64,
+                    }}
+                    variant={'outlined'}
+                  >
+                    {item.name}
+                  </StyledButton>
+                );
+              })}
+            </StyledFormItem>
+          </Stack>
+        </Stack>
+      </Stack>
     </Box>
   );
 });

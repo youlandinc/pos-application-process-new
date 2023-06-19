@@ -6,7 +6,6 @@ import { POSFlex, POSFont } from '@/styles';
 const productItemStyle = {
   '&.container': {
     ...POSFlex('', 'space-between', undefined),
-
     width: '100%',
   },
   '& .label': {
