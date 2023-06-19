@@ -13,7 +13,7 @@ import { _fetchLoanTask, _notifyTaskUpdate } from '@/requests/dashboard';
 import { BridgePurchaseTasks } from '@/types';
 
 import { StyledButton, StyledLoading } from '@/components/atoms';
-import { PageHeader } from '@/components/molecules';
+import { DashboardHeader } from '@/components/molecules';
 
 type BridgePurchaseTaskCode =
   | 'BP_APPLICATION_LOAN'
@@ -443,7 +443,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
 
   return (
     <Box sx={TaskListStyles}>
-      <PageHeader
+      <DashboardHeader
         subTitle={
           'You can make updates to the task before the loan is approved.'
         }

@@ -1,21 +1,22 @@
 import { FC, useState } from 'react';
 import { Box, CircularProgress, Icon, SxProps } from '@mui/material';
-import { useAsync } from 'react-use';
-import { useSnackbar } from 'notistack';
-import { _fetchMyTeamData } from '@/requests/saas';
-
-import { POSFont, POSSize } from '@/styles';
-
-import { PageHeader, ServiceCardList } from '@/components/molecules';
 import {
   MailOutlineOutlined,
   PhoneEnabledOutlined,
   SupportAgentOutlined,
   WatchLaterOutlined,
 } from '@mui/icons-material';
-import { POSFormatUSPhoneToText } from '@/utils';
-import MY_TEAM from '@/svg/dashboard/my_team.svg';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
+
 import { AUTO_HIDE_DURATION } from '@/constants';
+import { _fetchMyTeamData } from '@/requests/saas';
+import { POSFormatUSPhoneToText } from '@/utils';
+import { POSFont, POSSize } from '@/styles';
+
+import { DashboardHeader, ServiceCardList } from '@/components/molecules';
+
+import MY_TEAM from '@/svg/dashboard/my_team.svg';
 
 export interface TeamMemberData {
   name: string;
@@ -63,7 +64,7 @@ export const TeamPage: FC = () => {
         />
       ) : (
         <>
-          <PageHeader
+          <DashboardHeader
             subTitle={` From choosing a rate to scheduling closing, you have a dedicated
               team of specialists. Along the way, new faces will show up so be sure to check back
               often and drop a line if you need anything.`}

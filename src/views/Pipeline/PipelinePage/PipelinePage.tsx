@@ -18,18 +18,19 @@ export const PipelinePage: FC<{ children?: ReactNode }> = observer(
 
     // await fetch user setting
     useEffect(() => {
-      fetchPipelineStatus().then();
+      fetchPipelineStatus();
     }, [fetchPipelineStatus]);
 
     // await fetch task item status
     useEffect(() => {
       if (userType === UserType.CUSTOMER) {
+        pipelineTask.setInitialized(true);
         return;
       }
       if (!pipelineTask.pipelineInitialized) {
         pipelineTask.initPipelineTaskForm();
       }
-      pipelineTask.fetchPipelineTaskData().then();
+      pipelineTask.fetchPipelineTaskData();
     }, [pipelineTask, pipelineTask.pipelineInitialized, userType]);
 
     return !pipelineTask.pipelineInitialized ? (

@@ -1,10 +1,18 @@
+import { FC, ReactNode } from 'react';
+import { Box, BoxProps, SxProps, Typography } from '@mui/material';
+
 import { useBreakpoints } from '@/hooks';
-import { FC } from 'react';
-import { Box, Typography } from '@mui/material';
 
-import { PageHeaderProps } from './index';
+export interface DashboardHeaderProps extends Omit<BoxProps, 'title'> {
+  children?: ReactNode;
+  sx?: SxProps;
+  title: ReactNode;
+  titleSx?: SxProps;
+  subTitle?: ReactNode;
+  subTitleSx?: SxProps;
+}
 
-export const PageHeader: FC<PageHeaderProps> = ({
+export const DashboardHeader: FC<DashboardHeaderProps> = ({
   children,
   title,
   titleSx,

@@ -17,7 +17,7 @@ import {
   StyledLoading,
   StyledTextField,
 } from '@/components/atoms';
-import { PageHeader } from '@/components/molecules';
+import { DashboardHeader } from '@/components/molecules';
 import { _fetchPDFFile, _sendPreapprovalLetter } from '@/requests/dashboard';
 import { Box, BoxProps } from '@mui/material';
 import { POSFormatDollar } from '@/utils';
@@ -159,7 +159,7 @@ export const PreApprovalInfo = forwardRef<
 
   return (
     <Box className={'container'} sx={useStyles}>
-      <PageHeader title={'Pre-approval letter'} />
+      <DashboardHeader title={'Pre-approval letter'} />
       <ActionCard
         label={
           <Box>
