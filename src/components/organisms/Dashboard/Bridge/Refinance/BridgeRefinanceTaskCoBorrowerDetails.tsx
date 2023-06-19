@@ -8,6 +8,7 @@ import { format, isDate, isValid } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 
 import { POSNotUndefined } from '@/utils';
+import { useSessionStorageState } from '@/hooks';
 import { Address, IAddress } from '@/models/common/Address';
 import {
   DashboardTaskBorrowerEntityType,
@@ -44,13 +45,14 @@ import {
   StyledTextFieldSocialNumber,
   Transitions,
 } from '@/components/atoms';
-
-import { ScoreResult } from '@/components/molecules';
+import { DashboardScoreResult } from '@/components/molecules';
 
 export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+
   const { state } = useSessionStorageState('tenantConfig');
+
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [tableView, setTableView] = useState<'form' | 'score'>('form');
 
@@ -599,7 +601,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     </StyledFormItem>
   ) : (
     <Stack alignItems={'center'} gap={3}>
-      <ScoreResult score={creditScore} />
+      <DashboardScoreResult score={creditScore} />
       <StyledButton
         disabled={!isDisabled || saveLoading}
         loading={saveLoading}

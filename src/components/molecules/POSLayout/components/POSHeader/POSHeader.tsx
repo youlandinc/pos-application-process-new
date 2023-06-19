@@ -1,6 +1,5 @@
-import Link from 'next/link';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import {
   CloseOutlined,
   DehazeOutlined,
@@ -8,12 +7,12 @@ import {
   WidgetsOutlined,
 } from '@mui/icons-material';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 import { observer } from 'mobx-react-lite';
 
 import { POSHeaderProps, POSHeaderStyles } from './index';
 import { MyAccountButton } from '../MyAccountButton';
-import { POSFlex } from '@/styles';
 import {
   useBreakpoints,
   usePersistFn,
@@ -21,15 +20,16 @@ import {
   useStoreData,
   useSwitch,
 } from '@/hooks';
+
 import {
   StyledButton,
   StyledDialog,
   StyledHeaderLogo,
 } from '@/components/atoms';
 import {
+  DashboardSideDrawer,
   ForgotPassword,
   Login,
-  SideDrawer,
   SignUp,
 } from '@/components/molecules';
 
@@ -381,10 +381,10 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   ]);
 
   return (
-    <Box
-      sx={{
-        ...POSFlex('center', 'center', 'row'),
-      }}
+    <Stack
+      alignItems={'center'}
+      flexDirection={'row'}
+      justifyContent={'center'}
     >
       <Box sx={POSHeaderStyles}>
         {scene === 'dashboard' ? (
@@ -400,7 +400,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         )}
         <Box sx={{ ml: 'auto' }}>{renderButton}</Box>
       </Box>
-      <SideDrawer close={sideClose} visible={closeVisible} />
+      <DashboardSideDrawer close={sideClose} visible={closeVisible} />
       <StyledDialog
         content={renderDialog.content}
         disableEscapeKeyDown
@@ -410,6 +410,6 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         open={visible}
         scroll={'body'}
       />
-    </Box>
+    </Stack>
   );
 });
