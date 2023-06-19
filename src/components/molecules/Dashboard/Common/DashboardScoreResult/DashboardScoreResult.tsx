@@ -1,7 +1,8 @@
-import { POSCreateDebounceFunction } from '@/utils';
-import dynamic from 'next/dynamic';
 import { FC, useCallback, useEffect } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
+import dynamic from 'next/dynamic';
+
+import { POSCreateDebounceFunction } from '@/utils';
 
 import { StyledFormItem } from '@/components/atoms';
 
@@ -11,7 +12,9 @@ const AnimatedNumbers = dynamic(() => import('react-animated-numbers'), {
   ssr: false,
 });
 
-export const ScoreResult: FC<{ score: number | undefined }> = ({ score }) => {
+export const DashboardScoreResult: FC<{ score: number | undefined }> = ({
+  score,
+}) => {
   const handledAnimate = useCallback(() => {
     const SCORE_BUOY_DIVIDER = document.getElementById('SCORE_BUOY_DIVIDER');
     const SCORE_BUOY_ICON = document.getElementById('SCORE_BUOY_ICON');

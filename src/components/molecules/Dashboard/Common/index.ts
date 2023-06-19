@@ -1,10 +1,9 @@
-export * from './SideDrawer';
 export * from './ServiceCardList';
 export * from './PreApprovalEdit';
 export * from './PreApprovalInfo';
-export * from './ScoreResult';
 
 export * from './DashboardTaskPayment';
+export * from './DashboardScoreResult';
 
 export * from './DashboardCardItem';
 export * from './DashboardCard';
@@ -12,3 +11,4 @@ export * from './DashboardCard';
 export * from './DashboardHeader';
 
 export * from './DashboardMenuList';
+export * from './DashboardSideDrawer';
