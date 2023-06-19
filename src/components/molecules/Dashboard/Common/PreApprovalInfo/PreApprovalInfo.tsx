@@ -80,6 +80,7 @@ export const PreApprovalInfo = forwardRef<
   const [email, setEmail] = useState<string>('');
 
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
+  const [viewLoading, setViewLoading] = useState<boolean>(false);
   const [sendLoading, setSendLoading] = useState<boolean>(false);
 
   const onEmailSubmit = useCallback<FormEventHandler>(
@@ -133,6 +134,29 @@ export const PreApprovalInfo = forwardRef<
     [],
   );
 
+  const onViewPDF = useCallback(
+    async () => {
+      const handler = (data: BlobPart) => {
+        // file export
+        if (!data) {
+          setViewLoading(false);
+          return;
+        }
+        const url = window.URL.createObjectURL(
+          new Blob([data], { type: 'application/pdf;chartset=UTF-8' }),
+        );
+        window.open(url);
+        setViewLoading(false);
+      };
+      setViewLoading(true);
+      const res = await _fetchPDFFile(processId as string);
+      handler(res.data);
+    },
+    // this function never change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
   return (
     <Box className={'container'} sx={useStyles}>
       <PageHeader title={'Pre-approval letter'} />
@@ -160,15 +184,35 @@ export const PreApprovalInfo = forwardRef<
         }
         mt={3}
       >
-        <StyledButton
-          className={'button_style'}
-          color={'info'}
-          disabled={loading || downloadLoading}
-          onClick={onDownloadPDF}
-          variant={'outlined'}
+        <Box
+          width={{
+            xl: 200,
+            md: '100%',
+            xs: '100%',
+          }}
         >
-          {downloadLoading ? 'Downloading...' : 'Download PDF'}
-        </StyledButton>
+          <StyledButton
+            className={'button_style'}
+            color={'primary'}
+            disabled={loading || viewLoading}
+            onClick={onViewPDF}
+            sx={{
+              mb: { xl: 3, xs: 0 },
+            }}
+            variant={'contained'}
+          >
+            {viewLoading ? 'Viewing...' : 'View Letter'}
+          </StyledButton>
+          <StyledButton
+            className={'button_style'}
+            color={'info'}
+            disabled={loading || downloadLoading}
+            onClick={onDownloadPDF}
+            variant={'outlined'}
+          >
+            {downloadLoading ? 'Downloading...' : 'Download PDF'}
+          </StyledButton>
+        </Box>
       </ActionCard>
       <ActionCard
         component="form"
