@@ -44,7 +44,7 @@ import SIGN_UP_SVG from '@/svg/auth/sign_up.svg';
 export const SignUp: FC<SignUpProps> = observer(
   ({ isNestForm = false, isRedirect = true, successCb }) => {
     const router = useRouter();
-    const { state } = useSessionStorageState('tenantConfig');
+    const { saasState } = useSessionStorageState('tenantConfig');
     const { enqueueSnackbar } = useSnackbar();
 
     const [email, setEmail] = useState('');
@@ -347,7 +347,7 @@ export const SignUp: FC<SignUpProps> = observer(
                     and to receive
                     {
                       //sass
-                      ' ' + state?.organizationName || ' YouLand'
+                      ' ' + saasState?.organizationName || ' YouLand'
                     }{' '}
                     emails & updates and acknowledge that you read our{' '}
                     <Link

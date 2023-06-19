@@ -43,7 +43,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     open: sideOpen,
     close: sideClose,
   } = useSwitch();
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
   const breakpoint = useBreakpoints();
 
   const {
@@ -241,7 +241,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 Welcome to
                 {
                   //sass
-                  ' ' + state?.organizationName || ' YouLand'
+                  ' ' + saasState?.organizationName || ' YouLand'
                 }{' '}
                 !
               </Typography>
@@ -355,7 +355,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 and to receive
                 {
                   //sass
-                  ' ' + state?.organizationName || ' YouLand'
+                  ' ' + saasState?.organizationName || ' YouLand'
                 }{' '}
                 emails & updates and acknowledge that you read our{' '}
                 <Link
@@ -376,7 +376,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     close,
     handledLoginSuccess,
     handledSignUpAndResetSuccess,
-    state?.organizationName,
+    saasState?.organizationName,
     target,
   ]);
 

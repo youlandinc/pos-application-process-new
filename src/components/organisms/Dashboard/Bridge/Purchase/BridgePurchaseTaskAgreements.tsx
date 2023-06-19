@@ -15,7 +15,7 @@ export const BridgePurchaseTaskAgreements: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [saveLoading, setSaveLoading] = useState(false);
 
@@ -47,7 +47,7 @@ export const BridgePurchaseTaskAgreements: FC = observer(() => {
       <StyledFormItem
         label={`Review and accept ${
           //sass
-          state?.organizationName || ' YouLand'
+          saasState?.organizationName || ' YouLand'
         }'s construction holdback process`}
         maxWidth={900}
         sub

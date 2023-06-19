@@ -73,7 +73,7 @@ const resetAddress = {
 export const BridgeRefinanceTaskCompanyInformation: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
   const [saveLoading, setSaveLoading] = useState(false);
 
   const [contactForm, setContactForm] = useState(initialValues);
@@ -275,7 +275,7 @@ export const BridgeRefinanceTaskCompanyInformation: FC = observer(() => {
       gap={6}
       label={'Closing Agent / Title Company Information'}
       tip={`A closing agent assists with closing and verifies there are no outstanding title issues. ${
-        state?.organizationName || 'YouLand'
+        saasState?.organizationName || 'YouLand'
       } also orders a Title Commitment and a Title Report on the property from this agent.`}
       tipSx={{ mb: 0 }}
     >

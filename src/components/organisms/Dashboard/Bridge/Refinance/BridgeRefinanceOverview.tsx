@@ -65,7 +65,7 @@ const useStyles = {
 export const BridgeRefinanceOverview: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
   // const tenantConfig = utils.getTenantConfig();
 
   const [summary, setSummary] = useState<BridgeOverviewInfo>();
@@ -310,7 +310,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
             considered an extension or offer of credit by
             {
               // todo: sass
-              ' ' + state?.organizationName || ' YouLand'
+              ' ' + saasState?.organizationName || ' YouLand'
             }
             .
           </Box>

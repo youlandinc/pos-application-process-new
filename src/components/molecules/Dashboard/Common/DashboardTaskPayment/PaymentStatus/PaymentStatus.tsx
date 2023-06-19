@@ -16,7 +16,7 @@ interface PaymentStatusProps {
 export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
   const router = useRouter();
 
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const renderResult = useMemo(() => {
     switch (paymentStatus) {
@@ -39,13 +39,13 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                     Should you require additional assistance, email us at
                     <Typography className={'link_style'} component={'span'}>
                       {/* todo sass */}{' '}
-                      {state?.extInfo?.posSettings?.email ||
+                      {saasState?.extInfo?.posSettings?.email ||
                         'borrow@youland.com'}{' '}
                     </Typography>
                     or call toll free at{' '}
                     <Typography className={'link_style'} component={'span'}>
                       {POSFormatUSPhoneToText(
-                        state?.extInfo?.posSettings?.phone,
+                        saasState?.extInfo?.posSettings?.phone,
                       ) || '1-833-968-5263'}{' '}
                     </Typography>
                   </Typography>
@@ -126,13 +126,14 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                   <span className={'link_style'}>
                     {/* todo sass */}{' '}
                     {POSFormatUSPhoneToText(
-                      state?.extInfo?.posSettings?.phone,
+                      saasState?.extInfo?.posSettings?.phone,
                     ) || '1-833-968-5263'}{' '}
                   </span>{' '}
                   or email us at
                   <span className={'link_style'}>
                     {/* todo sass */}{' '}
-                    {state?.extInfo?.posSettings?.email || 'borrow@youland.com'}{' '}
+                    {saasState?.extInfo?.posSettings?.email ||
+                      'borrow@youland.com'}{' '}
                   </span>
                   . We can help you with the refund.
                 </Typography>
@@ -156,8 +157,8 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
   }, [
     paymentStatus,
     router,
-    state?.extInfo?.posSettings?.email,
-    state?.extInfo?.posSettings?.phone,
+    saasState?.extInfo?.posSettings?.email,
+    saasState?.extInfo?.posSettings?.phone,
   ]);
 
   return <>{renderResult}</>;

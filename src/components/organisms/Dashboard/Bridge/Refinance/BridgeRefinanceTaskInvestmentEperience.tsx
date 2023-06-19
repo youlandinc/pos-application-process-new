@@ -25,7 +25,7 @@ import { useSessionStorageState } from '@/hooks';
 export const BridgeRefinanceTaskInvestmentExperience: FC = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState(false);
 
@@ -203,13 +203,13 @@ export const BridgeRefinanceTaskInvestmentExperience: FC = () => {
             include. It is important that the person/Entity on title is
             affiliated to the Borrower and Guarantor on your loan application.
             Additional documentation may be required if{' '}
-            {state?.organizationName || 'YouLand'} can&apos;t validate property
-            ownership or title affiliation. Include the complete property
-            address. When filling out the Experience Verification Sheet, please
-            be sure to fill out the complete property address. Leave out vacant
-            land and home address. {state?.organizationName || 'YouLand'} will
-            not count vacant land or your current home towards your experience
-            verification.
+            {saasState?.organizationName || 'YouLand'} can&apos;t validate
+            property ownership or title affiliation. Include the complete
+            property address. When filling out the Experience Verification
+            Sheet, please be sure to fill out the complete property address.
+            Leave out vacant land and home address.{' '}
+            {saasState?.organizationName || 'YouLand'} will not count vacant
+            land or your current home towards your experience verification.
           </Typography>
 
           <Box mt={3} width={'100%'}>

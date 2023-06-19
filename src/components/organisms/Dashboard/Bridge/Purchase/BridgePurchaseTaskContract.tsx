@@ -30,7 +30,7 @@ import { useSessionStorageState } from '@/hooks';
 export const BridgePurchaseTaskContract: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
   const [saveLoading, setSaveLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
 
@@ -192,7 +192,7 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
           <>
             <Box>
               We’ll confirm that all of the details in the purchase contract
-              match your application. {state?.organizationName || 'YouLand'}{' '}
+              match your application. {saasState?.organizationName || 'YouLand'}{' '}
               will look for the agreed-upon purchase price, any Sellers
               concessions and fees, close of escrow date, and confirmation that
               the property is being used for investment purposes.

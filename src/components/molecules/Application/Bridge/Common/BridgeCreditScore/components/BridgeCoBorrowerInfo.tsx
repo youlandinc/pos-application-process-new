@@ -31,7 +31,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
     },
     // userType,
   } = useMst();
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const coBorrowerInfo: IPersonalInfo = creditScore.coBorrowerInfo;
   const {
@@ -121,7 +121,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
               sub
               tip={`By entering your phone number,  you're authorizing ${
                 //sass
-                ' ' + state?.organizationName || ' YouLand'
+                ' ' + saasState?.organizationName || ' YouLand'
               } to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may.`}
             >
               <Stack gap={3} maxWidth={600} width={'100%'}>
@@ -201,12 +201,12 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
                   {coBorrowerInfo.lastName || 'name'} , authorize
                   {
                     //sass
-                    ' ' + state?.organizationName || ' YouLand'
+                    ' ' + saasState?.organizationName || ' YouLand'
                   }{' '}
                   to verify my credit. I&apos;ve also read and agreed to
                   {
                     //sass
-                    ' ' + state?.organizationName || ' YouLand'
+                    ' ' + saasState?.organizationName || ' YouLand'
                   }{' '}
                   &apos;s{' '}
                   <Typography

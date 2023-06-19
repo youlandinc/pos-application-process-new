@@ -12,7 +12,7 @@ import { StyledButton, StyledFormItem, Transitions } from '@/components/atoms';
 
 export const Auth: FC<FormNodeBaseProps> = observer((props) => {
   const { prevStep, nextStep } = props;
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
   const { session, bpmn } = useMst();
   const [authType, setAuthType] = useState<
     'login' | 'sign_up' | 'reset_password'
@@ -50,7 +50,7 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
           authType === 'login'
             ? `Welcome to ${
                 //sass
-                ' ' + state?.organizationName || ' YouLand'
+                ' ' + saasState?.organizationName || ' YouLand'
               }!`
             : authType === 'sign_up'
             ? 'Sign Up'

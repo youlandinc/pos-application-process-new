@@ -26,7 +26,7 @@ export const BridgeCelebrate: FC<{ nextStep: () => void }> = observer(
       },
       userType,
     } = useMst();
-    const { state } = useSessionStorageState('tenantConfig');
+    const { saasState } = useSessionStorageState('tenantConfig');
 
     const loanAmount = useMemo(() => {
       let total = 0;
@@ -82,7 +82,7 @@ export const BridgeCelebrate: FC<{ nextStep: () => void }> = observer(
             final approval of your loan,{' '}
             {
               //sass
-              ' ' + state?.organizationName || ' YouLand'
+              ' ' + saasState?.organizationName || ' YouLand'
             }{' '}
             must underwrite and verify all of your provided information.
           </Typography>

@@ -57,7 +57,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { state } = useSessionStorageState('tenantConfig');
+  const { saasState } = useSessionStorageState('tenantConfig');
   const { open, visible, close } = useSwitch(false);
 
   const [loading, setLoading] = useState(false);
@@ -222,7 +222,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
                 {/* todo sass */}
                 Rates displayed are subject to rate confirm and are not to be
                 considered an extension or offer of credit by{' '}
-                {state?.organizationName || 'YouLand'}.
+                {saasState?.organizationName || 'YouLand'}.
               </Typography>
             </>
           }
