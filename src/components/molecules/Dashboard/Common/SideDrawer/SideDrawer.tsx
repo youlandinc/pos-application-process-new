@@ -10,7 +10,7 @@ import {
   StyledDrawer,
   StyledHeaderLogo,
 } from '@/components/atoms';
-import { POSMenuList } from '@/components/molecules';
+import { DashboardMenuList } from '@/components/molecules';
 import { useBreakpoints } from '@/hooks';
 import { SceneType } from '@/types';
 
@@ -40,7 +40,7 @@ export const SideDrawer: FC<SideDrawerProps> = observer(
       <StyledDrawer
         content={
           <>
-            <POSMenuList
+            <DashboardMenuList
               info={selectedProcessData}
               scene={selectedProcessData.scene || SceneType.bridge_purchase}
             />

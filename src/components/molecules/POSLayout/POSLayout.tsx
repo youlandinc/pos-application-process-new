@@ -14,7 +14,7 @@ import {
 import { POSLayoutProps } from './index';
 import { POSHeader } from './components/POSHeader';
 import { StyledBoxWrap } from '@/components/atoms';
-import { POSMenuList } from '@/components/molecules';
+import { DashboardMenuList } from '@/components/molecules';
 import { SceneType } from '@/types';
 
 export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
@@ -41,7 +41,7 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
       >
         {scene === 'dashboard' && ['lg', 'xl', 'xxl'].includes(breakpoint) && (
           <Box sx={{ minWidth: 280 }}>
-            <POSMenuList
+            <DashboardMenuList
               info={store.selectedProcessData}
               scene={
                 store.selectedProcessData.scene || SceneType.bridge_purchase

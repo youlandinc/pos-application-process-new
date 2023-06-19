@@ -1,4 +1,3 @@
-export * from './POSMenuList';
 export * from './SideDrawer';
 export * from './ServiceCardList';
 export * from './PreApprovalEdit';
@@ -11,3 +10,5 @@ export * from './DashboardCardItem';
 export * from './DashboardCard';
 
 export * from './DashboardHeader';
+
+export * from './DashboardMenuList';
