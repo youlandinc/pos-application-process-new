@@ -3,14 +3,14 @@ import { Box, Stack, StackProps } from '@mui/material';
 
 import { POSFont } from '@/styles';
 
-interface DashboardProductItemProps extends StackProps {
+interface DashboardCardItemProps extends StackProps {
   label: string | ReactNode;
   labelStyle?: CSSProperties;
   info: string | number | ReactNode;
   infoStyle?: CSSProperties;
 }
 
-export const DashboardProductItem: FC<DashboardProductItemProps> = ({
+export const DashboardCardItem: FC<DashboardCardItemProps> = ({
   label,
   info,
   labelStyle,
@@ -20,7 +20,7 @@ export const DashboardProductItem: FC<DashboardProductItemProps> = ({
   return (
     <Stack
       alignItems={label === 'Address' ? 'flex-start' : 'center'}
-      flexDirection={'column'}
+      flexDirection={'row'}
       justifyContent={'space-between'}
       width={'100%'}
       {...rest}
