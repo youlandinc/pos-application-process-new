@@ -128,6 +128,9 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
         setProductInfo(productInfo);
         setHaveAppraisal(haveAppraisal ?? undefined);
         setAppraisalFiles(appraisalFiles ?? []);
+        if (appraisalFiles?.length > 0) {
+          setTableStatus(DashboardTaskPaymentTableStatus.summary);
+        }
         setPaymentStatus(
           paymentStatus as string as DashboardTaskPaymentMethodsStatus,
         );
@@ -175,9 +178,9 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
         return !noticeCheck;
       case DashboardTaskPaymentTableStatus.summary:
         if (!POSNotUndefined(haveAppraisal) || !summaryCheck) {
-          return false;
+          return true;
         }
-        return haveAppraisal ? !appraisalFiles.length : false;
+        return haveAppraisal ? !appraisalFiles.length || saveLoading : false;
       case DashboardTaskPaymentTableStatus.payment:
         return !paymentCheck || !clickable || loading;
     }
@@ -187,6 +190,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
     haveAppraisal,
     summaryCheck,
     appraisalFiles.length,
+    saveLoading,
     paymentCheck,
     clickable,
     loading,
@@ -347,11 +351,15 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
               loadingText={'Saving...'}
               onClick={async () => {
                 await handledSaveFormAndGetPaymentDetail();
-                next();
+                if (!haveAppraisal) {
+                  next();
+                  return;
+                }
+                await backToList();
               }}
               sx={{ flex: 1 }}
             >
-              Next
+              {haveAppraisal ? 'Save' : 'Next'}
             </StyledButton>
           </Stack>
         );
@@ -391,6 +399,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
     disabledButton,
     handledPayment,
     handledSaveFormAndGetPaymentDetail,
+    haveAppraisal,
     next,
     saveLoading,
     tableStatus,
