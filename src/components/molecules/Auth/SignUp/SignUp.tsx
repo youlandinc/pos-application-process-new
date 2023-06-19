@@ -207,7 +207,7 @@ export const SignUp: FC<SignUpProps> = observer(
           <StyledTextField
             disabled={loading}
             inputProps={{
-              autocomplete: 'new-password',
+              autoComplete: 'new-password',
             }}
             label={'Email'}
             onChange={(e) => setEmail(e.target.value)}
@@ -226,7 +226,7 @@ export const SignUp: FC<SignUpProps> = observer(
                   : false
               }
               inputProps={{
-                autocomplete: 'new-password',
+                autoComplete: 'new-password',
               }}
               label={'Password'}
               onChange={handledPasswordChange}
@@ -270,7 +270,7 @@ export const SignUp: FC<SignUpProps> = observer(
           <StyledTextFieldPassword
             disabled={loading}
             inputProps={{
-              autocomplete: 'new-password',
+              autoComplete: 'new-password',
             }}
             label={'Confirm password'}
             onChange={(e) => setConfirmedPassword(e.target.value)}

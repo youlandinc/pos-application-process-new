@@ -46,9 +46,11 @@ import {
 } from '@/components/atoms';
 
 import { ScoreResult } from '@/components/molecules';
+import { useSessionStorageState } from '@/hooks';
 
 export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
   const router = useRouter();
+  const { state } = useSessionStorageState('tenantConfig');
   const { enqueueSnackbar } = useSnackbar();
 
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
@@ -506,15 +508,15 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
                     variant={'body2'}
                   >
                     I, {firstName || 'borrower'} {lastName || 'name'} ,
-                    authorize
+                    authorize{' '}
                     {
                       //sass
-                      ' YouLand'
+                      state?.organizationName || 'YouLand'
                     }{' '}
-                    to verify my credit. I&apos;ve also read and agreed to
+                    to verify my credit. I&apos;ve also read and agreed to{' '}
                     {
                       //sass
-                      ' YouLand'
+                      state?.organizationName || 'YouLand'
                     }{' '}
                     &apos;s{' '}
                     <Typography
