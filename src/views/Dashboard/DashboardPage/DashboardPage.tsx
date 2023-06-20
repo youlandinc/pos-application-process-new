@@ -10,7 +10,7 @@ import { POSLayout } from '@/components/molecules';
 export const DashboardPage: FC<{ children?: ReactNode }> = observer(
   ({ children }) => {
     const {
-      userSetting: { loading, fetchPipelineStatus, pipelineStatusInitialized },
+      userSetting: { fetchPipelineStatus, pipelineStatusInitialized },
     } = useMst();
 
     useCheckProcessId();
@@ -19,13 +19,6 @@ export const DashboardPage: FC<{ children?: ReactNode }> = observer(
     useEffect(() => {
       fetchPipelineStatus();
     }, [fetchPipelineStatus]);
-
-    // await fetch task item status
-    useEffect(() => {
-      if (loading || !pipelineStatusInitialized) {
-        return;
-      }
-    }, [pipelineStatusInitialized, loading]);
 
     return !pipelineStatusInitialized ? (
       <StyledLoading sx={{ color: 'primary.main' }} />

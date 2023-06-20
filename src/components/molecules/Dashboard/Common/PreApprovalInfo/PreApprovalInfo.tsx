@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import {
   FC,
   FormEventHandler,
@@ -7,58 +6,20 @@ import {
   useCallback,
   useState,
 } from 'react';
-
+import { Box, BoxProps, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
-import { POSFlex, POSFont } from '@/styles';
+import { _fetchPDFFile, _sendPreapprovalLetter } from '@/requests/dashboard';
+import { POSFormatDollar } from '@/utils';
 import { LoanStage } from '@/types/enum';
+
 import {
   StyledButton,
   StyledLoading,
   StyledTextField,
 } from '@/components/atoms';
 import { DashboardHeader } from '@/components/molecules';
-import { _fetchPDFFile, _sendPreapprovalLetter } from '@/requests/dashboard';
-import { Box, BoxProps } from '@mui/material';
-import { POSFormatDollar } from '@/utils';
-
-const useStyles = {
-  '&.container': {
-    // minWidth: 904,
-    maxWidth: 900,
-    px: { lg: 3, xs: 0 },
-  },
-  '& .card_title': {
-    ...POSFont({ md: 24, xs: 18 }, 600, 1.5, 'text.primary'),
-    mb: 1.5,
-  },
-  '& .card_content': {
-    ...POSFont({ md: 16, xs: 12 }, 400, 1.5),
-  },
-
-  '& .input': {},
-  '& .button_style': {
-    width: {
-      xl: 200,
-      xs: '100%',
-    },
-    mt: {
-      xl: 0,
-      xs: 3,
-    },
-  },
-  '& .secondButton': {
-    ...POSFont(16, 700, 1.5, '#ffffff'),
-    textTransform: 'none',
-    background: '#7B96B5',
-    minWidth: 200,
-    height: 50,
-    borderRadius: 8,
-    '&:hover': {
-      background: '#446B99',
-    },
-  },
-} as const;
 
 interface PreApprovalInfoProps {
   loading: boolean;
@@ -71,9 +32,7 @@ interface PreApprovalInfoProps {
 export const PreApprovalInfo = forwardRef<
   HTMLInputElement,
   PreApprovalInfoProps
->((props, ref) => {
-  const { loading, loanAmount = 0, onClickEdit, processId, loanStage } = props;
-
+>(({ loading, loanAmount = 0, onClickEdit, processId, loanStage }, ref) => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -158,23 +117,42 @@ export const PreApprovalInfo = forwardRef<
   );
 
   return (
-    <Box className={'container'} sx={useStyles}>
+    <Box maxWidth={900} px={{ lg: 3, xs: 0 }}>
       <DashboardHeader title={'Pre-approval letter'} />
       <ActionCard
         label={
           <Box>
-            <Box className={'card_title'}>Your current loan amount is</Box>
-            <Box sx={{ ...POSFont(24, 600, 1.2, 'primary.main'), mb: 1.5 }}>
+            <Box
+              color={'text.primary'}
+              fontSize={{ md: 24, xs: 18 }}
+              fontWeight={600}
+              lineHeight={1.5}
+              mb={1.5}
+            >
+              Your current loan amount is
+            </Box>
+            <Box
+              color={'primary.main'}
+              fontSize={24}
+              fontWeight={600}
+              lineHeight={1.2}
+              mb={1.5}
+            >
               {loading ? (
                 <StyledLoading
-                  // iconSize={size(40)}
-                  sx={{ justifyContent: 'flex-start' }}
+                  sx={{ justifyContent: 'flex-start', color: 'primary.main' }}
                 />
               ) : (
                 POSFormatDollar(loanAmount)
               )}
             </Box>
-            <Box className={'card_content'} color={'text.secondary'}>
+
+            <Box
+              color={'text.secondary'}
+              fontSize={{ md: 16, xs: 12 }}
+              fontWeight={400}
+              lineHeight={1.5}
+            >
               Your final loan amount will be verified through the full
               underwriting process, but the pre-approval letter is still a
               valuable and accurate tool that will greatly increase your chances
@@ -184,7 +162,7 @@ export const PreApprovalInfo = forwardRef<
         }
         mt={3}
       >
-        <Box
+        <Stack
           width={{
             xl: 200,
             md: '100%',
@@ -192,41 +170,59 @@ export const PreApprovalInfo = forwardRef<
           }}
         >
           <StyledButton
-            className={'button_style'}
             color={'primary'}
             disabled={loading || viewLoading}
             onClick={onViewPDF}
             sx={{
               mb: { xl: 3, xs: 0 },
+              width: { xl: 200, xs: '100%' },
+              mt: { xl: 0, xs: 3 },
             }}
             variant={'contained'}
           >
             {viewLoading ? 'Viewing...' : 'View Letter'}
           </StyledButton>
+
           <StyledButton
-            className={'button_style'}
             color={'info'}
             disabled={loading || downloadLoading}
             onClick={onDownloadPDF}
+            sx={{
+              width: { xl: 200, xs: '100%' },
+              mt: { xl: 0, xs: 3 },
+            }}
             variant={'outlined'}
           >
             {downloadLoading ? 'Downloading...' : 'Download PDF'}
           </StyledButton>
-        </Box>
+        </Stack>
       </ActionCard>
+
       <ActionCard
         component="form"
         label={
           <Box>
-            <Box className={'card_title'}>
+            <Box
+              color={'text.primary'}
+              fontSize={{ md: 24, xs: 18 }}
+              fontWeight={600}
+              lineHeight={1.5}
+              mb={1.5}
+            >
               Who should we send your letter to?
             </Box>
-            <Box className={'card_content'} color={'text.secondary'} mb={3}>
+
+            <Box
+              color={'text.secondary'}
+              fontSize={{ md: 16, xs: 12 }}
+              fontWeight={400}
+              lineHeight={1.5}
+              mb={3}
+            >
               We&apos;ll keep whoever you want in the loop about the
               pre-approval letter update.
             </Box>
             <StyledTextField
-              className={'input'}
               inputRef={ref}
               label="Email address"
               onChange={(e) => setEmail(e.target.value)}
@@ -238,18 +234,22 @@ export const PreApprovalInfo = forwardRef<
         }
         mt={3}
         onSubmit={onEmailSubmit}
-        style={{ alignItems: 'flex-end' }}
+        sx={{ alignItems: 'flex-end' }}
       >
         <StyledButton
-          className={'button_style'}
           color={'primary'}
           disabled={loading || sendLoading}
+          sx={{
+            width: { xl: 200, xs: '100%' },
+            mt: { xl: 0, xs: 3 },
+          }}
           type="submit"
           variant={'contained'}
         >
           {sendLoading ? 'Sending...' : 'Send'}
         </StyledButton>
       </ActionCard>
+
       {![
         LoanStage.RateLocked,
         LoanStage.RateLocking,
@@ -257,10 +257,24 @@ export const PreApprovalInfo = forwardRef<
       ].includes(loanStage as LoanStage) && (
         <ActionCard
           bgcolor={'action.hover'}
+          boxShadow={'none'}
           label={
             <Box>
-              <Box className={'card_title'}>Edit your pre-approval letter</Box>
-              <Box className={'card_content'} color={'text.primary'}>
+              <Box
+                color={'text.primary'}
+                fontSize={{ md: 24, xs: 18 }}
+                fontWeight={600}
+                lineHeight={1.5}
+                mb={1.5}
+              >
+                Edit your pre-approval letter
+              </Box>
+              <Box
+                color={'text.primary'}
+                fontSize={{ md: 16, xs: 12 }}
+                fontWeight={400}
+                lineHeight={1.5}
+              >
                 You can edit the purchase price and down payment amounts on your
                 letter so that it is personalized to a specific property when
                 you&apos;re making offers.
@@ -268,13 +282,15 @@ export const PreApprovalInfo = forwardRef<
             </Box>
           }
           mt={3}
-          style={{ boxShadow: 'none' }}
         >
           <StyledButton
-            className={'button_style'}
             color={'primary'}
             disabled={loading}
             onClick={onClickEdit}
+            sx={{
+              width: { xl: 200, xs: '100%' },
+              mt: { xl: 0, xs: 3 },
+            }}
             variant={'contained'}
           >
             Edit amount
@@ -285,33 +301,29 @@ export const PreApprovalInfo = forwardRef<
   );
 });
 
-const useActionCardStyles = {
-  '&.container': {
-    ...POSFlex('center', 'space-between', 'row'),
-    flexWrap: 'wrap',
-    padding: 3,
-    lineHeight: 1.5,
-    borderRadius: 2,
-    border: '1px solid',
-    borderColor: 'background.border_default',
-    '& .label': {
-      flex: 1,
-      mr: { xl: 3, sx: 0 },
-    },
-  },
-};
-
-interface ActionCard extends BoxProps {
+interface ActionCardProps extends BoxProps {
   label: ReactNode;
   children: ReactNode;
 }
 
-const ActionCard: FC<ActionCard> = (props) => {
-  const { label, children, ...rest } = props;
-
+const ActionCard: FC<ActionCardProps> = ({ label, children, ...rest }) => {
   return (
-    <Box className={'container'} {...rest} sx={useActionCardStyles}>
-      <Box className={'label'}>{label}</Box>
+    <Box
+      {...rest}
+      alignItems={'center'}
+      border={'1px solid'}
+      borderColor={'background.border_default'}
+      borderRadius={2}
+      display={'flex'}
+      flexDirection={'row'}
+      flexWrap={'wrap'}
+      justifyContent={'space-between'}
+      lineHeight={1.5}
+      p={3}
+    >
+      <Box flex={1} mr={{ xl: 3, sx: 0 }}>
+        {label}
+      </Box>
       {children}
     </Box>
   );

@@ -1,8 +1,10 @@
 import { Dispatch, FC, ReactNode, SetStateAction } from 'react';
 import { Stack } from '@mui/material';
 
+import { OPTIONS_MORTGAGE_PROPERTY, OPTIONS_MORTGAGE_UNIT } from '@/constants';
 import { PropertyOpt, PropertyUnitOpt } from '@/types';
 import { IAddress } from '@/models/common/Address';
+
 import {
   StyledButton,
   StyledGoogleAutoComplete,
@@ -10,28 +12,6 @@ import {
   Transitions,
 } from '@/components/atoms';
 import { DashboardHeader } from '@/components/molecules';
-import { OPTIONS_MORTGAGE_PROPERTY, OPTIONS_MORTGAGE_UNIT } from '@/constants';
-
-const useStyles = {
-  '&.container': {
-    maxWidth: 900,
-  },
-  '& .form': {
-    marginBlockStart: 6,
-  },
-  '& .formRow': {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gap: 50,
-    marginBlockEnd: 3,
-    '& > *': {
-      flex: 1,
-    },
-    '& > :last-child:nth-of-type(2)': {
-      flex: 0.4545,
-    },
-  },
-};
 
 interface PreApprovalEditProps {
   address: IAddress;
@@ -63,12 +43,7 @@ export const PreApprovalEdit: FC<PreApprovalEditProps> = (props) => {
   } = props;
 
   return (
-    <Stack
-      alignItems={'center'}
-      className={'container'}
-      justifyContent={'center'}
-      sx={useStyles}
-    >
+    <Stack alignItems={'center'} justifyContent={'center'} maxWidth={900}>
       <DashboardHeader
         subTitle={
           "You can edit the purchase price and down payment amounts on your letter so that it is personalized to a specific property when you're making offers."
