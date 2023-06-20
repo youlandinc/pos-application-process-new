@@ -47,7 +47,13 @@ export const BridgeProperty: FC<PropertyProps> = observer((props) => {
           />
         </Stack>
       </StyledFormItem>
-      <Transitions>
+      <Transitions
+        style={{
+          width: '100%',
+          display:
+            propertyType === PropertyOpt.twoToFourFamily ? 'block' : 'none',
+        }}
+      >
         {propertyType === PropertyOpt.twoToFourFamily && (
           <StyledFormItem label={'How many units will the property have?'}>
             <Stack maxWidth={600} width={'100%'}>

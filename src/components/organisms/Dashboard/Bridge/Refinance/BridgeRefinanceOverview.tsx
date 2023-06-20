@@ -203,6 +203,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
         >
           <DashboardCard
             dataList={summary?.info}
+            flex={1}
             loading={loading}
             subInfo={summary?.subInfo}
             subTitle={summary?.subTitle}
@@ -224,6 +225,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
           </DashboardCard>
           <DashboardCard
             dataList={product?.info}
+            flex={1}
             loading={loading}
             subInfo={product?.subInfo}
             subTitle={product?.subTitle}

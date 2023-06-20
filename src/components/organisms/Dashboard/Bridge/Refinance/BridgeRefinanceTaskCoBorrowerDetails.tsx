@@ -164,13 +164,10 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
-    if (
-      !POSNotUndefined(isCoBorrower) ||
-      !POSNotUndefined(borrowerType) ||
-      !POSNotUndefined(authorizedCreditCheck)
-    ) {
+    if (!POSNotUndefined(isCoBorrower)) {
       return false;
     }
+
     const dateValid = isValid(dateOfBirth) && isDate(dateOfBirth);
     const condition =
       !!firstName &&
@@ -185,6 +182,18 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
       address.checkAddressValid &&
       !!ssn &&
       authorizedCreditCheck;
+
+    if (
+      isCoBorrower &&
+      (!POSNotUndefined(borrowerType) ||
+        !POSNotUndefined(authorizedCreditCheck))
+    ) {
+      return false;
+    }
+
+    if (!isCoBorrower) {
+      return true;
+    }
 
     return borrowerType === DashboardTaskBorrowerType.individual
       ? condition

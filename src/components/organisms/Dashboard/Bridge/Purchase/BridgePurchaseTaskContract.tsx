@@ -24,6 +24,7 @@ import {
   StyledFormItem,
   StyledLoading,
   StyledUploadBox,
+  Transitions,
 } from '@/components/atoms';
 import { useSessionStorageState } from '@/hooks';
 
@@ -31,13 +32,11 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { saasState } = useSessionStorageState('tenantConfig');
+
   const [saveLoading, setSaveLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
 
   const [isAccepted, setIsAccepted] = useState(true);
-  const [contractEndDate, setContractEndDate] = useState<
-    unknown | null | Date
-  >();
   const [contractFiles, setContractFiles] = useState<TaskFiles[]>([]);
 
   const handledSuccess = async (files: FileList) => {
@@ -85,12 +84,9 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
-        const { contractFiles, contractEndDate, isAccepted } = res.data;
+        const { contractFiles, isAccepted } = res.data;
         setContractFiles(contractFiles || []);
         setIsAccepted(isAccepted ?? undefined);
-        if (contractEndDate) {
-          setContractEndDate(new Date(contractEndDate));
-        }
       })
       .catch((err) =>
         enqueueSnackbar(err as string, {
@@ -106,24 +102,19 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
-    const dateValid = isValid(contractEndDate) && isDate(contractEndDate);
     if (!POSNotUndefined(isAccepted)) {
       return false;
     }
-    return contractFiles.length > 0 && dateValid;
-  }, [contractEndDate, contractFiles.length, isAccepted]);
+    return isAccepted ? contractFiles.length > 0 : true;
+  }, [contractFiles.length, isAccepted]);
 
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
-    const dateValid = isValid(contractEndDate) && isDate(contractEndDate);
 
     const postData = {
       taskId: router.query.taskId as string,
       taskForm: {
         contractFiles,
-        contractEndDate: dateValid
-          ? format(contractEndDate as Date, 'yyyy-MM-dd O')
-          : undefined,
         isAccepted,
       },
     };
@@ -142,7 +133,7 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
     } finally {
       setSaveLoading(false);
     }
-  }, [contractEndDate, router, contractFiles, isAccepted, enqueueSnackbar]);
+  }, [router, contractFiles, isAccepted, enqueueSnackbar]);
 
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
@@ -168,51 +159,45 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
         />
       </StyledFormItem>
 
-      <StyledFormItem
-        label={'Contract end date'}
-        maxWidth={600}
-        sub
-        tip={
-          'For a purchase, on which date does your purchase contract expire? For refinance, on what date did you originally acquire the property?'
-        }
+      <Transitions
+        style={{
+          display: isAccepted ? 'block' : 'none',
+          width: '100%',
+        }}
       >
-        <StyledDatePicker
-          disableFuture={false}
-          disablePast={false}
-          label={'MM/DD/YYYY'}
-          onChange={(date) => setContractEndDate(date)}
-          value={contractEndDate}
-        />
-      </StyledFormItem>
-      <StyledFormItem
-        label={'Why do we need this?'}
-        maxWidth={900}
-        sub
-        tip={
-          <>
-            <Box>
-              We’ll confirm that all of the details in the purchase contract
-              match your application. {saasState?.organizationName || 'YouLand'}{' '}
-              will look for the agreed-upon purchase price, any Sellers
-              concessions and fees, close of escrow date, and confirmation that
-              the property is being used for investment purposes.
-            </Box>
-            <Box>
-              Check for initials and signatures. The Purchase Contract must be
-              fully executed with initials and signatures in all designated
-              places, along with all of the contract pages and any additional
-              addendums.
-            </Box>
-          </>
-        }
-      >
-        <StyledUploadBox
-          fileList={contractFiles}
-          loading={uploadLoading}
-          onDelete={handledDelete}
-          onSuccess={handledSuccess}
-        />
-      </StyledFormItem>
+        {isAccepted && (
+          <StyledFormItem
+            label={'Why do we need this?'}
+            maxWidth={900}
+            sub
+            tip={
+              <>
+                <Box>
+                  We’ll confirm that all of the details in the purchase contract
+                  match your application.{' '}
+                  {saasState?.organizationName || 'YouLand'} will look for the
+                  agreed-upon purchase price, any Sellers concessions and fees,
+                  close of escrow date, and confirmation that the property is
+                  being used for investment purposes.
+                </Box>
+                <Box>
+                  Check for initials and signatures. The Purchase Contract must
+                  be fully executed with initials and signatures in all
+                  designated places, along with all of the contract pages and
+                  any additional addendums.
+                </Box>
+              </>
+            }
+          >
+            <StyledUploadBox
+              fileList={contractFiles}
+              loading={uploadLoading}
+              onDelete={handledDelete}
+              onSuccess={handledSuccess}
+            />
+          </StyledFormItem>
+        )}
+      </Transitions>
 
       <Stack
         flexDirection={'row'}

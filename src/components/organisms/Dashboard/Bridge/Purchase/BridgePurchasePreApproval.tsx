@@ -2,15 +2,21 @@ import { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Stack } from '@mui/material';
 import { useAsyncFn } from 'react-use';
+import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
-import { useAsyncEffect } from '@/hooks';
 
-import { useSnackbar } from 'notistack';
-import { Address, IAddress } from '@/models/common/Address';
-
+import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFlex, POSFont } from '@/styles';
+import { useAsyncEffect } from '@/hooks';
+import { Address, IAddress } from '@/models/common/Address';
+import { LoanStage, UserType } from '@/types/enum';
+import {
+  POSFormatDollar,
+  POSFormatLocalPercent,
+  POSNotUndefined,
+} from '@/utils';
 import {
   BridgePurchaseEstimateRateData,
   MPPreApprovalLetterBPData,
@@ -18,13 +24,13 @@ import {
   PropertyUnitOpt,
   RatesProductData,
 } from '@/types';
-
 import {
   _fetchPreApprovedLetterCheck,
   _fetchPreApprovedLetterInfo,
   _updateRatesProductSelected,
   UpdateRatesPostData,
 } from '@/requests/dashboard';
+
 import {
   StyledButton,
   StyledCheckbox,
@@ -34,14 +40,6 @@ import {
   Transitions,
 } from '@/components/atoms';
 import { PreApprovalEdit, PreApprovalInfo } from '@/components/molecules';
-
-import { LoanStage, UserType } from '@/types/enum';
-import {
-  POSFormatDollar,
-  POSFormatLocalPercent,
-  POSNotUndefined,
-} from '@/utils';
-import { AUTO_HIDE_DURATION } from '@/constants';
 
 const useStyles = {
   mx: { lg: 'auto', xs: 0 },
