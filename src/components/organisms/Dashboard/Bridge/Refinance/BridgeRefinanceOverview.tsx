@@ -7,8 +7,7 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 
 import { POSFlex, POSFont } from '@/styles';
-import { StyledButton } from '@/components/atoms';
-
+import { AUTO_HIDE_DURATION, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
 import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
 import {
   POSFindLabel,
@@ -17,11 +16,9 @@ import {
   POSFormatPercent,
 } from '@/utils';
 import { OverviewBRSummaryData } from '@/types';
-import { OPTIONS_MORTGAGE_PROPERTY } from '@/constants/options/mortgage';
-import { AUTO_HIDE_DURATION } from '@/constants';
-
 import { useSessionStorageState } from '@/hooks';
 
+import { StyledButton } from '@/components/atoms';
 import {
   BridgeOverviewInfo,
   DashboardCard,
