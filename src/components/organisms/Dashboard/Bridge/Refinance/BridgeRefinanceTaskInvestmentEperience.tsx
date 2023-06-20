@@ -95,8 +95,8 @@ export const BridgeRefinanceTaskInvestmentExperience: FC = () => {
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
-    return investmentFiles.length > 0 && !!propertiesNum;
-  }, [investmentFiles.length, propertiesNum]);
+    return !!propertiesNum;
+  }, [propertiesNum]);
 
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);

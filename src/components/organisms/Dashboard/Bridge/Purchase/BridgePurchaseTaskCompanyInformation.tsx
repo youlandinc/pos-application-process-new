@@ -448,7 +448,11 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
                 value={manageForm.companyName}
               />
               <StyledTextField
-                label={'Title Order Number'}
+                label={
+                  whoIsManaging === DashboardTaskLoanClosing.escrow_company
+                    ? 'Escrow Number'
+                    : 'Closing Attorney File No.'
+                }
                 onChange={(e) =>
                   setManageForm({
                     ...manageForm,
