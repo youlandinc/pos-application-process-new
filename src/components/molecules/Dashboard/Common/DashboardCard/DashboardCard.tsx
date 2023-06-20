@@ -53,7 +53,7 @@ export const DashboardCard: FC<DashboardCardProps> = ({
       {...rest}
     >
       {loading ? (
-        <StyledLoading sx={{ mb: 3, color: 'primary.main' }} />
+        <StyledLoading sx={{ m: 'auto', color: 'primary.main' }} />
       ) : (
         <>
           <Box
