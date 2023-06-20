@@ -28,11 +28,12 @@ import {
   StyledTextFieldNumber,
   Transitions,
 } from '@/components/atoms';
+import { useSessionStorageState } from '@/hooks';
 
 export const BridgeRefinanceTaskLoanDetails: FC = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-
+  const { saasState } = useSessionStorageState('tenantConfig');
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
 
   const [homeValue, setHomeValue] = useState<number | undefined>();
@@ -299,9 +300,10 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
             <StyledFormItem
               label={'Estimated Rehab Loan Amount'}
               sub
-              tip={
-                'Total cost that you would like {Organization Name} to finance.'
-              }
+              tip={`Total cost that you would like ${
+                //sass
+                saasState?.organizationName || 'YouLand'
+              } to finance.`}
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldNumber
