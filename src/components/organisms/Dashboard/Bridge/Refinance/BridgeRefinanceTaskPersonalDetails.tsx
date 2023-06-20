@@ -156,6 +156,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
         delinquentTimes,
         citizenship,
         propAddr: address.getPostData(),
+        isBankruptcy,
         dischargeDate: dateValid
           ? format(dischargeDate as Date, 'yyyy-MM-dd O')
           : undefined,
@@ -181,6 +182,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
     delinquentTimes,
     dischargeDate,
     enqueueSnackbar,
+    isBankruptcy,
     marital,
     router,
   ]);

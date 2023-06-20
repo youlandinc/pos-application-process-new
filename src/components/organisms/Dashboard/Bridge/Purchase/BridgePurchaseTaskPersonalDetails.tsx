@@ -150,6 +150,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
           ? format(dischargeDate as Date, 'yyyy-MM-dd O')
           : undefined,
         marital,
+        isBankruptcy,
         delinquentTimes,
         citizenship,
       },
@@ -174,6 +175,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
     delinquentTimes,
     dischargeDate,
     enqueueSnackbar,
+    isBankruptcy,
     marital,
     router,
   ]);
