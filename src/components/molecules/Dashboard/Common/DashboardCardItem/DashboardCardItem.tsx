@@ -1,7 +1,5 @@
 import { CSSProperties, FC, ReactNode } from 'react';
-import { Box, Stack, StackProps } from '@mui/material';
-
-import { POSFont } from '@/styles';
+import { Stack, StackProps, Typography } from '@mui/material';
 
 interface DashboardCardItemProps extends StackProps {
   label: string | ReactNode;
@@ -25,25 +23,24 @@ export const DashboardCardItem: FC<DashboardCardItemProps> = ({
       width={'100%'}
       {...rest}
     >
-      <Box
-        sx={{
-          ...POSFont({ md: 16, xs: 12 }, 400, 1.5, 'text.primary'),
-          ...labelStyle,
-        }}
+      <Typography
+        color={'text.primary'}
+        component={'div'}
+        sx={labelStyle}
+        variant={'body1'}
       >
         {label}
-      </Box>
-      <Box
-        className={'info'}
-        sx={{
-          ...POSFont({ md: 16, xs: 12 }, 600, 1.5, 'text.primary'),
-          maxWidth: '75%',
-          textAlign: 'right',
-          ...infoStyle,
-        }}
+      </Typography>
+      <Typography
+        color={'text.primary'}
+        component={'div'}
+        maxWidth={'75%'}
+        sx={infoStyle}
+        textAlign={'right'}
+        variant={'subtitle1'}
       >
         {info}
-      </Box>
+      </Typography>
     </Stack>
   );
 };
