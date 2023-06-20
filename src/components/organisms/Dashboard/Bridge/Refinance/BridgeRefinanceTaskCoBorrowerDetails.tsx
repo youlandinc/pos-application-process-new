@@ -402,9 +402,10 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
             <StyledFormItem
               label={'Personal Information'}
               sub
-              tip={
-                "By entering your phone number,  you're authorizing {Organization Name} to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may."
-              }
+              tip={`By entering your phone number,  you're authorizing ${
+                //sass
+                saasState?.organizationName || 'YouLand'
+              } to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may.`}
             >
               <Stack gap={3} maxWidth={600} width={'100%'}>
                 <StyledTextField
