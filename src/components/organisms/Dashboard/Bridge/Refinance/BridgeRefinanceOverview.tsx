@@ -1,13 +1,13 @@
 import { FC, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 
-import { POSFlex, POSFont } from '@/styles';
 import { AUTO_HIDE_DURATION, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
+import { BROverviewSummaryData } from '@/types';
 import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
 import {
   POSFindLabel,
@@ -15,7 +15,6 @@ import {
   POSFormatLocalPercent,
   POSFormatPercent,
 } from '@/utils';
-import { OverviewBRSummaryData } from '@/types';
 import { useSessionStorageState } from '@/hooks';
 
 import { StyledButton } from '@/components/atoms';
@@ -24,40 +23,6 @@ import {
   DashboardCard,
   DashboardHeader,
 } from '@/components/molecules';
-
-const useStyles = {
-  '&.container': {
-    ...POSFlex('flex-start', 'center', 'column'),
-    px: {
-      xl: 0,
-      lg: 3,
-      xs: 0,
-    },
-    maxWidth: 900,
-    mx: {
-      lg: 'auto',
-      xs: 0,
-    },
-  },
-  '& .content': {
-    ...POSFlex('flex-start', 'flex-start', 'column'),
-    width: '100%',
-  },
-  '& .contentItem': {
-    width: '100%',
-    flex: 1,
-    display: 'flex',
-    gap: '24px',
-    flexWrap: 'wrap',
-  },
-  '& .cardButton': {
-    marginTop: 'auto',
-  },
-  '& .footer': {
-    ...POSFont(12, 400, 1.5, 'text.secondary'),
-    mt: 6,
-  },
-};
 
 export const BridgeRefinanceOverview: FC = observer(() => {
   const router = useRouter();
@@ -71,7 +36,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
   const [thirdParty, setThirdParty] = useState<BridgeOverviewInfo>();
 
   const { loading } = useAsync(async () => {
-    return await _fetchOverviewLoanSummary<OverviewBRSummaryData>(
+    return await _fetchOverviewLoanSummary<BROverviewSummaryData>(
       router.query.processId as string,
     )
       .then((res) => {
@@ -103,11 +68,11 @@ export const BridgeRefinanceOverview: FC = observer(() => {
             {
               label: 'Address',
               info: (
-                <Box
-                  style={{
-                    ...POSFlex('flex-end', 'center', 'column'),
-                    width: '100%',
-                  }}
+                <Stack
+                  alignItems={'flex-end'}
+                  flexDirection={'column'}
+                  justifyContent={'center'}
+                  width={'100%'}
                 >
                   <Box
                     style={{
@@ -119,7 +84,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
                     {line_1}
                   </Box>
                   <Box>{line_2}</Box>
-                </Box>
+                </Stack>
               ),
             },
           ],
@@ -206,15 +171,36 @@ export const BridgeRefinanceOverview: FC = observer(() => {
   });
 
   return (
-    <Box className={'container'} sx={useStyles}>
+    <Stack
+      alignItems={'flex-start'}
+      className={'container'}
+      flexDirection={'column'}
+      justifyContent={'center'}
+      maxWidth={900}
+      mx={{ lg: 'auto', xs: 0 }}
+      px={{ xl: 0, lg: 3, xs: 0 }}
+      width={'100%'}
+    >
       <DashboardHeader
         subTitle={
           'Everything about your loan found in one place. Get updates and see what needs to be done before you close.'
         }
         title={'Your Loan Overview'}
       />
-      <Box className={'content'}>
-        <Box className={'contentItem'} mr={'24px'}>
+      <Stack
+        alignItems={'flex-start'}
+        flexDirection={'column'}
+        gap={3}
+        justifyContent={'flex-start'}
+        width={'100%'}
+      >
+        <Stack
+          flex={1}
+          flexDirection={{ xl: 'row', xs: 'column' }}
+          flexWrap={'wrap'}
+          gap={3}
+          width={'100%'}
+        >
           <DashboardCard
             dataList={summary?.info}
             loading={loading}
@@ -257,28 +243,36 @@ export const BridgeRefinanceOverview: FC = observer(() => {
               Explore Rate
             </StyledButton>
           </DashboardCard>
-        </Box>
-        <Box className={'contentItem'}>
+        </Stack>
+
+        <Stack
+          flex={1}
+          flexDirection={{ xl: 'row', xs: 'column' }}
+          flexWrap={'wrap'}
+          gap={3}
+          width={'100%'}
+        >
           <DashboardCard
             dataList={loanDetail?.info}
+            flex={1}
             loading={loading}
-            mt={'24px'}
             subInfo={loanDetail?.subInfo}
             subTitle={loanDetail?.subTitle}
             title={loanDetail?.title}
           />
           <DashboardCard
             dataList={thirdParty?.info}
+            flex={1}
             loading={loading}
-            mt={'24px'}
             subInfo={thirdParty?.subInfo}
             subTitle={thirdParty?.subTitle}
             title={thirdParty?.title}
           />
-        </Box>
-      </Box>
-      <Box className="footer">
-        <Box>
+        </Stack>
+      </Stack>
+
+      <Box color={'text.secondary'} mt={6}>
+        <Typography component={'div'} variant={'body2'}>
           Check out your list of{' '}
           <Box
             className={'link_style'}
@@ -293,17 +287,17 @@ export const BridgeRefinanceOverview: FC = observer(() => {
             Tasks
           </Box>{' '}
           to see what you need to take care of to secure your loan.
-        </Box>
-        <Box mt={3}>
-          <Box fontSize={14}>Disclaimer</Box>
-          <Box mt={1.5}>
+        </Typography>
+        <Typography component={'div'} mt={3} variant={'body3'}>
+          <Box>Disclaimer</Box>
+          <Box mt={1.25}>
             The total loan amount is an estimate, and may be subject to change.
             The amount also does not include third party settlement costs that
             may be required to close your loan. For more details on those
             potential costs, please contact your settlement agent.
           </Box>
-          <Box mt={1}>
-            Rates displayed are subject to rate confirm and are not to be
+          <Box mt={1.25}>
+            Rates displayed are subject to rate lock and are not to be
             considered an extension or offer of credit by
             {
               // todo: sass
@@ -311,8 +305,8 @@ export const BridgeRefinanceOverview: FC = observer(() => {
             }
             .
           </Box>
-        </Box>
+        </Typography>
       </Box>
-    </Box>
+    </Stack>
   );
 });
