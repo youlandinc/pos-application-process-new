@@ -1,7 +1,6 @@
 import { FC, ReactNode } from 'react';
-import { Box, Divider, Stack, StackProps } from '@mui/material';
+import { Box, Divider, Stack, StackProps, Typography } from '@mui/material';
 
-import { POSFont } from '@/styles';
 import { POSFormatDollar } from '@/utils';
 
 import { StyledLoading } from '@/components/atoms';
@@ -56,23 +55,19 @@ export const DashboardCard: FC<DashboardCardProps> = ({
         <StyledLoading sx={{ m: 'auto', color: 'primary.main' }} />
       ) : (
         <>
-          <Box
-            sx={{
-              ...POSFont({ md: 24, sx: 16 }, 600, 1.5, 'text.primary'),
-            }}
-          >
+          <Typography color={'text.primary'} component={'div'} variant={'h4'}>
             <Box>{title}</Box>
-          </Box>
+          </Typography>
           <Box my={1.5}>
             <DashboardCardItem
               info={
-                <Box
-                  sx={{
-                    ...POSFont({ md: 24, xs: 16 }, 600, 1.5, 'primary.main'),
-                  }}
+                <Typography
+                  color={'primary.main'}
+                  component={'div'}
+                  variant={'h4'}
                 >
                   {subInfo}
-                </Box>
+                </Typography>
               }
               label={subTitle}
             />

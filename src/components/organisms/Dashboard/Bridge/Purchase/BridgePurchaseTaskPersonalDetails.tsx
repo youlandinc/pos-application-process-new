@@ -1,3 +1,4 @@
+import { POSNotUndefined } from '@/utils';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -107,19 +108,34 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
 
   const isDisabled = useMemo(() => {
     const dateValid = isValid(dischargeDate) && isDate(dischargeDate);
+    const isPosBankruptcyUndefined = !POSNotUndefined(isBankruptcy);
+
+    if (isPosBankruptcyUndefined) {
+      return false;
+    }
+
+    if (isBankruptcy) {
+      return (
+        dateValid &&
+        address.checkAddressValid &&
+        !!marital &&
+        !!citizenship &&
+        !!delinquentTimes
+      );
+    }
 
     return (
       address.checkAddressValid &&
       !!marital &&
       !!citizenship &&
-      !!delinquentTimes &&
-      dateValid
+      !!delinquentTimes
     );
   }, [
     address.checkAddressValid,
     citizenship,
     delinquentTimes,
     dischargeDate,
+    isBankruptcy,
     marital,
   ]);
 

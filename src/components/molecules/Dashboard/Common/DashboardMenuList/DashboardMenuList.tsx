@@ -154,6 +154,7 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
         <Box
           sx={{
             '& .item': {
+              cursor: 'pointer',
               '&:hover': {
                 bgcolor: 'action.hover',
               },
