@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Box, CircularProgress, Icon, SxProps } from '@mui/material';
+import { Icon, Stack, Typography } from '@mui/material';
 import {
   MailOutlineOutlined,
   PhoneEnabledOutlined,
@@ -12,9 +12,9 @@ import { useSnackbar } from 'notistack';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { _fetchMyTeamData } from '@/requests/saas';
 import { POSFormatUSPhoneToText } from '@/utils';
-import { POSFont, POSSize } from '@/styles';
 
-import { DashboardHeader, ServiceCardList } from '@/components/molecules';
+import { StyledFormItem, StyledLoading } from '@/components/atoms';
+import { DashboardServiceCardItem } from '@/components/molecules';
 
 import MY_TEAM from '@/svg/dashboard/my_team.svg';
 
@@ -57,149 +57,117 @@ export const TeamPage: FC = () => {
   });
 
   return (
-    <Box className={'container'} sx={useStyles}>
+    <>
       {loading ? (
-        <CircularProgress
-          style={{ color: '#fff', ...POSSize(24), marginRight: 3 }}
+        <StyledLoading
+          sx={{
+            color: 'primary.main',
+            width: 24,
+            height: 24,
+            marginLeft: 24,
+          }}
         />
       ) : (
-        <>
-          <DashboardHeader
-            subTitle={` From choosing a rate to scheduling closing, you have a dedicated
-              team of specialists. Along the way, new faces will show up so be sure to check back
-              often and drop a line if you need anything.`}
-            title={"We're here with you every step of the way"}
-          />
-          <Box className={'pageFooter'}>
-            <Box className={'otherWrap'}>
-              <Box className={'otherInfoBox'}>
-                <Box className={'otherInfoTitle'}>Hours of Operation</Box>
-                <Box className={'otherInfoTip'}>
-                  If your current expert isn&apos;t available, you can leave a
-                  message for them or speak with someone else.
-                </Box>
-                <Box className={'otherInfoContact'}>
-                  <PhoneEnabledOutlined className={'logo'} />
-                  {POSFormatUSPhoneToText(phone)}
-                </Box>
-                <Box className={'otherInfoContact'}>
-                  <MailOutlineOutlined className={'logo'} />
-                  {email}
-                </Box>
-                <Box className={'otherInfoContact'} mt={'8px'}>
-                  <SupportAgentOutlined className={'logo'} />
-                  {slogan}
-                </Box>
-                <Box className={'otherInfoContact'}>
-                  {' '}
-                  <WatchLaterOutlined className={'logo'} /> {workTime}
-                </Box>
-              </Box>
-              {/* <Image
-                   alt={''}
-                   height={140}
-                   src={'/my_team_footer.png'}
-                   width={216}
-                   /> */}
-              <Icon className={'my_team_svg'} component={MY_TEAM} />
-            </Box>
-          </Box>
-          <Box className={'pageMain'}>
-            <Box className={'cardListWrap'}>
-              {teamList?.map((item, index) => (
-                <ServiceCardList data={item} key={index} />
-              ))}
-            </Box>
-          </Box>
-        </>
+        <StyledFormItem
+          gap={6}
+          justifyContent={'flex-start'}
+          label={"We're here with you every step of the way"}
+          maxWidth={900}
+          mx={{ lg: 'auto', xs: 0 }}
+          px={{ lg: 3, xs: 0 }}
+          tip={
+            'From choosing a rate to scheduling closing, you have a dedicated team of specialists. Along the way, new faces will show up so be sure to check back often and drop a line if you need anything.'
+          }
+          tipSx={{ m: 0 }}
+        >
+          <Stack
+            alignItems={'center'}
+            bgcolor={'#F5F8FA'}
+            borderRadius={2}
+            flexDirection={{ xl: 'row', xs: 'column' }}
+            gap={3}
+            justifyContent={'space-between'}
+            p={3}
+            width={'100%'}
+          >
+            <Stack color={'text.primary'} flex={1.5} flexShrink={0} gap={1.5}>
+              <Typography variant={'h4'}>Hours of Operation</Typography>
+
+              <Typography
+                color={'text.secondary'}
+                mb={1.5}
+                variant={'body1'}
+                width={'100%'}
+              >
+                If your current expert isn&apos;t available, you can leave a
+                message for them or speak with someone else.
+              </Typography>
+
+              <Typography
+                alignItems={'center'}
+                color={'text.primary'}
+                display={'flex'}
+                gap={1.5}
+                justifyContent={'flex-start'}
+                variant={'subtitle1'}
+              >
+                <PhoneEnabledOutlined sx={{ width: 24, height: 24 }} />
+                {POSFormatUSPhoneToText(phone)}
+              </Typography>
+
+              <Typography
+                alignItems={'center'}
+                color={'text.primary'}
+                display={'flex'}
+                gap={1.5}
+                justifyContent={'flex-start'}
+                variant={'subtitle1'}
+              >
+                <MailOutlineOutlined sx={{ width: 24, height: 24 }} />
+                {email}
+              </Typography>
+
+              <Typography
+                alignItems={'center'}
+                color={'text.primary'}
+                display={'flex'}
+                gap={1.5}
+                justifyContent={'flex-start'}
+                variant={'subtitle1'}
+              >
+                <SupportAgentOutlined sx={{ width: 24, height: 24 }} />
+                {slogan}
+              </Typography>
+
+              <Typography
+                alignItems={'center'}
+                color={'text.primary'}
+                display={'flex'}
+                gap={1.5}
+                justifyContent={'flex-start'}
+                variant={'subtitle1'}
+              >
+                <WatchLaterOutlined sx={{ width: 24, height: 24 }} />
+                {workTime}
+              </Typography>
+            </Stack>
+
+            <Icon
+              component={MY_TEAM}
+              sx={{
+                width: { xl: '60%', xs: '85%' },
+                height: 'auto',
+              }}
+            />
+          </Stack>
+
+          <Stack flexDirection={'row'} flexWrap={'wrap'} gap={3} width={'100%'}>
+            {teamList?.map((item, index) => (
+              <DashboardServiceCardItem data={item} key={index} />
+            ))}
+          </Stack>
+        </StyledFormItem>
       )}
-    </Box>
+    </>
   );
-};
-
-const useStyles: SxProps = {
-  '&.container': {
-    px: {
-      lg: 3,
-      xs: 0,
-    },
-    maxWidth: 900,
-    mx: {
-      lg: 'auto',
-      xs: 0,
-    },
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-  },
-
-  '& .pageMain': {
-    marginTop: 6,
-    width: '100%',
-  },
-  '& .cardListWrap': {
-    maxWidth: 1312,
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: 3,
-  },
-  '& .pageFooter': {
-    marginTop: 3,
-    fontSize: 16,
-    lineHeight: 1.5,
-    color: 'text.primary',
-    width: '100%',
-    maxWidth: 1312,
-  },
-  '& .my_team_svg': {
-    width: { md: '45%', xs: '85%' },
-    height: '100%',
-    mt: {
-      md: 0,
-      xs: 3,
-    },
-  },
-  '& .otherWrap': {
-    background: '#F5F8FA',
-    borderRadius: 2,
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    p: 3,
-  },
-  '& .otherInfoBox': {
-    flex: 1.5,
-    flexShrink: 0,
-    lineHeight: 1.5,
-    color: 'rgba(0,0,0,.6)',
-  },
-  '& .otherInfoTitle': {
-    ...POSFont({ md: 24, xs: 16 }, 600, 1.5, 'text.primary'),
-  },
-  '& .otherInfoTip': {
-    ...POSFont({ md: 16, xs: 12 }, 400, 1.5, 'text.secondary'),
-    mt: 1.5,
-    mb: 3,
-    width: '80%',
-  },
-  '& .otherInfoTime': {
-    fontWeight: 700,
-  },
-  '& .otherInfoContact': {
-    mt: 1.5,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    ...POSFont({ md: 16, xs: 12 }, 600, 1.5, 'text.primary'),
-    '&:first-of-type': {
-      marginTop: 0,
-    },
-  },
-  '& .logo': {
-    width: 24,
-    height: 24,
-    mr: 1.5,
-    color: 'text.primary',
-  },
 };
