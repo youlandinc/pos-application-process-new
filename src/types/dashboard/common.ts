@@ -35,18 +35,6 @@ export type BaseOverviewSummaryData = {
   loanAmount: number;
 };
 
-export type OverviewBRSummaryData = BaseOverviewSummaryData & {
-  homeValue: number;
-  balance: number;
-  cashOutAmount: number;
-  cor: number;
-  firstName: string;
-  lastName: string;
-  address: string;
-  isCor: boolean;
-  isCashOut: boolean;
-};
-
 // summary
 export interface SummaryIncomeData {
   incomeTotal: number;

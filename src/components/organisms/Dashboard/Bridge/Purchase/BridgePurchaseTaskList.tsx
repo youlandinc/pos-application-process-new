@@ -89,12 +89,12 @@ const taskObj: taskObj = {
     title: 'Property Appraisal',
     children: [
       {
-        code: 'BP_APPRAISAL_PROPERTY_DETAILS',
-        url: '/dashboard/tasks/property_inspection',
-      },
-      {
         code: 'BP_APPRAISAL_COST',
         url: '/dashboard/tasks/cost',
+      },
+      {
+        code: 'BP_APPRAISAL_PROPERTY_DETAILS',
+        url: '/dashboard/tasks/property_inspection',
       },
     ],
   },

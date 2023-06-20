@@ -7,8 +7,15 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { POSFont } from '@/styles';
+import { AUTO_HIDE_DURATION } from '@/constants';
 import { useAsyncEffect } from '@/hooks';
 import { Address, IAddress } from '@/models/common/Address';
+import {
+  POSFormatDollar,
+  POSFormatLocalPercent,
+  POSFormatPercent,
+} from '@/utils';
 import {
   BPPreApprovalLetterData,
   BridgeRefinanceEstimateRateData,
@@ -20,13 +27,13 @@ import {
   RatesProductData,
 } from '@/types';
 import { LoanStage, UserType } from '@/types/enum';
-
 import {
   _fetchPreApprovedLetterCheck,
   _fetchPreApprovedLetterInfo,
   _updateRatesProductSelected,
   UpdateRatesPostData,
 } from '@/requests/dashboard';
+
 import {
   StyledButton,
   StyledCheckbox,
@@ -35,14 +42,6 @@ import {
   Transitions,
 } from '@/components/atoms';
 import { PreApprovalEdit, PreApprovalInfo } from '@/components/molecules';
-
-import {
-  POSFormatDollar,
-  POSFormatLocalPercent,
-  POSFormatPercent,
-} from '@/utils';
-import { POSFont } from '@/styles';
-import { AUTO_HIDE_DURATION } from '@/constants';
 
 const useStyles = {
   mx: { lg: 'auto', xs: 0 },

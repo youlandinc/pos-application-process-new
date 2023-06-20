@@ -150,6 +150,7 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
         style={{
           display:
             propertyType === PropertyOpt.twoToFourFamily ? 'block' : 'none',
+          width: '100%',
         }}
       >
         {propertyType === PropertyOpt.twoToFourFamily && (
