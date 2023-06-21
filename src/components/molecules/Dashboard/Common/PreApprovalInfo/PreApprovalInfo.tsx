@@ -105,7 +105,7 @@ export const PreApprovalInfo = forwardRef<
           new Blob([data], { type: 'application/pdf;chartset=UTF-8' }),
         );
 
-        window.open(url.split(':')[0]);
+        window.open(url.split('blob:')[1]);
         setViewLoading(false);
       };
       setViewLoading(true);
