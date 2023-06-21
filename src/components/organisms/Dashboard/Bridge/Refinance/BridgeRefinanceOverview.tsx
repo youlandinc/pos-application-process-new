@@ -218,6 +218,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
                   query: router.query,
                 })
               }
+              sx={{ mt: 'auto' }}
               variant={'contained'}
             >
               View Letter
@@ -240,6 +241,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
                   query: router.query,
                 })
               }
+              sx={{ mt: 'auto' }}
               variant={'contained'}
             >
               Explore Rate

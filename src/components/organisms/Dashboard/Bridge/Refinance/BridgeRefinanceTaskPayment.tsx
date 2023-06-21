@@ -136,6 +136,9 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
         setAppraisalFiles(appraisalFiles ?? []);
         setNoticeCheck(isNotice ?? undefined);
         setSummaryCheck(isConfirm ?? undefined);
+        if (appraisalFiles?.length > 0) {
+          setTableStatus(DashboardTaskPaymentTableStatus.summary);
+        }
         setPaymentStatus(
           paymentStatus as string as DashboardTaskPaymentMethodsStatus,
         );
@@ -185,7 +188,9 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
         if (!POSNotUndefined(haveAppraisal) || !summaryCheck) {
           return true;
         }
-        return haveAppraisal ? !appraisalFiles.length || saveLoading : false;
+        return haveAppraisal
+          ? !appraisalFiles.length || saveLoading
+          : saveLoading;
       case DashboardTaskPaymentTableStatus.payment:
         return !paymentCheck || !clickable || loading;
     }
@@ -360,7 +365,11 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
               loadingText={'Saving...'}
               onClick={async () => {
                 await handledSaveFormAndGetPaymentDetail();
-                next();
+                if (!haveAppraisal) {
+                  next();
+                  return;
+                }
+                await backToList();
               }}
               sx={{ flex: 1 }}
             >
