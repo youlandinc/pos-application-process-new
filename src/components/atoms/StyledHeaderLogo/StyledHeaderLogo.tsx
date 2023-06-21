@@ -22,7 +22,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
 
   return (
     <Box
-      onClick={() => router.push('/')}
+      onClick={() => router.push('/pipeline')}
       sx={{ ...StyledHeaderLogoStyles, ...sx }}
     >
       {Logo}

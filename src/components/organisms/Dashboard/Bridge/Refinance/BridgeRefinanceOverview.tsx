@@ -198,7 +198,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
           flex={1}
           flexDirection={{ xl: 'row', xs: 'column' }}
           gap={3}
-          minHeight={464}
+          minHeight={loading ? 464 : 'unset'}
           width={'100%'}
         >
           <DashboardCard
@@ -251,7 +251,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
           flex={1}
           flexDirection={{ xl: 'row', xs: 'column' }}
           gap={3}
-          minHeight={464}
+          minHeight={loading ? 464 : 'unset'}
           width={'100%'}
         >
           <DashboardCard
