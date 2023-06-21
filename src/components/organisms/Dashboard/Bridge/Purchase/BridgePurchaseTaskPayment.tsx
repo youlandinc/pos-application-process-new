@@ -188,7 +188,9 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
         if (!POSNotUndefined(haveAppraisal) || !summaryCheck) {
           return true;
         }
-        return haveAppraisal ? !appraisalFiles.length || saveLoading : false;
+        return haveAppraisal
+          ? !appraisalFiles.length || saveLoading
+          : saveLoading;
       case DashboardTaskPaymentTableStatus.payment:
         return !paymentCheck || !clickable || loading;
     }
@@ -219,7 +221,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
       taskForm: {
         productInfo,
         haveAppraisal,
-        appraisalFiles,
+        appraisalFiles: haveAppraisal ? appraisalFiles : [],
         isNotice: noticeCheck,
         isConfirm: summaryCheck,
       },
