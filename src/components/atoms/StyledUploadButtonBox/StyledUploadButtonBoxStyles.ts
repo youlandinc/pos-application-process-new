@@ -64,7 +64,17 @@ export const StyledUploadButtonBoxStyles: SxProps = {
   },
   '& .uploadBox': {
     width: '100%',
-    ...POSFlex('center', 'space-between', 'row'),
+    ...POSFlex('center', 'space-between', { md: 'row', xs: 'column' }),
+    '& >h4': {
+      fontSize: { md: 24, xs: 18 },
+    },
+    '& >label': {
+      mt: {
+        md: 0,
+        xs: 3,
+      },
+      width: { md: 168, xs: '100%' },
+    },
   },
 
   ' input': {
