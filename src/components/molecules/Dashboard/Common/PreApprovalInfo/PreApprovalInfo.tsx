@@ -104,8 +104,18 @@ export const PreApprovalInfo = forwardRef<
         const url = window.URL.createObjectURL(
           new Blob([data], { type: 'application/pdf;chartset=UTF-8' }),
         );
+        const previewWindow = window.open(
+          '',
+          '_blank',
+          // 'toolbar=no,menubar=no,location=no,status=no',
+        );
 
-        window.open(url.split('blob:')[1]);
+        previewWindow!.document.write(
+          '<embed src="' +
+            url +
+            '" type="application/pdf" width="100%" height="100%" />',
+        );
+        previewWindow!.document.body.style.margin = '0';
         setViewLoading(false);
       };
       setViewLoading(true);
