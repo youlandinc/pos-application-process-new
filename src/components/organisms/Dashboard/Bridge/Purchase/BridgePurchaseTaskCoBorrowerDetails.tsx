@@ -255,7 +255,14 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
     try {
       const res = await _updateTaskFormInfo(postData);
       setCreditScore(res.data);
-      setTableView('score');
+      if (isCoBorrower) {
+        setTableView('score');
+      } else {
+        await router.push({
+          pathname: '/dashboard/tasks',
+          query: { processId: router.query.processId },
+        });
+      }
     } catch (e) {
       enqueueSnackbar(e as string, {
         variant: 'error',
