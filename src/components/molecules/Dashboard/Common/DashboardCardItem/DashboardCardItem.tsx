@@ -1,5 +1,6 @@
 import { CSSProperties, FC, ReactNode } from 'react';
 import { Stack, StackProps, Typography } from '@mui/material';
+import { useBreakpoints } from '@/hooks';
 
 interface DashboardCardItemProps extends StackProps {
   label: string | ReactNode;
@@ -15,6 +16,7 @@ export const DashboardCardItem: FC<DashboardCardItemProps> = ({
   infoStyle,
   ...rest
 }) => {
+  const breakpoint = useBreakpoints();
   return (
     <Stack
       alignItems={label === 'Address' ? 'flex-start' : 'center'}
@@ -27,7 +29,7 @@ export const DashboardCardItem: FC<DashboardCardItemProps> = ({
         color={'text.primary'}
         component={'div'}
         sx={labelStyle}
-        variant={'body1'}
+        variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'}
       >
         {label}
       </Typography>
@@ -37,7 +39,9 @@ export const DashboardCardItem: FC<DashboardCardItemProps> = ({
         maxWidth={'75%'}
         sx={infoStyle}
         textAlign={'right'}
-        variant={'subtitle1'}
+        variant={
+          ['xs', 'sm', 'md'].includes(breakpoint) ? 'subtitle3' : 'subtitle1'
+        }
       >
         {info}
       </Typography>

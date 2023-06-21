@@ -197,8 +197,8 @@ export const BridgeRefinanceOverview: FC = observer(() => {
         <Stack
           flex={1}
           flexDirection={{ xl: 'row', xs: 'column' }}
-          flexWrap={'wrap'}
           gap={3}
+          minHeight={464}
           width={'100%'}
         >
           <DashboardCard
@@ -250,8 +250,8 @@ export const BridgeRefinanceOverview: FC = observer(() => {
         <Stack
           flex={1}
           flexDirection={{ xl: 'row', xs: 'column' }}
-          flexWrap={'wrap'}
           gap={3}
+          minHeight={464}
           width={'100%'}
         >
           <DashboardCard

@@ -123,11 +123,19 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
-        const { productInfo, haveAppraisal, appraisalFiles, paymentStatus } =
-          res.data;
+        const {
+          productInfo,
+          haveAppraisal,
+          appraisalFiles,
+          paymentStatus,
+          isConfirm,
+          isNotice,
+        } = res.data;
         setProductInfo(productInfo);
         setHaveAppraisal(haveAppraisal ?? undefined);
         setAppraisalFiles(appraisalFiles ?? []);
+        setNoticeCheck(isNotice ?? undefined);
+        setSummaryCheck(isConfirm ?? undefined);
         setPaymentStatus(
           paymentStatus as string as DashboardTaskPaymentMethodsStatus,
         );
@@ -209,6 +217,8 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
         productInfo,
         haveAppraisal,
         appraisalFiles,
+        isNotice: noticeCheck,
+        isConfirm: summaryCheck,
       },
     };
 
@@ -230,9 +240,11 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
     appraisalFiles,
     enqueueSnackbar,
     haveAppraisal,
+    noticeCheck,
     productInfo,
     router.query.processId,
     router.query.taskId,
+    summaryCheck,
   ]);
 
   const { back, next } = useStateMachine(tableStatus, setTableStatus);
