@@ -13,9 +13,10 @@ import {
 
 import { POSLayoutProps } from './index';
 import { POSHeader } from './components/POSHeader';
+import { SceneType } from '@/types';
+
 import { StyledBoxWrap } from '@/components/atoms';
 import { DashboardMenuList } from '@/components/molecules';
-import { SceneType } from '@/types';
 
 export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
   const store = useMst();

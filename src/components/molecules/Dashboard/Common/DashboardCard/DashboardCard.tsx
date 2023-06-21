@@ -2,6 +2,7 @@ import { FC, ReactNode } from 'react';
 import { Box, Divider, Stack, StackProps, Typography } from '@mui/material';
 
 import { POSFormatDollar } from '@/utils';
+import { useBreakpoints } from '@/hooks';
 
 import { StyledLoading } from '@/components/atoms';
 import { DashboardCardItem } from '@/components/molecules';
@@ -38,6 +39,7 @@ export const DashboardCard: FC<DashboardCardProps> = ({
   children,
   ...rest
 }) => {
+  const breakpoint = useBreakpoints();
   return (
     <Stack
       border={'1px solid'}
@@ -45,8 +47,6 @@ export const DashboardCard: FC<DashboardCardProps> = ({
       borderRadius={2}
       flex={{ xl: 1, xs: '100%' }}
       flexDirection={'column'}
-      minHeight={464}
-      overflow={'hidden'}
       p={3}
       width={'100%'}
       {...rest}
@@ -55,7 +55,11 @@ export const DashboardCard: FC<DashboardCardProps> = ({
         <StyledLoading sx={{ m: 'auto', color: 'primary.main' }} />
       ) : (
         <>
-          <Typography color={'text.primary'} component={'div'} variant={'h4'}>
+          <Typography
+            color={'text.primary'}
+            component={'div'}
+            variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h4'}
+          >
             <Box>{title}</Box>
           </Typography>
           <Box my={1.5}>
@@ -64,7 +68,9 @@ export const DashboardCard: FC<DashboardCardProps> = ({
                 <Typography
                   color={'primary.main'}
                   component={'div'}
-                  variant={'h4'}
+                  variant={
+                    ['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h4'
+                  }
                 >
                   {subInfo}
                 </Typography>
