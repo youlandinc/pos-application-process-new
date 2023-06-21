@@ -60,7 +60,7 @@ export const StyledUploadButtonBoxStyles: SxProps = {
     mt: 3,
   },
   '& .fileName': {
-    ...POSTextEllipsis({ xs: 200, lg: 400 }),
+    ...POSTextEllipsis({ xs: 140, md: 280, lg: 220, xl: 400 }),
   },
   '& .uploadBox': {
     width: '100%',
