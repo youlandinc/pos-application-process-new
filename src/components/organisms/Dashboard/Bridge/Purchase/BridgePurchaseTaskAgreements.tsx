@@ -6,7 +6,10 @@ import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { _updateTaskFormInfo } from '@/requests/dashboard';
+import {
+  _fetchAttachmentFile,
+  _updateTaskFormInfo,
+} from '@/requests/dashboard';
 import { useSessionStorageState } from '@/hooks';
 
 import { StyledButton, StyledFormItem } from '@/components/atoms';
@@ -56,9 +59,7 @@ export const BridgePurchaseTaskAgreements: FC = observer(() => {
           className={'link_style'}
           component={'span'}
           fontWeight={600}
-          onClick={() => {
-            window.open('');
-          }}
+          onClick={handledViewPDF}
         >
           View Construction Holdback Process
         </Typography>

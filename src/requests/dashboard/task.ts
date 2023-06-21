@@ -56,3 +56,7 @@ export const _deleteTaskFile = (
 export const _restartPaymentPipeline = (taskId: string) => {
   return post(`/dashboard/loan/task/payment/${taskId}`);
 };
+
+export const _fetchAttachmentFile = () => {
+  return get('/dashboard/loan/task/attachment');
+};
