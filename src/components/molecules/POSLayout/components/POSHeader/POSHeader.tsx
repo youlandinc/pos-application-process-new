@@ -241,7 +241,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 Welcome to
                 {
                   //sass
-                  ' ' + saasState?.organizationName || ' YouLand'
+                  saasState?.organizationName || ' YouLand'
                 }{' '}
                 !
               </Typography>

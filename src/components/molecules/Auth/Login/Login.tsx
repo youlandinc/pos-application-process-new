@@ -167,8 +167,8 @@ export const Login: FC<LoginProps> = observer(
                   Welcome to
                   {
                     //sass
-                    ' ' + saasState?.organizationName || ' YouLand'
-                  }{' '}
+                    saasState?.organizationName || ' YouLand'
+                  }
                   !
                 </Typography>
                 {FormBody}
