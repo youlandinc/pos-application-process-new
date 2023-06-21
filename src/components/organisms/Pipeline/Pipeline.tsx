@@ -32,6 +32,7 @@ export const Pipeline: FC = observer(() => {
     userSetting: { pipelineStatus, pipelineStatusInitialized },
     pipelineTask: { pipelineInitialized },
     userType,
+    session,
   } = useMst();
 
   const { visible, open, close } = useSwitch(false);
@@ -54,6 +55,9 @@ export const Pipeline: FC = observer(() => {
   });
 
   const [, getListData] = useAsyncFn(async () => {
+    if (!session) {
+      return;
+    }
     if (
       (!pipelineInitialized || !pipelineStatusInitialized || !pipelineStatus) &&
       userType !== UserType.CUSTOMER

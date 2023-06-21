@@ -2,6 +2,7 @@ import { FC, ReactNode, useMemo } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
+import { useBreakpoints } from '@/hooks';
 import { LoanStage, RatesProductData, UserType } from '@/types';
 
 import { StyledButton, StyledLoading } from '@/components/atoms';
@@ -46,7 +47,7 @@ export const BridgeRatesList: FC<RatesProductListProps> = ({
           )}
 
           <Stack
-            flexDirection={'row'}
+            flexDirection={{ xs: 'column', xl: 'row' }}
             flexWrap={'wrap'}
             gap={3}
             mt={3}
@@ -95,7 +96,7 @@ const ProductCard: FC<{
             >
               <Typography variant={'body1'}>Total Borrower Fee</Typography>
               <Typography fontWeight={600} variant={'h5'}>
-                {POSFormatDollar(product.paymentOfMonth)}
+                {POSFormatDollar(product.totalBorrowerFees)}
               </Typography>
             </Stack>
           </>
@@ -133,7 +134,7 @@ const ProductCard: FC<{
         transition: 'all .3s',
         '&:hover': { borderColor: '#1134E3' },
       }}
-      width={{ lg: 'calc(50% - 12px)', xs: '100%' }}
+      width={{ xl: 'calc(50% - 12px)', xs: '100%' }}
     >
       <Stack gap={1.5}>
         <Stack

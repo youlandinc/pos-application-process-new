@@ -24,7 +24,7 @@ export const WhereKnow: FC<FormNodeBaseProps> = observer(
       <>
         <StyledFormItem
           alignItems={'center'}
-          label={'Where you heard about us ?'}
+          label={'Where did you hear about us?'}
         >
           <StyledSelect
             label={'Please select one'}

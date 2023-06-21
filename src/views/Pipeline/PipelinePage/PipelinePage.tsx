@@ -14,12 +14,15 @@ export const PipelinePage: FC<{ children?: ReactNode }> = observer(
       userType,
       pipelineTask,
       userSetting: { fetchPipelineStatus },
+      session,
     } = useMst();
 
     // await fetch user setting
     useEffect(() => {
-      fetchPipelineStatus();
-    }, [fetchPipelineStatus]);
+      if (session) {
+        fetchPipelineStatus();
+      }
+    }, [fetchPipelineStatus, session]);
 
     // await fetch task item status
     useEffect(() => {

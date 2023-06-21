@@ -43,10 +43,15 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
       return;
     }
     router.push(jumpPath);
-    enqueueSnackbar("You haven't logged", {
-      variant: 'error',
-      autoHideDuration: AUTO_HIDE_DURATION,
-    });
+    if (
+      !router.pathname.includes('pipeline') &&
+      router.pathname.includes('application')
+    ) {
+      enqueueSnackbar("You haven't logged", {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    }
   });
 
   // only detecting at the first time entry
