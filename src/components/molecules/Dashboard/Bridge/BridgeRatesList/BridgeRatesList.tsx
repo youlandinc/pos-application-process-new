@@ -25,6 +25,7 @@ export const BridgeRatesList: FC<RatesProductListProps> = ({
   userType,
   label,
 }) => {
+  const breakpoint = useBreakpoints();
   return (
     <Stack maxWidth={900} width={'100%'}>
       {isFirstSearch ? (
@@ -40,7 +41,9 @@ export const BridgeRatesList: FC<RatesProductListProps> = ({
               color={'info.main'}
               mt={3}
               textAlign={'center'}
-              variant={'body1'}
+              variant={
+                ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
+              }
             >
               The following loan programs are available for you
             </Typography>
@@ -59,6 +62,7 @@ export const BridgeRatesList: FC<RatesProductListProps> = ({
                 onClick={onClick}
                 product={product}
                 userType={userType!}
+                breakpoint={breakpoint}
               />
             ))}
           </Stack>
@@ -72,7 +76,8 @@ const ProductCard: FC<{
   product: RatesProductData;
   onClick: (item: RatesProductData) => void;
   userType: UserType;
-}> = ({ product, onClick, userType }) => {
+  breakpoint: string;
+}> = ({ product, onClick, userType, breakpoint }) => {
   const renderByUserType = useMemo(() => {
     switch (userType) {
       case UserType.BROKER:
@@ -84,8 +89,16 @@ const ProductCard: FC<{
               flexDirection={'row'}
               justifyContent={'space-between'}
             >
-              <Typography variant={'body1'}>Total Borrower Points</Typography>
-              <Typography fontWeight={600} variant={'h5'}>
+              <Typography
+                variant={
+                  ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
+                }
+              >
+                Total Borrower Points
+              </Typography>
+              <Typography
+                variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h5'}
+              >
                 {POSFormatPercent(product.totalBorrowerPoints)}
               </Typography>
             </Stack>
@@ -94,8 +107,16 @@ const ProductCard: FC<{
               flexDirection={'row'}
               justifyContent={'space-between'}
             >
-              <Typography variant={'body1'}>Total Borrower Fee</Typography>
-              <Typography fontWeight={600} variant={'h5'}>
+              <Typography
+                variant={
+                  ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
+                }
+              >
+                Total Borrower Fee
+              </Typography>
+              <Typography
+                variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h5'}
+              >
                 {POSFormatDollar(product.totalBorrowerFees)}
               </Typography>
             </Stack>
@@ -108,8 +129,16 @@ const ProductCard: FC<{
             flexDirection={'row'}
             justifyContent={'space-between'}
           >
-            <Typography variant={'body1'}>Referral Fee</Typography>
-            <Typography fontWeight={600} variant={'h5'}>
+            <Typography
+              variant={
+                ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
+              }
+            >
+              Referral Fee
+            </Typography>
+            <Typography
+              variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h5'}
+            >
               {POSFormatDollar(product.agentFee)}
             </Typography>
           </Stack>
@@ -118,6 +147,7 @@ const ProductCard: FC<{
         return null;
     }
   }, [
+    breakpoint,
     product.paymentOfMonth,
     userType,
     product.agentFee,
@@ -142,28 +172,56 @@ const ProductCard: FC<{
           flexDirection={'row'}
           justifyContent={'space-between'}
         >
-          <Typography variant={'body1'}>Loan Term</Typography>
-          <Typography fontWeight={600} variant={'h5'}>
+          <Typography
+            variant={
+              ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
+            }
+          >
+            Loan Term
+          </Typography>
+          <Typography
+            variant={
+              ['xs', 'sm', 'md'].includes(breakpoint as string) ? 'h7' : 'h5'
+            }
+          >
             {product.loanTerm} Months
           </Typography>
         </Stack>
+
         <Stack
           alignItems={'flex-end'}
           flexDirection={'row'}
           justifyContent={'space-between'}
         >
-          <Typography variant={'body1'}>Rate</Typography>
-          <Typography fontWeight={600} variant={'h5'}>
+          <Typography
+            variant={
+              ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
+            }
+          >
+            Rate
+          </Typography>
+          <Typography
+            variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h5'}
+          >
             {POSFormatPercent(product.interestRateOfYear)}
           </Typography>
         </Stack>
+
         <Stack
           alignItems={'flex-end'}
           flexDirection={'row'}
           justifyContent={'space-between'}
         >
-          <Typography variant={'body1'}>Monthly Payment</Typography>
-          <Typography fontWeight={600} variant={'h5'}>
+          <Typography
+            variant={
+              ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
+            }
+          >
+            Monthly Payment
+          </Typography>
+          <Typography
+            variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h5'}
+          >
             {POSFormatDollar(product.paymentOfMonth)}
           </Typography>
         </Stack>
