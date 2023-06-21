@@ -102,10 +102,14 @@ export const PreApprovalInfo = forwardRef<
           return;
         }
         const url = window.URL.createObjectURL(
-          new Blob([data], { type: 'application/pdf;chartset=UTF-8' }),
+          new Blob([data], { type: 'application/pdf;charset=UTF-8' }),
         );
-
-        window.open(url.split('blob:')[1]);
+        const previewWindow = window.open('', '_blank');
+        previewWindow!.document.write(
+          '<embed src="' +
+            url +
+            '" type="application/pdf" width="100%" height="100%" />',
+        );
         setViewLoading(false);
       };
       setViewLoading(true);
