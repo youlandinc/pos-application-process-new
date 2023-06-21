@@ -9,7 +9,7 @@ export const useCheckProcessId = (jumpPath = '/pipeline') => {
   const { enqueueSnackbar } = useSnackbar();
 
   const check = useCallback(() => {
-    if (!router.query.processId) {
+    if (!location.href.includes('processId')) {
       enqueueSnackbar('Please select a loan application first', {
         variant: 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
