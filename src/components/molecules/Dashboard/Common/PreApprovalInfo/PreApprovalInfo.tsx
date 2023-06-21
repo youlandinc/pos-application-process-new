@@ -109,13 +109,15 @@ export const PreApprovalInfo = forwardRef<
           '_blank',
           // 'toolbar=no,menubar=no,location=no,status=no',
         );
+        setTimeout(() => {
+          previewWindow!.document.write(
+            '<embed src="' +
+              url +
+              '" type="application/pdf" width="100%" height="100%" />',
+          );
+          previewWindow!.document.body.style.margin = '0';
+        }, 10);
 
-        previewWindow!.document.write(
-          '<embed src="' +
-            url +
-            '" type="application/pdf" width="100%" height="100%" />',
-        );
-        previewWindow!.document.body.style.margin = '0';
         setViewLoading(false);
       };
       setViewLoading(true);
