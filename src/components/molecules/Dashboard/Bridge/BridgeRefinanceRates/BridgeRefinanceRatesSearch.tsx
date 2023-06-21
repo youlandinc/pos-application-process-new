@@ -509,7 +509,7 @@ export const BridgeRefinanceRatesSearch: FC<
           <Transitions
             style={{
               width: '100%',
-              display: isCashOut ? 'block' : 'none',
+              display: isCashOut || isCor ? 'block' : 'none',
             }}
           >
             {isCor && (
