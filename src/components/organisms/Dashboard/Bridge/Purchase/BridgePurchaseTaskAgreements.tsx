@@ -21,6 +21,7 @@ export const BridgePurchaseTaskAgreements: FC = observer(() => {
   const { saasState } = useSessionStorageState('tenantConfig');
 
   const [saveLoading, setSaveLoading] = useState(false);
+  const [viewLoading, setViewLoading] = useState<boolean>(false);
 
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
@@ -44,6 +45,43 @@ export const BridgePurchaseTaskAgreements: FC = observer(() => {
       setSaveLoading(false);
     }
   }, [enqueueSnackbar, router]);
+
+  const handledViewPDF = useCallback(
+    async () => {
+      const handler = (data: BlobPart) => {
+        if (viewLoading) {
+          return;
+        }
+        // file export
+        if (!data) {
+          setViewLoading(false);
+          return;
+        }
+        const url = window.URL.createObjectURL(
+          new Blob([data], { type: 'application/pdf;chartset=UTF-8' }),
+        );
+        const previewWindow = window.open(
+          '',
+          '_blank',
+          // 'toolbar=no,menubar=no,location=no,status=no',
+        );
+
+        previewWindow!.document.write(
+          '<embed src="' +
+            url +
+            '" type="application/pdf" width="100%" height="100%" />',
+        );
+        previewWindow!.document.body.style.margin = '0';
+        setViewLoading(false);
+      };
+      setViewLoading(true);
+      const res = await _fetchAttachmentFile();
+      handler(res.data);
+    },
+    // this function never change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   return (
     <StyledFormItem gap={3} label={'Agreements'}>

@@ -58,5 +58,5 @@ export const _restartPaymentPipeline = (taskId: string) => {
 };
 
 export const _fetchAttachmentFile = () => {
-  return get('/dashboard/loan/task/attachment');
+  return get('/dashboard/loan/task/attachment', { responseType: 'blob' });
 };

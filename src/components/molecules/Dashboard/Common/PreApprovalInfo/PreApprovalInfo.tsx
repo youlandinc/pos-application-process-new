@@ -102,7 +102,7 @@ export const PreApprovalInfo = forwardRef<
           return;
         }
         const url = window.URL.createObjectURL(
-          new Blob([data], { type: 'application/pdf;charset=UTF-8' }),
+          new Blob([data], { type: 'application/pdf;chartset=UTF-8' }),
         );
         const previewWindow = window.open(
           '',
