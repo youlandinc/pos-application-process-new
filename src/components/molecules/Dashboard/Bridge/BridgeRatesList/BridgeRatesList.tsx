@@ -58,11 +58,11 @@ export const BridgeRatesList: FC<RatesProductListProps> = ({
           >
             {productList.map((product, index) => (
               <ProductCard
+                breakpoint={breakpoint}
                 key={`${product.id}_${index}`}
                 onClick={onClick}
                 product={product}
                 userType={userType!}
-                breakpoint={breakpoint}
               />
             ))}
           </Stack>

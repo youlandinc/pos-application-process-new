@@ -23,7 +23,15 @@ export const DashboardServiceCardItem: FC<DashboardServiceCardItemProps> = ({
       <Stack flex={1.5} gap={1.5}>
         <Typography variant={'h5'}>{name}</Typography>
         <Typography variant={'h6'}>{title}</Typography>
-        <Typography color={'text.secondary'} mb={3} mt={1.5} variant={'body1'}>
+        <Typography
+          color={'text.secondary'}
+          mb={3}
+          mt={1.5}
+          sx={{
+            wordBreak: 'break-word',
+          }}
+          variant={'body1'}
+        >
           {avatar}
         </Typography>
       </Stack>
