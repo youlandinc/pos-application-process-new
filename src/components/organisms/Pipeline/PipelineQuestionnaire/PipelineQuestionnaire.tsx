@@ -98,7 +98,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
       open();
       setTimeout(() => {
         renderFile(res.data);
-      }, 300);
+      }, 100);
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
