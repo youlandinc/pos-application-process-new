@@ -7,9 +7,11 @@ import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { AUTO_HIDE_DURATION } from '@/constants';
 import { useSessionStorageState, useSwitch } from '@/hooks';
 import { LoanStage, UserType } from '@/types/enum';
 import { POSFlex } from '@/styles';
+import { BridgeRefinanceLoanInfo } from '@/components/molecules/Application';
 
 import {
   _fetchRatesLoanInfo,
@@ -33,8 +35,6 @@ import {
   Encompass,
   RatesProductData,
 } from '@/types';
-import { BridgeRefinanceLoanInfo } from '@/components/molecules/Application';
-import { AUTO_HIDE_DURATION } from '@/constants';
 
 const initialize: BRQueryData = {
   homeValue: undefined,

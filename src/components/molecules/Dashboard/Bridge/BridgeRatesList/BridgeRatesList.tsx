@@ -147,11 +147,11 @@ const ProductCard: FC<{
         return null;
     }
   }, [
-    breakpoint,
-    product.paymentOfMonth,
     userType,
-    product.agentFee,
+    breakpoint,
     product.totalBorrowerPoints,
+    product.totalBorrowerFees,
+    product.agentFee,
   ]);
 
   return (

@@ -1,4 +1,3 @@
-import { _restartPaymentPipeline } from '@/requests/dashboard';
 import { FC, useMemo } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -6,6 +5,8 @@ import { useRouter } from 'next/router';
 import { DashboardTaskPaymentMethodsStatus } from '@/types';
 import { useSessionStorageState } from '@/hooks';
 import { POSFormatUSPhoneToText } from '@/utils';
+
+import { _restartPaymentPipeline } from '@/requests/dashboard';
 
 import { StyledButton, StyledFormItem } from '@/components/atoms';
 
