@@ -227,6 +227,7 @@ export const PipelineAgreement: FC = observer(() => {
             {computedAgreement.isRenderLicense && (
               <Stack width={'100%'}>
                 <StyledSelect
+                  label={'License'}
                   onChange={(e) =>
                     computedAgreement.agreement.changeFieldValue(
                       'license',
