@@ -206,7 +206,7 @@ export const BridgeRefinanceTaskList: FC = observer(() => {
                   pathname: sonItem.url,
                   query: {
                     ...router.query,
-                    taskId: taskDetails[sonItem.code].taskId,
+                    taskId: taskDetails[sonItem.code]?.taskId,
                   },
                 })
               }
@@ -244,7 +244,7 @@ export const BridgeRefinanceTaskList: FC = observer(() => {
                   pathname: sonItem.url,
                   query: {
                     ...router.query,
-                    taskId: taskDetails[sonItem.code].taskId,
+                    taskId: taskDetails[sonItem.code]?.taskId,
                   },
                 })
               }
@@ -282,7 +282,7 @@ export const BridgeRefinanceTaskList: FC = observer(() => {
                   pathname: sonItem.url,
                   query: {
                     ...router.query,
-                    taskId: taskDetails[sonItem.code].taskId,
+                    taskId: taskDetails[sonItem.code]?.taskId,
                   },
                 })
               }
@@ -320,7 +320,7 @@ export const BridgeRefinanceTaskList: FC = observer(() => {
                   pathname: sonItem.url,
                   query: {
                     ...router.query,
-                    taskId: taskDetails[sonItem.code].taskId,
+                    taskId: taskDetails[sonItem.code]?.taskId,
                   },
                 })
               }
@@ -358,7 +358,7 @@ export const BridgeRefinanceTaskList: FC = observer(() => {
                   pathname: sonItem.url,
                   query: {
                     ...router.query,
-                    taskId: taskDetails[sonItem.code].taskId,
+                    taskId: taskDetails[sonItem.code]?.taskId,
                   },
                 })
               }
