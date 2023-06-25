@@ -34,7 +34,6 @@ import {
 import {
   StyledButton,
   StyledCheckbox,
-  // StyledDialog,
   StyledLoading,
   StyledTextFieldNumber,
   Transitions,
@@ -72,8 +71,6 @@ export const BridgePurchasePreApproval: FC = observer(() => {
 
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-
-  // const { open, visible, close } = useSwitch(false);
 
   const [loanStage, setLoanStage] = useState<LoanStage | undefined>(
     LoanStage.PreApproved,

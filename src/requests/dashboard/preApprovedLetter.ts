@@ -25,6 +25,10 @@ export const _fetchPDFFile = (processId: string) => {
   return get(`/dashboard/letter/${processId}/pdf`, { responseType: 'blob' });
 };
 
+export const _previewPreApprovalPDFFile = (processId: string) => {
+  return get(`/dashboard/letter/${processId}/preview`);
+};
+
 export const _fetchPreApprovedLetterInfo = <
   T extends
     | BRPreApprovalLetterData
