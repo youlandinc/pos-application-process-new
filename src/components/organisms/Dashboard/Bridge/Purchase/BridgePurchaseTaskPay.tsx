@@ -43,7 +43,7 @@ export const BridgePurchaseTaskPay: FC = observer(() => {
   const { renderFile } = useRenderPdf(pdfFile);
 
   const [paymentType, setPaymentType] = useState<string | number>('ACH_debit');
-  const [address, setAddress] = useState<IAddress>(
+  const [address] = useState<IAddress>(
     Address.create({
       formatAddress: '',
       state: '',
@@ -89,7 +89,11 @@ export const BridgePurchaseTaskPay: FC = observer(() => {
                 sub
               >
                 <Stack width={'100%'}>
-                  <StyledTextField label={'Bank Name'} value={bankName} />
+                  <StyledTextField
+                    label={'Bank Name'}
+                    onChange={(e) => setBankName(e.target.value)}
+                    value={bankName}
+                  />
                 </Stack>
                 <Stack width={'100%'}>
                   <StyledGoogleAutoComplete
@@ -104,10 +108,12 @@ export const BridgePurchaseTaskPay: FC = observer(() => {
                 >
                   <StyledTextField
                     label={'Account Holder Name'}
+                    onChange={(e) => setAccountName(e.target.value)}
                     value={accountName}
                   />
                   <StyledTextField
                     label={'Routing number'}
+                    onChange={(e) => setRoutingNumber(e.target.value)}
                     value={routingNumber}
                   />
                 </Stack>
@@ -119,6 +125,7 @@ export const BridgePurchaseTaskPay: FC = observer(() => {
                 >
                   <StyledTextField
                     label={'Account Number'}
+                    onChange={(e) => setAccountNumber(e.target.value)}
                     value={accountNumber}
                   />
                   <StyledSelect

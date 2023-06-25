@@ -13,7 +13,6 @@ export * from './BridgePurchaseTaskDemographicsInformation';
 export * from './BridgePurchaseTaskGuarantorPersonal';
 export * from './BridgePurchaseTaskCoBorrowerDetails';
 
-
 export * from './BridgePurchaseTaskCompanyInformation';
 export * from './BridgePurchaseTaskInsuranceInformation';
 

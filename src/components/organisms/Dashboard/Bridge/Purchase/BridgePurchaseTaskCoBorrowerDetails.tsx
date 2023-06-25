@@ -287,7 +287,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
     marital,
     phoneNumber,
     residency,
-    router.query.taskId,
+    router,
     signatoryTitle,
     ssn,
     stateId,

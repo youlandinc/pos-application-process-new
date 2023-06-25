@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo, useState } from 'react';
-import { Box, SxProps, Typography } from '@mui/material';
+import { Box, Stack, SxProps, Typography } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { useAsync, useSetState } from 'react-use';
@@ -7,8 +7,9 @@ import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 
+import { useBreakpoints } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { POSFlex, POSFont } from '@/styles';
+import { POSFlex } from '@/styles';
 import { _fetchLoanTask, _notifyTaskUpdate } from '@/requests/dashboard';
 import { BridgePurchaseTasks } from '@/types';
 
@@ -148,6 +149,8 @@ export const BridgePurchaseTaskList: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
+  const breakpoints = useBreakpoints();
+
   const [updateLoading, setUpdateLoading] = useState(false);
 
   const [taskDetails, setTaskDetails] = useSetState<BridgePurchaseTasks>();
@@ -190,13 +193,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         <Box className={'card_box'}>
           <Box>
             <Typography
-              sx={{
-                fontSize: {
-                  md: 18,
-                  xs: 16,
-                },
-              }}
-              variant={'h6'}
+              variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
               {taskObj.ApplicationInformation.title}
             </Typography>
@@ -217,13 +214,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
               px={{ md: 3, xs: 0 }}
             >
               <Typography
-                sx={{
-                  fontSize: {
-                    md: 16,
-                    xs: 12,
-                  },
-                }}
-                variant={'body1'}
+                variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'}
               >
                 {taskDetails[sonItem.code]?.taskName}
               </Typography>
@@ -241,13 +232,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         <Box className={'card_box'}>
           <Box>
             <Typography
-              sx={{
-                fontSize: {
-                  md: 18,
-                  xs: 16,
-                },
-              }}
-              variant={'h6'}
+              variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
               {taskObj.BorrowerInformation.title}
             </Typography>
@@ -267,13 +252,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
               px={{ md: 3, xs: 0 }}
             >
               <Typography
-                sx={{
-                  fontSize: {
-                    md: 16,
-                    xs: 12,
-                  },
-                }}
-                variant={'body1'}
+                variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'}
               >
                 {taskDetails[sonItem.code]?.taskName}
               </Typography>
@@ -291,13 +270,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         <Box className={'card_box'}>
           <Box>
             <Typography
-              sx={{
-                fontSize: {
-                  md: 18,
-                  xs: 16,
-                },
-              }}
-              variant={'h6'}
+              variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
               {taskObj.PropertyAppraisal.title}
             </Typography>
@@ -317,13 +290,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
               px={{ md: 3, xs: 0 }}
             >
               <Typography
-                sx={{
-                  fontSize: {
-                    md: 16,
-                    xs: 12,
-                  },
-                }}
-                variant={'body1'}
+                variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'}
               >
                 {taskDetails[sonItem.code]?.taskName}
               </Typography>
@@ -341,13 +308,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         <Box className={'card_box'}>
           <Box>
             <Typography
-              sx={{
-                fontSize: {
-                  md: 18,
-                  xs: 16,
-                },
-              }}
-              variant={'h6'}
+              variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
               {taskObj.ThirdPartyInformation.title}
             </Typography>
@@ -367,13 +328,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
               px={{ md: 3, xs: 0 }}
             >
               <Typography
-                sx={{
-                  fontSize: {
-                    md: 16,
-                    xs: 12,
-                  },
-                }}
-                variant={'body1'}
+                variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'}
               >
                 {taskDetails[sonItem.code]?.taskName}
               </Typography>
@@ -391,13 +346,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         <Box className={'card_box'}>
           <Box>
             <Typography
-              sx={{
-                fontSize: {
-                  md: 18,
-                  xs: 16,
-                },
-              }}
-              variant={'h6'}
+              variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
               {taskObj.DocumentsMaterials.title}
             </Typography>
@@ -417,13 +366,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
               px={{ md: 3, xs: 0 }}
             >
               <Typography
-                sx={{
-                  fontSize: {
-                    md: 16,
-                    xs: 12,
-                  },
-                }}
-                variant={'body1'}
+                variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'}
               >
                 {taskDetails[sonItem.code]?.taskName}
               </Typography>
@@ -439,10 +382,18 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         </Box>
       </>
     );
-  }, [router, taskDetails]);
+  }, [breakpoints, router, taskDetails]);
 
   return (
-    <Box sx={TaskListStyles}>
+    <Stack
+      flexDirection={'column'}
+      justifyContent={'center'}
+      maxWidth={900}
+      mx={{ lg: 'auto', xs: 0 }}
+      px={{ lg: 3, xs: 0 }}
+      sx={TaskListStyles}
+      width={'100%'}
+    >
       <DashboardHeader
         subTitle={
           'You can make updates to the task before the loan is approved.'
@@ -455,66 +406,50 @@ export const BridgePurchaseTaskList: FC = observer(() => {
       ) : (
         <>
           {renderTaskList}
-          <Box className={'footer'}>
-            <Box>
+          <Stack
+            alignItems={'center'}
+            bgcolor={'warning.A200'}
+            borderRadius={2}
+            flexDirection={{ md: 'row', xs: 'column' }}
+            gap={3}
+            justifyContent={'space-between'}
+            mt={1}
+            p={3}
+          >
+            <Stack gap={1.5}>
               <Typography
                 color={'warning.main'}
-                sx={{
-                  fontSize: {
-                    md: 18,
-                    xs: 16,
-                  },
-                }}
-                variant={'h6'}
+                variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
               >
                 Update your progress with your loan officer
               </Typography>
               <Typography
                 color={'warning.main'}
-                sx={{
-                  fontSize: {
-                    md: 16,
-                    xs: 12,
-                  },
-                }}
-                variant={'body2'}
+                variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'}
               >
                 We will notify your loan officer to review the tasks you have
                 completed. If you have any questions or concerns, please reach
                 out to your loan officer to ensure that the tasks are completed
                 accurately.
               </Typography>
-            </Box>
-            <Box sx={{ width: '100px' }}>
-              <StyledButton
-                color={'warning'}
-                disabled={updateLoading}
-                onClick={handledUpdate}
-              >
-                Update
-              </StyledButton>
-            </Box>
-          </Box>
+            </Stack>
+
+            <StyledButton
+              color={'warning'}
+              disabled={updateLoading}
+              onClick={handledUpdate}
+              sx={{ width: 100, flexShrink: 0 }}
+            >
+              Update
+            </StyledButton>
+          </Stack>
         </>
       )}
-    </Box>
+    </Stack>
   );
 });
 
 const TaskListStyles: SxProps = {
-  maxWidth: 900,
-  width: '100%',
-  px: {
-    lg: 3,
-    xs: 0,
-  },
-  mx: {
-    lg: 'auto',
-    xs: 0,
-  },
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
   '& .card_box': {
     p: 3,
     border: '1px solid',
@@ -523,6 +458,8 @@ const TaskListStyles: SxProps = {
     borderRadius: 2,
     '& .Finish': {
       color: 'success.main',
+      width: { xs: 16, md: 24 },
+      ml: 3,
     },
     '& div': {
       height: 48,
@@ -537,26 +474,6 @@ const TaskListStyles: SxProps = {
           bgcolor: 'transparent',
         },
       },
-      '& >div': {
-        width: 120,
-        height: 24,
-        borderRadius: 1,
-        bgcolor: 'success.A200',
-        ...POSFlex('center', 'center', 'row'),
-        ...POSFont(12, 600, 1.5, 'success.main'),
-        '&.Unfinished': {
-          bgcolor: 'info.A200',
-          color: 'info.main',
-        },
-      },
     },
-  },
-  '& .footer': {
-    p: 3,
-    borderRadius: 2,
-    mt: 1,
-    bgcolor: 'warning.A200',
-    gap: 3,
-    ...POSFlex('center', 'space-between', { md: 'row', xs: 'column' }),
   },
 };
