@@ -66,7 +66,7 @@ export const BridgeCelebrate: FC<{ nextStep: () => void }> = observer(
             <Typography component={'span'} fontWeight={600} variant={'inherit'}>
               {POSFormatDollar(loanAmount)}{' '}
             </Typography>
-            for the residential property located at{' '}
+            for the property located at{' '}
             <Typography component={'span'} fontWeight={600} variant={'inherit'}>
               {`${address.formatAddress}`}
               {address.aptNumber && `, #${address.aptNumber}, `}

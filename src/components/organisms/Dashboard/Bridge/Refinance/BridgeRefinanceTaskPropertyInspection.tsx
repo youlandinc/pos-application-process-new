@@ -52,8 +52,8 @@ export const BridgeRefinanceTaskPropertyInspection: FC = observer(() => {
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
-    return !!email && !!phoneNumber && !!contactName && !!instructions;
-  }, [contactName, email, instructions, phoneNumber]);
+    return !!email && !!phoneNumber && !!contactName;
+  }, [contactName, email, phoneNumber]);
 
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
@@ -115,7 +115,7 @@ export const BridgeRefinanceTaskPropertyInspection: FC = observer(() => {
           value={email}
         />
         <StyledTextField
-          label={'Property Access Instructions'}
+          label={'Property Access Instructions(Optional)'}
           onChange={(e) => setInstructions(e.target.value)}
           value={instructions}
         />

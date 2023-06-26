@@ -155,7 +155,6 @@ export enum DashboardTaskPrimaryReasonRefinance {
 export enum DashboardTaskExitStrategy {
   rehab_and_sell = 'REHAB_AND_SELL',
   rehab_rent_refinance = 'REHAB_RENT_REFINANCE',
-  other = 'OTHER',
 }
 
 export enum DashboardTaskInstructions {

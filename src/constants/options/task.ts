@@ -193,9 +193,4 @@ export const OPTIONS_TASK_EXIT_STRATEGY: Option[] = [
     value: DashboardTaskExitStrategy.rehab_rent_refinance,
     label: 'Use of proceeds to buy other properties',
   },
-  {
-    key: DashboardTaskExitStrategy.other,
-    value: DashboardTaskExitStrategy.other,
-    label: 'Other',
-  },
 ];

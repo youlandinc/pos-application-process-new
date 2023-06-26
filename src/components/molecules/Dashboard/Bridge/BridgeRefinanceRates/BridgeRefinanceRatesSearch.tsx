@@ -569,7 +569,7 @@ export const BridgeRefinanceRatesSearch: FC<
                   <Typography variant={'body1'}>Loan to Cost</Typography>
                   <StyledTooltip
                     title={
-                      'LTC (Total Loan Amount / [Home value + Estimated Rehab Loan Amount])'
+                      'Loan to Cost (LTC) – Total Loan Amount/(As is value + Rehab Amount)'
                     }
                   >
                     <InfoOutlined sx={{ width: 16, height: 16 }} />

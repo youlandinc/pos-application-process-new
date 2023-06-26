@@ -10,12 +10,8 @@ import {
   AUTO_HIDE_DURATION,
   OPTIONS_COMMON_YES_OR_NO,
   OPTIONS_TASK_EXIT_STRATEGY,
-  OPTIONS_TASK_PRIMARY_REASON,
 } from '@/constants';
-import {
-  DashboardTaskExitStrategy,
-  DashboardTaskPrimaryReasonRefinance,
-} from '@/types';
+import { DashboardTaskExitStrategy } from '@/types';
 import { POSNotUndefined } from '@/utils';
 
 import {
@@ -47,9 +43,6 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
   const [corDate, setCorDate] = useState<unknown | Date | null>(null);
   const [arv, setArv] = useState<number | undefined>();
 
-  const [primaryReason, setPrimaryReason] = useState<
-    DashboardTaskPrimaryReasonRefinance | undefined
-  >();
   const [exitStrategy, setExitStrategy] = useState<
     DashboardTaskExitStrategy | undefined
   >();
@@ -66,7 +59,6 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
           cor,
           corDate,
           arv,
-          primaryReason,
           exitStrategy,
         } = res.data;
 
@@ -83,9 +75,6 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
         }
         setArv(arv || undefined);
 
-        setPrimaryReason(
-          (primaryReason as DashboardTaskPrimaryReasonRefinance) || undefined,
-        );
         setExitStrategy(
           (exitStrategy as DashboardTaskExitStrategy) || undefined,
         );
@@ -121,9 +110,8 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
             !!cor &&
             !!homeValue &&
             !!balance &&
-            !!primaryReason &&
             !!exitStrategy
-        : !!homeValue && !!balance && !!primaryReason && !!exitStrategy;
+        : !!homeValue && !!balance && !!exitStrategy;
     }
 
     return isCor
@@ -132,9 +120,8 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
           !!cor &&
           !!homeValue &&
           !!balance &&
-          !!primaryReason &&
           !!exitStrategy
-      : !!homeValue && !!balance && !!primaryReason && !!exitStrategy;
+      : !!homeValue && !!balance && !!exitStrategy;
   }, [
     arv,
     balance,
@@ -145,7 +132,6 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
     homeValue,
     isCashOut,
     isCor,
-    primaryReason,
   ]);
 
   const handledSubmit = useCallback(async () => {
@@ -165,7 +151,6 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
         homeValue,
         isCashOut,
         isCor,
-        primaryReason,
       },
     };
     try {
@@ -193,7 +178,6 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
     homeValue,
     isCashOut,
     isCor,
-    primaryReason,
     router,
   ]);
 
@@ -354,24 +338,6 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
           </>
         )}
       </Transitions>
-
-      <StyledFormItem
-        label={'What is your primary reason for refinancing your current loan?'}
-        sub
-        tip={
-          'When you refinance, you can take out cash from your home equity to help you pay for home improvements, pay off higher-interest debts (this is known as debt consolidation), or pay for other expenses.'
-        }
-      >
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledSelectOption
-            onChange={(value) => {
-              setPrimaryReason(value as DashboardTaskPrimaryReasonRefinance);
-            }}
-            options={OPTIONS_TASK_PRIMARY_REASON}
-            value={primaryReason}
-          />
-        </Stack>
-      </StyledFormItem>
 
       <StyledFormItem label={'Exit strategy'} sub>
         <Stack maxWidth={600} width={'100%'}>

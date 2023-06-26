@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { POSFlex, POSFont } from '@/styles';
+import { POSFlex } from '@/styles';
 import { useAsyncEffect } from '@/hooks';
 import { Address, IAddress } from '@/models/common/Address';
 import { LoanStage, UserType } from '@/types/enum';

@@ -276,7 +276,7 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
   const renderLabel = useMemo(() => {
     switch (productCategory) {
       case 'bridge': {
-        return 'Bridge/Fix and Flip';
+        return 'Stabilized Bridge/Fix & Flip';
       }
     }
   }, [productCategory]);
@@ -302,14 +302,14 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
                   onClick={() => setApplicationType('purchase')}
                   sx={LoanApplicationButtonStyles}
                 >
-                  Are you buying?
+                  Purchase
                 </Box>
                 <Box
                   className={applicationType === 'refinance' ? 'active' : ''}
                   onClick={() => setApplicationType('refinance')}
                   sx={LoanApplicationButtonStyles}
                 >
-                  Refinancing?
+                  Refinance
                 </Box>
                 <StyledButton
                   disabled={!applicationType || initState.loading}

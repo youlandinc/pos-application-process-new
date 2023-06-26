@@ -137,23 +137,21 @@ export const BridgePurchaseTaskGuarantorPersonal: FC = observer(() => {
   ) : (
     <StyledFormItem
       gap={6}
-      label={'Guarantor Details'}
+      label={'Borrower Type'}
       tip={
         'If you represent an entity, please update the borrower type below, and we will convert the previously filled borrower information into a guarantor for this entity.'
       }
       tipSx={{ mb: 0 }}
     >
-      <StyledFormItem label={'Borrower Type'} sub>
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledSelectOption
-            onChange={(value) =>
-              setBorrowerType(value as string as DashboardTaskBorrowerType)
-            }
-            options={OPTIONS_TASK_BORROWER_TYPE}
-            value={borrowerType}
-          />
-        </Stack>
-      </StyledFormItem>
+      <Stack maxWidth={600} width={'100%'}>
+        <StyledSelectOption
+          onChange={(value) =>
+            setBorrowerType(value as string as DashboardTaskBorrowerType)
+          }
+          options={OPTIONS_TASK_BORROWER_TYPE}
+          value={borrowerType}
+        />
+      </Stack>
 
       <Transitions
         style={{

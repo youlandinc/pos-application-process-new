@@ -22,7 +22,7 @@ const productList = [
   //{ name: 'Alternative mortgage', url: '/application/alternative_mortgage' },
   //{ name: 'Rental', url: '/application/rental' },
   {
-    name: 'Bridge/Fix and Flip',
+    name: 'Stabilized Bridge/Fix & Flip',
     url: '/application/bridge',
     disabled: false,
   },
@@ -37,7 +37,7 @@ export const Entrance: FC = observer(() => {
   const computedArray = useMemo(() => {
     if (userType === UserType.BROKER) {
       productList.forEach((item) => {
-        if (item.name !== 'Bridge/Fix and Flip') {
+        if (item.name !== 'Stabilized Bridge/Fix & Flip') {
           item.disabled = true;
         }
       });

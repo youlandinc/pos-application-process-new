@@ -83,24 +83,22 @@ export const BridgeRefinanceTaskAgreements: FC = observer(() => {
 
   return (
     <>
-      <StyledFormItem gap={3} label={'Agreements'}>
-        <StyledFormItem
-          label={`Review and accept ${
-            //sass
-            saasState?.organizationName || ' YouLand'
-          }'s construction holdback process`}
-          maxWidth={900}
-          sub
+      <StyledFormItem
+        gap={3}
+        label={`Review and accept ${
+          //sass
+          saasState?.organizationName || ' YouLand'
+        }'s construction holdback process`}
+        maxWidth={900}
+      >
+        <Typography
+          className={'link_style'}
+          component={'span'}
+          fontWeight={600}
+          onClick={handledViewPDF}
         >
-          <Typography
-            className={'link_style'}
-            component={'span'}
-            fontWeight={600}
-            onClick={handledViewPDF}
-          >
-            View Construction Holdback Process
-          </Typography>
-        </StyledFormItem>
+          View Construction Holdback Process
+        </Typography>
 
         <Stack
           flexDirection={'row'}
