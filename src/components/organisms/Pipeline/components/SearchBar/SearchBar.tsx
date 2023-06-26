@@ -172,6 +172,22 @@ export const SearchBar: FC<SearchBarProps> = ({
             }
             onClose={close}
             open={visible}
+            sx={{
+              '&.MuiDrawer-root': {
+                '& .drawer_header': {
+                  position: 'sticky',
+                  width: '100%',
+                  top: 0,
+                  fontWeight: 600,
+                  fontSize: 18,
+                  color: 'text.primary',
+                  borderBottom: '1px solid',
+                  borderColor: 'background.border_default',
+                  bgcolor: 'background.white',
+                  p: 3,
+                },
+              },
+            }}
           />
         </>
       ) : (
