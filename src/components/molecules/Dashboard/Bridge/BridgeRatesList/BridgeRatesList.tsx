@@ -39,7 +39,7 @@ export const BridgeRatesList: FC<RatesProductListProps> = ({
         <></>
       ) : loading ? (
         <StyledLoading sx={{ color: 'primary.main' }} />
-      ) : !productList.length > 0 ? (
+      ) : productList.length > 0 ? (
         <>
           {label ? (
             label
