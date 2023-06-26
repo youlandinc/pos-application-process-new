@@ -62,6 +62,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
   const [dischargeDate, setDischargeDate] = useState<unknown | Date | null>(
     null,
   );
+  const [isForeclosure, setIsForeclosure] = useState<boolean | undefined>();
 
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
@@ -73,11 +74,13 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
           delinquentTimes,
           citizenship,
           isBankruptcy,
+          isForeclosure,
         } = res.data;
         setCitizenship(citizenship as DashboardTaskCitizenshipStatus);
         setMarital(marital as DashboardTaskMaritalStatus);
         setDelinquentTimes(delinquentTimes as string);
         setIsBankruptcy(isBankruptcy ?? undefined);
+        setIsForeclosure(isForeclosure ?? undefined);
         if (dischargeDate) {
           setDischargeDate(new Date(dischargeDate));
         }
@@ -109,8 +112,9 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
   const isDisabled = useMemo(() => {
     const dateValid = isValid(dischargeDate) && isDate(dischargeDate);
     const isPosBankruptcyUndefined = !POSNotUndefined(isBankruptcy);
+    const isPOSForeclosureUndefined = !POSNotUndefined(isForeclosure);
 
-    if (isPosBankruptcyUndefined) {
+    if (isPosBankruptcyUndefined || isPOSForeclosureUndefined) {
       return false;
     }
 
@@ -136,6 +140,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
     delinquentTimes,
     dischargeDate,
     isBankruptcy,
+    isForeclosure,
     marital,
   ]);
 
@@ -153,6 +158,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
         isBankruptcy,
         delinquentTimes,
         citizenship,
+        isForeclosure,
       },
     };
     try {
@@ -176,6 +182,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
     dischargeDate,
     enqueueSnackbar,
     isBankruptcy,
+    isForeclosure,
     marital,
     router,
   ]);
@@ -264,7 +271,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
           {isBankruptcy && (
             <Stack mt={3}>
               <StyledDatePicker
-                label={'MM/DD/YYYY'}
+                label={'Filing Date'}
                 onChange={(date) => {
                   setDischargeDate(date);
                 }}
@@ -273,6 +280,22 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
             </Stack>
           )}
         </Transitions>
+      </StyledFormItem>
+
+      <StyledFormItem
+        label={'Have you had property foreclosure upon in the past 7 years?'}
+        sub
+      >
+        <StyledButtonGroup
+          onChange={(e, value) => {
+            if (value !== null) {
+              setIsForeclosure(value === 'yes');
+            }
+          }}
+          options={OPTIONS_COMMON_YES_OR_NO}
+          sx={{ width: '100%', maxWidth: 600 }}
+          value={isForeclosure}
+        />
       </StyledFormItem>
 
       <Stack
