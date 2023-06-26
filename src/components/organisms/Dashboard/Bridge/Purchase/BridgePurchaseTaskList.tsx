@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
 import { Box, Stack, SxProps, Typography } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
 import { useRouter } from 'next/router';
@@ -10,10 +10,13 @@ import { observer } from 'mobx-react-lite';
 import { useBreakpoints } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFlex } from '@/styles';
-import { _fetchLoanTask, _notifyTaskUpdate } from '@/requests/dashboard';
+import {
+  _fetchLoanTask,
+  //_notifyTaskUpdate
+} from '@/requests/dashboard';
 import { BridgePurchaseTasks } from '@/types';
 
-import { StyledButton, StyledLoading } from '@/components/atoms';
+import { StyledLoading } from '@/components/atoms';
 import { DashboardHeader } from '@/components/molecules';
 
 type BridgePurchaseTaskCode =
@@ -151,23 +154,23 @@ export const BridgePurchaseTaskList: FC = observer(() => {
 
   const breakpoints = useBreakpoints();
 
-  const [updateLoading, setUpdateLoading] = useState(false);
+  //const [updateLoading, setUpdateLoading] = useState(false);
 
   const [taskDetails, setTaskDetails] = useSetState<BridgePurchaseTasks>();
 
-  const handledUpdate = useCallback(async () => {
-    setUpdateLoading(true);
-    try {
-      await _notifyTaskUpdate(router.query.processId as string);
-    } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-      });
-    } finally {
-      setUpdateLoading(false);
-    }
-  }, [enqueueSnackbar, router.query.processId]);
+  //const handledUpdate = useCallback(async () => {
+  //  setUpdateLoading(true);
+  //  try {
+  //    await _notifyTaskUpdate(router.query.processId as string);
+  //  } catch (err) {
+  //    enqueueSnackbar(err as string, {
+  //      variant: 'error',
+  //      autoHideDuration: AUTO_HIDE_DURATION,
+  //    });
+  //  } finally {
+  //    setUpdateLoading(false);
+  //  }
+  //}, [enqueueSnackbar, router.query.processId]);
 
   const { loading } = useAsync(async () => {
     return await _fetchLoanTask(router.query.processId as string)
@@ -406,43 +409,43 @@ export const BridgePurchaseTaskList: FC = observer(() => {
       ) : (
         <>
           {renderTaskList}
-          <Stack
-            alignItems={'center'}
-            bgcolor={'warning.A200'}
-            borderRadius={2}
-            flexDirection={{ md: 'row', xs: 'column' }}
-            gap={3}
-            justifyContent={'space-between'}
-            mt={1}
-            p={3}
-          >
-            <Stack gap={1.5}>
-              <Typography
-                color={'warning.main'}
-                variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
-              >
-                Update your progress with your loan officer
-              </Typography>
-              <Typography
-                color={'warning.main'}
-                variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'}
-              >
-                We will notify your loan officer to review the tasks you have
-                completed. If you have any questions or concerns, please reach
-                out to your loan officer to ensure that the tasks are completed
-                accurately.
-              </Typography>
-            </Stack>
+          {/*<Stack*/}
+          {/*  alignItems={'center'}*/}
+          {/*  bgcolor={'warning.A200'}*/}
+          {/*  borderRadius={2}*/}
+          {/*  flexDirection={{ md: 'row', xs: 'column' }}*/}
+          {/*  gap={3}*/}
+          {/*  justifyContent={'space-between'}*/}
+          {/*  mt={1}*/}
+          {/*  p={3}*/}
+          {/*>*/}
+          {/*  <Stack gap={1.5}>*/}
+          {/*    <Typography*/}
+          {/*      color={'warning.main'}*/}
+          {/*      variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}*/}
+          {/*    >*/}
+          {/*      Update your progress with your loan officer*/}
+          {/*    </Typography>*/}
+          {/*    <Typography*/}
+          {/*      color={'warning.main'}*/}
+          {/*      variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'}*/}
+          {/*    >*/}
+          {/*      We will notify your loan officer to review the tasks you have*/}
+          {/*      completed. If you have any questions or concerns, please reach*/}
+          {/*      out to your loan officer to ensure that the tasks are completed*/}
+          {/*      accurately.*/}
+          {/*    </Typography>*/}
+          {/*  </Stack>*/}
 
-            <StyledButton
-              color={'warning'}
-              disabled={updateLoading}
-              onClick={handledUpdate}
-              sx={{ width: 100, flexShrink: 0 }}
-            >
-              Update
-            </StyledButton>
-          </Stack>
+          {/*  <StyledButton*/}
+          {/*    color={'warning'}*/}
+          {/*    disabled={updateLoading}*/}
+          {/*    onClick={handledUpdate}*/}
+          {/*    sx={{ width: 100, flexShrink: 0 }}*/}
+          {/*  >*/}
+          {/*    Update*/}
+          {/*  </StyledButton>*/}
+          {/*</Stack>*/}
         </>
       )}
     </Stack>

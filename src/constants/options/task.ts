@@ -8,7 +8,7 @@ import {
   DashboardTaskInstructions,
   DashboardTaskLoanClosing,
   DashboardTaskMaritalStatus,
-  DashboardTaskPrimaryReasonRefinance,
+  //DashboardTaskPrimaryReasonRefinance,
 } from '@/types';
 
 export const OPTIONS_TASK_CITIZENSHIP_STATUS: Option[] = [
@@ -149,48 +149,53 @@ export const OPTIONS_TASK_AUTOMATIC_PAYMENT: Option[] = [
   },
 ];
 
-export const OPTIONS_TASK_PRIMARY_REASON: Option[] = [
-  {
-    key: DashboardTaskPrimaryReasonRefinance.no_cash_out,
-    value: DashboardTaskPrimaryReasonRefinance.no_cash_out,
-    label: 'Rate & Term refi: no cash out',
-  },
-  {
-    key: DashboardTaskPrimaryReasonRefinance.delayed_purchase_refinance,
-    value: DashboardTaskPrimaryReasonRefinance.delayed_purchase_refinance,
-    label: 'Delayed purchase refinance',
-  },
-  {
-    key: DashboardTaskPrimaryReasonRefinance.currently_rent_out,
-    value: DashboardTaskPrimaryReasonRefinance.currently_rent_out,
-    label: 'Property currently rented out',
-  },
-  {
-    key: DashboardTaskPrimaryReasonRefinance.finish_property_rehab,
-    value: DashboardTaskPrimaryReasonRefinance.finish_property_rehab,
-    label: 'Need more time to finish property rehab',
-  },
-  {
-    key: DashboardTaskPrimaryReasonRefinance.buy_other_property,
-    value: DashboardTaskPrimaryReasonRefinance.buy_other_property,
-    label: 'Use of proceeds to buy other properties',
-  },
-  {
-    key: DashboardTaskPrimaryReasonRefinance.other,
-    value: DashboardTaskPrimaryReasonRefinance.other,
-    label: 'Other',
-  },
-];
+//export const OPTIONS_TASK_PRIMARY_REASON: Option[] = [
+//  {
+//    key: DashboardTaskPrimaryReasonRefinance.no_cash_out,
+//    value: DashboardTaskPrimaryReasonRefinance.no_cash_out,
+//    label: 'Rate & Term refi: no cash out',
+//  },
+//  {
+//    key: DashboardTaskPrimaryReasonRefinance.delayed_purchase_refinance,
+//    value: DashboardTaskPrimaryReasonRefinance.delayed_purchase_refinance,
+//    label: 'Delayed purchase refinance',
+//  },
+//  {
+//    key: DashboardTaskPrimaryReasonRefinance.currently_rent_out,
+//    value: DashboardTaskPrimaryReasonRefinance.currently_rent_out,
+//    label: 'Property currently rented out',
+//  },
+//  {
+//    key: DashboardTaskPrimaryReasonRefinance.finish_property_rehab,
+//    value: DashboardTaskPrimaryReasonRefinance.finish_property_rehab,
+//    label: 'Need more time to finish property rehab',
+//  },
+//  {
+//    key: DashboardTaskPrimaryReasonRefinance.buy_other_property,
+//    value: DashboardTaskPrimaryReasonRefinance.buy_other_property,
+//    label: 'Use of proceeds to buy other properties',
+//  },
+//  {
+//    key: DashboardTaskPrimaryReasonRefinance.other,
+//    value: DashboardTaskPrimaryReasonRefinance.other,
+//    label: 'Other',
+//  },
+//];
 
 export const OPTIONS_TASK_EXIT_STRATEGY: Option[] = [
   {
     key: DashboardTaskExitStrategy.rehab_and_sell,
     value: DashboardTaskExitStrategy.rehab_and_sell,
-    label: 'Need more time to finish property rehab',
+    label: 'Rehab and Sell',
   },
   {
     key: DashboardTaskExitStrategy.rehab_rent_refinance,
     value: DashboardTaskExitStrategy.rehab_rent_refinance,
-    label: 'Use of proceeds to buy other properties',
+    label: 'Rehab and Rental',
+  },
+  {
+    key: DashboardTaskExitStrategy.obtain_long_term_financing,
+    value: DashboardTaskExitStrategy.obtain_long_term_financing,
+    label: 'Obtain Long Term Financing',
   },
 ];
