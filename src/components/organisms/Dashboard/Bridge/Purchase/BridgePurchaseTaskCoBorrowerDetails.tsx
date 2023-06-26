@@ -637,7 +637,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
           maxWidth: 600,
         }}
       >
-        Back
+        Next
       </StyledButton>
     </Stack>
   );

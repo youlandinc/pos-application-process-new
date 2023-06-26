@@ -1,11 +1,18 @@
 import { FC, ReactNode, useMemo } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Icon, Stack, Typography } from '@mui/material';
+import {
+  CallOutlined,
+  InfoOutlined,
+  MailOutlineOutlined,
+} from '@mui/icons-material';
 
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
 import { useBreakpoints } from '@/hooks';
 import { LoanStage, RatesProductData, UserType } from '@/types';
 
-import { StyledButton, StyledLoading } from '@/components/atoms';
+import { StyledButton, StyledLoading, StyledTooltip } from '@/components/atoms';
+
+import RATE_NO_RESULT from '@/svg/dashboard/rate_no_result.svg';
 
 interface RatesProductListProps {
   productList: RatesProductData[];
@@ -32,7 +39,7 @@ export const BridgeRatesList: FC<RatesProductListProps> = ({
         <></>
       ) : loading ? (
         <StyledLoading sx={{ color: 'primary.main' }} />
-      ) : (
+      ) : !productList.length > 0 ? (
         <>
           {label ? (
             label
@@ -57,7 +64,7 @@ export const BridgeRatesList: FC<RatesProductListProps> = ({
             width={'100%'}
           >
             {productList.map((product, index) => (
-              <ProductCard
+              <BridgeRatesItem
                 breakpoint={breakpoint}
                 key={`${product.id}_${index}`}
                 onClick={onClick}
@@ -67,12 +74,14 @@ export const BridgeRatesList: FC<RatesProductListProps> = ({
             ))}
           </Stack>
         </>
+      ) : (
+        <BridgeRatesNoResult />
       )}
     </Stack>
   );
 };
 
-const ProductCard: FC<{
+const BridgeRatesItem: FC<{
   product: RatesProductData;
   onClick: (item: RatesProductData) => void;
   userType: UserType;
@@ -112,7 +121,7 @@ const ProductCard: FC<{
                   ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
                 }
               >
-                Total Borrower Fee
+                Total Origination Fee
               </Typography>
               <Typography
                 variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h5'}
@@ -213,11 +222,20 @@ const ProductCard: FC<{
           justifyContent={'space-between'}
         >
           <Typography
+            component={'div'}
+            sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}
             variant={
               ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
             }
           >
             Monthly Payment
+            <StyledTooltip
+              title={
+                'The current interest calculation is based on dutch basis. However, the actual calculation will be non-dutch based on the actual draw schedule.'
+              }
+            >
+              <InfoOutlined sx={{ width: 16, height: 16 }} />
+            </StyledTooltip>
           </Typography>
           <Typography
             variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h5'}
@@ -236,5 +254,57 @@ const ProductCard: FC<{
         {product.selected ? 'See Cost' : 'Select'}
       </StyledButton>
     </Stack>
+  );
+};
+
+const BridgeRatesNoResult: FC = () => {
+  return (
+    <>
+      <Stack
+        alignItems={'center'}
+        gap={3}
+        justifyContent={'center'}
+        maxWidth={900}
+        mb={3}
+        mt={6}
+        width={'100%'}
+      >
+        <Icon component={RATE_NO_RESULT} sx={{ width: 260, height: 220 }} />
+        <Typography color={'text.primary'} textAlign={'center'} variant={'h4'}>
+          Can&apos;t find any rates? We can help
+        </Typography>
+        <Typography color={'info.main'} textAlign={'center'} variant={'body1'}>
+          Based on your information, we couldn&apos;t find any options. Feel
+          free to contact us and we&apos;ll help you out.
+        </Typography>
+        <Stack
+          alignItems={'center'}
+          flexDirection={{ md: 'row', xs: 'column' }}
+          gap={3}
+          justifyContent={'center'}
+          maxWidth={900}
+          width={'100%'}
+        >
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            gap={1.5}
+            justifyContent={'center'}
+          >
+            <CallOutlined />
+            (833) 968-5263
+          </Stack>
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            gap={1.5}
+            justifyContent={'center'}
+          >
+            <MailOutlineOutlined />
+            borrow@youland.com
+          </Stack>
+        </Stack>
+      </Stack>
+    </>
   );
 };
