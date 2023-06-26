@@ -40,32 +40,6 @@ import {
 } from '@/components/atoms';
 import { PreApprovalEdit, PreApprovalInfo } from '@/components/molecules';
 
-const useStyles = {
-  mx: { lg: 'auto', xs: 0 },
-  '& .resultBox': {
-    ...POSFont(16, 400, 1.5, '#3F51B5'),
-    mt: 3,
-    background: '#F5F8FA',
-    width: '100%',
-    p: 3,
-    borderRadius: 2,
-  },
-
-  '& .updatedImage': {
-    display: 'inline-block',
-    width: 192,
-    height: 160,
-    marginBlockEnd: 24,
-    background:
-      'url(/PreapprovalLetter/letter-1.png) no-repeat center / contain',
-  },
-  '& .updatedTip': {
-    ...POSFont(16, 700, 1.5, 'rgba(0, 0, 0, 0.87)'),
-    paddingInline: 60,
-    fontSize: 24,
-  },
-} as const;
-
 export const BridgePurchasePreApproval: FC = observer(() => {
   const { userType } = useMst();
 
@@ -342,11 +316,20 @@ export const BridgePurchasePreApproval: FC = observer(() => {
 
   const renderResultList = useMemo(() => {
     return typeof checkResult !== 'undefined' ? (
-      <Box className={'resultBox'}>
+      <Box
+        bgcolor={'#F5F8FA'}
+        borderRadius={2}
+        color={'#3F51B5'}
+        fontSize={16}
+        fontWeight={400}
+        lineHeight={1.5}
+        mt={3}
+        p={3}
+        width={'100%'}
+      >
         {checkLoading ? (
           <StyledLoading
-            // iconSize={size(24)}
-            sx={{ justifyContent: 'flex-start' }}
+            sx={{ justifyContent: 'flex-start', color: 'primary.main' }}
           />
         ) : checkResult ? (
           <Box
@@ -590,7 +573,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
   const infoRef = useRef<HTMLInputElement>(null);
 
   return (
-    <Box sx={useStyles}>
+    <Box mx={{ lg: 'auto', xs: 0 }}>
       {tableStatus === 'view' ? (
         <PreApprovalInfo
           loading={initState.loading}
@@ -621,7 +604,21 @@ export const BridgePurchasePreApproval: FC = observer(() => {
       {/* <StyledDialog
          content={
          <>
+         '& .updatedImage': {
+         display: 'inline-block',
+         width: 192,
+         height: 160,
+         marginBlockEnd: 24,
+         background:
+         'url(/PreapprovalLetter/letter-1.png) no-repeat center / contain',
+         },
+         
          <Box className={'updatedImage'} />
+         '& .updatedTip': {
+         ...POSFont(16, 700, 1.5, 'rgba(0, 0, 0, 0.87)'),
+         paddingInline: 60,
+         fontSize: 24,
+         },
          <Box className={'updatedTip'}>
          Your pre-approval letter has already been updated!
          </Box>

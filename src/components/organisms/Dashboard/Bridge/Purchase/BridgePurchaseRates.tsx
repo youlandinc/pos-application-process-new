@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
@@ -7,18 +7,11 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useSessionStorageState, useSwitch } from '@/hooks';
-
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { POSFlex } from '@/styles';
-import { BridgePurchaseLoanInfo } from '@/components/molecules/Application';
-import {
-  BridgePurchaseEstimateRateData,
-  BridgeRefinanceEstimateRateData,
-  Encompass,
-  RatesProductData,
-} from '@/types';
+import { useSessionStorageState, useSwitch } from '@/hooks';
 import { LoanStage, UserType } from '@/types/enum';
+import { BridgePurchaseLoanInfo } from '@/components/molecules/Application';
+
 import {
   _fetchRatesLoanInfo,
   _fetchRatesProduct,
@@ -28,6 +21,14 @@ import {
   MPQueryData,
   MRQueryData,
 } from '@/requests/dashboard';
+
+import {
+  BridgePurchaseEstimateRateData,
+  BridgeRefinanceEstimateRateData,
+  Encompass,
+  RatesProductData,
+} from '@/types';
+
 import {
   BridgePurchaseRatesDrawer,
   BridgePurchaseRatesSearch,
@@ -188,68 +189,60 @@ export const BridgePurchaseRates: FC = observer(() => {
   );
 
   return (
-    <>
-      <Box sx={BridgePurchaseRatesStyles}>
-        <BridgePurchaseRatesSearch
-          loading={loading || initLoading}
-          loanStage={loanStage}
-          onCheck={onCheckGetList}
-          searchForm={searchForm}
-          setSearchForm={setSearchForm}
-          userType={userType}
-        />
-        <BridgeRatesList
-          label={
-            <>
-              <Typography
-                color={'info.main'}
-                mt={6}
-                textAlign={'center'}
-                variant={'body1'}
-              >
-                The following loan programs are available for you
-              </Typography>
-              <Typography
-                color={'info.main'}
-                mt={1.5}
-                textAlign={'center'}
-                variant={'body3'}
-              >
-                {/* todo sass */}
-                Rates displayed are subject to rate lock and are not to be
-                considered an extension or offer of credit by{' '}
-                {saasState?.organizationName || 'YouLand'}.
-              </Typography>
-            </>
-          }
-          loading={loading || initLoading}
-          loanStage={loanStage}
-          onClick={onListItemClick}
-          productList={productList || []}
-          userType={userType}
-        />
-        <BridgePurchaseRatesDrawer
-          // loanStage={loanStage}
-          onCancel={close}
-          selectedItem={selectedItem}
-          userType={userType as UserType}
-          visible={visible}
-        />
-      </Box>
-    </>
+    <Stack
+      alignItems={'flex-start'}
+      flexDirection={'column'}
+      justifyContent={'flex-start'}
+      maxWidth={900}
+      mx={{ lg: 'auto', xs: 0 }}
+      px={{ lg: 3, xs: 0 }}
+      width={'100%'}
+    >
+      <BridgePurchaseRatesSearch
+        loading={loading || initLoading}
+        loanStage={loanStage}
+        onCheck={onCheckGetList}
+        searchForm={searchForm}
+        setSearchForm={setSearchForm}
+        userType={userType}
+      />
+      <BridgeRatesList
+        label={
+          <>
+            <Typography
+              color={'info.main'}
+              mt={6}
+              textAlign={'center'}
+              variant={'body1'}
+            >
+              The following loan programs are available for you
+            </Typography>
+            <Typography
+              color={'info.main'}
+              mt={1.5}
+              textAlign={'center'}
+              variant={'body3'}
+            >
+              {/* todo sass */}
+              Rates displayed are subject to rate lock and are not to be
+              considered an extension or offer of credit by{' '}
+              {saasState?.organizationName || 'YouLand'}.
+            </Typography>
+          </>
+        }
+        loading={loading || initLoading}
+        loanStage={loanStage}
+        onClick={onListItemClick}
+        productList={productList || []}
+        userType={userType}
+      />
+      <BridgePurchaseRatesDrawer
+        // loanStage={loanStage}
+        onCancel={close}
+        selectedItem={selectedItem}
+        userType={userType as UserType}
+        visible={visible}
+      />
+    </Stack>
   );
 });
-
-const BridgePurchaseRatesStyles = {
-  width: '100%',
-  px: {
-    lg: 3,
-    xs: 0,
-  },
-  maxWidth: 900,
-  mx: {
-    lg: 'auto',
-    xs: 0,
-  },
-  ...POSFlex('flex-start', 'flex-start', 'column'),
-};
