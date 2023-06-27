@@ -1,9 +1,9 @@
-import { format, isDate, isValid } from 'date-fns';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
+import { format, isDate, isValid } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
 
@@ -143,61 +143,61 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
       );
   }, [router.query.taskId]);
 
-  const isDisabled = useMemo(() => {
-    const dateValid = (date: any) => {
-      return isValid(date) && isDate(date);
-    };
-
-    const conditionA = () => {
-      return (
-        !!contactForm.firstName &&
-        !!contactForm.lastName &&
-        !!contactForm.email &&
-        !!contactForm.phoneNumber &&
-        !!contactForm.companyName &&
-        !!contactForm.titleOrderNumber &&
-        dateValid(contactForm.contractDate) &&
-        clientContactAddress.checkAddressValid
-      );
-    };
-    const conditionB = () => {
-      return (
-        !!manageForm.firstName &&
-        !!manageForm.lastName &&
-        !!manageForm.email &&
-        !!manageForm.phoneNumber &&
-        !!manageForm.companyName &&
-        !!manageForm.titleOrderNumber &&
-        clientManageAddress.checkAddressValid
-      );
-    };
-    if (!POSNotUndefined(isLoanClosing)) {
-      return false;
-    }
-    return isLoanClosing
-      ? conditionA() && !!instructions && !!escrowNumber
-      : conditionA() && conditionB() && whoIsManaging && !!instructions;
-  }, [
-    clientContactAddress.checkAddressValid,
-    contactForm.companyName,
-    contactForm.contractDate,
-    contactForm.email,
-    contactForm.firstName,
-    contactForm.lastName,
-    contactForm.phoneNumber,
-    contactForm.titleOrderNumber,
-    escrowNumber,
-    instructions,
-    isLoanClosing,
-    clientManageAddress.checkAddressValid,
-    manageForm.companyName,
-    manageForm.email,
-    manageForm.firstName,
-    manageForm.lastName,
-    manageForm.phoneNumber,
-    manageForm.titleOrderNumber,
-    whoIsManaging,
-  ]);
+  //const isDisabled = useMemo(() => {
+  //  const dateValid = (date: any) => {
+  //    return isValid(date) && isDate(date);
+  //  };
+  //
+  //  const conditionA = () => {
+  //    return (
+  //      !!contactForm.firstName &&
+  //      !!contactForm.lastName &&
+  //      !!contactForm.email &&
+  //      !!contactForm.phoneNumber &&
+  //      !!contactForm.companyName &&
+  //      !!contactForm.titleOrderNumber &&
+  //      dateValid(contactForm.contractDate) &&
+  //      clientContactAddress.checkAddressValid
+  //    );
+  //  };
+  //  const conditionB = () => {
+  //    return (
+  //      !!manageForm.firstName &&
+  //      !!manageForm.lastName &&
+  //      !!manageForm.email &&
+  //      !!manageForm.phoneNumber &&
+  //      !!manageForm.companyName &&
+  //      !!manageForm.titleOrderNumber &&
+  //      clientManageAddress.checkAddressValid
+  //    );
+  //  };
+  //  if (!POSNotUndefined(isLoanClosing)) {
+  //    return false;
+  //  }
+  //  return isLoanClosing
+  //    ? conditionA() && !!instructions && !!escrowNumber
+  //    : conditionA() && conditionB() && whoIsManaging && !!instructions;
+  //}, [
+  //  clientContactAddress.checkAddressValid,
+  //  contactForm.companyName,
+  //  contactForm.contractDate,
+  //  contactForm.email,
+  //  contactForm.firstName,
+  //  contactForm.lastName,
+  //  contactForm.phoneNumber,
+  //  contactForm.titleOrderNumber,
+  //  escrowNumber,
+  //  instructions,
+  //  isLoanClosing,
+  //  clientManageAddress.checkAddressValid,
+  //  manageForm.companyName,
+  //  manageForm.email,
+  //  manageForm.firstName,
+  //  manageForm.lastName,
+  //  manageForm.phoneNumber,
+  //  manageForm.titleOrderNumber,
+  //  whoIsManaging,
+  //]);
 
   const handledSubmit = useCallback(async () => {
     const dateValid = (date: any) => {
@@ -497,7 +497,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
           Back
         </StyledButton>
         <StyledButton
-          disabled={!isDisabled || saveLoading}
+          disabled={saveLoading}
           loading={saveLoading}
           loadingText={'Saving...'}
           onClick={handledSubmit}
