@@ -155,9 +155,8 @@ const initialState = {
 
   userProfile: void 0,
   userSetting: {
-    initialized: false,
     loading: false,
-    pipelineStatus: false,
+    pipelineStatus: void 0,
     pipelineStatusInitialized: false,
   },
   userType: void 0,

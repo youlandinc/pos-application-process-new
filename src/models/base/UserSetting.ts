@@ -6,7 +6,7 @@ import { enqueueSnackbar } from 'notistack';
 export const UserSetting = types
   .model({
     loading: types.boolean,
-    pipelineStatus: types.boolean,
+    pipelineStatus: types.maybe(types.boolean),
     pipelineStatusInitialized: types.boolean,
   })
   .actions((self) => {

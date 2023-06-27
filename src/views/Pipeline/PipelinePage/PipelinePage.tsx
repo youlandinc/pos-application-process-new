@@ -14,7 +14,7 @@ export const PipelinePage: FC<{ children?: ReactNode }> = observer(
     const {
       userType,
       pipelineTask,
-      userSetting: { fetchPipelineStatus },
+      userSetting: { fetchPipelineStatus, pipelineStatus },
       session,
     } = useMst();
 
@@ -31,11 +31,19 @@ export const PipelinePage: FC<{ children?: ReactNode }> = observer(
         pipelineTask.setInitialized(true);
         return;
       }
-      if (!pipelineTask.pipelineInitialized) {
-        pipelineTask.initPipelineTaskForm();
+      if (session) {
+        if (!pipelineTask.pipelineInitialized) {
+          pipelineTask.initPipelineTaskForm();
+        }
+        pipelineTask.fetchPipelineTaskData();
       }
-      pipelineTask.fetchPipelineTaskData();
-    }, [pipelineTask, pipelineTask.pipelineInitialized, userType]);
+    }, [
+      pipelineStatus,
+      pipelineTask,
+      pipelineTask.pipelineInitialized,
+      session,
+      userType,
+    ]);
 
     return !pipelineTask.pipelineInitialized ? (
       <Stack
