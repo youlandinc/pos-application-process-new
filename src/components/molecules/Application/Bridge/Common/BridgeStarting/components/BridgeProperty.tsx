@@ -50,8 +50,10 @@ export const BridgeProperty: FC<PropertyProps> = observer((props) => {
       <Transitions
         style={{
           width: '100%',
+          maxWidth: 600,
           display:
-            propertyType === PropertyOpt.twoToFourFamily ? 'block' : 'none',
+            propertyType === PropertyOpt.twoToFourFamily ? 'flex' : 'none',
+          justifyContent: 'center',
         }}
       >
         {propertyType === PropertyOpt.twoToFourFamily && (

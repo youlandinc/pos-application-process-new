@@ -33,10 +33,11 @@ export const PTaskForm = types
         self.formData.injectPipelineTaskData(res.data);
         self.setInitialized(true);
       } catch (e) {
-        enqueueSnackbar(e as string, {
-          variant: 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-        });
+        console.log(e);
+        //enqueueSnackbar(e as string, {
+        //  variant: 'error',
+        //  autoHideDuration: AUTO_HIDE_DURATION,
+        //});
       }
     });
     return {
