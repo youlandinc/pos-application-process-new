@@ -7,7 +7,21 @@ import { observer } from 'mobx-react-lite';
 const DynamicEntrance = dynamic(
   () => import('@/views/EntrancePage').then((mod) => mod.EntrancePage),
   {
-    loading: () => <CircularProgress />,
+    loading: () => (
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minWidth: 375,
+          minHeight: 667,
+        }}
+      >
+        <CircularProgress />
+      </div>
+    ),
     ssr: false,
   },
 );

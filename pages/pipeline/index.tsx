@@ -10,7 +10,21 @@ const DynamicPipelinePage = dynamic(
       (mod) => mod.PipelinePage,
     ),
   {
-    loading: () => <CircularProgress />,
+    loading: () => (
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minWidth: 375,
+          minHeight: 667,
+        }}
+      >
+        <CircularProgress />
+      </div>
+    ),
     ssr: false,
   },
 );
@@ -21,7 +35,21 @@ const DynamicPipelineListPage = dynamic(
       (mod) => mod.PipelineListPage,
     ),
   {
-    loading: () => <CircularProgress />,
+    loading: () => (
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minWidth: 375,
+          minHeight: 667,
+        }}
+      >
+        <CircularProgress />
+      </div>
+    ),
     ssr: false,
   },
 );
