@@ -1,13 +1,13 @@
 import { get, post } from './axios';
 import { User } from '@/types/user';
 
-export const _fetchUserSetting = () => {
-  return get<User.UserSetting>('/dashboard/user/settings/info');
-};
-
-export const _updateUserSetting = (setting: Partial<User.UserSetting>) => {
-  return post<User.UserSetting>('/dashboard/user/settings/info', setting);
-};
+//export const _fetchUserSetting = () => {
+//  return get<User.UserSetting>('/dashboard/user/settings/info');
+//};
+//
+//export const _updateUserSetting = (setting: Partial<User.UserSetting>) => {
+//  return post<User.UserSetting>('/dashboard/user/settings/info', setting);
+//};
 
 export const _userSingUp = (params: User.UserSignUp) => {
   return post<User.UserSignUp>('/usercenter/api/user/sign_up', params);
@@ -43,6 +43,6 @@ export const _userResetPassword = (params: User.UserResetPassParams) => {
   return post<any>('/usercenter/api/user/resetPass', params);
 };
 
-export const _userUpload = (params) => {
-  return post<User.UserUploadRequest[]>('/dashboard/user/upload ', params);
-};
+// export const _userUpload = (params) => {
+//   return post<User.UserUploadRequest[]>('/dashboard/user/upload ', params);
+// };

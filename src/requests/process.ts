@@ -1,8 +1,12 @@
+import { ProcessesParams } from '@/types/process';
 import { get, post, put } from './axios';
 import { ProcessData } from '@/types/server';
 
-export const _startProcess = (productName = 'mortgage') => {
-  return post<ProcessData>(`/processes/${productName}`, {});
+export const _startProcess = (
+  productName = 'mortgage',
+  tenantId: string | number,
+) => {
+  return post<ProcessData>(`/processes/${productName}/${tenantId}`, {});
 };
 
 export const _fetchProcessData = (processInsId = '') => {
@@ -29,13 +33,13 @@ export const _bindProcess = (processInsId: string) => {
   return post<BaseResponse>(`/processes/${processInsId}/users/bind`);
 };
 
-export const _fetchAllProcesses = (params) => {
+export const _fetchAllProcesses = (params: ProcessesParams) => {
   return post<{ content: ProcessData[] } & any>(
     '/processes/user/application',
     params,
   );
 };
 
-export const _fetchAllCommission = (params) => {
-  return post('/processes/commission', params);
-};
+// export const _fetchAllCommission = (params) => {
+//   return post('/processes/commission', params);
+// };

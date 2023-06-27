@@ -1,14 +1,14 @@
-import { useMst } from '@/models/Root';
-import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
-import { usePersistFn } from '@/hooks/usePersistFn';
 import { useCallback, useEffect } from 'react';
-import { UserType } from '@/types';
-import { AUTO_HIDE_DURATION } from '@/constants';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 
-export const useCheckHasLoggedIn = (
-  jumpPath = '/my_application/application',
-) => {
+import { useMst } from '@/models/Root';
+
+import { usePersistFn } from './index';
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { UserType } from '@/types';
+
+export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
   const { session, persistDataLoaded, userType, loginType } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
@@ -19,21 +19,22 @@ export const useCheckHasLoggedIn = (
     enqueueSnackbar('You have logged in and are now ready for you', {
       variant: 'success',
       autoHideDuration: AUTO_HIDE_DURATION,
-      onClose: () => {
-        router.push(jumpPath);
-      },
     });
+    router.push(jumpPath);
   });
   useEffect(() => {
     check();
   }, [check, persistDataLoaded]);
 };
 
-export const useCheckIsLogin = (jumpPath = '/auth/sign_in') => {
+export const useCheckIsLogin = (jumpPath = '/auth/login') => {
   const { session, persistDataLoaded, userType, loginType } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const check = usePersistFn(() => {
+    if (router.pathname.includes('application')) {
+      return;
+    }
     if (
       !persistDataLoaded ||
       (session && userType && loginType) ||
@@ -42,10 +43,15 @@ export const useCheckIsLogin = (jumpPath = '/auth/sign_in') => {
       return;
     }
     router.push(jumpPath);
-    enqueueSnackbar("You haven't logged", {
-      variant: 'error',
-      autoHideDuration: AUTO_HIDE_DURATION,
-    });
+    if (
+      !router.pathname.includes('pipeline') &&
+      router.pathname.includes('application')
+    ) {
+      enqueueSnackbar("You haven't logged", {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    }
   });
 
   // only detecting at the first time entry
@@ -54,48 +60,59 @@ export const useCheckIsLogin = (jumpPath = '/auth/sign_in') => {
   }, [check, persistDataLoaded]);
 };
 
-//export const useCheckBrokerIsApproval = (jumpPath = '/my_application/task') => {
-//  const { session, persistDataLoaded, userType, loginType } = useMst();
-//  const { enqueueSnackbar } = useSnackbar();
-//  const router = useRouter();
-//  const check = useCallback(async () => {
-//    if (
-//      !persistDataLoaded ||
-//      (session && userType && loginType && brokerStatus) ||
-//      router.pathname.includes('my_application/task') ||
-//      router.pathname.includes('change_email') ||
-//      router.pathname.includes('change_password')
-//    ) {
-//      return;
-//    }
-//    if (session) {
-//      await fetchBrokerStatus();
-//      if (
-//        brokerStatusInitialized &&
-//        !brokerStatus &&
-//        userType === UserType.BROKER
-//      ) {
-//        await router.push(jumpPath);
-//        enqueueSnackbar('Your broker application hasn’t been approved', {
-//          variant: 'error',
-//          autoHideDuration: AUTO_HIDE_DURATION,
-//        });
-//      }
-//    }
-//  }, [
-//    brokerStatus,
-//    brokerStatusInitialized,
-//    enqueueSnackbar,
-//    fetchBrokerStatus,
-//    jumpPath,
-//    loginType,
-//    persistDataLoaded,
-//    router,
-//    session,
-//    userType,
-//  ]);
-//
-//  useEffect(() => {
-//    check();
-//  }, [check]);
-//};
+export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
+  const {
+    session,
+    persistDataLoaded,
+    userType,
+    loginType,
+    userSetting: {
+      pipelineStatusInitialized,
+      pipelineStatus,
+      fetchPipelineStatus,
+    },
+  } = useMst();
+  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
+  const check = useCallback(async () => {
+    if (
+      !persistDataLoaded ||
+      (session && userType && loginType && pipelineStatus) ||
+      router.pathname.includes('/pipeline/profile') ||
+      router.pathname.includes('/pipeline/task') ||
+      router.pathname.includes('/change_email') ||
+      router.pathname.includes('/change_password')
+    ) {
+      return;
+    }
+    if (session) {
+      await fetchPipelineStatus();
+      if (
+        pipelineStatusInitialized &&
+        !pipelineStatus &&
+        userType !== UserType.CUSTOMER
+      ) {
+        await router.push(jumpPath);
+        enqueueSnackbar('Your information is incomplete', {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
+      }
+    }
+  }, [
+    enqueueSnackbar,
+    fetchPipelineStatus,
+    jumpPath,
+    loginType,
+    persistDataLoaded,
+    pipelineStatus,
+    pipelineStatusInitialized,
+    router,
+    session,
+    userType,
+  ]);
+
+  useEffect(() => {
+    check();
+  }, [check]);
+};

@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useMemo } from 'react';
 import { AutoPersistService, RootStoreKey } from '@/services/PersistData';
 import { useMst } from '@/models/Root';
 import { LoginType, UserType } from '@/types/enum';
-import { userpool } from '@/common/userpool';
+import { userpool } from '@/constants';
 
 const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect;

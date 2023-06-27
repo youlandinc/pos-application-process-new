@@ -1,37 +1,25 @@
-import { useMst } from '@/models/Root';
-import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
-//import { usePersistFn } from '@/hooks/usePersistFn';
 import { useCallback, useEffect } from 'react';
-import { UserType } from '@/types/enum';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+
 import { AUTO_HIDE_DURATION } from '@/constants';
 
-export const useCheckProcessId = (jumpPath = '/my_application/application') => {
-  const { userSetting, userType, loginType } = useMst();
-  const { enqueueSnackbar } = useSnackbar();
+export const useCheckProcessId = (jumpPath = '/pipeline') => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
   const check = useCallback(() => {
-    if (userType === UserType.BROKER) {
-      router.push(jumpPath);
-      return;
-    }
-    if (userSetting.setting.lastSelectedProcessId === '') {
+    if (!location.href.includes('processId')) {
       enqueueSnackbar('Please select a loan application first', {
         variant: 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
-        onClose: () => {
-          router.push(jumpPath);
+        onClose: async () => {
+          await router.push(jumpPath);
         },
       });
       return;
     }
-  }, [
-    enqueueSnackbar,
-    jumpPath,
-    router,
-    userSetting.setting.lastSelectedProcessId,
-    userType,
-  ]);
+  }, [enqueueSnackbar, jumpPath, router]);
 
   useEffect(() => {
     check();

@@ -1,15 +1,15 @@
 import { get, post } from '../axios';
 import {
-  PreApprovalLetterBPData,
-  PreApprovalLetterBRData,
-  PreApprovalLetterMPData,
-} from '@/types/dashboardData';
+  BPPreApprovalLetterData,
+  BRPreApprovalLetterData,
+  MPPreApprovalLetterData,
+} from '@/types/dashboard';
 
 export const _fetchPreApprovedLetterCheck = <
   T extends
-    | PreApprovalLetterMPData
-    | PreApprovalLetterBPData
-    | PreApprovalLetterBRData,
+    | BRPreApprovalLetterData
+    | BPPreApprovalLetterData
+    | MPPreApprovalLetterData,
 >(
   processId = '',
   checkData: T,
@@ -21,15 +21,19 @@ export const _sendPreapprovalLetter = (processId: string, email: string) => {
   return post(`/dashboard/letter/${processId}/send/${email}`);
 };
 
-export const _fetchPDFFile = (processId) => {
+export const _fetchPDFFile = (processId: string) => {
   return get(`/dashboard/letter/${processId}/pdf`, { responseType: 'blob' });
+};
+
+export const _previewPreApprovalPDFFile = (processId: string) => {
+  return get(`/dashboard/letter/${processId}/preview`);
 };
 
 export const _fetchPreApprovedLetterInfo = <
   T extends
-    | PreApprovalLetterMPData
-    | PreApprovalLetterBPData
-    | PreApprovalLetterBRData,
+    | BRPreApprovalLetterData
+    | BPPreApprovalLetterData
+    | MPPreApprovalLetterData,
 >(
   processId: string,
 ) => {

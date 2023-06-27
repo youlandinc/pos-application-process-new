@@ -1,23 +1,13 @@
 /** @type {import('next').NextConfig} */
 
 module.exports = {
+  env: {
+    USER_POOL_ID: process.env.USER_POOL_ID,
+    CLIENT_ID: process.env.CLIENT_ID,
+    STRIPE_PUBLISH_KEY: process.env.STRIPE_PUBLISH_KEY,
+  },
   reactStrictMode: false,
   trailingSlash: true,
-  // i18n: {
-  //   locales: ['zh', 'en'],
-  //   defaultLocale: 'en',
-  //   localeDetection: false,
-  //   domains: [
-  //     {
-  //       domain: 'example.zh',
-  //       defaultLocale: 'zh',
-  //     },
-  //     {
-  //       domain: 'example.com',
-  //       defaultLocale: 'en',
-  //     },
-  //   ],
-  // },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
@@ -26,12 +16,10 @@ module.exports = {
     });
     return config;
   },
-  // exportPathMap: async function (
-  //   defaultPathMap,
-  //   { dev, dir, outDir, distDir, buildId },
-  // ) {
-  //   return {
-  //     '/': { page: '/' },
-  //   };
-  // },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  images: {
+    domains: ['youland-common-images.s3.us-west-1.amazonaws.com'],
+  },
 };

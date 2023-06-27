@@ -1,6 +1,6 @@
 import { get } from '../axios';
 import { PreApprovalLetterData } from '@/types/server';
-import { OverviewData, OverviewSummaryData } from '@/types/dashboardData';
+import { OverviewData, OverviewSummaryData } from '@/types/dashboard';
 
 export const _fetchPreApprovalLetterData = (processId: string) => {
   return get<PreApprovalLetterData>(`/dashboard/letter/${processId}`);

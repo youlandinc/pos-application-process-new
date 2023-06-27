@@ -1,7 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
-import { INotificationStation } from '@/models/NotificationStation';
 import { autorun } from 'mobx';
+import { INotificationStation } from '@/models/base';
 
 export const useNotification = (notificationStation: INotificationStation) => {
   const { enqueueSnackbar } = useSnackbar();
