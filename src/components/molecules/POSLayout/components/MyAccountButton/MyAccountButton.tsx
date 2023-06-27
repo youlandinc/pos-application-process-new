@@ -76,12 +76,12 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
     async (e: MouseEvent<HTMLElement>, url: string) => {
       e.preventDefault();
       if (url === 'sign_out') {
-        store.logout();
         handledClose(e);
+        store.logout();
         return;
       }
-      await router.push(url);
       handledClose(e);
+      await router.push(url);
     },
     [handledClose, router, store],
   );
@@ -174,6 +174,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
             style={{
               transformOrigin: 'top',
             }}
+            timeout={popperVisible ? 300 : 0}
           >
             <Paper>
               <ClickAwayListener onClickAway={handledClose}>
