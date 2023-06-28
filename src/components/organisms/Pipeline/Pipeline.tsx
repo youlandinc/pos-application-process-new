@@ -43,6 +43,7 @@ export const Pipeline: FC = observer(() => {
   const [firstLoading, setFirstLoading] = useState<boolean>(true);
   const [fetchLoading, setFetchLoading] = useState<boolean>(false);
   const [isChange, setIsChange] = useState<boolean>(false);
+  const [isRefresh, setIsRefresh] = useState<boolean>(false);
   const [deleteAddress, setDeleteAddress] = useState<string[]>([]);
   const [deleteId, setDeleteId] = useState<string>('');
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
@@ -54,72 +55,77 @@ export const Pipeline: FC = observer(() => {
     loanPurpose: [],
   });
 
-  const [, getListData] = useAsyncFn(async () => {
-    if (!session) {
-      return;
-    }
-    if (
-      (!pipelineInitialized || !pipelineStatusInitialized || !pipelineStatus) &&
-      userType !== UserType.CUSTOMER
-    ) {
-      return;
-    }
-    const params = {
-      page,
-      size: PAGE_SIZE,
-      loanId: '',
-      propertyAddress: searchForm.propertyAddress,
-      beginTime: searchForm.dateRange[0]
-        ? format(searchForm.dateRange[0], "yyyy-MM-dd'T'HH:mm:ss'Z'")
-        : '',
-      endTime: searchForm.dateRange[1]
-        ? format(searchForm.dateRange[1], "yyyy-MM-dd'T'") + '23:59:59Z'
-        : '',
-      loanType: searchForm.loanSpecies,
-      loanPurpose: searchForm.loanPurpose,
-      stage: searchForm.loanStage,
-    };
-    setFetchLoading(true);
-    return await _fetchAllProcesses(params)
-      .then((res) => {
-        const obj: { [key: string]: { [key: string]: unknown } } = {};
-        const temp = isChange
-          ? res.data.content
-          : [...listData, ...res.data.content].reduce((cur, next) => {
-              if (!obj[next.youlandId]) {
-                obj[next.youlandId] = cur.push(next);
-              }
-              return cur;
-            }, []);
-        setIsLoadMore(
-          temp.length !== res.data.totalElements
-            ? res.data.totalElements - PAGE_SIZE > 0
-              ? res.data.totalElements / PAGE_SIZE >= 1
-              : false
-            : false,
-        );
-        setListData(temp);
-        if (firstLoading) {
-          setFirstLoading(false);
-        }
-      })
-      .catch((err) => {
-        enqueueSnackbar(err, {
-          variant: 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
+  const [, getListData] = useAsyncFn(
+    async (pageParams?: number) => {
+      if (!session) {
+        return;
+      }
+      if (
+        (!pipelineInitialized ||
+          !pipelineStatusInitialized ||
+          !pipelineStatus) &&
+        userType !== UserType.CUSTOMER
+      ) {
+        return;
+      }
+      const params = {
+        page: pageParams || page,
+        size: PAGE_SIZE,
+        loanId: '',
+        propertyAddress: searchForm.propertyAddress,
+        beginTime: searchForm.dateRange[0]
+          ? format(searchForm.dateRange[0], "yyyy-MM-dd'T'HH:mm:ss'Z'")
+          : '',
+        endTime: searchForm.dateRange[1]
+          ? format(searchForm.dateRange[1], "yyyy-MM-dd'T'") + '23:59:59Z'
+          : '',
+        loanType: searchForm.loanSpecies,
+        loanPurpose: searchForm.loanPurpose,
+        stage: searchForm.loanStage,
+      };
+      setFetchLoading(true);
+      return await _fetchAllProcesses(params)
+        .then((res) => {
+          const obj: { [key: string]: { [key: string]: unknown } } = {};
+          const temp = isChange
+            ? res.data.content
+            : [...listData, ...res.data.content].reduce((cur, next) => {
+                if (!obj[next.youlandId]) {
+                  obj[next.youlandId] = cur.push(next);
+                }
+                return cur;
+              }, []);
+          setIsLoadMore(
+            temp.length !== res.data.totalElements
+              ? res.data.totalElements - PAGE_SIZE > 0
+                ? res.data.totalElements / PAGE_SIZE >= 1
+                : false
+              : false,
+          );
+          setListData(temp);
+          if (firstLoading) {
+            setFirstLoading(false);
+          }
+        })
+        .catch((err) => {
+          enqueueSnackbar(err, {
+            variant: 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+          });
+        })
+        .finally(() => {
+          setFetchLoading(false);
+          setIsChange(false);
         });
-      })
-      .finally(() => {
-        setFetchLoading(false);
-        setIsChange(false);
-      });
-  }, [
-    searchForm,
-    page,
-    pipelineInitialized,
-    pipelineStatusInitialized,
-    pipelineStatus,
-  ]);
+    },
+    [
+      searchForm,
+      page,
+      pipelineInitialized,
+      pipelineStatusInitialized,
+      pipelineStatus,
+    ],
+  );
 
   const handledView = async (row: LoanItemCardProps['formData']) => {
     if (!row) {
@@ -172,7 +178,7 @@ export const Pipeline: FC = observer(() => {
     await setDeleteLoading(true);
     try {
       await _deleteProcess(deleteId);
-      await getListData();
+      setListData(listData.filter((item) => item.youlandId !== deleteId));
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
@@ -181,8 +187,9 @@ export const Pipeline: FC = observer(() => {
     } finally {
       close();
       setDeleteLoading(false);
+      setDeleteId('');
     }
-  }, [close, deleteId, enqueueSnackbar, getListData]);
+  }, [close, deleteId, enqueueSnackbar, listData]);
 
   useEffect(() => {
     if (isChange) {
