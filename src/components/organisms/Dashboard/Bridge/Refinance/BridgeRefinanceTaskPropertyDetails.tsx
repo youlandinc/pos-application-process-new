@@ -1,3 +1,4 @@
+import { POSNotUndefined } from '@/utils';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Stack } from '@mui/material';
@@ -9,6 +10,7 @@ import { observer } from 'mobx-react-lite';
 import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 import {
   AUTO_HIDE_DURATION,
+  OPTIONS_COMMON_YES_OR_NO,
   OPTIONS_MORTGAGE_PROPERTY,
   OPTIONS_MORTGAGE_UNIT,
 } from '@/constants';
@@ -17,6 +19,7 @@ import { PropertyOpt, PropertyUnitOpt } from '@/types';
 
 import {
   StyledButton,
+  StyledButtonGroup,
   StyledFormItem,
   StyledGoogleAutoComplete,
   StyledLoading,
@@ -47,13 +50,15 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
   const [propertyUnit, setPropertyUnit] = useState<
     PropertyUnitOpt | undefined
   >();
+  const [isOccupied, setIsOccupied] = useState<boolean | undefined>();
 
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
-        const { propAddr, propertyType, propertyUnit } = res.data;
+        const { propAddr, propertyType, propertyUnit, isOccupied } = res.data;
         setPropertyType(propertyType);
         setPropertyUnit(propertyUnit);
+        setIsOccupied(isOccupied ?? undefined);
         setTimeout(() => {
           address.injectServerData({
             formatAddress: '',
@@ -80,10 +85,13 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
+    if (!POSNotUndefined(isOccupied)) {
+      return false;
+    }
     return propertyType === PropertyOpt.twoToFourFamily
       ? address.checkAddressValid && !!propertyUnit
       : !!propertyType && address.checkAddressValid;
-  }, [address.checkAddressValid, propertyType, propertyUnit]);
+  }, [address.checkAddressValid, isOccupied, propertyType, propertyUnit]);
 
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
@@ -93,6 +101,7 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
         propAddr: address.getPostData(),
         propertyType,
         propertyUnit,
+        isOccupied,
       },
     };
     try {
@@ -109,7 +118,14 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
     } finally {
       setSaveLoading(false);
     }
-  }, [address, enqueueSnackbar, propertyType, propertyUnit, router]);
+  }, [
+    address,
+    enqueueSnackbar,
+    isOccupied,
+    propertyType,
+    propertyUnit,
+    router,
+  ]);
 
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
@@ -154,7 +170,7 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
         }}
       >
         {propertyType === PropertyOpt.twoToFourFamily && (
-          <StyledFormItem label={'How many units will the property have?'}>
+          <StyledFormItem label={'How many units will the property have?'} sub>
             <Stack maxWidth={600} width={'100%'}>
               <StyledSelectOption
                 onChange={(value) => {
@@ -167,6 +183,25 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
           </StyledFormItem>
         )}
       </Transitions>
+
+      <StyledFormItem
+        label={'Do you plan to occupy the property?'}
+        sub
+        tip={'Your intended use of the home.'}
+        tipSx={{ mb: 0 }}
+      >
+        <Stack maxWidth={600} width={'100%'}>
+          <StyledButtonGroup
+            onChange={(e, value) => {
+              if (value !== null) {
+                setIsOccupied(value === 'yes');
+              }
+            }}
+            options={OPTIONS_COMMON_YES_OR_NO}
+            value={isOccupied}
+          />
+        </Stack>
+      </StyledFormItem>
 
       <Stack
         flexDirection={'row'}
