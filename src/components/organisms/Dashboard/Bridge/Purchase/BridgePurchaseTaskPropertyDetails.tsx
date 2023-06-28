@@ -154,7 +154,7 @@ export const BridgePurchaseTaskPropertyDetails: FC = observer(() => {
         }}
       >
         {propertyType === PropertyOpt.twoToFourFamily && (
-          <StyledFormItem label={'How many units will the property have?'}>
+          <StyledFormItem label={'How many units will the property have?'} sub>
             <Stack maxWidth={600} width={'100%'}>
               <StyledSelectOption
                 onChange={(value) => {
