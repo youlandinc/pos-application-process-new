@@ -1,7 +1,7 @@
 import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { _fetchPipelineStatus } from '@/requests';
-import { AUTO_HIDE_DURATION } from '@/constants';
-import { enqueueSnackbar } from 'notistack';
+//import { AUTO_HIDE_DURATION } from '@/constants';
+//import { enqueueSnackbar } from 'notistack';
 
 export const UserSetting = types
   .model({
@@ -20,10 +20,11 @@ export const UserSetting = types
       } catch (e) {
         self.loading = false;
         self.pipelineStatusInitialized = false;
-        enqueueSnackbar(e as string, {
-          variant: 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-        });
+        console.log(e);
+        //enqueueSnackbar(e as string, {
+        //  variant: 'error',
+        //  autoHideDuration: AUTO_HIDE_DURATION,
+        //});
       }
     });
     return {
