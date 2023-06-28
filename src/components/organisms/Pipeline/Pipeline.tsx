@@ -65,7 +65,7 @@ export const Pipeline: FC = observer(() => {
       return;
     }
     const params = {
-      page,
+      page: page,
       size: PAGE_SIZE,
       loanId: '',
       propertyAddress: searchForm.propertyAddress,
@@ -172,7 +172,7 @@ export const Pipeline: FC = observer(() => {
     await setDeleteLoading(true);
     try {
       await _deleteProcess(deleteId);
-      await getListData();
+      setListData(listData.filter((item) => item.youlandId !== deleteId));
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
@@ -181,8 +181,9 @@ export const Pipeline: FC = observer(() => {
     } finally {
       close();
       setDeleteLoading(false);
+      setDeleteId('');
     }
-  }, [close, deleteId, enqueueSnackbar, getListData]);
+  }, [close, deleteId, enqueueSnackbar, listData]);
 
   useEffect(() => {
     if (isChange) {
