@@ -1,8 +1,12 @@
 import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { AUTO_HIDE_DURATION, FormData } from '@/constants';
-import { PTask, SPTask } from '@/models/pipeline/PTask';
+//import { enqueueSnackbar } from 'notistack';
+import {
+  //AUTO_HIDE_DURATION,
+  FormData,
+} from '@/constants';
 import { _fetchPipelineTask } from '@/requests';
-import { enqueueSnackbar } from 'notistack';
+
+import { PTask, SPTask } from '@/models/pipeline/PTask';
 
 const Union = types.union({
   dispatcher: (snapshot: SPTask | undefined) => {
