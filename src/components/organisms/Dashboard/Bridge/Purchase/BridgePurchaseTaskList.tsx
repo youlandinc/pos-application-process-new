@@ -389,7 +389,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         display={'flex'}
         height={32}
         justifyContent={'center'}
-        m={'0 auto 24px auto'}
+        m={'0 auto 48px auto'}
         variant={'subtitle3'}
         width={120}
       >
