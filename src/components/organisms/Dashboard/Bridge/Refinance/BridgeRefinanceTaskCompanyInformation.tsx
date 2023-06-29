@@ -143,62 +143,6 @@ export const BridgeRefinanceTaskCompanyInformation: FC = observer(() => {
       );
   }, [router.query.taskId]);
 
-  //const isDisabled = useMemo(() => {
-  //  const dateValid = (date: any) => {
-  //    return isValid(date) && isDate(date);
-  //  };
-  //
-  //  const conditionA = () => {
-  //    return (
-  //      !!contactForm.firstName &&
-  //      !!contactForm.lastName &&
-  //      !!contactForm.email &&
-  //      !!contactForm.phoneNumber &&
-  //      !!contactForm.companyName &&
-  //      !!contactForm.titleOrderNumber &&
-  //      dateValid(contactForm.contractDate) &&
-  //      clientContactAddress.checkAddressValid
-  //    );
-  //  };
-  //  const conditionB = () => {
-  //    return (
-  //      !!manageForm.firstName &&
-  //      !!manageForm.lastName &&
-  //      !!manageForm.email &&
-  //      !!manageForm.phoneNumber &&
-  //      !!manageForm.companyName &&
-  //      !!manageForm.titleOrderNumber &&
-  //      clientManageAddress.checkAddressValid
-  //    );
-  //  };
-  //  if (!POSNotUndefined(isLoanClosing)) {
-  //    return false;
-  //  }
-  //  return isLoanClosing
-  //    ? conditionA() && !!instructions && !!escrowNumber
-  //    : conditionA() && conditionB() && whoIsManaging && !!instructions;
-  //}, [
-  //  clientContactAddress.checkAddressValid,
-  //  contactForm.companyName,
-  //  contactForm.contractDate,
-  //  contactForm.email,
-  //  contactForm.firstName,
-  //  contactForm.lastName,
-  //  contactForm.phoneNumber,
-  //  contactForm.titleOrderNumber,
-  //  escrowNumber,
-  //  instructions,
-  //  isLoanClosing,
-  //  clientManageAddress.checkAddressValid,
-  //  manageForm.companyName,
-  //  manageForm.email,
-  //  manageForm.firstName,
-  //  manageForm.lastName,
-  //  manageForm.phoneNumber,
-  //  manageForm.titleOrderNumber,
-  //  whoIsManaging,
-  //]);
-
   const handledSubmit = useCallback(async () => {
     const dateValid = (date: any) => {
       return isValid(date) && isDate(date);
@@ -273,7 +217,7 @@ export const BridgeRefinanceTaskCompanyInformation: FC = observer(() => {
   ) : (
     <StyledFormItem
       gap={6}
-      label={'Closing Agent / Title Company Information'}
+      label={'Closing Agent / Title Company Information(Optional)'}
       tip={`A closing agent assists with closing and verifies there are no outstanding title issues. ${
         saasState?.organizationName || 'YouLand'
       } also orders a Title Commitment and a Title Report on the property from this agent.`}

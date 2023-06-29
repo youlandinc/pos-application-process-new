@@ -1,5 +1,4 @@
-import { TaskFiles } from '@/types';
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
@@ -7,6 +6,7 @@ import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 
+import { TaskFiles } from '@/types';
 import { Address, IAddress } from '@/models/common/Address';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import {
@@ -131,24 +131,6 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
       );
   }, [router.query.taskId]);
 
-  const isDisabled = useMemo(() => {
-    return (
-      insuranceFiles.length > 0 &&
-      !!agentName &&
-      !!companyName &&
-      !!email &&
-      !!phoneNumber &&
-      address.checkAddressValid
-    );
-  }, [
-    address.checkAddressValid,
-    agentName,
-    companyName,
-    email,
-    insuranceFiles.length,
-    phoneNumber,
-  ]);
-
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
     const postData = {
@@ -192,7 +174,7 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
   ) : (
     <StyledFormItem
       gap={6}
-      label={'Homeowner Insurance Policy'}
+      label={'Homeowner Insurance Policy(Optional)'}
       tip={
         'Homeowner insurance must comply with our Policy Guidelines and it is required to close your loan. Once you are covered, provide your insurance provider’s contact information. This allows us to speak directly with your provider on the details and get confirmation that your home is insured.'
       }
@@ -264,7 +246,7 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
           Back
         </StyledButton>
         <StyledButton
-          disabled={!isDisabled || saveLoading}
+          disabled={saveLoading}
           loading={saveLoading}
           loadingText={'Saving...'}
           onClick={handledSubmit}

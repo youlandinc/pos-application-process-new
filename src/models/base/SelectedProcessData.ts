@@ -2,7 +2,7 @@ import { flow, Instance, types } from 'mobx-state-tree';
 import { AxiosResponse } from 'axios';
 import { enqueueSnackbar } from 'notistack';
 
-import { ProcessData, SceneType } from '@/types';
+import { LoanStage, ProcessData, SceneType } from '@/types';
 import { _fetchProcessData } from '@/requests';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { ParseProcess } from '@/services/ParseProcess';
@@ -19,6 +19,16 @@ export const SelectedProcessData = types
       types.literal(SceneType.bridge_purchase),
       types.literal(SceneType.bridge_refinance),
     ),
+
+    loanStage: types.union(
+      types.literal(LoanStage.Application),
+      types.literal(LoanStage.PreApproved),
+      types.literal(LoanStage.RateLocking),
+      types.literal(LoanStage.RateLocked),
+      types.literal(LoanStage.Approved),
+      types.literal(LoanStage.FinalClosing),
+      types.literal(LoanStage.Refusal),
+    ),
   })
   .actions((self) => ({
     setProcessData(processData: ProcessData) {
@@ -26,6 +36,9 @@ export const SelectedProcessData = types
     },
     setScene(scene: SceneType) {
       self.scene = scene;
+    },
+    setLoanStage(loanStage: LoanStage) {
+      self.loanStage = loanStage;
     },
   }))
   .actions((self) => {
@@ -41,6 +54,7 @@ export const SelectedProcessData = types
         self.setScene(
           new ParseProcess(res.data).productType as string as SceneType,
         );
+        self.setLoanStage(res.data.stage as string as LoanStage);
       } catch (e) {
         self.loading = false;
         enqueueSnackbar(e as string, {

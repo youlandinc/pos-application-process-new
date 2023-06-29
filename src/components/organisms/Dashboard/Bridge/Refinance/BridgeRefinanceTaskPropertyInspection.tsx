@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -51,10 +51,6 @@ export const BridgeRefinanceTaskPropertyInspection: FC = observer(() => {
       );
   }, [router.query.taskId]);
 
-  const isDisabled = useMemo(() => {
-    return !!email && !!phoneNumber && !!contactName;
-  }, [contactName, email, phoneNumber]);
-
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
     const postData = {
@@ -88,7 +84,7 @@ export const BridgeRefinanceTaskPropertyInspection: FC = observer(() => {
   ) : (
     <StyledFormItem
       gap={3}
-      label={'Property Inspection Details'}
+      label={'Property Inspection Details(Optional)'}
       tipSx={{ mb: 0 }}
     >
       <StyledFormItem
@@ -142,7 +138,7 @@ export const BridgeRefinanceTaskPropertyInspection: FC = observer(() => {
           Back
         </StyledButton>
         <StyledButton
-          disabled={!isDisabled || saveLoading}
+          disabled={saveLoading}
           loading={saveLoading}
           loadingText={'Saving...'}
           onClick={handledSubmit}
