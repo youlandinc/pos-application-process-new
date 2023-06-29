@@ -112,7 +112,7 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
           break;
         case 'mortgage refinance':
           formatMenuList = list.reduce((acc: MenuItems[], next: MenuItems) => {
-            if (next.key !== 'preapproval_letter') {
+            if (next.key !== 'pre_approval_letter') {
               acc.push(next);
             }
             return acc;

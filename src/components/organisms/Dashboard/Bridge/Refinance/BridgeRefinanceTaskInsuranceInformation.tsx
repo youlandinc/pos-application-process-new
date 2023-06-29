@@ -192,7 +192,7 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
   ) : (
     <StyledFormItem
       gap={6}
-      label={'Homeowner Insurance Provider Information'}
+      label={'Homeowner Insurance Policy'}
       tip={
         'Homeowner insurance must comply with our Policy Guidelines and it is required to close your loan. Once you are covered, provide your insurance provider’s contact information. This allows us to speak directly with your provider on the details and get confirmation that your home is insured.'
       }
