@@ -1,4 +1,3 @@
-import { POSNotUndefined } from '@/utils';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -8,6 +7,7 @@ import { format, isDate, isValid } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
 
+import { POSNotUndefined } from '@/utils';
 import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 import { Address, IAddress } from '@/models/common/Address';
 import {
@@ -63,6 +63,9 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
     null,
   );
   const [isForeclosure, setIsForeclosure] = useState<boolean | undefined>();
+  const [foreclosureDate, setForeclosureDate] = useState<
+    unknown | Date | null
+  >();
 
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
@@ -75,6 +78,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
           citizenship,
           isBankruptcy,
           isForeclosure,
+          foreclosureDate,
         } = res.data;
         setCitizenship(citizenship as DashboardTaskCitizenshipStatus);
         setMarital(marital as DashboardTaskMaritalStatus);
@@ -83,6 +87,9 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
         setIsForeclosure(isForeclosure ?? undefined);
         if (dischargeDate) {
           setDischargeDate(new Date(dischargeDate));
+        }
+        if (foreclosureDate) {
+          setForeclosureDate(new Date(foreclosureDate as string));
         }
         setTimeout(() => {
           address.injectServerData({
@@ -111,11 +118,24 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
 
   const isDisabled = useMemo(() => {
     const dateValid = isValid(dischargeDate) && isDate(dischargeDate);
+    const foreclosureDateValid =
+      isValid(foreclosureDate) && isDate(foreclosureDate);
     const isPosBankruptcyUndefined = !POSNotUndefined(isBankruptcy);
     const isPOSForeclosureUndefined = !POSNotUndefined(isForeclosure);
 
     if (isPosBankruptcyUndefined || isPOSForeclosureUndefined) {
       return false;
+    }
+
+    if (isBankruptcy && isForeclosure) {
+      return (
+        dateValid &&
+        address.checkAddressValid &&
+        !!marital &&
+        !!citizenship &&
+        !!delinquentTimes &&
+        foreclosureDateValid
+      );
     }
 
     if (isBankruptcy) {
@@ -125,6 +145,16 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
         !!marital &&
         !!citizenship &&
         !!delinquentTimes
+      );
+    }
+
+    if (isForeclosure) {
+      return (
+        address.checkAddressValid &&
+        !!marital &&
+        !!citizenship &&
+        !!delinquentTimes &&
+        foreclosureDateValid
       );
     }
 
@@ -139,6 +169,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
     citizenship,
     delinquentTimes,
     dischargeDate,
+    foreclosureDate,
     isBankruptcy,
     isForeclosure,
     marital,
@@ -146,6 +177,8 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
 
   const handledSubmit = useCallback(async () => {
     const dateValid = isValid(dischargeDate) && isDate(dischargeDate);
+    const foreclosureDateValid =
+      isValid(foreclosureDate) && isDate(foreclosureDate);
     setSaveLoading(true);
     const postData = {
       taskId: router.query.taskId as string,
@@ -159,6 +192,9 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
         delinquentTimes,
         citizenship,
         isForeclosure,
+        foreclosureDate: foreclosureDateValid
+          ? format(foreclosureDate as Date, 'yyyy-MM-dd O')
+          : undefined,
       },
     };
     try {
@@ -181,6 +217,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
     delinquentTimes,
     dischargeDate,
     enqueueSnackbar,
+    foreclosureDate,
     isBankruptcy,
     isForeclosure,
     marital,
@@ -271,7 +308,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
           {isBankruptcy && (
             <Stack mt={3}>
               <StyledDatePicker
-                label={'Filing Date'}
+                label={'Bankruptcy Filing Date'}
                 onChange={(date) => {
                   setDischargeDate(date);
                 }}
@@ -296,6 +333,25 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
           sx={{ width: '100%', maxWidth: 600 }}
           value={isForeclosure}
         />
+        <Transitions
+          style={{
+            display: isForeclosure ? 'block' : 'none',
+            width: '100%',
+            maxWidth: 600,
+          }}
+        >
+          {isForeclosure && (
+            <Stack mt={3}>
+              <StyledDatePicker
+                label={'Property Foreclosure Filing Date'}
+                onChange={(date) => {
+                  setForeclosureDate(date);
+                }}
+                value={foreclosureDate}
+              />
+            </Stack>
+          )}
+        </Transitions>
       </StyledFormItem>
 
       <Stack
