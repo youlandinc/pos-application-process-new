@@ -6,15 +6,13 @@ import { useAsync, useSetState } from 'react-use';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
 import { useBreakpoints } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFlex } from '@/styles';
-import {
-  _fetchLoanTask,
-  //_notifyTaskUpdate
-} from '@/requests/dashboard';
-import { BridgePurchaseTasks } from '@/types';
+import { _fetchLoanTask } from '@/requests/dashboard';
+import { BridgePurchaseTasks, LoanStage } from '@/types';
 
 import { StyledLoading } from '@/components/atoms';
 import { DashboardHeader } from '@/components/molecules';
@@ -149,28 +147,16 @@ const taskObj: taskObj = {
 };
 
 export const BridgePurchaseTaskList: FC = observer(() => {
+  const {
+    selectedProcessData: { loanStage },
+  } = useMst();
+
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const breakpoints = useBreakpoints();
 
-  //const [updateLoading, setUpdateLoading] = useState(false);
-
   const [taskDetails, setTaskDetails] = useSetState<BridgePurchaseTasks>();
-
-  //const handledUpdate = useCallback(async () => {
-  //  setUpdateLoading(true);
-  //  try {
-  //    await _notifyTaskUpdate(router.query.processId as string);
-  //  } catch (err) {
-  //    enqueueSnackbar(err as string, {
-  //      variant: 'error',
-  //      autoHideDuration: AUTO_HIDE_DURATION,
-  //    });
-  //  } finally {
-  //    setUpdateLoading(false);
-  //  }
-  //}, [enqueueSnackbar, router.query.processId]);
 
   const { loading } = useAsync(async () => {
     return await _fetchLoanTask(router.query.processId as string)
@@ -387,6 +373,31 @@ export const BridgePurchaseTaskList: FC = observer(() => {
     );
   }, [breakpoints, router, taskDetails]);
 
+  const renderStage = useMemo(() => {
+    return (
+      <Typography
+        alignItems={'center'}
+        bgcolor={
+          loanStage === LoanStage.Approved
+            ? '#E1EFE4'
+            : 'rgba(17, 52, 227, 0.10)'
+        }
+        borderRadius={2}
+        color={
+          loanStage === LoanStage.Approved ? 'success.main' : 'primary.main'
+        }
+        display={'flex'}
+        height={32}
+        justifyContent={'center'}
+        m={'0 auto 48px auto'}
+        variant={'subtitle3'}
+        width={120}
+      >
+        {loanStage}
+      </Typography>
+    );
+  }, [loanStage]);
+
   return (
     <Stack
       flexDirection={'column'}
@@ -408,44 +419,8 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         <StyledLoading sx={{ color: 'primary.main' }} />
       ) : (
         <>
+          {renderStage}
           {renderTaskList}
-          {/*<Stack*/}
-          {/*  alignItems={'center'}*/}
-          {/*  bgcolor={'warning.A200'}*/}
-          {/*  borderRadius={2}*/}
-          {/*  flexDirection={{ md: 'row', xs: 'column' }}*/}
-          {/*  gap={3}*/}
-          {/*  justifyContent={'space-between'}*/}
-          {/*  mt={1}*/}
-          {/*  p={3}*/}
-          {/*>*/}
-          {/*  <Stack gap={1.5}>*/}
-          {/*    <Typography*/}
-          {/*      color={'warning.main'}*/}
-          {/*      variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}*/}
-          {/*    >*/}
-          {/*      Update your progress with your loan officer*/}
-          {/*    </Typography>*/}
-          {/*    <Typography*/}
-          {/*      color={'warning.main'}*/}
-          {/*      variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'}*/}
-          {/*    >*/}
-          {/*      We will notify your loan officer to review the tasks you have*/}
-          {/*      completed. If you have any questions or concerns, please reach*/}
-          {/*      out to your loan officer to ensure that the tasks are completed*/}
-          {/*      accurately.*/}
-          {/*    </Typography>*/}
-          {/*  </Stack>*/}
-
-          {/*  <StyledButton*/}
-          {/*    color={'warning'}*/}
-          {/*    disabled={updateLoading}*/}
-          {/*    onClick={handledUpdate}*/}
-          {/*    sx={{ width: 100, flexShrink: 0 }}*/}
-          {/*  >*/}
-          {/*    Update*/}
-          {/*  </StyledButton>*/}
-          {/*</Stack>*/}
         </>
       )}
     </Stack>

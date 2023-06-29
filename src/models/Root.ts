@@ -15,7 +15,13 @@ import {
   //UserProfile
 } from './base';
 
-import { LoginType, SceneType, ServerTaskKey, UserType } from '@/types/enum';
+import {
+  LoanStage,
+  LoginType,
+  SceneType,
+  ServerTaskKey,
+  UserType,
+} from '@/types/enum';
 import { User } from '@/types/user';
 
 import { userpool } from '@/constants';
@@ -147,6 +153,7 @@ const initialState = {
     data: void 0,
     scene: SceneType.default,
     loading: false,
+    loanStage: LoanStage.Application,
   },
 
   pipelineTask: {

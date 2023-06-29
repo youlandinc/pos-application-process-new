@@ -1,4 +1,3 @@
-import { POSNotUndefined } from '@/utils';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -8,6 +7,7 @@ import { format, isDate, isValid } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
 
+import { POSNotUndefined } from '@/utils';
 import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 import { Address, IAddress } from '@/models/common/Address';
 import {
@@ -64,6 +64,9 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
     null,
   );
   const [isForeclosure, setIsForeclosure] = useState<boolean | undefined>();
+  const [foreclosureDate, setForeclosureDate] = useState<
+    unknown | Date | null
+  >();
 
   const { loading } = useAsync(async () => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
@@ -76,6 +79,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
           citizenship,
           isBankruptcy,
           isForeclosure,
+          foreclosureDate,
         } = res.data;
 
         setCitizenship(
@@ -86,6 +90,9 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
         setIsForeclosure(isForeclosure ?? undefined);
         if (dischargeDate) {
           setDischargeDate(new Date(dischargeDate as string));
+        }
+        if (foreclosureDate) {
+          setForeclosureDate(new Date(foreclosureDate as string));
         }
 
         setDelinquentTimes(delinquentTimes as string);
@@ -117,11 +124,24 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
 
   const isDisabled = useMemo(() => {
     const dateValid = isValid(dischargeDate) && isDate(dischargeDate);
+    const foreclosureDateValid =
+      isValid(foreclosureDate) && isDate(foreclosureDate);
     const isPosBankruptcyUndefined = !POSNotUndefined(isBankruptcy);
     const isPOSForeclosureUndefined = !POSNotUndefined(isForeclosure);
 
     if (isPosBankruptcyUndefined || isPOSForeclosureUndefined) {
       return false;
+    }
+
+    if (isBankruptcy && isForeclosure) {
+      return (
+        dateValid &&
+        foreclosureDateValid &&
+        address.checkAddressValid &&
+        !!marital &&
+        !!citizenship &&
+        !!delinquentTimes
+      );
     }
 
     if (isBankruptcy) {
@@ -131,6 +151,16 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
         !!marital &&
         !!citizenship &&
         !!delinquentTimes
+      );
+    }
+
+    if (isForeclosure) {
+      return (
+        address.checkAddressValid &&
+        !!marital &&
+        !!citizenship &&
+        !!delinquentTimes &&
+        foreclosureDateValid
       );
     }
 
@@ -145,6 +175,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
     citizenship,
     delinquentTimes,
     dischargeDate,
+    foreclosureDate,
     isBankruptcy,
     isForeclosure,
     marital,
@@ -152,6 +183,8 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
 
   const handledSubmit = useCallback(async () => {
     const dateValid = isValid(dischargeDate) && isDate(dischargeDate);
+    const foreclosureDateValid =
+      isValid(foreclosureDate) && isDate(foreclosureDate);
     setSaveLoading(true);
     const postData = {
       taskId: router.query.taskId as string,
@@ -164,6 +197,9 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
         isForeclosure,
         dischargeDate: dateValid
           ? format(dischargeDate as Date, 'yyyy-MM-dd O')
+          : undefined,
+        foreclosureDate: foreclosureDateValid
+          ? format(foreclosureDate as Date, 'yyyy-MM-dd O')
           : undefined,
       },
     };
@@ -187,6 +223,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
     delinquentTimes,
     dischargeDate,
     enqueueSnackbar,
+    foreclosureDate,
     isBankruptcy,
     isForeclosure,
     marital,
@@ -277,7 +314,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
           {isBankruptcy && (
             <Stack mt={3}>
               <StyledDatePicker
-                label={'Filing Date'}
+                label={'Bankruptcy Filing Date'}
                 onChange={(date) => {
                   setDischargeDate(date);
                 }}
@@ -302,6 +339,25 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
           sx={{ width: '100%', maxWidth: 600 }}
           value={isForeclosure}
         />
+        <Transitions
+          style={{
+            display: isForeclosure ? 'block' : 'none',
+            width: '100%',
+            maxWidth: 600,
+          }}
+        >
+          {isForeclosure && (
+            <Stack mt={3}>
+              <StyledDatePicker
+                label={'Property Foreclosure Filing Date'}
+                onChange={(date) => {
+                  setForeclosureDate(date);
+                }}
+                value={foreclosureDate}
+              />
+            </Stack>
+          )}
+        </Transitions>
       </StyledFormItem>
 
       <Stack
