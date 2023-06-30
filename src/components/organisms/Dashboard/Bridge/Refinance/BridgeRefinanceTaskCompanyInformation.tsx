@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -16,7 +16,11 @@ import {
   OPTIONS_TASK_INSTRUCTIONS,
   OPTIONS_TASK_MANAGING_LOAN_CLOSING,
 } from '@/constants';
-import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
+import {
+  _fetchTaskFormInfo,
+  _skipLoanTask,
+  _updateTaskFormInfo,
+} from '@/requests/dashboard';
 
 import {
   StyledButton,
@@ -74,7 +78,9 @@ export const BridgeRefinanceTaskCompanyInformation: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { saasState } = useSessionStorageState('tenantConfig');
+
   const [saveLoading, setSaveLoading] = useState(false);
+  const [skipLoading, setSkipLoading] = useState(false);
 
   const [contactForm, setContactForm] = useState(initialValues);
   const [manageForm, setManageForm] = useState(initialValues);
@@ -212,6 +218,80 @@ export const BridgeRefinanceTaskCompanyInformation: FC = observer(() => {
     whoIsManaging,
   ]);
 
+  const handledSkip = useCallback(async () => {
+    setSkipLoading(true);
+    try {
+      await _skipLoanTask(router.query.taskId as string);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSkipLoading(false);
+    }
+  }, [enqueueSnackbar, router]);
+
+  const isDisabled = useMemo(() => {
+    const dateValid = (date: any) => {
+      return isValid(date) && isDate(date);
+    };
+
+    const conditionA = () => {
+      return (
+        !!contactForm.firstName &&
+        !!contactForm.lastName &&
+        !!contactForm.email &&
+        !!contactForm.phoneNumber &&
+        !!contactForm.companyName &&
+        !!contactForm.titleOrderNumber &&
+        dateValid(contactForm.contractDate) &&
+        clientContactAddress.checkAddressValid
+      );
+    };
+    const conditionB = () => {
+      return (
+        !!manageForm.firstName &&
+        !!manageForm.lastName &&
+        !!manageForm.email &&
+        !!manageForm.phoneNumber &&
+        !!manageForm.companyName &&
+        !!manageForm.titleOrderNumber &&
+        clientManageAddress.checkAddressValid
+      );
+    };
+    if (!POSNotUndefined(isLoanClosing)) {
+      return false;
+    }
+    return isLoanClosing
+      ? conditionA() && !!instructions && !!escrowNumber
+      : conditionA() && conditionB() && whoIsManaging && !!instructions;
+  }, [
+    clientContactAddress.checkAddressValid,
+    contactForm.companyName,
+    contactForm.contractDate,
+    contactForm.email,
+    contactForm.firstName,
+    contactForm.lastName,
+    contactForm.phoneNumber,
+    contactForm.titleOrderNumber,
+    escrowNumber,
+    instructions,
+    isLoanClosing,
+    clientManageAddress.checkAddressValid,
+    manageForm.companyName,
+    manageForm.email,
+    manageForm.firstName,
+    manageForm.lastName,
+    manageForm.phoneNumber,
+    manageForm.titleOrderNumber,
+    whoIsManaging,
+  ]);
+
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
   ) : (
@@ -223,6 +303,16 @@ export const BridgeRefinanceTaskCompanyInformation: FC = observer(() => {
       } also orders a Title Commitment and a Title Report on the property from this agent.`}
       tipSx={{ mb: 0 }}
     >
+      <StyledButton
+        color={'info'}
+        disabled={saveLoading || skipLoading}
+        onClick={handledSkip}
+        sx={{ width: '100%', maxWidth: 276 }}
+        variant={'outlined'}
+      >
+        Skip
+      </StyledButton>
+
       <StyledFormItem
         gap={3}
         label={'Provide contact details'}
@@ -440,7 +530,7 @@ export const BridgeRefinanceTaskCompanyInformation: FC = observer(() => {
           Back
         </StyledButton>
         <StyledButton
-          disabled={saveLoading}
+          disabled={saveLoading || skipLoading || !isDisabled}
           loading={saveLoading}
           loadingText={'Saving...'}
           onClick={handledSubmit}
