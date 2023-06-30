@@ -4,7 +4,7 @@ import {
   AccountBalanceOutlined,
   GradingOutlined,
   PeopleAltOutlined,
-  PublicOutlined,
+  //PublicOutlined,
   TextSnippetOutlined,
   TimelineOutlined,
 } from '@mui/icons-material';
@@ -71,12 +71,12 @@ const list: MenuItems[] = [
     key: 'team',
     icon: <PeopleAltOutlined />,
   },
-  {
-    label: 'Resources',
-    path: 'resources',
-    key: 'resources',
-    icon: <PublicOutlined />,
-  },
+  //{
+  //  label: 'Resources',
+  //  path: 'resources',
+  //  key: 'resources',
+  //  icon: <PublicOutlined />,
+  //},
 ];
 
 export const DashboardMenuList: FC<POSMenuListProps> = observer(

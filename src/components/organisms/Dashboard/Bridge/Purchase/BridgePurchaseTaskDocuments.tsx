@@ -51,6 +51,8 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
   const [questionnaireFiles, setQuestionnaireFiles] = useState<TaskFiles[]>([]);
   const [policyFiles, setPolicyFiles] = useState<TaskFiles[]>([]);
 
+  const [otherFiles, setOtherFiles] = useState<TaskFiles[]>([]);
+
   const computedObj = useCallback(
     (key: string) => {
       switch (key) {
@@ -78,6 +80,8 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
           return { data: questionnaireFiles, action: setQuestionnaireFiles };
         case 'policy':
           return { data: policyFiles, action: setPolicyFiles };
+        case 'other':
+          return { data: otherFiles, action: setOtherFiles };
         default:
           return null;
       }
@@ -90,6 +94,7 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
       form1003Files,
       identificationFiles,
       lawsFiles,
+      otherFiles,
       policyFiles,
       prelimFiles,
       questionnaireFiles,
@@ -176,6 +181,7 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
           budgetFiles,
           questionnaireFiles,
           policyFiles,
+          otherFiles,
         } = res.data;
 
         setShow1(show1);
@@ -188,6 +194,7 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
         setAuthorizationFiles(authorizationFiles || []);
         setBankFiles(bankFiles || []);
         setPrelimFiles(prelimFiles || []);
+        setOtherFiles(otherFiles || []);
 
         setArticlesFiles(articlesFiles || []);
         setLawsFiles(lawsFiles || []);
@@ -229,6 +236,7 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
         questionnaireFiles,
         standingFiles,
         w9Files,
+        otherFiles,
       },
     };
 
@@ -255,6 +263,7 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
     form1003Files,
     identificationFiles,
     lawsFiles,
+    otherFiles,
     policyFiles,
     prelimFiles,
     questionnaireFiles,
@@ -374,6 +383,14 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
             />
           </>
         )}
+
+        <StyledUploadButtonBox
+          fileList={otherFiles}
+          label={'Other'}
+          loading={uploadLoading}
+          onDelete={(index) => handledDelete(index, 'other')}
+          onSuccess={(files) => handledSuccess(files, 'other')}
+        />
       </Stack>
 
       <Stack
