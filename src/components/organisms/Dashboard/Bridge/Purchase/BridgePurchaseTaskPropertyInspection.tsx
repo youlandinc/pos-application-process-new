@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -6,7 +6,11 @@ import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
 
-import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
+import {
+  _fetchTaskFormInfo,
+  _skipLoanTask,
+  _updateTaskFormInfo,
+} from '@/requests/dashboard';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
 import {
@@ -22,6 +26,7 @@ export const BridgePurchaseTaskPropertyInspection: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [saveLoading, setSaveLoading] = useState(false);
+  const [skipLoading, setSkipLoading] = useState(false);
 
   const [contactName, setContactName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -79,14 +84,46 @@ export const BridgePurchaseTaskPropertyInspection: FC = observer(() => {
     }
   }, [contactName, email, enqueueSnackbar, instructions, phoneNumber, router]);
 
+  const handledSkip = useCallback(async () => {
+    setSkipLoading(true);
+    try {
+      await _skipLoanTask(router.query.taskId as string);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSkipLoading(false);
+    }
+  }, [enqueueSnackbar, router]);
+
+  const isDisabled = useMemo(() => {
+    return !contactName || !phoneNumber || !email;
+  }, [contactName, email, phoneNumber]);
+
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
   ) : (
     <StyledFormItem
       gap={3}
       label={'Property Inspection Details(Optional)'}
-      tipSx={{ mb: 0 }}
+      labelSx={{ mb: 0 }}
     >
+      <StyledButton
+        color={'info'}
+        disabled={saveLoading || skipLoading}
+        onClick={handledSkip}
+        sx={{ width: '100%', maxWidth: 276 }}
+        variant={'outlined'}
+      >
+        Skip
+      </StyledButton>
+
       <StyledFormItem
         gap={3}
         label={'Property inspection contact information'}
@@ -138,7 +175,7 @@ export const BridgePurchaseTaskPropertyInspection: FC = observer(() => {
           Back
         </StyledButton>
         <StyledButton
-          disabled={saveLoading}
+          disabled={saveLoading || skipLoading || isDisabled}
           loading={saveLoading}
           loadingText={'Saving...'}
           onClick={handledSubmit}
