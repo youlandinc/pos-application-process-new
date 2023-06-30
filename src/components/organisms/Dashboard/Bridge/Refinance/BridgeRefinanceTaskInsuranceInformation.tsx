@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
@@ -12,6 +12,7 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import {
   _deleteTaskFile,
   _fetchTaskFormInfo,
+  _skipLoanTask,
   _updateTaskFormInfo,
   _uploadTaskFile,
 } from '@/requests/dashboard';
@@ -32,6 +33,7 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
 
   const [saveLoading, setSaveLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
+  const [skipLoading, setSkipLoading] = useState(false);
 
   const [address] = useState<IAddress>(
     Address.create({
@@ -169,6 +171,42 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
     router,
   ]);
 
+  const handledSkip = useCallback(async () => {
+    setSkipLoading(true);
+    try {
+      await _skipLoanTask(router.query.taskId as string);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSkipLoading(false);
+    }
+  }, [enqueueSnackbar, router]);
+
+  const isDisabled = useMemo(() => {
+    return (
+      insuranceFiles.length > 0 &&
+      !!agentName &&
+      !!companyName &&
+      !!email &&
+      !!phoneNumber &&
+      address.checkAddressValid
+    );
+  }, [
+    address.checkAddressValid,
+    agentName,
+    companyName,
+    email,
+    insuranceFiles.length,
+    phoneNumber,
+  ]);
+
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
   ) : (
@@ -180,6 +218,16 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
       }
       tipSx={{ mb: 0 }}
     >
+      <StyledButton
+        color={'info'}
+        disabled={saveLoading || skipLoading}
+        onClick={handledSkip}
+        sx={{ width: '100%', maxWidth: 276 }}
+        variant={'outlined'}
+      >
+        Skip
+      </StyledButton>
+
       <StyledFormItem
         gap={3}
         label={'Insurance provider information'}
@@ -246,7 +294,7 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
           Back
         </StyledButton>
         <StyledButton
-          disabled={saveLoading}
+          disabled={saveLoading || skipLoading || !isDisabled}
           loading={saveLoading}
           loadingText={'Saving...'}
           onClick={handledSubmit}

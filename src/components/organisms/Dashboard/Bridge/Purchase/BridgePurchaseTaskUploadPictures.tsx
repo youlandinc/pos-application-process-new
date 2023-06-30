@@ -10,6 +10,7 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import {
   _deleteTaskFile,
   _fetchTaskFormInfo,
+  _skipLoanTask,
   _updateTaskFormInfo,
   _uploadTaskFile,
 } from '@/requests/dashboard';
@@ -28,6 +29,7 @@ export const BridgePurchaseTaskUploadPictures: FC = observer(() => {
 
   const [saveLoading, setSaveLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
+  const [skipLoading, setSkipLoading] = useState(false);
 
   const [picturesFiles, setPicturesFiles] = useState<TaskFiles[]>([]);
 
@@ -121,6 +123,24 @@ export const BridgePurchaseTaskUploadPictures: FC = observer(() => {
     }
   }, [enqueueSnackbar, picturesFiles, router]);
 
+  const handledSkip = useCallback(async () => {
+    setSkipLoading(true);
+    try {
+      await _skipLoanTask(router.query.taskId as string);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setSkipLoading(false);
+    }
+  }, [enqueueSnackbar, router]);
+
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
   ) : (
@@ -134,12 +154,8 @@ export const BridgePurchaseTaskUploadPictures: FC = observer(() => {
     >
       <StyledButton
         color={'info'}
-        onClick={() =>
-          router.push({
-            pathname: '/dashboard/tasks',
-            query: { processId: router.query.processId },
-          })
-        }
+        disabled={saveLoading || skipLoading}
+        onClick={handledSkip}
         sx={{ width: '100%', maxWidth: 276 }}
         variant={'outlined'}
       >
@@ -183,7 +199,7 @@ export const BridgePurchaseTaskUploadPictures: FC = observer(() => {
           Back
         </StyledButton>
         <StyledButton
-          disabled={!isDisabled || saveLoading}
+          disabled={!isDisabled || saveLoading || skipLoading}
           loading={saveLoading}
           loadingText={'Saving...'}
           onClick={handledSubmit}
