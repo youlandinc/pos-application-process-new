@@ -130,10 +130,10 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
           setDateOfBirth(new Date(dateOfBirth));
         }
         if (bankruptDate) {
-          setBankruptDate(bankruptDate);
+          setBankruptDate(new Date(bankruptDate));
         }
         if (foreclosureDate) {
-          setForeclosureDate(foreclosureDate);
+          setForeclosureDate(new Date(foreclosureDate));
         }
         setIsCoBorrower(isCoBorrower);
         setBorrowerType(borrowerType || undefined);
