@@ -54,6 +54,8 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
   const [questionnaireFiles, setQuestionnaireFiles] = useState<TaskFiles[]>([]);
   const [policyFiles, setPolicyFiles] = useState<TaskFiles[]>([]);
 
+  const [otherFiles, setOtherFiles] = useState<TaskFiles[]>([]);
+
   const computedObj = useCallback(
     (key: string) => {
       switch (key) {
@@ -85,6 +87,8 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
           return { data: questionnaireFiles, action: setQuestionnaireFiles };
         case 'policy':
           return { data: policyFiles, action: setPolicyFiles };
+        case 'other':
+          return { data: otherFiles, action: setOtherFiles };
         default:
           return null;
       }
@@ -98,6 +102,7 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
       identificationFiles,
       insuranceFiles,
       lawsFiles,
+      otherFiles,
       payoffFiles,
       policyFiles,
       prelimFiles,
@@ -182,6 +187,7 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
           authorizationFiles,
           bankFiles,
           prelimFiles,
+          otherFiles,
 
           articlesFiles,
           lawsFiles,
@@ -205,6 +211,7 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
         setAuthorizationFiles(authorizationFiles || []);
         setBankFiles(bankFiles || []);
         setPrelimFiles(prelimFiles || []);
+        setOtherFiles(otherFiles || []);
 
         setArticlesFiles(articlesFiles || []);
         setLawsFiles(lawsFiles || []);
@@ -247,6 +254,7 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
         questionnaireFiles,
         standingFiles,
         w9Files,
+        otherFiles,
       },
     };
 
@@ -274,6 +282,7 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
     identificationFiles,
     insuranceFiles,
     lawsFiles,
+    otherFiles,
     payoffFiles,
     policyFiles,
     prelimFiles,
@@ -410,6 +419,14 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
             />
           </>
         )}
+
+        <StyledUploadButtonBox
+          fileList={otherFiles}
+          label={'Other'}
+          loading={uploadLoading}
+          onDelete={(index) => handledDelete(index, 'other')}
+          onSuccess={(files) => handledSuccess(files, 'other')}
+        />
       </Stack>
 
       <Stack
