@@ -32,6 +32,10 @@ export const _updateTaskFormInfo = (data: {
   return post('/dashboard/loan/task/', data);
 };
 
+export const _skipLoanTask = (processId = '') => {
+  return post(`/dashboard/loan/task/skip/${processId}`);
+};
+
 export const _notifyTaskUpdate = (processId: string) => {
   return post(`/dashboard/loan/task/notify/${processId}`);
 };

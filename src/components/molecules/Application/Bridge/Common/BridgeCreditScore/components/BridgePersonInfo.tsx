@@ -104,7 +104,7 @@ export const BridgePersonInfo: FC = observer(() => {
             </Stack>
             <Stack>
               <StyledDatePicker
-                label={'MM/DD/YYYY'}
+                label={'Date of Birth'}
                 onChange={changeFieldValue('dateOfBirth')}
                 validate={selfInfo.errors.dateOfBirth}
                 value={selfInfo.dateOfBirth}

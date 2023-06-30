@@ -87,7 +87,11 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
   const [gender, setGender] = useState<string | undefined>();
   const [marital, setMarital] = useState<string | undefined>();
   const [residency, setResidency] = useState<string | undefined>();
-  const [trackRecord, setTrackRecord] = useState<string | undefined>();
+  const [delinquentTimes, setDelinquentTimes] = useState<string | undefined>();
+  const [bankruptDate, setBankruptDate] = useState<unknown | Date | null>(null);
+  const [foreclosureDate, setForeclosureDate] = useState<unknown | Date | null>(
+    null,
+  );
 
   const [ssn, setSsn] = useState<string>('');
   const [authorizedCreditCheck, setAuthorizedCreditCheck] = useState(false);
@@ -116,12 +120,20 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
           signatoryTitle,
           ssn,
           stateId,
-          trackRecord,
+          delinquentTimes,
+          bankruptDate,
+          foreclosureDate,
           creditScore,
           hasCreditScore,
         } = res.data;
         if (dateOfBirth) {
           setDateOfBirth(new Date(dateOfBirth));
+        }
+        if (bankruptDate) {
+          setBankruptDate(bankruptDate);
+        }
+        if (foreclosureDate) {
+          setForeclosureDate(foreclosureDate);
         }
         setIsCoBorrower(isCoBorrower);
         setBorrowerType(borrowerType || undefined);
@@ -135,7 +147,8 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
         setLastName(lastName || '');
         setPhoneNumber(phoneNumber || undefined);
         setEmail(email || '');
-        setTrackRecord(trackRecord || '');
+        setDelinquentTimes(delinquentTimes || '');
+
         setResidency(residency || undefined);
         setMarital(marital || undefined);
         setGender(gender || undefined);
@@ -178,7 +191,6 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
       !!gender &&
       !!marital &&
       !!residency &&
-      !!trackRecord &&
       address.checkAddressValid &&
       !!ssn &&
       authorizedCreditCheck;
@@ -220,11 +232,13 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
     signatoryTitle,
     ssn,
     stateId,
-    trackRecord,
   ]);
 
   const handledSubmit = useCallback(async () => {
     const dateValid = isValid(dateOfBirth) && isDate(dateOfBirth);
+    const bankruptDateValid = isValid(bankruptDate) && isDate(bankruptDate);
+    const foreclosureDateValid =
+      isValid(foreclosureDate) && isDate(foreclosureDate);
     setSaveLoading(true);
     const postData = {
       taskId: router.query.taskId as string,
@@ -247,7 +261,13 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
         signatoryTitle,
         ssn,
         stateId,
-        trackRecord,
+        delinquentTimes,
+        bankruptDate: bankruptDateValid
+          ? format(bankruptDate as Date, 'yyyy-MM-dd O')
+          : undefined,
+        foreclosureDate: foreclosureDateValid
+          ? format(foreclosureDate as Date, 'yyyy-MM-dd O')
+          : undefined,
         propAddr: address.getPostData(),
       },
     };
@@ -274,13 +294,16 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
   }, [
     address,
     authorizedCreditCheck,
+    bankruptDate,
     borrowerType,
     dateOfBirth,
+    delinquentTimes,
     email,
     enqueueSnackbar,
     entityState,
     entityType,
     firstName,
+    foreclosureDate,
     gender,
     isCoBorrower,
     lastName,
@@ -291,7 +314,6 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
     signatoryTitle,
     ssn,
     stateId,
-    trackRecord,
   ]);
 
   return loading ? (
@@ -429,7 +451,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
                 />
                 <StyledDatePicker
                   disabled={hasCreditScore}
-                  label={'MM/DD/YYYY'}
+                  label={'Date of Birth'}
                   onChange={(value) => setDateOfBirth(value)}
                   value={dateOfBirth}
                 />
@@ -480,12 +502,24 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
                 <StyledTextFieldNumber
                   decimalScale={0}
                   disabled={hasCreditScore}
-                  label={'Track Record'}
+                  label={'Delinquent Times'}
                   onValueChange={({ formattedValue }) =>
-                    setTrackRecord(formattedValue)
+                    setDelinquentTimes(formattedValue)
                   }
                   thousandSeparator={false}
-                  value={trackRecord}
+                  value={delinquentTimes}
+                />
+                <StyledDatePicker
+                  disabled={hasCreditScore}
+                  label={'Bankruptcy Filing Date'}
+                  onChange={(value) => setBankruptDate(value)}
+                  value={bankruptDate}
+                />
+                <StyledDatePicker
+                  disabled={hasCreditScore}
+                  label={'Property Foreclosure Filing Date'}
+                  onChange={(value) => setForeclosureDate(value)}
+                  value={foreclosureDate}
                 />
               </Stack>
             </StyledFormItem>

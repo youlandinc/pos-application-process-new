@@ -83,11 +83,7 @@ export const PreApprovalEdit: FC<PreApprovalEditProps> = (props) => {
           </Stack>
         )}
         <Stack width={'100%'}>
-          <StyledGoogleAutoComplete
-            address={address}
-            disabled={editable}
-            fullAddress
-          />
+          <StyledGoogleAutoComplete address={address} disabled fullAddress />
         </Stack>
         {children}
         <Stack
