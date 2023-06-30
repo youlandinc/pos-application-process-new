@@ -105,7 +105,7 @@ export const PaymentSummary: FC<PaymentSummaryProps> = ({
         gap={6}
         label={'Do you have a recent Property Appraisal？'}
         sub
-        tip={'Next, fill out your Experience Verification Sheet'}
+        // tip={'Next, fill out your Experience Verification Sheet'}
         tipSx={{ m: 0 }}
       >
         <StyledButtonGroup
