@@ -145,7 +145,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
                 </Stack>
                 <Stack>
                   <StyledDatePicker
-                    label={'MM/DD/YYYY'}
+                    label={'Date of Birth'}
                     onChange={changeFieldValue('dateOfBirth')}
                     validate={coBorrowerInfo.errors.dateOfBirth}
                     value={coBorrowerInfo.dateOfBirth}
