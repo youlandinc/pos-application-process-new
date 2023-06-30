@@ -182,7 +182,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
       taskId: router.query.taskId as string,
       taskForm: {
         propAddr: address.getPostData(),
-        dischargeDate: dateValid
+        bankruptDate: dateValid
           ? format(bankruptDate as Date, 'yyyy-MM-dd O')
           : undefined,
         marital,
