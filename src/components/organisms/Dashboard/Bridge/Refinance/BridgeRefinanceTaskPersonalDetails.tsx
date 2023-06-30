@@ -60,9 +60,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
   >();
   const [delinquentTimes, setDelinquentTimes] = useState<string | undefined>();
   const [isBankruptcy, setIsBankruptcy] = useState<boolean | undefined>();
-  const [dischargeDate, setDischargeDate] = useState<unknown | Date | null>(
-    null,
-  );
+  const [bankruptDate, setBankruptDate] = useState<unknown | Date | null>(null);
   const [isForeclosure, setIsForeclosure] = useState<boolean | undefined>();
   const [foreclosureDate, setForeclosureDate] = useState<
     unknown | Date | null
@@ -74,7 +72,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
         const {
           propAddr,
           marital,
-          dischargeDate,
+          bankruptDate,
           delinquentTimes,
           citizenship,
           isBankruptcy,
@@ -88,8 +86,8 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
         setMarital((marital as DashboardTaskMaritalStatus) || undefined);
         setIsBankruptcy(isBankruptcy ?? undefined);
         setIsForeclosure(isForeclosure ?? undefined);
-        if (dischargeDate) {
-          setDischargeDate(new Date(dischargeDate as string));
+        if (bankruptDate) {
+          setBankruptDate(new Date(bankruptDate as string));
         }
         if (foreclosureDate) {
           setForeclosureDate(new Date(foreclosureDate as string));
@@ -123,7 +121,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
-    const dateValid = isValid(dischargeDate) && isDate(dischargeDate);
+    const dateValid = isValid(bankruptDate) && isDate(bankruptDate);
     const foreclosureDateValid =
       isValid(foreclosureDate) && isDate(foreclosureDate);
     const isPosBankruptcyUndefined = !POSNotUndefined(isBankruptcy);
@@ -174,7 +172,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
     address.checkAddressValid,
     citizenship,
     delinquentTimes,
-    dischargeDate,
+    bankruptDate,
     foreclosureDate,
     isBankruptcy,
     isForeclosure,
@@ -182,7 +180,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
   ]);
 
   const handledSubmit = useCallback(async () => {
-    const dateValid = isValid(dischargeDate) && isDate(dischargeDate);
+    const dateValid = isValid(bankruptDate) && isDate(bankruptDate);
     const foreclosureDateValid =
       isValid(foreclosureDate) && isDate(foreclosureDate);
     setSaveLoading(true);
@@ -195,8 +193,8 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
         propAddr: address.getPostData(),
         isBankruptcy,
         isForeclosure,
-        dischargeDate: dateValid
-          ? format(dischargeDate as Date, 'yyyy-MM-dd O')
+        bankruptDate: dateValid
+          ? format(bankruptDate as Date, 'yyyy-MM-dd O')
           : undefined,
         foreclosureDate: foreclosureDateValid
           ? format(foreclosureDate as Date, 'yyyy-MM-dd O')
@@ -221,7 +219,7 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
     address,
     citizenship,
     delinquentTimes,
-    dischargeDate,
+    bankruptDate,
     enqueueSnackbar,
     foreclosureDate,
     isBankruptcy,
@@ -316,9 +314,9 @@ export const BridgeRefinanceTaskPersonalDetails: FC = observer(() => {
               <StyledDatePicker
                 label={'Bankruptcy Filing Date'}
                 onChange={(date) => {
-                  setDischargeDate(date);
+                  setBankruptDate(date);
                 }}
-                value={dischargeDate}
+                value={bankruptDate}
               />
             </Stack>
           )}
