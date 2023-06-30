@@ -146,7 +146,7 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
         }
       >
         <Stack maxWidth={600} width={'100%'}>
-          <StyledGoogleAutoComplete address={address} />
+          <StyledGoogleAutoComplete address={address} disabled />
         </Stack>
       </StyledFormItem>
 
