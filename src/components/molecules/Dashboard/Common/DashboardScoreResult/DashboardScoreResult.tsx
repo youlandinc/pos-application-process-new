@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect } from 'react';
-import { Box, Icon, Stack, Typography } from '@mui/material';
+import { Box, Icon, Stack } from '@mui/material';
 import dynamic from 'next/dynamic';
 
 import { POSCreateDebounceFunction } from '@/utils';
@@ -63,15 +63,16 @@ export const DashboardScoreResult: FC<{ score: number | undefined }> = ({
           </Stack>
         }
         tip={
-          'Congratulations! Your credit score indicates that you are qualified to proceed with us and help us determine which rates you qualify for.'
+          score && score > 650
+            ? 'Congratulations! Your credit score indicates that you are qualified to proceed with us and help us determine which rates you qualify for.'
+            : "The credit score for your co-borrower did not meet the requirements. Please revisit and update the co-borrower's information accordingly."
         }
         tipSx={{ mb: 0 }}
       >
         <Box
           id={'SCORE_BUOY_DIVIDER'}
           sx={{
-            m: '0 auto',
-            mt: 6,
+            m: '48px auto',
             width: '100%',
             maxWidth: 600,
             height: 16,
@@ -92,14 +93,6 @@ export const DashboardScoreResult: FC<{ score: number | undefined }> = ({
             }}
           />
         </Box>
-        <Typography
-          color={'info.main'}
-          mt={6}
-          textAlign={'center'}
-          variant={'body1'}
-        >
-          Just a few more steps until you&apos;re pre-approved.
-        </Typography>
       </StyledFormItem>
     </>
   );
