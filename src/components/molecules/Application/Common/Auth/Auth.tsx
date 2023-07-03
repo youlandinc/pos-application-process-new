@@ -46,16 +46,13 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
       width={'100%'}
     >
       <StyledFormItem
-        label={`${
+        label={
           authType === 'login'
-            ? `Welcome to ${
-                //sass
-                ' ' + saasState?.organizationName || ' YouLand'
-              }!`
+            ? `Welcome to ${' ' + saasState?.organizationName || 'YouLand'} !`
             : authType === 'sign_up'
             ? 'Sign Up'
             : 'Rest Password'
-        }`}
+        }
         sx={{ maxWidth: 600 }}
       >
         <Transitions style={{ width: '100%' }}>
