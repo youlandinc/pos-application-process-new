@@ -21,15 +21,25 @@ export const DashboardServiceCardItem: FC<DashboardServiceCardItemProps> = ({
       width={{ lg: 'calc(50% - 12px)', xs: '100%' }}
     >
       <Stack flex={1.5} gap={1.5}>
-        <Typography variant={'h5'}>{name}</Typography>
-        <Typography variant={'h6'}>{title}</Typography>
+        <Typography
+          sx={{ wordBreak: 'break-word' }}
+          variant={'h5'}
+          width={'100%'}
+        >
+          {name}
+        </Typography>
+        <Typography
+          sx={{ wordBreak: 'break-word' }}
+          variant={'h6'}
+          width={'100%'}
+        >
+          {title}
+        </Typography>
         <Typography
           color={'text.secondary'}
           mb={3}
           mt={1.5}
-          sx={{
-            wordBreak: 'break-word',
-          }}
+          sx={{ wordBreak: 'break-word' }}
           variant={'body1'}
         >
           {avatar}
@@ -42,6 +52,7 @@ export const DashboardServiceCardItem: FC<DashboardServiceCardItemProps> = ({
           display={'flex'}
           flexDirection={'row'}
           justifyContent={'flex-start'}
+          sx={{ wordBreak: 'break-word' }}
           variant={'subtitle1'}
           width={'100%'}
         >
@@ -60,6 +71,7 @@ export const DashboardServiceCardItem: FC<DashboardServiceCardItemProps> = ({
           display={'flex'}
           flexDirection={'row'}
           justifyContent={'flex-start'}
+          sx={{ wordBreak: 'break-word' }}
           variant={'subtitle1'}
           width={'100%'}
         >
