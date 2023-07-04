@@ -188,7 +188,6 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
         label={'Do you plan to occupy the property?'}
         sub
         tip={'Your intended use of the home.'}
-        tipSx={{ mb: 0 }}
       >
         <Stack maxWidth={600} width={'100%'}>
           <StyledButtonGroup
