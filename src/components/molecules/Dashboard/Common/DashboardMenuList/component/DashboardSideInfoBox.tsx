@@ -91,7 +91,7 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
           <Box
             sx={{
               mt: 3,
-              width: '100%',
+              maxWidth: 280,
               borderRadius: 2,
               p: 3,
               bgcolor: 'action.hover',
