@@ -146,14 +146,36 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
     >
       <Stack
         alignItems={'center'}
+        display={'inline-flex'}
         flexDirection={'row'}
         justifyContent={'space-between'}
+        width={'100%'}
       >
-        <Box>
+        <Box minWidth={0} width={'calc(100% - 64px)'}>
           {address ? (
             <>
-              <Typography variant={'subtitle1'}>{line_1}</Typography>
-              <Typography variant={'subtitle1'}>{line_2}</Typography>
+              <Typography
+                overflow={'hidden'}
+                sx={{
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+                variant={'subtitle1'}
+                width={'100%'}
+              >
+                {line_1}
+              </Typography>
+              <Typography
+                overflow={'hidden'}
+                sx={{
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+                variant={'subtitle1'}
+                width={'100%'}
+              >
+                {line_2}
+              </Typography>
             </>
           ) : (
             <Typography variant={'subtitle1'}>Draft</Typography>
@@ -164,6 +186,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
           isIconButton
           onClick={handledClick}
           ref={anchorRef}
+          sx={{ flexShrink: 0 }}
         >
           <MoreVertOutlined />
         </StyledButton>
