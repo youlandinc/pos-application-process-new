@@ -20,6 +20,7 @@ export const UserSetting = types
       } catch (e) {
         self.loading = false;
         self.pipelineStatusInitialized = false;
+        //eslint-disable-next-line no-console
         console.log(e);
         //enqueueSnackbar(e as string, {
         //  variant: 'error',

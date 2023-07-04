@@ -37,6 +37,7 @@ export const PTaskForm = types
         self.formData.injectPipelineTaskData(res.data);
         self.setInitialized(true);
       } catch (e) {
+        //eslint-disable-next-line no-console
         console.log(e);
         //enqueueSnackbar(e as string, {
         //  variant: 'error',
