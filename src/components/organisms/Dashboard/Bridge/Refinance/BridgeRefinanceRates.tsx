@@ -74,6 +74,9 @@ export const BridgeRefinanceRates: FC = observer(() => {
   >();
 
   const { loading: initLoading } = useAsync(async () => {
+    if (!router.query.processId) {
+      return;
+    }
     return Promise.all([
       _fetchRatesProduct(router.query.processId as string),
       _fetchRatesLoanInfo(router.query.processId as string),

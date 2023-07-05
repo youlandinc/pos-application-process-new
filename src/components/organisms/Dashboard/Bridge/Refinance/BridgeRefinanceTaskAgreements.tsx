@@ -1,4 +1,4 @@
-import { FC, useCallback, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
@@ -31,6 +31,16 @@ export const BridgeRefinanceTaskAgreements: FC = observer(() => {
   const [viewLoading, setViewLoading] = useState<boolean>(false);
 
   const [pdfString, setPdfString] = useState<string>('');
+
+  useEffect(() => {
+    if (router.query.taskId) {
+      return;
+    }
+    router.push({
+      pathname: '/dashboard/tasks',
+      query: { processId: router.query.processId },
+    });
+  }, [router]);
 
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
