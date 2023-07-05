@@ -330,7 +330,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
       gap={6}
       label={'Co-borrower Details'}
       tip={
-        "This means your assets and income will be counted together. You can't remove your co-borrower once you have started your application unless you restart a new one."
+        "This means your assets and income will be counted together. You can't remove your co-borrower once you have started your application unless you restart a new one.If there is a co-borrower, credit report and background check fees need to be charged for both individuals."
       }
       tipSx={{ mb: 0 }}
     >

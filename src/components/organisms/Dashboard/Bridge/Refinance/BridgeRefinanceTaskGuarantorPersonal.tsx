@@ -145,7 +145,7 @@ export const BridgeRefinanceTaskGuarantorPersonal: FC = observer(() => {
       gap={6}
       label={'Borrower Type'}
       tip={
-        'If you represent an entity, please update the borrower type below, and we will convert the previously filled borrower information into a guarantor for this entity.'
+        'If you represent an entity/trust, please update the borrower type below, and we will convert the previously filled borrower information into a guarantor for this entity/trust.'
       }
       tipSx={{ mb: 0 }}
     >
