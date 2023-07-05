@@ -35,6 +35,9 @@ export const BridgePurchaseOverview: FC = observer(() => {
   const [thirdParty, setThirdParty] = useState<BridgeOverviewInfo>();
 
   const { loading } = useAsync(async () => {
+    if (!router.query.processId) {
+      return;
+    }
     return await _fetchOverviewLoanSummary<BPOverviewSummaryData>(
       router.query.processId as string,
     )

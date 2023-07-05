@@ -123,6 +123,9 @@ export const BridgePurchasePreApproval: FC = observer(() => {
   }, [editLoanAmount, rateData?.cor, rateData?.isCor, rateData?.purchasePrice]);
 
   const [initState, getInitData] = useAsyncFn(async (processId: string) => {
+    if (!router.query.processId) {
+      return;
+    }
     return await _fetchPreApprovedLetterInfo<MPPreApprovalLetterBPData>(
       processId,
     )

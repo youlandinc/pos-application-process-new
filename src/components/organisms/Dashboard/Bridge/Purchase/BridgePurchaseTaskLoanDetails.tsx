@@ -34,6 +34,13 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
   const [arv, setArv] = useState<number | undefined>();
 
   const { loading } = useAsync(async () => {
+    if (!router.query.taskId) {
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+      return;
+    }
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
         const { purchasePrice, propertyValue, isCor, corDate, cor, arv } =

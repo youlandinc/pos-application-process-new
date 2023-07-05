@@ -75,6 +75,13 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
   };
 
   const { loading } = useAsync(async () => {
+    if (!router.query.taskId) {
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+      return;
+    }
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
         const { investmentFiles, propertiesNum } = res.data;

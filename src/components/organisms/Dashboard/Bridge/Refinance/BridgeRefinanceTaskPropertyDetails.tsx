@@ -53,6 +53,13 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
   const [isOccupied, setIsOccupied] = useState<boolean | undefined>();
 
   const { loading } = useAsync(async () => {
+    if (!router.query.taskId) {
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+      return;
+    }
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
         const { propAddr, propertyType, propertyUnit, isOccupied } = res.data;
