@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, useCallback, useState } from 'react';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
@@ -302,7 +302,51 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
   ) : (
-    <StyledFormItem gap={3} label={'Documents & Materials'}>
+    <StyledFormItem
+      gap={3}
+      label={'Documents & Materials'}
+      tip={
+        <Stack gap={1.5}>
+          Example documents:
+          <Typography
+            color={'primary.main'}
+            onClick={() =>
+              window.open(
+                'https://youland-template-file.s3.us-west-1.amazonaws.com/1003_2021V.pdf',
+              )
+            }
+            sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+            variant={'body1'}
+          >
+            1003 Form
+          </Typography>
+          <Typography
+            color={'primary.main'}
+            onClick={() =>
+              window.open(
+                'https://youland-template-file.s3.us-west-1.amazonaws.com/fw9.pdf',
+              )
+            }
+            sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+            variant={'body1'}
+          >
+            W9 Form
+          </Typography>
+          <Typography
+            color={'primary.main'}
+            onClick={() =>
+              window.open(
+                'https://youland-template-file.s3.us-west-1.amazonaws.com/Borrower+authorization+form.pdf',
+              )
+            }
+            sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+            variant={'body1'}
+          >
+            Borrower authorization form
+          </Typography>
+        </Stack>
+      }
+    >
       <Stack gap={6} maxWidth={900} width={'100%'}>
         <StyledUploadButtonBox
           fileList={form1003Files}
