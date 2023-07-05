@@ -158,6 +158,9 @@ export const BridgeRefinanceTaskList: FC = observer(() => {
   const [taskDetails, setTaskDetails] = useSetState<BridgeRefinanceTasks>();
 
   const { loading } = useAsync(async () => {
+    if (!router.query.processId) {
+      return;
+    }
     return await _fetchLoanTask(router.query.processId as string)
       .then((res) => {
         setTaskDetails(res?.data?.tasks);

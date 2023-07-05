@@ -34,6 +34,11 @@ export const OPTIONS_COMMON_USER_TYPE: Option[] = [
     key: UserType.LOAN_OFFICER,
     value: UserType.LOAN_OFFICER,
   },
+  {
+    label: 'Lender',
+    key: UserType.LENDER,
+    value: UserType.LENDER,
+  },
 ];
 
 export const OPTIONS_COMMON_STATE: Option[] = [
