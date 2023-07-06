@@ -127,6 +127,7 @@ export enum DashboardTaskMaritalStatus {
 export enum DashboardTaskBorrowerType {
   individual = 'INDIVIDUAL',
   entity = 'ENTITY',
+  trust = 'TRUST',
 }
 
 export enum DashboardTaskBorrowerEntityType {

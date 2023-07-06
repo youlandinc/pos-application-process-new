@@ -24,15 +24,19 @@ import {
 
 export const PTask = types
   .model({
+    [PipelineTaskKey.WF]: PTW9,
     [PipelineTaskKey.AI]: PTACH,
     [PipelineTaskKey.BA]: PTAgreement,
     [PipelineTaskKey.BG]: PTGovernment,
     [PipelineTaskKey.BL]: PTLicense,
     [PipelineTaskKey.BQ]: PTQuestionnaire,
-    [PipelineTaskKey.WF]: PTW9,
+    [PipelineTaskKey.LA]: PTAgreement,
+    [PipelineTaskKey.LG]: PTGovernment,
+    [PipelineTaskKey.LL]: PTLicense,
+    [PipelineTaskKey.LQ]: PTQuestionnaire,
     [PipelineTaskKey.LOA]: PTAgreementNotBroker,
-    [PipelineTaskKey.REAA]: PTAgreementNotBroker,
     [PipelineTaskKey.LOI]: PTACHNotBroker,
+    [PipelineTaskKey.REAA]: PTAgreementNotBroker,
     [PipelineTaskKey.REAI]: PTACHNotBroker,
   })
   .actions((self) => {
@@ -41,24 +45,24 @@ export const PTask = types
         if (data) {
           for (const [key, value] of Object.entries(data)) {
             switch (key) {
-              case PipelineTaskKey.BL:
-                self[PipelineTaskKey.BL].injectPipelineTaskData(
-                  value as PipelineTaskItem<PipelineLicense>,
-                );
-                break;
               case PipelineTaskKey.WF:
                 self[PipelineTaskKey.WF].injectPipelineTaskData(
                   value as PipelineTaskItem<PipelineW9>,
                 );
                 break;
-              case PipelineTaskKey.BG:
-                self[PipelineTaskKey.BG].injectPipelineTaskData(
-                  value as PipelineTaskItem<PipelineGovernment>,
-                );
-                break;
               case PipelineTaskKey.AI:
                 self[PipelineTaskKey.AI].injectPipelineTaskData(
                   value as PipelineTaskItem<PipelineACH>,
+                );
+                break;
+              case PipelineTaskKey.BL:
+                self[PipelineTaskKey.BL].injectPipelineTaskData(
+                  value as PipelineTaskItem<PipelineLicense>,
+                );
+                break;
+              case PipelineTaskKey.BG:
+                self[PipelineTaskKey.BG].injectPipelineTaskData(
+                  value as PipelineTaskItem<PipelineGovernment>,
                 );
                 break;
               case PipelineTaskKey.BA:
@@ -71,19 +75,39 @@ export const PTask = types
                   value as PipelineTaskItem<PipelineQuestionnaire>,
                 );
                 break;
-              case PipelineTaskKey.LOA:
-                self[PipelineTaskKey.LOA].injectPipelineTaskData(
+              case PipelineTaskKey.LL:
+                self[PipelineTaskKey.LL].injectPipelineTaskData(
+                  value as PipelineTaskItem<PipelineLicense>,
+                );
+                break;
+              case PipelineTaskKey.LG:
+                self[PipelineTaskKey.LG].injectPipelineTaskData(
+                  value as PipelineTaskItem<PipelineGovernment>,
+                );
+                break;
+              case PipelineTaskKey.LA:
+                self[PipelineTaskKey.LA].injectPipelineTaskData(
                   value as PipelineTaskItem<PipelineAgreement>,
                 );
                 break;
-              case PipelineTaskKey.REAA:
-                self[PipelineTaskKey.REAA].injectPipelineTaskData(
+              case PipelineTaskKey.LQ:
+                self[PipelineTaskKey.LQ].injectPipelineTaskData(
+                  value as PipelineTaskItem<PipelineQuestionnaire>,
+                );
+                break;
+              case PipelineTaskKey.LOA:
+                self[PipelineTaskKey.LOA].injectPipelineTaskData(
                   value as PipelineTaskItem<PipelineAgreement>,
                 );
                 break;
               case PipelineTaskKey.LOI:
                 self[PipelineTaskKey.LOI].injectPipelineTaskData(
                   value as PipelineTaskItem<PipelineACH>,
+                );
+                break;
+              case PipelineTaskKey.REAA:
+                self[PipelineTaskKey.REAA].injectPipelineTaskData(
+                  value as PipelineTaskItem<PipelineAgreement>,
                 );
                 break;
               case PipelineTaskKey.REAI:
