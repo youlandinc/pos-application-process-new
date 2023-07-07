@@ -326,6 +326,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
         fontSize={16}
         fontWeight={400}
         lineHeight={1.5}
+        maxWidth={{ xs: '100%', md: 600, xl: '100%' }}
         mt={3}
         p={3}
         width={'100%'}
@@ -388,13 +389,10 @@ export const BridgePurchasePreApproval: FC = observer(() => {
   const renderEditChildren = useMemo(() => {
     return (
       <>
-        <Stack
-          flexDirection={{ lg: 'row', xs: 'column' }}
-          gap={3}
-          width={'100%'}
-        >
+        <Stack gap={3} width={'100%'}>
           <StyledTextFieldNumber
             disabled={checkLoading}
+            error={!!LTVError}
             label="Purchase price"
             onValueChange={({ floatValue }) =>
               setRateData({
@@ -403,11 +401,11 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               })
             }
             prefix={'$'}
-            validate={LTVError}
             value={rateData?.purchasePrice}
           />
           <StyledTextFieldNumber
             disabled={checkLoading}
+            error={!!LTVError}
             label="Purchase loan amount"
             onValueChange={({ floatValue }) => {
               setRateData({
@@ -416,10 +414,8 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               });
             }}
             prefix={'$'}
-            validate={LTVError}
             value={rateData?.purchaseLoanAmount}
           />
-          {/* {!rateData?.isCor && ( */}
           <StyledTextFieldNumber
             decimalScale={3}
             disabled
@@ -430,7 +426,6 @@ export const BridgePurchasePreApproval: FC = observer(() => {
             thousandSeparator={false}
             value={POSFormatLocalPercent(LTV)}
           />
-          {/* )} */}
         </Stack>
         <Stack sx={{ display: LTVError ? 'block' : 'none' }} width={'100%'}>
           <Transitions>
@@ -461,13 +456,10 @@ export const BridgePurchasePreApproval: FC = observer(() => {
         >
           <Transitions>
             {rateData?.isCor && (
-              <Stack
-                flexDirection={{ lg: 'row', xs: 'column' }}
-                gap={3}
-                width={'100%'}
-              >
+              <Stack gap={3} width={'100%'}>
                 <StyledTextFieldNumber
                   disabled={checkLoading}
+                  error={!!LTCError}
                   label={'Estimated rehab loan amount'}
                   onValueChange={({ floatValue }) => {
                     setRateData({
@@ -476,11 +468,11 @@ export const BridgePurchasePreApproval: FC = observer(() => {
                     });
                   }}
                   prefix={'$'}
-                  validate={LTCError}
                   value={rateData?.cor || undefined}
                 />
                 <StyledTextFieldNumber
                   disabled={checkLoading}
+                  error={!!LTCError}
                   label={'After repair value (ARV)'}
                   onValueChange={({ floatValue }) => {
                     setRateData({
@@ -489,7 +481,6 @@ export const BridgePurchasePreApproval: FC = observer(() => {
                     });
                   }}
                   prefix={'$'}
-                  validate={LTCError}
                   value={rateData?.arv || undefined}
                 />
                 <StyledTextFieldNumber
@@ -529,6 +520,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
                 <StyledTextFieldNumber
                   decimalScale={3}
                   disabled={checkLoading}
+                  error={!!brokerPointsError || undefined}
                   label="Broker origination fee"
                   onValueChange={({ floatValue }) =>
                     setRateData({
@@ -539,11 +531,11 @@ export const BridgePurchasePreApproval: FC = observer(() => {
                   percentage
                   suffix={'%'}
                   thousandSeparator={false}
-                  validate={brokerPointsError}
                   value={rateData?.brokerPoints}
                 />
                 <StyledTextFieldNumber
                   disabled={checkLoading}
+                  error={!!brokerFeeError || undefined}
                   label="Broker processing fee"
                   onValueChange={({ floatValue }) => {
                     setRateData({
@@ -552,7 +544,6 @@ export const BridgePurchasePreApproval: FC = observer(() => {
                     });
                   }}
                   prefix={'$'}
-                  validate={brokerFeeError}
                   value={rateData?.brokerProcessingFee}
                 />
               </Stack>
