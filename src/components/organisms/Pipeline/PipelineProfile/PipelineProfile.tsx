@@ -29,12 +29,16 @@ export const PipelineProfile: FC = observer(() => {
   );
 
   const {
-    BROKER_LICENSE,
-    BROKER_GOVERNMENT_ID,
     W9_FORM,
     ACH_INFORMATION,
     BROKER_QUESTIONNAIRE,
     BROKER_AGREEMENT,
+    BROKER_LICENSE,
+    BROKER_GOVERNMENT_ID,
+    LENDER_QUESTIONNAIRE,
+    LENDER_AGREEMENT,
+    LENDER_LICENSE,
+    LENDER_GOVERNMENT_ID,
     LOAN_OFFICER_AGREEMENT,
     REAL_ESTATE_AGENT_AGREEMENT,
     LOAN_OFFICER_ACH_INFORMATION,
@@ -129,6 +133,125 @@ export const PipelineProfile: FC = observer(() => {
             >
               <Typography className={'task_label'} variant={'h6'}>
                 {ACH_INFORMATION.taskName}
+              </Typography>
+              <StyledStatus status={ACH_INFORMATION.taskStatus} />
+            </Stack>
+          </>
+        );
+      case UserType.LENDER:
+        return (
+          <>
+            <Stack
+              alignItems={'center'}
+              className={'task_item'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              onClick={() => handleEnterSubTask('/pipeline/task/license')}
+            >
+              <Typography className={'task_label'} variant={'h6'}>
+                {LENDER_LICENSE.taskName}
+              </Typography>
+              <StyledStatus status={LENDER_LICENSE.taskStatus} />
+            </Stack>
+
+            <Stack
+              alignItems={'center'}
+              className={'task_item'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              onClick={() => handleEnterSubTask('/pipeline/task/agreement')}
+            >
+              <Typography className={'task_label'} variant={'h6'}>
+                {LENDER_AGREEMENT.taskName}{' '}
+                <Typography
+                  component={'span'}
+                  sx={{ color: 'info.A100', fontSize: 'inherit' }}
+                  variant={'h6'}
+                >
+                  (Optional)
+                </Typography>
+              </Typography>
+              <StyledStatus status={LENDER_AGREEMENT.taskStatus} />
+            </Stack>
+
+            <Stack
+              alignItems={'center'}
+              className={'task_item'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              onClick={() => handleEnterSubTask('/pipeline/task/government')}
+            >
+              <Typography className={'task_label'} variant={'h6'}>
+                {LENDER_GOVERNMENT_ID.taskName}{' '}
+                <Typography
+                  component={'span'}
+                  sx={{ color: 'info.A100', fontSize: 'inherit' }}
+                  variant={'h6'}
+                >
+                  (Optional)
+                </Typography>
+              </Typography>
+              <StyledStatus status={LENDER_GOVERNMENT_ID.taskStatus} />
+            </Stack>
+            <Stack
+              alignItems={'center'}
+              className={'task_item'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              onClick={() => handleEnterSubTask('/pipeline/task/w9')}
+            >
+              <Typography className={'task_label'} variant={'h6'}>
+                {W9_FORM.taskName}{' '}
+                <Typography
+                  component={'span'}
+                  sx={{ color: 'info.A100', fontSize: 'inherit' }}
+                  variant={'h6'}
+                >
+                  (Optional)
+                </Typography>
+              </Typography>
+              <StyledStatus status={W9_FORM.taskStatus} />
+            </Stack>
+
+            <Stack
+              alignItems={'center'}
+              className={'task_item'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              onClick={() => handleEnterSubTask('/pipeline/task/questionnaire')}
+            >
+              <Typography
+                className={'task_label'}
+                component={'div'}
+                variant={'h6'}
+              >
+                {LENDER_QUESTIONNAIRE.taskName}{' '}
+                <Typography
+                  component={'span'}
+                  sx={{ color: 'info.A100', fontSize: 'inherit' }}
+                  variant={'h6'}
+                >
+                  (Optional)
+                </Typography>
+              </Typography>
+              <StyledStatus status={BROKER_QUESTIONNAIRE.taskStatus} />
+            </Stack>
+            <Stack
+              alignItems={'center'}
+              className={'task_item'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              onClick={() => handleEnterSubTask('/pipeline/task/ach')}
+            >
+              <Typography className={'task_label'} variant={'h6'}>
+                {ACH_INFORMATION.taskName}{' '}
+                <Typography
+                  component={'span'}
+                  sx={{ color: 'info.A100', fontSize: 'inherit' }}
+                  variant={'h6'}
+                >
+                  (Optional)
+                </Typography>
               </Typography>
               <StyledStatus status={ACH_INFORMATION.taskStatus} />
             </Stack>
@@ -231,6 +354,13 @@ export const PipelineProfile: FC = observer(() => {
     BROKER_LICENSE.taskStatus,
     BROKER_QUESTIONNAIRE.taskName,
     BROKER_QUESTIONNAIRE.taskStatus,
+    LENDER_AGREEMENT.taskName,
+    LENDER_AGREEMENT.taskStatus,
+    LENDER_GOVERNMENT_ID.taskName,
+    LENDER_GOVERNMENT_ID.taskStatus,
+    LENDER_LICENSE.taskName,
+    LENDER_LICENSE.taskStatus,
+    LENDER_QUESTIONNAIRE.taskName,
     LOAN_OFFICER_ACH_INFORMATION.taskName,
     LOAN_OFFICER_ACH_INFORMATION.taskStatus,
     LOAN_OFFICER_AGREEMENT.taskName,
@@ -249,10 +379,14 @@ export const PipelineProfile: FC = observer(() => {
     switch (userType) {
       case UserType.BROKER:
         return 'Broker Tasks';
+      case UserType.LENDER:
+        return 'Lender Tasks';
       case UserType.LOAN_OFFICER:
         return 'Loan Officer Tasks';
       case UserType.REAL_ESTATE_AGENT:
         return 'Real Estate Agent Tasks';
+      default:
+        return 'Broker Tasks';
     }
   }, [userType]);
 

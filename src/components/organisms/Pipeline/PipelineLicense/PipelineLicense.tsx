@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { getSnapshot } from 'mobx-state-tree';
 import { useMst } from '@/models/Root';
 
-import { TaskFiles } from '@/types';
+import { TaskFiles, UserType } from '@/types';
 import { _addTaskFile, _completePipelineTask, _deleteUpload } from '@/requests';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
@@ -22,21 +22,45 @@ export const PipelineLicense: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
 
   const {
+    userType,
     pipelineTask: { pipelineInitialized, formData },
   } = useMst();
 
-  const { BROKER_LICENSE } = formData;
+  const { BROKER_LICENSE, LENDER_LICENSE } = formData;
 
   const [fileList, setFileList] = useState<TaskFiles[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
+
+  const computedLicense = useMemo(() => {
+    switch (userType) {
+      case UserType.BROKER: {
+        return {
+          label: "Broker's License",
+          license: BROKER_LICENSE,
+        };
+      }
+      case UserType.LENDER: {
+        return {
+          label: "Lender's License",
+          license: LENDER_LICENSE,
+        };
+      }
+      default: {
+        return {
+          label: '',
+          license: null,
+        };
+      }
+    }
+  }, [BROKER_LICENSE, LENDER_LICENSE, userType]);
 
   useEffect(
     () => {
       if (!pipelineInitialized) {
         return;
       }
-      setFileList(getSnapshot(BROKER_LICENSE?.taskForm?.taskFiles));
+      setFileList(getSnapshot(computedLicense.license?.taskForm?.taskFiles));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [pipelineInitialized],
@@ -46,14 +70,17 @@ export const PipelineLicense: FC = observer(() => {
     setUploadLoading(true);
 
     try {
-      const formDatas = new FormData();
+      const formData = new FormData();
       Array.from(files, (item) => {
-        formDatas.append('files', item);
+        formData.append('files', item);
       });
-      const { data } = await _addTaskFile(formDatas, BROKER_LICENSE.taskId);
+      const { data } = await _addTaskFile(
+        formData,
+        computedLicense.license.taskId,
+      );
       setFileList([...fileList, ...data]);
       data.forEach((item) => {
-        BROKER_LICENSE.addFile(item);
+        computedLicense.license.addFile(item);
       });
       setUploadLoading(false);
     } catch (err) {
@@ -67,11 +94,13 @@ export const PipelineLicense: FC = observer(() => {
 
   const onDelete = async (index: number) => {
     try {
-      await _deleteUpload(BROKER_LICENSE.taskId, { url: fileList[index]?.url });
+      await _deleteUpload(computedLicense.license.taskId, {
+        url: fileList[index]?.url,
+      });
       const temp = JSON.parse(JSON.stringify(fileList));
       temp.splice(index, 1);
       setFileList(temp);
-      BROKER_LICENSE.removeFile(index);
+      computedLicense.license.removeFile(index);
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
@@ -82,7 +111,7 @@ export const PipelineLicense: FC = observer(() => {
 
   const handledCompleteTaskAndBackToSummary = async () => {
     setLoading(true);
-    const data = BROKER_LICENSE.getPostData();
+    const data = computedLicense.license.getPostData();
     try {
       await _completePipelineTask(data);
       setLoading(false);
@@ -99,7 +128,7 @@ export const PipelineLicense: FC = observer(() => {
   return (
     <Stack alignItems={'center'} justifyContent={'center'}>
       <StyledFormItem
-        label={'Broker License'}
+        label={computedLicense.label}
         sx={{ width: '100%' }}
         tip={`If you're looking to broker bridge loans in AZ, CA, MN, NC, NJ,
             NV, NY, OR, or UT, please upload your broker license for each
