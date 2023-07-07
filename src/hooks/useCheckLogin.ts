@@ -4,7 +4,7 @@ import { useSnackbar } from 'notistack';
 
 import { useMst } from '@/models/Root';
 
-import { usePersistFn } from './index';
+import { usePersistFn, useSessionStorageState } from './index';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { UserType } from '@/types';
 
@@ -31,7 +31,12 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
   const { session, persistDataLoaded, userType, loginType } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   const check = usePersistFn(() => {
+    if (!saasState) {
+      return;
+    }
     if (router.pathname.includes('application')) {
       return;
     }
