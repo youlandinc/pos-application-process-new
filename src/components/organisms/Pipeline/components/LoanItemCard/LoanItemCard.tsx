@@ -43,6 +43,9 @@ export interface LoanItemCardProps {
     brokerOriginationFee?: number;
     brokerProcessingFee?: number;
     brokerPoints?: number;
+    lenderOriginationFee?: number;
+    lenderProcessingFee?: number;
+    lenderPoints?: number;
     officerOriginationFee?: number;
     officerProcessingFee?: number;
     officerPoints?: number;
@@ -74,6 +77,9 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
     brokerOriginationFee,
     brokerProcessingFee,
     brokerPoints,
+    lenderOriginationFee,
+    lenderProcessingFee,
+    lenderPoints,
     officerOriginationFee,
     officerProcessingFee,
     officerPoints,
@@ -269,16 +275,20 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
           <StyledBadge content={loanStage} status={loanStage} />
         </Box>
         {(userType === UserType.BROKER ||
-          userType === UserType.LOAN_OFFICER) && (
+          userType === UserType.LOAN_OFFICER ||
+          userType === UserType.LENDER) && (
           <>
             <Box className={'product_item'}>
               <Box>Origination Fee</Box>
               <Typography variant={'subtitle1'}>
                 {`${POSFormatDollar(
-                  brokerOriginationFee || officerOriginationFee,
+                  brokerOriginationFee ||
+                    officerOriginationFee ||
+                    lenderOriginationFee,
                 )}(${POSFormatPercent(
                   (brokerPoints && brokerPoints / 100) ||
                     (officerPoints && officerPoints / 100) ||
+                    (lenderPoints && lenderPoints / 100) ||
                     undefined,
                 )})`}
               </Typography>
@@ -286,7 +296,11 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
             <Box className={'product_item'}>
               <Box>Processing Fee</Box>
               <Typography variant={'subtitle1'}>
-                {POSFormatDollar(brokerProcessingFee || officerProcessingFee)}
+                {POSFormatDollar(
+                  brokerProcessingFee ||
+                    officerProcessingFee ||
+                    lenderProcessingFee,
+                )}
               </Typography>
             </Box>
           </>
