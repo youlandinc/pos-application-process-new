@@ -48,6 +48,8 @@ export interface BridgePurchaseEstimateRateData {
   arv: number | undefined;
   brokerPoints?: number | undefined;
   brokerProcessingFee?: number | undefined;
+  lenderPoints?: number | undefined;
+  lenderProcessingFee?: number | undefined;
   officerPoints?: number | undefined;
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
@@ -63,6 +65,8 @@ export interface BridgeRefinanceEstimateRateData {
   arv: number | undefined;
   brokerPoints?: number | undefined;
   brokerProcessingFee?: number | undefined;
+  lenderPoints?: number | undefined;
+  lenderProcessingFee?: number | undefined;
   officerPoints?: number | undefined;
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;

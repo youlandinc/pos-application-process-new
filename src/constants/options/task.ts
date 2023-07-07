@@ -57,6 +57,11 @@ export const OPTIONS_TASK_BORROWER_TYPE: Option[] = [
     value: DashboardTaskBorrowerType.entity,
     label: 'Entity',
   },
+  {
+    key: DashboardTaskBorrowerType.trust,
+    value: DashboardTaskBorrowerType.trust,
+    label: 'Trust',
+  },
 ];
 
 export const OPTIONS_TASK_ENTITY_TYPE: Option[] = [

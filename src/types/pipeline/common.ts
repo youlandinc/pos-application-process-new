@@ -7,41 +7,68 @@ export enum PipelineTaskItemStatus {
 }
 
 export enum PipelineTaskName {
-  BROKER_LICENSE = 'Broker License',
+  // common
+  W9_FORM = 'W9 Form',
   ACH_INFORMATION = 'ACH Information',
+  // broker
+  BROKER_LICENSE = 'Broker License',
   BROKER_QUESTIONNAIRE = 'Broker Questionnaire',
   BROKER_AGREEMENT = 'Broker Agreement',
   BROKER_GOVERNMENT_ID = 'Broker Government ID',
-  W9_FORM = 'W9 Form',
+  // lender
+  LENDER_LICENSE = 'Lender License',
+  LENDER_QUESTIONNAIRE = 'Lender Questionnaire',
+  LENDER_AGREEMENT = 'Lender Agreement',
+  LENDER_GOVERNMENT_ID = 'Lender Government ID',
+  // loan officer
   LOAN_OFFICER_AGREEMENT = 'Loan Officer information',
-  REAL_ESTATE_AGENT_AGREEMENT = 'Real Estate Agent information',
   LOAN_OFFICER_ACH_INFORMATION = 'Loan Officer ACH Information',
-  REAL_ESTATE_AGENT_ACH_INFORMATION = 'REAL_ESTATE_AGENT_ACH_INFORMATION',
+  // real estate agent
+  REAL_ESTATE_AGENT_AGREEMENT = 'Real Estate Agent information',
+  REAL_ESTATE_AGENT_ACH_INFORMATION = 'Real Estate Agent ACH Information',
 }
 
 export enum PipelineTaskKey {
-  BL = 'BROKER_LICENSE',
+  // common
+  WF = 'W9_FORM',
   AI = 'ACH_INFORMATION',
+  // broker
+  BL = 'BROKER_LICENSE',
   BQ = 'BROKER_QUESTIONNAIRE',
   BA = 'BROKER_AGREEMENT',
   BG = 'BROKER_GOVERNMENT_ID',
-  WF = 'W9_FORM',
+  // lender
+  LL = 'LENDER_LICENSE',
+  LQ = 'LENDER_QUESTIONNAIRE',
+  LA = 'LENDER_AGREEMENT',
+  LG = 'LENDER_GOVERNMENT_ID',
+  // loan officer
   LOA = 'LOAN_OFFICER_AGREEMENT',
-  REAA = 'REAL_ESTATE_AGENT_AGREEMENT',
   LOI = 'LOAN_OFFICER_ACH_INFORMATION',
+  // real estate agent
+  REAA = 'REAL_ESTATE_AGENT_AGREEMENT',
   REAI = 'REAL_ESTATE_AGENT_ACH_INFORMATION',
 }
 
 export interface PipelineTasksMap {
+  // common
   [PipelineTaskKey.AI]: PipelineTaskItem<PipelineACH>;
-  [PipelineTaskKey.BA]: PipelineTaskItem<PipelineAgreement>;
-  [PipelineTaskKey.LOA]: PipelineTaskItem<PipelineAgreement>;
-  [PipelineTaskKey.REAA]: PipelineTaskItem<PipelineAgreement>;
-  [PipelineTaskKey.BG]: PipelineTaskItem<PipelineGovernment>;
+  [PipelineTaskKey.WF]: PipelineTaskItem<PipelineW9>;
+  // broker
   [PipelineTaskKey.BL]: PipelineTaskItem<PipelineLicense>;
   [PipelineTaskKey.BQ]: PipelineTaskItem<PipelineQuestionnaire>;
-  [PipelineTaskKey.WF]: PipelineTaskItem<PipelineW9>;
+  [PipelineTaskKey.BA]: PipelineTaskItem<PipelineAgreement>;
+  [PipelineTaskKey.BG]: PipelineTaskItem<PipelineGovernment>;
+  // lender
+  [PipelineTaskKey.LL]: PipelineTaskItem<PipelineLicense>;
+  [PipelineTaskKey.LQ]: PipelineTaskItem<PipelineQuestionnaire>;
+  [PipelineTaskKey.LA]: PipelineTaskItem<PipelineAgreement>;
+  [PipelineTaskKey.LG]: PipelineTaskItem<PipelineGovernment>;
+  // loan officer
   [PipelineTaskKey.LOI]: PipelineTaskItem<PipelineACH>;
+  [PipelineTaskKey.LOA]: PipelineTaskItem<PipelineAgreement>;
+  // real estate agent
+  [PipelineTaskKey.REAA]: PipelineTaskItem<PipelineAgreement>;
   [PipelineTaskKey.REAI]: PipelineTaskItem<PipelineACH>;
 }
 
