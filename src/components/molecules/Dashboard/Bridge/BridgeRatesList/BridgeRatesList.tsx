@@ -6,9 +6,9 @@ import {
   MailOutlineOutlined,
 } from '@mui/icons-material';
 
-import { POSFormatDollar, POSFormatPercent } from '@/utils';
 import { useBreakpoints } from '@/hooks';
 import { LoanStage, RatesProductData, UserType } from '@/types';
+import { POSFormatDollar, POSFormatPercent } from '@/utils';
 
 import { StyledButton, StyledLoading, StyledTooltip } from '@/components/atoms';
 
@@ -91,6 +91,7 @@ const BridgeRatesItem: FC<{
     switch (userType) {
       case UserType.BROKER:
       case UserType.LOAN_OFFICER:
+      case UserType.LENDER:
         return (
           <>
             <Stack

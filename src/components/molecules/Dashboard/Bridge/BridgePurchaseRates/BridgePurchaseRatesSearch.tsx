@@ -1,11 +1,3 @@
-import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
-import { Stack, Typography } from '@mui/material';
-import { InfoOutlined } from '@mui/icons-material';
-import { BPQueryData } from '@/requests/dashboard';
-import { LoanStage, UserType } from '@/types/enum';
-
-import { POSFormatDollar, POSFormatPercent, POSNotUndefined } from '@/utils';
-
 import {
   StyledButton,
   StyledCheckbox,
@@ -14,6 +6,19 @@ import {
   StyledTooltip,
   Transitions,
 } from '@/components/atoms';
+import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
+import { BPQueryData } from '@/requests/dashboard';
+import { LoanStage, UserType } from '@/types/enum';
+
+import {
+  POSFindLabel,
+  POSFormatDollar,
+  POSFormatPercent,
+  POSNotUndefined,
+} from '@/utils';
+import { InfoOutlined } from '@mui/icons-material';
+import { Stack, Typography } from '@mui/material';
+import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 
 interface BridgePurchaseRatesSearchProps {
   loading: boolean;
@@ -43,6 +48,8 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
     officerPoints,
     officerProcessingFee,
     agentFee,
+    lenderPoints,
+    lenderProcessingFee,
   } = searchForm;
 
   const [LTVError, setLTVError] = useState<string>('');
@@ -88,7 +95,22 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
   }, [isCor, loanAmount, cor, purchasePrice]);
 
   const pointsError = useMemo(() => {
-    const points = userType === UserType.BROKER ? brokerPoints : officerPoints;
+    let points;
+    switch (userType) {
+      case UserType.BROKER:
+        points = brokerPoints;
+        break;
+      case UserType.LENDER:
+        points = lenderPoints;
+        break;
+      case UserType.LOAN_OFFICER:
+        points = officerPoints;
+        break;
+      default:
+        points = officerPoints;
+        break;
+    }
+
     if (!POSNotUndefined(points)) {
       return [''];
     }
@@ -96,15 +118,30 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
       return undefined;
     }
     return [
-      `${
-        userType === UserType.BROKER ? 'Broker' : 'Loan officer'
-      } origination fee must be lesser than or equal to 5%.`,
+      `${POSFindLabel(
+        OPTIONS_COMMON_USER_TYPE,
+        userType as string as UserType,
+      )} origination fee must be lesser than or equal to 5%.`,
     ];
-  }, [brokerPoints, officerPoints, userType]);
+  }, [brokerPoints, officerPoints, userType, lenderPoints]);
 
   const processingFeeError = useMemo(() => {
-    const fee =
-      userType === UserType.BROKER ? brokerProcessingFee : officerProcessingFee;
+    let fee;
+    switch (userType) {
+      case UserType.BROKER:
+        fee = brokerProcessingFee;
+        break;
+      case UserType.LENDER:
+        fee = lenderProcessingFee;
+        break;
+      case UserType.LOAN_OFFICER:
+        fee = officerProcessingFee;
+        break;
+      default:
+        fee = officerProcessingFee;
+        break;
+    }
+
     if (!POSNotUndefined(fee) || !loanAmount) {
       return [''];
     }
@@ -112,13 +149,20 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
       return undefined;
     }
     return [
-      `${
-        userType === UserType.BROKER ? 'Broker' : 'Loan officer'
-      } origination fee must be lesser than or equal to ${POSFormatDollar(
+      `${POSFindLabel(
+        OPTIONS_COMMON_USER_TYPE,
+        userType as string as UserType,
+      )} origination fee must be lesser than or equal to ${POSFormatDollar(
         loanAmount,
       )}.`,
     ];
-  }, [brokerProcessingFee, loanAmount, officerProcessingFee, userType]);
+  }, [
+    brokerProcessingFee,
+    loanAmount,
+    officerProcessingFee,
+    lenderProcessingFee,
+    userType,
+  ]);
 
   const agentFeeError = useMemo(() => {
     if (!POSNotUndefined(agentFee) || !loanAmount) {
@@ -155,6 +199,13 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
           !pointsError &&
           !processingFeeError;
         break;
+      case UserType.LENDER:
+        flag =
+          POSNotUndefined(lenderPoints) &&
+          POSNotUndefined(lenderProcessingFee) &&
+          !pointsError &&
+          !processingFeeError;
+        break;
       case UserType.CUSTOMER:
         flag = true;
         break;
@@ -186,6 +237,8 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
     processingFeeError,
     brokerPoints,
     brokerProcessingFee,
+    lenderPoints,
+    lenderProcessingFee,
   ]);
 
   const renderByUserType = useMemo(() => {
@@ -235,6 +288,56 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                   prefix={'$'}
                   validate={processingFeeError}
                   value={brokerProcessingFee}
+                />
+              </Stack>
+            </Stack>
+          </StyledFormItem>
+        );
+      case UserType.LENDER:
+        return (
+          <StyledFormItem
+            gap={3}
+            label={'Lender Origination Compensation'}
+            labelSx={{ m: 0 }}
+            sub
+          >
+            <Stack
+              flexDirection={{ lg: 'row', xs: 'column' }}
+              gap={3}
+              maxWidth={900}
+              width={'100%'}
+            >
+              <Stack flex={1} gap={1}>
+                <Typography>Lender Origination Fee</Typography>
+                <StyledTextFieldNumber
+                  decimalScale={3}
+                  disabled={loading || loanStage === LoanStage.Approved}
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      lenderPoints: floatValue,
+                    });
+                  }}
+                  percentage
+                  suffix={'%'}
+                  thousandSeparator={false}
+                  validate={pointsError}
+                  value={lenderPoints}
+                />
+              </Stack>
+              <Stack flex={1} gap={1}>
+                <Typography>Lender Processing Fee</Typography>
+                <StyledTextFieldNumber
+                  disabled={loading || loanStage === LoanStage.Approved}
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      lenderProcessingFee: floatValue,
+                    });
+                  }}
+                  prefix={'$'}
+                  validate={processingFeeError}
+                  value={lenderProcessingFee}
                 />
               </Stack>
             </Stack>
@@ -334,6 +437,8 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
     agentFeeError,
     brokerPoints,
     brokerProcessingFee,
+    lenderPoints,
+    lenderProcessingFee,
     loading,
     loanStage,
     officerPoints,

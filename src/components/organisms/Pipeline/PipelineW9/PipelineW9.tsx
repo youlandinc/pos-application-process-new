@@ -46,11 +46,11 @@ export const PipelineW9: FC = observer(() => {
     setUploadLoading(true);
 
     try {
-      const formDatas = new FormData();
+      const formData = new FormData();
       Array.from(files, (item) => {
-        formDatas.append('files', item);
+        formData.append('files', item);
       });
-      const { data } = await _addTaskFile(formDatas, W9_FORM.taskId);
+      const { data } = await _addTaskFile(formData, W9_FORM.taskId);
       setFileList([...fileList, ...data]);
       data.forEach((item) => {
         W9_FORM.addFile(item);
