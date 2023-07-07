@@ -33,7 +33,11 @@ import {
   _previewDocument,
 } from '@/requests';
 
-import { PipelineLicenseTypeOpt, PipelineQuestionnaireOwner } from '@/types';
+import {
+  PipelineLicenseTypeOpt,
+  PipelineQuestionnaireOwner,
+  UserType,
+} from '@/types';
 import { SPQOwnerData } from '@/models/pipeline/base/PQOwner';
 
 const initialized: SPQOwnerData = {
@@ -51,8 +55,9 @@ export const PipelineQuestionnaire: FC = observer(() => {
   const breakpoint = useBreakpoints();
 
   const {
+    userType,
     pipelineTask: {
-      formData: { BROKER_QUESTIONNAIRE },
+      formData: { BROKER_QUESTIONNAIRE, LENDER_QUESTIONNAIRE },
     },
   } = useMst();
 
@@ -68,12 +73,50 @@ export const PipelineQuestionnaire: FC = observer(() => {
 
   const { renderFile } = useRenderPdf(pdfFile);
 
+  const computedQuestionnaire = useMemo(() => {
+    switch (userType) {
+      case UserType.BROKER: {
+        return {
+          label: 'Broker Questionnaire (Optional)',
+          tip: 'Please indicate the states in which you are licensed to broker loans and the type of license you hold in each state',
+          listTitle: 'Broker Name ',
+          fileName: 'Broker Questionnaire.pdf',
+          dialogHeader: 'Broker Questionnaire',
+          userName: 'broker',
+          questionnaire: BROKER_QUESTIONNAIRE,
+        };
+      }
+      case UserType.LENDER: {
+        return {
+          label: 'Lender Questionnaire (Optional)',
+          tip: 'Please indicate the states in which you are licensed to lender loans and the type of license you hold in each state',
+          listTitle: 'Lender Name ',
+          fileName: 'Lender Questionnaire.pdf',
+          dialogHeader: 'Lender Questionnaire',
+          userName: 'lender',
+          questionnaire: LENDER_QUESTIONNAIRE,
+        };
+      }
+      default: {
+        return {
+          label: '',
+          tip: '',
+          listTitle: '',
+          fileName: '',
+          dialogHeader: '',
+          userName: '',
+          questionnaire: null,
+        };
+      }
+    }
+  }, [BROKER_QUESTIONNAIRE, LENDER_QUESTIONNAIRE, userType]);
+
   const handledCompleteTaskAndBackToSummary = async () => {
-    if (BROKER_QUESTIONNAIRE.validateSelfInfo()) {
+    if (computedQuestionnaire.questionnaire.validateSelfInfo()) {
       return;
     }
     setLoading(true);
-    const data = BROKER_QUESTIONNAIRE.getPostData();
+    const data = computedQuestionnaire.questionnaire.getPostData();
     try {
       await _completePipelineTask(data);
       await router.push('/pipeline/profile');
@@ -88,11 +131,11 @@ export const PipelineQuestionnaire: FC = observer(() => {
   };
 
   const generateFile = async () => {
-    if (BROKER_QUESTIONNAIRE.validateSelfInfo()) {
+    if (computedQuestionnaire.questionnaire.validateSelfInfo()) {
       return;
     }
     setGenLoading(true);
-    const data = BROKER_QUESTIONNAIRE.getGenerateFileData();
+    const data = computedQuestionnaire.questionnaire.getGenerateFileData();
     try {
       const res = await _previewDocument(data);
       open();
@@ -111,11 +154,14 @@ export const PipelineQuestionnaire: FC = observer(() => {
 
   const handledSaveFile = async () => {
     setAgreeLoading(true);
-    const data = BROKER_QUESTIONNAIRE.getPostData();
+    const data = computedQuestionnaire.questionnaire.getPostData();
 
     try {
       const res = await _fetchLegalFile(data.taskId);
-      await BROKER_QUESTIONNAIRE.changeFieldValue('documentFile', res.data);
+      await computedQuestionnaire.questionnaire.changeFieldValue(
+        'documentFile',
+        res.data,
+      );
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
@@ -128,17 +174,16 @@ export const PipelineQuestionnaire: FC = observer(() => {
   };
 
   const isAddLicense = useMemo(() => {
-    return BROKER_QUESTIONNAIRE.taskForm.licenses.length >= 4;
-  }, [BROKER_QUESTIONNAIRE.taskForm.licenses.length]);
+    return computedQuestionnaire.questionnaire.taskForm.licenses.length >= 4;
+  }, [computedQuestionnaire.questionnaire.taskForm.licenses.length]);
 
   return (
     <>
       <Stack alignItems={'center'} justifyContent={'center'}>
         <StyledFormItem
-          label={'Broker Questionnaire (Optional)'}
+          label={computedQuestionnaire.label}
           sx={{ width: '100%' }}
-          tip={`Please indicate the states in which you are licensed to broker
-                loans and the type of license you hold in each state`}
+          tip={computedQuestionnaire.tip}
         >
           <Stack alignItems={'center'} justifyContent={'center'} width={'100%'}>
             <StyledButton
@@ -152,7 +197,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
           </Stack>
 
           <Transitions style={{ width: '100%' }}>
-            {BROKER_QUESTIONNAIRE.taskForm?.licenses?.map(
+            {computedQuestionnaire.questionnaire.taskForm?.licenses?.map(
               (item: PipelineQuestionnaireOwner, index: number) => (
                 <Stack
                   alignItems={'center'}
@@ -179,7 +224,9 @@ export const PipelineQuestionnaire: FC = observer(() => {
                       <StyledButton
                         color={'primary'}
                         onClick={() =>
-                          BROKER_QUESTIONNAIRE.removeLicenses(index)
+                          computedQuestionnaire.questionnaire.removeLicenses(
+                            index,
+                          )
                         }
                         size={'small'}
                         variant={'outlined'}
@@ -192,7 +239,9 @@ export const PipelineQuestionnaire: FC = observer(() => {
                         color={'primary'}
                         disabled={isAddLicense}
                         onClick={() =>
-                          BROKER_QUESTIONNAIRE.addLicenses(initialized)
+                          computedQuestionnaire.questionnaire.addLicenses(
+                            initialized,
+                          )
                         }
                         size={'small'}
                         variant={'outlined'}
@@ -210,9 +259,9 @@ export const PipelineQuestionnaire: FC = observer(() => {
                     width={'100%'}
                   >
                     <StyledTextField
-                      label={'Broker name ' + (index + 1)}
+                      label={computedQuestionnaire.listTitle + (index + 1)}
                       onChange={(e) => {
-                        BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
+                        computedQuestionnaire.questionnaire.changeLicensesFieldValue(
                           'ownerName',
                           e.target.value,
                           index,
@@ -223,15 +272,15 @@ export const PipelineQuestionnaire: FC = observer(() => {
                     <StyledTextFieldSocialNumber
                       label={'Social Security Number'}
                       onValueChange={(v) => {
-                        BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
+                        computedQuestionnaire.questionnaire.changeLicensesFieldValue(
                           'ssn',
                           v,
                           index,
                         );
                       }}
                       validate={
-                        BROKER_QUESTIONNAIRE.errors &&
-                        BROKER_QUESTIONNAIRE.errors[index]?.ssn
+                        computedQuestionnaire.questionnaire.errors &&
+                        computedQuestionnaire.questionnaire.errors[index]?.ssn
                       }
                       value={item.ssn}
                     />
@@ -245,15 +294,16 @@ export const PipelineQuestionnaire: FC = observer(() => {
                     <StyledDatePicker
                       label={'Date of Birth'}
                       onChange={(date) => {
-                        BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
+                        computedQuestionnaire.questionnaire.changeLicensesFieldValue(
                           'birthday',
                           date,
                           index,
                         );
                       }}
                       validate={
-                        BROKER_QUESTIONNAIRE.errors &&
-                        BROKER_QUESTIONNAIRE.errors[index]?.dateOfBirth
+                        computedQuestionnaire.questionnaire.errors &&
+                        computedQuestionnaire.questionnaire.errors[index]
+                          ?.dateOfBirth
                       }
                       value={item.birthday}
                     />
@@ -261,7 +311,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
                     <StyledSelect
                       label={'State'}
                       onChange={(e) => {
-                        BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
+                        computedQuestionnaire.questionnaire.changeLicensesFieldValue(
                           'state',
                           e.target.value as string,
                           index,
@@ -279,7 +329,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
                     <StyledSelect
                       label={'License type'}
                       onChange={(e) => {
-                        BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
+                        computedQuestionnaire.questionnaire.changeLicensesFieldValue(
                           'licenseType',
                           e.target.value as string,
                           index,
@@ -292,7 +342,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
                     <StyledTextField
                       label="License #"
                       onChange={(e) => {
-                        BROKER_QUESTIONNAIRE.changeLicensesFieldValue(
+                        computedQuestionnaire.questionnaire.changeLicensesFieldValue(
                           'license',
                           e.target.value,
                           index,
@@ -309,7 +359,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
             <StyledButton
               color={'primary'}
               disabled={
-                !BROKER_QUESTIONNAIRE.checkLicensesValid ||
+                !computedQuestionnaire.questionnaire.checkLicensesValid ||
                 genLoading ||
                 loading
               }
@@ -325,7 +375,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
               Generate File
             </StyledButton>
             <Transitions>
-              {BROKER_QUESTIONNAIRE.taskForm.documentFile && (
+              {computedQuestionnaire.questionnaire.taskForm.documentFile && (
                 <Typography
                   component={'div'}
                   mt={3}
@@ -339,11 +389,12 @@ export const PipelineQuestionnaire: FC = observer(() => {
                     fontWeight={600}
                     onClick={() =>
                       window.open(
-                        BROKER_QUESTIONNAIRE.taskForm.documentFile.url,
+                        computedQuestionnaire.questionnaire.taskForm
+                          .documentFile.url,
                       )
                     }
                   >
-                    Broker Questionnaire.pdf
+                    {computedQuestionnaire.fileName}
                   </Typography>{' '}
                   that you have confirmed. In case you need to make any changes,
                   a new agreement will be generated and require your agreement
@@ -370,7 +421,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
               <StyledButton
                 color={'primary'}
                 disabled={
-                  !BROKER_QUESTIONNAIRE.checkTaskFormValid ||
+                  !computedQuestionnaire.questionnaire.checkTaskFormValid ||
                   loading ||
                   genLoading
                 }
@@ -399,7 +450,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
           >
             <Typography variant={'body1'}>
               &quot;By clicking the below button, I hereby agree to the above
-              broker agreement.&quot;
+              {computedQuestionnaire.userName} agreement.&quot;
             </Typography>
             <StyledButton
               disabled={agreeLoading}
@@ -418,7 +469,9 @@ export const PipelineQuestionnaire: FC = observer(() => {
             justifyContent={'space-between'}
             pb={3}
           >
-            <Typography variant={'h6'}>Broker Questionnaire</Typography>
+            <Typography variant={'h6'}>
+              {computedQuestionnaire.dialogHeader}
+            </Typography>
             <StyledButton disabled={agreeLoading} isIconButton onClick={close}>
               <CloseOutlined />
             </StyledButton>

@@ -1,16 +1,15 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
-
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
-import { getSnapshot } from 'mobx-state-tree';
 import { observer } from 'mobx-react-lite';
+import { getSnapshot } from 'mobx-state-tree';
 import { useMst } from '@/models/Root';
 
-import { TaskFiles } from '@/types';
-import { _addTaskFile, _completePipelineTask, _deleteUpload } from '@/requests';
 import { AUTO_HIDE_DURATION } from '@/constants';
+import { _addTaskFile, _completePipelineTask, _deleteUpload } from '@/requests';
+import { TaskFiles, UserType } from '@/types';
 
 import {
   StyledButton,
@@ -23,21 +22,47 @@ export const PipelineGovernment: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
 
   const {
+    userType,
     pipelineTask: { pipelineInitialized, formData },
   } = useMst();
 
-  const { BROKER_GOVERNMENT_ID } = formData;
+  const { BROKER_GOVERNMENT_ID, LENDER_GOVERNMENT_ID } = formData;
 
   const [fileList, setFileList] = useState<TaskFiles[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
+
+  const computedGovernment = useMemo(() => {
+    switch (userType) {
+      case UserType.BROKER: {
+        return {
+          label: "Broker's Government ID",
+          government: BROKER_GOVERNMENT_ID,
+        };
+      }
+      case UserType.LENDER: {
+        return {
+          label: "Lender's Government ID",
+          government: LENDER_GOVERNMENT_ID,
+        };
+      }
+      default: {
+        return {
+          label: '',
+          government: null,
+        };
+      }
+    }
+  }, [BROKER_GOVERNMENT_ID, LENDER_GOVERNMENT_ID, userType]);
 
   useEffect(
     () => {
       if (!pipelineInitialized) {
         return;
       }
-      setFileList(getSnapshot(BROKER_GOVERNMENT_ID?.taskForm?.taskFiles));
+      setFileList(
+        getSnapshot(computedGovernment.government?.taskForm?.taskFiles),
+      );
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [pipelineInitialized],
@@ -47,17 +72,17 @@ export const PipelineGovernment: FC = observer(() => {
     setUploadLoading(true);
 
     try {
-      const formDatas = new FormData();
+      const formData = new FormData();
       Array.from(files, (item) => {
-        formDatas.append('files', item);
+        formData.append('files', item);
       });
       const { data } = await _addTaskFile(
-        formDatas,
-        BROKER_GOVERNMENT_ID.taskId,
+        formData,
+        computedGovernment.government.taskId,
       );
       setFileList([...fileList, ...data]);
       data.forEach((item) => {
-        BROKER_GOVERNMENT_ID.addFile(item);
+        computedGovernment.government.addFile(item);
       });
       setUploadLoading(false);
     } catch (err) {
@@ -71,13 +96,13 @@ export const PipelineGovernment: FC = observer(() => {
 
   const onDelete = async (index: number) => {
     try {
-      await _deleteUpload(BROKER_GOVERNMENT_ID.taskId, {
+      await _deleteUpload(computedGovernment.government.taskId, {
         url: fileList[index]?.url,
       });
       const temp = JSON.parse(JSON.stringify(fileList));
       temp.splice(index, 1);
       setFileList(temp);
-      BROKER_GOVERNMENT_ID.removeFile(index);
+      computedGovernment.government.removeFile(index);
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
@@ -88,7 +113,7 @@ export const PipelineGovernment: FC = observer(() => {
 
   const handledCompleteTaskAndBackToSummary = async () => {
     setLoading(true);
-    const data = BROKER_GOVERNMENT_ID.getPostData();
+    const data = computedGovernment.government.getPostData();
     try {
       await _completePipelineTask(data);
       setLoading(false);
@@ -105,11 +130,9 @@ export const PipelineGovernment: FC = observer(() => {
   return (
     <Stack alignItems={'center'} justifyContent={'center'}>
       <StyledFormItem
-        label={"Broker's Government ID"}
+        label={computedGovernment.label}
         sx={{ width: '100%' }}
-        tip={`Please upload your driver's license or government issued ID
-            (driver's license, US passport, US military ID) to verify your
-            identity.`}
+        tip={'Please upload your driver\'s license or government issued ID (driver\'s license, US passport, US military ID) to verify your identity.'}
       >
         <Stack alignItems={'center'} gap={3} width={'100%'}>
           <Stack width={'100%'}>

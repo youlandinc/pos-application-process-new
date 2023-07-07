@@ -71,6 +71,12 @@ export const PipelineAch: FC = observer(() => {
           ach: ACH_INFORMATION,
           isGenerateFile: true,
         };
+      case UserType.LENDER:
+        return {
+          tip: 'We need you to provide US ACH information in order to pay your lender compensation.',
+          ach: ACH_INFORMATION,
+          isGenerateFile: true,
+        };
       default:
         return {
           tip: '',

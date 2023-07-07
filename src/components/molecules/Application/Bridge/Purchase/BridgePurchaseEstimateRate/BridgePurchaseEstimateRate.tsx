@@ -31,8 +31,13 @@ const initialize: BPQueryData = {
   isCor: false,
   cor: undefined,
   arv: undefined,
+  lenderPoints: undefined,
+  lenderProcessingFee: undefined,
   brokerPoints: undefined,
   brokerProcessingFee: undefined,
+  officerPoints: undefined,
+  officerProcessingFee: undefined,
+  agentFee: undefined,
 };
 
 export interface BridgePurchaseLoanInfo {
@@ -66,6 +71,10 @@ export interface BridgePurchaseLoanInfo {
   brokerPoints: number;
   brokerOriginationFee: number;
   brokerProcessingFee: number;
+  // lender
+  lenderPoints: number;
+  lenderOriginationFee: number;
+  lenderProcessingFee: number;
   // officer
   officerPoints: number;
   officerOriginationFee: number;

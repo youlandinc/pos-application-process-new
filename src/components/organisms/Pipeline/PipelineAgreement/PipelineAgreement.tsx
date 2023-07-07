@@ -36,6 +36,7 @@ export const PipelineAgreement: FC = observer(() => {
     pipelineTask: {
       formData: {
         BROKER_AGREEMENT,
+        LENDER_AGREEMENT,
         LOAN_OFFICER_AGREEMENT,
         REAL_ESTATE_AGENT_AGREEMENT,
       },
@@ -61,6 +62,14 @@ export const PipelineAgreement: FC = observer(() => {
           label: 'Broker Agreement',
           tip: 'Please fill out and read our broker agreement.',
           agreement: BROKER_AGREEMENT,
+        };
+      case UserType.LENDER:
+        return {
+          isRenderLicense: false,
+          isGenerateFile: true,
+          label: 'Lender Agreement',
+          tip: 'Please fill out and read our lender agreement.',
+          agreement: LENDER_AGREEMENT,
         };
       case UserType.LOAN_OFFICER:
         return {
@@ -88,6 +97,7 @@ export const PipelineAgreement: FC = observer(() => {
         };
     }
   }, [
+    LENDER_AGREEMENT,
     BROKER_AGREEMENT,
     LOAN_OFFICER_AGREEMENT,
     REAL_ESTATE_AGENT_AGREEMENT,
