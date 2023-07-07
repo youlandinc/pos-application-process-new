@@ -32,7 +32,11 @@ import '@/styles/globals.css';
 import { createEmotionCache } from '@/styles';
 import { theme } from '@/theme';
 
-import { ProviderDetectActive, ProviderPersistData } from '@/components/atoms';
+import {
+  ProviderDetectActive,
+  ProviderPersistData,
+  StyledLoading,
+} from '@/components/atoms';
 import { Provider, rootStore } from '@/models/Root';
 
 import { _fetchSaasConfig } from '@/requests/saas';
@@ -50,7 +54,8 @@ export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const { enqueueSnackbar } = useSnackbar();
   const { setItem } = useSessionStorageState('tenantConfig');
-  useAsync(async () => {
+
+  const { loading } = useAsync(async () => {
     return await _fetchSaasConfig()
       .then(({ data }) => {
         setItem(data);
@@ -137,8 +142,10 @@ export default function MyApp(props: MyAppProps) {
     },
   }));
 
-  const renderComponent = useMemo(
-    () => (
+  const renderComponent = useMemo(() => {
+    return loading ? (
+      <StyledLoading />
+    ) : (
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <LocalizationProvider apterLocale={en} dateAdapter={AdapterDateFns}>
@@ -159,9 +166,8 @@ export default function MyApp(props: MyAppProps) {
           </SnackbarProvider>
         </LocalizationProvider>
       </ThemeProvider>
-    ),
-    [Component, StyledMaterialDesignContent, pageProps],
-  );
+    );
+  }, [Component, StyledMaterialDesignContent, loading, pageProps]);
 
   return (
     <>
