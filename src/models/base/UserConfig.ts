@@ -9,6 +9,7 @@ export const UserConfig = types
         types.literal(UserType.BROKER),
         types.literal(UserType.REAL_ESTATE_AGENT),
         types.literal(UserType.LOAN_OFFICER),
+        types.literal(UserType.LENDER),
       ),
     ),
     loginType: types.maybe(
