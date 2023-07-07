@@ -53,7 +53,7 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const { enqueueSnackbar } = useSnackbar();
-  const { setItem } = useSessionStorageState('tenantConfig');
+  const { setItem, saasState } = useSessionStorageState('tenantConfig');
 
   const { loading } = useAsync(async () => {
     return await _fetchSaasConfig()
@@ -143,31 +143,34 @@ export default function MyApp(props: MyAppProps) {
   }));
 
   const renderComponent = useMemo(() => {
-    return loading ? (
-      <StyledLoading />
-    ) : (
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <LocalizationProvider apterLocale={en} dateAdapter={AdapterDateFns}>
-          <SnackbarProvider
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            Components={{
-              success: StyledMaterialDesignContent,
-              error: StyledMaterialDesignContent,
-              default: StyledMaterialDesignContent,
-              info: StyledMaterialDesignContent,
-              warning: StyledMaterialDesignContent,
-            }}
-          >
-            <Component {...pageProps} />
-          </SnackbarProvider>
-        </LocalizationProvider>
-      </ThemeProvider>
-    );
-  }, [Component, StyledMaterialDesignContent, loading, pageProps]);
+    if (saasState) {
+      return (
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <LocalizationProvider apterLocale={en} dateAdapter={AdapterDateFns}>
+            <SnackbarProvider
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              Components={{
+                success: StyledMaterialDesignContent,
+                error: StyledMaterialDesignContent,
+                default: StyledMaterialDesignContent,
+                info: StyledMaterialDesignContent,
+                warning: StyledMaterialDesignContent,
+              }}
+            >
+              <Component {...pageProps} />
+            </SnackbarProvider>
+          </LocalizationProvider>
+        </ThemeProvider>
+      );
+    }
+    if (loading) {
+      return <StyledLoading sx={{ color: 'black' }} />;
+    }
+  }, [Component, StyledMaterialDesignContent, loading, pageProps, saasState]);
 
   return (
     <>
