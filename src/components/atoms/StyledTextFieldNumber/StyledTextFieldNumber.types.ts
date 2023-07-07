@@ -16,4 +16,5 @@ export interface StyledTextFieldNumberProps {
   disabled?: boolean;
   validate?: undefined | string[];
   percentage?: boolean;
+  error?: boolean | undefined;
 }
