@@ -23,17 +23,17 @@ import {
 } from '@/requests/dashboard';
 
 import {
-  BridgeRatesList,
-  BridgeRefinanceRatesDrawer,
-  BridgeRefinanceRatesSearch,
-} from '@/components/molecules';
-
-import {
   BridgePurchaseEstimateRateData,
   BridgeRefinanceEstimateRateData,
   Encompass,
   RatesProductData,
 } from '@/types';
+
+import {
+  BridgeRatesList,
+  BridgeRefinanceRatesDrawer,
+  BridgeRefinanceRatesSearch,
+} from '@/components/molecules';
 
 const initialize: BRQueryData = {
   homeValue: undefined,
@@ -45,6 +45,8 @@ const initialize: BRQueryData = {
   arv: undefined,
   brokerPoints: undefined,
   brokerProcessingFee: undefined,
+  lenderPoints: undefined,
+  lenderProcessingFee: undefined,
   officerPoints: undefined,
   officerProcessingFee: undefined,
   agentFee: undefined,
@@ -96,6 +98,8 @@ export const BridgeRefinanceRates: FC = observer(() => {
           isCor,
           cor,
           arv,
+          lenderPoints,
+          lenderProcessingFee,
           brokerPoints,
           brokerProcessingFee,
           officerPoints,
@@ -107,10 +111,12 @@ export const BridgeRefinanceRates: FC = observer(() => {
           homeValue,
           balance,
           isCashOut,
-          cashOutAmount: cashOutAmount,
+          cashOutAmount,
           isCor,
-          cor: cor,
-          arv: arv,
+          cor,
+          arv,
+          lenderPoints,
+          lenderProcessingFee,
           brokerPoints,
           brokerProcessingFee,
           officerPoints,
