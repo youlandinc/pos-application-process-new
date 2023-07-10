@@ -1,3 +1,4 @@
+import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
 import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
@@ -13,7 +14,12 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-import { POSFormatDollar, POSFormatPercent, POSNotUndefined } from '@/utils';
+import {
+  POSFindLabel,
+  POSFormatDollar,
+  POSFormatPercent,
+  POSNotUndefined,
+} from '@/utils';
 
 interface BridgeRefinanceRatesSearchProps {
   onCheck: () => void;
@@ -47,6 +53,8 @@ export const BridgeRefinanceRatesSearch: FC<
     officerPoints,
     officerProcessingFee,
     agentFee,
+    lenderProcessingFee,
+    lenderPoints,
   } = searchForm;
 
   const [LTVError, setLTVError] = useState<string>('');
@@ -102,7 +110,21 @@ export const BridgeRefinanceRatesSearch: FC<
   }, [cor, homeValue, isCor, loanAmount]);
 
   const pointsError = useMemo(() => {
-    const points = userType === UserType.BROKER ? brokerPoints : officerPoints;
+    let points;
+    switch (userType) {
+      case UserType.BROKER:
+        points = brokerPoints;
+        break;
+      case UserType.LENDER:
+        points = lenderPoints;
+        break;
+      case UserType.LOAN_OFFICER:
+        points = officerPoints;
+        break;
+      default:
+        points = officerPoints;
+        break;
+    }
     if (!POSNotUndefined(points)) {
       return [''];
     }
@@ -110,15 +132,30 @@ export const BridgeRefinanceRatesSearch: FC<
       return undefined;
     }
     return [
-      `${
-        userType === UserType.BROKER ? 'Broker' : 'Loan officer'
-      } origination fee must be lesser than or equal to 5%.`,
+      `${POSFindLabel(
+        OPTIONS_COMMON_USER_TYPE,
+        userType as string as UserType,
+      )} origination fee must be lesser than or equal to 5%.`,
     ];
-  }, [brokerPoints, officerPoints, userType]);
+  }, [brokerPoints, officerPoints, userType, lenderPoints]);
 
   const processingFeeError = useMemo(() => {
-    const fee =
-      userType === UserType.BROKER ? brokerProcessingFee : officerProcessingFee;
+    let fee;
+    switch (userType) {
+      case UserType.BROKER:
+        fee = brokerProcessingFee;
+        break;
+      case UserType.LENDER:
+        fee = lenderProcessingFee;
+        break;
+      case UserType.LOAN_OFFICER:
+        fee = officerProcessingFee;
+        break;
+      default:
+        fee = officerProcessingFee;
+        break;
+    }
+
     if (!POSNotUndefined(fee) || !loanAmount) {
       return [''];
     }
@@ -126,13 +163,20 @@ export const BridgeRefinanceRatesSearch: FC<
       return undefined;
     }
     return [
-      `${
-        userType === UserType.BROKER ? 'Broker' : 'Loan officer'
-      } origination fee must be lesser than or equal to ${POSFormatDollar(
+      `${POSFindLabel(
+        OPTIONS_COMMON_USER_TYPE,
+        userType as string as UserType,
+      )} origination fee must be lesser than or equal to ${POSFormatDollar(
         loanAmount,
       )}.`,
     ];
-  }, [brokerProcessingFee, loanAmount, officerProcessingFee, userType]);
+  }, [
+    brokerProcessingFee,
+    loanAmount,
+    officerProcessingFee,
+    userType,
+    lenderProcessingFee,
+  ]);
 
   const agentFeeError = useMemo(() => {
     if (!POSNotUndefined(agentFee) || !loanAmount) {
@@ -166,6 +210,13 @@ export const BridgeRefinanceRatesSearch: FC<
         flag =
           POSNotUndefined(brokerPoints) &&
           POSNotUndefined(brokerProcessingFee) &&
+          !pointsError &&
+          !processingFeeError;
+        break;
+      case UserType.LENDER:
+        flag =
+          POSNotUndefined(lenderPoints) &&
+          POSNotUndefined(lenderProcessingFee) &&
           !pointsError &&
           !processingFeeError;
         break;
@@ -213,6 +264,8 @@ export const BridgeRefinanceRatesSearch: FC<
     processingFeeError,
     brokerPoints,
     brokerProcessingFee,
+    lenderPoints,
+    lenderProcessingFee,
     homeValue,
     balance,
     cashOutAmount,
@@ -267,6 +320,56 @@ export const BridgeRefinanceRatesSearch: FC<
                   prefix={'$'}
                   validate={processingFeeError}
                   value={brokerProcessingFee}
+                />
+              </Stack>
+            </Stack>
+          </StyledFormItem>
+        );
+      case UserType.LENDER:
+        return (
+          <StyledFormItem
+            gap={3}
+            label={'Lender Origination Compensation'}
+            labelSx={{ m: 0 }}
+            sub
+          >
+            <Stack
+              flexDirection={{ lg: 'row', xs: 'column' }}
+              gap={3}
+              maxWidth={900}
+              width={'100%'}
+            >
+              <Stack flex={1} gap={1}>
+                <Typography>Lender Origination Fee</Typography>
+                <StyledTextFieldNumber
+                  decimalScale={3}
+                  disabled={loading || loanStage === LoanStage.Approved}
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      lenderPoints: floatValue,
+                    });
+                  }}
+                  percentage
+                  suffix={'%'}
+                  thousandSeparator={false}
+                  validate={pointsError}
+                  value={lenderPoints}
+                />
+              </Stack>
+              <Stack flex={1} gap={1}>
+                <Typography>Lender Processing Fee</Typography>
+                <StyledTextFieldNumber
+                  disabled={loading || loanStage === LoanStage.Approved}
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      lenderProcessingFee: floatValue,
+                    });
+                  }}
+                  prefix={'$'}
+                  validate={processingFeeError}
+                  value={lenderProcessingFee}
                 />
               </Stack>
             </Stack>
@@ -366,6 +469,8 @@ export const BridgeRefinanceRatesSearch: FC<
     agentFeeError,
     brokerPoints,
     brokerProcessingFee,
+    lenderPoints,
+    lenderProcessingFee,
     loading,
     loanStage,
     officerPoints,

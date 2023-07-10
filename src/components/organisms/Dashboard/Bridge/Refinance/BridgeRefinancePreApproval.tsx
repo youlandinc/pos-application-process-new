@@ -10,22 +10,19 @@ import { useMst } from '@/models/Root';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { useAsyncEffect } from '@/hooks';
 import { Address, IAddress } from '@/models/common/Address';
+import { LoanStage, UserType } from '@/types/enum';
 import {
   POSFormatDollar,
   POSFormatLocalPercent,
-  POSFormatPercent,
+  POSNotUndefined,
 } from '@/utils';
 import {
-  BPPreApprovalLetterData,
   BridgeRefinanceEstimateRateData,
-  BRPreApprovalLetterData,
   MPPreApprovalLetterBRData,
-  MPPreApprovalLetterData,
   PropertyOpt,
   PropertyUnitOpt,
   RatesProductData,
 } from '@/types';
-import { LoanStage, UserType } from '@/types/enum';
 import {
   _fetchPreApprovedLetterCheck,
   _fetchPreApprovedLetterInfo,
@@ -105,9 +102,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     if (!rateData?.homeValue) {
       return 0;
     }
-    // if (rateData?.isCor) {
-    //   setLTVError(undefined);
-    // }
     let total = rateData?.balance || 0;
     if (rateData?.isCashOut) {
       total += rateData?.cashOutAmount || 0;
@@ -211,13 +205,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     await getInitData(router.query.processId as string);
   }, [router.query.processId]);
 
-  // const onDialogSendEmailClick = useCallback(() => {
-  //   close();
-  //   setTimeout(() => {
-  //     infoRef.current?.focus();
-  //   });
-  // }, [close]);
-
   const onChangeTableStatus = useCallback(() => {
     setTableStatus(tableStatus === 'edit' ? 'view' : 'edit');
     setCheckResult(undefined);
@@ -235,10 +222,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     };
     const { data, status } = await _fetchPreApprovedLetterCheck(
       router.query.processId as string,
-      postData as
-        | BRPreApprovalLetterData
-        | BPPreApprovalLetterData
-        | MPPreApprovalLetterData,
+      postData as MPPreApprovalLetterBRData,
     );
     if (status === 200) {
       setCheckResult(!!data);
@@ -263,7 +247,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
       postData as UpdateRatesPostData,
     );
     if (res.status === 200) {
-      // open();
       setCheckResult(undefined);
       setTableStatus('view');
       await getInitData(router.query.processId as string);
@@ -293,10 +276,10 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
   const brokerFeeError = useMemo(() => {
     const { brokerProcessingFee } = rateData || {};
 
-    if (!brokerProcessingFee || !editLoanAmount) {
-      return [''];
+    if (!POSNotUndefined(brokerProcessingFee) || !editLoanAmount) {
+      return undefined;
     }
-    if (brokerProcessingFee <= editLoanAmount) {
+    if ((brokerProcessingFee as number) <= editLoanAmount) {
       return undefined;
     }
     return [
@@ -309,8 +292,8 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
   const clickable = useMemo(() => {
     const brokerCondition =
       userType === UserType.BROKER
-        ? rateData?.brokerPoints &&
-          rateData?.brokerProcessingFee &&
+        ? POSNotUndefined(rateData?.brokerPoints) &&
+          POSNotUndefined(rateData?.brokerProcessingFee) &&
           !brokerPointsError &&
           !brokerFeeError
         : true;
@@ -361,6 +344,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
         fontSize={16}
         fontWeight={400}
         lineHeight={1.5}
+        maxWidth={{ xs: '100%', md: 600, xl: '100%' }}
         mt={3}
         p={3}
         width={'100%'}
@@ -370,29 +354,36 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             sx={{ justifyContent: 'flex-start', color: 'primary.main' }}
           />
         ) : checkResult ? (
-          <Box>
-            <Box fontWeight={700}>Your updated loan product</Box>
-            <Box mt={1}>
-              Based on that new info, here&apos;s an updated rate and loan you
-              might like
-            </Box>
-            <Box fontWeight={700} mt={1}>
-              {POSFormatLocalPercent(productData?.interestRateOfYear)} Rate /{' '}
-              {productData?.loanTerm} months /{' '}
-              {POSFormatDollar(productData?.paymentOfMonth)} Monthly payment
-            </Box>
+          <Stack
+            alignItems={'center'}
+            flexDirection={{ xl: 'row', xs: 'column' }}
+            justifyContent={'space-between'}
+          >
+            <Stack gap={1}>
+              <Box fontWeight={700}>Your updated loan product</Box>
+              <Box>
+                Based on that new info, here&apos;s an updated rate and loan you
+                might like
+              </Box>
+              <Box fontWeight={700}>
+                {POSFormatLocalPercent(productData?.interestRateOfYear)} Rate /{' '}
+                {productData?.loanTerm} months /{' '}
+                {POSFormatDollar(productData?.paymentOfMonth)} Monthly payment
+              </Box>
+            </Stack>
+
             <Box sx={{ textAlign: 'center' }}>
               <StyledButton
                 color={'primary'}
                 disabled={!clickable}
                 onClick={onClickUpdate}
-                sx={{ mt: 3 }}
+                sx={{ width: 200, mt: { xl: 0, xs: 1 } }}
                 variant={'contained'}
               >
                 Update
               </StyledButton>
             </Box>
-          </Box>
+          </Stack>
         ) : (
           <Box>
             Based on your information, we couldn&apos;t find any rate options.
@@ -414,13 +405,10 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
   const renderEditChildren = useMemo(() => {
     return (
       <>
-        <Stack
-          flexDirection={{ lg: 'row', xs: 'column' }}
-          gap={3}
-          width={'100%'}
-        >
+        <Stack gap={3} width={'100%'}>
           <StyledTextFieldNumber
             disabled={checkLoading}
+            error={!!LTVError}
             label="As-is Property Value"
             onValueChange={({ floatValue }) =>
               setRateData({
@@ -429,11 +417,11 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
               })
             }
             prefix={'$'}
-            validate={LTVError}
             value={rateData?.homeValue}
           />
           <StyledTextFieldNumber
             disabled={checkLoading}
+            error={!!LTVError}
             label="Payoff Amount"
             onValueChange={({ floatValue }) => {
               setRateData({
@@ -442,7 +430,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
               });
             }}
             prefix={'$'}
-            validate={LTVError}
             value={rateData?.balance}
           />
           {/* {!rateData?.isCor && ( */}
@@ -453,7 +440,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             percentage
             suffix={'%'}
             thousandSeparator={false}
-            value={POSFormatPercent(LTV)}
+            value={POSFormatLocalPercent(LTV)}
           />
           {/* )} */}
         </Stack>
@@ -487,6 +474,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             {rateData?.isCashOut && (
               <StyledTextFieldNumber
                 disabled={checkLoading}
+                error={!!LTCError}
                 label={'Cash out amount'}
                 onValueChange={({ floatValue }) => {
                   setRateData({
@@ -495,7 +483,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
                   });
                 }}
                 prefix={'$'}
-                validate={LTCError}
                 value={rateData?.cashOutAmount || undefined}
               />
             )}
@@ -521,14 +508,10 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
         >
           <Transitions>
             {rateData?.isCor && (
-              <Stack
-                flexDirection={{ lg: 'row', xs: 'column' }}
-                gap={3}
-                width={'100%'}
-              >
+              <Stack gap={3} width={'100%'}>
                 <StyledTextFieldNumber
                   disabled={checkLoading}
-                  // validate={!!LTCError}
+                  error={!!LTCError}
                   label={'Estimated rehab loan amount'}
                   onValueChange={({ floatValue }) => {
                     setRateData({
@@ -541,7 +524,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
                 />
                 <StyledTextFieldNumber
                   disabled={checkLoading}
-                  // validate={!!LTCError}
+                  error={!!LTCError}
                   label={'After repair value (ARV)'}
                   onValueChange={({ floatValue }) => {
                     setRateData({
@@ -560,7 +543,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
                   percentage={true}
                   suffix={'%'}
                   thousandSeparator={false}
-                  value={POSFormatPercent(LTC)}
+                  value={POSFormatLocalPercent(LTC)}
                 />
               </Stack>
             )}
@@ -582,14 +565,11 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
         >
           <Transitions>
             {userType === UserType.BROKER && (
-              <Stack
-                flexDirection={{ lg: 'row', xs: 'column' }}
-                gap={3}
-                width={'100%'}
-              >
+              <Stack gap={3} width={'100%'}>
                 <StyledTextFieldNumber
                   decimalScale={3}
                   disabled={checkLoading}
+                  error={!!brokerPointsError}
                   label="Broker origination fee"
                   onValueChange={({ floatValue }) =>
                     setRateData({
@@ -599,11 +579,11 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
                   }
                   suffix={'%'}
                   thousandSeparator={false}
-                  validate={brokerPointsError}
                   value={rateData?.brokerPoints}
                 />
                 <StyledTextFieldNumber
                   disabled={checkLoading}
+                  error={!!brokerFeeError}
                   label="Broker processing fee"
                   onValueChange={({ floatValue }) => {
                     setRateData({
@@ -612,7 +592,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
                     });
                   }}
                   prefix={'$'}
-                  validate={brokerFeeError}
                   value={rateData?.brokerProcessingFee}
                 />
               </Stack>
@@ -664,50 +643,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           </PreApprovalEdit>
         </>
       )}
-      {/* <StyledDialog
-         content={
-         <>
-         '& .updatedImage': {
-         display: 'inline-block',
-         width: 192,
-         height: 160,
-         marginBlockEnd: 24,
-         background:
-         'url(/PreapprovalLetter/letter-1.png) no-repeat center / contain',
-         },
-         
-         <Box className={'updatedImage'} />
-         '& .updatedTip': {
-         ...POSFont(16, 700, 1.5, 'rgba(0, 0, 0, 0.87)'),
-         paddingInline: 60,
-         fontSize: 24,
-         },
-         <Box className={'updatedTip'}>
-         Your pre-approval letter has already been updated!
-         </Box>
-         </>
-         }
-         footer={
-         <>
-         <StyledButton
-         onClick={() => router.push('/dashboard/rates')}
-         variant={'outlined'}
-         >
-         Go to Rates
-         </StyledButton>
-         <StyledButton
-         color={'primary'}
-         disableElevation
-         onClick={onDialogSendEmailClick}
-         variant={'contained'}
-         >
-         Send Email
-         </StyledButton>
-         </>
-         }
-         onClose={close}
-         open={visible}
-         ></StyledDialog> */}
     </Box>
   );
 });

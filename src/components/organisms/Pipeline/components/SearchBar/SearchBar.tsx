@@ -48,6 +48,8 @@ export const SearchBar: FC<SearchBarProps> = ({
     switch (userType) {
       case UserType.BROKER:
         return 'for Broker';
+      case UserType.LENDER:
+        return 'for Table Funding';
       case UserType.LOAN_OFFICER:
         return 'for Loan Officer';
       case UserType.REAL_ESTATE_AGENT:

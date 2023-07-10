@@ -69,6 +69,23 @@ export const BridgeRefinanceRatesDrawer: FC<
             />
           </>
         );
+      case UserType.LENDER:
+        return (
+          <>
+            <CardItem
+              info={`${POSFormatDollar(
+                selectedItem?.lenderOriginationFee,
+              )}(${POSFormatPercent(
+                (selectedItem?.lenderPoints as number) / 100,
+              )})`}
+              label={'Lender Origination Fee'}
+            />
+            <CardItem
+              info={POSFormatDollar(selectedItem?.lenderProcessingFee)}
+              label={'Lender Processing Fee'}
+            />
+          </>
+        );
       case UserType.LOAN_OFFICER:
         return (
           <>
@@ -103,6 +120,9 @@ export const BridgeRefinanceRatesDrawer: FC<
     selectedItem?.brokerOriginationFee,
     selectedItem?.brokerPoints,
     selectedItem?.brokerProcessingFee,
+    selectedItem?.lenderOriginationFee,
+    selectedItem?.lenderPoints,
+    selectedItem?.lenderProcessingFee,
     selectedItem?.officerOriginationFee,
     selectedItem?.officerPoints,
     selectedItem?.officerProcessingFee,

@@ -8,7 +8,6 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { POSFlex } from '@/styles';
 import { useAsyncEffect } from '@/hooks';
 import { Address, IAddress } from '@/models/common/Address';
 import { LoanStage, UserType } from '@/types/enum';
@@ -179,13 +178,6 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     await getInitData(router.query.processId as string);
   }, [router.query.processId]);
 
-  // const onDialogSendEmailClick = useCallback(() => {
-  //   close();
-  //   setTimeout(() => {
-  //     infoRef.current?.focus();
-  //   });
-  // }, [close]);
-
   const onChangeTableStatus = useCallback(() => {
     setTableStatus(tableStatus === 'edit' ? 'view' : 'edit');
     setCheckResult(undefined);
@@ -336,38 +328,35 @@ export const BridgePurchasePreApproval: FC = observer(() => {
             sx={{ justifyContent: 'flex-start', color: 'primary.main' }}
           />
         ) : checkResult ? (
-          <Box
-            sx={{
-              ...POSFlex('center', 'space-between', {
-                xl: 'row',
-                xs: 'column',
-              }),
-            }}
+          <Stack
+            alignItems={'center'}
+            flexDirection={{ xl: 'row', xs: 'column' }}
+            justifyContent={'space-between'}
           >
-            <Box>
+            <Stack gap={1}>
               <Box fontWeight={700}>Your updated loan product</Box>
-              <Box mt={1}>
+              <Box>
                 Based on that new info, here&apos;s an updated rate and loan you
                 might like
               </Box>
-              <Box fontWeight={700} mt={1}>
+              <Box fontWeight={700}>
                 {POSFormatLocalPercent(productData?.interestRateOfYear)} Rate /{' '}
                 {productData?.loanTerm} months /{' '}
                 {POSFormatDollar(productData?.paymentOfMonth)} Monthly payment
               </Box>
-            </Box>
+            </Stack>
             <Box>
               <StyledButton
                 color={'primary'}
                 disabled={!clickable}
                 onClick={onClickUpdate}
-                sx={{ width: 200, mt: { xl: 0, xs: 3 } }}
+                sx={{ width: 200, mt: { xl: 0, xs: 1 } }}
                 variant={'contained'}
               >
                 Update
               </StyledButton>
             </Box>
-          </Box>
+          </Stack>
         ) : (
           <Box>
             Based on your information, we couldn&apos;t find any rate options.
@@ -595,50 +584,6 @@ export const BridgePurchasePreApproval: FC = observer(() => {
           </PreApprovalEdit>
         </>
       )}
-      {/* <StyledDialog
-         content={
-         <>
-         '& .updatedImage': {
-         display: 'inline-block',
-         width: 192,
-         height: 160,
-         marginBlockEnd: 24,
-         background:
-         'url(/PreapprovalLetter/letter-1.png) no-repeat center / contain',
-         },
-         
-         <Box className={'updatedImage'} />
-         '& .updatedTip': {
-         ...POSFont(16, 700, 1.5, 'rgba(0, 0, 0, 0.87)'),
-         paddingInline: 60,
-         fontSize: 24,
-         },
-         <Box className={'updatedTip'}>
-         Your pre-approval letter has already been updated!
-         </Box>
-         </>
-         }
-         footer={
-         <>
-         <StyledButton
-         onClick={() => router.push('/dashboard/rates')}
-         variant={'outlined'}
-         >
-         Go to Rates
-         </StyledButton>
-         <StyledButton
-         color={'primary'}
-         disableElevation
-         onClick={onDialogSendEmailClick}
-         variant={'contained'}
-         >
-         Send Email
-         </StyledButton>
-         </>
-         }
-         onClose={close}
-         open={visible}
-         /> */}
     </Box>
   );
 });
