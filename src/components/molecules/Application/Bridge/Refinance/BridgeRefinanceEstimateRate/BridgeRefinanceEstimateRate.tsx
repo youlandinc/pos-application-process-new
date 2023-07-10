@@ -35,6 +35,8 @@ const initialize: BRQueryData = {
   arv: undefined,
   brokerPoints: undefined,
   brokerProcessingFee: undefined,
+  lenderPoints: undefined,
+  lenderProcessingFee: undefined,
   officerPoints: undefined,
   officerProcessingFee: undefined,
   agentFee: undefined,
@@ -72,6 +74,10 @@ export interface BridgeRefinanceLoanInfo {
   brokerPoints: number;
   brokerProcessingFee: number;
   brokerOriginationFee: number;
+  // lender
+  lenderPoints: number;
+  lenderProcessingFee: number;
+  lenderOriginationFee: number;
   // officer
   officerPoints: number;
   officerOriginationFee: number;

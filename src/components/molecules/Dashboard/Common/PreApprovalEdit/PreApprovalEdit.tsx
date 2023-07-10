@@ -111,7 +111,6 @@ export const PreApprovalEdit: FC<PreApprovalEditProps> = (props) => {
           </StyledButton>
         </Stack>
       </Stack>
-
       {resultList}
     </Stack>
   );

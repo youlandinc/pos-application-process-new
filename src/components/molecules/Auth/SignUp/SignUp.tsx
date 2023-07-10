@@ -21,7 +21,7 @@ import { POSFlex } from '@/styles';
 import {
   AUTO_HIDE_DURATION,
   LOGIN_APP_KEY,
-  OPTIONS_COMMON_USER_TYPE,
+  OPTIONS_SIGN_UP_ROLE,
   SignUpSchema,
   userpool,
 } from '@/constants';
@@ -198,7 +198,7 @@ export const SignUp: FC<SignUpProps> = observer(
             onChange={(e) =>
               setUserType(e.target.value as keyof typeof UserType)
             }
-            options={OPTIONS_COMMON_USER_TYPE}
+            options={OPTIONS_SIGN_UP_ROLE}
             required
             validate={formError?.userType}
             value={userType}

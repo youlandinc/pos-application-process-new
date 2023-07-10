@@ -41,6 +41,29 @@ export const OPTIONS_COMMON_USER_TYPE: Option[] = [
   },
 ];
 
+export const OPTIONS_SIGN_UP_ROLE: Option[] = [
+  {
+    label: 'Consumer',
+    key: UserType.CUSTOMER,
+    value: UserType.CUSTOMER,
+  },
+  {
+    label: 'Broker',
+    key: UserType.BROKER,
+    value: UserType.BROKER,
+  },
+  {
+    label: 'Real Estate Agent',
+    key: UserType.REAL_ESTATE_AGENT,
+    value: UserType.REAL_ESTATE_AGENT,
+  },
+  {
+    label: 'Loan Officer',
+    key: UserType.LOAN_OFFICER,
+    value: UserType.LOAN_OFFICER,
+  },
+];
+
 export const OPTIONS_COMMON_STATE: Option[] = [
   { label: 'Alabama', value: 'AL', key: 'AL' },
   {
