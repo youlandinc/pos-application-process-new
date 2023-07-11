@@ -234,7 +234,7 @@ export const PipelineProfile: FC = observer(() => {
                   (Optional)
                 </Typography>
               </Typography>
-              <StyledStatus status={BROKER_QUESTIONNAIRE.taskStatus} />
+              <StyledStatus status={LENDER_QUESTIONNAIRE.taskStatus} />
             </Stack>
             <Stack
               alignItems={'center'}
@@ -361,6 +361,7 @@ export const PipelineProfile: FC = observer(() => {
     LENDER_LICENSE.taskName,
     LENDER_LICENSE.taskStatus,
     LENDER_QUESTIONNAIRE.taskName,
+    LENDER_QUESTIONNAIRE.taskStatus,
     LOAN_OFFICER_ACH_INFORMATION.taskName,
     LOAN_OFFICER_ACH_INFORMATION.taskStatus,
     LOAN_OFFICER_AGREEMENT.taskName,
