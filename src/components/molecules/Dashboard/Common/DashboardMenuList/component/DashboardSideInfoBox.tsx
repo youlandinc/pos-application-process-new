@@ -14,8 +14,11 @@ import {
   OPTIONS_MORTGAGE_PROPERTY,
 } from '@/constants';
 
+//import { StyledLoading } from '@/components/atoms';
+
 interface DashboardSideInfoBoxProps {
   info: ISelectedProcessData;
+  loading?: boolean;
 }
 
 interface IBorrowerSummaryData {
@@ -26,7 +29,10 @@ interface IBorrowerSummaryData {
 }
 
 export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
-  ({ info }) => {
+  ({
+    info,
+    //loading
+  }) => {
     const { data } = info;
 
     const [borrowerSummaryData, setBorrowerSummaryData] =
@@ -86,69 +92,72 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
     }, [data]);
 
     return (
-      <>
-        {data && (
+      <Box
+        sx={{
+          mt: 3,
+          maxWidth: 280,
+          borderRadius: 2,
+          p: 3,
+          bgcolor: 'action.hover',
+          minHeight: 100,
+        }}
+      >
+        {/*{loading ? (*/}
+        {/*  <StyledLoading sx={{ color: 'primary.main' }} />*/}
+        {/*) : (*/}
+        <>
+          <Typography mb={1} variant={'subtitle1'}>
+            {borrowerSummaryData?.productType}
+          </Typography>
           <Box
+            className={'customInfo_list'}
+            component={'ul'}
             sx={{
-              mt: 3,
-              maxWidth: 280,
-              borderRadius: 2,
-              p: 3,
-              bgcolor: 'action.hover',
+              width: '100%',
+              p: 0,
+              listStyle: 'none',
             }}
           >
-            <Typography mb={1} variant={'subtitle1'}>
-              {borrowerSummaryData?.productType}
-            </Typography>
-            <Box
-              className={'customInfo_list'}
-              component={'ul'}
-              sx={{
-                width: '100%',
-                p: 0,
-                listStyle: 'none',
-              }}
-            >
-              {borrowerSummaryData?.address && (
-                <Box
-                  color={'text.primary'}
-                  component={'li'}
-                  display={'flex'}
-                  fontSize={14}
-                  lineHeight={1.5}
-                  width={'100%'}
-                >
-                  {borrowerSummaryData.address}
-                </Box>
-              )}
-              {borrowerSummaryData?.occupancyType && (
-                <Box
-                  color={'text.primary'}
-                  component={'li'}
-                  display={'flex'}
-                  fontSize={14}
-                  lineHeight={1.5}
-                  width={'100%'}
-                >
-                  {borrowerSummaryData.occupancyType}
-                </Box>
-              )}
-              {borrowerSummaryData?.propertyType && (
-                <Box
-                  color={'text.primary'}
-                  component={'li'}
-                  display={'flex'}
-                  fontSize={14}
-                  lineHeight={1.5}
-                  width={'100%'}
-                >
-                  {borrowerSummaryData.propertyType}
-                </Box>
-              )}
-            </Box>
+            {borrowerSummaryData?.address && (
+              <Box
+                color={'text.primary'}
+                component={'li'}
+                display={'flex'}
+                fontSize={14}
+                lineHeight={1.5}
+                width={'100%'}
+              >
+                {borrowerSummaryData.address}
+              </Box>
+            )}
+            {borrowerSummaryData?.occupancyType && (
+              <Box
+                color={'text.primary'}
+                component={'li'}
+                display={'flex'}
+                fontSize={14}
+                lineHeight={1.5}
+                width={'100%'}
+              >
+                {borrowerSummaryData.occupancyType}
+              </Box>
+            )}
+            {borrowerSummaryData?.propertyType && (
+              <Box
+                color={'text.primary'}
+                component={'li'}
+                display={'flex'}
+                fontSize={14}
+                lineHeight={1.5}
+                width={'100%'}
+              >
+                {borrowerSummaryData.propertyType}
+              </Box>
+            )}
           </Box>
-        )}
-      </>
+        </>
+        {/*)}*/}
+      </Box>
     );
   },
 );

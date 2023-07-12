@@ -7,11 +7,12 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { AUTO_HIDE_DURATION } from '@/constants';
-import { useAsyncEffect } from '@/hooks';
+import { AUTO_HIDE_DURATION, OPTIONS_COMMON_USER_TYPE } from '@/constants';
+import { useAsyncEffect, useBreakpoints } from '@/hooks';
 import { Address, IAddress } from '@/models/common/Address';
 import { LoanStage, UserType } from '@/types/enum';
 import {
+  POSFindLabel,
   POSFormatDollar,
   POSFormatLocalPercent,
   POSNotUndefined,
@@ -43,9 +44,8 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
   const { userType } = useMst();
 
   const router = useRouter();
+  const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
-
-  // const { open, visible, close } = useSwitch(false);
 
   const [loanStage, setLoanStage] = useState<LoanStage | undefined>(
     LoanStage.PreApproved,
@@ -179,6 +179,11 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           arv,
           brokerPoints,
           brokerProcessingFee,
+          lenderPoints,
+          lenderProcessingFee,
+          officerPoints,
+          officerProcessingFee,
+          agentFee,
         } = data;
         setRateData({
           cor,
@@ -190,6 +195,11 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           arv,
           brokerPoints,
           brokerProcessingFee,
+          lenderPoints,
+          lenderProcessingFee,
+          officerPoints,
+          officerProcessingFee,
+          agentFee,
         });
       })
       .catch((err) =>
@@ -261,49 +271,134 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     rateData,
   ]);
 
-  const brokerPointsError = useMemo(() => {
-    const { brokerPoints } = rateData || {};
+  const pointsError = useMemo(() => {
+    const { brokerPoints, lenderPoints, officerPoints } = rateData || {};
 
-    if (!brokerPoints) {
+    let points;
+    switch (userType) {
+      case UserType.BROKER:
+        points = brokerPoints;
+        break;
+      case UserType.LENDER:
+        points = lenderPoints;
+        break;
+      case UserType.LOAN_OFFICER:
+        points = officerPoints;
+        break;
+      case UserType.CUSTOMER:
+        return undefined;
+      default:
+        points = officerPoints;
+        break;
+    }
+
+    if (!points) {
       return [''];
     }
-    if (brokerPoints <= 5) {
-      return undefined;
-    }
-    return ['Broker origination fee must be lesser than or equal to 5%.'];
-  }, [rateData]);
-
-  const brokerFeeError = useMemo(() => {
-    const { brokerProcessingFee } = rateData || {};
-
-    if (!POSNotUndefined(brokerProcessingFee) || !editLoanAmount) {
-      return undefined;
-    }
-    if ((brokerProcessingFee as number) <= editLoanAmount) {
+    if (points <= 5) {
       return undefined;
     }
     return [
-      `Broker origination fee must be lesser than or equal to ${POSFormatDollar(
+      `${POSFindLabel(
+        OPTIONS_COMMON_USER_TYPE,
+        userType as string as UserType,
+      )} origination fee must be lesser than or equal to 5%.`,
+    ];
+  }, [rateData, userType]);
+
+  const processingFeeError = useMemo(() => {
+    const { brokerProcessingFee, lenderProcessingFee, officerProcessingFee } =
+      rateData || {};
+
+    let fee;
+    switch (userType) {
+      case UserType.BROKER:
+        fee = brokerProcessingFee;
+        break;
+      case UserType.LENDER:
+        fee = lenderProcessingFee;
+        break;
+      case UserType.LOAN_OFFICER:
+        fee = officerProcessingFee;
+        break;
+      case UserType.CUSTOMER:
+        return undefined;
+      default:
+        fee = officerProcessingFee;
+        break;
+    }
+    if (!POSNotUndefined(fee) || !loanAmount) {
+      return [''];
+    }
+    if ((fee as number) <= loanAmount) {
+      return undefined;
+    }
+    return [
+      `${POSFindLabel(
+        OPTIONS_COMMON_USER_TYPE,
+        userType as string as UserType,
+      )} origination fee must be lesser than or equal to ${POSFormatDollar(
         editLoanAmount,
       )}.`,
     ];
-  }, [rateData, editLoanAmount]);
+  }, [rateData, userType, loanAmount, editLoanAmount]);
+
+  const agentFeeError = useMemo(() => {
+    const { agentFee } = rateData || {};
+    if (!POSNotUndefined(agentFee) || !loanAmount) {
+      return [''];
+    }
+    if (agentFee! <= loanAmount) {
+      return undefined;
+    }
+    return [
+      `Real estate agent fee must be lesser than or equal to ${POSFormatDollar(
+        loanAmount,
+      )}.`,
+    ];
+  }, [loanAmount, rateData]);
 
   const clickable = useMemo(() => {
-    const brokerCondition =
-      userType === UserType.BROKER
-        ? POSNotUndefined(rateData?.brokerPoints) &&
+    let userCondition;
+    switch (userType) {
+      case UserType.BROKER:
+        userCondition =
+          POSNotUndefined(rateData?.brokerPoints) &&
           POSNotUndefined(rateData?.brokerProcessingFee) &&
-          !brokerPointsError &&
-          !brokerFeeError
-        : true;
+          !pointsError &&
+          !processingFeeError;
+        break;
+      case UserType.LENDER:
+        userCondition =
+          POSNotUndefined(rateData?.lenderPoints) &&
+          POSNotUndefined(rateData?.lenderProcessingFee) &&
+          !pointsError &&
+          !processingFeeError;
+        break;
+      case UserType.LOAN_OFFICER:
+        userCondition =
+          POSNotUndefined(rateData?.officerPoints) &&
+          POSNotUndefined(rateData?.officerProcessingFee) &&
+          !pointsError &&
+          !processingFeeError;
+        break;
+      case UserType.REAL_ESTATE_AGENT:
+        userCondition = POSNotUndefined(rateData?.agentFee) && !agentFeeError;
+        break;
+      case UserType.CUSTOMER:
+        userCondition = true;
+        break;
+      default:
+        userCondition = true;
+        break;
+    }
 
     if (
-      !propertyType ||
       !address?.checkAddressValid ||
+      !propertyType ||
       !!LTVError ||
       !!LTCError ||
-      !brokerCondition
+      !userCondition
     ) {
       return false;
     }
@@ -319,19 +414,25 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     return true;
   }, [
     userType,
-    rateData?.brokerPoints,
-    rateData?.brokerProcessingFee,
+    address?.checkAddressValid,
+    propertyType,
+    LTVError,
+    LTCError,
     rateData?.isCor,
     rateData?.isCashOut,
+    rateData?.brokerPoints,
+    rateData?.brokerProcessingFee,
+    rateData?.lenderPoints,
+    rateData?.lenderProcessingFee,
+    rateData?.officerPoints,
+    rateData?.officerProcessingFee,
+    rateData?.agentFee,
     rateData?.cor,
     rateData?.arv,
     rateData?.cashOutAmount,
-    brokerPointsError,
-    brokerFeeError,
-    propertyType,
-    address?.checkAddressValid,
-    LTVError,
-    LTCError,
+    pointsError,
+    processingFeeError,
+    agentFeeError,
     propertyUnit,
   ]);
 
@@ -403,6 +504,137 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
   ]);
 
   const renderEditChildren = useMemo(() => {
+    let additionalCondition;
+    switch (userType) {
+      case UserType.BROKER:
+        additionalCondition = (
+          <>
+            <StyledTextFieldNumber
+              decimalScale={3}
+              disabled={checkLoading}
+              label="Broker Origination Fee"
+              onValueChange={({ floatValue }) =>
+                setRateData({
+                  ...(rateData as BridgeRefinanceEstimateRateData),
+                  brokerPoints: floatValue,
+                })
+              }
+              percentage
+              suffix={'%'}
+              thousandSeparator={false}
+              validate={pointsError}
+              value={rateData?.brokerPoints}
+            />
+            <StyledTextFieldNumber
+              disabled={checkLoading}
+              label="Broker Processing Fee"
+              onValueChange={({ floatValue }) => {
+                setRateData({
+                  ...(rateData as BridgeRefinanceEstimateRateData),
+                  brokerProcessingFee: floatValue,
+                });
+              }}
+              prefix={'$'}
+              validate={processingFeeError}
+              value={rateData?.brokerProcessingFee}
+            />
+          </>
+        );
+        break;
+      case UserType.LENDER:
+        additionalCondition = (
+          <>
+            <StyledTextFieldNumber
+              decimalScale={3}
+              disabled={checkLoading}
+              label="Lender Origination Fee"
+              onValueChange={({ floatValue }) =>
+                setRateData({
+                  ...(rateData as BridgeRefinanceEstimateRateData),
+                  lenderPoints: floatValue,
+                })
+              }
+              percentage
+              suffix={'%'}
+              thousandSeparator={false}
+              validate={pointsError}
+              value={rateData?.lenderPoints}
+            />
+            <StyledTextFieldNumber
+              disabled={checkLoading}
+              label="Lender Processing Fee"
+              onValueChange={({ floatValue }) => {
+                setRateData({
+                  ...(rateData as BridgeRefinanceEstimateRateData),
+                  lenderProcessingFee: floatValue,
+                });
+              }}
+              prefix={'$'}
+              validate={processingFeeError}
+              value={rateData?.lenderProcessingFee}
+            />
+          </>
+        );
+        break;
+      case UserType.LOAN_OFFICER:
+        additionalCondition = (
+          <>
+            <StyledTextFieldNumber
+              decimalScale={3}
+              disabled={checkLoading}
+              label="Loan Officer Origination Fee"
+              onValueChange={({ floatValue }) =>
+                setRateData({
+                  ...(rateData as BridgeRefinanceEstimateRateData),
+                  officerPoints: floatValue,
+                })
+              }
+              percentage
+              suffix={'%'}
+              thousandSeparator={false}
+              validate={pointsError}
+              value={rateData?.officerPoints}
+            />
+            <StyledTextFieldNumber
+              disabled={checkLoading}
+              label="Loan Officer Processing Fee"
+              onValueChange={({ floatValue }) => {
+                setRateData({
+                  ...(rateData as BridgeRefinanceEstimateRateData),
+                  officerProcessingFee: floatValue,
+                });
+              }}
+              prefix={'$'}
+              validate={processingFeeError}
+              value={rateData?.officerProcessingFee}
+            />
+          </>
+        );
+        break;
+      case UserType.REAL_ESTATE_AGENT:
+        additionalCondition = (
+          <>
+            <StyledTextFieldNumber
+              decimalScale={3}
+              disabled={checkLoading}
+              label="Real Estate Agent Origination Fee"
+              onValueChange={({ floatValue }) =>
+                setRateData({
+                  ...(rateData as BridgeRefinanceEstimateRateData),
+                  agentFee: floatValue,
+                })
+              }
+              percentage
+              suffix={'%'}
+              thousandSeparator={false}
+              validate={agentFeeError}
+              value={rateData?.agentFee}
+            />
+          </>
+        );
+        break;
+    }
+
     return (
       <>
         <Stack gap={3} width={'100%'}>
@@ -457,7 +689,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           <StyledCheckbox
             checked={rateData?.isCashOut}
             disabled={checkLoading}
-            label={'Cash out'}
+            label={'Cash Out'}
             onChange={(e) => {
               setRateData({
                 ...(rateData as BridgeRefinanceEstimateRateData),
@@ -475,7 +707,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
               <StyledTextFieldNumber
                 disabled={checkLoading}
                 error={!!LTCError}
-                label={'Cash out amount'}
+                label={'Cash Out Amount'}
                 onValueChange={({ floatValue }) => {
                   setRateData({
                     ...rateData,
@@ -492,7 +724,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           <StyledCheckbox
             checked={rateData?.isCor}
             disabled={checkLoading}
-            label={'Rehab loan amount'}
+            label={'Rehab Loan Amount'}
             onChange={(e) => {
               setRateData({
                 ...(rateData as BridgeRefinanceEstimateRateData),
@@ -512,7 +744,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
                 <StyledTextFieldNumber
                   disabled={checkLoading}
                   error={!!LTCError}
-                  label={'Estimated rehab loan amount'}
+                  label={'Estimated Rehab Loan Amount'}
                   onValueChange={({ floatValue }) => {
                     setRateData({
                       ...rateData,
@@ -525,7 +757,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
                 <StyledTextFieldNumber
                   disabled={checkLoading}
                   error={!!LTCError}
-                  label={'After repair value (ARV)'}
+                  label={'After Repair Value (ARV)'}
                   onValueChange={({ floatValue }) => {
                     setRateData({
                       ...rateData,
@@ -559,63 +791,39 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             )}
           </Transitions>
         </Stack>
-        <Stack
-          sx={{ display: userType === UserType.BROKER ? 'block' : 'none' }}
-          width={'100%'}
+        <Transitions
+          style={{
+            display: userType !== UserType.CUSTOMER ? 'block' : 'none',
+            width: '100%',
+          }}
         >
-          <Transitions>
-            {userType === UserType.BROKER && (
-              <Stack gap={3} width={'100%'}>
-                <StyledTextFieldNumber
-                  decimalScale={3}
-                  disabled={checkLoading}
-                  error={!!brokerPointsError}
-                  label="Broker origination fee"
-                  onValueChange={({ floatValue }) =>
-                    setRateData({
-                      ...(rateData as BridgeRefinanceEstimateRateData),
-                      brokerPoints: floatValue,
-                    })
-                  }
-                  suffix={'%'}
-                  thousandSeparator={false}
-                  value={rateData?.brokerPoints}
-                />
-                <StyledTextFieldNumber
-                  disabled={checkLoading}
-                  error={!!brokerFeeError}
-                  label="Broker processing fee"
-                  onValueChange={({ floatValue }) => {
-                    setRateData({
-                      ...(rateData as BridgeRefinanceEstimateRateData),
-                      brokerProcessingFee: floatValue,
-                    });
-                  }}
-                  prefix={'$'}
-                  value={rateData?.brokerProcessingFee}
-                />
-              </Stack>
-            )}
-          </Transitions>
-        </Stack>
+          <Stack gap={3} width={'100%'}>
+            {additionalCondition}
+          </Stack>
+        </Transitions>
       </>
     );
   }, [
+    userType,
+    checkLoading,
     LTVError,
     rateData,
-    checkLoading,
     LTV,
     LTCError,
     LTC,
-    userType,
-    brokerPointsError,
-    brokerFeeError,
+    pointsError,
+    processingFeeError,
+    agentFeeError,
   ]);
 
   const infoRef = useRef<HTMLInputElement | null>(null);
 
   return (
-    <Box mx={{ lg: 'auto', xs: 0 }}>
+    <Transitions
+      style={{
+        margin: ['xs', 'sm', 'md'].includes(breakpoints) ? 0 : '0 auto',
+      }}
+    >
       {tableStatus === 'view' ? (
         <PreApprovalInfo
           loading={initState.loading}
@@ -643,6 +851,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           </PreApprovalEdit>
         </>
       )}
-    </Box>
+    </Transitions>
   );
 });

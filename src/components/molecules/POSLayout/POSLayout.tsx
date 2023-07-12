@@ -20,17 +20,19 @@ import { DashboardMenuList } from '@/components/molecules';
 
 export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
   const store = useMst();
+  const {
+    selectedProcessData: { fetchProcessData, loading },
+  } = store;
   const breakpoint = useBreakpoints();
   const router = useRouter();
   useCheckIsLogin();
   useCheckInfoIsComplete();
 
   useEffect(() => {
-    const { fetchProcessData } = store.selectedProcessData;
     if (!router.pathname.includes('pipeline') && router.query.processId) {
       fetchProcessData(router.query.processId);
     }
-  }, [router.pathname, router.query.processId, store.selectedProcessData]);
+  }, [fetchProcessData, router.pathname, router.query.processId]);
 
   return (
     <Box sx={{ height: '100%' }}>
@@ -44,6 +46,7 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
           <Box sx={{ minWidth: 280 }}>
             <DashboardMenuList
               info={store.selectedProcessData}
+              loading={loading}
               scene={
                 store.selectedProcessData.scene || SceneType.bridge_purchase
               }

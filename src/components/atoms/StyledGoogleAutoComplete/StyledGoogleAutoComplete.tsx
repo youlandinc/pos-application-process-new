@@ -125,11 +125,11 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
               />
               <StyledTextField
                 disabled={disabled}
-                label={'Zip code'}
+                label={'Zip Code'}
                 onChange={(e) =>
                   address.changeFieldValue('postcode', e.target.value)
                 }
-                placeholder={'Zip code'}
+                placeholder={'Zip Code'}
                 sx={{ flex: 1 }}
                 value={address.postcode}
               />
