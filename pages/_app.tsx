@@ -168,7 +168,7 @@ export default function MyApp(props: MyAppProps) {
       );
     }
     if (loading) {
-      return <StyledLoading sx={{ color: 'black' }} />;
+      return <StyledLoading sx={{ color: 'primary.main' }} />;
     }
   }, [Component, StyledMaterialDesignContent, loading, pageProps, saasState]);
 

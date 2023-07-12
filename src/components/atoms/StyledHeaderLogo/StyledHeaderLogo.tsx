@@ -8,6 +8,7 @@ import { useSessionStorageState } from '@/hooks';
 export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
   sx,
   logoUrl = '/images/logo/logo_blue.svg',
+  disabled = false,
 }) => {
   const router = useRouter();
   const { saasState } = useSessionStorageState('tenantConfig');
@@ -22,17 +23,15 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
 
   return (
     <Box
-      onClick={() => router.push('/pipeline')}
+      onClick={() => {
+        if (disabled) {
+          return;
+        }
+        router.push('/pipeline');
+      }}
       sx={{ ...StyledHeaderLogoStyles, ...sx }}
     >
       {Logo}
-      {/* <Image
-        alt=""
-        fill
-        priority
-        src={saasState?.logoUrl || logoUrl}
-        style={{ maxWidth: 180 }}
-      /> */}
     </Box>
   );
 };
