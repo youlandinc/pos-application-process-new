@@ -1,8 +1,8 @@
-import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
 import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
 
+import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
 import { BRQueryData } from '@/requests/dashboard';
 import { LoanStage, UserType } from '@/types/enum';
 import {
