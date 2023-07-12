@@ -59,31 +59,37 @@ export const PreApprovalEdit: FC<PreApprovalEditProps> = (props) => {
         <Stack width={'100%'}>
           <StyledSelect
             disabled={editable}
-            label="Property type"
+            label="Property Type"
             onChange={(e) => onTypeChange(e.target.value as PropertyOpt)}
             options={OPTIONS_MORTGAGE_PROPERTY}
             sx={{ maxWidth: '100%' }}
             value={propertyType}
           />
         </Stack>
-        {propertyType === 'two_to_four_family' && (
-          <Stack width={'100%'}>
-            <Transitions>
-              <StyledSelect
-                disabled={editable}
-                label="Number of units"
-                onChange={(e) =>
-                  onUnitChange(e.target.value as PropertyUnitOpt)
-                }
-                options={OPTIONS_MORTGAGE_UNIT}
-                sx={{ maxWidth: '100%' }}
-                value={propertyUnit}
-              />
-            </Transitions>
-          </Stack>
-        )}
+        <Transitions
+          style={{
+            display: propertyType === 'two_to_four_family' ? 'block' : 'none',
+            width: '100%',
+          }}
+        >
+          {propertyType === 'two_to_four_family' && (
+            <StyledSelect
+              disabled={editable}
+              label="Number of Units"
+              onChange={(e) => onUnitChange(e.target.value as PropertyUnitOpt)}
+              options={OPTIONS_MORTGAGE_UNIT}
+              sx={{ maxWidth: '100%' }}
+              value={propertyUnit}
+            />
+          )}
+        </Transitions>
         <Stack width={'100%'}>
-          <StyledGoogleAutoComplete address={address} disabled fullAddress />
+          <StyledGoogleAutoComplete
+            address={address}
+            disabled
+            fullAddress
+            label={'Address'}
+          />
         </Stack>
         {children}
         <Stack

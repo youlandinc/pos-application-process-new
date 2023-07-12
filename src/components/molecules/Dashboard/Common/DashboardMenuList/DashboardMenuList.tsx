@@ -4,7 +4,6 @@ import {
   AccountBalanceOutlined,
   GradingOutlined,
   PeopleAltOutlined,
-  //PublicOutlined,
   TextSnippetOutlined,
   TimelineOutlined,
 } from '@mui/icons-material';
@@ -20,6 +19,7 @@ import { DashboardSideInfoBox } from './component';
 type POSMenuListProps = {
   info: ISelectedProcessData;
   scene: SceneType;
+  loading: boolean;
 };
 
 interface MenuItems {
@@ -80,7 +80,7 @@ const list: MenuItems[] = [
 ];
 
 export const DashboardMenuList: FC<POSMenuListProps> = observer(
-  ({ scene, info }) => {
+  ({ scene, info, loading }) => {
     // const store = useMst();
     const router = useRouter();
     const [activeKey, setActiveKey] = useState(router.pathname.split('/')[2]);
@@ -181,7 +181,7 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
         >
           {renderMenuList}
         </Box>
-        <DashboardSideInfoBox info={info} />
+        <DashboardSideInfoBox info={info} loading={loading} />
       </>
     );
   },
