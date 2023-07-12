@@ -1,17 +1,24 @@
 import { FC, useMemo } from 'react';
 import { Box, Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+import { enqueueSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { AUTO_HIDE_DURATION, userpool } from '@/constants';
 import { POSFont } from '@/styles';
-import { UserType } from '@/types';
+import { LoginType, UserType } from '@/types';
+import { DetectActiveService } from '@/services/DetectActive';
+
+import { _fetchUserInfoByToken } from '@/requests';
 
 import {
   StyledButton,
   StyledFormItem,
   StyledHeaderLogo,
 } from '@/components/atoms';
+import { useAsync } from 'react-use';
 
 const productList = [
   // {
@@ -32,7 +39,43 @@ const productList = [
 ];
 
 export const Entrance: FC = observer(() => {
-  const { userType } = useMst();
+  const router = useRouter();
+
+  const store = useMst();
+  const { userType, detectUserActiveService } = store;
+
+  const { loading } = useAsync(async () => {
+    if (!router.query.token) {
+      return;
+    }
+    try {
+      const { data } = await _fetchUserInfoByToken({
+        token: router.query.token as string,
+      });
+
+      userpool.setLastAuthUserBase(data);
+      await detectUserActiveService.setDetectUserActiveService(
+        new DetectActiveService(data),
+      );
+
+      store.injectCognitoUserProfile(data);
+      store.injectCognitoUserSession(data);
+      const {
+        userProfile: { userType, loginType },
+      } = data;
+      store.updateUserType(userType as UserType);
+      store.updateLoginType(loginType as LoginType);
+      enqueueSnackbar('login success!', {
+        autoHideDuration: AUTO_HIDE_DURATION,
+        variant: 'success',
+      });
+    } catch (e) {
+      enqueueSnackbar(e as string, {
+        autoHideDuration: AUTO_HIDE_DURATION,
+        variant: 'error',
+      });
+    }
+  }, [router.query.token]);
 
   const computedArray = useMemo(() => {
     if (userType === UserType.BROKER) {
@@ -60,7 +103,7 @@ export const Entrance: FC = observer(() => {
           px={{ lg: 0, xs: 'clamp(24px,6.4vw,80px)' }}
           width={{ xxl: 1440, xl: 1240, lg: 938, xs: '100%' }}
         >
-          <StyledHeaderLogo />
+          <StyledHeaderLogo disabled={loading} />
         </Stack>
       </Stack>
 
@@ -95,6 +138,7 @@ export const Entrance: FC = observer(() => {
                 return (
                   <StyledButton
                     color={'info'}
+                    disabled={loading}
                     key={item.name + index}
                     onClick={() => (window.location.href = item.url)}
                     sx={{

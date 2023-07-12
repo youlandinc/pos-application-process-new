@@ -46,3 +46,9 @@ export const _userResetPassword = (params: User.UserResetPassParams) => {
 // export const _userUpload = (params) => {
 //   return post<User.UserUploadRequest[]>('/dashboard/user/upload ', params);
 // };
+
+export const _fetchUserInfoByToken = (params: { token: string }) => {
+  return get('/usercenter/api/user/fetchUserInfo', {
+    headers: { Authorization: `Bearer ${params.token}` },
+  });
+};
