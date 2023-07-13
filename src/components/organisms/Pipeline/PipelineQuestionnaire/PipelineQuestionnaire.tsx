@@ -218,7 +218,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
                         ...POSFont({ lg: 24, xs: 18 }, 700, 1.5),
                       }}
                     >
-                      {'Broker name ' + (index + 1)}
+                      {computedQuestionnaire.listTitle + (index + 1)}
                     </Box>
                     {index !== 0 && (
                       <StyledButton
