@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION, OPTIONS_ACCOUNT_TYPE } from '@/constants';
-import { useRenderPdf, useSwitch } from '@/hooks';
+import { useRenderPdf, useSessionStorageState, useSwitch } from '@/hooks';
 import { UserType } from '@/types';
 
 import {
@@ -32,6 +32,8 @@ export const PipelineAch: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
 
   const { visible, open, close } = useSwitch(false);
+
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [loading, setLoading] = useState<boolean>(false);
   const [genLoading, setGenLoading] = useState<boolean>(false);
@@ -315,8 +317,12 @@ export const PipelineAch: FC = observer(() => {
             width={'100%'}
           >
             <Typography variant={'body1'}>
-              &quot;By clicking the below button, I hereby agree to the above
-              broker agreement.&quot;
+              &quot;By clicking the below button, I hereby authorize{' '}
+              {saasState?.organizationName || 'YouLand'} to electronically
+              credit my account (and, if necessary, to electronically debit my
+              account to correct erroneous credits) for commission payments due
+              from closed loans funded by{' '}
+              {saasState?.organizationName || 'YouLand'}.&quot;
             </Typography>
             <StyledButton
               disabled={agreeLoading}
