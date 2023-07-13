@@ -85,13 +85,19 @@ export const BridgePurchaseTaskGuarantorPersonal: FC = observer(() => {
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
-    return borrowerType === DashboardTaskBorrowerType.individual
-      ? false
-      : !entityName &&
+    switch (borrowerType) {
+      case DashboardTaskBorrowerType.individual:
+      case DashboardTaskBorrowerType.trust:
+        return false;
+      case DashboardTaskBorrowerType.entity:
+        return (
+          !entityName &&
           !entityState &&
           !entityType &&
           !signatoryTitle &&
-          !stateId;
+          !stateId
+        );
+    }
   }, [
     borrowerType,
     entityName,

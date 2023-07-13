@@ -114,8 +114,8 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
         ? undefined
         : [`Your LTV should be no more than ${radio * 100}%`],
     );
-    if (editLoanAmount < 150000) {
-      setLTVError(['Total loan amount must be at least $150,000']);
+    if (editLoanAmount < 100000) {
+      setLTVError(['Total loan amount must be at least $100,000']);
     }
     return total / rateData?.homeValue;
   }, [
