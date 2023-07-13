@@ -68,13 +68,13 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
       return 0;
     }
     setLTVError(
-      purchaseLoanAmount / purchasePrice <= 0.75
+      purchaseLoanAmount / purchasePrice <= 0.8
         ? ''
-        : 'Your LTV should be no more than 75%',
+        : 'Your LTV should be no more than 80%',
     );
-    if (purchaseLoanAmount < 150000) {
+    if (purchaseLoanAmount < 100000) {
       setLTVError(
-        'Adjust your down payment. Total loan amount must be at least $150,000',
+        'Adjust your down payment. Total loan amount must be at least $100,000',
       );
     }
     return purchaseLoanAmount ? purchaseLoanAmount / purchasePrice : 0;
