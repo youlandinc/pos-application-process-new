@@ -61,6 +61,8 @@ export const PipelineAgreement: FC = observer(() => {
           isGenerateFile: true,
           label: 'Broker Agreement',
           tip: 'Please fill out and read our broker agreement.',
+          username: 'broker',
+          upperName: 'Broker',
           agreement: BROKER_AGREEMENT,
         };
       case UserType.LENDER:
@@ -69,6 +71,8 @@ export const PipelineAgreement: FC = observer(() => {
           isGenerateFile: true,
           label: 'Lender Agreement',
           tip: 'Please fill out and read our lender agreement.',
+          username: 'lender',
+          upperName: 'Lender',
           agreement: LENDER_AGREEMENT,
         };
       case UserType.LOAN_OFFICER:
@@ -77,6 +81,8 @@ export const PipelineAgreement: FC = observer(() => {
           isGenerateFile: false,
           label: 'Loan Officer Information',
           tip: 'Please fill out the information that pertains to you.',
+          username: 'loan officer',
+          upperName: 'Loan Officer',
           agreement: LOAN_OFFICER_AGREEMENT,
         };
       case UserType.REAL_ESTATE_AGENT:
@@ -85,6 +91,8 @@ export const PipelineAgreement: FC = observer(() => {
           isGenerateFile: false,
           label: 'Real Estate Agent Information',
           tip: 'Please fill out the information that pertains to you.',
+          username: 'real estate agent',
+          upperName: 'Real Estate Agent',
           agreement: REAL_ESTATE_AGENT_AGREEMENT,
         };
       default:
@@ -93,6 +101,8 @@ export const PipelineAgreement: FC = observer(() => {
           isGenerateFile: false,
           label: '',
           tip: '',
+          username: '',
+          upperName: '',
           agreement: null,
         };
     }
@@ -294,7 +304,7 @@ export const PipelineAgreement: FC = observer(() => {
                       )
                     }
                   >
-                    Broker Agreement.pdf
+                    {computedAgreement.upperName} Agreement.pdf
                   </Typography>{' '}
                   that you have confirmed. In case you need to make any changes,
                   a new agreement will be generated and require your agreement
@@ -350,7 +360,7 @@ export const PipelineAgreement: FC = observer(() => {
           >
             <Typography variant={'body1'}>
               &quot;By clicking the below button, I hereby agree to the above
-              broker agreement.&quot;
+              {computedAgreement.username} agreement.&quot;
             </Typography>
             <StyledButton
               disabled={agreeLoading}
@@ -369,7 +379,9 @@ export const PipelineAgreement: FC = observer(() => {
             justifyContent={'space-between'}
             pb={3}
           >
-            <Typography variant={'h6'}>Broker Agreement</Typography>
+            <Typography variant={'h6'}>
+              {computedAgreement.upperName} Agreement
+            </Typography>
             <StyledButton disabled={agreeLoading} isIconButton onClick={close}>
               <CloseOutlined />
             </StyledButton>
