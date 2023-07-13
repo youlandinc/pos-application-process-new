@@ -13,7 +13,12 @@ import {
   OPTIONS_COMMON_STATE,
   OPTIONS_PIPELINE_LICENSE_TYPE,
 } from '@/constants';
-import { useBreakpoints, useRenderPdf, useSwitch } from '@/hooks';
+import {
+  useBreakpoints,
+  useRenderPdf,
+  useSessionStorageState,
+  useSwitch,
+} from '@/hooks';
 
 import { POSFont } from '@/styles';
 
@@ -53,6 +58,8 @@ export const PipelineQuestionnaire: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const breakpoint = useBreakpoints();
+
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const {
     userType,
@@ -450,7 +457,9 @@ export const PipelineQuestionnaire: FC = observer(() => {
           >
             <Typography variant={'body1'}>
               &quot;By clicking the below button, I hereby agree to the above
-              {computedQuestionnaire.userName} agreement.&quot;
+              broker agreement and authorize{' '}
+              {saasState?.organizationName || 'YouLand'} to check my
+              background.&quot;
             </Typography>
             <StyledButton
               disabled={agreeLoading}
