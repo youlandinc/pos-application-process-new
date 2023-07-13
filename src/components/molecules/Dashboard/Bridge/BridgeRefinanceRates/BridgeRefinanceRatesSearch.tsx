@@ -91,8 +91,8 @@ export const BridgeRefinanceRatesSearch: FC<
         ? ''
         : `Your LTV should be no more than ${radio * 100}%`,
     );
-    if (loanAmount! < 150000) {
-      setLTVError('Total loan amount must be at least $150,000');
+    if (loanAmount! < 100000) {
+      setLTVError('Total loan amount must be at least $100,000');
     }
     return total / homeValue;
   }, [homeValue, balance, isCor, isCashOut, loanAmount, cashOutAmount]);

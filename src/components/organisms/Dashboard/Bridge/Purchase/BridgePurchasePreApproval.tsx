@@ -85,13 +85,13 @@ export const BridgePurchasePreApproval: FC = observer(() => {
       return 0;
     }
     setLTVError(
-      rateData?.purchaseLoanAmount / rateData?.purchasePrice <= 0.75
+      rateData?.purchaseLoanAmount / rateData?.purchasePrice <= 0.8
         ? undefined
-        : ['Your LTV should be no more than 75%'],
+        : ['Your LTV should be no more than 80%'],
     );
-    if (rateData?.purchaseLoanAmount < 150000) {
+    if (rateData?.purchaseLoanAmount < 100000) {
       setLTVError([
-        'Adjust your down payment. Total loan amount must be at least $150,000',
+        'Adjust your down payment. Total loan amount must be at least $100,000',
       ]);
     }
     return rateData?.purchaseLoanAmount
