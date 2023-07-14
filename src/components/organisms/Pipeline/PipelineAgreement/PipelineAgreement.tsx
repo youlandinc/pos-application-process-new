@@ -359,7 +359,9 @@ export const PipelineAgreement: FC = observer(() => {
             textAlign={'left'}
             width={'100%'}
           >
-            <Typography fontSize={12} variant={'body1'}>
+            <Typography
+              variant={['xs', 'sm'].includes(breakpoint) ? 'body3' : 'body1'}
+            >
               &quot;By clicking the below button, I hereby agree to the above
               {computedAgreement.username} agreement.&quot;
             </Typography>

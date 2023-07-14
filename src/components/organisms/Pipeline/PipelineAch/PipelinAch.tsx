@@ -317,7 +317,9 @@ export const PipelineAch: FC = observer(() => {
             textAlign={'left'}
             width={'100%'}
           >
-            <Typography fontSize={12} variant={'body1'}>
+            <Typography
+              variant={['xs', 'sm'].includes(breakpoint) ? 'body3' : 'body1'}
+            >
               &quot;I hereby consent and acknowledge my agreement to the
               electronic loan agreement and associated terms of{' '}
               {saasState?.organizationName || 'YouLand'}.&quot;
