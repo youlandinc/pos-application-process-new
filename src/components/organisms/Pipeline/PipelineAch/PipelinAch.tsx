@@ -8,7 +8,12 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION, OPTIONS_ACCOUNT_TYPE } from '@/constants';
-import { useRenderPdf, useSessionStorageState, useSwitch } from '@/hooks';
+import {
+  useBreakpoints,
+  useRenderPdf,
+  useSessionStorageState,
+  useSwitch,
+} from '@/hooks';
 import { UserType } from '@/types';
 
 import {
@@ -31,8 +36,8 @@ export const PipelineAch: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
+  const breakpoint = useBreakpoints();
   const { visible, open, close } = useSwitch(false);
-
   const { saasState } = useSessionStorageState('tenantConfig');
 
   const [loading, setLoading] = useState<boolean>(false);

@@ -13,7 +13,7 @@ import {
   _previewDocument,
 } from '@/requests';
 import { AUTO_HIDE_DURATION, OPTIONS_LICENSE_TYPE } from '@/constants';
-import { useRenderPdf, useSwitch } from '@/hooks';
+import { useBreakpoints, useRenderPdf, useSwitch } from '@/hooks';
 import { UserType } from '@/types';
 
 import {
@@ -31,6 +31,9 @@ export const PipelineAgreement: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
+  const breakpoint = useBreakpoints();
+  const { visible, open, close } = useSwitch(false);
+
   const {
     userType,
     pipelineTask: {
@@ -46,8 +49,6 @@ export const PipelineAgreement: FC = observer(() => {
   const [loading, setLoading] = useState<boolean>(false);
   const [genLoading, setGenLoading] = useState<boolean>(false);
   const [agreeLoading, setAgreeLoading] = useState<boolean>(false);
-
-  const { visible, open, close } = useSwitch(false);
 
   const pdfFile = useRef(null);
 
