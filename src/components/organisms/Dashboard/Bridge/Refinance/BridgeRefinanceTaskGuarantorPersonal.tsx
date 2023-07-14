@@ -1,3 +1,23 @@
+import { FC, useCallback, useMemo, useState } from 'react';
+import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
+
+import { observer } from 'mobx-react-lite';
+
+import {
+  AUTO_HIDE_DURATION,
+  OPTIONS_COMMON_STATE,
+  OPTIONS_TASK_BORROWER_TYPE,
+  OPTIONS_TASK_ENTITY_TYPE,
+} from '@/constants';
+import {
+  DashboardTaskBorrowerEntityType,
+  DashboardTaskBorrowerType,
+} from '@/types';
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
+
 import {
   StyledButton,
   StyledFormItem,
@@ -7,25 +27,6 @@ import {
   StyledTextField,
   Transitions,
 } from '@/components/atoms';
-import {
-  AUTO_HIDE_DURATION,
-  OPTIONS_COMMON_STATE,
-  OPTIONS_TASK_BORROWER_TYPE,
-  OPTIONS_TASK_ENTITY_TYPE,
-} from '@/constants';
-
-import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
-import {
-  DashboardTaskBorrowerEntityType,
-  DashboardTaskBorrowerType,
-} from '@/types';
-import { Stack } from '@mui/material';
-
-import { observer } from 'mobx-react-lite';
-import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
-import { FC, useCallback, useMemo, useState } from 'react';
-import { useAsync } from 'react-use';
 
 export const BridgeRefinanceTaskGuarantorPersonal: FC = observer(() => {
   const router = useRouter();
