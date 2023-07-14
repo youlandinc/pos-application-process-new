@@ -448,6 +448,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
         disableEscapeKeyDown
         footer={
           <Stack
+            alignItems={'center'}
             flexDirection={{ xs: 'column', lg: 'row' }}
             gap={3}
             justifyContent={{ lg: 'space-between', xs: 'center' }}
@@ -455,7 +456,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
             textAlign={'left'}
             width={'100%'}
           >
-            <Typography variant={'body1'}>
+            <Typography fontSize={12} variant={'body1'}>
               &quot;By clicking the below button, I hereby agree to the above
               broker agreement and authorize{' '}
               {saasState?.organizationName || 'YouLand'} to check my
@@ -466,6 +467,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
               loading={agreeLoading}
               loadingText={'Processing...'}
               onClick={handledSaveFile}
+              sx={{ flexShrink: 0, height: 56, width: 200 }}
             >
               I Agree
             </StyledButton>

@@ -309,6 +309,7 @@ export const PipelineAch: FC = observer(() => {
         disableEscapeKeyDown
         footer={
           <Stack
+            alignItems={'center'}
             flexDirection={{ xs: 'column', lg: 'row' }}
             gap={3}
             justifyContent={{ lg: 'space-between', xs: 'center' }}
@@ -316,12 +317,9 @@ export const PipelineAch: FC = observer(() => {
             textAlign={'left'}
             width={'100%'}
           >
-            <Typography variant={'body1'}>
-              &quot;By clicking the below button, I hereby authorize{' '}
-              {saasState?.organizationName || 'YouLand'} to electronically
-              credit my account (and, if necessary, to electronically debit my
-              account to correct erroneous credits) for commission payments due
-              from closed loans funded by{' '}
+            <Typography fontSize={12} variant={'body1'}>
+              &quot;I hereby consent and acknowledge my agreement to the
+              electronic loan agreement and associated terms of{' '}
               {saasState?.organizationName || 'YouLand'}.&quot;
             </Typography>
             <StyledButton
@@ -329,6 +327,7 @@ export const PipelineAch: FC = observer(() => {
               loading={agreeLoading}
               loadingText={'Processing...'}
               onClick={handledSaveFile}
+              sx={{ flexShrink: 0, height: 56, width: 200 }}
             >
               I Agree
             </StyledButton>
