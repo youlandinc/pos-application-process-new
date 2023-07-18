@@ -1,9 +1,13 @@
 import { ChangeEvent, FC, useCallback } from 'react';
 import { Stack, Typography } from '@mui/material';
+import { NumberFormatValues } from 'react-number-format';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { OPTIONS_COMMON_BORROWER_TYPE } from '@/constants';
+import { useSessionStorageState } from '@/hooks';
+import { CommonBorrowerType } from '@/types';
 import {
   IPersonalInfo,
   SPersonalInfo,
@@ -14,12 +18,13 @@ import {
   StyledDatePicker,
   StyledFormItem,
   StyledGoogleAutoComplete,
+  StyledProgressRing,
+  StyledSelectOption,
   StyledTextField,
   StyledTextFieldPhone,
   StyledTextFieldSocialNumber,
+  Transitions,
 } from '@/components/atoms';
-import { NumberFormatValues } from 'react-number-format';
-import { useSessionStorageState } from '@/hooks';
 
 // todo : saas
 export const BridgePersonInfo: FC = observer(() => {
@@ -53,6 +58,10 @@ export const BridgePersonInfo: FC = observer(() => {
             selfInfo.changeSelfInfo(fieldName, e as unknown as string);
             break;
           }
+          case 'citizenship': {
+            selfInfo.changeSelfInfo(fieldName, e as CommonBorrowerType);
+            break;
+          }
           default:
             selfInfo.changeSelfInfo(
               fieldName,
@@ -75,6 +84,13 @@ export const BridgePersonInfo: FC = observer(() => {
         }
         tipSx={{ mb: 0 }}
       >
+        <StyledFormItem label={'What is your citizenship status?'} sub>
+          <StyledSelectOption
+            onChange={changeFieldValue('citizenship')}
+            options={OPTIONS_COMMON_BORROWER_TYPE}
+            value={selfInfo.citizenship}
+          />
+        </StyledFormItem>
         <StyledFormItem
           label={'Personal Information'}
           sub
@@ -135,15 +151,28 @@ export const BridgePersonInfo: FC = observer(() => {
             <StyledGoogleAutoComplete address={selfInfo.address} />
           </Stack>
         </StyledFormItem>
-        <StyledFormItem label={'Your Social Security Number'} sub>
-          <Stack gap={3} maxWidth={600} width={'100%'}>
-            <StyledTextFieldSocialNumber
-              onValueChange={changeFieldValue('ssn')}
-              validate={selfInfo.errors.ssn}
-              value={selfInfo.ssn}
-            />
-          </Stack>
-        </StyledFormItem>
+        <Transitions
+          style={{
+            display:
+              selfInfo.citizenship !== CommonBorrowerType.foreign_national
+                ? 'block'
+                : 'none',
+            width: '100%',
+          }}
+        >
+          {selfInfo.citizenship !== CommonBorrowerType.foreign_national && (
+            <StyledFormItem label={'Your Social Security Number'} sub>
+              <Stack gap={3} maxWidth={600} width={'100%'}>
+                <StyledTextFieldSocialNumber
+                  onValueChange={changeFieldValue('ssn')}
+                  validate={selfInfo.errors.ssn}
+                  value={selfInfo.ssn}
+                />
+              </Stack>
+            </StyledFormItem>
+          )}
+        </Transitions>
+
         <StyledCheckbox
           checked={selfInfo.authorizedCreditCheck}
           label={

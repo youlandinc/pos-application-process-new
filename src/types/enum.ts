@@ -5,6 +5,10 @@ export enum SceneType {
   mortgage_refinance = 'mortgage refinance',
   bridge_purchase = 'bridge purchase',
   bridge_refinance = 'bridge refinance',
+  fixed_purchase = 'fixed & flip purchase',
+  fixed_refinance = 'fixed & flip refinance',
+  ground_purchase = 'ground up construction purchase',
+  ground_refinance = 'ground up construction refinance',
 }
 
 export enum ServerTaskKey {

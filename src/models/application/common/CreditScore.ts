@@ -9,7 +9,11 @@ import {
 import { DebtData } from '@/models/common/DebtData';
 import { Address, IAddress, SAddress } from '@/models/common/Address';
 
-import { DebtWrongReasonOpt, RelationshipOpt } from '@/types/options';
+import {
+  CommonBorrowerType,
+  DebtWrongReasonOpt,
+  RelationshipOpt,
+} from '@/types/options';
 import { CreditScoreState, VariableName } from '@/types/enum';
 import {
   BorrowerDebtRecordData,
@@ -37,6 +41,13 @@ export const PersonalInfo = types
     email: types.string,
     authorizedCreditCheck: types.boolean,
     creditScore: types.maybe(types.number),
+    citizenship: types.maybe(
+      types.union(
+        types.literal(CommonBorrowerType.us_citizen),
+        types.literal(CommonBorrowerType.foreign_national),
+        types.literal(CommonBorrowerType.permanent_resident_alien),
+      ),
+    ),
     errors: types.optional(
       types.model({
         firstName: types.maybe(types.array(types.string)),
@@ -102,6 +113,7 @@ export const PersonalInfo = types
           ssn,
           authorizedCreditCheck,
           email,
+          citizenship,
           //address,
         } = self;
         return {
@@ -115,6 +127,7 @@ export const PersonalInfo = types
             ssn,
             authorizedCreditCheck,
             email,
+            citizenship,
           },
         };
       },
@@ -128,6 +141,7 @@ export const PersonalInfo = types
           propAddr,
           authorizedCreditCheck,
           email,
+          citizenship,
         } = value;
         self.firstName = firstName;
         self.lastName = lastName;
@@ -137,6 +151,7 @@ export const PersonalInfo = types
         self.email = email;
         self.address.injectServerData(propAddr);
         self.authorizedCreditCheck = authorizedCreditCheck;
+        self.citizenship = citizenship;
       },
       injectAddressData(address: IAddress) {
         const addressSnap: SAddress = getSnapshot(address);

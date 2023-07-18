@@ -2,6 +2,8 @@ export * from './Provider';
 
 export * from './Transitions';
 
+export * from './StyledProgressRing';
+
 export * from './StyledLoading';
 
 export * from './StyledBoxWrap';

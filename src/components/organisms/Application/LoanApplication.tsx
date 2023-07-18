@@ -30,6 +30,14 @@ import {
 
 //import { MortgagePurchaseForm, MortgageRefinanceForm } from './Mortgage';
 import { BridgePurchaseForm, BridgeRefinanceForm } from './Bridge';
+import {
+  FixedAndFlipPurchaseForm,
+  FixedAndFlipRefinanceForm,
+} from './FixedAndFlip';
+import {
+  GroundUpPurchaseForm,
+  GroundUpRefinanceForm,
+} from './GroundUpConstruction';
 
 export interface LoanApplicationProps {
   productCategory: ProductCategory;
@@ -270,13 +278,43 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
         }
         break;
       }
+      case 'fixed_and_flip': {
+        if (!productType && !applicationType) {
+          return null;
+        }
+        if (productType === 'purchase' || applicationType === 'purchase') {
+          return <FixedAndFlipPurchaseForm handleBack={handleBack} />;
+        }
+        if (productType === 'refinance' || applicationType === 'refinance') {
+          return <FixedAndFlipRefinanceForm handleBack={handleBack} />;
+        }
+        break;
+      }
+      case 'ground_up_construction': {
+        if (!productType && !applicationType) {
+          return null;
+        }
+        if (productType === 'purchase' || applicationType === 'purchase') {
+          return <GroundUpPurchaseForm handleBack={handleBack} />;
+        }
+        if (productType === 'refinance' || applicationType === 'refinance') {
+          return <GroundUpRefinanceForm handleBack={handleBack} />;
+        }
+        break;
+      }
     }
   }, [productType, handleBack, productCategory, applicationType]);
 
   const renderLabel = useMemo(() => {
     switch (productCategory) {
       case 'bridge': {
-        return 'Stabilized Bridge/Fix & Flip';
+        return 'Stabilized Bridge';
+      }
+      case 'fixed_and_flip': {
+        return 'Fixed & Flip';
+      }
+      case 'ground_up_construction': {
+        return 'Ground-up Construction';
       }
     }
   }, [productCategory]);

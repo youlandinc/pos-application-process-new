@@ -35,6 +35,14 @@ const Union = types.union({
 
       case 'BridgeRefinance':
         return BridgeRefinance;
+      //case 'FixAndFlipPurchase':
+      //  return FixAndFlipPurchase;
+      //case 'FixAndFlipRefinance':
+      //  return FixAndFlipRefinance;
+      //case 'GroundUpPurchase':
+      //  return GroundUpPurchase;
+      //case 'GroundUpRefinance':
+      //  return GroundUpRefinance;
       default:
         return types.undefined;
     }

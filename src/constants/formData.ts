@@ -447,6 +447,7 @@ export const FormData = {
           lastName: '',
           phoneNumber: '',
           dateOfBirth: null,
+          citizenship: undefined,
           address: {
             formatAddress: '',
             aptNumber: '',
@@ -473,6 +474,7 @@ export const FormData = {
           lastName: '',
           phoneNumber: '',
           dateOfBirth: null,
+          citizenship: undefined,
           address: {
             formatAddress: '',
             aptNumber: '',
@@ -541,6 +543,7 @@ export const FormData = {
           lastName: '',
           phoneNumber: '',
           dateOfBirth: null,
+          citizenship: undefined,
           address: {
             formatAddress: '',
             aptNumber: '',
@@ -567,6 +570,7 @@ export const FormData = {
           lastName: '',
           phoneNumber: '',
           dateOfBirth: null,
+          citizenship: undefined,
           email: '',
           address: {
             formatAddress: '',
@@ -600,6 +604,14 @@ export const FormData = {
         arv: undefined,
       },
     },
+  },
+  fix_and_flip: {
+    purchase: {},
+    refinance: {},
+  },
+  ground_up_construction: {
+    purchase: {},
+    refinance: {},
   },
   pipelineTaskDefaultData: {
     // common
