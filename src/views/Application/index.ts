@@ -1,2 +1,3 @@
 export * from './BridgePage';
-export * from './FixAndFlipPage';
+export * from './FixedAndFlipPage';
+export * from './GroundUpPage';
