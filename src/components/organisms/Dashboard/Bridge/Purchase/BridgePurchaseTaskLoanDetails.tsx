@@ -3,35 +3,38 @@ import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
-import { format, isDate, isValid } from 'date-fns';
+//import { format, isDate, isValid } from 'date-fns';
 
-import { AUTO_HIDE_DURATION, OPTIONS_COMMON_YES_OR_NO } from '@/constants';
+import {
+  AUTO_HIDE_DURATION,
+  //OPTIONS_COMMON_YES_OR_NO
+} from '@/constants';
 import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
-import { POSNotUndefined } from '@/utils';
+//import { POSNotUndefined } from '@/utils';
 
 import {
   StyledButton,
-  StyledButtonGroup,
-  StyledDatePicker,
+  //StyledButtonGroup,
+  //StyledDatePicker,
   StyledFormItem,
   StyledLoading,
   StyledTextFieldNumber,
-  Transitions,
+  //Transitions,
 } from '@/components/atoms';
-import { useSessionStorageState } from '@/hooks';
+//import { useSessionStorageState } from '@/hooks';
 
 export const BridgePurchaseTaskLoanDetails: FC = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const { saasState } = useSessionStorageState('tenantConfig');
+  //const { saasState } = useSessionStorageState('tenantConfig');
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
 
   const [purchasePrice, setPurchasePrice] = useState<number | undefined>();
   const [propertyValue, setPropertyValue] = useState<number | undefined>();
-  const [isCor, setIsCor] = useState<boolean>();
-  const [cor, setCor] = useState<number | undefined>();
-  const [corDate, setCorDate] = useState<unknown | Date | null>(null);
-  const [arv, setArv] = useState<number | undefined>();
+  //const [isCor, setIsCor] = useState<boolean>();
+  //const [cor, setCor] = useState<number | undefined>();
+  //const [corDate, setCorDate] = useState<unknown | Date | null>(null);
+  //const [arv, setArv] = useState<number | undefined>();
 
   const { loading } = useAsync(async () => {
     if (!router.query.taskId) {
@@ -43,16 +46,19 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
     }
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
-        const { purchasePrice, propertyValue, isCor, corDate, cor, arv } =
-          res.data;
+        const {
+          purchasePrice,
+          propertyValue,
+          //isCor, corDate, cor, arv
+        } = res.data;
         setPurchasePrice(purchasePrice || undefined);
         setPropertyValue(propertyValue || undefined);
-        setIsCor(isCor ?? undefined);
-        if (corDate) {
-          setCorDate(new Date(corDate));
-        }
-        setCor(cor || undefined);
-        setArv(arv || undefined);
+        //setIsCor(isCor ?? undefined);
+        //if (corDate) {
+        //  setCorDate(new Date(corDate));
+        //}
+        //setCor(cor || undefined);
+        //setArv(arv || undefined);
       })
       .catch((err) => {
         enqueueSnackbar(err as string, {
@@ -68,32 +74,32 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
-    const dateValid = isValid(corDate) && isDate(corDate);
-    const condition = POSNotUndefined(isCor);
-    if (!condition) {
-      return false;
-    }
-    if (isCor) {
-      return !!purchasePrice && !!propertyValue && dateValid && !!cor && !!arv;
-    }
+    //const dateValid = isValid(corDate) && isDate(corDate);
+    //const condition = POSNotUndefined(isCor);
+    //if (!condition) {
+    //  return false;
+    //}
+    //if (isCor) {
+    //  return !!purchasePrice && !!propertyValue && dateValid && !!cor && !!arv;
+    //}
     return !!purchasePrice && !!propertyValue;
-  }, [arv, corDate, isCor, propertyValue, purchasePrice, cor]);
+  }, [propertyValue, purchasePrice]);
 
   const handledSubmit = useCallback(async () => {
-    const dateValid = isValid(corDate) && isDate(corDate);
+    //const dateValid = isValid(corDate) && isDate(corDate);
 
     setSaveLoading(true);
     const postData = {
       taskId: router.query.taskId as string,
       taskForm: {
-        cor,
-        corDate: dateValid
-          ? format(corDate as Date, 'yyyy-MM-dd O')
-          : undefined,
-        isCor,
+        //cor,
+        //corDate: dateValid
+        //  ? format(corDate as Date, 'yyyy-MM-dd O')
+        //  : undefined,
+        //isCor,
         purchasePrice,
         propertyValue,
-        arv,
+        //arv,
       },
     };
     try {
@@ -110,16 +116,7 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
     } finally {
       setSaveLoading(false);
     }
-  }, [
-    arv,
-    cor,
-    corDate,
-    enqueueSnackbar,
-    isCor,
-    propertyValue,
-    purchasePrice,
-    router,
-  ]);
+  }, [enqueueSnackbar, propertyValue, purchasePrice, router]);
 
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
@@ -169,87 +166,87 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
           />
         </Stack>
       </StyledFormItem>
-      <StyledFormItem label={'Will you request rehab funds?'} sub>
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledButtonGroup
-            onChange={(e, value) => {
-              if (value !== null) {
-                setIsCor(value === 'yes');
-              }
-            }}
-            options={OPTIONS_COMMON_YES_OR_NO}
-            sx={{ width: '100%', maxWidth: 600 }}
-            value={isCor}
-          />
-        </Stack>
-      </StyledFormItem>
+      {/*<StyledFormItem label={'Will you request rehab funds?'} sub>*/}
+      {/*  <Stack maxWidth={600} width={'100%'}>*/}
+      {/*    <StyledButtonGroup*/}
+      {/*      onChange={(e, value) => {*/}
+      {/*        if (value !== null) {*/}
+      {/*          setIsCor(value === 'yes');*/}
+      {/*        }*/}
+      {/*      }}*/}
+      {/*      options={OPTIONS_COMMON_YES_OR_NO}*/}
+      {/*      sx={{ width: '100%', maxWidth: 600 }}*/}
+      {/*      value={isCor}*/}
+      {/*    />*/}
+      {/*  </Stack>*/}
+      {/*</StyledFormItem>*/}
 
-      <Transitions
-        style={{
-          display: isCor ? 'flex' : 'none',
-          flexDirection: 'column',
-          gap: 48,
-        }}
-      >
-        {isCor && (
-          <>
-            <StyledFormItem
-              label={'Estimated rehab loan amount'}
-              sub
-              tip={`Total cost that you would like ${
-                //sass
-                saasState?.organizationName || 'YouLand'
-              } to finance.`}
-            >
-              <Stack maxWidth={600} width={'100%'}>
-                <StyledTextFieldNumber
-                  label={'Estimated Rehab Loan Amount'}
-                  onValueChange={({ floatValue }) => {
-                    setCor(floatValue);
-                  }}
-                  prefix={'$'}
-                  value={cor}
-                />
-              </Stack>
-            </StyledFormItem>
-            <StyledFormItem
-              label={'Estimated date to finish your rehab project'}
-              sub
-            >
-              <Stack maxWidth={600} width={'100%'}>
-                <StyledDatePicker
-                  disableFuture={false}
-                  disablePast={false}
-                  label={'MM/DD/YYYY'}
-                  onChange={(date) => {
-                    setCorDate(date);
-                  }}
-                  //validate={}
-                  value={corDate}
-                />
-              </Stack>
-            </StyledFormItem>
-            <StyledFormItem
-              label={'After repair value'}
-              sub
-              tip={
-                'Once all improvements to the property have been made, how much will the property be worth?'
-              }
-            >
-              <Stack maxWidth={600} width={'100%'}>
-                <StyledTextFieldNumber
-                  label={'After repair property value'}
-                  onValueChange={({ floatValue }) => {
-                    setArv(floatValue);
-                  }}
-                  prefix={'$'}
-                  value={arv}
-                />
-              </Stack>
-            </StyledFormItem>
-          </>
-        )}
-      </Transitions>
+      {/*<Transitions*/}
+      {/*  style={{*/}
+      {/*    display: isCor ? 'flex' : 'none',*/}
+      {/*    flexDirection: 'column',*/}
+      {/*    gap: 48,*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  {isCor && (*/}
+      {/*    <>*/}
+      {/*      <StyledFormItem*/}
+      {/*        label={'Estimated rehab loan amount'}*/}
+      {/*        sub*/}
+      {/*        tip={`Total cost that you would like ${*/}
+      {/*          //sass*/}
+      {/*          saasState?.organizationName || 'YouLand'*/}
+      {/*        } to finance.`}*/}
+      {/*      >*/}
+      {/*        <Stack maxWidth={600} width={'100%'}>*/}
+      {/*          <StyledTextFieldNumber*/}
+      {/*            label={'Estimated Rehab Loan Amount'}*/}
+      {/*            onValueChange={({ floatValue }) => {*/}
+      {/*              setCor(floatValue);*/}
+      {/*            }}*/}
+      {/*            prefix={'$'}*/}
+      {/*            value={cor}*/}
+      {/*          />*/}
+      {/*        </Stack>*/}
+      {/*      </StyledFormItem>*/}
+      {/*      <StyledFormItem*/}
+      {/*        label={'Estimated date to finish your rehab project'}*/}
+      {/*        sub*/}
+      {/*      >*/}
+      {/*        <Stack maxWidth={600} width={'100%'}>*/}
+      {/*          <StyledDatePicker*/}
+      {/*            disableFuture={false}*/}
+      {/*            disablePast={false}*/}
+      {/*            label={'MM/DD/YYYY'}*/}
+      {/*            onChange={(date) => {*/}
+      {/*              setCorDate(date);*/}
+      {/*            }}*/}
+      {/*            //validate={}*/}
+      {/*            value={corDate}*/}
+      {/*          />*/}
+      {/*        </Stack>*/}
+      {/*      </StyledFormItem>*/}
+      {/*      <StyledFormItem*/}
+      {/*        label={'After repair value'}*/}
+      {/*        sub*/}
+      {/*        tip={*/}
+      {/*          'Once all improvements to the property have been made, how much will the property be worth?'*/}
+      {/*        }*/}
+      {/*      >*/}
+      {/*        <Stack maxWidth={600} width={'100%'}>*/}
+      {/*          <StyledTextFieldNumber*/}
+      {/*            label={'After repair property value'}*/}
+      {/*            onValueChange={({ floatValue }) => {*/}
+      {/*              setArv(floatValue);*/}
+      {/*            }}*/}
+      {/*            prefix={'$'}*/}
+      {/*            value={arv}*/}
+      {/*          />*/}
+      {/*        </Stack>*/}
+      {/*      </StyledFormItem>*/}
+      {/*    </>*/}
+      {/*  )}*/}
+      {/*</Transitions>*/}
 
       <Stack
         flexDirection={'row'}
