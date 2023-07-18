@@ -605,7 +605,7 @@ export const FormData = {
       },
     },
   },
-  fix_and_flip: {
+  fixed_and_flip: {
     purchase: {},
     refinance: {},
   },
