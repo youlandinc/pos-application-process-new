@@ -13,13 +13,9 @@ import { Address, IAddress } from '@/models/common/Address';
 import {
   AUTO_HIDE_DURATION,
   OPTIONS_COMMON_YES_OR_NO,
-  //OPTIONS_TASK_CITIZENSHIP_STATUS,
   OPTIONS_TASK_MARTIAL_STATUS,
 } from '@/constants';
-import {
-  //DashboardTaskCitizenshipStatus,
-  DashboardTaskMaritalStatus,
-} from '@/types';
+import { DashboardTaskMaritalStatus } from '@/types';
 
 import {
   StyledButton,
@@ -51,9 +47,6 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
   );
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
 
-  //const [citizenship, setCitizenship] = useState<
-  //  DashboardTaskCitizenshipStatus | undefined
-  //>();
   const [marital, setMarital] = useState<
     DashboardTaskMaritalStatus | undefined
   >();
@@ -80,12 +73,10 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
           marital,
           bankruptDate,
           delinquentTimes,
-          //citizenship,
           isBankruptcy,
           isForeclosure,
           foreclosureDate,
         } = res.data;
-        //setCitizenship(citizenship as DashboardTaskCitizenshipStatus);
         setMarital(marital as DashboardTaskMaritalStatus);
         setDelinquentTimes(delinquentTimes as string);
         setIsBankruptcy(isBankruptcy ?? undefined);
@@ -137,7 +128,6 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
         dateValid &&
         address.checkAddressValid &&
         !!marital &&
-        //!!citizenship &&
         !!delinquentTimes &&
         foreclosureDateValid
       );
@@ -145,11 +135,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
 
     if (isBankruptcy) {
       return (
-        dateValid &&
-        address.checkAddressValid &&
-        !!marital &&
-        //!!citizenship &&
-        !!delinquentTimes
+        dateValid && address.checkAddressValid && !!marital && !!delinquentTimes
       );
     }
 
@@ -157,18 +143,12 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
       return (
         address.checkAddressValid &&
         !!marital &&
-        //!!citizenship &&
         !!delinquentTimes &&
         foreclosureDateValid
       );
     }
 
-    return (
-      address.checkAddressValid &&
-      !!marital &&
-      //!!citizenship &&
-      !!delinquentTimes
-    );
+    return address.checkAddressValid && !!marital && !!delinquentTimes;
   }, [
     address.checkAddressValid,
     delinquentTimes,
@@ -194,7 +174,6 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
         marital,
         isBankruptcy,
         delinquentTimes,
-        //citizenship,
         isForeclosure,
         foreclosureDate: foreclosureDateValid
           ? format(foreclosureDate as Date, 'yyyy-MM-dd O')
@@ -217,7 +196,6 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
     }
   }, [
     address,
-    //citizenship,
     delinquentTimes,
     bankruptDate,
     enqueueSnackbar,
@@ -239,18 +217,6 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
       }
       tipSx={{ mb: 0 }}
     >
-      {/*<StyledFormItem label={'What is your citizenship status?'} sub>*/}
-      {/*  <Stack maxWidth={600} width={'100%'}>*/}
-      {/*    <StyledSelectOption*/}
-      {/*      onChange={(value) =>*/}
-      {/*        setCitizenship(value as string as DashboardTaskCitizenshipStatus)*/}
-      {/*      }*/}
-      {/*      options={OPTIONS_TASK_CITIZENSHIP_STATUS}*/}
-      {/*      value={citizenship}*/}
-      {/*    />*/}
-      {/*  </Stack>*/}
-      {/*</StyledFormItem>*/}
-
       <StyledFormItem label={'What is your marital status?'} sub>
         <Stack maxWidth={600} width={'100%'}>
           <StyledSelectOption

@@ -11,9 +11,9 @@ import { POSNotUndefined } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
 import { Address, IAddress } from '@/models/common/Address';
 import {
+  CommonBorrowerType,
   DashboardTaskBorrowerEntityType,
   DashboardTaskBorrowerType,
-  DashboardTaskCitizenshipStatus,
   DashboardTaskGender,
   DashboardTaskMaritalStatus,
 } from '@/types';
@@ -73,6 +73,9 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
   const [borrowerType, setBorrowerType] = useState<
     DashboardTaskBorrowerType | undefined
   >();
+  const [citizenship, setCitizenship] = useState<
+    CommonBorrowerType | undefined
+  >();
 
   const [signatoryTitle, setSignatoryTitle] = useState<string | undefined>();
   const [entityType, setEntityType] = useState<string | undefined>();
@@ -86,7 +89,6 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
   const [email, setEmail] = useState<string | undefined>();
   const [gender, setGender] = useState<string | undefined>();
   const [marital, setMarital] = useState<string | undefined>();
-  const [residency, setResidency] = useState<string | undefined>();
   const [delinquentTimes, setDelinquentTimes] = useState<string | undefined>();
   const [bankruptDate, setBankruptDate] = useState<unknown | Date | null>(null);
   const [foreclosureDate, setForeclosureDate] = useState<unknown | Date | null>(
@@ -110,6 +112,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
         const {
+          citizenship,
           isCoBorrower,
           authorizedCreditCheck,
           borrowerType,
@@ -123,7 +126,6 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
           marital,
           phoneNumber,
           propAddr,
-          residency,
           signatoryTitle,
           ssn,
           stateId,
@@ -156,7 +158,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
         setEmail(email || '');
         setDelinquentTimes(delinquentTimes || '');
 
-        setResidency(residency || undefined);
+        setCitizenship(citizenship || undefined);
         setMarital(marital || undefined);
         setGender(gender || undefined);
         setSsn(ssn || undefined);
@@ -190,6 +192,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
 
     const dateValid = isValid(dateOfBirth) && isDate(dateOfBirth);
     const condition =
+      !!citizenship &&
       !!firstName &&
       !!lastName &&
       !!phoneNumber &&
@@ -197,7 +200,6 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
       dateValid &&
       !!gender &&
       !!marital &&
-      !!residency &&
       address.checkAddressValid &&
       !!ssn &&
       authorizedCreditCheck;
@@ -224,6 +226,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
   }, [
     address.checkAddressValid,
     authorizedCreditCheck,
+    citizenship,
     borrowerType,
     dateOfBirth,
     email,
@@ -235,7 +238,6 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
     lastName,
     marital,
     phoneNumber,
-    residency,
     signatoryTitle,
     ssn,
     stateId,
@@ -264,7 +266,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
         lastName,
         marital,
         phoneNumber,
-        residency,
+        citizenship,
         signatoryTitle,
         ssn,
         stateId,
@@ -303,6 +305,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
     authorizedCreditCheck,
     bankruptDate,
     borrowerType,
+    citizenship,
     dateOfBirth,
     delinquentTimes,
     email,
@@ -316,7 +319,6 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
     lastName,
     marital,
     phoneNumber,
-    residency,
     router,
     signatoryTitle,
     ssn,
@@ -379,6 +381,19 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
                   }
                   options={OPTIONS_TASK_BORROWER_TYPE}
                   value={borrowerType}
+                />
+              </Stack>
+            </StyledFormItem>
+
+            <StyledFormItem label={'What is your citizenship status?'} sub>
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledSelectOption
+                  disabled={hasCreditScore}
+                  onChange={(value) =>
+                    setCitizenship(value as string as CommonBorrowerType)
+                  }
+                  options={OPTIONS_TASK_CITIZENSHIP_STATUS}
+                  value={citizenship}
                 />
               </Stack>
             </StyledFormItem>
@@ -493,18 +508,6 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
                   }
                   options={OPTIONS_TASK_MARTIAL_STATUS}
                   value={marital}
-                />
-                <StyledSelect
-                  disabled={hasCreditScore}
-                  label={'Residency Status'}
-                  onChange={(e) =>
-                    setResidency(
-                      e.target
-                        .value as string as DashboardTaskCitizenshipStatus,
-                    )
-                  }
-                  options={OPTIONS_TASK_CITIZENSHIP_STATUS}
-                  value={residency}
                 />
                 <StyledTextFieldNumber
                   decimalScale={0}

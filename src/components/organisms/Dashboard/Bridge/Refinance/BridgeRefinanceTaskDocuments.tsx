@@ -302,55 +302,27 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
   ) : (
-    <StyledFormItem
-      gap={3}
-      label={'Documents & Materials'}
-      tip={
-        <Stack gap={1.5}>
-          Example documents:
-          <Typography
-            color={'primary.main'}
-            onClick={() =>
-              window.open(
-                'https://youland-template-file.s3.us-west-1.amazonaws.com/1003_2021V.pdf',
-              )
-            }
-            sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-            variant={'body1'}
-          >
-            1003 Form
-          </Typography>
-          <Typography
-            color={'primary.main'}
-            onClick={() =>
-              window.open(
-                'https://youland-template-file.s3.us-west-1.amazonaws.com/fw9.pdf',
-              )
-            }
-            sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-            variant={'body1'}
-          >
-            W9 Form
-          </Typography>
-          <Typography
-            color={'primary.main'}
-            onClick={() =>
-              window.open(
-                'https://youland-template-file.s3.us-west-1.amazonaws.com/Borrower+authorization+form.pdf',
-              )
-            }
-            sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-            variant={'body1'}
-          >
-            Borrower authorization form
-          </Typography>
-        </Stack>
-      }
-    >
+    <StyledFormItem gap={3} label={'Documents'}>
       <Stack gap={6} maxWidth={900} width={'100%'}>
         <StyledUploadButtonBox
           fileList={form1003Files}
-          label={'1003 Form'}
+          label={
+            <Stack flexDirection={'column'} width={'100%'}>
+              1003 Form{' '}
+              <Typography
+                color={'primary.main'}
+                onClick={() =>
+                  window.open(
+                    'https://youland-template-file.s3.us-west-1.amazonaws.com/1003_2021V.pdf',
+                  )
+                }
+                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                variant={'body1'}
+              >
+                1003 Form.pdf
+              </Typography>
+            </Stack>
+          }
           loading={uploadLoading}
           onDelete={(index) => handledDelete(index, 'form1003')}
           onSuccess={(files) => handledSuccess(files, 'form1003')}
@@ -365,7 +337,26 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
 
         <StyledUploadButtonBox
           fileList={w9Files}
-          label={'W9 Form'}
+          label={
+            <Stack flexDirection={'column'} width={'100%'}>
+              W9 Form
+              <Typography
+                color={'primary.main'}
+                onClick={() =>
+                  window.open(
+                    'https://youland-template-file.s3.us-west-1.amazonaws.com/fw9.pdf',
+                  )
+                }
+                sx={{
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                }}
+                variant={'body1'}
+              >
+                W9 Form.pdf
+              </Typography>
+            </Stack>
+          }
           loading={uploadLoading}
           onDelete={(index) => handledDelete(index, 'w9')}
           onSuccess={(files) => handledSuccess(files, 'w9')}
@@ -373,7 +364,23 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
 
         <StyledUploadButtonBox
           fileList={authorizationFiles}
-          label={'Borrower authorization form'}
+          label={
+            <Stack flexDirection={'column'} width={'100%'}>
+              Borrower authorization form{' '}
+              <Typography
+                color={'primary.main'}
+                onClick={() =>
+                  window.open(
+                    'https://youland-template-file.s3.us-west-1.amazonaws.com/Borrower+authorization+form.pdf',
+                  )
+                }
+                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                variant={'body1'}
+              >
+                Borrower authorization form.pdf
+              </Typography>
+            </Stack>
+          }
           loading={uploadLoading}
           onDelete={(index) => handledDelete(index, 'authorization')}
           onSuccess={(files) => handledSuccess(files, 'authorization')}

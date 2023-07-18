@@ -11,9 +11,9 @@ import { POSNotUndefined } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
 import { Address, IAddress } from '@/models/common/Address';
 import {
+  CommonBorrowerType,
   DashboardTaskBorrowerEntityType,
   DashboardTaskBorrowerType,
-  DashboardTaskCitizenshipStatus,
   DashboardTaskGender,
   DashboardTaskMaritalStatus,
 } from '@/types';
@@ -73,6 +73,9 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   const [borrowerType, setBorrowerType] = useState<
     DashboardTaskBorrowerType | undefined
   >();
+  const [citizenship, setCitizenship] = useState<
+    CommonBorrowerType | undefined
+  >();
 
   const [signatoryTitle, setSignatoryTitle] = useState<string | undefined>();
   const [entityType, setEntityType] = useState<string | undefined>();
@@ -86,7 +89,6 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   const [email, setEmail] = useState<string | undefined>();
   const [gender, setGender] = useState<string | undefined>();
   const [marital, setMarital] = useState<string | undefined>();
-  const [residency, setResidency] = useState<string | undefined>();
   const [delinquentTimes, setDelinquentTimes] = useState<string | undefined>();
   const [bankruptDate, setBankruptDate] = useState<unknown | Date | null>(null);
   const [foreclosureDate, setForeclosureDate] = useState<unknown | Date | null>(
@@ -111,6 +113,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
       .then((res) => {
         const {
           isCoBorrower,
+          citizenship,
           authorizedCreditCheck,
           borrowerType,
           dateOfBirth,
@@ -123,7 +126,6 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
           marital,
           phoneNumber,
           propAddr,
-          residency,
           signatoryTitle,
           ssn,
           stateId,
@@ -156,7 +158,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
         setEmail(email || '');
         setDelinquentTimes(delinquentTimes || '');
 
-        setResidency(residency || undefined);
+        setCitizenship(citizenship || undefined);
         setMarital(marital || undefined);
         setGender(gender || undefined);
         setSsn(ssn || undefined);
@@ -191,6 +193,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     const dateValid = isValid(dateOfBirth) && isDate(dateOfBirth);
 
     const condition =
+      !!citizenship &&
       !!firstName &&
       !!lastName &&
       !!phoneNumber &&
@@ -198,7 +201,6 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
       dateValid &&
       !!gender &&
       !!marital &&
-      !!residency &&
       address.checkAddressValid &&
       !!ssn &&
       authorizedCreditCheck;
@@ -226,6 +228,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     address.checkAddressValid,
     authorizedCreditCheck,
     borrowerType,
+    citizenship,
     dateOfBirth,
     email,
     entityState,
@@ -236,7 +239,6 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     lastName,
     marital,
     phoneNumber,
-    residency,
     signatoryTitle,
     ssn,
     stateId,
@@ -251,6 +253,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     const postData = {
       taskId: router.query.taskId as string,
       taskForm: {
+        citizenship,
         authorizedCreditCheck,
         borrowerType,
         dateOfBirth: dateValid
@@ -265,7 +268,6 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
         lastName,
         marital,
         phoneNumber,
-        residency,
         signatoryTitle,
         ssn,
         stateId,
@@ -304,6 +306,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     authorizedCreditCheck,
     bankruptDate,
     borrowerType,
+    citizenship,
     dateOfBirth,
     delinquentTimes,
     email,
@@ -317,7 +320,6 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     lastName,
     marital,
     phoneNumber,
-    residency,
     router,
     signatoryTitle,
     ssn,
@@ -380,6 +382,19 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                   }
                   options={OPTIONS_TASK_BORROWER_TYPE}
                   value={borrowerType}
+                />
+              </Stack>
+            </StyledFormItem>
+
+            <StyledFormItem label={'What is your citizenship status?'} sub>
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledSelectOption
+                  disabled={hasCreditScore}
+                  onChange={(value) =>
+                    setCitizenship(value as string as CommonBorrowerType)
+                  }
+                  options={OPTIONS_TASK_CITIZENSHIP_STATUS}
+                  value={citizenship}
                 />
               </Stack>
             </StyledFormItem>
@@ -494,18 +509,6 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                   }
                   options={OPTIONS_TASK_MARTIAL_STATUS}
                   value={marital}
-                />
-                <StyledSelect
-                  disabled={hasCreditScore}
-                  label={'Residency Status'}
-                  onChange={(e) =>
-                    setResidency(
-                      e.target
-                        .value as string as DashboardTaskCitizenshipStatus,
-                    )
-                  }
-                  options={OPTIONS_TASK_CITIZENSHIP_STATUS}
-                  value={residency}
                 />
                 <StyledTextFieldNumber
                   decimalScale={0}
