@@ -1,6 +1,6 @@
 import { CommonBorrowerType, UserType } from '@/types';
 
-export const OPTIONS_COMMON_BORROWER_TYPE: Option[] = [
+export const OPTIONS_COMMON_CITIZEN_TYPE: Option[] = [
   {
     label: 'US Citizen',
     value: CommonBorrowerType.us_citizen,

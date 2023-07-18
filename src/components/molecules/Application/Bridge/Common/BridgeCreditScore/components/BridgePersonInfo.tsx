@@ -5,7 +5,7 @@ import { NumberFormatValues } from 'react-number-format';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { OPTIONS_COMMON_BORROWER_TYPE } from '@/constants';
+import { OPTIONS_COMMON_CITIZEN_TYPE } from '@/constants';
 import { useSessionStorageState } from '@/hooks';
 import { CommonBorrowerType } from '@/types';
 import {
@@ -87,7 +87,7 @@ export const BridgePersonInfo: FC = observer(() => {
         <StyledFormItem label={'What is your citizenship status?'} sub>
           <StyledSelectOption
             onChange={changeFieldValue('citizenship')}
-            options={OPTIONS_COMMON_BORROWER_TYPE}
+            options={OPTIONS_COMMON_CITIZEN_TYPE}
             value={selfInfo.citizenship}
           />
         </StyledFormItem>

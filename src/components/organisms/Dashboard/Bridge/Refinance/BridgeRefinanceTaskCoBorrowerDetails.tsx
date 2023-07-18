@@ -19,10 +19,10 @@ import {
 } from '@/types';
 import {
   AUTO_HIDE_DURATION,
+  OPTIONS_COMMON_CITIZEN_TYPE,
   OPTIONS_COMMON_STATE,
   OPTIONS_COMMON_YES_OR_NO,
   OPTIONS_TASK_BORROWER_TYPE,
-  OPTIONS_TASK_CITIZENSHIP_STATUS,
   OPTIONS_TASK_ENTITY_TYPE,
   OPTIONS_TASK_GENDER,
   OPTIONS_TASK_MARTIAL_STATUS,
@@ -98,7 +98,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   const [ssn, setSsn] = useState<string>('');
   const [authorizedCreditCheck, setAuthorizedCreditCheck] = useState(false);
 
-  const [hasCreditScore, setHasCreditScore] = useState(false);
+  const [isConfirm, setIsConfirm] = useState(false);
   const [creditScore, setCreditScore] = useState<number | undefined>();
 
   const { loading } = useAsync(async () => {
@@ -133,7 +133,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
           bankruptDate,
           foreclosureDate,
           creditScore,
-          hasCreditScore,
+          isConfirm,
         } = res.data;
         if (dateOfBirth) {
           setDateOfBirth(new Date(dateOfBirth));
@@ -163,7 +163,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
         setGender(gender || undefined);
         setSsn(ssn || undefined);
 
-        setHasCreditScore(hasCreditScore || false);
+        setIsConfirm(isConfirm || false);
         setCreditScore(creditScore || 0);
 
         setAuthorizedCreditCheck(authorizedCreditCheck || false);
@@ -191,9 +191,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     }
 
     const dateValid = isValid(dateOfBirth) && isDate(dateOfBirth);
-
-    const condition =
-      !!citizenship &&
+    const conditionA =
       !!firstName &&
       !!lastName &&
       !!phoneNumber &&
@@ -205,10 +203,19 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
       !!ssn &&
       authorizedCreditCheck;
 
+    const conditionB =
+      !!firstName &&
+      !!lastName &&
+      !!phoneNumber &&
+      !!email &&
+      dateValid &&
+      !!gender &&
+      !!marital &&
+      address.checkAddressValid;
+
     if (
       isCoBorrower &&
-      (!POSNotUndefined(borrowerType) ||
-        !POSNotUndefined(authorizedCreditCheck))
+      (!POSNotUndefined(borrowerType) || !POSNotUndefined(citizenship))
     ) {
       return false;
     }
@@ -217,18 +224,27 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
       return true;
     }
 
-    return borrowerType === DashboardTaskBorrowerType.individual
-      ? condition
-      : condition &&
-          !!entityType &&
-          !!entityState &&
-          !!stateId &&
-          !!signatoryTitle;
+    if (borrowerType === DashboardTaskBorrowerType.individual) {
+      if (citizenship === CommonBorrowerType.foreign_national) {
+        return conditionB;
+      }
+      return conditionA;
+    }
+    if (citizenship === CommonBorrowerType.foreign_national) {
+      return conditionB;
+    }
+    return (
+      conditionA &&
+      !!entityType &&
+      !!entityState &&
+      !!stateId &&
+      !!signatoryTitle
+    );
   }, [
     address.checkAddressValid,
     authorizedCreditCheck,
-    borrowerType,
     citizenship,
+    borrowerType,
     dateOfBirth,
     email,
     entityState,
@@ -285,7 +301,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     try {
       const res = await _updateTaskFormInfo(postData);
       setCreditScore(res.data);
-      if (isCoBorrower) {
+      if (isCoBorrower && citizenship !== CommonBorrowerType.foreign_national) {
         setTableView('score');
       } else {
         await router.push({
@@ -343,7 +359,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
       >
         <Stack maxWidth={600} width={'100%'}>
           <StyledButtonGroup
-            disabled={hasCreditScore}
+            disabled={isConfirm}
             onChange={(e, value) => {
               if (value !== null) {
                 setIsCoBorrower(value === 'yes');
@@ -374,7 +390,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledSelectOption
-                  disabled={hasCreditScore}
+                  disabled={isConfirm}
                   onChange={(value) =>
                     setBorrowerType(
                       value as string as DashboardTaskBorrowerType,
@@ -389,11 +405,11 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
             <StyledFormItem label={'What is your citizenship status?'} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledSelectOption
-                  disabled={hasCreditScore}
+                  disabled={isConfirm}
                   onChange={(value) =>
                     setCitizenship(value as string as CommonBorrowerType)
                   }
-                  options={OPTIONS_TASK_CITIZENSHIP_STATUS}
+                  options={OPTIONS_COMMON_CITIZEN_TYPE}
                   value={citizenship}
                 />
               </Stack>
@@ -417,13 +433,13 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                     width={'100%'}
                   >
                     <StyledTextField
-                      disabled={hasCreditScore}
+                      disabled={isConfirm}
                       label={'Authorized Signatory Title'}
                       onChange={(e) => setSignatoryTitle(e.target.value)}
                       value={signatoryTitle}
                     />
                     <StyledSelect
-                      disabled={hasCreditScore}
+                      disabled={isConfirm}
                       label={'Entity Type'}
                       onChange={(e) =>
                         setEntityType(
@@ -434,13 +450,13 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                       value={entityType}
                     />
                     <StyledTextField
-                      disabled={hasCreditScore}
+                      disabled={isConfirm}
                       label={'Secretary of State ID'}
                       onChange={(e) => setStateId(e.target.value)}
                       value={stateId}
                     />
                     <StyledSelect
-                      disabled={hasCreditScore}
+                      disabled={isConfirm}
                       label={'Formation State'}
                       onChange={(e) => setEntityState(e.target.value as string)}
                       options={OPTIONS_COMMON_STATE}
@@ -461,37 +477,37 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
             >
               <Stack gap={3} maxWidth={600} width={'100%'}>
                 <StyledTextField
-                  disabled={hasCreditScore}
+                  disabled={isConfirm}
                   label={'First Name'}
                   onChange={(e) => setFirstName(e.target.value)}
                   value={firstName}
                 />
                 <StyledTextField
-                  disabled={hasCreditScore}
+                  disabled={isConfirm}
                   label={'Last Name'}
                   onChange={(e) => setLastName(e.target.value)}
                   value={lastName}
                 />
                 <StyledDatePicker
-                  disabled={hasCreditScore}
+                  disabled={isConfirm}
                   label={'Date of Birth'}
                   onChange={(value) => setDateOfBirth(value)}
                   value={dateOfBirth}
                 />
                 <StyledTextFieldPhone
-                  disabled={hasCreditScore}
+                  disabled={isConfirm}
                   label={'Phone Number'}
                   onValueChange={({ value }) => setPhoneNumber(value)}
                   value={phoneNumber}
                 />
                 <StyledTextField
-                  disabled={hasCreditScore}
+                  disabled={isConfirm}
                   label={'Email'}
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
                 />
                 <StyledSelect
-                  disabled={hasCreditScore}
+                  disabled={isConfirm}
                   label={'Gender'}
                   onChange={(e) =>
                     setGender(e.target.value as string as DashboardTaskGender)
@@ -500,7 +516,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                   value={gender}
                 />
                 <StyledSelect
-                  disabled={hasCreditScore}
+                  disabled={isConfirm}
                   label={'Marital Status'}
                   onChange={(e) =>
                     setMarital(
@@ -512,7 +528,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                 />
                 <StyledTextFieldNumber
                   decimalScale={0}
-                  disabled={hasCreditScore}
+                  disabled={isConfirm}
                   label={'Delinquent Times'}
                   onValueChange={({ formattedValue }) =>
                     setDelinquentTimes(formattedValue)
@@ -521,13 +537,13 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                   value={delinquentTimes}
                 />
                 <StyledDatePicker
-                  disabled={hasCreditScore}
+                  disabled={isConfirm}
                   label={'Bankruptcy Filing Date'}
                   onChange={(value) => setBankruptDate(value)}
                   value={bankruptDate}
                 />
                 <StyledDatePicker
-                  disabled={hasCreditScore}
+                  disabled={isConfirm}
                   label={'Property Foreclosure Filing Date'}
                   onChange={(value) => setForeclosureDate(value)}
                   value={foreclosureDate}
@@ -539,29 +555,31 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
               <Stack maxWidth={600} width={'100%'}>
                 <StyledGoogleAutoComplete
                   address={address}
-                  disabled={hasCreditScore}
+                  disabled={isConfirm}
                 />
               </Stack>
             </StyledFormItem>
 
-            <StyledFormItem
-              label={'Your Co-borrower Social Security Number'}
-              sub
-            >
-              <Stack maxWidth={600} width={'100%'}>
-                <StyledTextFieldSocialNumber
-                  disabled={hasCreditScore}
-                  label={'Social Security Number'}
-                  onValueChange={(v) => setSsn(v)}
-                  value={ssn}
-                />
-              </Stack>
-            </StyledFormItem>
+            {citizenship !== CommonBorrowerType.foreign_national && (
+              <StyledFormItem
+                label={'Your Co-borrower Social Security Number'}
+                sub
+              >
+                <Stack maxWidth={600} width={'100%'}>
+                  <StyledTextFieldSocialNumber
+                    disabled={isConfirm}
+                    label={'Social Security Number'}
+                    onValueChange={(v) => setSsn(v)}
+                    value={ssn}
+                  />
+                </Stack>
+              </StyledFormItem>
+            )}
 
-            {!hasCreditScore ? (
+            {!isConfirm ? (
               <StyledCheckbox
                 checked={authorizedCreditCheck}
-                disabled={hasCreditScore}
+                disabled={isConfirm}
                 label={
                   <Typography
                     color={'text.primary'}
@@ -616,14 +634,14 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                 onChange={(e) => setAuthorizedCreditCheck(e.target.checked)}
                 sx={{ maxWidth: 600 }}
               />
-            ) : (
+            ) : citizenship !== CommonBorrowerType.foreign_national ? (
               <StyledFormItem
                 label={`Credit Score is ${creditScore}`}
                 labelSx={{ m: 0 }}
                 sub
                 tipSx={{ m: 0 }}
               />
-            )}
+            ) : null}
           </>
         )}
       </Transitions>
@@ -636,7 +654,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
         width={'100%'}
       >
         <StyledButton
-          color={hasCreditScore ? 'primary' : 'info'}
+          color={isConfirm ? 'primary' : 'info'}
           onClick={() =>
             router.push({
               pathname: '/dashboard/tasks',
@@ -644,11 +662,11 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
             })
           }
           sx={{ flex: 1 }}
-          variant={hasCreditScore ? 'contained' : 'text'}
+          variant={isConfirm ? 'contained' : 'text'}
         >
           Back
         </StyledButton>
-        {!hasCreditScore && (
+        {!isConfirm && (
           <StyledButton
             disabled={!isDisabled || saveLoading}
             loading={saveLoading}

@@ -1,1 +1,1 @@
-export * from './GroundUpPurchaseEstateRate';
+export * from './GroundPurchaseEstateRate';

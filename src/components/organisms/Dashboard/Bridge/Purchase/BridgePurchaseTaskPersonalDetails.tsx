@@ -231,7 +231,7 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
 
       <StyledFormItem label={'Current Address'} sub>
         <Stack maxWidth={600} width={'100%'}>
-          <StyledGoogleAutoComplete address={address} />
+          <StyledGoogleAutoComplete address={address} disabled />
         </Stack>
       </StyledFormItem>
 
