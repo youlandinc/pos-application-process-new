@@ -38,18 +38,21 @@ export const PipelineLicense: FC = observer(() => {
         return {
           label: "Broker's License",
           license: BROKER_LICENSE,
+          name: 'broker',
         };
       }
       case UserType.LENDER: {
         return {
           label: "Lender's License",
           license: LENDER_LICENSE,
+          name: 'lender',
         };
       }
       default: {
         return {
           label: '',
           license: null,
+          name: '',
         };
       }
     }
@@ -130,10 +133,7 @@ export const PipelineLicense: FC = observer(() => {
       <StyledFormItem
         label={computedLicense.label}
         sx={{ width: '100%' }}
-        tip={`If you're looking to broker bridge loans in AZ, CA, MN, NC, NJ,
-            NV, NY, OR, or UT, please upload your broker license for each
-            respective state here. We are not currently lending in any other
-            states.`}
+        tip={`If you're looking to broker bridge loans, please upload your ${computedLicense.name} license for each respective state here. We lend in all states except AZ, NV, ND, SD, VT, ID, and MN`}
       >
         <Stack alignItems={'center'} gap={3} width={'100%'}>
           <Stack width={'100%'}>
