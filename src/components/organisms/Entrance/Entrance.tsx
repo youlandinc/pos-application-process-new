@@ -32,8 +32,8 @@ const productList = [
     url: '/application/bridge',
   },
   {
-    name: 'Fix & Flip',
-    url: '/application/fix_and_flip',
+    name: 'Fixed & Flip',
+    url: '/application/fixed_and_flip',
   },
   {
     name: 'Ground-up Construction',
