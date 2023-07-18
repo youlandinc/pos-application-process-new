@@ -1,6 +1,6 @@
 import {
-  BridgePropertyNumberOpt,
   ChannelOpt,
+  PropertyNumberOpt,
   PropertyOpt,
   PropertyUnitOpt,
 } from '@/types/options';
@@ -25,7 +25,7 @@ export interface BridgeApplicationProcessSnapshot {
 }
 
 export interface BridgeStartingData {
-  propertyNumber: BridgePropertyNumberOpt;
+  propertyNumber: PropertyNumberOpt;
   isConfirm: boolean | undefined;
   propertyType: PropertyOpt;
   propertyUnit: PropertyUnitOpt;

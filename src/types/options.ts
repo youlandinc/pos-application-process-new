@@ -16,7 +16,7 @@ export enum ChannelOpt {
   other = 'other',
 }
 
-export enum BridgePropertyNumberOpt {
+export enum PropertyNumberOpt {
   default = '',
   zero = 'none',
   one_to_four = 'one_to_four',
