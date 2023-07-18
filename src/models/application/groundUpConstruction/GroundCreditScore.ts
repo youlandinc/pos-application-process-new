@@ -1,18 +1,18 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 
-import { BridgeCoBorrowerCondition, VariableName } from '@/types';
+import { GroundCoBorrowerCondition, VariableName } from '@/types';
 import { PersonalInfo } from '@/models/application/common/CreditScore';
 
-import { BridgeCreditScoreState } from '@/types/enum';
+import { GroundUpConstructionCreditScoreState } from '@/types/enum';
 
-export const BridgeCreditScore = types
+export const GroundCreditScore = types
   .model({
     selfInfo: PersonalInfo,
     coBorrowerCondition: types.model({
       isCoBorrower: types.maybe(types.boolean),
     }),
     coBorrowerInfo: PersonalInfo,
-    state: types.frozen<BridgeCreditScoreState>(),
+    state: types.frozen<GroundUpConstructionCreditScoreState>(),
   })
   .actions((self) => ({
     changeState(state: (typeof self)['state']) {
@@ -23,11 +23,11 @@ export const BridgeCreditScore = types
     >(key: K, value: (typeof self)['coBorrowerCondition'][K]) {
       self.coBorrowerCondition[key] = value;
     },
-    injectServerData(value: BridgeCoBorrowerCondition) {
+    injectServerData(value: GroundCoBorrowerCondition) {
       const { isCoBorrower } = value;
       self.coBorrowerCondition.isCoBorrower = isCoBorrower;
     },
-    getCoborrowerConditionPostData(): Variable<BridgeCoBorrowerCondition> {
+    getCoborrowerConditionPostData(): Variable<GroundCoBorrowerCondition> {
       const { isCoBorrower } = self.coBorrowerCondition;
       return {
         name: VariableName.aboutOtherCondition,
@@ -39,5 +39,5 @@ export const BridgeCreditScore = types
     },
   }));
 
-export type IBridgeCreditScore = Instance<typeof BridgeCreditScore>;
-export type SBridgeCreditScore = SnapshotOut<typeof BridgeCreditScore>;
+export type IGroundCreditScore = Instance<typeof GroundCreditScore>;
+export type SGroundCreditScore = SnapshotOut<typeof GroundCreditScore>;

@@ -1,9 +1,9 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { BridgePurchaseEstimateRateData } from '@/types/application/bridge';
+import { GroundPurchaseEstimateRateData } from '@/types/application/ground';
 
 import { VariableName } from '@/types/enum';
 
-export const BPEstimateRate = types
+export const GroundPurchaseEstimateRate = types
   .model({
     purchasePrice: types.maybe(types.number),
     purchaseLoanAmount: types.maybe(types.number),
@@ -23,7 +23,7 @@ export const BPEstimateRate = types
     ) {
       self[key] = value;
     },
-    getPostData(): Variable<BridgePurchaseEstimateRateData> {
+    getPostData(): Variable<GroundPurchaseEstimateRateData> {
       const { purchasePrice, purchaseLoanAmount, isCor, cor, arv } = self;
       return {
         name: VariableName.estimateRate,
@@ -37,7 +37,7 @@ export const BPEstimateRate = types
         },
       };
     },
-    injectServerData(value: BridgePurchaseEstimateRateData) {
+    injectServerData(value: GroundPurchaseEstimateRateData) {
       const { purchasePrice, purchaseLoanAmount, isCor, cor, arv } = value;
       self.purchaseLoanAmount = purchaseLoanAmount;
       self.purchasePrice = purchasePrice;
@@ -47,5 +47,9 @@ export const BPEstimateRate = types
     },
   }));
 
-export type IBPEstimateRate = Instance<typeof BPEstimateRate>;
-export type SBPEstimateRate = SnapshotOut<typeof BPEstimateRate>;
+export type IGroundPurchaseEstimateRate = Instance<
+  typeof GroundPurchaseEstimateRate
+>;
+export type SGroundPurchaseEstimateRate = SnapshotOut<
+  typeof GroundPurchaseEstimateRate
+>;

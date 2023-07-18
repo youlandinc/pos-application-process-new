@@ -1,9 +1,9 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { BridgePurchaseEstimateRateData } from '@/types/application/bridge';
+import { FixedPurchaseEstimateRateData } from '@/types/application/fixed';
 
 import { VariableName } from '@/types/enum';
 
-export const BPEstimateRate = types
+export const FixedPurchaseEstimateRate = types
   .model({
     purchasePrice: types.maybe(types.number),
     purchaseLoanAmount: types.maybe(types.number),
@@ -23,7 +23,7 @@ export const BPEstimateRate = types
     ) {
       self[key] = value;
     },
-    getPostData(): Variable<BridgePurchaseEstimateRateData> {
+    getPostData(): Variable<FixedPurchaseEstimateRateData> {
       const { purchasePrice, purchaseLoanAmount, isCor, cor, arv } = self;
       return {
         name: VariableName.estimateRate,
@@ -37,7 +37,7 @@ export const BPEstimateRate = types
         },
       };
     },
-    injectServerData(value: BridgePurchaseEstimateRateData) {
+    injectServerData(value: FixedPurchaseEstimateRateData) {
       const { purchasePrice, purchaseLoanAmount, isCor, cor, arv } = value;
       self.purchaseLoanAmount = purchaseLoanAmount;
       self.purchasePrice = purchasePrice;
@@ -47,5 +47,9 @@ export const BPEstimateRate = types
     },
   }));
 
-export type IBPEstimateRate = Instance<typeof BPEstimateRate>;
-export type SBPEstimateRate = SnapshotOut<typeof BPEstimateRate>;
+export type IFixedPurchaseEstimateRate = Instance<
+  typeof FixedPurchaseEstimateRate
+>;
+export type SFixedPurchaseEstimateRate = SnapshotOut<
+  typeof FixedPurchaseEstimateRate
+>;

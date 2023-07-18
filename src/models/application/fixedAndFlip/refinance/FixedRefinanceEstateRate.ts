@@ -1,9 +1,9 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { BridgeRefinanceEstimateRateData } from '@/types/application/bridge';
+import { FixedRefinanceEstimateRateData } from '@/types/application/fixed';
 
 import { VariableName } from '@/types/enum';
 
-export const BREstimateRate = types
+export const FixedRefinanceEstimateRate = types
   .model({
     homeValue: types.maybe(types.number),
     balance: types.maybe(types.number),
@@ -25,7 +25,7 @@ export const BREstimateRate = types
     ) {
       self[key] = value;
     },
-    getPostData(): Variable<BridgeRefinanceEstimateRateData> {
+    getPostData(): Variable<FixedRefinanceEstimateRateData> {
       const { homeValue, balance, isCashOut, cashOutAmount, isCor, cor, arv } =
         self;
 
@@ -43,7 +43,7 @@ export const BREstimateRate = types
         },
       };
     },
-    injectServerData(value: BridgeRefinanceEstimateRateData) {
+    injectServerData(value: FixedRefinanceEstimateRateData) {
       const { homeValue, balance, isCashOut, cashOutAmount, isCor, cor, arv } =
         value;
 
@@ -57,5 +57,9 @@ export const BREstimateRate = types
     },
   }));
 
-export type IBREstimateRate = Instance<typeof BREstimateRate>;
-export type SBREstimateRate = SnapshotOut<typeof BREstimateRate>;
+export type IFixedRefinanceEstimateRate = Instance<
+  typeof FixedRefinanceEstimateRate
+>;
+export type SFixedRefinanceEstimateRate = SnapshotOut<
+  typeof FixedRefinanceEstimateRate
+>;
