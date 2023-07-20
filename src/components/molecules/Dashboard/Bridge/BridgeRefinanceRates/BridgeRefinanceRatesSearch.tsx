@@ -41,13 +41,10 @@ export const BridgeRefinanceRatesSearch: FC<
   loanStage = LoanStage.Application,
 }) => {
   const {
-    cor,
-    isCor,
     isCashOut,
     cashOutAmount,
     balance,
     homeValue,
-    arv,
     brokerPoints,
     brokerProcessingFee,
     officerPoints,
@@ -58,26 +55,20 @@ export const BridgeRefinanceRatesSearch: FC<
   } = searchForm;
 
   const [LTVError, setLTVError] = useState<string>('');
-  const [LTCError, setLTCError] = useState<string>('');
 
   const loanAmount = useMemo(() => {
     let total = balance;
-    if (isCor) {
-      total! += cor || 0;
-    }
+
     if (isCashOut) {
       total! += cashOutAmount || 0;
     }
     return total;
-  }, [balance, cashOutAmount, cor, isCashOut, isCor]);
+  }, [balance, cashOutAmount, isCashOut]);
 
   const LTV = useMemo(() => {
     let radio = 0.7;
     if (!homeValue) {
       return 0;
-    }
-    if (isCor) {
-      setLTVError('');
     }
     let total = balance || 0;
     if (isCashOut) {
@@ -95,19 +86,7 @@ export const BridgeRefinanceRatesSearch: FC<
       setLTVError('Total loan amount must be at least $100,000');
     }
     return total / homeValue;
-  }, [homeValue, balance, isCor, isCashOut, loanAmount, cashOutAmount]);
-
-  const LTC = useMemo(() => {
-    const result = cor === 0 ? 0 : loanAmount! / (cor! + homeValue!);
-    setLTCError(
-      !isCor
-        ? ''
-        : result > 0.75
-        ? 'Reduce your loan amount or rehab cost. Your Loan-to-Cost should be no more than 75%'
-        : '',
-    );
-    return result;
-  }, [cor, homeValue, isCor, loanAmount]);
+  }, [homeValue, balance, isCashOut, loanAmount, cashOutAmount]);
 
   const pointsError = useMemo(() => {
     let points;
@@ -228,33 +207,16 @@ export const BridgeRefinanceRatesSearch: FC<
         break;
     }
 
-    if (LTVError || LTCError) {
+    if (LTVError) {
       return false;
     }
-    if (!isCor && !isCashOut) {
+    if (!isCashOut) {
       return homeValue && POSNotUndefined(balance) && flag;
-    } else if (isCor || isCashOut) {
-      if (isCor && isCashOut) {
-        return (
-          homeValue &&
-          POSNotUndefined(balance) &&
-          cashOutAmount &&
-          cor &&
-          arv &&
-          flag
-        );
-      } else if (isCashOut) {
-        return homeValue && cashOutAmount && flag;
-      } else if (isCor) {
-        return homeValue && cor && arv && flag;
-      }
     }
-    return true;
+    return homeValue && cashOutAmount && flag;
   }, [
     userType,
     LTVError,
-    LTCError,
-    isCor,
     isCashOut,
     agentFee,
     agentFeeError,
@@ -269,8 +231,6 @@ export const BridgeRefinanceRatesSearch: FC<
     homeValue,
     balance,
     cashOutAmount,
-    cor,
-    arv,
   ]);
 
   const renderByUserType = useMemo(() => {
@@ -555,7 +515,7 @@ export const BridgeRefinanceRatesSearch: FC<
             </Stack>
 
             <Transitions>
-              {LTVError && !isCor && (
+              {LTVError && (
                 <Typography color={'error'} variant={'body3'}>
                   {LTVError}
                 </Typography>
@@ -595,101 +555,6 @@ export const BridgeRefinanceRatesSearch: FC<
                   prefix={'$'}
                   value={cashOutAmount || undefined}
                 />
-              </Stack>
-            )}
-          </Transitions>
-
-          <StyledCheckbox
-            checked={isCor}
-            disabled={loading || loanStage === LoanStage.Approved || !!LTVError}
-            label={'Rehab Loan Amount'}
-            onChange={(e) => {
-              setSearchForm({
-                ...searchForm,
-                isCor: e.target.checked,
-              });
-            }}
-          />
-
-          <Transitions
-            style={{
-              width: '100%',
-              display: isCashOut || isCor ? 'block' : 'none',
-            }}
-          >
-            {isCor && (
-              <Stack gap={1} width={'100%'}>
-                <Stack
-                  flexDirection={{ lg: 'row', xs: 'column' }}
-                  gap={3}
-                  width={'100%'}
-                >
-                  <Stack flex={1} gap={1}>
-                    <Typography variant={'body1'}>
-                      Estimated Rehab Loan Amount
-                    </Typography>
-                    <StyledTextFieldNumber
-                      disabled={loading || loanStage === LoanStage.Approved}
-                      onValueChange={({ floatValue }) => {
-                        setSearchForm({
-                          ...searchForm,
-                          cor: floatValue,
-                        });
-                      }}
-                      prefix={'$'}
-                      value={cor || undefined}
-                    />
-                  </Stack>
-                  <Stack flex={1} gap={1}>
-                    <Typography variant={'body1'}>
-                      After Repair Value (ARV){' '}
-                      <StyledTooltip
-                        title={
-                          'ARV (As-is Property Value + Estimated Rehab Loan Amount)'
-                        }
-                      >
-                        <InfoOutlined sx={{ width: 16, height: 16 }} />
-                      </StyledTooltip>
-                    </Typography>
-                    <StyledTextFieldNumber
-                      disabled={loading || loanStage === LoanStage.Approved}
-                      onValueChange={({ floatValue }) => {
-                        setSearchForm({
-                          ...searchForm,
-                          arv: floatValue,
-                        });
-                      }}
-                      prefix={'$'}
-                      value={arv}
-                    />
-                  </Stack>
-                </Stack>
-                <Stack
-                  alignItems={'center'}
-                  flexDirection={'row'}
-                  gap={1}
-                  justifyContent={'flex-start'}
-                  width={{ md: 'calc(50% - 12px)', xs: '100%' }}
-                >
-                  <Typography variant={'body1'}>Loan to Cost</Typography>
-                  <StyledTooltip
-                    title={
-                      'Loan to Cost (LTC) – Total Loan Amount/(As is value + Rehab Amount)'
-                    }
-                  >
-                    <InfoOutlined sx={{ width: 16, height: 16 }} />
-                  </StyledTooltip>
-                  <Typography ml={'auto'} variant={'body1'}>
-                    {POSFormatPercent(LTC)}
-                  </Typography>
-                </Stack>
-                <Transitions>
-                  {LTCError && (
-                    <Typography color={'error'} variant={'body3'}>
-                      {LTCError}
-                    </Typography>
-                  )}
-                </Transitions>
               </Stack>
             )}
           </Transitions>

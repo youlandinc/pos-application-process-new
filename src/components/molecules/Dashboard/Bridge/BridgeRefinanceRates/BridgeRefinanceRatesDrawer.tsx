@@ -55,7 +55,7 @@ export const BridgeRefinanceRatesDrawer: FC<
       case UserType.BROKER:
         return (
           <>
-            <CardItem
+            <BridgeRefinanceCardItem
               info={`${POSFormatDollar(
                 selectedItem?.brokerOriginationFee,
               )}(${POSFormatPercent(
@@ -63,7 +63,7 @@ export const BridgeRefinanceRatesDrawer: FC<
               )})`}
               label={'Broker Origination Fee'}
             />
-            <CardItem
+            <BridgeRefinanceCardItem
               info={POSFormatDollar(selectedItem?.brokerProcessingFee)}
               label={'Broker Processing Fee'}
             />
@@ -72,7 +72,7 @@ export const BridgeRefinanceRatesDrawer: FC<
       case UserType.LENDER:
         return (
           <>
-            <CardItem
+            <BridgeRefinanceCardItem
               info={`${POSFormatDollar(
                 selectedItem?.lenderOriginationFee,
               )}(${POSFormatPercent(
@@ -80,7 +80,7 @@ export const BridgeRefinanceRatesDrawer: FC<
               )})`}
               label={'Lender Origination Fee'}
             />
-            <CardItem
+            <BridgeRefinanceCardItem
               info={POSFormatDollar(selectedItem?.lenderProcessingFee)}
               label={'Lender Processing Fee'}
             />
@@ -89,7 +89,7 @@ export const BridgeRefinanceRatesDrawer: FC<
       case UserType.LOAN_OFFICER:
         return (
           <>
-            <CardItem
+            <BridgeRefinanceCardItem
               info={`${POSFormatDollar(
                 selectedItem?.officerOriginationFee,
               )}(${POSFormatPercent(
@@ -97,7 +97,7 @@ export const BridgeRefinanceRatesDrawer: FC<
               )})`}
               label={'Loan Officer Origination Fee'}
             />
-            <CardItem
+            <BridgeRefinanceCardItem
               info={POSFormatDollar(selectedItem?.officerProcessingFee)}
               label={'Loan Officer Processing Fee'}
             />
@@ -106,7 +106,7 @@ export const BridgeRefinanceRatesDrawer: FC<
       case UserType.REAL_ESTATE_AGENT:
         return (
           <>
-            <CardItem
+            <BridgeRefinanceCardItem
               info={POSFormatDollar(selectedItem?.agentFee)}
               label={'Referral Fee'}
             />
@@ -153,7 +153,7 @@ export const BridgeRefinanceRatesDrawer: FC<
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={
                   <Typography variant={'inherit'}>
                     {`${selectedItem?.firstName} ${selectedItem?.lastName}`}
@@ -161,7 +161,7 @@ export const BridgeRefinanceRatesDrawer: FC<
                 }
                 label={'Borrower'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={
                   <Typography
                     component={'div'}
@@ -178,27 +178,21 @@ export const BridgeRefinanceRatesDrawer: FC<
                 }
                 label={'Address'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.totalLoanAmount)}
                 label={'Total Loan Amount'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.homeValue)}
                 label={'As-is Property Value'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.balance)}
                 label={'Payoff Amount'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.cashOutAmount)}
                 label={'Cash Out Amount'}
-              />
-              <CardItem
-                info={
-                  selectedItem?.cor ? POSFormatDollar(selectedItem?.cor) : 'N/A'
-                }
-                label={'Rehab Loan Amount'}
               />
             </Stack>
           </Stack>
@@ -217,35 +211,28 @@ export const BridgeRefinanceRatesDrawer: FC<
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={selectedItem?.amortization}
                 label={'Amortization'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={POSFindLabel(
                   OPTIONS_MORTGAGE_PROPERTY,
                   selectedItem?.propertyType as string,
                 )}
                 label={'Property Type'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={selectedItem?.closeDate}
                 label={'Preferred Close Date'}
               />
-              <CardItem info={selectedItem?.lien} label={'Lien'} />
-              <CardItem
-                info={
-                  selectedItem?.arv ? POSFormatDollar(selectedItem?.arv) : 'N/A'
-                }
-                label={'Estimated ARV'}
+              <BridgeRefinanceCardItem
+                info={selectedItem?.lien}
+                label={'Lien'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={POSFormatPercent(selectedItem?.ltv)}
                 label={'Loan-to-Value'}
-              />
-              <CardItem
-                info={POSFormatPercent(selectedItem?.ltc)}
-                label={'Loan-to-Cost'}
               />
             </Stack>
           </Stack>
@@ -264,15 +251,15 @@ export const BridgeRefinanceRatesDrawer: FC<
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={POSFormatPercent(selectedItem?.interestRateOfYear)}
                 label={'Interest Rate'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={`${selectedItem?.loanTerm} months`}
                 label={'Loan Term'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}
                 label={'Monthly Payment'}
               />
@@ -308,7 +295,7 @@ export const BridgeRefinanceRatesDrawer: FC<
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={`${POSFormatDollar(
                   selectedItem?.originationFee,
                 )}(${POSFormatPercent(
@@ -316,21 +303,21 @@ export const BridgeRefinanceRatesDrawer: FC<
                 )})`}
                 label={'Lender Origination Fee'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.underwritingFee)}
                 label={'Underwriting Fee'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.docPreparationFee)}
                 label={'Document Preparation Fee'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={POSFormatDollar(
                   (selectedItem?.paymentOfMonth as number) / 30,
                 )}
                 label={'Pro-rated Interest'}
               />
-              <CardItem
+              <BridgeRefinanceCardItem
                 info={selectedItem?.thirdPartyCosts}
                 label={'Third-party Costs'}
               />
@@ -391,7 +378,10 @@ export const BridgeRefinanceRatesDrawer: FC<
   );
 };
 
-const CardItem: FC<{ label: string; info: ReactNode }> = ({ label, info }) => {
+const BridgeRefinanceCardItem: FC<{ label: string; info: ReactNode }> = ({
+  label,
+  info,
+}) => {
   const breakpoints = useBreakpoints();
 
   return (

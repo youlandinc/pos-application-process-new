@@ -18,7 +18,6 @@ import {
   StyledDatePicker,
   StyledFormItem,
   StyledGoogleAutoComplete,
-  StyledProgressRing,
   StyledSelectOption,
   StyledTextField,
   StyledTextFieldPhone,

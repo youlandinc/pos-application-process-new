@@ -30,9 +30,9 @@ import {
 } from '@/types';
 
 import {
-  BridgeRatesList,
   BridgeRefinanceRatesDrawer,
   BridgeRefinanceRatesSearch,
+  RatesList,
 } from '@/components/molecules';
 
 const initialize: BRQueryData = {
@@ -40,9 +40,6 @@ const initialize: BRQueryData = {
   balance: undefined,
   isCashOut: false,
   cashOutAmount: undefined,
-  isCor: false,
-  cor: undefined,
-  arv: undefined,
   brokerPoints: undefined,
   brokerProcessingFee: undefined,
   lenderPoints: undefined,
@@ -95,9 +92,6 @@ export const BridgeRefinanceRates: FC = observer(() => {
           balance,
           isCashOut,
           cashOutAmount,
-          isCor,
-          cor,
-          arv,
           lenderPoints,
           lenderProcessingFee,
           brokerPoints,
@@ -112,9 +106,6 @@ export const BridgeRefinanceRates: FC = observer(() => {
           balance,
           isCashOut,
           cashOutAmount,
-          isCor,
-          cor,
-          arv,
           lenderPoints,
           lenderProcessingFee,
           brokerPoints,
@@ -217,7 +208,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
         setSearchForm={setSearchForm}
         userType={userType as UserType}
       />
-      <BridgeRatesList
+      <RatesList
         label={
           <>
             <Typography

@@ -48,7 +48,7 @@ export const Entrance: FC = observer(() => {
   const router = useRouter();
 
   const store = useMst();
-  const { userType, detectUserActiveService } = store;
+  const { detectUserActiveService } = store;
 
   const { loading } = useAsync(async () => {
     if (!router.query.token) {

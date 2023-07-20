@@ -33,7 +33,6 @@ import {
 
 import {
   StyledButton,
-  StyledCheckbox,
   StyledLoading,
   StyledTextFieldNumber,
   Transitions,
@@ -73,7 +72,6 @@ export const BridgePurchasePreApproval: FC = observer(() => {
   const [rateData, setRateData] = useState<BridgePurchaseEstimateRateData>();
 
   const [LTVError, setLTVError] = useState<undefined | string[]>(undefined);
-  const [LTCError, setLTCError] = useState<undefined | string[]>(undefined);
 
   const [productData, setProductData] = useState<RatesProductData>();
 
@@ -98,30 +96,6 @@ export const BridgePurchasePreApproval: FC = observer(() => {
       ? rateData?.purchaseLoanAmount / rateData?.purchasePrice
       : 0;
   }, [rateData?.purchaseLoanAmount, rateData?.purchasePrice]);
-
-  const editLoanAmount = useMemo(() => {
-    return rateData?.isCor
-      ? (rateData?.purchaseLoanAmount as number) + (rateData?.cor as number)
-      : rateData?.purchaseLoanAmount;
-  }, [rateData?.purchaseLoanAmount, rateData?.cor, rateData?.isCor]);
-
-  const LTC = useMemo(() => {
-    if (!rateData?.isCor) {
-      setLTCError(undefined);
-      return 0;
-    }
-    const result =
-      (editLoanAmount as number) /
-      ((rateData?.cor as number) + (rateData?.purchasePrice as number));
-    setLTCError(
-      result > 0.75
-        ? [
-            'Reduce your purchase loan amount or rehab loan amount. Your Loan-to-Cost should be no more than 75%',
-          ]
-        : undefined,
-    );
-    return result;
-  }, [editLoanAmount, rateData?.cor, rateData?.isCor, rateData?.purchasePrice]);
 
   const [initState, getInitData] = useAsyncFn(async (processId: string) => {
     if (!router.query.processId) {
@@ -149,11 +123,8 @@ export const BridgePurchasePreApproval: FC = observer(() => {
           }),
         );
         const {
-          isCor,
           purchasePrice,
           purchaseLoanAmount,
-          cor,
-          arv,
           brokerPoints,
           brokerProcessingFee,
           lenderPoints,
@@ -163,11 +134,8 @@ export const BridgePurchasePreApproval: FC = observer(() => {
           agentFee,
         } = data;
         setRateData({
-          isCor,
           purchasePrice,
           purchaseLoanAmount,
-          cor,
-          arv,
           brokerPoints,
           brokerProcessingFee,
           lenderPoints,
@@ -288,8 +256,12 @@ export const BridgePurchasePreApproval: FC = observer(() => {
   }, [rateData, userType]);
 
   const processingFeeError = useMemo(() => {
-    const { brokerProcessingFee, lenderProcessingFee, officerProcessingFee } =
-      rateData || {};
+    const {
+      brokerProcessingFee,
+      lenderProcessingFee,
+      officerProcessingFee,
+      purchaseLoanAmount,
+    } = rateData || {};
 
     let fee;
     switch (userType) {
@@ -320,10 +292,10 @@ export const BridgePurchasePreApproval: FC = observer(() => {
         OPTIONS_COMMON_USER_TYPE,
         userType as string as UserType,
       )} origination fee must be lesser than or equal to ${POSFormatDollar(
-        editLoanAmount,
+        purchaseLoanAmount,
       )}.`,
     ];
-  }, [rateData, userType, loanAmount, editLoanAmount]);
+  }, [rateData, userType, loanAmount]);
 
   const agentFeeError = useMemo(() => {
     const { agentFee } = rateData || {};
@@ -378,7 +350,6 @@ export const BridgePurchasePreApproval: FC = observer(() => {
       !address?.checkAddressValid ||
       !propertyType ||
       !!LTVError ||
-      !!LTCError ||
       !userCondition
     ) {
       return false;
@@ -386,17 +357,12 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     if (propertyType === PropertyOpt.twoToFourFamily) {
       return !!propertyUnit;
     }
-    if (rateData?.isCor) {
-      return !!(rateData.cor && rateData.arv);
-    }
     return true;
   }, [
     userType,
     address?.checkAddressValid,
     propertyType,
     LTVError,
-    LTCError,
-    rateData?.isCor,
     rateData?.brokerPoints,
     rateData?.brokerProcessingFee,
     rateData?.lenderPoints,
@@ -404,8 +370,6 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     rateData?.officerPoints,
     rateData?.officerProcessingFee,
     rateData?.agentFee,
-    rateData?.cor,
-    rateData?.arv,
     pointsError,
     processingFeeError,
     agentFeeError,
@@ -657,76 +621,6 @@ export const BridgePurchasePreApproval: FC = observer(() => {
           </Transitions>
         </Stack>
 
-        <Stack width={'100%'}>
-          <StyledCheckbox
-            checked={rateData?.isCor}
-            disabled={checkLoading}
-            label={'Rehab Loan Amount'}
-            onChange={(e) => {
-              setRateData({
-                ...(rateData as BridgePurchaseEstimateRateData),
-                isCor: e.target.checked,
-              });
-            }}
-          />
-        </Stack>
-        <Stack
-          sx={{ display: rateData?.isCor ? 'block' : 'none' }}
-          width={'100%'}
-        >
-          <Transitions>
-            {rateData?.isCor && (
-              <Stack gap={3} width={'100%'}>
-                <StyledTextFieldNumber
-                  disabled={checkLoading}
-                  error={!!LTCError}
-                  label={'Estimated Rehab Loan Amount'}
-                  onValueChange={({ floatValue }) => {
-                    setRateData({
-                      ...rateData,
-                      cor: floatValue,
-                    });
-                  }}
-                  prefix={'$'}
-                  value={rateData?.cor || undefined}
-                />
-                <StyledTextFieldNumber
-                  disabled={checkLoading}
-                  error={!!LTCError}
-                  label={'After Repair Value (ARV)'}
-                  onValueChange={({ floatValue }) => {
-                    setRateData({
-                      ...rateData,
-                      arv: floatValue,
-                    });
-                  }}
-                  prefix={'$'}
-                  value={rateData?.arv || undefined}
-                />
-                <StyledTextFieldNumber
-                  decimalScale={3}
-                  disabled
-                  label={'Loan-to-Cost'}
-                  onValueChange={() => undefined}
-                  percentage={true}
-                  suffix={'%'}
-                  thousandSeparator={false}
-                  value={POSFormatLocalPercent(LTC)}
-                />
-              </Stack>
-            )}
-          </Transitions>
-        </Stack>
-        <Stack sx={{ display: LTCError ? 'block' : 'none' }} width={'100%'}>
-          <Transitions>
-            {LTCError && (
-              <Stack color={'error.main'} width={'100%'}>
-                {LTCError}
-              </Stack>
-            )}
-          </Transitions>
-        </Stack>
-
         <Transitions
           style={{
             display: userType !== UserType.CUSTOMER ? 'block' : 'none',
@@ -745,8 +639,6 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     LTVError,
     rateData,
     LTV,
-    LTCError,
-    LTC,
     pointsError,
     processingFeeError,
     agentFeeError,

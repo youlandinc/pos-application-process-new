@@ -43,9 +43,6 @@ export interface BridgeCoBorrowerCondition {
 export interface BridgePurchaseEstimateRateData {
   purchasePrice: number | undefined;
   purchaseLoanAmount: number | undefined;
-  isCor: boolean | undefined;
-  cor: number | undefined;
-  arv: number | undefined;
   brokerPoints?: number | undefined;
   brokerProcessingFee?: number | undefined;
   lenderPoints?: number | undefined;
@@ -60,9 +57,6 @@ export interface BridgeRefinanceEstimateRateData {
   balance: number | undefined;
   isCashOut: boolean;
   cashOutAmount: number | undefined;
-  isCor: boolean;
-  cor: number | undefined;
-  arv: number | undefined;
   brokerPoints?: number | undefined;
   brokerProcessingFee?: number | undefined;
   lenderPoints?: number | undefined;

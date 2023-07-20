@@ -1,9 +1,10 @@
-import dynamic from 'next/dynamic';
 import { FC, useCallback, useEffect } from 'react';
 import { Box, Icon, Stack } from '@mui/material';
+import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
+
 import { POSCreateDebounceFunction } from '@/utils';
 
 import { StyledButton, StyledFormItem } from '@/components/atoms';

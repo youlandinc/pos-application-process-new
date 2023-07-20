@@ -60,10 +60,10 @@ export const BridgeRefinanceOverview: FC = observer(() => {
               label: 'Cash Out Amount',
               info: POSFormatDollar(summary.cashOutAmount),
             },
-            {
-              label: 'Rehab Loan Amount',
-              info: summary?.cor ? POSFormatDollar(summary.cor) : 'N/A',
-            },
+            //{
+            //  label: 'Rehab Loan Amount',
+            //  info: summary?.cor ? POSFormatDollar(summary.cor) : 'N/A',
+            //},
             {
               label: 'Borrower',
               info: `${summary.firstName} ${summary.lastName}`,
@@ -125,15 +125,19 @@ export const BridgeRefinanceOverview: FC = observer(() => {
                 : 'N/A',
             },
             { label: 'Lien', info: loanDetail?.lien },
+            //{
+            //  label: 'Estimated ARV',
+            //  info: loanDetail?.arv ? POSFormatDollar(loanDetail?.arv) : 'N/A',
+            //},
+            //{
+            //  label: `${summary.isCor ? 'Loan to Cost' : 'Loan to Value(LTV)'}`,
+            //  info: POSFormatPercent(
+            //    summary.isCor ? loanDetail?.ltc : loanDetail?.ltv,
+            //  ),
+            //},
             {
-              label: 'Estimated ARV',
-              info: loanDetail?.arv ? POSFormatDollar(loanDetail?.arv) : 'N/A',
-            },
-            {
-              label: `${summary.isCor ? 'Loan to Cost' : 'Loan to Value(LTV)'}`,
-              info: POSFormatPercent(
-                summary.isCor ? loanDetail?.ltc : loanDetail?.ltv,
-              ),
+              label: 'Loan to Value(LTV)',
+              info: POSFormatPercent(loanDetail?.ltv),
             },
           ],
         });

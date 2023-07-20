@@ -12,8 +12,6 @@ export type BridgeOverviewDetail = {
   closeDate: string;
   penalty: number;
   lien: string;
-  arv: number;
-  ltc: number;
   ltv: number;
 };
 
@@ -31,16 +29,14 @@ export type BridgeOverviewThirdParty = {
 export type BPOverviewSummaryData = BaseOverviewSummaryData & {
   purchasePrice: number;
   purchaseLoanAmount: number;
-  cor: number;
   firstName: string;
   lastName: string;
   address: string;
-  isCor: boolean;
 };
 
 export type BridgePurchaseRatesLoanInfo = Pick<
   BridgePurchaseEstimateRateData,
-  'purchasePrice' | 'purchaseLoanAmount' | 'cor'
+  'purchasePrice' | 'purchaseLoanAmount'
 > & {
   totalLoanAmount: number;
 };
@@ -53,17 +49,15 @@ export type BROverviewSummaryData = BaseOverviewSummaryData & {
   homeValue: number;
   balance: number;
   cashOutAmount: number;
-  cor: number;
   firstName: string;
   lastName: string;
   address: string;
-  isCor: boolean;
   isCashOut: boolean;
 };
 
 export type BridgeRefinanceRatesLoanInfo = Pick<
   BridgeRefinanceEstimateRateData,
-  'balance' | 'cashOutAmount' | 'cor'
+  'balance' | 'cashOutAmount'
 > & {
   totalLoanAmount: number;
 };

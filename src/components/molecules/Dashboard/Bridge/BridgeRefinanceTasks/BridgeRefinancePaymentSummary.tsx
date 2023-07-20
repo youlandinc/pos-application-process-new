@@ -23,7 +23,6 @@ export const BridgeRefinancePaymentSummary: FC<
     totalLoanAmount: undefined,
     balance: undefined,
     cashOutAmount: undefined,
-    cor: undefined,
     paymentOfMonth: undefined,
   },
 }) => {
@@ -103,19 +102,6 @@ export const BridgeRefinancePaymentSummary: FC<
           <Typography variant={'body1'}>Cash Out Amount</Typography>
           <Typography variant={'subtitle1'}>
             {POSFormatDollar(productInfo?.cashOutAmount)}
-          </Typography>
-        </Stack>
-
-        <Stack
-          alignItems={'center'}
-          flex={1}
-          flexDirection={'row'}
-          justifyContent={'space-between'}
-          py={1.5}
-        >
-          <Typography variant={'body1'}>Rehab Loan Amount</Typography>
-          <Typography variant={'subtitle1'}>
-            {productInfo?.cor ? POSFormatDollar(productInfo.cor) : 'N/A'}
           </Typography>
         </Stack>
 
