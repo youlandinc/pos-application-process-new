@@ -19,7 +19,7 @@ import { DashboardSideInfoBox } from './component';
 type POSMenuListProps = {
   info: ISelectedProcessData;
   scene: SceneType;
-  loading: boolean;
+  loading?: boolean;
 };
 
 interface MenuItems {
