@@ -50,6 +50,7 @@ export const PersonalInfo = types
     ),
     errors: types.optional(
       types.model({
+        citizenship: types.maybe(types.array(types.string)),
         firstName: types.maybe(types.array(types.string)),
         lastName: types.maybe(types.array(types.string)),
         phoneNumber: types.maybe(types.array(types.string)),
@@ -64,6 +65,15 @@ export const PersonalInfo = types
   })
   .views((self) => ({
     get checkValueIsEmpty() {
+      if (self.citizenship === CommonBorrowerType.foreign_national) {
+        return [
+          'firstName',
+          'lastName',
+          'phoneNumber',
+          'email',
+          'dateOfBirth',
+        ].some((item) => !self[item as keyof typeof self]);
+      }
       return Object.keys(self.errors).some(
         (item) => !self[item as keyof typeof self],
       );

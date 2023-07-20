@@ -13,3 +13,5 @@ export * from './PreApprovalEdit';
 export * from './PreApprovalInfo';
 
 export * from './DashboardServiceCardItem';
+
+export * from './RatesList';
