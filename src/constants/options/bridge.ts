@@ -1,4 +1,4 @@
-import { BridgePropertyNumberOpt, ChannelOpt } from '@/types';
+import { ChannelOpt, PropertyNumberOpt } from '@/types';
 
 export const OPTIONS_BRIDGE_CHANNEL: Option[] = [
   {
@@ -75,18 +75,18 @@ export const OPTIONS_BRIDGE_CHANNEL: Option[] = [
 
 export const OPTIONS_BRIDGE_PROPERTY_NUMBER: Option[] = [
   {
-    key: BridgePropertyNumberOpt.zero,
-    value: BridgePropertyNumberOpt.zero,
+    key: PropertyNumberOpt.zero,
+    value: PropertyNumberOpt.zero,
     label: 'None',
   },
   {
-    key: BridgePropertyNumberOpt.one_to_four,
-    value: BridgePropertyNumberOpt.one_to_four,
+    key: PropertyNumberOpt.one_to_four,
+    value: PropertyNumberOpt.one_to_four,
     label: '1-4 Properties',
   },
   {
-    key: BridgePropertyNumberOpt.five_more,
-    value: BridgePropertyNumberOpt.five_more,
+    key: PropertyNumberOpt.five_more,
+    value: PropertyNumberOpt.five_more,
     label: '5+ Properties',
   },
 ];

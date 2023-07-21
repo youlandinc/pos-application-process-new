@@ -4,11 +4,15 @@ import { ChangeEvent, FC, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
+import {
+  OPTIONS_COMMON_CITIZEN_TYPE,
+  OPTIONS_COMMON_YES_OR_NO,
+} from '@/constants';
 import {
   IPersonalInfo,
   SPersonalInfo,
 } from '@/models/application/common/CreditScore';
+import { CommonBorrowerType } from '@/types';
 
 import {
   StyledButtonGroup,
@@ -16,6 +20,7 @@ import {
   StyledDatePicker,
   StyledFormItem,
   StyledGoogleAutoComplete,
+  StyledSelectOption,
   StyledTextField,
   StyledTextFieldPhone,
   StyledTextFieldSocialNumber,
@@ -59,6 +64,10 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
             break;
           case 'dateOfBirth': {
             coBorrowerInfo.changeSelfInfo(fieldName, e as unknown as string);
+            break;
+          }
+          case 'citizenship': {
+            coBorrowerInfo.changeSelfInfo(fieldName, e as CommonBorrowerType);
             break;
           }
           default:
@@ -116,6 +125,13 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
             }
             tipSx={{ mb: 0 }}
           >
+            <StyledFormItem label={'What is your citizenship status?'} sub>
+              <StyledSelectOption
+                onChange={changeFieldValue('citizenship')}
+                options={OPTIONS_COMMON_CITIZEN_TYPE}
+                value={coBorrowerInfo.citizenship}
+              />
+            </StyledFormItem>
             <StyledFormItem
               label={'Personal Information'}
               sub
@@ -176,18 +192,32 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
                 <StyledGoogleAutoComplete address={coBorrowerInfo.address} />
               </Stack>
             </StyledFormItem>
-            <StyledFormItem
-              label={'Your Co-borrower Social Security Number'}
-              sub
+            <Transitions
+              style={{
+                display:
+                  coBorrowerInfo.citizenship !==
+                  CommonBorrowerType.foreign_national
+                    ? 'block'
+                    : 'none',
+                width: '100%',
+              }}
             >
-              <Stack maxWidth={600} width={'100%'}>
-                <StyledTextFieldSocialNumber
-                  onValueChange={changeFieldValue('ssn')}
-                  validate={coBorrowerInfo.errors.ssn}
-                  value={coBorrowerInfo.ssn}
-                />
-              </Stack>
-            </StyledFormItem>
+              {coBorrowerInfo.citizenship !==
+                CommonBorrowerType.foreign_national && (
+                <StyledFormItem
+                  label={'Your Co-borrower Social Security Number'}
+                  sub
+                >
+                  <Stack gap={3} maxWidth={600} width={'100%'}>
+                    <StyledTextFieldSocialNumber
+                      onValueChange={changeFieldValue('ssn')}
+                      validate={coBorrowerInfo.errors.ssn}
+                      value={coBorrowerInfo.ssn}
+                    />
+                  </Stack>
+                </StyledFormItem>
+              )}
+            </Transitions>
             <StyledCheckbox
               checked={coBorrowerInfo.authorizedCreditCheck}
               label={

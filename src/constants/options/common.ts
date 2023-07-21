@@ -1,4 +1,22 @@
-import { UserType } from '@/types';
+import { CommonBorrowerType, UserType } from '@/types';
+
+export const OPTIONS_COMMON_CITIZEN_TYPE: Option[] = [
+  {
+    label: 'US Citizen',
+    value: CommonBorrowerType.us_citizen,
+    key: CommonBorrowerType.us_citizen,
+  },
+  {
+    label: 'Permanent Resident-Alien',
+    value: CommonBorrowerType.permanent_resident_alien,
+    key: CommonBorrowerType.permanent_resident_alien,
+  },
+  {
+    label: 'Foreign National',
+    value: CommonBorrowerType.foreign_national,
+    key: CommonBorrowerType.foreign_national,
+  },
+];
 
 export const OPTIONS_COMMON_YES_OR_NO: Option[] = [
   {

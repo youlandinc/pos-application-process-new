@@ -1,18 +1,13 @@
 import { FC, ReactNode, useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
-
 import { observer } from 'mobx-react-lite';
 
-import { POSFlex } from '@/styles';
-import { POSFindLabel } from '@/utils';
-import { ParseProcess } from '@/services/ParseProcess';
 import { ISelectedProcessData } from '@/models/base';
 
-import {
-  OPTIONS_COMMON_STATE,
-  OPTIONS_MORTGAGE_OCCUPANCY,
-  OPTIONS_MORTGAGE_PROPERTY,
-} from '@/constants';
+import { OPTIONS_COMMON_STATE, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
+import { POSFlex } from '@/styles';
+import { VariableName } from '@/types';
+import { POSFindLabel, POSFindSpecificVariable } from '@/utils';
 
 //import { StyledLoading } from '@/components/atoms';
 
@@ -24,7 +19,7 @@ interface DashboardSideInfoBoxProps {
 interface IBorrowerSummaryData {
   productType: string;
   address: string | ReactNode;
-  occupancyType: string;
+  occupancyType?: string;
   propertyType: string;
 }
 
@@ -40,14 +35,32 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
 
     useEffect(() => {
       if (data) {
-        const parsedData = new ParseProcess(data);
+        const {
+          extra: { variables },
+        } = data;
+
+        const startingData = POSFindSpecificVariable(
+          VariableName.starting,
+          variables,
+        );
+
+        if (!startingData) {
+          return;
+        }
+
+        const {
+          value: { propAddr: address, propertyType, propertyUnit },
+        } = startingData;
+
+        const propertyInfo =
+          propertyUnit > 0
+            ? `${propertyUnit} units`
+            : POSFindLabel(OPTIONS_MORTGAGE_PROPERTY, propertyType);
 
         setBorrowerSummaryData({
-          productType: parsedData.productType
-            ?.toLowerCase()
-            ?.replace(/( |^)[a-z]/g, (L) => L.toUpperCase()),
+          productType: data.extra.name,
           address:
-            parsedData.propertyAddress && parsedData.propertyAddress.address ? (
+            address && address.address ? (
               <Box
                 style={{
                   ...POSFlex('flex-start', 'center', 'column'),
@@ -60,33 +73,23 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
                     whiteSpace: 'break-spaces',
                     lineHeight: 1.5,
                   }}
-                >{`${parsedData.propertyAddress.address} ${
-                  parsedData.propertyAddress.aptNumber &&
-                  `, #${parsedData.propertyAddress.aptNumber}`
+                >{`${address.address} ${
+                  address.aptNumber && `, #${address.aptNumber}`
                 }`}</Box>
-                <Box>{`${
-                  parsedData.propertyAddress.city &&
-                  `${parsedData.propertyAddress.city}, `
-                } ${parsedData.propertyAddress.state} ${
-                  parsedData.propertyAddress.postcode
-                }`}</Box>
+                <Box>{`${address.city && `${address.city}, `} ${
+                  address.state
+                } ${address.postcode}`}</Box>
               </Box>
             ) : (
               OPTIONS_COMMON_STATE.find(
-                (item) =>
-                  item.value ===
-                  (parsedData.propertyAddress &&
-                    parsedData.propertyAddress.state),
+                (item) => item.value === (address && address.state),
               )?.label || ''
             ),
-          occupancyType: POSFindLabel(
-            OPTIONS_MORTGAGE_OCCUPANCY,
-            parsedData.occupancyOpt || '',
-          ),
-          propertyType: POSFindLabel(
-            OPTIONS_MORTGAGE_PROPERTY,
-            parsedData.propertyOpt || '',
-          ),
+          //occupancyType: POSFindLabel(
+          //  OPTIONS_MORTGAGE_OCCUPANCY,
+          //  parsedData.occupancyOpt || '',
+          //),
+          propertyType: propertyInfo,
         });
       }
     }, [data]);

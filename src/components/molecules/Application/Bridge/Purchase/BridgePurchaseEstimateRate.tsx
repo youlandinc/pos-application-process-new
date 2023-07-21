@@ -22,15 +22,12 @@ import {
 import {
   BridgePurchaseRatesDrawer,
   BridgePurchaseRatesSearch,
-  BridgeRatesList,
+  RatesList,
 } from '@/components/molecules';
 
 const initialize: BPQueryData = {
   purchasePrice: undefined,
   purchaseLoanAmount: undefined,
-  isCor: false,
-  cor: undefined,
-  arv: undefined,
   lenderPoints: undefined,
   lenderProcessingFee: undefined,
   brokerPoints: undefined,
@@ -45,19 +42,15 @@ export interface BridgePurchaseLoanInfo {
   firstName: string;
   lastName: string;
   address: string;
-  isCor: boolean;
   totalLoanAmount: number;
   purchasePrice: number;
   purchaseLoanAmount: number;
-  cor: number;
   // detail
   amortization: string;
   propertyType: PropertyOpt;
   closeDate: string;
   lien: string;
-  arv: number;
   ltv: number;
-  ltc: number;
   // third-part
   downPayment: number;
   totalClosingCash: number;
@@ -135,13 +128,15 @@ export const BridgePurchaseEstimateRate: FC<{
         if (infoRes.status === 200) {
           setProductInfo(infoRes.data.info);
         }
-        setLoading(false);
       })
       .catch((err) => {
         enqueueSnackbar(err, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
         });
+        setProductList([]);
+      })
+      .finally(() => {
         setLoading(false);
       });
   };
@@ -192,7 +187,7 @@ export const BridgePurchaseEstimateRate: FC<{
         setSearchForm={setSearchForm}
         userType={userType}
       />
-      <BridgeRatesList
+      <RatesList
         isFirstSearch={isFirstSearch}
         loading={loading}
         onClick={onListItemClick}

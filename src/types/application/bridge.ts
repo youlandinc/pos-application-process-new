@@ -1,6 +1,6 @@
 import {
-  BridgePropertyNumberOpt,
   ChannelOpt,
+  PropertyNumberOpt,
   PropertyOpt,
   PropertyUnitOpt,
 } from '@/types/options';
@@ -25,7 +25,7 @@ export interface BridgeApplicationProcessSnapshot {
 }
 
 export interface BridgeStartingData {
-  propertyNumber: BridgePropertyNumberOpt;
+  propertyNumber: PropertyNumberOpt;
   isConfirm: boolean | undefined;
   propertyType: PropertyOpt;
   propertyUnit: PropertyUnitOpt;
@@ -43,9 +43,6 @@ export interface BridgeCoBorrowerCondition {
 export interface BridgePurchaseEstimateRateData {
   purchasePrice: number | undefined;
   purchaseLoanAmount: number | undefined;
-  isCor: boolean | undefined;
-  cor: number | undefined;
-  arv: number | undefined;
   brokerPoints?: number | undefined;
   brokerProcessingFee?: number | undefined;
   lenderPoints?: number | undefined;
@@ -60,9 +57,6 @@ export interface BridgeRefinanceEstimateRateData {
   balance: number | undefined;
   isCashOut: boolean;
   cashOutAmount: number | undefined;
-  isCor: boolean;
-  cor: number | undefined;
-  arv: number | undefined;
   brokerPoints?: number | undefined;
   brokerProcessingFee?: number | undefined;
   lenderPoints?: number | undefined;
@@ -77,6 +71,8 @@ interface TaskInfo {
   taskName: string;
   taskForm: null;
   finished: boolean;
+  totalNum: null | number;
+  uploadedNum: null | number;
 }
 
 export interface BridgePurchaseTasks {
@@ -121,4 +117,6 @@ export interface LoanTask {
   processId: string;
   stage: string;
   tasks: BridgePurchaseTasks & BridgeRefinanceTasks;
+  totalNum: number;
+  finishedNum: number;
 }

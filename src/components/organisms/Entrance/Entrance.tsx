@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
@@ -24,14 +24,20 @@ const productList = [
   // {
   //   name: 'Mortgage',
   //   url: '/application/mortgage',
-  //   disabled: false,
   // },
   //{ name: 'Alternative mortgage', url: '/application/alternative_mortgage' },
   //{ name: 'Rental', url: '/application/rental' },
   {
-    name: 'Stabilized Bridge/Fix & Flip',
+    name: 'Stabilized Bridge',
     url: '/application/bridge',
-    disabled: false,
+  },
+  {
+    name: 'Fixed & Flip',
+    url: '/application/fixed_and_flip',
+  },
+  {
+    name: 'Ground-up Construction',
+    url: '/application/ground_up_construction',
   },
   //{ name: 'Jumbo', url: '/application/jumbo' },
   //{ name: 'Crypto mortgage', url: '/application/crypto_mortgage' },
@@ -42,7 +48,7 @@ export const Entrance: FC = observer(() => {
   const router = useRouter();
 
   const store = useMst();
-  const { userType, detectUserActiveService } = store;
+  const { detectUserActiveService } = store;
 
   const { loading } = useAsync(async () => {
     if (!router.query.token) {
@@ -76,17 +82,6 @@ export const Entrance: FC = observer(() => {
       });
     }
   }, [router.query.token]);
-
-  const computedArray = useMemo(() => {
-    if (userType === UserType.BROKER) {
-      productList.forEach((item) => {
-        if (item.name !== 'Stabilized Bridge/Fix & Flip') {
-          item.disabled = true;
-        }
-      });
-    }
-    return productList;
-  }, [userType]);
 
   return (
     <Box sx={{ bgcolor: '#F5F8FA' }}>
@@ -134,7 +129,7 @@ export const Entrance: FC = observer(() => {
               label={'Which product are you interested in?'}
               labelSx={{ m: 0 }}
             >
-              {computedArray.map((item, index) => {
+              {productList.map((item, index) => {
                 return (
                   <StyledButton
                     color={'info'}

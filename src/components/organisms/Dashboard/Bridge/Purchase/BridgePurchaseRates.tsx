@@ -32,15 +32,12 @@ import {
 import {
   BridgePurchaseRatesDrawer,
   BridgePurchaseRatesSearch,
-  BridgeRatesList,
+  RatesList,
 } from '@/components/molecules';
 
 const initialize: BPQueryData = {
   purchasePrice: undefined,
   purchaseLoanAmount: undefined,
-  isCor: false,
-  cor: undefined,
-  arv: undefined,
   brokerPoints: undefined,
   brokerProcessingFee: undefined,
   lenderPoints: undefined,
@@ -89,11 +86,8 @@ export const BridgePurchaseRates: FC = observer(() => {
         setLoanStage(loanStage);
         setLoanInfo(info);
         const {
-          isCor,
           purchaseLoanAmount,
           purchasePrice,
-          cor,
-          arv,
           lenderPoints,
           lenderProcessingFee,
           brokerPoints,
@@ -104,11 +98,8 @@ export const BridgePurchaseRates: FC = observer(() => {
         } = info;
         setSearchForm({
           ...searchForm,
-          isCor,
           purchasePrice,
           purchaseLoanAmount,
-          cor,
-          arv,
           lenderPoints,
           lenderProcessingFee,
           brokerPoints,
@@ -215,7 +206,7 @@ export const BridgePurchaseRates: FC = observer(() => {
         setSearchForm={setSearchForm}
         userType={userType}
       />
-      <BridgeRatesList
+      <RatesList
         label={
           <>
             <Typography

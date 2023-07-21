@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { Box, Stack, SxProps, Typography } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
 import { useRouter } from 'next/router';
@@ -14,7 +14,11 @@ import { POSFlex } from '@/styles';
 import { _fetchLoanTask } from '@/requests/dashboard';
 import { BridgePurchaseTasks, LoanStage } from '@/types';
 
-import { StyledLoading } from '@/components/atoms';
+import {
+  StyledLoading,
+  StyledProgressBlock,
+  StyledProgressLine,
+} from '@/components/atoms';
 import { DashboardHeader } from '@/components/molecules';
 
 type BridgePurchaseTaskCode =
@@ -158,13 +162,19 @@ export const BridgePurchaseTaskList: FC = observer(() => {
 
   const [taskDetails, setTaskDetails] = useSetState<BridgePurchaseTasks>();
 
+  const [total, setTotal] = useState(9);
+  const [current, setCurrent] = useState(0);
+
   const { loading } = useAsync(async () => {
     if (!router.query.processId) {
       return;
     }
     return await _fetchLoanTask(router.query.processId as string)
       .then((res) => {
+        const { totalNum, finishedNum } = res.data;
         setTaskDetails(res?.data?.tasks);
+        setTotal(totalNum);
+        setCurrent(finishedNum);
       })
       .catch((err) => {
         enqueueSnackbar(err, {
@@ -366,6 +376,15 @@ export const BridgePurchaseTaskList: FC = observer(() => {
                   >
                     {taskDetails[sonItem.code]?.taskName}
                   </Typography>
+                  {taskDetails[sonItem.code]?.taskName === 'Documents' &&
+                    !taskDetails[sonItem.code]?.finished && (
+                      <StyledProgressBlock
+                        current={
+                          taskDetails[sonItem.code]?.uploadedNum as number
+                        }
+                        total={taskDetails[sonItem.code]?.totalNum as number}
+                      />
+                    )}
                   {taskDetails[sonItem.code]?.finished && (
                     <CheckCircle
                       className={
@@ -428,6 +447,9 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         <StyledLoading sx={{ color: 'primary.main' }} />
       ) : (
         <>
+          <Stack alignItems={'center'} mb={3}>
+            <StyledProgressLine current={current} total={total} />
+          </Stack>
           {renderStage}
           {renderTaskList}
         </>

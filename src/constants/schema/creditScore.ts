@@ -1,5 +1,13 @@
+import { CommonBorrowerType } from '@/types';
+
 export const CreditScoreSchema: Record<any, any> = {
   selfInfo: {
+    citizenship: {
+      presence: {
+        allowEmpty: false,
+        message: 'Must not be empty',
+      },
+    },
     firstName: {
       presence: {
         allowEmpty: false,
@@ -29,18 +37,23 @@ export const CreditScoreSchema: Record<any, any> = {
         message: 'Borrowers must not be less than 18 years old',
       },
     },
-    ssn: {
-      presence: {
-        allowEmpty: false,
-        message: 'Must not be empty',
-      },
-      ssn: true,
-    },
     email: {
       presence: {
         allowEmpty: false,
         message: 'Must not be empty',
       },
+    },
+    ssn: (value: any, attributes: any) => {
+      if (attributes.citizenship !== CommonBorrowerType.foreign_national) {
+        return {
+          presence: {
+            allowEmpty: false,
+            message: 'Must not be empty',
+          },
+          ssn: true,
+        };
+      }
+      return undefined;
     },
   },
 };

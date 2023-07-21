@@ -57,7 +57,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
       case UserType.BROKER:
         return (
           <>
-            <CardItem
+            <BridgePurchaseCardItem
               info={`${POSFormatDollar(
                 selectedItem?.brokerOriginationFee,
               )}(${POSFormatPercent(
@@ -65,7 +65,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               )})`}
               label={'Broker Origination Fee'}
             />
-            <CardItem
+            <BridgePurchaseCardItem
               info={POSFormatDollar(selectedItem?.brokerProcessingFee)}
               label={'Broker Processing Fee'}
             />
@@ -74,7 +74,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
       case UserType.LENDER:
         return (
           <>
-            <CardItem
+            <BridgePurchaseCardItem
               info={`${POSFormatDollar(
                 selectedItem?.lenderOriginationFee,
               )}(${POSFormatPercent(
@@ -82,7 +82,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               )})`}
               label={'Lender Origination Fee'}
             />
-            <CardItem
+            <BridgePurchaseCardItem
               info={POSFormatDollar(selectedItem?.lenderProcessingFee)}
               label={'Lender Processing Fee'}
             />
@@ -91,7 +91,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
       case UserType.LOAN_OFFICER:
         return (
           <>
-            <CardItem
+            <BridgePurchaseCardItem
               info={`${POSFormatDollar(
                 selectedItem?.officerOriginationFee,
               )}(${POSFormatPercent(
@@ -99,7 +99,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               )})`}
               label={'Loan Officer Origination Fee'}
             />
-            <CardItem
+            <BridgePurchaseCardItem
               info={POSFormatDollar(selectedItem?.officerProcessingFee)}
               label={'Loan Officer Processing Fee'}
             />
@@ -108,7 +108,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
       case UserType.REAL_ESTATE_AGENT:
         return (
           <>
-            <CardItem
+            <BridgePurchaseCardItem
               info={POSFormatDollar(selectedItem?.agentFee)}
               label={'Referral Fee'}
             />
@@ -156,7 +156,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <BridgePurchaseCardItem
                 info={
                   <Typography variant={'inherit'}>
                     {`${selectedItem?.firstName} ${selectedItem?.lastName}`}
@@ -164,7 +164,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
                 }
                 label={'Borrower'}
               />
-              <CardItem
+              <BridgePurchaseCardItem
                 info={
                   <Typography
                     component={'div'}
@@ -181,23 +181,17 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
                 }
                 label={'Address'}
               />
-              <CardItem
+              <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.totalLoanAmount)}
                 label={'Total Loan Amount'}
               />
-              <CardItem
+              <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.purchasePrice)}
                 label={'Purchase Price'}
               />
-              <CardItem
+              <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.purchaseLoanAmount)}
                 label={'Purchase Loan Amount'}
-              />
-              <CardItem
-                info={
-                  selectedItem?.cor ? POSFormatDollar(selectedItem?.cor) : 'N/A'
-                }
-                label={'Rehab Loan Amount'}
               />
             </Stack>
           </Stack>
@@ -216,35 +210,28 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <BridgePurchaseCardItem
                 info={selectedItem?.amortization}
                 label={'Amortization'}
               />
-              <CardItem
+              <BridgePurchaseCardItem
                 info={POSFindLabel(
                   OPTIONS_MORTGAGE_PROPERTY,
                   selectedItem?.propertyType as string,
                 )}
                 label={'Property Type'}
               />
-              <CardItem
+              <BridgePurchaseCardItem
                 info={selectedItem?.closeDate}
                 label={'Preferred Close Date'}
               />
-              <CardItem info={selectedItem?.lien} label={'Lien'} />
-              <CardItem
-                info={
-                  selectedItem?.arv ? POSFormatDollar(selectedItem?.arv) : 'N/A'
-                }
-                label={'Estimated ARV'}
+              <BridgePurchaseCardItem
+                info={selectedItem?.lien}
+                label={'Lien'}
               />
-              <CardItem
-                info={POSFormatPercent(
-                  selectedItem?.isCor ? selectedItem?.ltc : selectedItem?.ltv,
-                )}
-                label={
-                  selectedItem?.isCor ? 'Loan-to-Cost' : 'Loan-to-Value (LTV)'
-                }
+              <BridgePurchaseCardItem
+                info={POSFormatPercent(selectedItem?.ltv)}
+                label={'Loan-to-Value (LTV)'}
               />
             </Stack>
           </Stack>
@@ -263,15 +250,15 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <BridgePurchaseCardItem
                 info={POSFormatPercent(selectedItem?.interestRateOfYear)}
                 label={'Interest Rate'}
               />
-              <CardItem
+              <BridgePurchaseCardItem
                 info={`${selectedItem?.loanTerm} months`}
                 label={'Loan Term'}
               />
-              <CardItem
+              <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}
                 label={'Monthly Payment'}
               />
@@ -307,11 +294,11 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.downPayment)}
                 label={'Down Payment'}
               />
-              <CardItem
+              <BridgePurchaseCardItem
                 info={`${POSFormatDollar(
                   selectedItem?.originationFee,
                 )}(${POSFormatPercent(
@@ -319,21 +306,21 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
                 )})`}
                 label={'Lender Origination Fee'}
               />
-              <CardItem
+              <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.underwritingFee)}
                 label={'Underwriting Fee'}
               />
-              <CardItem
+              <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.docPreparationFee)}
                 label={'Document Preparation Fee'}
               />
-              <CardItem
+              <BridgePurchaseCardItem
                 info={POSFormatDollar(
                   (selectedItem?.paymentOfMonth as number) / 30,
                 )}
                 label={'Pro-rated Interest'}
               />
-              <CardItem
+              <BridgePurchaseCardItem
                 info={selectedItem?.thirdPartyCosts}
                 label={'Third-party Costs'}
               />
@@ -394,7 +381,10 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
   );
 };
 
-const CardItem: FC<{ label: string; info: ReactNode }> = ({ label, info }) => {
+const BridgePurchaseCardItem: FC<{ label: string; info: ReactNode }> = ({
+  label,
+  info,
+}) => {
   const breakpoints = useBreakpoints();
 
   return (

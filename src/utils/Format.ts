@@ -24,6 +24,9 @@ export const POSFormatPercent = (
   radix = 3,
 ): string => {
   if (!percentageValue) {
+    if (radix === 0) {
+      return '0%';
+    }
     return '0.000%';
   }
   let target = percentageValue;

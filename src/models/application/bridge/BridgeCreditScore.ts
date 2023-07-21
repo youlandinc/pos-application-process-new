@@ -1,6 +1,6 @@
-import { BridgeCoBorrowerCondition, VariableName } from '@/types';
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 
+import { BridgeCoBorrowerCondition, VariableName } from '@/types';
 import { PersonalInfo } from '@/models/application/common/CreditScore';
 
 import { BridgeCreditScoreState } from '@/types/enum';

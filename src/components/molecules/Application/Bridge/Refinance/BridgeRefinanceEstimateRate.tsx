@@ -20,9 +20,9 @@ import {
   BRQueryData,
 } from '@/requests/dashboard';
 import {
-  BridgeRatesList,
   BridgeRefinanceRatesDrawer,
   BridgeRefinanceRatesSearch,
+  RatesList,
 } from '@/components/molecules';
 
 const initialize: BRQueryData = {
@@ -30,9 +30,6 @@ const initialize: BRQueryData = {
   balance: undefined,
   isCashOut: false,
   cashOutAmount: undefined,
-  isCor: false,
-  cor: undefined,
-  arv: undefined,
   brokerPoints: undefined,
   brokerProcessingFee: undefined,
   lenderPoints: undefined,
@@ -48,20 +45,16 @@ export interface BridgeRefinanceLoanInfo {
   lastName: string;
   address: string;
   isCashOut: boolean;
-  isCor: boolean;
   totalLoanAmount: number;
   balance: number;
   homeValue: number;
   cashOutAmount: number;
-  cor: number;
   // detail
   amortization: string;
   propertyType: PropertyOpt;
   closeDate: string;
   lien: string;
-  arv: number;
   ltv: number;
-  ltc: number;
   // third-part
   totalClosingCash: number;
   originationFee: number;
@@ -138,13 +131,15 @@ export const BridgeRefinanceEstimateRate: FC<{
         if (infoRes.status === 200) {
           setProductInfo(infoRes.data.info);
         }
-        setLoading(false);
       })
       .catch((err) => {
         enqueueSnackbar(err, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
         });
+        setProductList([]);
+      })
+      .finally(() => {
         setLoading(false);
       });
   };
@@ -197,7 +192,7 @@ export const BridgeRefinanceEstimateRate: FC<{
         setSearchForm={setSearchForm}
         userType={userType!}
       />
-      <BridgeRatesList
+      <RatesList
         isFirstSearch={isFirstSearch}
         loading={loading}
         onClick={onListItemClick}

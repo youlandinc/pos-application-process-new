@@ -1,87 +1,12 @@
-import { FC, ReactNode, useMemo } from 'react';
-import { Icon, Stack, Typography } from '@mui/material';
-import {
-  CallOutlined,
-  InfoOutlined,
-  MailOutlineOutlined,
-} from '@mui/icons-material';
+import { FC, useMemo } from 'react';
+import { Stack, Typography } from '@mui/material';
+import { InfoOutlined } from '@mui/icons-material';
 
-import { useBreakpoints } from '@/hooks';
-import { LoanStage, RatesProductData, UserType } from '@/types';
+import { RatesProductData, UserType } from '@/types';
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
+import { StyledButton, StyledTooltip } from '@/components/atoms';
 
-import { StyledButton, StyledLoading, StyledTooltip } from '@/components/atoms';
-
-import RATE_NO_RESULT from '@/svg/dashboard/rate_no_result.svg';
-
-interface RatesProductListProps {
-  productList: RatesProductData[];
-  onClick: (item: RatesProductData) => void;
-  loading: boolean;
-  isFirstSearch?: boolean;
-  userType?: UserType;
-  loanStage?: LoanStage;
-  label?: ReactNode;
-}
-
-export const BridgeRatesList: FC<RatesProductListProps> = ({
-  productList,
-  onClick,
-  loading,
-  isFirstSearch = false,
-  userType,
-  label,
-}) => {
-  const breakpoint = useBreakpoints();
-  return (
-    <Stack maxWidth={900} width={'100%'}>
-      {isFirstSearch ? (
-        <></>
-      ) : loading ? (
-        <StyledLoading sx={{ color: 'primary.main' }} />
-      ) : productList.length > 0 ? (
-        <>
-          {label ? (
-            label
-          ) : (
-            <Typography
-              color={'info.main'}
-              mt={3}
-              textAlign={'center'}
-              variant={
-                ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
-              }
-            >
-              The following loan programs are available for you
-            </Typography>
-          )}
-
-          <Stack
-            flexDirection={{ xs: 'column', xl: 'row' }}
-            flexWrap={'wrap'}
-            gap={3}
-            mt={3}
-            width={'100%'}
-          >
-            {productList.map((product, index) => (
-              <BridgeRatesItem
-                breakpoint={breakpoint}
-                key={`${product.id}_${index}`}
-                onClick={onClick}
-                product={product}
-                userType={userType!}
-              />
-            ))}
-          </Stack>
-        </>
-      ) : (
-        <BridgeRatesNoResult />
-      )}
-    </Stack>
-  );
-};
-
-const BridgeRatesItem: FC<{
+export const RatesItems: FC<{
   product: RatesProductData;
   onClick: (item: RatesProductData) => void;
   userType: UserType;
@@ -255,57 +180,5 @@ const BridgeRatesItem: FC<{
         {product.selected ? 'See Cost' : 'Select'}
       </StyledButton>
     </Stack>
-  );
-};
-
-const BridgeRatesNoResult: FC = () => {
-  return (
-    <>
-      <Stack
-        alignItems={'center'}
-        gap={3}
-        justifyContent={'center'}
-        maxWidth={900}
-        mb={3}
-        mt={6}
-        width={'100%'}
-      >
-        <Icon component={RATE_NO_RESULT} sx={{ width: 260, height: 220 }} />
-        <Typography color={'text.primary'} textAlign={'center'} variant={'h4'}>
-          Can&apos;t find any rates? We can help
-        </Typography>
-        <Typography color={'info.main'} textAlign={'center'} variant={'body1'}>
-          Based on your information, we couldn&apos;t find any options. Feel
-          free to contact us and we&apos;ll help you out.
-        </Typography>
-        <Stack
-          alignItems={'center'}
-          flexDirection={{ md: 'row', xs: 'column' }}
-          gap={3}
-          justifyContent={'center'}
-          maxWidth={900}
-          width={'100%'}
-        >
-          <Stack
-            alignItems={'center'}
-            flexDirection={'row'}
-            gap={1.5}
-            justifyContent={'center'}
-          >
-            <CallOutlined />
-            (833) 968-5263
-          </Stack>
-          <Stack
-            alignItems={'center'}
-            flexDirection={'row'}
-            gap={1.5}
-            justifyContent={'center'}
-          >
-            <MailOutlineOutlined />
-            borrow@youland.com
-          </Stack>
-        </Stack>
-      </Stack>
-    </>
   );
 };

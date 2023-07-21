@@ -59,10 +59,10 @@ export const BridgePurchaseOverview: FC = observer(() => {
               label: 'Purchase Loan Amount',
               info: POSFormatDollar(summary?.purchaseLoanAmount),
             },
-            {
-              label: 'Rehab Loan Amount',
-              info: summary?.cor ? POSFormatDollar(summary.cor) : 'N/A',
-            },
+            //{
+            //  label: 'Rehab Loan Amount',
+            //  info: summary?.cor ? POSFormatDollar(summary.cor) : 'N/A',
+            //},
             {
               label: 'Borrower',
               info: `${summary.firstName} ${summary.lastName}`,
@@ -124,15 +124,19 @@ export const BridgePurchaseOverview: FC = observer(() => {
                 : 'N/A',
             },
             { label: 'Lien', info: loanDetail?.lien },
+            //{
+            //  label: 'Estimated ARV',
+            //  info: loanDetail?.arv ? POSFormatDollar(loanDetail?.arv) : 'N/A',
+            //},
+            //{
+            //  label: `${summary.isCor ? 'Loan to Cost' : 'Loan to Value(LTV)'}`,
+            //  info: POSFormatPercent(
+            //    summary.isCor ? loanDetail?.ltc : loanDetail?.ltv,
+            //  ),
+            //},
             {
-              label: 'Estimated ARV',
-              info: loanDetail?.arv ? POSFormatDollar(loanDetail?.arv) : 'N/A',
-            },
-            {
-              label: `${summary.isCor ? 'Loan to Cost' : 'Loan to Value(LTV)'}`,
-              info: POSFormatPercent(
-                summary.isCor ? loanDetail?.ltc : loanDetail?.ltv,
-              ),
+              label: 'Loan to Value(LTV)',
+              info: POSFormatPercent(loanDetail?.ltv),
             },
           ],
         });

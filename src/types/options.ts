@@ -16,7 +16,7 @@ export enum ChannelOpt {
   other = 'other',
 }
 
-export enum BridgePropertyNumberOpt {
+export enum PropertyNumberOpt {
   default = '',
   zero = 'none',
   one_to_four = 'one_to_four',
@@ -122,4 +122,10 @@ export enum WhyRefinanceOpt {
   payoffExist = 'payoff_existing',
   consolidateDebts = 'consolidate_debts',
   default = '',
+}
+
+export enum CommonBorrowerType {
+  us_citizen = 'us_citizen',
+  permanent_resident_alien = 'permanent_resident_alien',
+  foreign_national = 'foreign_national',
 }

@@ -1,4 +1,11 @@
-import { Dispatch, FC, SetStateAction, useCallback, useState } from 'react';
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -19,8 +26,27 @@ import {
   StyledButton,
   StyledFormItem,
   StyledLoading,
+  StyledProgressLine,
   StyledUploadButtonBox,
 } from '@/components/atoms';
+
+const hash = {
+  common: [
+    'payoff',
+    'insurance',
+    // common
+    'form1003',
+    'identification',
+    'w9',
+    'authorization',
+    'bank',
+    'prelim',
+    'other',
+  ],
+  show1: ['budget'],
+  show2: ['questionnaire', 'policy'],
+  show3: ['articles', 'laws', 'standing'],
+};
 
 export const BridgeRefinanceTaskDocuments: FC = observer(() => {
   const router = useRouter();
@@ -28,6 +54,8 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
 
   const [uploadLoading, setUploadLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
+
+  const [total, setTotal] = useState(9);
 
   const [show1, setShow1] = useState(false);
   const [show2, setShow2] = useState(false);
@@ -171,6 +199,37 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
     }
   };
 
+  const computedCurrent = useMemo(() => {
+    let count = 0;
+    hash.common.forEach((item) => {
+      if (computedObj(item)?.data?.length) {
+        count += 1;
+      }
+    });
+    if (show1) {
+      hash.show1.forEach((item) => {
+        if (computedObj(item)?.data?.length) {
+          count += 1;
+        }
+      });
+    }
+    if (show2) {
+      hash.show2.forEach((item) => {
+        if (computedObj(item)?.data?.length) {
+          count += 1;
+        }
+      });
+    }
+    if (show3) {
+      hash.show3.forEach((item) => {
+        if (computedObj(item)?.data?.length) {
+          count += 1;
+        }
+      });
+    }
+    return count;
+  }, [computedObj, show1, show2, show3]);
+
   const { loading } = useAsync(async () => {
     if (!router.query.taskId) {
       await router.push({
@@ -204,7 +263,11 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
 
           questionnaireFiles,
           policyFiles,
+
+          totalNum,
         } = res.data;
+
+        setTotal(totalNum);
 
         setShow1(show1);
         setShow2(show2);
@@ -304,53 +367,33 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
   ) : (
     <StyledFormItem
       gap={3}
-      label={'Documents & Materials'}
+      label={'Documents'}
       tip={
-        <Stack gap={1.5}>
-          Example documents:
-          <Typography
-            color={'primary.main'}
-            onClick={() =>
-              window.open(
-                'https://youland-template-file.s3.us-west-1.amazonaws.com/1003_2021V.pdf',
-              )
-            }
-            sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-            variant={'body1'}
-          >
-            1003 Form
-          </Typography>
-          <Typography
-            color={'primary.main'}
-            onClick={() =>
-              window.open(
-                'https://youland-template-file.s3.us-west-1.amazonaws.com/fw9.pdf',
-              )
-            }
-            sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-            variant={'body1'}
-          >
-            W9 Form
-          </Typography>
-          <Typography
-            color={'primary.main'}
-            onClick={() =>
-              window.open(
-                'https://youland-template-file.s3.us-west-1.amazonaws.com/Borrower+authorization+form.pdf',
-              )
-            }
-            sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-            variant={'body1'}
-          >
-            Borrower authorization form
-          </Typography>
+        <Stack alignItems={'center'}>
+          <StyledProgressLine current={computedCurrent} total={total} />
         </Stack>
       }
     >
       <Stack gap={6} maxWidth={900} width={'100%'}>
         <StyledUploadButtonBox
           fileList={form1003Files}
-          label={'1003 Form'}
+          label={
+            <Stack flexDirection={'column'} width={'100%'}>
+              1003 Form{' '}
+              <Typography
+                color={'primary.main'}
+                onClick={() =>
+                  window.open(
+                    'https://youland-template-file.s3.us-west-1.amazonaws.com/1003_2021V.pdf',
+                  )
+                }
+                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                variant={'body1'}
+              >
+                1003 Form.pdf
+              </Typography>
+            </Stack>
+          }
           loading={uploadLoading}
           onDelete={(index) => handledDelete(index, 'form1003')}
           onSuccess={(files) => handledSuccess(files, 'form1003')}
@@ -365,7 +408,26 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
 
         <StyledUploadButtonBox
           fileList={w9Files}
-          label={'W9 Form'}
+          label={
+            <Stack flexDirection={'column'} width={'100%'}>
+              W9 Form
+              <Typography
+                color={'primary.main'}
+                onClick={() =>
+                  window.open(
+                    'https://youland-template-file.s3.us-west-1.amazonaws.com/fw9.pdf',
+                  )
+                }
+                sx={{
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                }}
+                variant={'body1'}
+              >
+                W9 Form.pdf
+              </Typography>
+            </Stack>
+          }
           loading={uploadLoading}
           onDelete={(index) => handledDelete(index, 'w9')}
           onSuccess={(files) => handledSuccess(files, 'w9')}
@@ -373,7 +435,23 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
 
         <StyledUploadButtonBox
           fileList={authorizationFiles}
-          label={'Borrower authorization form'}
+          label={
+            <Stack flexDirection={'column'} width={'100%'}>
+              Borrower authorization form{' '}
+              <Typography
+                color={'primary.main'}
+                onClick={() =>
+                  window.open(
+                    'https://youland-template-file.s3.us-west-1.amazonaws.com/Borrower+authorization+form.pdf',
+                  )
+                }
+                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                variant={'body1'}
+              >
+                Borrower authorization form.pdf
+              </Typography>
+            </Stack>
+          }
           loading={uploadLoading}
           onDelete={(index) => handledDelete(index, 'authorization')}
           onSuccess={(files) => handledSuccess(files, 'authorization')}

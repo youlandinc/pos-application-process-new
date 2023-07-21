@@ -5,16 +5,18 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { useStoreData } from '@/hooks';
-import { POSFindSpecificVariable, POSNotUndefined } from '@/utils';
 import { IBridgeCreditScore } from '@/models/application/bridge';
 import { IPersonalInfo } from '@/models/application/common/CreditScore';
 import {
   BorrowerData,
   BridgeCreditScoreState,
   BridgePurchaseState,
+  CommonBorrowerType,
+  SelfInfoData,
   ServerTaskKey,
   VariableName,
 } from '@/types';
+import { POSFindSpecificVariable, POSNotUndefined } from '@/utils';
 
 import { StyledButton } from '@/components/atoms';
 
@@ -81,6 +83,14 @@ const useStateMachine = (
                   _borrower?.value.creditScore,
                 );
                 if (
+                  selfInfo.citizenship === CommonBorrowerType.foreign_national
+                ) {
+                  creditScore.changeState(
+                    BridgeCreditScoreState.coBorrowerInfo,
+                  );
+                  return;
+                }
+                if (
                   _borrower?.value.creditScore &&
                   _borrower?.value.creditScore <= 640
                 ) {
@@ -123,7 +133,19 @@ const useStateMachine = (
           await handledNextTask(params, () => nextStep());
         },
         back: async () => {
-          await handledPrevTask(ServerTaskKey.about_yourself, () => {
+          await handledPrevTask(ServerTaskKey.about_yourself, (prevTask) => {
+            const { variables } = prevTask.extra;
+            const aboutUSelf = POSFindSpecificVariable<SelfInfoData>(
+              VariableName.aboutUSelf,
+              variables,
+            );
+            const {
+              value: { citizenship },
+            } = aboutUSelf as Variable<SelfInfoData>;
+            if (citizenship === CommonBorrowerType.foreign_national) {
+              creditScore.changeState(BridgeCreditScoreState.selfInfo);
+              return;
+            }
             creditScore.changeState(BridgeCreditScoreState.creditScore);
           });
         },

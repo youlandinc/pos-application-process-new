@@ -73,7 +73,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
   const [rateData, setRateData] = useState<BridgeRefinanceEstimateRateData>();
 
   const [LTVError, setLTVError] = useState<undefined | string[]>(undefined);
-  const [LTCError, setLTCError] = useState<undefined | string[]>(undefined);
 
   const [productData, setProductData] = useState<RatesProductData>();
 
@@ -82,20 +81,11 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
 
   const editLoanAmount = useMemo(() => {
     let total = rateData?.balance || 0;
-    if (rateData?.isCor) {
-      total += rateData?.cor || 0;
-    }
     if (rateData?.isCashOut) {
       total += rateData?.cashOutAmount || 0;
     }
     return total;
-  }, [
-    rateData?.balance,
-    rateData?.isCor,
-    rateData?.isCashOut,
-    rateData?.cor,
-    rateData?.cashOutAmount,
-  ]);
+  }, [rateData?.balance, rateData?.isCashOut, rateData?.cashOutAmount]);
 
   const LTV = useMemo(() => {
     let radio = 0.7;
@@ -126,24 +116,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     rateData?.isCashOut,
   ]);
 
-  const LTC = useMemo(() => {
-    const result =
-      rateData?.cor === 0
-        ? 0
-        : (loanAmount as number) /
-          ((rateData?.cor as number) + (rateData?.homeValue as number));
-    setLTCError(
-      !rateData?.isCor
-        ? undefined
-        : result > 0.75
-        ? [
-            'Reduce your cash out amount or rehab cost. Your Loan-to-Cost should be no more than 75%',
-          ]
-        : undefined,
-    );
-    return result;
-  }, [loanAmount, rateData?.cor, rateData?.homeValue, rateData?.isCor]);
-
   const [initState, getInitData] = useAsyncFn(async (processId: string) => {
     if (!router.query.processId) {
       return;
@@ -170,13 +142,10 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           }),
         );
         const {
-          cor,
-          isCor,
           isCashOut,
           cashOutAmount,
           balance,
           homeValue,
-          arv,
           brokerPoints,
           brokerProcessingFee,
           lenderPoints,
@@ -186,13 +155,10 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           agentFee,
         } = data;
         setRateData({
-          cor,
-          isCor,
           isCashOut,
           cashOutAmount,
           balance,
           homeValue,
-          arv,
           brokerPoints,
           brokerProcessingFee,
           lenderPoints,
@@ -397,16 +363,12 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
       !address?.checkAddressValid ||
       !propertyType ||
       !!LTVError ||
-      !!LTCError ||
       !userCondition
     ) {
       return false;
     }
     if (propertyType === PropertyOpt.twoToFourFamily) {
       return !!propertyUnit;
-    }
-    if (rateData?.isCor) {
-      return !!(rateData.cor && rateData.arv);
     }
     if (rateData?.isCashOut) {
       return !!rateData.cashOutAmount;
@@ -417,8 +379,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     address?.checkAddressValid,
     propertyType,
     LTVError,
-    LTCError,
-    rateData?.isCor,
     rateData?.isCashOut,
     rateData?.brokerPoints,
     rateData?.brokerProcessingFee,
@@ -427,8 +387,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     rateData?.officerPoints,
     rateData?.officerProcessingFee,
     rateData?.agentFee,
-    rateData?.cor,
-    rateData?.arv,
     rateData?.cashOutAmount,
     pointsError,
     processingFeeError,
@@ -664,7 +622,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             prefix={'$'}
             value={rateData?.balance}
           />
-          {/* {!rateData?.isCor && ( */}
           <StyledTextFieldNumber
             disabled
             label="Loan-to-Value"
@@ -674,7 +631,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             thousandSeparator={false}
             value={POSFormatLocalPercent(LTV)}
           />
-          {/* )} */}
         </Stack>
         <Stack sx={{ display: LTVError ? 'block' : 'none' }} width={'100%'}>
           <Transitions>
@@ -706,7 +662,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             {rateData?.isCashOut && (
               <StyledTextFieldNumber
                 disabled={checkLoading}
-                error={!!LTCError}
                 label={'Cash Out Amount'}
                 onValueChange={({ floatValue }) => {
                   setRateData({
@@ -720,77 +675,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             )}
           </Transitions>
         </Stack>
-        <Stack width={'100%'}>
-          <StyledCheckbox
-            checked={rateData?.isCor}
-            disabled={checkLoading}
-            label={'Rehab Loan Amount'}
-            onChange={(e) => {
-              setRateData({
-                ...(rateData as BridgeRefinanceEstimateRateData),
-                isCor: e.target.checked,
-              });
-            }}
-          />
-        </Stack>
 
-        <Stack
-          sx={{ display: rateData?.isCor ? 'block' : 'none' }}
-          width={'100%'}
-        >
-          <Transitions>
-            {rateData?.isCor && (
-              <Stack gap={3} width={'100%'}>
-                <StyledTextFieldNumber
-                  disabled={checkLoading}
-                  error={!!LTCError}
-                  label={'Estimated Rehab Loan Amount'}
-                  onValueChange={({ floatValue }) => {
-                    setRateData({
-                      ...rateData,
-                      cor: floatValue,
-                    });
-                  }}
-                  prefix={'$'}
-                  value={rateData?.cor || undefined}
-                />
-                <StyledTextFieldNumber
-                  disabled={checkLoading}
-                  error={!!LTCError}
-                  label={'After Repair Value (ARV)'}
-                  onValueChange={({ floatValue }) => {
-                    setRateData({
-                      ...rateData,
-                      arv: floatValue,
-                    });
-                  }}
-                  prefix={'$'}
-                  value={rateData?.arv || undefined}
-                />
-                <StyledTextFieldNumber
-                  decimalScale={3}
-                  disabled
-                  label={'Loan-to-Cost'}
-                  onValueChange={() => undefined}
-                  percentage={true}
-                  suffix={'%'}
-                  thousandSeparator={false}
-                  value={POSFormatLocalPercent(LTC)}
-                />
-              </Stack>
-            )}
-          </Transitions>
-        </Stack>
-
-        <Stack sx={{ display: LTCError ? 'block' : 'none' }} width={'100%'}>
-          <Transitions>
-            {LTCError && (
-              <Stack color={'error.main'} width={'100%'}>
-                {LTCError}
-              </Stack>
-            )}
-          </Transitions>
-        </Stack>
         <Transitions
           style={{
             display: userType !== UserType.CUSTOMER ? 'block' : 'none',
@@ -809,8 +694,6 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     LTVError,
     rateData,
     LTV,
-    LTCError,
-    LTC,
     pointsError,
     processingFeeError,
     agentFeeError,

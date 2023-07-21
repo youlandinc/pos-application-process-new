@@ -14,7 +14,6 @@ import {
 
 import {
   StyledButton,
-  StyledCheckbox,
   StyledFormItem,
   StyledTextFieldNumber,
   StyledTooltip,
@@ -39,10 +38,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
   loanStage = LoanStage.Application,
 }) => {
   const {
-    isCor,
     purchasePrice,
-    cor,
-    arv,
     purchaseLoanAmount,
     brokerPoints,
     brokerProcessingFee,
@@ -54,13 +50,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
   } = searchForm;
 
   const [LTVError, setLTVError] = useState<string>('');
-  const [LTCError, setLTCError] = useState<string>('');
-
-  const loanAmount = useMemo(() => {
-    return isCor
-      ? (purchaseLoanAmount as number) + (cor || 0)
-      : purchaseLoanAmount;
-  }, [purchaseLoanAmount, cor, isCor]);
 
   const LTV = useMemo(() => {
     if (!purchaseLoanAmount || !purchasePrice) {
@@ -79,21 +68,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
     }
     return purchaseLoanAmount ? purchaseLoanAmount / purchasePrice : 0;
   }, [purchaseLoanAmount, purchasePrice]);
-
-  const LTC = useMemo(() => {
-    if (!isCor) {
-      setLTCError('');
-      return;
-    }
-    const result =
-      (loanAmount as number) / ((cor as number) + (purchasePrice as number));
-    setLTCError(
-      result > 0.75
-        ? 'Reduce your purchase loan amount or rehab loan amount. Your Loan-to-Cost should be no more than 75%'
-        : '',
-    );
-    return result;
-  }, [isCor, loanAmount, cor, purchasePrice]);
 
   const pointsError = useMemo(() => {
     let points;
@@ -143,10 +117,10 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
         break;
     }
 
-    if (!POSNotUndefined(fee) || !loanAmount) {
+    if (!POSNotUndefined(fee) || !purchaseLoanAmount) {
       return [''];
     }
-    if ((fee as number) <= loanAmount) {
+    if ((fee as number) <= purchaseLoanAmount) {
       return undefined;
     }
     return [
@@ -154,30 +128,30 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
         OPTIONS_COMMON_USER_TYPE,
         userType as string as UserType,
       )} origination fee must be lesser than or equal to ${POSFormatDollar(
-        loanAmount,
+        purchaseLoanAmount,
       )}.`,
     ];
   }, [
     brokerProcessingFee,
-    loanAmount,
+    purchaseLoanAmount,
     officerProcessingFee,
     lenderProcessingFee,
     userType,
   ]);
 
   const agentFeeError = useMemo(() => {
-    if (!POSNotUndefined(agentFee) || !loanAmount) {
+    if (!POSNotUndefined(agentFee) || !purchaseLoanAmount) {
       return [''];
     }
-    if ((agentFee as number) <= loanAmount) {
+    if ((agentFee as number) <= purchaseLoanAmount) {
       return undefined;
     }
     return [
       `Real estate agent fee must be lesser than or equal to ${POSFormatDollar(
-        loanAmount,
+        purchaseLoanAmount,
       )}.`,
     ];
-  }, [agentFee, loanAmount]);
+  }, [agentFee, purchaseLoanAmount]);
 
   const isValid = useMemo(() => {
     let flag: boolean;
@@ -215,19 +189,13 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
         break;
     }
 
-    if (LTVError || LTCError) {
+    if (LTVError) {
       return false;
     }
-    return isCor
-      ? cor && arv && purchasePrice && purchaseLoanAmount && flag
-      : purchasePrice && purchaseLoanAmount && flag;
+    return purchasePrice && purchaseLoanAmount && flag;
   }, [
     userType,
     LTVError,
-    LTCError,
-    isCor,
-    cor,
-    arv,
     purchasePrice,
     purchaseLoanAmount,
     agentFee,
@@ -461,7 +429,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
         <StyledFormItem
           alignItems={'flex-start'}
           gap={3}
-          label={`Total Loan Amount: ${POSFormatDollar(loanAmount)}`}
+          label={`Total Loan Amount: ${POSFormatDollar(purchaseLoanAmount)}`}
           labelSx={{ textAlign: 'center', width: '100%' }}
           maxWidth={900}
           mt={3}
@@ -522,108 +490,13 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
             </Stack>
 
             <Transitions>
-              {LTVError && !isCor && (
+              {LTVError && (
                 <Typography color={'error'} variant={'body3'}>
                   {LTVError}
                 </Typography>
               )}
             </Transitions>
           </Stack>
-
-          <StyledCheckbox
-            checked={isCor}
-            disabled={loading || loanStage === LoanStage.Approved || !!LTVError}
-            label={'Rehab Loan Amount'}
-            onChange={(e) => {
-              setSearchForm({
-                ...searchForm,
-                isCor: e.target.checked,
-              });
-            }}
-          />
-
-          <Transitions
-            style={{
-              width: '100%',
-              display: isCor ? 'block' : 'none',
-            }}
-          >
-            {isCor && (
-              <Stack gap={1} width={'100%'}>
-                <Stack
-                  flexDirection={{ lg: 'row', xs: 'column' }}
-                  gap={3}
-                  width={'100%'}
-                >
-                  <Stack flex={1} gap={1}>
-                    <Typography variant={'body1'}>
-                      Estimated Rehab Loan Amount
-                    </Typography>
-                    <StyledTextFieldNumber
-                      disabled={loading || loanStage === LoanStage.Approved}
-                      onValueChange={({ floatValue }) => {
-                        setSearchForm({
-                          ...searchForm,
-                          cor: floatValue,
-                        });
-                      }}
-                      prefix={'$'}
-                      value={cor || undefined}
-                    />
-                  </Stack>
-                  <Stack flex={1} gap={1}>
-                    <Typography variant={'body1'}>
-                      After Repair Value (ARV){' '}
-                      <StyledTooltip
-                        title={
-                          'ARV (Purchase price + Estimated rehab loan amount)'
-                        }
-                      >
-                        <InfoOutlined sx={{ width: 16, height: 16 }} />
-                      </StyledTooltip>
-                    </Typography>
-                    <StyledTextFieldNumber
-                      disabled={loading || loanStage === LoanStage.Approved}
-                      onValueChange={({ floatValue }) => {
-                        setSearchForm({
-                          ...searchForm,
-                          arv: floatValue,
-                        });
-                      }}
-                      prefix={'$'}
-                      value={arv}
-                    />
-                  </Stack>
-                </Stack>
-                <Stack
-                  alignItems={'center'}
-                  flexDirection={'row'}
-                  gap={1}
-                  justifyContent={'flex-start'}
-                  width={{ md: 'calc(50% - 12px)', xs: '100%' }}
-                >
-                  <Typography variant={'body1'}>Loan to Cost</Typography>
-                  <StyledTooltip
-                    title={
-                      'LTC (Total loan amount / [Purchase price + Rehab loan amount])'
-                    }
-                  >
-                    <InfoOutlined sx={{ width: 16, height: 16 }} />
-                  </StyledTooltip>
-                  <Typography ml={'auto'} variant={'body1'}>
-                    {POSFormatPercent(LTC)}
-                  </Typography>
-                </Stack>
-                <Transitions>
-                  {LTCError && (
-                    <Typography color={'error'} variant={'body3'}>
-                      {LTCError}
-                    </Typography>
-                  )}
-                </Transitions>
-              </Stack>
-            )}
-          </Transitions>
         </StyledFormItem>
 
         {renderByUserType}
