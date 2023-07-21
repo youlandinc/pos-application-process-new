@@ -118,6 +118,10 @@ ul {
   color: #cdcdcd !important;
 }
 
+.OPT_TextField_inputStyle_container input[type='tel'] {
+  font-family: inherit !important;
+}
+
 /*MUI DataGrid style format*/
 /*.MuiDataGrid-windowContainer {*/
 /*  box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.15);*/

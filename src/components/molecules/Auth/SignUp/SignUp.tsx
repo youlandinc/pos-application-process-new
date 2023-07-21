@@ -366,7 +366,7 @@ export const SignUp: FC<SignUpProps> = observer(
         )}
         <StyledDialog
           content={
-            <Box mt={3}>
+            <Box mt={3} overflow={'hidden'}>
               <Typography
                 className={'POS_tl POS_fullwidth'}
                 color={'text.secondary'}
@@ -390,9 +390,13 @@ export const SignUp: FC<SignUpProps> = observer(
               >
                 Didn&apos;t verification code?{' '}
                 <Typography
-                  color={'text.primary'}
+                  color={loading ? 'action.disabled' : 'text.primary'}
                   component={'span'}
                   onClick={handledResendOtp}
+                  sx={{
+                    cursor: 'pointer',
+                    textDecorationLine: 'underline',
+                  }}
                   variant={'body2'}
                 >
                   Request again
