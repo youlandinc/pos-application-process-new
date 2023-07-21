@@ -3,6 +3,8 @@ export * from './Provider';
 export * from './Transitions';
 
 export * from './StyledProgressRing';
+export * from './StyledProgressBlock';
+export * from './StyledProgressLine';
 
 export * from './StyledLoading';
 

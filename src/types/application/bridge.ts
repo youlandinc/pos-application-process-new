@@ -71,6 +71,8 @@ interface TaskInfo {
   taskName: string;
   taskForm: null;
   finished: boolean;
+  totalNum: null | number;
+  uploadedNum: null | number;
 }
 
 export interface BridgePurchaseTasks {
@@ -115,4 +117,6 @@ export interface LoanTask {
   processId: string;
   stage: string;
   tasks: BridgePurchaseTasks & BridgeRefinanceTasks;
+  totalNum: number;
+  finishedNum: number;
 }

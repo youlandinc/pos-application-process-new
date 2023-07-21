@@ -1,4 +1,11 @@
-import { Dispatch, FC, SetStateAction, useCallback, useState } from 'react';
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -19,8 +26,27 @@ import {
   StyledButton,
   StyledFormItem,
   StyledLoading,
+  StyledProgressLine,
   StyledUploadButtonBox,
 } from '@/components/atoms';
+
+const hash = {
+  common: [
+    //'payoff',
+    //'insurance',
+    // common
+    'form1003',
+    'identification',
+    'w9',
+    'authorization',
+    'bank',
+    'prelim',
+    'other',
+  ],
+  show1: ['budget'],
+  show2: ['questionnaire', 'policy'],
+  show3: ['articles', 'laws', 'standing'],
+};
 
 export const BridgePurchaseTaskDocuments: FC = observer(() => {
   const router = useRouter();
@@ -28,6 +54,8 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
 
   const [uploadLoading, setUploadLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
+
+  const [total, setTotal] = useState(9);
 
   const [show1, setShow1] = useState(false);
   const [show2, setShow2] = useState(false);
@@ -126,6 +154,8 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
         variant: 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
       });
+    } finally {
+      setUploadLoading(false);
     }
   };
 
@@ -189,7 +219,10 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
           questionnaireFiles,
           policyFiles,
           otherFiles,
+          totalNum,
         } = res.data;
+
+        setTotal(totalNum);
 
         setShow1(show1);
         setShow2(show2);
@@ -224,6 +257,37 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
         }),
       );
   }, [router.query.taskId]);
+
+  const computedCurrent = useMemo(() => {
+    let count = 0;
+    hash.common.forEach((item) => {
+      if (computedObj(item)?.data?.length) {
+        count += 1;
+      }
+    });
+    if (show1) {
+      hash.show1.forEach((item) => {
+        if (computedObj(item)?.data?.length) {
+          count += 1;
+        }
+      });
+    }
+    if (show2) {
+      hash.show2.forEach((item) => {
+        if (computedObj(item)?.data?.length) {
+          count += 1;
+        }
+      });
+    }
+    if (show3) {
+      hash.show3.forEach((item) => {
+        if (computedObj(item)?.data?.length) {
+          count += 1;
+        }
+      });
+    }
+    return count;
+  }, [computedObj, show1, show2, show3]);
 
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
@@ -282,7 +346,15 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
   ) : (
-    <StyledFormItem gap={3} label={'Documents'}>
+    <StyledFormItem
+      gap={3}
+      label={'Documents'}
+      tip={
+        <Stack alignItems={'center'}>
+          <StyledProgressLine current={computedCurrent} total={total} />
+        </Stack>
+      }
+    >
       <Stack gap={6} maxWidth={900} width={'100%'}>
         <StyledUploadButtonBox
           fileList={form1003Files}
