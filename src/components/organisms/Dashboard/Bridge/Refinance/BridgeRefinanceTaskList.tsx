@@ -473,7 +473,7 @@ const TaskListStyles: SxProps = {
       '&:hover': {
         cursor: 'pointer',
         borderRadius: 1,
-        bgcolor: '#C5D1FF',
+        bgcolor: '#F4F6FA',
       },
       '&:first-of-type': {
         '&:hover': {

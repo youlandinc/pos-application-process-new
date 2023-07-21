@@ -35,17 +35,22 @@ export const Pipeline: FC = observer(() => {
     session,
   } = useMst();
 
-  const { visible, open, close } = useSwitch(false);
-
-  const [listData, setListData] = useState<LoanItemCardProps['formData'][]>([]);
-  const [page, setPage] = useState<number>(1);
-  const [isLoadMore, setIsLoadMore] = useState<boolean>(false);
   const [firstLoading, setFirstLoading] = useState<boolean>(true);
   const [fetchLoading, setFetchLoading] = useState<boolean>(false);
+
+  const { visible, open, close } = useSwitch(false);
+
+  const [page, setPage] = useState<number>(1);
+  const [isLoadMore, setIsLoadMore] = useState<boolean>(false);
+  const [isLastPage, setIsLastPage] = useState(false);
+
+  const [listData, setListData] = useState<LoanItemCardProps['formData'][]>([]);
+
   const [isChange, setIsChange] = useState<boolean>(false);
   const [deleteAddress, setDeleteAddress] = useState<string[]>([]);
   const [deleteId, setDeleteId] = useState<string>('');
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+
   const [searchForm, setSearchForm] = useState<SearchBarProps['searchForm']>({
     propertyAddress: '',
     dateRange: [null, null],
@@ -102,6 +107,7 @@ export const Pipeline: FC = observer(() => {
         if (firstLoading) {
           setFirstLoading(false);
         }
+        setIsLastPage(res.data.last);
       })
       .catch((err) => {
         enqueueSnackbar(err, {
@@ -172,18 +178,23 @@ export const Pipeline: FC = observer(() => {
     await setDeleteLoading(true);
     try {
       await _deleteProcess(deleteId);
-      setListData(listData.filter((item) => item.youlandId !== deleteId));
+      if (isLastPage) {
+        setListData(listData.filter((item) => item.youlandId !== deleteId));
+      }
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
       });
     } finally {
+      if (!isLastPage) {
+        await getListData();
+      }
       close();
       setDeleteLoading(false);
       setDeleteId('');
     }
-  }, [close, deleteId, enqueueSnackbar, listData]);
+  }, [close, deleteId, enqueueSnackbar, getListData, isLastPage, listData]);
 
   useEffect(() => {
     if (isChange) {
