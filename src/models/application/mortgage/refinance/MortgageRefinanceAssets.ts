@@ -6,7 +6,7 @@ import {
   types,
 } from 'mobx-state-tree';
 
-import { Address } from '@/models/common/Address';
+import { Address, SAddress } from '@/models/common/Address';
 import { LoanData, SLoanData } from '@/models/common/LoanData';
 import { MortgageFinancialSituation } from '@/models/application/common/MortgageFinancialSitutation';
 
@@ -89,7 +89,7 @@ export const MortgageRefinanceResidenceOwn = types
     getPostData(): Variable<MRResidenceOwnData> {
       const { ownCurrentEstate, hasMonthlyPayment, payments, propertyTitle } =
         self;
-      const paymentListToMap = payments.reduce((acc, cur, index) => {
+      const paymentListToMap = payments.reduce((acc: any, cur, index) => {
         acc[index] = getSnapshot(cur);
         return acc;
       }, {});
@@ -196,7 +196,7 @@ export const MortgageRefinanceYourProperty = types
     deleteLoan(idx: number) {
       self.payments.splice(idx, 1);
     },
-    injectAddress(data) {
+    injectAddress(data: SAddress) {
       self.address.formatAddress = data.formatAddress;
       self.address.state = data.state;
       self.address.street = data.street;
@@ -290,7 +290,7 @@ export const MortgageRefinanceAssets = types
     changeState(state: typeof self.state) {
       self.state = state;
     },
-    changeYourPropertyList(data: SMRYourProperty[]) {
+    changeYourPropertyList(data: SMortgageRefinanceYourProperty[]) {
       self.values.yourProperty = cast(data);
     },
     changeFieldValue<K extends keyof typeof self>(
@@ -299,7 +299,7 @@ export const MortgageRefinanceAssets = types
     ) {
       self[key] = value;
     },
-    injectServerData(value: MRYourPropertyData) {
+    injectServerData(value: MRYourPropertyData): void {
       const { assets } = value;
       const temp = [];
       for (const key in assets) {
@@ -339,10 +339,10 @@ export const MortgageRefinanceAssets = types
           }),
         });
       }
-      self.values.yourProperty = cast(temp);
+      self.values.yourProperty = cast(temp as any);
     },
     getYourPropertyPostData(): Variable<MRYourPropertyData> {
-      const assets = {};
+      const assets: any = {};
       self.values.yourProperty.forEach((item, index) => {
         const {
           propertyTitle,
@@ -352,7 +352,7 @@ export const MortgageRefinanceAssets = types
           payments,
           address: { formatAddress, aptNumber, city, state, postcode },
         } = item;
-        const paymentListToMap = payments.reduce((acc, cur, index) => {
+        const paymentListToMap = payments.reduce((acc: any, cur, index) => {
           acc[index] = getSnapshot(cur);
           return acc;
         }, {});
