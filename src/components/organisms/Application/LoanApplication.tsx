@@ -31,7 +31,8 @@ import {
 //import { MortgagePurchaseForm, MortgageRefinanceForm } from './Mortgage';
 import { BridgePurchaseForm, BridgeRefinanceForm } from './Bridge';
 import { FixPurchaseForm, FixRefinanceForm } from './Fix';
-import { GroundPurchaseForm, GroundRefinanceForm } from './Ground';
+
+//import { GroundPurchaseForm, GroundRefinanceForm } from './Ground';
 
 export interface LoanApplicationProps {
   productCategory: ProductCategory;
@@ -284,18 +285,18 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
         }
         break;
       }
-      case 'ground_up_construction': {
-        if (!productType && !applicationType) {
-          return null;
-        }
-        if (productType === 'purchase' || applicationType === 'purchase') {
-          return <GroundPurchaseForm handleBack={handleBack} />;
-        }
-        if (productType === 'refinance' || applicationType === 'refinance') {
-          return <GroundRefinanceForm handleBack={handleBack} />;
-        }
-        break;
-      }
+      //case 'ground_up_construction': {
+      //  if (!productType && !applicationType) {
+      //    return null;
+      //  }
+      //  if (productType === 'purchase' || applicationType === 'purchase') {
+      //    return <GroundPurchaseForm handleBack={handleBack} />;
+      //  }
+      //  if (productType === 'refinance' || applicationType === 'refinance') {
+      //    return <GroundRefinanceForm handleBack={handleBack} />;
+      //  }
+      //  break;
+      //}
     }
   }, [productType, handleBack, productCategory, applicationType]);
 
