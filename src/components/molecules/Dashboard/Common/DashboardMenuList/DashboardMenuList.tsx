@@ -1,5 +1,5 @@
-import { FC, ReactNode, useCallback, useMemo, useState } from 'react';
-import { Box } from '@mui/material';
+import { ISelectedProcessData } from '@/models/base';
+import { SceneType } from '@/types';
 import {
   AccountBalanceOutlined,
   GradingOutlined,
@@ -7,12 +7,11 @@ import {
   TextSnippetOutlined,
   TimelineOutlined,
 } from '@mui/icons-material';
-import { useRouter } from 'next/router';
+import { Box } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
-
-import { ISelectedProcessData } from '@/models/base';
-import { SceneType } from '@/types';
+import { useRouter } from 'next/router';
+import { FC, ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { DashboardSideInfoBox } from './component';
 
@@ -118,8 +117,10 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
             return acc;
           }, []);
           break;
-        case 'bridge purchase':
-        case 'bridge refinance':
+        case SceneType.bridge_purchase:
+        case SceneType.bridge_refinance:
+        case SceneType.fix_purchase:
+        case SceneType.fix_refinance:
           formatMenuList = list.reduce((acc: MenuItems[], next: MenuItems) => {
             if (next.key !== 'application_summary') {
               acc.push(next);

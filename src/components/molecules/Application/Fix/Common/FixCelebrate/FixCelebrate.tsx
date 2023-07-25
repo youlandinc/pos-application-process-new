@@ -58,7 +58,7 @@ export const FixCelebrate: FC<{ nextStep: () => void }> = observer(
           textAlign={'center'}
         >
           <Typography color={'info.main'} variant={'body1'}>
-            You are pre-qualified for a fix & flip loan up to{' '}
+            You are pre-qualified for a fix and flip loan up to{' '}
             <Typography component={'span'} fontWeight={600} variant={'inherit'}>
               {POSFormatDollar(loanAmount)}{' '}
             </Typography>

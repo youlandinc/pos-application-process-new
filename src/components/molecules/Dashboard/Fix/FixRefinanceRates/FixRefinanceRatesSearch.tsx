@@ -58,7 +58,9 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
   const [LTCError, setLTCError] = useState<string>('');
 
   const loanAmount = useMemo(() => {
-    let total = balance + cor || 0;
+    let total = 0;
+    total += balance || 0;
+    total += cor || 0;
     if (isCashOut) {
       total! += cashOutAmount || 0;
     }
@@ -466,7 +468,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
     <>
       <StyledFormItem
         gap={3}
-        label={'Estimate your fix & flip loan rate'}
+        label={'Estimate your fix and flip loan rate'}
         labelSx={{ m: 0 }}
       >
         <StyledFormItem

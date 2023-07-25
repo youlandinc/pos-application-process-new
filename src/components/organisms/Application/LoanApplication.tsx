@@ -306,7 +306,7 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
         return 'Stabilized Bridge';
       }
       case 'fix_and_flip': {
-        return 'Fix & Flip';
+        return 'fix and flip';
       }
       case 'ground_up_construction': {
         return 'Ground-up Construction';

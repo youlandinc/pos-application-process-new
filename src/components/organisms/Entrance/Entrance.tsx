@@ -32,7 +32,7 @@ const productList = [
     url: '/application/bridge',
   },
   {
-    name: 'Fix & Flip',
+    name: 'fix and flip',
     url: '/application/fix_and_flip',
   },
   {
