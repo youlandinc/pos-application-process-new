@@ -8,7 +8,7 @@ import { useSwitch } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { _updateProcessVariables } from '@/requests';
 import {
-  FixRefinanceEstimateRateData,
+  FREstimateRateData,
   PropertyOpt,
   RatesProductData,
   VariableName,
@@ -117,7 +117,7 @@ export const FixRefinanceEstimateRate: FC<{
   const onCheckGetList = async () => {
     setIsFirstSearch(false);
     setLoading(true);
-    const postData: Variable<FixRefinanceEstimateRateData> = {
+    const postData: Variable<FREstimateRateData> = {
       name: VariableName.estimateRate,
       type: 'json',
       value: {

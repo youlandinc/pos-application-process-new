@@ -1,5 +1,5 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { FixRefinanceEstimateRateData } from '@/types/application/fix';
+import { FREstimateRateData } from '@/types/application/fix';
 
 import { VariableName } from '@/types/enum';
 
@@ -24,7 +24,7 @@ export const FixRefinanceEstimateRate = types
     ) {
       self[key] = value;
     },
-    getPostData(): Variable<FixRefinanceEstimateRateData> {
+    getPostData(): Variable<FREstimateRateData> {
       const { homeValue, balance, isCashOut, cashOutAmount, cor, arv } = self;
 
       return {
@@ -40,7 +40,7 @@ export const FixRefinanceEstimateRate = types
         },
       };
     },
-    injectServerData(value: FixRefinanceEstimateRateData) {
+    injectServerData(value: FREstimateRateData) {
       const { homeValue, balance, isCashOut, cashOutAmount, cor, arv } = value;
 
       self.homeValue = homeValue;

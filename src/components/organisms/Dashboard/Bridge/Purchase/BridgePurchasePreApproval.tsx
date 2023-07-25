@@ -18,8 +18,8 @@ import {
   POSNotUndefined,
 } from '@/utils';
 import {
-  BridgePurchaseEstimateRateData,
-  MPPreApprovalLetterBPData,
+  BPEstimateRateData,
+  BPPreApprovalLetterData,
   PropertyOpt,
   PropertyUnitOpt,
   RatesProductData,
@@ -69,7 +69,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
       errors: {},
     }),
   );
-  const [rateData, setRateData] = useState<BridgePurchaseEstimateRateData>();
+  const [rateData, setRateData] = useState<BPEstimateRateData>();
 
   const [LTVError, setLTVError] = useState<undefined | string[]>(undefined);
 
@@ -101,9 +101,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     if (!router.query.processId) {
       return;
     }
-    return await _fetchPreApprovedLetterInfo<MPPreApprovalLetterBPData>(
-      processId,
-    )
+    return await _fetchPreApprovedLetterInfo<BPPreApprovalLetterData>(processId)
       .then((res) => {
         const { data } = res;
         setLoanStage(data?.loanStage);
@@ -145,13 +143,13 @@ export const BridgePurchasePreApproval: FC = observer(() => {
           agentFee,
         });
       })
-      .catch((err) =>
+      .catch((err) => {
         enqueueSnackbar(err as string, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
           onClose: () => router.push('/pipeline'),
-        }),
-      );
+        });
+      });
   }, []);
 
   useAsyncEffect(async () => {
@@ -174,9 +172,9 @@ export const BridgePurchasePreApproval: FC = observer(() => {
       ...rateData,
     };
     const { data, status } =
-      await _fetchPreApprovedLetterCheck<MPPreApprovalLetterBPData>(
+      await _fetchPreApprovedLetterCheck<BPPreApprovalLetterData>(
         router.query.processId as string,
-        postData as MPPreApprovalLetterBPData,
+        postData as BPPreApprovalLetterData,
       );
     if (status === 200) {
       setCheckResult(!!data);
@@ -454,7 +452,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Broker Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   brokerPoints: floatValue,
                 })
               }
@@ -469,7 +467,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Broker Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   brokerProcessingFee: floatValue,
                 });
               }}
@@ -489,7 +487,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Lender Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   lenderPoints: floatValue,
                 })
               }
@@ -504,7 +502,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Lender Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   lenderProcessingFee: floatValue,
                 });
               }}
@@ -524,7 +522,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Loan Officer Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   officerPoints: floatValue,
                 })
               }
@@ -539,7 +537,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Loan Officer Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   officerProcessingFee: floatValue,
                 });
               }}
@@ -558,7 +556,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Real Estate Agent Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   agentFee: floatValue,
                 });
               }}
@@ -580,7 +578,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
             label="Purchase Price"
             onValueChange={({ floatValue }) =>
               setRateData({
-                ...(rateData as BridgePurchaseEstimateRateData),
+                ...(rateData as BPEstimateRateData),
                 purchasePrice: floatValue,
               })
             }
@@ -593,7 +591,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
             label="Purchase Loan Amount"
             onValueChange={({ floatValue }) => {
               setRateData({
-                ...(rateData as BridgePurchaseEstimateRateData),
+                ...(rateData as BPEstimateRateData),
                 purchaseLoanAmount: floatValue,
               });
             }}

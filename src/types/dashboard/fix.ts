@@ -1,7 +1,7 @@
 import {
-  FixPurchaseEstimateRateData,
-  FixRefinanceEstimateRateData,
   FixStartingData,
+  FPEstimateRateData,
+  FREstimateRateData,
 } from '@/types/application';
 import { BaseOverviewSummaryData, BasePreApprovalLetterData } from '@/types';
 
@@ -14,17 +14,6 @@ export type FPOverviewSummaryData = BaseOverviewSummaryData & {
   address: string;
 };
 
-export type FixPurchaseRatesLoanInfo = Pick<
-  FixPurchaseEstimateRateData,
-  'purchasePrice' | 'purchaseLoanAmount' | 'cor'
-> & {
-  totalLoanAmount: number;
-};
-
-export type FPPreApprovalLetterData = BasePreApprovalLetterData &
-  FixPurchaseEstimateRateData &
-  Pick<FixStartingData, 'propertyType' | 'propertyUnit' | 'propAddr'>;
-
 export type FROverviewSummaryData = BaseOverviewSummaryData & {
   homeValue: number;
   balance: number;
@@ -36,13 +25,24 @@ export type FROverviewSummaryData = BaseOverviewSummaryData & {
   isCashOut: boolean;
 };
 
-export type FixRefinanceRatesLoanInfo = Pick<
-  FixRefinanceEstimateRateData,
+export type FPRatesLoanInfo = Pick<
+  FPEstimateRateData,
+  'purchasePrice' | 'purchaseLoanAmount' | 'cor'
+> & {
+  totalLoanAmount: number;
+};
+
+export type FRRatesLoanInfo = Pick<
+  FREstimateRateData,
   'balance' | 'cashOutAmount' | 'cor'
 > & {
   totalLoanAmount: number;
 };
 
+export type FPPreApprovalLetterData = BasePreApprovalLetterData &
+  FPEstimateRateData &
+  Pick<FixStartingData, 'propertyType' | 'propertyUnit' | 'propAddr'>;
+
 export type FRPreApprovalLetterData = BasePreApprovalLetterData &
-  FixRefinanceEstimateRateData &
+  FREstimateRateData &
   Pick<FixStartingData, 'propertyType' | 'propertyUnit' | 'propAddr'>;

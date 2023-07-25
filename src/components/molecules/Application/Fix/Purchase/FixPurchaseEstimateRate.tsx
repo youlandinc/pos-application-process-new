@@ -8,7 +8,7 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { useSwitch } from '@/hooks';
 import { _updateProcessVariables } from '@/requests';
 import {
-  FixPurchaseEstimateRateData,
+  FPEstimateRateData,
   PropertyOpt,
   RatesProductData,
   VariableName,
@@ -113,7 +113,7 @@ export const FixPurchaseEstimateRate: FC<{
   const onCheckGetList = async () => {
     setIsFirstSearch(false);
     setLoading(true);
-    const postData: Variable<FixPurchaseEstimateRateData> = {
+    const postData: Variable<FPEstimateRateData> = {
       name: VariableName.estimateRate,
       type: 'json',
       value: {

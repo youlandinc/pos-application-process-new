@@ -1,7 +1,4 @@
 import {
-  BridgePurchaseEstimateRateData,
-  BridgeRefinanceEstimateRateData,
-  BridgeStartingData,
   MortgageFinancialSituationData,
   MortgagePropertyNewData,
   MortgageStartingData,
@@ -23,29 +20,17 @@ export type MPOverviewSummaryData = BaseOverviewSummaryData & {
   expiredDate: string;
 };
 
-export type MPRatesLoanInfo = MortgagePropertyNewData &
-  Pick<MortgageStartingData, 'propertyOpt' | 'numberOfUnits'> & {
-    percent?: number;
-  };
-
-export type MPPreApprovalLetterData = BasePreApprovalLetterData &
-  MortgagePropertyNewData &
-  Pick<MortgageStartingData, 'propertyOpt' | 'numberOfUnits' | 'propAddr'>;
-
-export type MPPreApprovalLetterBPData = BasePreApprovalLetterData &
-  BridgePurchaseEstimateRateData &
-  Pick<BridgeStartingData, 'propertyType' | 'propertyUnit' | 'propAddr'>;
-
-export type MPPreApprovalLetterBRData = BasePreApprovalLetterData &
-  BridgeRefinanceEstimateRateData &
-  Pick<BridgeStartingData, 'propertyType' | 'propertyUnit' | 'propAddr'>;
-
 export type MROverviewSummaryData = BaseOverviewSummaryData & {
   cashOut: number;
   balance: number;
   homeValue: number;
   address: string;
 };
+
+export type MPRatesLoanInfo = MortgagePropertyNewData &
+  Pick<MortgageStartingData, 'propertyOpt' | 'numberOfUnits'> & {
+    percent?: number;
+  };
 
 export type MRRatesLoanInfo = Pick<
   MRStartingData,
@@ -56,3 +41,7 @@ export type MRRatesLoanInfo = Pick<
     upfrontCost: string;
     balance: number;
   };
+
+export type MPPreApprovalLetterData = BasePreApprovalLetterData &
+  MortgagePropertyNewData &
+  Pick<MortgageStartingData, 'propertyOpt' | 'numberOfUnits' | 'propAddr'>;

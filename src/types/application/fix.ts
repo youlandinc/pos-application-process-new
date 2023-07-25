@@ -35,7 +35,7 @@ export interface FixCoBorrowerCondition {
   isCoBorrower: boolean | undefined;
 }
 
-export interface FixPurchaseEstimateRateData {
+export interface FPEstimateRateData {
   purchasePrice: number | undefined;
   purchaseLoanAmount: number | undefined;
   cor: number | undefined;
@@ -49,7 +49,7 @@ export interface FixPurchaseEstimateRateData {
   agentFee?: number | undefined;
 }
 
-export interface FixRefinanceEstimateRateData {
+export interface FREstimateRateData {
   homeValue: number | undefined;
   balance: number | undefined;
   isCashOut: boolean;

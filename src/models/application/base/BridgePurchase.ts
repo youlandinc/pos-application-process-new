@@ -13,9 +13,9 @@ import { BridgePurchaseState, VariableName } from '@/types/enum';
 import { ProcessData } from '@/types/server';
 import {
   BorrowerData,
+  BPEstimateRateData,
   BridgeApplicationProcessSnapshot,
   BridgeCoBorrowerCondition,
-  BridgePurchaseEstimateRateData,
   BridgeStartingData,
   SelfInfoData,
   WhereKnowUsData,
@@ -110,7 +110,7 @@ export const BridgePurchase = types
             break;
           }
           case VariableName.estimateRate: {
-            const value = variable.value as BridgePurchaseEstimateRateData;
+            const value = variable.value as BPEstimateRateData;
             self.estimateRate.injectServerData(value);
             break;
           }

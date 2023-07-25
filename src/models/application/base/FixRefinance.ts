@@ -15,8 +15,8 @@ import {
   BorrowerData,
   FixApplicationProcessSnapshot,
   FixCoBorrowerCondition,
-  FixRefinanceEstimateRateData,
   FixStartingData,
+  FREstimateRateData,
   SelfInfoData,
   WhereKnowUsData,
 } from '@/types/application';
@@ -110,7 +110,7 @@ export const FixRefinance = types
             break;
           }
           case VariableName.estimateRate: {
-            const value = variable.value as FixRefinanceEstimateRateData;
+            const value = variable.value as FREstimateRateData;
             self.estimateRate.injectServerData(value);
             break;
           }

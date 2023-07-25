@@ -40,7 +40,7 @@ export interface BridgeCoBorrowerCondition {
   isCoBorrower: boolean | undefined;
 }
 
-export interface BridgePurchaseEstimateRateData {
+export interface BPEstimateRateData {
   purchasePrice: number | undefined;
   purchaseLoanAmount: number | undefined;
   brokerPoints?: number | undefined;
@@ -52,7 +52,7 @@ export interface BridgePurchaseEstimateRateData {
   agentFee?: number | undefined;
 }
 
-export interface BridgeRefinanceEstimateRateData {
+export interface BREstimateRateData {
   homeValue: number | undefined;
   balance: number | undefined;
   isCashOut: boolean;

@@ -23,8 +23,8 @@ import {
 
 import {
   Encompass,
-  FixPurchaseEstimateRateData,
-  FixRefinanceEstimateRateData,
+  FPEstimateRateData,
+  FREstimateRateData,
   RatesProductData,
 } from '@/types';
 
@@ -180,8 +180,8 @@ export const FixRefinanceRates: FC = observer(() => {
       postData: Partial<
         Pick<RatesProductData, 'id'> & {
           queryParams:
-            | FixRefinanceEstimateRateData
-            | FixPurchaseEstimateRateData
+            | FREstimateRateData
+            | FPEstimateRateData
             | MPQueryData
             | MRQueryData;
         }

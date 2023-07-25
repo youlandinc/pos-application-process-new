@@ -2,11 +2,11 @@ import { FC } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { POSFormatDollar, POSFormatLocalPercent } from '@/utils';
-import { BridgeRefinanceRatesLoanInfo, RatesProductData } from '@/types';
+import { BRRatesLoanInfo, RatesProductData } from '@/types';
 
 interface BridgeRefinancePaymentSummaryProps {
   productInfo:
-    | (BridgeRefinanceRatesLoanInfo &
+    | (BRRatesLoanInfo &
         Pick<
           RatesProductData,
           'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm'

@@ -2,11 +2,11 @@ import { FC } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { POSFormatDollar, POSFormatLocalPercent } from '@/utils';
-import { FixRefinanceRatesLoanInfo, RatesProductData } from '@/types';
+import { FRRatesLoanInfo, RatesProductData } from '@/types';
 
 interface FixRefinancePaymentSummaryProps {
   productInfo:
-    | (FixRefinanceRatesLoanInfo &
+    | (FRRatesLoanInfo &
         Pick<
           RatesProductData,
           'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm'

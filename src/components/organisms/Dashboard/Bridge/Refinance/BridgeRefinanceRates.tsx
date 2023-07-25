@@ -23,8 +23,8 @@ import {
 } from '@/requests/dashboard';
 
 import {
-  BridgePurchaseEstimateRateData,
-  BridgeRefinanceEstimateRateData,
+  BPEstimateRateData,
+  BREstimateRateData,
   Encompass,
   RatesProductData,
 } from '@/types';
@@ -175,8 +175,8 @@ export const BridgeRefinanceRates: FC = observer(() => {
       postData: Partial<
         Pick<RatesProductData, 'id'> & {
           queryParams:
-            | BridgeRefinanceEstimateRateData
-            | BridgePurchaseEstimateRateData
+            | BREstimateRateData
+            | BPEstimateRateData
             | MPQueryData
             | MRQueryData;
         }

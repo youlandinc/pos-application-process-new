@@ -8,7 +8,7 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { useSwitch } from '@/hooks';
 import { _updateProcessVariables } from '@/requests';
 import {
-  BridgePurchaseEstimateRateData,
+  BPEstimateRateData,
   PropertyOpt,
   RatesProductData,
   VariableName,
@@ -108,7 +108,7 @@ export const BridgePurchaseEstimateRate: FC<{
   const onCheckGetList = async () => {
     setIsFirstSearch(false);
     setLoading(true);
-    const postData: Variable<BridgePurchaseEstimateRateData> = {
+    const postData: Variable<BPEstimateRateData> = {
       name: VariableName.estimateRate,
       type: 'json',
       value: {
