@@ -3,8 +3,8 @@ import { RatesProductData } from '@/types/dashboard';
 import {
   BridgePurchaseEstimateRateData,
   BridgeRefinanceEstimateRateData,
-  FixedPurchaseEstimateRateData,
-  FixedRefinanceEstimateRateData,
+  FixPurchaseEstimateRateData,
+  FixRefinanceEstimateRateData,
   GroundPurchaseEstimateRateData,
   GroundRefinanceEstimateRateData,
   MortgagePropertyNewData,
@@ -38,13 +38,13 @@ export type MRQueryData = Pick<MRStartingData, 'homeValue'> & {
 
 export type BPQueryData = BridgePurchaseEstimateRateData;
 
-export type FPQueryData = FixedPurchaseEstimateRateData;
+export type FPQueryData = FixPurchaseEstimateRateData;
 
 export type GPQueryData = GroundPurchaseEstimateRateData;
 
 export type BRQueryData = BridgeRefinanceEstimateRateData;
 
-export type FRQueryData = FixedRefinanceEstimateRateData;
+export type FRQueryData = FixRefinanceEstimateRateData;
 
 export type GRQueryData = GroundRefinanceEstimateRateData;
 

@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { POSGetProductTypeByUrl } from '@/utils';
 import { _deleteProcess, _fetchAllProcesses } from '@/requests';
 import { useSwitch } from '@/hooks';
 import { LoanStage, UserType } from '@/types';
@@ -133,9 +134,9 @@ export const Pipeline: FC = observer(() => {
     }
     switch (row.loanStage) {
       case LoanStage.Application:
-        window.location.href = `/application/${row.productType
-          .split(' ')[0]
-          .toLowerCase()}?processId=${row.youlandId}`;
+        window.location.href = `/application/${POSGetProductTypeByUrl(
+          row.productType,
+        )}?processId=${row.youlandId}`;
         break;
       case LoanStage.Refusal:
         enqueueSnackbar(

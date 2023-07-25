@@ -4,27 +4,6 @@ import {
   BridgeStartingData,
 } from '@/types/application';
 import { BaseOverviewSummaryData, BasePreApprovalLetterData } from '@/types';
-import { PropertyOpt } from '@/types/options';
-
-export type BridgeOverviewDetail = {
-  amortization: string;
-  propertyType: PropertyOpt;
-  closeDate: string;
-  penalty: number;
-  lien: string;
-  ltv: number;
-};
-
-export type BridgeOverviewThirdParty = {
-  totalClosingCash: number;
-  downPayment?: number;
-  originationFee: number;
-  originationFeePer: number;
-  underwritingFee: number;
-  docPreparationFee: number;
-  proRatedInterest: number;
-  thirdPartyCosts: string;
-};
 
 export type BPOverviewSummaryData = BaseOverviewSummaryData & {
   purchasePrice: number;

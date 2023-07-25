@@ -1,7 +1,7 @@
 type ProductCategory =
   | 'mortgage'
   | 'bridge'
-  | 'fixed_and_flip'
+  | 'fix_and_flip'
   | 'ground_up_construction'
   | undefined;
 // | 'mortgageAlter'

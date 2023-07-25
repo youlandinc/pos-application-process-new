@@ -1,8 +1,8 @@
 import {
   ChannelOpt,
-  FixedAndFlipCreditScoreState,
-  FixedAndFlipPurchaseState,
-  FixedAndFlipRefinanceState,
+  FixAndFlipCreditScoreState,
+  FixAndFlipPurchaseState,
+  FixAndFlipRefinanceState,
   GroundUpConstructionCreditScoreState,
   GroundUpConstructionPurchaseState,
   GroundUpConstructionRefinanceState,
@@ -611,12 +611,12 @@ export const FormData = {
       },
     },
   },
-  fixed_and_flip: {
+  fix_and_flip: {
     purchase: {
-      name: 'FixedAndFlipPurchase',
+      name: 'FixAndFlipPurchase',
       preApproved: false,
       denialReason: void 0,
-      state: FixedAndFlipPurchaseState.starting,
+      state: FixAndFlipPurchaseState.starting,
       starting: {
         purpose: {
           values: {
@@ -695,7 +695,7 @@ export const FormData = {
           isValid: false,
           needDateValidate: false,
         },
-        state: FixedAndFlipCreditScoreState.notice,
+        state: FixAndFlipCreditScoreState.notice,
       },
       whereKnowUs: {
         reference: ChannelOpt.default,
@@ -709,10 +709,10 @@ export const FormData = {
       },
     },
     refinance: {
-      name: 'FixedAndFlipRefinance',
+      name: 'FixAndFlipRefinance',
       preApproved: false,
       denialReason: void 0,
-      state: FixedAndFlipRefinanceState.starting,
+      state: FixAndFlipRefinanceState.starting,
       starting: {
         purpose: {
           values: {
@@ -791,7 +791,7 @@ export const FormData = {
           isValid: false,
           needDateValidate: false,
         },
-        state: FixedAndFlipCreditScoreState.notice,
+        state: FixAndFlipCreditScoreState.notice,
       },
       whereKnowUs: {
         reference: ChannelOpt.default,

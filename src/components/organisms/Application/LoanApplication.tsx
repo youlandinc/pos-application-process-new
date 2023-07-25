@@ -30,14 +30,8 @@ import {
 
 //import { MortgagePurchaseForm, MortgageRefinanceForm } from './Mortgage';
 import { BridgePurchaseForm, BridgeRefinanceForm } from './Bridge';
-import {
-  FixedAndFlipPurchaseForm,
-  FixedAndFlipRefinanceForm,
-} from './FixedAndFlip';
-import {
-  GroundUpPurchaseForm,
-  GroundUpRefinanceForm,
-} from './GroundUpConstruction';
+import { FixPurchaseForm, FixRefinanceForm } from './Fix';
+import { GroundPurchaseForm, GroundRefinanceForm } from './Ground';
 
 export interface LoanApplicationProps {
   productCategory: ProductCategory;
@@ -278,15 +272,15 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
         }
         break;
       }
-      case 'fixed_and_flip': {
+      case 'fix_and_flip': {
         if (!productType && !applicationType) {
           return null;
         }
         if (productType === 'purchase' || applicationType === 'purchase') {
-          return <FixedAndFlipPurchaseForm handleBack={handleBack} />;
+          return <FixPurchaseForm handleBack={handleBack} />;
         }
         if (productType === 'refinance' || applicationType === 'refinance') {
-          return <FixedAndFlipRefinanceForm handleBack={handleBack} />;
+          return <FixRefinanceForm handleBack={handleBack} />;
         }
         break;
       }
@@ -295,10 +289,10 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
           return null;
         }
         if (productType === 'purchase' || applicationType === 'purchase') {
-          return <GroundUpPurchaseForm handleBack={handleBack} />;
+          return <GroundPurchaseForm handleBack={handleBack} />;
         }
         if (productType === 'refinance' || applicationType === 'refinance') {
-          return <GroundUpRefinanceForm handleBack={handleBack} />;
+          return <GroundRefinanceForm handleBack={handleBack} />;
         }
         break;
       }
@@ -310,8 +304,8 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
       case 'bridge': {
         return 'Stabilized Bridge';
       }
-      case 'fixed_and_flip': {
-        return 'Fixed & Flip';
+      case 'fix_and_flip': {
+        return 'Fix & Flip';
       }
       case 'ground_up_construction': {
         return 'Ground-up Construction';
