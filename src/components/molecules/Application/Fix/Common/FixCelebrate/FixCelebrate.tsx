@@ -31,20 +31,16 @@ export const FixCelebrate: FC<{ nextStep: () => void }> = observer(
     const loanAmount = useMemo(() => {
       let total = 0;
       if (applicationType === 'refinance') {
-        const { isCor, balance, cor, isCashOut, cashOutAmount } = estimateRate;
+        const { balance, cor, isCashOut, cashOutAmount } = estimateRate;
         total += balance;
-        if (isCor) {
-          total += cor;
-        }
+        total += cor;
         if (isCashOut) {
           total += cashOutAmount;
         }
       } else {
-        const { isCor, purchaseLoanAmount, cor } = estimateRate;
+        const { purchaseLoanAmount, cor } = estimateRate;
         total += purchaseLoanAmount;
-        if (isCor) {
-          total += cor;
-        }
+        total += cor;
       }
       return total;
     }, [applicationType, estimateRate]);

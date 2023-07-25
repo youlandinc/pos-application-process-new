@@ -28,7 +28,6 @@ import {
 const initialize: FPQueryData = {
   purchasePrice: undefined,
   purchaseLoanAmount: undefined,
-  isCor: false,
   cor: undefined,
   arv: undefined,
   lenderPoints: undefined,
@@ -45,7 +44,6 @@ export interface FixPurchaseLoanInfo {
   firstName: string;
   lastName: string;
   address: string;
-  isCor: boolean;
   totalLoanAmount: number;
   purchasePrice: number;
   purchaseLoanAmount: number;

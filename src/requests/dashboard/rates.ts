@@ -24,7 +24,11 @@ type FetchProductMapPreviewQueryData =
   | MPQueryData
   | MRQueryData
   | BPQueryData
-  | BRQueryData;
+  | BRQueryData
+  | FPQueryData
+  | FRQueryData
+  | GPQueryData
+  | GRQueryData;
 
 export type MPQueryData = MortgagePropertyNewData &
   Partial<
@@ -37,15 +41,12 @@ export type MRQueryData = Pick<MRStartingData, 'homeValue'> & {
 };
 
 export type BPQueryData = BridgePurchaseEstimateRateData;
-
-export type FPQueryData = FixPurchaseEstimateRateData;
-
-export type GPQueryData = GroundPurchaseEstimateRateData;
-
 export type BRQueryData = BridgeRefinanceEstimateRateData;
 
+export type FPQueryData = FixPurchaseEstimateRateData;
 export type FRQueryData = FixRefinanceEstimateRateData;
 
+export type GPQueryData = GroundPurchaseEstimateRateData;
 export type GRQueryData = GroundRefinanceEstimateRateData;
 
 export const _fetchRatesProductPreview = (

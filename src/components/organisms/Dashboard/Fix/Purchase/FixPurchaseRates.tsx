@@ -37,7 +37,6 @@ import {
 const initialize: FPQueryData = {
   purchasePrice: undefined,
   purchaseLoanAmount: undefined,
-  isCor: false,
   cor: undefined,
   arv: undefined,
   brokerPoints: undefined,
@@ -88,7 +87,6 @@ export const FixPurchaseRates: FC = observer(() => {
         setLoanStage(loanStage);
         setLoanInfo(info);
         const {
-          isCor,
           purchaseLoanAmount,
           purchasePrice,
           cor,
@@ -103,7 +101,6 @@ export const FixPurchaseRates: FC = observer(() => {
         } = info;
         setSearchForm({
           ...searchForm,
-          isCor,
           purchasePrice,
           purchaseLoanAmount,
           cor,

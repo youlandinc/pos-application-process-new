@@ -9,7 +9,6 @@ export const GroundRefinanceEstimateRate = types
     balance: types.maybe(types.number),
     isCashOut: types.maybe(types.boolean),
     cashOutAmount: types.maybe(types.number),
-    isCor: types.maybe(types.boolean),
     cor: types.maybe(types.number),
     arv: types.maybe(types.number),
   })
@@ -26,8 +25,7 @@ export const GroundRefinanceEstimateRate = types
       self[key] = value;
     },
     getPostData(): Variable<GroundRefinanceEstimateRateData> {
-      const { homeValue, balance, isCashOut, cashOutAmount, isCor, cor, arv } =
-        self;
+      const { homeValue, balance, isCashOut, cashOutAmount, cor, arv } = self;
 
       return {
         name: VariableName.estimateRate,
@@ -37,21 +35,18 @@ export const GroundRefinanceEstimateRate = types
           balance,
           isCashOut: isCashOut as boolean,
           cashOutAmount,
-          isCor: isCor as boolean,
           cor,
           arv,
         },
       };
     },
     injectServerData(value: GroundRefinanceEstimateRateData) {
-      const { homeValue, balance, isCashOut, cashOutAmount, isCor, cor, arv } =
-        value;
+      const { homeValue, balance, isCashOut, cashOutAmount, cor, arv } = value;
 
       self.homeValue = homeValue;
       self.balance = balance;
       self.isCashOut = isCashOut;
       self.cashOutAmount = cashOutAmount;
-      self.isCor = isCor;
       self.cor = cor;
       self.arv = arv;
     },

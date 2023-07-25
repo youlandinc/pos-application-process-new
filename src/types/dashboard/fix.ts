@@ -12,7 +12,6 @@ export type FPOverviewSummaryData = BaseOverviewSummaryData & {
   firstName: string;
   lastName: string;
   address: string;
-  isCor: boolean;
 };
 
 export type FixPurchaseRatesLoanInfo = Pick<

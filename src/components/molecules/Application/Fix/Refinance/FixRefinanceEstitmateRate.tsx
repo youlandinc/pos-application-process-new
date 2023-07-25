@@ -30,7 +30,6 @@ const initialize: FRQueryData = {
   homeValue: undefined,
   balance: undefined,
   isCashOut: false,
-  isCor: false,
   cor: undefined,
   arv: undefined,
   cashOutAmount: undefined,
@@ -49,7 +48,6 @@ export interface FixRefinanceLoanInfo {
   lastName: string;
   address: string;
   isCashOut: boolean;
-  isCor: boolean;
   totalLoanAmount: number;
   balance: number;
   homeValue: number;
