@@ -2,6 +2,8 @@ import { get, post } from '../axios';
 import {
   BPPreApprovalLetterData,
   BRPreApprovalLetterData,
+  FPPreApprovalLetterData,
+  FRPreApprovalLetterData,
   MPPreApprovalLetterData,
 } from '@/types/dashboard';
 
@@ -9,7 +11,9 @@ export const _fetchPreApprovedLetterCheck = <
   T extends
     | BRPreApprovalLetterData
     | BPPreApprovalLetterData
-    | MPPreApprovalLetterData,
+    | MPPreApprovalLetterData
+    | FPPreApprovalLetterData
+    | FRPreApprovalLetterData,
 >(
   processId = '',
   checkData: T,

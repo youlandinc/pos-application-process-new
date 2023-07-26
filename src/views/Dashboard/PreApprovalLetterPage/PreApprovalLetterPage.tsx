@@ -3,10 +3,13 @@ import { FC, useMemo } from 'react';
 import { useMst } from '@/models/Root';
 import { observer } from 'mobx-react-lite';
 
+import { SceneType } from '@/types';
+
 import {
-  // MortgagePurchasePreApproval,
   BridgePurchasePreApproval,
   BridgeRefinancePreApproval,
+  FixPurchasePreApproval,
+  FixRefinancePreApproval,
 } from '@/components/organisms';
 
 export const PreApprovalLetterPage: FC = observer(() => {
@@ -16,14 +19,21 @@ export const PreApprovalLetterPage: FC = observer(() => {
 
   const renderPreApprovalPage = useMemo(() => {
     switch (scene) {
-      // case 'mortgage purchase':
-      //   return <MortgagePurchasePreApproval />;
-      case 'bridge purchase':
+      case SceneType.bridge_purchase: {
         return <BridgePurchasePreApproval />;
-      case 'bridge refinance':
+      }
+      case SceneType.bridge_refinance: {
         return <BridgeRefinancePreApproval />;
-      default:
+      }
+      case SceneType.fix_purchase: {
+        return <FixPurchasePreApproval />;
+      }
+      case SceneType.fix_refinance: {
+        return <FixRefinancePreApproval />;
+      }
+      default: {
         return <BridgePurchasePreApproval />;
+      }
     }
   }, [scene]);
 

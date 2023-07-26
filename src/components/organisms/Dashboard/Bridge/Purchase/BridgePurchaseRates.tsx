@@ -11,6 +11,7 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { useSessionStorageState, useSwitch } from '@/hooks';
 import { LoanStage, UserType } from '@/types/enum';
 import { BridgePurchaseLoanInfo } from '@/components/molecules/Application';
+import { BPEstimateRateData, Encompass, RatesProductData } from '@/types';
 
 import {
   _fetchRatesLoanInfo,
@@ -18,16 +19,7 @@ import {
   _fetchRatesProductPreview,
   _updateRatesProductSelected,
   BPQueryData,
-  MPQueryData,
-  MRQueryData,
 } from '@/requests/dashboard';
-
-import {
-  BPEstimateRateData,
-  BREstimateRateData,
-  Encompass,
-  RatesProductData,
-} from '@/types';
 
 import {
   BridgePurchaseRatesDrawer,
@@ -125,8 +117,9 @@ export const BridgePurchaseRates: FC = observer(() => {
       searchForm,
     )
       .then((res) => {
-        setProductList(res.data.products);
-        setLoanInfo(res.data.loanInfo);
+        const { products, loanInfo } = res.data;
+        setProductList(products);
+        setLoanInfo(loanInfo);
         setLoading(false);
       })
       .catch((err) => {
@@ -172,11 +165,7 @@ export const BridgePurchaseRates: FC = observer(() => {
     async (
       postData: Partial<
         Pick<RatesProductData, 'id'> & {
-          queryParams:
-            | BPEstimateRateData
-            | BREstimateRateData
-            | MPQueryData
-            | MRQueryData;
+          queryParams: BPEstimateRateData;
         }
       >,
     ) => {

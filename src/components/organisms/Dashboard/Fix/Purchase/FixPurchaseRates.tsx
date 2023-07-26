@@ -17,16 +17,9 @@ import {
   _fetchRatesProductPreview,
   _updateRatesProductSelected,
   FPQueryData,
-  MPQueryData,
-  MRQueryData,
 } from '@/requests/dashboard';
 
-import {
-  Encompass,
-  FPEstimateRateData,
-  FREstimateRateData,
-  RatesProductData,
-} from '@/types';
+import { Encompass, FPEstimateRateData, RatesProductData } from '@/types';
 
 import {
   FixPurchaseRatesDrawer,
@@ -130,8 +123,9 @@ export const FixPurchaseRates: FC = observer(() => {
       searchForm,
     )
       .then((res) => {
-        setProductList(res.data.products);
-        setLoanInfo(res.data.loanInfo);
+        const { products, loanInfo } = res.data;
+        setProductList(products);
+        setLoanInfo(loanInfo);
         setLoading(false);
       })
       .catch((err) => {
@@ -177,11 +171,7 @@ export const FixPurchaseRates: FC = observer(() => {
     async (
       postData: Partial<
         Pick<RatesProductData, 'id'> & {
-          queryParams:
-            | FPEstimateRateData
-            | FREstimateRateData
-            | MPQueryData
-            | MRQueryData;
+          queryParams: FPEstimateRateData;
         }
       >,
     ) => {
