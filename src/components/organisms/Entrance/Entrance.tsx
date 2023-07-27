@@ -32,7 +32,7 @@ const productList = [
     url: '/application/bridge',
   },
   {
-    name: 'fix and flip',
+    name: 'Fix and Flip',
     url: '/application/fix_and_flip',
   },
   {
@@ -60,7 +60,7 @@ export const Entrance: FC = observer(() => {
       });
 
       userpool.setLastAuthUserBase(data);
-      await detectUserActiveService.setDetectUserActiveService(
+      detectUserActiveService.setDetectUserActiveService(
         new DetectActiveService(data),
       );
 
