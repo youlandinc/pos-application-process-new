@@ -47,6 +47,8 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
   const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
 
+  const [uploadLoading, setUploadLoading] = useState<boolean>(false);
+
   const [loanStage, setLoanStage] = useState<LoanStage | undefined>(
     LoanStage.PreApproved,
   );
@@ -206,6 +208,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
   }, [address, router.query.processId, propertyType, propertyUnit, rateData]);
 
   const onClickUpdate = useCallback(async () => {
+    setUploadLoading(true);
     const addressData = address?.getPostData();
     const postData = {
       id: productData?.id,
@@ -216,23 +219,35 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
         ...rateData,
       },
     };
-    const res = await _updateRatesProductSelected(
-      router.query.processId as string,
-      postData as UpdateRatesPostData,
-    );
-    if (res.status === 200) {
+    try {
+      await _updateRatesProductSelected(
+        router.query.processId as string,
+        postData as UpdateRatesPostData,
+      );
       setCheckResult(undefined);
       setTableStatus('view');
       await getInitData(router.query.processId as string);
+      enqueueSnackbar('Update Successfully!' as string, {
+        variant: 'success',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setUploadLoading(false);
     }
   }, [
     address,
-    getInitData,
-    router.query.processId,
     productData?.id,
     propertyType,
     propertyUnit,
     rateData,
+    router.query.processId,
+    getInitData,
+    enqueueSnackbar,
   ]);
 
   const pointsError = useMemo(() => {
@@ -323,6 +338,9 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
   }, [loanAmount, rateData]);
 
   const clickable = useMemo(() => {
+    if (uploadLoading || checkLoading) {
+      return false;
+    }
     let userCondition;
     switch (userType) {
       case UserType.BROKER:
@@ -373,6 +391,8 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
     }
     return true;
   }, [
+    uploadLoading,
+    checkLoading,
     userType,
     address?.checkAddressValid,
     propertyType,
@@ -627,18 +647,11 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             percentage
             suffix={'%'}
             thousandSeparator={false}
+            validate={LTVError}
             value={POSFormatLocalPercent(LTV)}
           />
         </Stack>
-        <Stack sx={{ display: LTVError ? 'block' : 'none' }} width={'100%'}>
-          <Transitions>
-            {LTVError && (
-              <Stack color={'error.main'} width={'100%'}>
-                {LTVError}
-              </Stack>
-            )}
-          </Transitions>
-        </Stack>
+
         <Stack width={'100%'}>
           <StyledCheckbox
             checked={rateData?.isCashOut}

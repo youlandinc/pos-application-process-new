@@ -18,8 +18,8 @@ import {
   POSNotUndefined,
 } from '@/utils';
 import {
-  BPEstimateRateData,
-  BPPreApprovalLetterData,
+  FREstimateRateData,
+  FRPreApprovalLetterData,
   PropertyOpt,
   PropertyUnitOpt,
   RatesProductData,
@@ -33,13 +33,14 @@ import {
 
 import {
   StyledButton,
+  StyledCheckbox,
   StyledLoading,
   StyledTextFieldNumber,
   Transitions,
 } from '@/components/atoms';
 import { PreApprovalEdit, PreApprovalInfo } from '@/components/molecules';
 
-export const BridgePurchasePreApproval: FC = observer(() => {
+export const FixRefinancePreApproval: FC = observer(() => {
   const { userType } = useMst();
 
   const router = useRouter();
@@ -71,48 +72,89 @@ export const BridgePurchasePreApproval: FC = observer(() => {
       errors: {},
     }),
   );
-  const [rateData, setRateData] = useState<BPEstimateRateData>();
+  const [rateData, setRateData] = useState<FREstimateRateData>();
 
   const [LTVError, setLTVError] = useState<undefined | string[]>(undefined);
+  const [LTCError, setLTCError] = useState<undefined | string[]>(undefined);
 
   const [productData, setProductData] = useState<RatesProductData>();
 
   const [checkResult, setCheckResult] = useState<unknown>();
   const [checkLoading, setCheckLoading] = useState<boolean>(false);
 
+  const editLoanAmount = useMemo(() => {
+    let total = rateData?.balance || 0;
+    total += rateData?.cor || 0;
+    if (rateData?.isCashOut) {
+      total += rateData?.cashOutAmount || 0;
+    }
+    return total;
+  }, [
+    rateData?.balance,
+    rateData?.cor,
+    rateData?.isCashOut,
+    rateData?.cashOutAmount,
+  ]);
+
   const LTV = useMemo(() => {
-    if (!rateData?.purchaseLoanAmount || !rateData?.purchasePrice) {
+    let radio = 0.7;
+    if (!rateData?.homeValue) {
       return 0;
     }
-    setLTVError(
-      rateData?.purchaseLoanAmount / rateData?.purchasePrice <= 0.8
-        ? undefined
-        : ['Your LTV should be no more than 80%'],
-    );
-    if (rateData?.purchaseLoanAmount < 100000) {
-      setLTVError([
-        'Adjust your down payment. Total loan amount must be at least $100,000',
-      ]);
+    let total = rateData?.balance || 0;
+    if (rateData?.isCashOut) {
+      total += rateData?.cashOutAmount || 0;
+      radio = 0.7;
+    } else {
+      radio = 0.65;
     }
-    return rateData?.purchaseLoanAmount
-      ? rateData?.purchaseLoanAmount / rateData?.purchasePrice
-      : 0;
-  }, [rateData?.purchaseLoanAmount, rateData?.purchasePrice]);
+    setLTVError(
+      total / rateData?.homeValue <= radio
+        ? undefined
+        : [`Your LTV should be no more than ${radio * 100}%`],
+    );
+    if (editLoanAmount < 100000) {
+      setLTVError(['Total loan amount must be at least $100,000']);
+    }
+    return total / rateData?.homeValue;
+  }, [
+    editLoanAmount,
+    rateData?.balance,
+    rateData?.cashOutAmount,
+    rateData?.homeValue,
+    rateData?.isCashOut,
+  ]);
+
+  const LTC = useMemo(() => {
+    const result =
+      rateData?.cor === 0
+        ? 0
+        : (editLoanAmount as number) /
+          ((rateData?.cor as number) + (rateData?.homeValue as number));
+    setLTCError(
+      result > 0.75
+        ? [
+            'Reduce your cash out amount or rehab cost. Your Loan-to-Cost should be no more than 75%',
+          ]
+        : undefined,
+    );
+    return result;
+  }, [editLoanAmount, rateData?.cor, rateData?.homeValue]);
 
   const [initState, getInitData] = useAsyncFn(async (processId: string) => {
     if (!router.query.processId) {
       return;
     }
-    return await _fetchPreApprovedLetterInfo<BPPreApprovalLetterData>(processId)
+    return await _fetchPreApprovedLetterInfo<FRPreApprovalLetterData>(processId)
       .then((res) => {
         const { data } = res;
         setLoanStage(data?.loanStage);
         setLoanAmount(data.loanAmount);
-        setPropertyType(data.propertyType);
+        setPropertyType(data?.propertyType);
         setPropertyUnit(data.propertyUnit);
         setAddress(
           Address.create({
-            formatAddress: data.propAddr.address,
+            formatAddress: data?.propAddr?.address,
             state: data.propAddr?.state ?? '',
             street: '',
             city: data.propAddr?.city ?? '',
@@ -123,8 +165,12 @@ export const BridgePurchasePreApproval: FC = observer(() => {
           }),
         );
         const {
-          purchasePrice,
-          purchaseLoanAmount,
+          cor,
+          arv,
+          isCashOut,
+          cashOutAmount,
+          balance,
+          homeValue,
           brokerPoints,
           brokerProcessingFee,
           lenderPoints,
@@ -134,8 +180,12 @@ export const BridgePurchasePreApproval: FC = observer(() => {
           agentFee,
         } = data;
         setRateData({
-          purchasePrice,
-          purchaseLoanAmount,
+          cor,
+          arv,
+          isCashOut,
+          cashOutAmount,
+          balance,
+          homeValue,
           brokerPoints,
           brokerProcessingFee,
           lenderPoints,
@@ -145,13 +195,13 @@ export const BridgePurchasePreApproval: FC = observer(() => {
           agentFee,
         });
       })
-      .catch((err) => {
+      .catch((err) =>
         enqueueSnackbar(err as string, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
           onClose: () => router.push('/pipeline'),
-        });
-      });
+        }),
+      );
   }, []);
 
   useAsyncEffect(async () => {
@@ -173,11 +223,10 @@ export const BridgePurchasePreApproval: FC = observer(() => {
       propertyType,
       ...rateData,
     };
-    const { data, status } =
-      await _fetchPreApprovedLetterCheck<BPPreApprovalLetterData>(
-        router.query.processId as string,
-        postData as BPPreApprovalLetterData,
-      );
+    const { data, status } = await _fetchPreApprovedLetterCheck(
+      router.query.processId as string,
+      postData as FRPreApprovalLetterData,
+    );
     if (status === 200) {
       setCheckResult(!!data);
       setProductData(data);
@@ -197,29 +246,18 @@ export const BridgePurchasePreApproval: FC = observer(() => {
         ...rateData,
       },
     };
-    try {
-      await _updateRatesProductSelected(
-        router.query.processId as string,
-        postData as UpdateRatesPostData,
-      );
+    const res = await _updateRatesProductSelected(
+      router.query.processId as string,
+      postData as UpdateRatesPostData,
+    );
+    if (res.status === 200) {
       setCheckResult(undefined);
       setTableStatus('view');
       await getInitData(router.query.processId as string);
-      enqueueSnackbar('Update Successfully!' as string, {
-        variant: 'success',
-        autoHideDuration: AUTO_HIDE_DURATION,
-      });
-    } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-      });
-    } finally {
-      setUploadLoading(false);
     }
+    setUploadLoading(false);
   }, [
     address,
-    enqueueSnackbar,
     getInitData,
     router.query.processId,
     productData?.id,
@@ -264,12 +302,8 @@ export const BridgePurchasePreApproval: FC = observer(() => {
   }, [rateData, userType]);
 
   const processingFeeError = useMemo(() => {
-    const {
-      brokerProcessingFee,
-      lenderProcessingFee,
-      officerProcessingFee,
-      purchaseLoanAmount,
-    } = rateData || {};
+    const { brokerProcessingFee, lenderProcessingFee, officerProcessingFee } =
+      rateData || {};
 
     let fee;
     switch (userType) {
@@ -288,11 +322,10 @@ export const BridgePurchasePreApproval: FC = observer(() => {
         fee = officerProcessingFee;
         break;
     }
-
-    if (!POSNotUndefined(fee) || !loanAmount) {
+    if (!POSNotUndefined(fee) || !editLoanAmount) {
       return [''];
     }
-    if ((fee as number) <= loanAmount) {
+    if ((fee as number) <= editLoanAmount) {
       return undefined;
     }
     return [
@@ -300,28 +333,28 @@ export const BridgePurchasePreApproval: FC = observer(() => {
         OPTIONS_COMMON_USER_TYPE,
         userType as string as UserType,
       )} origination fee must be lesser than or equal to ${POSFormatDollar(
-        purchaseLoanAmount,
+        editLoanAmount,
       )}.`,
     ];
-  }, [rateData, userType, loanAmount]);
+  }, [rateData, userType, editLoanAmount]);
 
   const agentFeeError = useMemo(() => {
     const { agentFee } = rateData || {};
-    if (!POSNotUndefined(agentFee) || !loanAmount) {
+    if (!POSNotUndefined(agentFee) || !editLoanAmount) {
       return [''];
     }
-    if (agentFee! <= loanAmount) {
+    if (agentFee! <= editLoanAmount) {
       return undefined;
     }
     return [
       `Real estate agent fee must be lesser than or equal to ${POSFormatDollar(
-        loanAmount,
+        editLoanAmount,
       )}.`,
     ];
-  }, [loanAmount, rateData]);
+  }, [editLoanAmount, rateData]);
 
   const clickable = useMemo(() => {
-    if (uploadLoading || checkLoading) {
+    if (uploadLoading) {
       return false;
     }
     let userCondition;
@@ -357,10 +390,12 @@ export const BridgePurchasePreApproval: FC = observer(() => {
         userCondition = true;
         break;
     }
+
     if (
       !address?.checkAddressValid ||
       !propertyType ||
       !!LTVError ||
+      !!LTCError ||
       !userCondition
     ) {
       return false;
@@ -368,14 +403,18 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     if (propertyType === PropertyOpt.twoToFourFamily) {
       return !!propertyUnit;
     }
+    if (rateData?.isCashOut) {
+      return !!rateData.cashOutAmount;
+    }
     return true;
   }, [
     uploadLoading,
-    checkLoading,
     userType,
     address?.checkAddressValid,
     propertyType,
     LTVError,
+    LTCError,
+    rateData?.isCashOut,
     rateData?.brokerPoints,
     rateData?.brokerProcessingFee,
     rateData?.lenderPoints,
@@ -383,6 +422,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     rateData?.officerPoints,
     rateData?.officerProcessingFee,
     rateData?.agentFee,
+    rateData?.cashOutAmount,
     pointsError,
     processingFeeError,
     agentFeeError,
@@ -425,7 +465,8 @@ export const BridgePurchasePreApproval: FC = observer(() => {
                 {POSFormatDollar(productData?.paymentOfMonth)} Monthly payment
               </Box>
             </Stack>
-            <Box>
+
+            <Box sx={{ textAlign: 'center' }}>
               <StyledButton
                 color={'primary'}
                 disabled={!clickable}
@@ -467,7 +508,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Broker Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as BPEstimateRateData),
+                  ...(rateData as FREstimateRateData),
                   brokerPoints: floatValue,
                 })
               }
@@ -482,7 +523,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Broker Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as BPEstimateRateData),
+                  ...(rateData as FREstimateRateData),
                   brokerProcessingFee: floatValue,
                 });
               }}
@@ -502,7 +543,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Lender Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as BPEstimateRateData),
+                  ...(rateData as FREstimateRateData),
                   lenderPoints: floatValue,
                 })
               }
@@ -517,7 +558,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Lender Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as BPEstimateRateData),
+                  ...(rateData as FREstimateRateData),
                   lenderProcessingFee: floatValue,
                 });
               }}
@@ -537,7 +578,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Loan Officer Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as BPEstimateRateData),
+                  ...(rateData as FREstimateRateData),
                   officerPoints: floatValue,
                 })
               }
@@ -552,7 +593,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Loan Officer Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as BPEstimateRateData),
+                  ...(rateData as FREstimateRateData),
                   officerProcessingFee: floatValue,
                 });
               }}
@@ -567,15 +608,18 @@ export const BridgePurchasePreApproval: FC = observer(() => {
         additionalCondition = (
           <>
             <StyledTextFieldNumber
+              decimalScale={3}
               disabled={checkLoading}
-              label="Real Estate Agent Processing Fee"
-              onValueChange={({ floatValue }) => {
+              label="Real Estate Agent Origination Fee"
+              onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as BPEstimateRateData),
+                  ...(rateData as FREstimateRateData),
                   agentFee: floatValue,
-                });
-              }}
-              prefix={'$'}
+                })
+              }
+              percentage
+              suffix={'%'}
+              thousandSeparator={false}
               validate={agentFeeError}
               value={rateData?.agentFee}
             />
@@ -590,31 +634,30 @@ export const BridgePurchasePreApproval: FC = observer(() => {
           <StyledTextFieldNumber
             disabled={checkLoading}
             error={!!LTVError}
-            label="Purchase Price"
+            label="As-is Property Value"
             onValueChange={({ floatValue }) =>
               setRateData({
-                ...(rateData as BPEstimateRateData),
-                purchasePrice: floatValue,
+                ...(rateData as FREstimateRateData),
+                homeValue: floatValue,
               })
             }
             prefix={'$'}
-            value={rateData?.purchasePrice}
+            value={rateData?.homeValue}
           />
           <StyledTextFieldNumber
             disabled={checkLoading}
             error={!!LTVError}
-            label="Purchase Loan Amount"
+            label="Payoff Amount"
             onValueChange={({ floatValue }) => {
               setRateData({
-                ...(rateData as BPEstimateRateData),
-                purchaseLoanAmount: floatValue,
+                ...(rateData as FREstimateRateData),
+                balance: floatValue,
               });
             }}
             prefix={'$'}
-            value={rateData?.purchaseLoanAmount}
+            value={rateData?.balance}
           />
           <StyledTextFieldNumber
-            decimalScale={3}
             disabled
             label="Loan-to-Value"
             onValueChange={() => undefined}
@@ -623,6 +666,80 @@ export const BridgePurchasePreApproval: FC = observer(() => {
             thousandSeparator={false}
             validate={LTVError}
             value={POSFormatLocalPercent(LTV)}
+          />
+        </Stack>
+        <Stack width={'100%'}>
+          <StyledCheckbox
+            checked={rateData?.isCashOut}
+            disabled={checkLoading}
+            label={'Cash Out'}
+            onChange={(e) => {
+              setRateData({
+                ...(rateData as FREstimateRateData),
+                isCashOut: e.target.checked,
+              });
+            }}
+          />
+        </Stack>
+        <Stack
+          sx={{ display: rateData?.isCashOut ? 'block' : 'none' }}
+          width={'100%'}
+        >
+          <Transitions>
+            {rateData?.isCashOut && (
+              <StyledTextFieldNumber
+                disabled={checkLoading}
+                label={'Cash Out Amount'}
+                onValueChange={({ floatValue }) => {
+                  setRateData({
+                    ...rateData,
+                    cashOutAmount: floatValue,
+                  });
+                }}
+                prefix={'$'}
+                value={rateData?.cashOutAmount || undefined}
+              />
+            )}
+          </Transitions>
+        </Stack>
+
+        <Stack gap={3} width={'100%'}>
+          <StyledTextFieldNumber
+            disabled={checkLoading}
+            error={!!LTCError}
+            label={'Estimated rehab loan amount'}
+            onValueChange={({ floatValue }) => {
+              setRateData({
+                ...(rateData as FREstimateRateData),
+                cor: floatValue,
+              });
+            }}
+            prefix={'$'}
+            value={rateData?.cor || undefined}
+          />
+          <StyledTextFieldNumber
+            disabled={checkLoading}
+            error={!!LTCError}
+            label={'After repair value (ARV)'}
+            onValueChange={({ floatValue }) => {
+              setRateData({
+                ...(rateData as FREstimateRateData),
+                arv: floatValue,
+              });
+            }}
+            prefix={'$'}
+            value={rateData?.arv || undefined}
+          />
+          <StyledTextFieldNumber
+            decimalScale={3}
+            disabled
+            label={'Loan-to-Cost'}
+            onValueChange={() => undefined}
+            percentage={true}
+            suffix={'%'}
+            thousandSeparator={false}
+            validate={LTCError}
+            value={POSFormatLocalPercent(LTC)}
           />
         </Stack>
 
@@ -644,12 +761,14 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     LTVError,
     rateData,
     LTV,
+    LTCError,
+    LTC,
     pointsError,
     processingFeeError,
     agentFeeError,
   ]);
 
-  const infoRef = useRef<HTMLInputElement>(null);
+  const infoRef = useRef<HTMLInputElement | null>(null);
 
   return (
     <Transitions

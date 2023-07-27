@@ -32,15 +32,15 @@ export const FixCelebrate: FC<{ nextStep: () => void }> = observer(
       let total = 0;
       if (applicationType === 'refinance') {
         const { balance, cor, isCashOut, cashOutAmount } = estimateRate;
-        total += balance;
-        total += cor;
+        total += balance || 0;
+        total += cor || 0;
         if (isCashOut) {
-          total += cashOutAmount;
+          total += cashOutAmount || 0;
         }
       } else {
         const { purchaseLoanAmount, cor } = estimateRate;
-        total += purchaseLoanAmount;
-        total += cor;
+        total += purchaseLoanAmount || 0;
+        total += cor || 0;
       }
       return total;
     }, [applicationType, estimateRate]);
