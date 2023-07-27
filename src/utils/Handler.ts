@@ -4,3 +4,19 @@ export const POSFindLabel = (
 ): string => {
   return options.find((item) => item.value === val)?.label || '';
 };
+
+export const POSGetProductTypeByUrl = (val: string): string => {
+  const condition = val.split(' ')[0];
+  switch (condition) {
+    case 'Mortgage':
+      return 'mortgage';
+    case 'Bridge':
+      return 'bridge';
+    case 'Fix':
+      return 'fix_and_flip';
+    case 'Ground':
+      return 'ground_up_construction';
+    default:
+      return '';
+  }
+};

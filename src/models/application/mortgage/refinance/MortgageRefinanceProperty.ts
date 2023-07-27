@@ -51,7 +51,9 @@ export const MortgageRefinanceProperty = types
     get checkIsValid() {
       const { occupancyOpt, propertyOpt, numberOfUnits, homeValue } =
         self.values;
-      const valid = Object.keys(self.errors).every((key) => !self.errors[key]);
+      const valid = Object.keys(self.errors).every(
+        (key) => !self.errors[key as keyof typeof self.errors],
+      );
       if (!homeValue || !occupancyOpt || !valid) {
         return false;
       }
@@ -73,8 +75,8 @@ export const MortgageRefinanceProperty = types
       const errors = validate({ [key]: value }, { [key]: PropertySchema[key] });
       self.isValid = !errors;
       self.errors = { ...self.errors, ...(errors || {}) };
-      if (self.errors[key as unknown as any] && errors === void 0) {
-        destroy(self.errors[key as unknown as any]);
+      if (self.errors[key as keyof typeof self.errors] && errors === void 0) {
+        destroy(self.errors[key as keyof typeof self.errors]);
       }
       self.isValid = Object.keys(self.errors).length === 0;
       self.values[key] = value;
@@ -82,7 +84,7 @@ export const MortgageRefinanceProperty = types
     validateForm() {
       const errors = validate(self.values, PropertySchema);
       self.isValid = Object.keys(getSnapshot(self.errors)).every(
-        (key) => !self.errors[key],
+        (key) => !self.errors[key as keyof typeof self.errors],
       );
       self.errors = errors || {};
     },

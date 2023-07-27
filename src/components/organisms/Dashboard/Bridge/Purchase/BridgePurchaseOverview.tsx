@@ -19,7 +19,7 @@ import { useSessionStorageState } from '@/hooks';
 
 import { StyledButton } from '@/components/atoms';
 import {
-  BridgeOverviewInfo,
+  CommonOverviewInfo,
   DashboardCard,
   DashboardHeader,
 } from '@/components/molecules';
@@ -29,10 +29,10 @@ export const BridgePurchaseOverview: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
   const { saasState } = useSessionStorageState('tenantConfig');
 
-  const [summary, setSummary] = useState<BridgeOverviewInfo>();
-  const [product, setProduct] = useState<BridgeOverviewInfo>();
-  const [loanDetail, setLoanDetail] = useState<BridgeOverviewInfo>();
-  const [thirdParty, setThirdParty] = useState<BridgeOverviewInfo>();
+  const [summary, setSummary] = useState<CommonOverviewInfo>();
+  const [product, setProduct] = useState<CommonOverviewInfo>();
+  const [loanDetail, setLoanDetail] = useState<CommonOverviewInfo>();
+  const [thirdParty, setThirdParty] = useState<CommonOverviewInfo>();
 
   const { loading } = useAsync(async () => {
     if (!router.query.processId) {

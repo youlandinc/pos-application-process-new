@@ -1,10 +1,10 @@
 import { get, post, put } from '../axios';
 import { RatesProductData } from '@/types/dashboard';
 import {
-  BridgePurchaseEstimateRateData,
-  BridgeRefinanceEstimateRateData,
-  FixedPurchaseEstimateRateData,
-  FixedRefinanceEstimateRateData,
+  BPEstimateRateData,
+  BREstimateRateData,
+  FPEstimateRateData,
+  FREstimateRateData,
   GroundPurchaseEstimateRateData,
   GroundRefinanceEstimateRateData,
   MortgagePropertyNewData,
@@ -24,7 +24,11 @@ type FetchProductMapPreviewQueryData =
   | MPQueryData
   | MRQueryData
   | BPQueryData
-  | BRQueryData;
+  | BRQueryData
+  | FPQueryData
+  | FRQueryData
+  | GPQueryData
+  | GRQueryData;
 
 export type MPQueryData = MortgagePropertyNewData &
   Partial<
@@ -36,16 +40,13 @@ export type MRQueryData = Pick<MRStartingData, 'homeValue'> & {
   upfrontCost: string;
 };
 
-export type BPQueryData = BridgePurchaseEstimateRateData;
+export type BPQueryData = BPEstimateRateData;
+export type BRQueryData = BREstimateRateData;
 
-export type FPQueryData = FixedPurchaseEstimateRateData;
+export type FPQueryData = FPEstimateRateData;
+export type FRQueryData = FREstimateRateData;
 
 export type GPQueryData = GroundPurchaseEstimateRateData;
-
-export type BRQueryData = BridgeRefinanceEstimateRateData;
-
-export type FRQueryData = FixedRefinanceEstimateRateData;
-
 export type GRQueryData = GroundRefinanceEstimateRateData;
 
 export const _fetchRatesProductPreview = (

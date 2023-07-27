@@ -1,5 +1,5 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { BridgePurchaseEstimateRateData } from '@/types/application/bridge';
+import { BPEstimateRateData } from '@/types/application/bridge';
 
 import { VariableName } from '@/types/enum';
 
@@ -20,7 +20,7 @@ export const BPEstimateRate = types
     ) {
       self[key] = value;
     },
-    getPostData(): Variable<BridgePurchaseEstimateRateData> {
+    getPostData(): Variable<BPEstimateRateData> {
       const { purchasePrice, purchaseLoanAmount } = self;
       return {
         name: VariableName.estimateRate,
@@ -31,7 +31,7 @@ export const BPEstimateRate = types
         },
       };
     },
-    injectServerData(value: BridgePurchaseEstimateRateData) {
+    injectServerData(value: BPEstimateRateData) {
       const { purchasePrice, purchaseLoanAmount } = value;
       self.purchaseLoanAmount = purchaseLoanAmount;
       self.purchasePrice = purchasePrice;

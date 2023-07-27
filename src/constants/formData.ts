@@ -1,8 +1,8 @@
 import {
   ChannelOpt,
-  FixedAndFlipCreditScoreState,
-  FixedAndFlipPurchaseState,
-  FixedAndFlipRefinanceState,
+  FixAndFlipCreditScoreState,
+  FixAndFlipPurchaseState,
+  FixAndFlipRefinanceState,
   GroundUpConstructionCreditScoreState,
   GroundUpConstructionPurchaseState,
   GroundUpConstructionRefinanceState,
@@ -605,18 +605,17 @@ export const FormData = {
         balance: undefined,
         isCashOut: false,
         cashOutAmount: undefined,
-        isCor: false,
         cor: undefined,
         arv: undefined,
       },
     },
   },
-  fixed_and_flip: {
+  fix_and_flip: {
     purchase: {
-      name: 'FixedAndFlipPurchase',
+      name: 'FixAndFlipPurchase',
       preApproved: false,
       denialReason: void 0,
-      state: FixedAndFlipPurchaseState.starting,
+      state: FixAndFlipPurchaseState.starting,
       starting: {
         purpose: {
           values: {
@@ -695,7 +694,7 @@ export const FormData = {
           isValid: false,
           needDateValidate: false,
         },
-        state: FixedAndFlipCreditScoreState.notice,
+        state: FixAndFlipCreditScoreState.notice,
       },
       whereKnowUs: {
         reference: ChannelOpt.default,
@@ -709,10 +708,10 @@ export const FormData = {
       },
     },
     refinance: {
-      name: 'FixedAndFlipRefinance',
+      name: 'FixAndFlipRefinance',
       preApproved: false,
       denialReason: void 0,
-      state: FixedAndFlipRefinanceState.starting,
+      state: FixAndFlipRefinanceState.starting,
       starting: {
         purpose: {
           values: {
@@ -791,7 +790,7 @@ export const FormData = {
           isValid: false,
           needDateValidate: false,
         },
-        state: FixedAndFlipCreditScoreState.notice,
+        state: FixAndFlipCreditScoreState.notice,
       },
       whereKnowUs: {
         reference: ChannelOpt.default,
@@ -801,7 +800,6 @@ export const FormData = {
         balance: undefined,
         isCashOut: false,
         cashOutAmount: undefined,
-        isCor: false,
         cor: undefined,
         arv: undefined,
       },
@@ -997,7 +995,6 @@ export const FormData = {
         balance: undefined,
         isCashOut: false,
         cashOutAmount: undefined,
-        isCor: false,
         cor: undefined,
         arv: undefined,
       },

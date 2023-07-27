@@ -18,8 +18,8 @@ import {
   POSNotUndefined,
 } from '@/utils';
 import {
-  BridgePurchaseEstimateRateData,
-  MPPreApprovalLetterBPData,
+  BPEstimateRateData,
+  BPPreApprovalLetterData,
   PropertyOpt,
   PropertyUnitOpt,
   RatesProductData,
@@ -46,6 +46,8 @@ export const BridgePurchasePreApproval: FC = observer(() => {
   const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
 
+  const [uploadLoading, setUploadLoading] = useState<boolean>(false);
+
   const [loanStage, setLoanStage] = useState<LoanStage | undefined>(
     LoanStage.PreApproved,
   );
@@ -69,7 +71,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
       errors: {},
     }),
   );
-  const [rateData, setRateData] = useState<BridgePurchaseEstimateRateData>();
+  const [rateData, setRateData] = useState<BPEstimateRateData>();
 
   const [LTVError, setLTVError] = useState<undefined | string[]>(undefined);
 
@@ -101,9 +103,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     if (!router.query.processId) {
       return;
     }
-    return await _fetchPreApprovedLetterInfo<MPPreApprovalLetterBPData>(
-      processId,
-    )
+    return await _fetchPreApprovedLetterInfo<BPPreApprovalLetterData>(processId)
       .then((res) => {
         const { data } = res;
         setLoanStage(data?.loanStage);
@@ -145,13 +145,13 @@ export const BridgePurchasePreApproval: FC = observer(() => {
           agentFee,
         });
       })
-      .catch((err) =>
+      .catch((err) => {
         enqueueSnackbar(err as string, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
           onClose: () => router.push('/pipeline'),
-        }),
-      );
+        });
+      });
   }, []);
 
   useAsyncEffect(async () => {
@@ -174,9 +174,9 @@ export const BridgePurchasePreApproval: FC = observer(() => {
       ...rateData,
     };
     const { data, status } =
-      await _fetchPreApprovedLetterCheck<MPPreApprovalLetterBPData>(
+      await _fetchPreApprovedLetterCheck<BPPreApprovalLetterData>(
         router.query.processId as string,
-        postData as MPPreApprovalLetterBPData,
+        postData as BPPreApprovalLetterData,
       );
     if (status === 200) {
       setCheckResult(!!data);
@@ -186,6 +186,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
   }, [address, router.query.processId, propertyType, propertyUnit, rateData]);
 
   const onClickUpdate = useCallback(async () => {
+    setUploadLoading(true);
     const addressData = address?.getPostData();
     const postData = {
       id: productData?.id,
@@ -196,11 +197,11 @@ export const BridgePurchasePreApproval: FC = observer(() => {
         ...rateData,
       },
     };
-    const res = await _updateRatesProductSelected(
-      router.query.processId as string,
-      postData as UpdateRatesPostData,
-    );
-    if (res.status === 200) {
+    try {
+      await _updateRatesProductSelected(
+        router.query.processId as string,
+        postData as UpdateRatesPostData,
+      );
       setCheckResult(undefined);
       setTableStatus('view');
       await getInitData(router.query.processId as string);
@@ -208,6 +209,13 @@ export const BridgePurchasePreApproval: FC = observer(() => {
         variant: 'success',
         autoHideDuration: AUTO_HIDE_DURATION,
       });
+    } catch (err) {
+      enqueueSnackbar(err as string, {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+    } finally {
+      setUploadLoading(false);
     }
   }, [
     address,
@@ -313,6 +321,9 @@ export const BridgePurchasePreApproval: FC = observer(() => {
   }, [loanAmount, rateData]);
 
   const clickable = useMemo(() => {
+    if (uploadLoading || checkLoading) {
+      return false;
+    }
     let userCondition;
     switch (userType) {
       case UserType.BROKER:
@@ -359,6 +370,8 @@ export const BridgePurchasePreApproval: FC = observer(() => {
     }
     return true;
   }, [
+    uploadLoading,
+    checkLoading,
     userType,
     address?.checkAddressValid,
     propertyType,
@@ -454,7 +467,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Broker Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   brokerPoints: floatValue,
                 })
               }
@@ -469,7 +482,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Broker Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   brokerProcessingFee: floatValue,
                 });
               }}
@@ -489,7 +502,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Lender Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   lenderPoints: floatValue,
                 })
               }
@@ -504,7 +517,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Lender Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   lenderProcessingFee: floatValue,
                 });
               }}
@@ -524,7 +537,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Loan Officer Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   officerPoints: floatValue,
                 })
               }
@@ -539,7 +552,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Loan Officer Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   officerProcessingFee: floatValue,
                 });
               }}
@@ -558,7 +571,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
               label="Real Estate Agent Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as BridgePurchaseEstimateRateData),
+                  ...(rateData as BPEstimateRateData),
                   agentFee: floatValue,
                 });
               }}
@@ -580,7 +593,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
             label="Purchase Price"
             onValueChange={({ floatValue }) =>
               setRateData({
-                ...(rateData as BridgePurchaseEstimateRateData),
+                ...(rateData as BPEstimateRateData),
                 purchasePrice: floatValue,
               })
             }
@@ -593,7 +606,7 @@ export const BridgePurchasePreApproval: FC = observer(() => {
             label="Purchase Loan Amount"
             onValueChange={({ floatValue }) => {
               setRateData({
-                ...(rateData as BridgePurchaseEstimateRateData),
+                ...(rateData as BPEstimateRateData),
                 purchaseLoanAmount: floatValue,
               });
             }}
@@ -608,17 +621,9 @@ export const BridgePurchasePreApproval: FC = observer(() => {
             percentage
             suffix={'%'}
             thousandSeparator={false}
+            validate={LTVError}
             value={POSFormatLocalPercent(LTV)}
           />
-        </Stack>
-        <Stack sx={{ display: LTVError ? 'block' : 'none' }} width={'100%'}>
-          <Transitions>
-            {LTVError && (
-              <Stack color={'error.main'} width={'100%'}>
-                {LTVError}
-              </Stack>
-            )}
-          </Transitions>
         </Stack>
 
         <Transitions

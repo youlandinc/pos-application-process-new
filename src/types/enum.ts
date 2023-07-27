@@ -5,10 +5,10 @@ export enum SceneType {
   mortgage_refinance = 'mortgage refinance',
   bridge_purchase = 'bridge purchase',
   bridge_refinance = 'bridge refinance',
-  fixed_purchase = 'fixed & flip purchase',
-  fixed_refinance = 'fixed & flip refinance',
-  ground_purchase = 'ground up construction purchase',
-  ground_refinance = 'ground up construction refinance',
+  fix_purchase = 'fix_and_flip purchase',
+  fix_refinance = 'fix_and_flip refinance',
+  ground_purchase = 'ground_up_construction purchase',
+  ground_refinance = 'ground_up_construction refinance',
 }
 
 export enum ServerTaskKey {
@@ -211,8 +211,8 @@ export enum BridgeRefinanceState {
   refuse = 'refuse',
 }
 
-// fixed and flip
-export enum FixedAndFlipPurchaseState {
+// fix and flip
+export enum FixAndFlipPurchaseState {
   starting = 'starting',
   creditScore = 'creditScore',
   auth = 'auth',
@@ -222,7 +222,7 @@ export enum FixedAndFlipPurchaseState {
   refuse = 'refuse',
 }
 
-export enum FixedAndFlipRefinanceState {
+export enum FixAndFlipRefinanceState {
   starting = 'starting',
   creditScore = 'creditScore',
   auth = 'auth',
@@ -260,7 +260,7 @@ export enum BridgeCreditScoreState {
   coBorrowerInfo = 'coBorrowerInfo',
 }
 
-export enum FixedAndFlipCreditScoreState {
+export enum FixAndFlipCreditScoreState {
   notice = 'notice',
   selfInfo = 'selfInfo',
   creditScore = 'creditScore',

@@ -38,7 +38,6 @@ export interface GroundCoBorrowerCondition {
 export interface GroundPurchaseEstimateRateData {
   purchasePrice: number | undefined;
   purchaseLoanAmount: number | undefined;
-  isCor: boolean | undefined;
   cor: number | undefined;
   arv: number | undefined;
   brokerPoints?: number | undefined;
@@ -55,7 +54,6 @@ export interface GroundRefinanceEstimateRateData {
   balance: number | undefined;
   isCashOut: boolean;
   cashOutAmount: number | undefined;
-  isCor: boolean;
   cor: number | undefined;
   arv: number | undefined;
   brokerPoints?: number | undefined;

@@ -3,11 +3,13 @@ import { FC, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { SceneType } from '@/types';
+
 import {
-  // MortgagePurchaseRates,
-  // MortgageRefinanceRates,
   BridgePurchaseRates,
   BridgeRefinanceRates,
+  FixPurchaseRates,
+  FixRefinanceRates,
 } from '@/components/organisms';
 
 export const RatesPage: FC = observer(() => {
@@ -17,17 +19,17 @@ export const RatesPage: FC = observer(() => {
 
   const renderRatesPage = useMemo(() => {
     switch (scene) {
-      // case 'mortgage purchase': {
-      //   return <MortgagePurchaseRates />;
-      // }
-      // case 'mortgage refinance': {
-      //   return <MortgageRefinanceRates />;
-      // }
-      case 'bridge purchase': {
+      case SceneType.bridge_purchase: {
         return <BridgePurchaseRates />;
       }
-      case 'bridge refinance': {
+      case SceneType.bridge_refinance: {
         return <BridgeRefinanceRates />;
+      }
+      case SceneType.fix_purchase: {
+        return <FixPurchaseRates />;
+      }
+      case SceneType.fix_refinance: {
+        return <FixRefinanceRates />;
       }
       default:
         return <BridgePurchaseRates />;

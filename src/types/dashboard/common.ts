@@ -1,10 +1,11 @@
+import { PropertyOpt } from '@/types';
 import { LoanStage, LoanType } from '@/types/enum';
 import { BorrowerDebtSummaryData } from '@/types/application';
 import {
   BPOverviewSummaryData,
-  BridgeOverviewDetail,
-  BridgeOverviewThirdParty,
   BROverviewSummaryData,
+  FPOverviewSummaryData,
+  FROverviewSummaryData,
   MPOverviewSummaryData,
   MROverviewSummaryData,
 } from '@/types/dashboard';
@@ -15,8 +16,30 @@ export type OverviewData<T extends OverviewSummaryData = any> = {
   closingCost: OverviewClosingCostData;
   summary: T;
   product: RatesProductData;
-  loanDetail?: BridgeOverviewDetail;
-  thirdParty?: BridgeOverviewThirdParty;
+  loanDetail?: BaseOverviewDetail;
+  thirdParty?: BaseOverviewThirdParty;
+};
+
+export type BaseOverviewDetail = {
+  amortization: string;
+  propertyType: PropertyOpt;
+  closeDate: string;
+  penalty: number;
+  lien: string;
+  arv: number;
+  ltc: number;
+  ltv?: number;
+};
+
+export type BaseOverviewThirdParty = {
+  totalClosingCash: number;
+  downPayment?: number;
+  originationFee: number;
+  originationFeePer: number;
+  underwritingFee: number;
+  docPreparationFee: number;
+  proRatedInterest: number;
+  thirdPartyCosts: string;
 };
 
 export interface OverviewClosingCostData {
@@ -29,7 +52,9 @@ export type OverviewSummaryData =
   | MROverviewSummaryData
   | MPOverviewSummaryData
   | BPOverviewSummaryData
-  | BROverviewSummaryData;
+  | BROverviewSummaryData
+  | FROverviewSummaryData
+  | FPOverviewSummaryData;
 
 export type BaseOverviewSummaryData = {
   loanAmount: number;
@@ -85,32 +110,6 @@ export type BasePreApprovalLetterData = {
 };
 
 // task
-export enum DashboardTaskKey {
-  // bridge purchase
-  BP_AL = 'BP_APPLICATION_LOAN',
-  BP_AP = 'BP_APPLICATION_PROPERTY',
-  BP_AI = 'BP_APPLICATION_INVESTMENT',
-
-  BP_BP = 'BP_BORROWER_PERSONAL',
-  BP_BD = 'BP_BORROWER_DEMOGRAPHICS',
-  BP_BCB = 'BP_BORROWER_CO_BORROWER',
-  BP_BG = 'BP_BORROWER_GUARANTOR',
-
-  BP_AC = 'BP_APPRAISAL_COST',
-  BP_APD = 'BP_APPRAISAL_PROPERTY_DETAILS',
-
-  BP_TC = 'BP_THIRD_CLOSING',
-  BP_TI = 'BP_THIRD_INSURANCE',
-
-  BP_AA = 'BP_AUTOPAY_ACH',
-
-  BP_DC = 'BP_DOCUMENTS_CONTRACT',
-  BP_DP = 'BP_DOCUMENTS_PICTURES',
-  BP_DR = 'BP_DOCUMENTS_REVIEW',
-  BP_DD = 'BP_DOCUMENTS_DOCUMENTS',
-
-  // bridge refinance
-}
 
 export enum DashboardTaskCitizenshipStatus {
   us_citizen = 'US_CITIZEN',
