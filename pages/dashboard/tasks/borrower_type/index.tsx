@@ -14,24 +14,24 @@ const DynamicDashboardPage = dynamic(
   },
 );
 
-const DynamicGuarantorPersonalPage = dynamic(
+const DynamicBorrowerTypePage = dynamic(
   () =>
-    import('@/views/Dashboard/TaskPage/GuarantorPersonalPage').then(
-      (mod) => mod.GuarantorPersonalPage,
+    import('@/views/Dashboard/TaskPage/BorrowerTypePage').then(
+      (mod) => mod.BorrowerTypePage,
     ),
   {
     loading: () => <CircularProgress />,
     ssr: false,
   },
 );
-const TaskGuarantorPersonal: FC = observer(() => {
+const TaskBorrowerType: FC = observer(() => {
   return (
     <>
       <DynamicDashboardPage>
-        <DynamicGuarantorPersonalPage />
+        <DynamicBorrowerTypePage />
       </DynamicDashboardPage>
     </>
   );
 });
 
-export default TaskGuarantorPersonal;
+export default TaskBorrowerType;
