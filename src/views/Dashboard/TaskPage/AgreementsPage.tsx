@@ -14,12 +14,6 @@ export const AgreementsPage: FC = observer(() => {
 
   const renderNode = useMemo(() => {
     switch (scene) {
-      //  case 'mortgage purchase': {
-      //    return <MortgagePurchaseTask />;
-      //  }
-      //  case 'mortgage refinance': {
-      //    return <MortgageRefinanceTask />;
-      //  }
       case 'bridge purchase': {
         return <BridgePurchaseTaskAgreements />;
       }

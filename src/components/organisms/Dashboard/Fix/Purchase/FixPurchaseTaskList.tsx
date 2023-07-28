@@ -13,10 +13,10 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFlex } from '@/styles';
 import { _fetchLoanTask } from '@/requests/dashboard';
 import {
-  BPDashboardTaskKey,
-  BridgeDashboardLoanTask,
-  BridgeDashboardTaskMap,
   DashboardTaskList,
+  FixDashboardLoanTask,
+  FixDashboardTaskMap,
+  FPDashboardTaskKey,
   LoanStage,
 } from '@/types';
 
@@ -27,20 +27,20 @@ import {
 } from '@/components/atoms';
 import { DashboardHeader } from '@/components/molecules';
 
-const BridgePurchaseDashboardTaskMap: DashboardTaskList<BPDashboardTaskKey> = {
+const FixPurchaseDashboardTaskMap: DashboardTaskList<FPDashboardTaskKey> = {
   ApplicationInformation: {
     title: 'Application Information',
     children: [
       {
-        code: 'BP_APPLICATION_LOAN',
+        code: 'FP_APPLICATION_LOAN',
         url: '/dashboard/tasks/loan_details',
       },
       {
-        code: 'BP_APPLICATION_PROPERTY',
+        code: 'FP_APPLICATION_PROPERTY',
         url: '/dashboard/tasks/property_details',
       },
       {
-        code: 'BP_APPLICATION_INVESTMENT',
+        code: 'FP_APPLICATION_INVESTMENT',
         url: '/dashboard/tasks/investment_experience',
       },
     ],
@@ -49,19 +49,19 @@ const BridgePurchaseDashboardTaskMap: DashboardTaskList<BPDashboardTaskKey> = {
     title: 'Borrower Information',
     children: [
       {
-        code: 'BP_BORROWER_PERSONAL',
+        code: 'FP_BORROWER_PERSONAL',
         url: '/dashboard/tasks/personal_details',
       },
       {
-        code: 'BP_BORROWER_DEMOGRAPHICS',
+        code: 'FP_BORROWER_DEMOGRAPHICS',
         url: '/dashboard/tasks/demographics_information',
       },
       {
-        code: 'BP_BORROWER_GUARANTOR',
+        code: 'FP_BORROWER_GUARANTOR',
         url: '/dashboard/tasks/guarantor_personal',
       },
       {
-        code: 'BP_BORROWER_CO_BORROWER',
+        code: 'FP_BORROWER_CO_BORROWER',
         url: '/dashboard/tasks/co_borrower_details',
       },
     ],
@@ -70,11 +70,11 @@ const BridgePurchaseDashboardTaskMap: DashboardTaskList<BPDashboardTaskKey> = {
     title: 'Property Appraisal',
     children: [
       {
-        code: 'BP_APPRAISAL_COST',
+        code: 'FP_APPRAISAL_COST',
         url: '/dashboard/tasks/cost',
       },
       {
-        code: 'BP_APPRAISAL_PROPERTY_DETAILS',
+        code: 'FP_APPRAISAL_PROPERTY_DETAILS',
         url: '/dashboard/tasks/property_inspection',
       },
     ],
@@ -83,11 +83,11 @@ const BridgePurchaseDashboardTaskMap: DashboardTaskList<BPDashboardTaskKey> = {
     title: 'Third-party Information',
     children: [
       {
-        code: 'BP_THIRD_CLOSING',
+        code: 'FP_THIRD_CLOSING',
         url: '/dashboard/tasks/company_information',
       },
       {
-        code: 'BP_THIRD_INSURANCE',
+        code: 'FP_THIRD_INSURANCE',
         url: '/dashboard/tasks/insurance_information',
       },
     ],
@@ -96,7 +96,7 @@ const BridgePurchaseDashboardTaskMap: DashboardTaskList<BPDashboardTaskKey> = {
   //   title: 'Set up auto Pay',
   //   children: [
   //     {
-  //       code: 'BP_THIRD_CLOSING',
+  //       code: 'FP_THIRD_CLOSING',
   //       url: '/dashboard/tasks/company_information',
   //     },
 
@@ -106,26 +106,26 @@ const BridgePurchaseDashboardTaskMap: DashboardTaskList<BPDashboardTaskKey> = {
     title: 'Documents & Materials',
     children: [
       {
-        code: 'BP_DOCUMENTS_CONTRACT',
+        code: 'FP_DOCUMENTS_CONTRACT',
         url: '/dashboard/tasks/contract',
       },
       {
-        code: 'BP_DOCUMENTS_PICTURES',
+        code: 'FP_DOCUMENTS_PICTURES',
         url: '/dashboard/tasks/upload_pictures',
       },
       {
-        code: 'BP_DOCUMENTS_REVIEW',
+        code: 'FP_DOCUMENTS_REVIEW',
         url: '/dashboard/tasks/agreements',
       },
       {
-        code: 'BP_DOCUMENTS_DOCUMENTS',
+        code: 'FP_DOCUMENTS_DOCUMENTS',
         url: '/dashboard/tasks/documents',
       },
     ],
   },
 };
 
-export const BridgePurchaseTaskList: FC = observer(() => {
+export const FixPurchaseTaskList: FC = observer(() => {
   const {
     selectedProcessData: { loanStage },
   } = useMst();
@@ -136,7 +136,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
   const breakpoints = useBreakpoints();
 
   const [taskDetails, setTaskDetails] =
-    useSetState<BridgeDashboardTaskMap<BPDashboardTaskKey>>();
+    useSetState<FixDashboardTaskMap<FPDashboardTaskKey>>();
 
   const [total, setTotal] = useState(9);
   const [current, setCurrent] = useState(0);
@@ -145,7 +145,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
     if (!router.query.processId) {
       return;
     }
-    return await _fetchLoanTask<BridgeDashboardLoanTask>(
+    return await _fetchLoanTask<FixDashboardLoanTask>(
       router.query.processId as string,
     )
       .then((res) => {
@@ -175,11 +175,11 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
-              {BridgePurchaseDashboardTaskMap.ApplicationInformation.title}
+              {FixPurchaseDashboardTaskMap.ApplicationInformation.title}
             </Typography>
           </Box>
 
-          {BridgePurchaseDashboardTaskMap.ApplicationInformation.children.map(
+          {FixPurchaseDashboardTaskMap.ApplicationInformation.children.map(
             (sonItem) => (
               <Box
                 key={sonItem.code}
@@ -218,10 +218,10 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
-              {BridgePurchaseDashboardTaskMap.BorrowerInformation.title}
+              {FixPurchaseDashboardTaskMap.BorrowerInformation.title}
             </Typography>
           </Box>
-          {BridgePurchaseDashboardTaskMap.BorrowerInformation.children.map(
+          {FixPurchaseDashboardTaskMap.BorrowerInformation.children.map(
             (sonItem) => (
               <Box
                 key={sonItem.code}
@@ -260,10 +260,10 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
-              {BridgePurchaseDashboardTaskMap.PropertyAppraisal.title}
+              {FixPurchaseDashboardTaskMap.PropertyAppraisal.title}
             </Typography>
           </Box>
-          {BridgePurchaseDashboardTaskMap.PropertyAppraisal.children.map(
+          {FixPurchaseDashboardTaskMap.PropertyAppraisal.children.map(
             (sonItem) => (
               <Box
                 key={sonItem.code}
@@ -302,10 +302,10 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
-              {BridgePurchaseDashboardTaskMap.ThirdPartyInformation.title}
+              {FixPurchaseDashboardTaskMap.ThirdPartyInformation.title}
             </Typography>
           </Box>
-          {BridgePurchaseDashboardTaskMap.ThirdPartyInformation.children.map(
+          {FixPurchaseDashboardTaskMap.ThirdPartyInformation.children.map(
             (sonItem) => (
               <Box
                 key={sonItem.code}
@@ -344,10 +344,10 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
-              {BridgePurchaseDashboardTaskMap.DocumentsMaterials.title}
+              {FixPurchaseDashboardTaskMap.DocumentsMaterials.title}
             </Typography>
           </Box>
-          {BridgePurchaseDashboardTaskMap.DocumentsMaterials.children.map(
+          {FixPurchaseDashboardTaskMap.DocumentsMaterials.children.map(
             (sonItem) => {
               if (taskDetails[sonItem.code]) {
                 return (

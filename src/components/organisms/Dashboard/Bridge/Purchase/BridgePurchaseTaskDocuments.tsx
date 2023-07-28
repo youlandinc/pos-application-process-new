@@ -41,7 +41,6 @@ const hash = {
     'authorization',
     'bank',
     'prelim',
-    'other',
   ],
   show1: ['budget'],
   show2: ['questionnaire', 'policy'],

@@ -1,4 +1,10 @@
-import { PropertyOpt } from '@/types';
+import {
+  BPDashboardTaskKey,
+  BRDashboardTaskKey,
+  FPDashboardTaskKey,
+  FRDashboardTaskKey,
+  PropertyOpt,
+} from '@/types';
 import { LoanStage, LoanType } from '@/types/enum';
 import { BorrowerDebtSummaryData } from '@/types/application';
 import {
@@ -110,6 +116,41 @@ export type BasePreApprovalLetterData = {
 };
 
 // task
+
+interface DashboardTaskItem<
+  T extends
+    | BPDashboardTaskKey
+    | BRDashboardTaskKey
+    | FPDashboardTaskKey
+    | FRDashboardTaskKey,
+> {
+  title: string;
+  children: Array<{ code: T; url: string }>;
+}
+
+export interface DashboardTaskList<
+  T extends
+    | BPDashboardTaskKey
+    | BRDashboardTaskKey
+    | FPDashboardTaskKey
+    | FRDashboardTaskKey,
+> {
+  ApplicationInformation: DashboardTaskItem<T>;
+  BorrowerInformation: DashboardTaskItem<T>;
+  PropertyAppraisal: DashboardTaskItem<T>;
+  ThirdPartyInformation: DashboardTaskItem<T>;
+  DocumentsMaterials: DashboardTaskItem<T>;
+  // SetUpAutoPay: DashboardTaskItem<T>;
+}
+
+export interface DashboardTaskInfo {
+  taskId: string;
+  taskName: string;
+  taskForm: null;
+  finished: boolean;
+  totalNum: null | number;
+  uploadedNum: null | number;
+}
 
 export enum DashboardTaskCitizenshipStatus {
   us_citizen = 'US_CITIZEN',
