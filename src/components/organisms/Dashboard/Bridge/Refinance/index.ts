@@ -14,11 +14,11 @@ export * from './BridgeRefinanceTaskDemograhpicsInformation';
 export * from './BridgeRefinanceTaskBorrowerType';
 export * from './BridgeRefinanceTaskCoBorrowerDetails';
 
-export * from './BridgeRefinanceTaskCompanyInformation';
-export * from './BridgeRefinanceTaskInsuranceInformation';
-
 export * from './BridgeRefinanceTaskPropertyInspection';
 export * from './BridgeRefinanceTaskPay';
+
+export * from './BridgeRefinanceTaskCompanyInformation';
+export * from './BridgeRefinanceTaskInsuranceInformation';
 
 export * from './BridgeRefinanceTaskUploadPictures';
 export * from './BridgeRefinanceTaskAgreements';
