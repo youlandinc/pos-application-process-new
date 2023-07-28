@@ -11,8 +11,8 @@ export * from './BridgeRefinanceTaskInvestmentEperience';
 
 export * from './BridgeRefinanceTaskPersonalDetails';
 export * from './BridgeRefinanceTaskDemograhpicsInformation';
+export * from './BridgeRefinanceTaskBorrowerType';
 export * from './BridgeRefinanceTaskCoBorrowerDetails';
-export * from './BridgeRefinanceTaskGuarantorPersonal';
 
 export * from './BridgeRefinanceTaskCompanyInformation';
 export * from './BridgeRefinanceTaskInsuranceInformation';

@@ -58,7 +58,7 @@ const BridgeRefinanceDashboardTaskMap: DashboardTaskList<BRDashboardTaskKey> = {
       },
       {
         code: 'BR_BORROWER_GUARANTOR',
-        url: '/dashboard/tasks/guarantor_personal',
+        url: '/dashboard/tasks/borrower_type',
       },
       {
         code: 'BR_BORROWER_CO_BORROWER',

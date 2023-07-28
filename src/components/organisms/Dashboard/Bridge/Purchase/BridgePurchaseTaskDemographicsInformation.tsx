@@ -1,13 +1,12 @@
 import { FC, useCallback, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Box, Stack, Typography } from '@mui/material';
-import { useAsync } from 'react-use';
+import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-
+import { useAsync } from 'react-use';
 import { observer } from 'mobx-react-lite';
 
+import { AUTO_HIDE_DURATION } from '@/constants';
 import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
-import { AUTO_HIDE_DURATION, OPTIONS_TASK_GENDER } from '@/constants';
 import { DashboardTaskGender } from '@/types';
 
 import {
@@ -15,7 +14,6 @@ import {
   StyledCheckbox,
   StyledFormItem,
   StyledLoading,
-  StyledSelectOption,
   StyledTextField,
   Transitions,
 } from '@/components/atoms';
@@ -61,7 +59,10 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
   const [white, setWhite] = useState<boolean>(false);
   const [notProvideRace, setNotProvideRace] = useState<boolean>(false);
 
-  const [gender, setGender] = useState<DashboardTaskGender | undefined>();
+  // gender
+  const [male, setMale] = useState<boolean>(false);
+  const [female, setFemale] = useState<boolean>(false);
+  const [notProvideGender, setNotProvideGender] = useState<boolean>(false);
 
   const { loading } = useAsync(async () => {
     if (!router.query.taskId) {
@@ -112,8 +113,6 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
           gender,
         } = res.data;
 
-        setGender(gender ?? '');
-
         // ethnicity
         setLatino(latino);
         setMexican(mexican);
@@ -147,6 +146,10 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
         setBlack(black);
         setWhite(white);
         setNotProvideRace(notProvideRace);
+
+        setMale(gender === DashboardTaskGender.male);
+        setFemale(gender === DashboardTaskGender.female);
+        setNotProvideGender(gender === DashboardTaskGender.not_provide);
       })
       .catch((err) =>
         enqueueSnackbar(err as string, {
@@ -212,7 +215,10 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
       }
       return notProvideRace || black || white;
     };
-    return !!gender && conditionB() && conditionA;
+    const conditionC = () => {
+      return [male, female, notProvideGender].some((item) => item);
+    };
+    return conditionC() && conditionB() && conditionA;
   }, [
     american,
     asianIndian,
@@ -220,17 +226,19 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
     chamorro,
     chinese,
     cuban,
+    female,
     filipino,
-    gender,
     hawaiian,
     isAsian,
     islander,
     japanese,
     korean,
     latino,
+    male,
     mexican,
     notLatino,
     notProvideEthnicity,
+    notProvideGender,
     notProvideRace,
     otherAsian,
     otherAsianText,
@@ -284,7 +292,11 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
           white,
           notProvideRace,
         },
-        gender,
+        gender: male
+          ? DashboardTaskGender.male
+          : female
+          ? DashboardTaskGender.female
+          : DashboardTaskGender.not_provide,
       },
     };
     try {
@@ -309,14 +321,15 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
     chinese,
     cuban,
     enqueueSnackbar,
+    female,
     filipino,
-    gender,
     hawaiian,
     isAsian,
     islander,
     japanese,
     korean,
     latino,
+    male,
     mexican,
     notLatino,
     notProvideEthnicity,
@@ -706,11 +719,33 @@ export const BridgePurchaseTaskDemographicsInformation: FC = observer(() => {
       </StyledFormItem>
 
       <StyledFormItem label={'What is your sex?'} sub>
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledSelectOption
-            onChange={(v) => setGender(v as string as DashboardTaskGender)}
-            options={OPTIONS_TASK_GENDER}
-            value={gender}
+        <Stack gap={3} maxWidth={600} width={'100%'}>
+          <StyledCheckbox
+            checked={male}
+            label={'Male'}
+            onChange={(e) => {
+              setFemale(false);
+              setNotProvideGender(false);
+              setMale(e.target.checked);
+            }}
+          />
+          <StyledCheckbox
+            checked={female}
+            label={'Female'}
+            onChange={(e) => {
+              setMale(false);
+              setNotProvideGender(false);
+              setFemale(e.target.checked);
+            }}
+          />
+          <StyledCheckbox
+            checked={notProvideGender}
+            label={'I do not wish to provide this information'}
+            onChange={(e) => {
+              setMale(false);
+              setFemale(false);
+              setNotProvideGender(e.target.checked);
+            }}
           />
         </Stack>
       </StyledFormItem>

@@ -18,7 +18,7 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
+export const FixRefinanceTaskDemographicsInformation: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
