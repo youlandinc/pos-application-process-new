@@ -1,4 +1,8 @@
-import { LoanTask, TaskFiles } from '@/types';
+import {
+  BridgeDashboardLoanTask,
+  FixDashboardLoanTask,
+  TaskFiles,
+} from '@/types';
 import { del, get, post, put } from '../axios';
 
 // payment
@@ -17,8 +21,12 @@ export const _fetchPaymentDetails = (paymentData: PostPayment) => {
   return post<SPaymentDetails>('/dashboard/pay/appraisal', paymentData);
 };
 
-export const _fetchLoanTask = (processId = '') => {
-  return get<LoanTask>(`/dashboard/loan/task/${processId}`);
+export const _fetchLoanTask = <
+  T extends BridgeDashboardLoanTask | FixDashboardLoanTask,
+>(
+  processId = '',
+) => {
+  return get<T>(`/dashboard/loan/task/${processId}`);
 };
 
 export const _fetchTaskFormInfo = (taskId: string) => {

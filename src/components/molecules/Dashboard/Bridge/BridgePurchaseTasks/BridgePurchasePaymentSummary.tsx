@@ -2,11 +2,11 @@ import { FC } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { POSFormatDollar, POSFormatLocalPercent } from '@/utils';
-import { BridgePurchaseRatesLoanInfo, RatesProductData } from '@/types';
+import { BPRatesLoanInfo, RatesProductData } from '@/types';
 
 interface BridgePurchasePaymentSummaryProps {
   productInfo:
-    | (BridgePurchaseRatesLoanInfo &
+    | (BPRatesLoanInfo &
         Pick<
           RatesProductData,
           'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm'
@@ -22,7 +22,6 @@ export const BridgePurchasePaymentSummary: FC<
     loanTerm: undefined,
     purchasePrice: undefined,
     purchaseLoanAmount: undefined,
-    cor: undefined,
     paymentOfMonth: undefined,
   },
 }) => {
@@ -76,19 +75,6 @@ export const BridgePurchasePaymentSummary: FC<
           <Typography variant={'body1'}>Purchase Loan Amount</Typography>
           <Typography variant={'subtitle1'}>
             {POSFormatDollar(productInfo?.purchaseLoanAmount)}
-          </Typography>
-        </Stack>
-
-        <Stack
-          alignItems={'center'}
-          flex={1}
-          flexDirection={'row'}
-          justifyContent={'space-between'}
-          py={1.5}
-        >
-          <Typography variant={'body1'}>Rehab Loan Amount</Typography>
-          <Typography variant={'subtitle1'}>
-            {POSFormatDollar(productInfo?.cor)}
           </Typography>
         </Stack>
 

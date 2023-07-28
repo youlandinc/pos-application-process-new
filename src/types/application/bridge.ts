@@ -1,6 +1,7 @@
+import { DashboardTaskInfo } from '@/types';
 import {
-  BridgePropertyNumberOpt,
   ChannelOpt,
+  PropertyNumberOpt,
   PropertyOpt,
   PropertyUnitOpt,
 } from '@/types/options';
@@ -25,7 +26,7 @@ export interface BridgeApplicationProcessSnapshot {
 }
 
 export interface BridgeStartingData {
-  propertyNumber: BridgePropertyNumberOpt;
+  propertyNumber: PropertyNumberOpt;
   isConfirm: boolean | undefined;
   propertyType: PropertyOpt;
   propertyUnit: PropertyUnitOpt;
@@ -40,12 +41,9 @@ export interface BridgeCoBorrowerCondition {
   isCoBorrower: boolean | undefined;
 }
 
-export interface BridgePurchaseEstimateRateData {
+export interface BPEstimateRateData {
   purchasePrice: number | undefined;
   purchaseLoanAmount: number | undefined;
-  isCor: boolean | undefined;
-  cor: number | undefined;
-  arv: number | undefined;
   brokerPoints?: number | undefined;
   brokerProcessingFee?: number | undefined;
   lenderPoints?: number | undefined;
@@ -55,14 +53,11 @@ export interface BridgePurchaseEstimateRateData {
   agentFee?: number | undefined;
 }
 
-export interface BridgeRefinanceEstimateRateData {
+export interface BREstimateRateData {
   homeValue: number | undefined;
   balance: number | undefined;
   isCashOut: boolean;
   cashOutAmount: number | undefined;
-  isCor: boolean;
-  cor: number | undefined;
-  arv: number | undefined;
   brokerPoints?: number | undefined;
   brokerProcessingFee?: number | undefined;
   lenderPoints?: number | undefined;
@@ -72,53 +67,48 @@ export interface BridgeRefinanceEstimateRateData {
   agentFee?: number | undefined;
 }
 
-interface TaskInfo {
-  taskId: string;
-  taskName: string;
-  taskForm: null;
-  finished: boolean;
-}
+export type BPDashboardTaskKey =
+  | 'BP_APPLICATION_LOAN'
+  | 'BP_APPLICATION_PROPERTY'
+  | 'BP_APPLICATION_INVESTMENT'
+  | 'BP_BORROWER_PERSONAL'
+  | 'BP_BORROWER_DEMOGRAPHICS'
+  | 'BP_BORROWER_CO_BORROWER'
+  | 'BP_BORROWER_GUARANTOR'
+  | 'BP_APPRAISAL_PROPERTY_DETAILS'
+  | 'BP_THIRD_CLOSING'
+  | 'BP_THIRD_INSURANCE'
+  | 'BP_DOCUMENTS_CONTRACT'
+  | 'BP_DOCUMENTS_PICTURES'
+  | 'BP_DOCUMENTS_REVIEW'
+  | 'BP_DOCUMENTS_DOCUMENTS'
+  | 'BP_APPRAISAL_COST';
 
-export interface BridgePurchaseTasks {
-  BP_APPLICATION_LOAN: TaskInfo;
-  BP_APPRAISAL_PROPERTY_DETAILS: TaskInfo;
-  BP_BORROWER_GUARANTOR: TaskInfo;
-  BP_BORROWER_PERSONAL: TaskInfo;
-  BP_APPRAISAL_COST: TaskInfo;
-  BP_BORROWER_DEMOGRAPHICS: TaskInfo;
-  BP_BORROWER_CO_BORROWER: TaskInfo;
-  BP_APPLICATION_PROPERTY: TaskInfo;
-  BP_AUTOPAY_ACH: TaskInfo;
-  BP_THIRD_CLOSING: TaskInfo;
-  BP_THIRD_INSURANCE: TaskInfo;
-  BP_DOCUMENTS_DOCUMENTS: TaskInfo;
-  BP_DOCUMENTS_CONTRACT: TaskInfo;
-  BP_DOCUMENTS_REVIEW: TaskInfo;
-  BP_DOCUMENTS_PICTURES: TaskInfo;
-  BP_APPLICATION_INVESTMENT: TaskInfo;
-}
+export type BRDashboardTaskKey =
+  | 'BR_APPLICATION_LOAN'
+  | 'BR_APPLICATION_PROPERTY'
+  | 'BR_APPLICATION_INVESTMENT'
+  | 'BR_BORROWER_PERSONAL'
+  | 'BR_BORROWER_DEMOGRAPHICS'
+  | 'BR_BORROWER_CO_BORROWER'
+  | 'BR_BORROWER_GUARANTOR'
+  | 'BR_APPRAISAL_PROPERTY_DETAILS'
+  | 'BR_THIRD_CLOSING'
+  | 'BR_THIRD_INSURANCE'
+  | 'BR_DOCUMENTS_CONTRACT'
+  | 'BR_DOCUMENTS_PICTURES'
+  | 'BR_DOCUMENTS_REVIEW'
+  | 'BR_DOCUMENTS_DOCUMENTS'
+  | 'BR_APPRAISAL_COST';
 
-export interface BridgeRefinanceTasks {
-  BR_APPLICATION_LOAN: TaskInfo;
-  BR_APPRAISAL_PROPERTY_DETAILS: TaskInfo;
-  BR_BORROWER_GUARANTOR: TaskInfo;
-  BR_BORROWER_PERSONAL: TaskInfo;
-  BR_APPRAISAL_COST: TaskInfo;
-  BR_BORROWER_DEMOGRAPHICS: TaskInfo;
-  BR_BORROWER_CO_BORROWER: TaskInfo;
-  BR_APPLICATION_PROPERTY: TaskInfo;
-  BR_AUTOPAY_ACH: TaskInfo;
-  BR_THIRD_CLOSING: TaskInfo;
-  BR_THIRD_INSURANCE: TaskInfo;
-  BR_DOCUMENTS_DOCUMENTS: TaskInfo;
-  BR_DOCUMENTS_CONTRACT: TaskInfo;
-  BR_DOCUMENTS_REVIEW: TaskInfo;
-  BR_DOCUMENTS_PICTURES: TaskInfo;
-  BR_APPLICATION_INVESTMENT: TaskInfo;
-}
+export type BridgeDashboardTaskMap<
+  T extends BPDashboardTaskKey | BRDashboardTaskKey,
+> = Record<T, DashboardTaskInfo>;
 
-export interface LoanTask {
+export interface BridgeDashboardLoanTask {
   processId: string;
   stage: string;
-  tasks: BridgePurchaseTasks & BridgeRefinanceTasks;
+  tasks: BridgeDashboardTaskMap<BPDashboardTaskKey & BRDashboardTaskKey>;
+  totalNum: number;
+  finishedNum: number;
 }

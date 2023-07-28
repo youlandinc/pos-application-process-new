@@ -79,7 +79,7 @@ export const MortgageRefinanceMonthlyPayment = types
     },
     injectServerData(value: MRMonthlyPaymentData) {
       const { hasMonthlyPayment, aboutYourLoans } = value;
-      const temp = [];
+      const temp: any[] = [];
       self.hasMonthlyPayment = hasMonthlyPayment;
       Object.keys(aboutYourLoans).forEach((key) => {
         temp.push(aboutYourLoans[key]);
@@ -88,7 +88,7 @@ export const MortgageRefinanceMonthlyPayment = types
     },
     getPostData(): Variable<MRMonthlyPaymentData> {
       const { hasMonthlyPayment } = self;
-      const aboutYourLoans = {};
+      const aboutYourLoans: any = {};
       const temp = self.aboutYourLoans;
       temp.forEach((item, idx) => {
         aboutYourLoans[idx] = { ...getSnapshot(item) };

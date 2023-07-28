@@ -2,10 +2,14 @@ import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import {
   BridgePurchase,
   BridgeRefinance,
+  FixPurchase,
+  FixRefinance,
   MortgagePurchase,
   MortgageRefinance,
   SBridgePurchase,
   SBridgeRefinance,
+  SFixPurchase,
+  SFixRefinance,
   SMortgagePurchase,
   SMortgageRefinance,
 } from '@/models/application/base';
@@ -15,9 +19,11 @@ const Union = types.union({
   dispatcher: (
     snapshot:
       | SMortgagePurchase
-      | SBridgePurchase
       | SMortgageRefinance
+      | SBridgePurchase
       | SBridgeRefinance
+      | SFixPurchase
+      | SFixRefinance
       | undefined,
   ) => {
     if (!snapshot) {
@@ -35,6 +41,17 @@ const Union = types.union({
 
       case 'BridgeRefinance':
         return BridgeRefinance;
+
+      case 'FixAndFlipPurchase':
+        return FixPurchase;
+
+      case 'FixAndFlipRefinance':
+        return FixRefinance;
+
+      //case 'GroundPurchase':
+      //  return GroundPurchase;
+      //case 'GroundRefinance':
+      //  return GroundRefinance;
       default:
         return types.undefined;
     }

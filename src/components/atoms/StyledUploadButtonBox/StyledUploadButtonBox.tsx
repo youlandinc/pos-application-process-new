@@ -118,7 +118,12 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
   return (
     <Box sx={StyledUploadButtonBoxStyles}>
       <Box className={'uploadBox'}>
-        <Typography variant={'h4'}>{label}</Typography>
+        <Typography
+          sx={{ textAlign: { xs: 'center', md: 'left' } }}
+          variant={'h4'}
+        >
+          {label}
+        </Typography>
         <StyledButton
           color={'inherit'}
           component={'label'}

@@ -31,20 +31,16 @@ export const BridgeCelebrate: FC<{ nextStep: () => void }> = observer(
     const loanAmount = useMemo(() => {
       let total = 0;
       if (applicationType === 'refinance') {
-        const { isCor, balance, cor, isCashOut, cashOutAmount } = estimateRate;
-        total += balance;
-        if (isCor) {
-          total += cor;
-        }
+        const { balance, cor, isCashOut, cashOutAmount } = estimateRate;
+        total += balance || 0;
+        total += cor || 0;
         if (isCashOut) {
-          total += cashOutAmount;
+          total += cashOutAmount || 0;
         }
       } else {
-        const { isCor, purchaseLoanAmount, cor } = estimateRate;
-        total += purchaseLoanAmount;
-        if (isCor) {
-          total += cor;
-        }
+        const { purchaseLoanAmount, cor } = estimateRate;
+        total += purchaseLoanAmount || 0;
+        total += cor || 0;
       }
       return total;
     }, [applicationType, estimateRate]);

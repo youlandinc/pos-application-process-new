@@ -15,7 +15,7 @@ import {
   SPaymentDetails,
 } from '@/requests/dashboard';
 import {
-  BridgeRefinanceRatesLoanInfo,
+  BRRatesLoanInfo,
   DashboardTaskPaymentMethodsStatus,
   DashboardTaskPaymentTableStatus,
   RatesProductData,
@@ -108,7 +108,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
   const [clickable, setClickable] = useState<boolean>(true);
 
   const [productInfo, setProductInfo] = useState<
-    BridgeRefinanceRatesLoanInfo &
+    BRRatesLoanInfo &
       Pick<
         RatesProductData,
         'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm'

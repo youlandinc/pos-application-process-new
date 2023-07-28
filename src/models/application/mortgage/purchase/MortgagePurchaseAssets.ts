@@ -229,7 +229,7 @@ export const MortgagePurchaseAssets = types
       },
       getPostData(): Variable<MortgagePropertyOwnData> {
         const realEstateList = self.realEstateList;
-        const assets = {};
+        const assets: any = {};
         realEstateList.forEach((realEstate, idx) => {
           assets[idx] = { ...this.genPrueData(realEstate) };
         });
@@ -259,7 +259,7 @@ export const MortgagePurchaseAssets = types
       },
       removeCurrentEstateFromList() {
         const { realEstateList } = self;
-        const temp = [];
+        const temp: any[] = [];
         realEstateList.forEach((item) => {
           if (!item.isCurrentEstate) {
             temp.push(this.parsePostDataToLocal(this.genPrueData(item)));
@@ -282,7 +282,7 @@ export const MortgagePurchaseAssets = types
           propertyPurpose,
           interestedRefinancing,
         } = estate;
-        const temp = {};
+        const temp: any = {};
         payments.forEach((loan, loanIdx) => {
           const { caption, balance, payment, isPrimary, includedTaxAndIns } =
             loan;
@@ -316,7 +316,7 @@ export const MortgagePurchaseAssets = types
           changeResidence,
         };
       },
-      parsePostDataToLocal(AssetsData): SMPRealEstate {
+      parsePostDataToLocal(AssetsData: any): SMPRealEstate {
         const {
           isCurrentEstate,
           propAddr: { address, aptNumber, state, city, postcode },
@@ -340,7 +340,7 @@ export const MortgagePurchaseAssets = types
             state,
             postcode,
             street: '',
-            errors: undefined,
+            errors: {},
             isValid: true,
           },
           propertyPurpose,

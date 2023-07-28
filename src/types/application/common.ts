@@ -1,4 +1,4 @@
-import { AddressData } from '@/types';
+import { AddressData, CommonBorrowerType } from '@/types';
 import { DenialReason } from '@/types/options';
 
 export interface BorrowerData {
@@ -20,6 +20,7 @@ export interface SelfInfoData {
   propAddr: AddressData;
   authorizedCreditCheck: boolean;
   email: string;
+  citizenship: CommonBorrowerType | undefined;
 }
 
 export interface SalaryIncomeData {

@@ -1,4 +1,9 @@
-type ProductCategory = 'mortgage' | 'bridge' | undefined;
+type ProductCategory =
+  | 'mortgage'
+  | 'bridge'
+  | 'fix_and_flip'
+  | 'ground_up_construction'
+  | undefined;
 // | 'mortgageAlter'
 // | 'rental'
 // | 'jumbo';

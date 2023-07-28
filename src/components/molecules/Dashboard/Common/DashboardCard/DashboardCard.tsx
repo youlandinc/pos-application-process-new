@@ -15,7 +15,7 @@ interface DashboardCardProps extends StackProps {
   dataList?: { label: string; info: string | ReactNode }[];
 }
 
-export interface BridgeOverviewInfo {
+export interface CommonOverviewInfo {
   title?: string;
   subTitle?: string;
   subInfo?: string;

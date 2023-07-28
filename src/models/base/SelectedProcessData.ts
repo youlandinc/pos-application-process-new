@@ -1,11 +1,11 @@
+import { POSFindSpecificVariable } from '@/utils';
 import { flow, Instance, types } from 'mobx-state-tree';
 import { AxiosResponse } from 'axios';
 import { enqueueSnackbar } from 'notistack';
 
-import { LoanStage, ProcessData, SceneType } from '@/types';
+import { LoanStage, ProcessData, SceneType, VariableName } from '@/types';
 import { _fetchProcessData } from '@/requests';
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { ParseProcess } from '@/services/ParseProcess';
 
 export const SelectedProcessData = types
   .model({
@@ -18,6 +18,10 @@ export const SelectedProcessData = types
       types.literal(SceneType.mortgage_refinance),
       types.literal(SceneType.bridge_purchase),
       types.literal(SceneType.bridge_refinance),
+      types.literal(SceneType.fix_purchase),
+      types.literal(SceneType.fix_refinance),
+      types.literal(SceneType.ground_purchase),
+      types.literal(SceneType.ground_refinance),
     ),
 
     loanStage: types.union(
@@ -51,16 +55,25 @@ export const SelectedProcessData = types
 
         self.loading = false;
         self.setProcessData(res.data);
-        self.setScene(
-          new ParseProcess(res.data).productType as string as SceneType,
+        const clientAppProgressData = POSFindSpecificVariable(
+          VariableName.clientAppProgress,
+          res.data.extra.variables,
         );
+        if (!clientAppProgressData) {
+          return;
+        }
+        const {
+          value: { productCategory, applicationType },
+        } = clientAppProgressData;
+        self.setScene(`${productCategory} ${applicationType}` as SceneType);
         self.setLoanStage(res.data.stage as string as LoanStage);
       } catch (e) {
-        self.loading = false;
         enqueueSnackbar(e as string, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
         });
+      } finally {
+        self.loading = false;
       }
     });
     return {

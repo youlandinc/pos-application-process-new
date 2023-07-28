@@ -4,7 +4,7 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { BridgePropertyNumberOpt } from '@/types';
+import { PropertyNumberOpt } from '@/types';
 import { IBridgePurpose } from '@/models/application/bridge';
 import {
   StyledFormItem,
@@ -46,7 +46,7 @@ export const BridgePurpose: FC<BridgePurposeProps> = observer((props) => {
             onChange={(value) => {
               purpose.changeFieldValue(
                 'propertyNumber',
-                value as BridgePropertyNumberOpt,
+                value as PropertyNumberOpt,
               );
             }}
             options={OPTIONS_BRIDGE_PROPERTY_NUMBER}

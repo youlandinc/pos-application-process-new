@@ -5,6 +5,10 @@ export enum SceneType {
   mortgage_refinance = 'mortgage refinance',
   bridge_purchase = 'bridge purchase',
   bridge_refinance = 'bridge refinance',
+  fix_purchase = 'fix_and_flip purchase',
+  fix_refinance = 'fix_and_flip refinance',
+  ground_purchase = 'ground_up_construction purchase',
+  ground_refinance = 'ground_up_construction refinance',
 }
 
 export enum ServerTaskKey {
@@ -207,7 +211,63 @@ export enum BridgeRefinanceState {
   refuse = 'refuse',
 }
 
+// fix and flip
+export enum FixAndFlipPurchaseState {
+  starting = 'starting',
+  creditScore = 'creditScore',
+  auth = 'auth',
+  whereKnowUs = 'whereKnowUs',
+  estimateRate = 'estimateRate',
+  celebrate = 'celebrate',
+  refuse = 'refuse',
+}
+
+export enum FixAndFlipRefinanceState {
+  starting = 'starting',
+  creditScore = 'creditScore',
+  auth = 'auth',
+  whereKnowUs = 'whereKnowUs',
+  estimateRate = 'estimateRate',
+  celebrate = 'celebrate',
+  refuse = 'refuse',
+}
+
+// ground up
+export enum GroundUpConstructionPurchaseState {
+  starting = 'starting',
+  creditScore = 'creditScore',
+  auth = 'auth',
+  whereKnowUs = 'whereKnowUs',
+  estimateRate = 'estimateRate',
+  celebrate = 'celebrate',
+  refuse = 'refuse',
+}
+
+export enum GroundUpConstructionRefinanceState {
+  starting = 'starting',
+  creditScore = 'creditScore',
+  auth = 'auth',
+  whereKnowUs = 'whereKnowUs',
+  estimateRate = 'estimateRate',
+  celebrate = 'celebrate',
+  refuse = 'refuse',
+}
+
 export enum BridgeCreditScoreState {
+  notice = 'notice',
+  selfInfo = 'selfInfo',
+  creditScore = 'creditScore',
+  coBorrowerInfo = 'coBorrowerInfo',
+}
+
+export enum FixAndFlipCreditScoreState {
+  notice = 'notice',
+  selfInfo = 'selfInfo',
+  creditScore = 'creditScore',
+  coBorrowerInfo = 'coBorrowerInfo',
+}
+
+export enum GroundUpConstructionCreditScoreState {
   notice = 'notice',
   selfInfo = 'selfInfo',
   creditScore = 'creditScore',
