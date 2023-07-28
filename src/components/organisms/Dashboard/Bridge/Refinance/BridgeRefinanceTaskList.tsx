@@ -12,7 +12,13 @@ import { useBreakpoints } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFlex } from '@/styles';
 import { _fetchLoanTask } from '@/requests/dashboard';
-import { BridgeRefinanceTasks, LoanStage } from '@/types';
+import {
+  BRDashboardTaskKey,
+  BridgeDashboardLoanTask,
+  BridgeDashboardTaskMap,
+  DashboardTaskList,
+  LoanStage,
+} from '@/types';
 
 import {
   StyledLoading,
@@ -21,38 +27,7 @@ import {
 } from '@/components/atoms';
 import { DashboardHeader } from '@/components/molecules';
 
-type BridgeRefinanceTaskCode =
-  | 'BR_APPLICATION_LOAN'
-  | 'BR_APPLICATION_PROPERTY'
-  | 'BR_APPLICATION_INVESTMENT'
-  | 'BR_BORROWER_PERSONAL'
-  | 'BR_BORROWER_DEMOGRAPHICS'
-  | 'BR_BORROWER_CO_BORROWER'
-  | 'BR_BORROWER_GUARANTOR'
-  | 'BR_APPRAISAL_PROPERTY_DETAILS'
-  | 'BR_THIRD_CLOSING'
-  | 'BR_THIRD_INSURANCE'
-  | 'BR_DOCUMENTS_CONTRACT'
-  | 'BR_DOCUMENTS_PICTURES'
-  | 'BR_DOCUMENTS_REVIEW'
-  | 'BR_DOCUMENTS_DOCUMENTS'
-  | 'BR_APPRAISAL_COST';
-
-interface TaskItem {
-  title: string;
-  children: Array<{ code: BridgeRefinanceTaskCode; url: string }>;
-}
-
-interface taskObj {
-  ApplicationInformation: TaskItem;
-  BorrowerInformation: TaskItem;
-  PropertyAppraisal: TaskItem;
-  ThirdPartyInformation: TaskItem;
-  DocumentsMaterials: TaskItem;
-  // SetUpAutoPay: TaskItem;
-}
-
-const taskObj: taskObj = {
+const BridgeRefinanceDashboardTaskMap: DashboardTaskList<BRDashboardTaskKey> = {
   ApplicationInformation: {
     title: 'Application Information',
     children: [
@@ -159,7 +134,8 @@ export const BridgeRefinanceTaskList: FC = observer(() => {
 
   const breakpoints = useBreakpoints();
 
-  const [taskDetails, setTaskDetails] = useSetState<BridgeRefinanceTasks>();
+  const [taskDetails, setTaskDetails] =
+    useSetState<BridgeDashboardTaskMap<BRDashboardTaskKey>>();
 
   const [total, setTotal] = useState(9);
   const [current, setCurrent] = useState(0);
@@ -168,7 +144,9 @@ export const BridgeRefinanceTaskList: FC = observer(() => {
     if (!router.query.processId) {
       return;
     }
-    return await _fetchLoanTask(router.query.processId as string)
+    return await _fetchLoanTask<BridgeDashboardLoanTask>(
+      router.query.processId as string,
+    )
       .then((res) => {
         const { totalNum, finishedNum } = res.data;
         setTaskDetails(res?.data?.tasks);
@@ -196,205 +174,223 @@ export const BridgeRefinanceTaskList: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
-              {taskObj.ApplicationInformation.title}
+              {BridgeRefinanceDashboardTaskMap.ApplicationInformation.title}
             </Typography>
           </Box>
 
-          {taskObj.ApplicationInformation.children.map((sonItem) => (
-            <Box
-              key={sonItem.code}
-              onClick={() =>
-                router.push({
-                  pathname: sonItem.url,
-                  query: {
-                    ...router.query,
-                    taskId: taskDetails[sonItem.code]?.taskId,
-                  },
-                })
-              }
-              px={{ md: 3, xs: 0 }}
-            >
-              <Typography
-                variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'}
+          {BridgeRefinanceDashboardTaskMap.ApplicationInformation.children.map(
+            (sonItem) => (
+              <Box
+                key={sonItem.code}
+                onClick={() =>
+                  router.push({
+                    pathname: sonItem.url,
+                    query: {
+                      ...router.query,
+                      taskId: taskDetails[sonItem.code]?.taskId,
+                    },
+                  })
+                }
+                px={{ md: 3, xs: 0 }}
               >
-                {taskDetails[sonItem.code]?.taskName}
-              </Typography>
-              {taskDetails[sonItem.code]?.finished && (
-                <CheckCircle
-                  className={
-                    taskDetails[sonItem.code]?.finished ? 'Finish' : ''
+                <Typography
+                  variant={
+                    ['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'
                   }
-                />
-              )}
-            </Box>
-          ))}
-        </Box>
-
-        <Box className={'card_box'}>
-          <Box>
-            <Typography
-              variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
-            >
-              {taskObj.BorrowerInformation.title}
-            </Typography>
-          </Box>
-          {taskObj.BorrowerInformation.children.map((sonItem) => (
-            <Box
-              key={sonItem.code}
-              onClick={() =>
-                router.push({
-                  pathname: sonItem.url,
-                  query: {
-                    ...router.query,
-                    taskId: taskDetails[sonItem.code]?.taskId,
-                  },
-                })
-              }
-              px={{ md: 3, xs: 0 }}
-            >
-              <Typography
-                variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'}
-              >
-                {taskDetails[sonItem.code]?.taskName}
-              </Typography>
-              {taskDetails[sonItem.code]?.finished && (
-                <CheckCircle
-                  className={
-                    taskDetails[sonItem.code]?.finished ? 'Finish' : ''
-                  }
-                />
-              )}
-            </Box>
-          ))}
-        </Box>
-
-        <Box className={'card_box'}>
-          <Box>
-            <Typography
-              variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
-            >
-              {taskObj.PropertyAppraisal.title}
-            </Typography>
-          </Box>
-          {taskObj.PropertyAppraisal.children.map((sonItem) => (
-            <Box
-              key={sonItem.code}
-              onClick={() =>
-                router.push({
-                  pathname: sonItem.url,
-                  query: {
-                    ...router.query,
-                    taskId: taskDetails[sonItem.code]?.taskId,
-                  },
-                })
-              }
-              px={{ md: 3, xs: 0 }}
-            >
-              <Typography
-                variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'}
-              >
-                {taskDetails[sonItem.code]?.taskName}
-              </Typography>
-              {taskDetails[sonItem.code]?.finished && (
-                <CheckCircle
-                  className={
-                    taskDetails[sonItem.code]?.finished ? 'Finish' : ''
-                  }
-                />
-              )}
-            </Box>
-          ))}
-        </Box>
-
-        <Box className={'card_box'}>
-          <Box>
-            <Typography
-              variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
-            >
-              {taskObj.ThirdPartyInformation.title}
-            </Typography>
-          </Box>
-          {taskObj.ThirdPartyInformation.children.map((sonItem) => (
-            <Box
-              key={sonItem.code}
-              onClick={() =>
-                router.push({
-                  pathname: sonItem.url,
-                  query: {
-                    ...router.query,
-                    taskId: taskDetails[sonItem.code]?.taskId,
-                  },
-                })
-              }
-              px={{ md: 3, xs: 0 }}
-            >
-              <Typography
-                variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'}
-              >
-                {taskDetails[sonItem.code]?.taskName}
-              </Typography>
-              {taskDetails[sonItem.code]?.finished && (
-                <CheckCircle
-                  className={
-                    taskDetails[sonItem.code]?.finished ? 'Finish' : ''
-                  }
-                />
-              )}
-            </Box>
-          ))}
-        </Box>
-
-        <Box className={'card_box'}>
-          <Box>
-            <Typography
-              variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
-            >
-              {taskObj.DocumentsMaterials.title}
-            </Typography>
-          </Box>
-          {taskObj.DocumentsMaterials.children.map((sonItem) => {
-            if (taskDetails[sonItem.code]) {
-              return (
-                <Box
-                  key={sonItem.code}
-                  onClick={() =>
-                    router.push({
-                      pathname: sonItem.url,
-                      query: {
-                        ...router.query,
-                        taskId: taskDetails[sonItem.code].taskId,
-                      },
-                    })
-                  }
-                  px={{ md: 3, xs: 0 }}
                 >
-                  <Typography
-                    variant={
-                      ['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'
+                  {taskDetails[sonItem.code]?.taskName}
+                </Typography>
+                {taskDetails[sonItem.code]?.finished && (
+                  <CheckCircle
+                    className={
+                      taskDetails[sonItem.code]?.finished ? 'Finish' : ''
                     }
+                  />
+                )}
+              </Box>
+            ),
+          )}
+        </Box>
+
+        <Box className={'card_box'}>
+          <Box>
+            <Typography
+              variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
+            >
+              {BridgeRefinanceDashboardTaskMap.BorrowerInformation.title}
+            </Typography>
+          </Box>
+          {BridgeRefinanceDashboardTaskMap.BorrowerInformation.children.map(
+            (sonItem) => (
+              <Box
+                key={sonItem.code}
+                onClick={() =>
+                  router.push({
+                    pathname: sonItem.url,
+                    query: {
+                      ...router.query,
+                      taskId: taskDetails[sonItem.code]?.taskId,
+                    },
+                  })
+                }
+                px={{ md: 3, xs: 0 }}
+              >
+                <Typography
+                  variant={
+                    ['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'
+                  }
+                >
+                  {taskDetails[sonItem.code]?.taskName}
+                </Typography>
+                {taskDetails[sonItem.code]?.finished && (
+                  <CheckCircle
+                    className={
+                      taskDetails[sonItem.code]?.finished ? 'Finish' : ''
+                    }
+                  />
+                )}
+              </Box>
+            ),
+          )}
+        </Box>
+
+        <Box className={'card_box'}>
+          <Box>
+            <Typography
+              variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
+            >
+              {BridgeRefinanceDashboardTaskMap.PropertyAppraisal.title}
+            </Typography>
+          </Box>
+          {BridgeRefinanceDashboardTaskMap.PropertyAppraisal.children.map(
+            (sonItem) => (
+              <Box
+                key={sonItem.code}
+                onClick={() =>
+                  router.push({
+                    pathname: sonItem.url,
+                    query: {
+                      ...router.query,
+                      taskId: taskDetails[sonItem.code]?.taskId,
+                    },
+                  })
+                }
+                px={{ md: 3, xs: 0 }}
+              >
+                <Typography
+                  variant={
+                    ['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'
+                  }
+                >
+                  {taskDetails[sonItem.code]?.taskName}
+                </Typography>
+                {taskDetails[sonItem.code]?.finished && (
+                  <CheckCircle
+                    className={
+                      taskDetails[sonItem.code]?.finished ? 'Finish' : ''
+                    }
+                  />
+                )}
+              </Box>
+            ),
+          )}
+        </Box>
+
+        <Box className={'card_box'}>
+          <Box>
+            <Typography
+              variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
+            >
+              {BridgeRefinanceDashboardTaskMap.ThirdPartyInformation.title}
+            </Typography>
+          </Box>
+          {BridgeRefinanceDashboardTaskMap.ThirdPartyInformation.children.map(
+            (sonItem) => (
+              <Box
+                key={sonItem.code}
+                onClick={() =>
+                  router.push({
+                    pathname: sonItem.url,
+                    query: {
+                      ...router.query,
+                      taskId: taskDetails[sonItem.code]?.taskId,
+                    },
+                  })
+                }
+                px={{ md: 3, xs: 0 }}
+              >
+                <Typography
+                  variant={
+                    ['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'
+                  }
+                >
+                  {taskDetails[sonItem.code]?.taskName}
+                </Typography>
+                {taskDetails[sonItem.code]?.finished && (
+                  <CheckCircle
+                    className={
+                      taskDetails[sonItem.code]?.finished ? 'Finish' : ''
+                    }
+                  />
+                )}
+              </Box>
+            ),
+          )}
+        </Box>
+
+        <Box className={'card_box'}>
+          <Box>
+            <Typography
+              variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
+            >
+              {BridgeRefinanceDashboardTaskMap.DocumentsMaterials.title}
+            </Typography>
+          </Box>
+          {BridgeRefinanceDashboardTaskMap.DocumentsMaterials.children.map(
+            (sonItem) => {
+              if (taskDetails[sonItem.code]) {
+                return (
+                  <Box
+                    key={sonItem.code}
+                    onClick={() =>
+                      router.push({
+                        pathname: sonItem.url,
+                        query: {
+                          ...router.query,
+                          taskId: taskDetails[sonItem.code].taskId,
+                        },
+                      })
+                    }
+                    px={{ md: 3, xs: 0 }}
                   >
-                    {taskDetails[sonItem.code]?.taskName}
-                  </Typography>
-                  {taskDetails[sonItem.code]?.taskName === 'Documents' &&
-                    !taskDetails[sonItem.code]?.finished && (
-                      <StyledProgressBlock
-                        current={
-                          taskDetails[sonItem.code]?.uploadedNum as number
+                    <Typography
+                      variant={
+                        ['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'
+                      }
+                    >
+                      {taskDetails[sonItem.code]?.taskName}
+                    </Typography>
+                    {taskDetails[sonItem.code]?.taskName === 'Documents' &&
+                      !taskDetails[sonItem.code]?.finished && (
+                        <StyledProgressBlock
+                          current={
+                            taskDetails[sonItem.code]?.uploadedNum as number
+                          }
+                          total={taskDetails[sonItem.code]?.totalNum as number}
+                        />
+                      )}
+                    {taskDetails[sonItem.code]?.finished && (
+                      <CheckCircle
+                        className={
+                          taskDetails[sonItem.code]?.finished ? 'Finish' : ''
                         }
-                        total={taskDetails[sonItem.code]?.totalNum as number}
                       />
                     )}
-                  {taskDetails[sonItem.code]?.finished && (
-                    <CheckCircle
-                      className={
-                        taskDetails[sonItem.code]?.finished ? 'Finish' : ''
-                      }
-                    />
-                  )}
-                </Box>
-              );
-            }
-          })}
+                  </Box>
+                );
+              }
+            },
+          )}
         </Box>
       </>
     );
