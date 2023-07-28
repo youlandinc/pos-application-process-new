@@ -6,7 +6,7 @@ export * from './InvestmentExperiencePage';
 
 export * from './PersonalDetailsPage';
 export * from './DemographicsInformationPage';
-export * from './GuarantorPersonalPage';
+export * from './BorrowerTypePage';
 export * from './CoBorrowerDetailsPage';
 
 export * from './PaymentPage';

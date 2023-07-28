@@ -4,9 +4,13 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { SceneType } from '@/types';
+
 import {
   BridgePurchaseTaskPropertyDetails,
   BridgeRefinanceTaskPropertyDetails,
+  FixPurchaseTaskPropertyDetails,
+  FixRefinanceTaskPropertyDetails,
 } from '@/components/organisms';
 
 export const PropertyDetailsPage: FC = observer(() => {
@@ -16,17 +20,17 @@ export const PropertyDetailsPage: FC = observer(() => {
 
   const renderNode = useMemo(() => {
     switch (scene) {
-      //  case 'mortgage purchase': {
-      //    return <MortgagePurchaseTask />;
-      //  }
-      //  case 'mortgage refinance': {
-      //    return <MortgageRefinanceTask />;
-      //  }
-      case 'bridge purchase': {
+      case SceneType.bridge_purchase: {
         return <BridgePurchaseTaskPropertyDetails />;
       }
-      case 'bridge refinance': {
+      case SceneType.bridge_refinance: {
         return <BridgeRefinanceTaskPropertyDetails />;
+      }
+      case SceneType.fix_purchase: {
+        return <FixPurchaseTaskPropertyDetails />;
+      }
+      case SceneType.fix_refinance: {
+        return <FixRefinanceTaskPropertyDetails />;
       }
       default:
         return <BridgePurchaseTaskPropertyDetails />;

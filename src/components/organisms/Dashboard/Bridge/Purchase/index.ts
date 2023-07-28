@@ -10,7 +10,7 @@ export * from './BridgePurchaseTaskInvestmentExperience';
 
 export * from './BridgePurchaseTaskPersonalDetails';
 export * from './BridgePurchaseTaskDemographicsInformation';
-export * from './BridgePurchaseTaskGuarantorPersonal';
+export * from './BridgePurchaseTaskBorrowerType';
 export * from './BridgePurchaseTaskCoBorrowerDetails';
 
 export * from './BridgePurchaseTaskCompanyInformation';

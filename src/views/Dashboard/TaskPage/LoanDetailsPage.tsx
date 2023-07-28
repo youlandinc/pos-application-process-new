@@ -1,3 +1,4 @@
+import { SceneType } from '@/types';
 import { FC, useMemo } from 'react';
 import { Stack } from '@mui/material';
 
@@ -7,6 +8,8 @@ import { useMst } from '@/models/Root';
 import {
   BridgePurchaseTaskLoanDetails,
   BridgeRefinanceTaskLoanDetails,
+  FixPurchaseTaskLoanDetails,
+  FixRefinanceTaskLoanDetails,
 } from '@/components/organisms';
 
 export const LoanDetailsPage: FC = observer(() => {
@@ -16,17 +19,17 @@ export const LoanDetailsPage: FC = observer(() => {
 
   const renderNode = useMemo(() => {
     switch (scene) {
-      //  case 'mortgage purchase': {
-      //    return <MortgagePurchaseTask />;
-      //  }
-      //  case 'mortgage refinance': {
-      //    return <MortgageRefinanceTask />;
-      //  }
-      case 'bridge purchase': {
+      case SceneType.bridge_purchase: {
         return <BridgePurchaseTaskLoanDetails />;
       }
-      case 'bridge refinance': {
+      case SceneType.bridge_refinance: {
         return <BridgeRefinanceTaskLoanDetails />;
+      }
+      case SceneType.fix_purchase: {
+        return <FixPurchaseTaskLoanDetails />;
+      }
+      case SceneType.fix_refinance: {
+        return <FixRefinanceTaskLoanDetails />;
       }
       default:
         return <BridgePurchaseTaskLoanDetails />;

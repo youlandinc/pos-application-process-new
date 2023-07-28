@@ -6,17 +6,17 @@ import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
+import {
+  DashboardTaskBorrowerEntityType,
+  DashboardTaskBorrowerType,
+} from '@/types';
 import {
   AUTO_HIDE_DURATION,
   OPTIONS_COMMON_STATE,
   OPTIONS_TASK_BORROWER_TYPE,
   OPTIONS_TASK_ENTITY_TYPE,
 } from '@/constants';
-import {
-  DashboardTaskBorrowerEntityType,
-  DashboardTaskBorrowerType,
-} from '@/types';
-import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 
 import {
   StyledButton,
@@ -28,7 +28,7 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-export const BridgeRefinanceTaskGuarantorPersonal: FC = observer(() => {
+export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -37,12 +37,12 @@ export const BridgeRefinanceTaskGuarantorPersonal: FC = observer(() => {
   const [borrowerType, setBorrowerType] = useState<
     DashboardTaskBorrowerType | undefined
   >();
-  const [entityName, setEntityName] = useState<string>('');
-  const [signatoryTitle, setSignatoryTitle] = useState<string>('');
+  const [entityName, setEntityName] = useState<string | undefined>('');
+  const [signatoryTitle, setSignatoryTitle] = useState<string | undefined>('');
   const [entityType, setEntityType] = useState<
     DashboardTaskBorrowerEntityType | undefined
   >();
-  const [stateId, setStateId] = useState<string>('');
+  const [stateId, setStateId] = useState<string | undefined>('');
   const [entityState, setEntityState] = useState<string | undefined>();
 
   const { loading } = useAsync(async () => {
@@ -63,12 +63,13 @@ export const BridgeRefinanceTaskGuarantorPersonal: FC = observer(() => {
           signatoryTitle,
           stateId,
         } = res.data;
-        setBorrowerType(borrowerType);
-        setEntityType(entityType);
-        setEntityName(entityName);
-        setSignatoryTitle(signatoryTitle);
-        setEntityState(entityState);
-        setStateId(stateId);
+
+        setBorrowerType(borrowerType || undefined);
+        setEntityType(entityType || undefined);
+        setEntityName(entityName || undefined);
+        setSignatoryTitle(signatoryTitle || undefined);
+        setEntityState(entityState || undefined);
+        setStateId(stateId || undefined);
       })
       .catch((err) =>
         enqueueSnackbar(err as string, {

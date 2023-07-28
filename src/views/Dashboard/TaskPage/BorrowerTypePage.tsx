@@ -7,13 +7,13 @@ import { useMst } from '@/models/Root';
 import { SceneType } from '@/types';
 
 import {
-  BridgePurchaseTaskDemographicsInformation,
-  BridgeRefinanceTaskDemographicsInformation,
-  FixPurchaseTaskDemographicsInformation,
-  FixRefinanceTaskDemographicsInformation,
+  BridgePurchaseTaskBorrowerType,
+  BridgeRefinanceTaskBorrowerType,
+  FixPurchaseTaskBorrowerType,
+  FixRefinanceTaskBorrowerType,
 } from '@/components/organisms';
 
-export const DemographicsInformationPage: FC = observer(() => {
+export const BorrowerTypePage: FC = observer(() => {
   const {
     selectedProcessData: { scene },
   } = useMst();
@@ -21,19 +21,19 @@ export const DemographicsInformationPage: FC = observer(() => {
   const renderNode = useMemo(() => {
     switch (scene) {
       case SceneType.bridge_purchase: {
-        return <BridgePurchaseTaskDemographicsInformation />;
+        return <BridgePurchaseTaskBorrowerType />;
       }
       case SceneType.bridge_refinance: {
-        return <BridgeRefinanceTaskDemographicsInformation />;
+        return <BridgeRefinanceTaskBorrowerType />;
       }
       case SceneType.fix_purchase: {
-        return <FixPurchaseTaskDemographicsInformation />;
+        return <FixPurchaseTaskBorrowerType />;
       }
       case SceneType.fix_refinance: {
-        return <FixRefinanceTaskDemographicsInformation />;
+        return <FixRefinanceTaskBorrowerType />;
       }
       default:
-        return <BridgePurchaseTaskDemographicsInformation />;
+        return <BridgePurchaseTaskBorrowerType />;
     }
   }, [scene]);
 

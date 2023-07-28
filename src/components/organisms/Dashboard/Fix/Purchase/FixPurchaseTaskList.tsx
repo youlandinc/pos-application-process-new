@@ -58,7 +58,7 @@ const FixPurchaseDashboardTaskMap: DashboardTaskList<FPDashboardTaskKey> = {
       },
       {
         code: 'FP_BORROWER_GUARANTOR',
-        url: '/dashboard/tasks/guarantor_personal',
+        url: '/dashboard/tasks/borrower_type',
       },
       {
         code: 'FP_BORROWER_CO_BORROWER',
