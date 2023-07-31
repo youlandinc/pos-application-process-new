@@ -1,3 +1,4 @@
+import { SceneType } from '@/types';
 import { FC, useMemo } from 'react';
 import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
@@ -5,6 +6,8 @@ import { useMst } from '@/models/Root';
 import {
   BridgePurchaseTaskUploadPictures,
   BridgeRefinanceTaskUploadPictures,
+  FixPurchaseTaskUploadPictures,
+  FixRefinanceTaskUploadPictures,
 } from '@/components/organisms';
 
 export const UploadPicturesPage: FC = observer(() => {
@@ -14,17 +17,17 @@ export const UploadPicturesPage: FC = observer(() => {
 
   const renderNode = useMemo(() => {
     switch (scene) {
-      //  case 'mortgage purchase': {
-      //    return <MortgagePurchaseTask />;
-      //  }
-      //  case 'mortgage refinance': {
-      //    return <MortgageRefinanceTask />;
-      //  }
-      case 'bridge purchase': {
+      case SceneType.bridge_purchase: {
         return <BridgePurchaseTaskUploadPictures />;
       }
-      case 'bridge refinance': {
+      case SceneType.bridge_refinance: {
         return <BridgeRefinanceTaskUploadPictures />;
+      }
+      case SceneType.fix_purchase: {
+        return <FixPurchaseTaskUploadPictures />;
+      }
+      case SceneType.fix_refinance: {
+        return <FixRefinanceTaskUploadPictures />;
       }
       default:
         return <BridgePurchaseTaskUploadPictures />;

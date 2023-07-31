@@ -1,18 +1,3 @@
-import { ChangeEvent, FC, useCallback } from 'react';
-import { Stack, Typography } from '@mui/material';
-import { NumberFormatValues } from 'react-number-format';
-
-import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
-
-import { OPTIONS_COMMON_CITIZEN_TYPE } from '@/constants';
-import { useSessionStorageState } from '@/hooks';
-import { CommonBorrowerType } from '@/types';
-import {
-  IPersonalInfo,
-  SPersonalInfo,
-} from '@/models/application/common/CreditScore';
-
 import {
   StyledCheckbox,
   StyledDatePicker,
@@ -25,13 +10,28 @@ import {
   Transitions,
 } from '@/components/atoms';
 
+import { HASH_COMMON_PERSON, OPTIONS_COMMON_CITIZEN_TYPE } from '@/constants';
+import { useSessionStorageState } from '@/hooks';
+import {
+  IPersonalInfo,
+  SPersonalInfo,
+} from '@/models/application/common/CreditScore';
+import { useMst } from '@/models/Root';
+import { CommonBorrowerType, UserType } from '@/types';
+import { POSUpperFirstLetter } from '@/utils';
+import { Stack, Typography } from '@mui/material';
+
+import { observer } from 'mobx-react-lite';
+import { ChangeEvent, FC, useCallback } from 'react';
+import { NumberFormatValues } from 'react-number-format';
+
 // todo : saas
 export const BridgePersonInfo: FC = observer(() => {
   const {
     applicationForm: {
       formData: { creditScore },
     },
-    // userType,
+    userType,
   } = useMst();
   const { saasState } = useSessionStorageState('tenantConfig');
 
@@ -76,14 +76,21 @@ export const BridgePersonInfo: FC = observer(() => {
     <>
       <StyledFormItem
         gap={6}
-        label={'Tell us about yourself'}
+        label={`Tell us about ${
+          HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].third_subject
+        }`}
         labelSx={{ mb: 0 }}
-        tip={
-          'We will use this information to review your credit score and history so that we can provide you with real, accurate loan options.'
-        }
+        tip={`We will use this information to review ${
+          HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].pronoun
+        } credit score and history so that we can provide you with real, accurate loan options.`}
         tipSx={{ mb: 0 }}
       >
-        <StyledFormItem label={'What is your citizenship status?'} sub>
+        <StyledFormItem
+          label={`What is ${
+            HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].pronoun
+          }citizenship status?`}
+          sub
+        >
           <StyledSelectOption
             onChange={changeFieldValue('citizenship')}
             options={OPTIONS_COMMON_CITIZEN_TYPE}
@@ -93,8 +100,10 @@ export const BridgePersonInfo: FC = observer(() => {
         <StyledFormItem
           label={'Personal Information'}
           sub
-          tip={`By entering your phone number,  you're authorizing ${
-            //sass
+          // todo : person
+          tip={`By entering ${
+            HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].pronoun
+          } phone number,  you're authorizing ${
             ' ' + saasState?.organizationName || ' YouLand'
           } to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may.`}
         >
@@ -160,7 +169,12 @@ export const BridgePersonInfo: FC = observer(() => {
           }}
         >
           {selfInfo.citizenship !== CommonBorrowerType.foreign_national && (
-            <StyledFormItem label={'Your Social Security Number'} sub>
+            <StyledFormItem
+              label={`${POSUpperFirstLetter(
+                HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].third_pronoun,
+              )} Social Security Number`}
+              sub
+            >
               <Stack gap={3} maxWidth={600} width={'100%'}>
                 <StyledTextFieldSocialNumber
                   onValueChange={changeFieldValue('ssn')}

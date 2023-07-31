@@ -1,5 +1,38 @@
 import { CommonBorrowerType, UserType } from '@/types';
 
+export const HASH_COMMON_PERSON = {
+  [UserType.CUSTOMER]: {
+    subject: 'you',
+    pronoun: 'your',
+    third_subject: 'yourself',
+    third_pronoun: 'your',
+  },
+  [UserType.BROKER]: {
+    subject: 'the borrower',
+    pronoun: "borrower's",
+    third_subject: 'borrower',
+    third_pronoun: 'their',
+  },
+  [UserType.LENDER]: {
+    subject: 'the borrower',
+    pronoun: "borrower's",
+    third_subject: 'borrower',
+    third_pronoun: 'their',
+  },
+  [UserType.REAL_ESTATE_AGENT]: {
+    subject: 'the borrower',
+    pronoun: "borrower's",
+    third_subject: 'borrower',
+    third_pronoun: 'their',
+  },
+  [UserType.LOAN_OFFICER]: {
+    subject: 'the borrower',
+    pronoun: "borrower's",
+    third_subject: 'borrower',
+    third_pronoun: 'their',
+  },
+};
+
 export const OPTIONS_COMMON_CITIZEN_TYPE: Option[] = [
   {
     label: 'US Citizen',

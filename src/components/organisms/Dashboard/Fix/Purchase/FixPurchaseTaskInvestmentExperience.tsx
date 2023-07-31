@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo, useState } from 'react';
-import { Stack } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
@@ -7,63 +7,42 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 
 import { TaskFiles } from '@/types';
-import { Address, IAddress } from '@/models/common/Address';
-import { AUTO_HIDE_DURATION } from '@/constants';
 import {
   _deleteTaskFile,
   _fetchTaskFormInfo,
-  _skipLoanTask,
   _updateTaskFormInfo,
   _uploadTaskFile,
 } from '@/requests/dashboard';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 import {
   StyledButton,
   StyledFormItem,
-  StyledGoogleAutoComplete,
   StyledLoading,
-  StyledTextField,
-  StyledTextFieldPhone,
+  StyledTextFieldNumber,
   StyledUploadBox,
 } from '@/components/atoms';
+import { useSessionStorageState } from '@/hooks';
 
-export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
+export const FixPurchaseTaskInvestmentExperience: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-
-  const [saveLoading, setSaveLoading] = useState(false);
+  const { saasState } = useSessionStorageState('tenantConfig');
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState(false);
-  const [skipLoading, setSkipLoading] = useState(false);
 
-  const [address] = useState<IAddress>(
-    Address.create({
-      formatAddress: '',
-      state: '',
-      street: '',
-      city: '',
-      aptNumber: '',
-      postcode: '',
-      isValid: false,
-      errors: {},
-    }),
-  );
-
-  const [agentName, setAgentName] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
-
-  const [insuranceFiles, setInsuranceFiles] = useState<TaskFiles[]>([]);
+  const [propertiesNum, setPropertiesNum] = useState('');
+  const [investmentFiles, setInvestmentFiles] = useState<TaskFiles[]>([]);
 
   const handledDelete = async (index: number) => {
     try {
       await _deleteTaskFile(router.query.taskId as string, {
-        fieldName: 'insuranceFiles',
-        fileUrl: insuranceFiles[index]?.url,
+        fieldName: 'investmentFiles',
+        fileUrl: investmentFiles[index]?.url,
       });
-      const temp = JSON.parse(JSON.stringify(insuranceFiles));
+      const temp = JSON.parse(JSON.stringify(investmentFiles));
       temp.splice(index, 1);
-      setInsuranceFiles(temp);
+      setInvestmentFiles(temp);
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
@@ -77,7 +56,7 @@ export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
 
     const formData = new FormData();
 
-    formData.append('fieldName', 'insuranceFiles');
+    formData.append('fieldName', 'investmentFiles');
     Array.from(files, (item) => {
       formData.append('files', item);
     });
@@ -86,7 +65,7 @@ export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
         formData,
         router.query.taskId as string,
       );
-      setInsuranceFiles([...insuranceFiles, ...data]);
+      setInvestmentFiles([...investmentFiles, ...data]);
     } catch (err) {
       enqueueSnackbar(err as string, {
         variant: 'error',
@@ -107,25 +86,9 @@ export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
     }
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
-        const {
-          agentName,
-          companyName,
-          phoneNumber,
-          email,
-          propAddr,
-          insuranceFiles,
-        } = res.data;
-
-        setAgentName(agentName ?? '');
-        setCompanyName(companyName ?? '');
-        setPhoneNumber(phoneNumber ?? '');
-        setEmail(email ?? '');
-
-        setInsuranceFiles(insuranceFiles ?? []);
-
-        setTimeout(() => {
-          address.injectServerData(propAddr);
-        });
+        const { investmentFiles, propertiesNum } = res.data;
+        setInvestmentFiles(investmentFiles || []);
+        setPropertiesNum(propertiesNum || '');
       })
       .catch((err) =>
         enqueueSnackbar(err as string, {
@@ -140,19 +103,20 @@ export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
       );
   }, [router.query.taskId]);
 
+  const isDisabled = useMemo(() => {
+    return !!propertiesNum;
+  }, [propertiesNum]);
+
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
     const postData = {
       taskId: router.query.taskId as string,
       taskForm: {
-        agentName,
-        companyName,
-        phoneNumber,
-        email,
-        propAddr: address.getPostData(),
-        insuranceFiles,
+        propertiesNum,
+        investmentFiles,
       },
     };
+
     try {
       await _updateTaskFormInfo(postData);
       await router.push({
@@ -167,117 +131,108 @@ export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
     } finally {
       setSaveLoading(false);
     }
-  }, [
-    address,
-    agentName,
-    companyName,
-    email,
-    enqueueSnackbar,
-    insuranceFiles,
-    phoneNumber,
-    router,
-  ]);
-
-  const handledSkip = useCallback(async () => {
-    setSkipLoading(true);
-    try {
-      await _skipLoanTask(router.query.taskId as string);
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { processId: router.query.processId },
-      });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-      });
-    } finally {
-      setSkipLoading(false);
-    }
-  }, [enqueueSnackbar, router]);
-
-  const isDisabled = useMemo(() => {
-    return (
-      insuranceFiles.length > 0 &&
-      !!agentName &&
-      !!companyName &&
-      !!email &&
-      !!phoneNumber &&
-      address.checkAddressValid
-    );
-  }, [
-    address.checkAddressValid,
-    agentName,
-    companyName,
-    email,
-    insuranceFiles.length,
-    phoneNumber,
-  ]);
+  }, [enqueueSnackbar, investmentFiles, propertiesNum, router]);
 
   return loading ? (
     <StyledLoading sx={{ color: 'primary.main' }} />
   ) : (
     <StyledFormItem
       gap={6}
-      label={'Homeowner Insurance Policy(Optional)'}
+      label={'Real Estate Investment Experience'}
       tip={
-        'Homeowner insurance must comply with our Policy Guidelines and it is required to close your loan. Once you are covered, provide your insurance provider’s contact information. This allows us to speak directly with your provider on the details and get confirmation that your home is insured.'
+        'Please list your past experience with investment properties. These should be properties where you appear on title. These may be properties that you have exited or sold. Please keep in mind we will verify this experience during underwriting.'
       }
       tipSx={{ mb: 0 }}
     >
-      <StyledButton
-        color={'info'}
-        disabled={saveLoading || skipLoading}
-        onClick={handledSkip}
-        sx={{ width: '100%', maxWidth: 276 }}
-        variant={'outlined'}
-      >
-        Skip
-      </StyledButton>
-
-      <StyledFormItem
-        gap={3}
-        label={'Insurance provider information'}
-        labelSx={{ mb: 0 }}
-        maxWidth={600}
-        sub
-      >
-        <StyledTextField
-          label={'Company Name'}
-          onChange={(e) => setCompanyName(e.target.value)}
-          value={companyName}
-        />
-        <StyledTextField
-          label={'Agent Name'}
-          onChange={(e) => setAgentName(e.target.value)}
-          value={agentName}
-        />
-
-        <StyledTextFieldPhone
-          label={'Phone Number'}
-          onValueChange={({ value }) => setPhoneNumber(value)}
-          value={phoneNumber}
-        />
-        <StyledTextField
-          label={'Email'}
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-        />
-
-        <StyledGoogleAutoComplete address={address} />
+      <StyledFormItem label={'Number of properties exited last 24 months'} sub>
+        <Stack maxWidth={600} width={'100%'}>
+          <StyledTextFieldNumber
+            decimalScale={0}
+            label={'Track Record'}
+            onValueChange={({ formattedValue }) =>
+              setPropertiesNum(formattedValue)
+            }
+            thousandSeparator={false}
+            value={propertiesNum}
+          />
+        </Stack>
       </StyledFormItem>
 
       <StyledFormItem
-        label={'Upload your evidence of insurance'}
-        maxWidth={900}
+        label={'Upload track record (Optional)'}
         sub
+        tip={
+          <Stack color={'info.main'}>
+            <Typography variant={'body1'}>
+              Next, fill out your Experience Verification Sheet
+            </Typography>
+            <Typography mt={1.5} variant={'body1'}>
+              Please complete the experience sheet and tell us about the
+              investment property flips you have completed in the past 24
+              months. For our purposes, a completed flip meets the following
+              criteria:
+            </Typography>
+            <Typography mt={1.5} textAlign={'left'} variant={'body1'}>
+              1. The property must have been owned at least 30 days, owned for
+              fewer than 36 months, and sold or converted into a rental property
+              in the last 24 months.
+            </Typography>
+            <Typography mt={1} textAlign={'left'} variant={'body1'}>
+              2. The sale price of the property must have been greater or equal
+              to $50,000.
+            </Typography>
+          </Stack>
+        }
       >
-        <StyledUploadBox
-          fileList={insuranceFiles}
-          loading={uploadLoading}
-          onDelete={handledDelete}
-          onSuccess={handledSuccess}
-        />
+        <Stack alignItems={'center'}>
+          <Typography color={'text.primary'} variant={'body1'}>
+            Example documents:
+          </Typography>
+
+          <Typography
+            className={'link_style'}
+            component={'span'}
+            fontWeight={600}
+            onClick={() => {
+              window.open(
+                'https://youland-template-file.s3.us-west-1.amazonaws.com/Sample-project-experience-template.xlsx',
+              );
+            }}
+          >
+            Sample project experience template
+          </Typography>
+
+          <Typography
+            color={'info.main'}
+            mt={1.5}
+            textAlign={'center'}
+            variant={'body3'}
+          >
+            Include the person/Entity on the title for each property you
+            include. It is important that the person/Entity on title is
+            affiliated to the Borrower and Guarantor on your loan application.
+            Additional documentation may be required if{' '}
+            {saasState?.organizationName || 'YouLand'} can&apos;t validate
+            property ownership or title affiliation. Include the complete
+            property address. When filling out the Experience Verification
+            Sheet, please be sure to fill out the complete property address.
+            Leave out vacant land and home address.{' '}
+            {saasState?.organizationName || 'YouLand'} will not count vacant
+            land or your current home towards your experience verification.
+          </Typography>
+
+          <Box mt={3} width={'100%'}>
+            <StyledUploadBox
+              accept={
+                'image/*,.pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+              }
+              fileList={investmentFiles}
+              loading={uploadLoading || loading}
+              onDelete={handledDelete}
+              onSuccess={handledSuccess}
+            />
+          </Box>
+        </Stack>
       </StyledFormItem>
 
       <Stack
@@ -301,7 +256,7 @@ export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
           Back
         </StyledButton>
         <StyledButton
-          disabled={saveLoading || skipLoading || !isDisabled}
+          disabled={!isDisabled || saveLoading}
           loading={saveLoading}
           loadingText={'Saving...'}
           onClick={handledSubmit}

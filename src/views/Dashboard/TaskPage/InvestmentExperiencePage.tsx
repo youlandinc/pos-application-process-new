@@ -9,8 +9,8 @@ import { SceneType } from '@/types';
 import {
   BridgePurchaseTaskInvestmentExperience,
   BridgeRefinanceTaskInvestmentExperience,
-  FixPurchaseTaskInsuranceInformation,
-  FixRefinanceTaskInsuranceInformation,
+  FixPurchaseTaskInvestmentExperience,
+  FixRefinanceTaskInvestmentExperience,
 } from '@/components/organisms';
 
 export const InvestmentExperiencePage: FC = observer(() => {
@@ -27,10 +27,10 @@ export const InvestmentExperiencePage: FC = observer(() => {
         return <BridgeRefinanceTaskInvestmentExperience />;
       }
       case SceneType.fix_purchase: {
-        return <FixPurchaseTaskInsuranceInformation />;
+        return <FixPurchaseTaskInvestmentExperience />;
       }
       case SceneType.fix_refinance: {
-        return <FixRefinanceTaskInsuranceInformation />;
+        return <FixRefinanceTaskInvestmentExperience />;
       }
       default:
         return <BridgePurchaseTaskInvestmentExperience />;
