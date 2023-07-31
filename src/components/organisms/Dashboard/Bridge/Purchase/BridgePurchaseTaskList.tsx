@@ -417,7 +417,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         variant={'subtitle3'}
         width={120}
       >
-        {loanStage}
+        {loanStage === LoanStage.Approved ? 'Approved' : 'In Progress'}
       </Typography>
     );
   }, [loanStage]);

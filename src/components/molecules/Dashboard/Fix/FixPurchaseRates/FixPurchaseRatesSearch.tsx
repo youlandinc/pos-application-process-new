@@ -429,6 +429,8 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
     agentFeeError,
     brokerPoints,
     brokerProcessingFee,
+    lenderPoints,
+    lenderProcessingFee,
     loading,
     loanStage,
     officerPoints,

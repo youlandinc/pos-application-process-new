@@ -1,6 +1,5 @@
 export * from './BridgeRefinanceRates';
 export * from './BridgeRefinanceOverview';
-export * from './BridgeRefinanceTaskPayment';
 export * from './BridgeRefinancePreApproval';
 
 export * from './BridgeRefinanceTaskList';
@@ -14,7 +13,9 @@ export * from './BridgeRefinanceTaskDemograhpicsInformation';
 export * from './BridgeRefinanceTaskBorrowerType';
 export * from './BridgeRefinanceTaskCoBorrowerDetails';
 
+export * from './BridgeRefinanceTaskPayment';
 export * from './BridgeRefinanceTaskPropertyInspection';
+
 export * from './BridgeRefinanceTaskPay';
 
 export * from './BridgeRefinanceTaskCompanyInformation';

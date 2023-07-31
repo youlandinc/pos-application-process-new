@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 
+import { observer } from 'mobx-react-lite';
+
 import { TaskFiles } from '@/types';
 import {
   _deleteTaskFile,
@@ -22,7 +24,7 @@ import {
 } from '@/components/atoms';
 import { useSessionStorageState } from '@/hooks';
 
-export const BridgePurchaseTaskInvestmentExperience: FC = () => {
+export const BridgePurchaseTaskInvestmentExperience: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { saasState } = useSessionStorageState('tenantConfig');
@@ -265,4 +267,4 @@ export const BridgePurchaseTaskInvestmentExperience: FC = () => {
       </Stack>
     </StyledFormItem>
   );
-};
+});
