@@ -429,6 +429,8 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
     agentFeeError,
     brokerPoints,
     brokerProcessingFee,
+    lenderPoints,
+    lenderProcessingFee,
     loading,
     loanStage,
     officerPoints,
@@ -444,7 +446,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
     <>
       <StyledFormItem
         gap={3}
-        label={'Estimate your fix and flip loan rate'}
+        label={'Estimate fix and flip loan rate'}
         labelSx={{ m: 0 }}
       >
         <StyledFormItem

@@ -5,13 +5,19 @@ import { NumberFormatValues } from 'react-number-format';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { OPTIONS_COMMON_CITIZEN_TYPE } from '@/constants';
+import {
+  HASH_COMMON_PERSON,
+  OPTIONS_COMMON_CITIZEN_TYPE,
+  OPTIONS_COMMON_USER_TYPE,
+} from '@/constants';
 import { useSessionStorageState } from '@/hooks';
-import { CommonBorrowerType } from '@/types';
 import {
   IPersonalInfo,
   SPersonalInfo,
 } from '@/models/application/common/CreditScore';
+
+import { CommonBorrowerType, UserType } from '@/types';
+import { POSFindLabel, POSUpperFirstLetter } from '@/utils';
 
 import {
   StyledCheckbox,
@@ -31,7 +37,7 @@ export const BridgePersonInfo: FC = observer(() => {
     applicationForm: {
       formData: { creditScore },
     },
-    // userType,
+    userType,
   } = useMst();
   const { saasState } = useSessionStorageState('tenantConfig');
 
@@ -76,14 +82,21 @@ export const BridgePersonInfo: FC = observer(() => {
     <>
       <StyledFormItem
         gap={6}
-        label={'Tell us about yourself'}
+        label={`Tell us about ${
+          HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_third_subject
+        }`}
         labelSx={{ mb: 0 }}
-        tip={
-          'We will use this information to review your credit score and history so that we can provide you with real, accurate loan options.'
-        }
+        tip={`We will use this information to review ${
+          HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
+        } credit score and history so that we can provide you with real, accurate loan options.`}
         tipSx={{ mb: 0 }}
       >
-        <StyledFormItem label={'What is your citizenship status?'} sub>
+        <StyledFormItem
+          label={`What is ${
+            HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
+          } citizenship status?`}
+          sub
+        >
           <StyledSelectOption
             onChange={changeFieldValue('citizenship')}
             options={OPTIONS_COMMON_CITIZEN_TYPE}
@@ -93,10 +106,16 @@ export const BridgePersonInfo: FC = observer(() => {
         <StyledFormItem
           label={'Personal Information'}
           sub
-          tip={`By entering your phone number,  you're authorizing ${
-            //sass
+          // todo : person
+          tip={`By entering ${
+            HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
+          } phone number,  you are authorizing ${
             ' ' + saasState?.organizationName || ' YouLand'
-          } to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may.`}
+          } to use this number to call, text and send ${
+            HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_third_subject
+          } messages by any method. We don't charge for contacting you, but ${
+            HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].third_pronoun
+          } service provider may.`}
         >
           <Stack gap={3} maxWidth={600} width={'100%'}>
             <Stack>
@@ -160,7 +179,12 @@ export const BridgePersonInfo: FC = observer(() => {
           }}
         >
           {selfInfo.citizenship !== CommonBorrowerType.foreign_national && (
-            <StyledFormItem label={'Your Social Security Number'} sub>
+            <StyledFormItem
+              label={`${POSUpperFirstLetter(
+                HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun,
+              )} Social Security Number`}
+              sub
+            >
               <Stack gap={3} maxWidth={600} width={'100%'}>
                 <StyledTextFieldSocialNumber
                   onValueChange={changeFieldValue('ssn')}
@@ -181,13 +205,21 @@ export const BridgePersonInfo: FC = observer(() => {
               ml={2}
               variant={'body2'}
             >
-              I, {selfInfo.firstName || 'borrower'}{' '}
-              {selfInfo.lastName || 'name'} , authorize{' '}
+              I,{' '}
+              {userType === UserType.CUSTOMER
+                ? `${selfInfo.firstName || 'borrower'}
+              ${selfInfo.lastName || 'name'} , authorize `
+                : `the ${POSFindLabel(
+                    OPTIONS_COMMON_USER_TYPE,
+                    userType as UserType,
+                  ).toLowerCase()} , authorize `}
               {
                 //sass
                 ' ' + saasState?.organizationName || ' YouLand'
               }{' '}
-              to verify my credit. I&apos;ve also read and agreed to
+              to verify{' '}
+              {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_oneself}{' '}
+              credit. I have also read and agreed to
               {
                 //sass
                 ' ' + saasState?.organizationName || ' YouLand'

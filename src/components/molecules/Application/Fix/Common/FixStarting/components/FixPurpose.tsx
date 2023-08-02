@@ -4,7 +4,7 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { PropertyNumberOpt } from '@/types';
+import { PropertyNumberOpt, UserType } from '@/types';
 import { IFixPurpose } from '@/models/application/fix';
 import {
   StyledFormItem,
@@ -12,7 +12,10 @@ import {
   StyledSelectOption,
   Transitions,
 } from '@/components/atoms';
-import { OPTIONS_BRIDGE_PROPERTY_NUMBER } from '@/constants';
+import {
+  HASH_COMMON_PERSON,
+  OPTIONS_BRIDGE_PROPERTY_NUMBER,
+} from '@/constants';
 
 interface FixPurposeProps {
   purpose: IFixPurpose;
@@ -26,6 +29,7 @@ export const FixPurpose: FC<FixPurposeProps> = observer((props) => {
 
   const {
     applicationForm: { applicationType },
+    userType,
   } = useMst();
 
   return (
@@ -39,7 +43,9 @@ export const FixPurpose: FC<FixPurposeProps> = observer((props) => {
     >
       {/*todo : saas*/}
       <StyledFormItem
-        label={'How many properties have you flipped in the last 24 months?'}
+        label={`How many properties have ${
+          HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject
+        } flipped in the last 24 months?`}
       >
         <Stack maxWidth={600} width={'100%'}>
           <StyledSelectOption
@@ -59,7 +65,9 @@ export const FixPurpose: FC<FixPurposeProps> = observer((props) => {
           //  todo : saas
           <StyledFormItem
             alignItems={'center'}
-            label={`What's the address of the property you'd like to ${applicationType}?`}
+            label={`What's the address of the property ${
+              HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject
+            } would like to ${applicationType}?`}
             width={'100%'}
           >
             <Stack maxWidth={600} width={'100%'}>

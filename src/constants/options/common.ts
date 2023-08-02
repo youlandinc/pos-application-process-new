@@ -1,5 +1,58 @@
 import { CommonBorrowerType, UserType } from '@/types';
 
+export const HASH_COMMON_PERSON = {
+  [UserType.CUSTOMER]: {
+    subject: 'you',
+    pronoun: 'your',
+    third_subject: 'yourself',
+    third_pronoun: 'your',
+    the_third_subject: 'yourself',
+    the_third_pronoun: 'your',
+    the_pronoun: 'your',
+    the_oneself: 'my',
+  },
+  [UserType.BROKER]: {
+    subject: 'the borrower',
+    pronoun: "borrower's",
+    third_subject: 'borrower',
+    third_pronoun: 'their',
+    the_third_subject: 'the borrower',
+    the_third_pronoun: 'the borrower',
+    the_pronoun: "the borrower's",
+    the_oneself: "the borrower's",
+  },
+  [UserType.LENDER]: {
+    subject: 'the borrower',
+    pronoun: "borrower's",
+    third_subject: 'borrower',
+    third_pronoun: 'their',
+    the_third_subject: 'the borrower',
+    the_third_pronoun: 'the borrower',
+    the_pronoun: "the borrower's",
+    the_oneself: "the borrower's",
+  },
+  [UserType.REAL_ESTATE_AGENT]: {
+    subject: 'the borrower',
+    pronoun: "borrower's",
+    third_subject: 'borrower',
+    third_pronoun: 'their',
+    the_third_subject: 'the borrower',
+    the_third_pronoun: 'the borrower',
+    the_pronoun: "the borrower's",
+    the_oneself: "the borrower's",
+  },
+  [UserType.LOAN_OFFICER]: {
+    subject: 'the borrower',
+    pronoun: "borrower's",
+    third_subject: 'borrower',
+    third_pronoun: 'their',
+    the_third_subject: 'the borrower',
+    the_third_pronoun: 'the borrower',
+    the_pronoun: "the borrower's",
+    the_oneself: "the borrower's",
+  },
+};
+
 export const OPTIONS_COMMON_CITIZEN_TYPE: Option[] = [
   {
     label: 'US Citizen',

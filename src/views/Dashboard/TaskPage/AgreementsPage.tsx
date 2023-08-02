@@ -1,3 +1,4 @@
+import { SceneType } from '@/types';
 import { FC, useMemo } from 'react';
 import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
@@ -5,6 +6,8 @@ import { useMst } from '@/models/Root';
 import {
   BridgePurchaseTaskAgreements,
   BridgeRefinanceTaskAgreements,
+  FixPurchaseTaskAgreements,
+  FixRefinanceTaskAgreements,
 } from '@/components/organisms';
 
 export const AgreementsPage: FC = observer(() => {
@@ -14,11 +17,17 @@ export const AgreementsPage: FC = observer(() => {
 
   const renderNode = useMemo(() => {
     switch (scene) {
-      case 'bridge purchase': {
+      case SceneType.bridge_purchase: {
         return <BridgePurchaseTaskAgreements />;
       }
-      case 'bridge refinance': {
+      case SceneType.bridge_refinance: {
         return <BridgeRefinanceTaskAgreements />;
+      }
+      case SceneType.fix_purchase: {
+        return <FixPurchaseTaskAgreements />;
+      }
+      case SceneType.fix_refinance: {
+        return <FixRefinanceTaskAgreements />;
       }
       default:
         return <BridgePurchaseTaskAgreements />;

@@ -11,3 +11,16 @@ export * from './FixPurchaseTaskPersonalDetails';
 export * from './FixPurchaseTaskDemographicsInformation';
 export * from './FixPurchaseTaskBorrowerType';
 export * from './FixPurchaseTaskCoBorrowerDetails';
+
+export * from './FixPurchaseTaskPayment';
+export * from './FixPurchaseTaskPropertyInspection';
+
+//export * from './FixPurchaseTaskPay';
+
+export * from './FixPurchaseTaskCompanyInformation';
+export * from './FixPurchaseTaskInsuranceInformation';
+
+export * from './FixPurchaseTaskContract';
+export * from './FixPurchaseTaskUploadPictures';
+export * from './FixPurchaseTaskAgreements';
+export * from './FixPurchaseTaskDocuments';

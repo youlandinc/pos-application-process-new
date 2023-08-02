@@ -446,7 +446,7 @@ export const BridgeRefinanceRatesSearch: FC<
     <>
       <StyledFormItem
         gap={3}
-        label={'Estimate your bridge loan rate'}
+        label={'Estimate bridge loan rate'}
         labelSx={{ m: 0 }}
       >
         <StyledFormItem

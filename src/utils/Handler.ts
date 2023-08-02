@@ -20,3 +20,7 @@ export const POSGetProductTypeByUrl = (val: string): string => {
       return '';
   }
 };
+
+export const POSUpperFirstLetter = (val: string): string => {
+  return val.charAt(0).toUpperCase() + val.slice(1);
+};
