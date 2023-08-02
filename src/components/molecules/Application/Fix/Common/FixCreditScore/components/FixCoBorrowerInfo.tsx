@@ -1,3 +1,4 @@
+import { POSFindLabel } from '@/utils';
 import { Stack, Typography } from '@mui/material';
 import { ChangeEvent, FC, useCallback } from 'react';
 
@@ -5,14 +6,16 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import {
+  HASH_COMMON_PERSON,
   OPTIONS_COMMON_CITIZEN_TYPE,
+  OPTIONS_COMMON_USER_TYPE,
   OPTIONS_COMMON_YES_OR_NO,
 } from '@/constants';
 import {
   IPersonalInfo,
   SPersonalInfo,
 } from '@/models/application/common/CreditScore';
-import { CommonBorrowerType } from '@/types';
+import { CommonBorrowerType, UserType } from '@/types';
 
 import {
   StyledButtonGroup,
@@ -34,7 +37,7 @@ export const FixCoBorrowerInfo: FC = observer(() => {
     applicationForm: {
       formData: { creditScore },
     },
-    // userType,
+    userType,
   } = useMst();
   const { saasState } = useSessionStorageState('tenantConfig');
 
@@ -85,12 +88,16 @@ export const FixCoBorrowerInfo: FC = observer(() => {
     <>
       <StyledFormItem
         alignItems={'center'}
-        label={'Would you like to add a co-borrower to your loan?'}
+        label={`Would you like to add a Co-borrower to ${
+          userType === UserType.CUSTOMER ? 'your' : ''
+        } loan?`}
         tip={
           <>
             <Typography color={'info.main'} variant={'body1'}>
-              This means your assets and income will be counted together. You
-              can&apos;t remove your co-borrower once you have started your
+              This means{' '}
+              {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun}{' '}
+              and co-borrower&apos;s assets and income will be counted together.
+              You can&apos;t remove co-borrower once you have started your
               application unless you restart a new one.
             </Typography>
             <Typography color={'info.main'} mt={1.5} variant={'body1'}>
@@ -118,14 +125,17 @@ export const FixCoBorrowerInfo: FC = observer(() => {
         {isCoBorrower && (
           <StyledFormItem
             gap={6}
-            label={'Tell us about your co-borrower'}
+            label={'Tell us about Co-borrower'}
             labelSx={{ mb: 0 }}
             tip={
-              "We are only collecting co-borrower's information for now. Checking credit score will be done in tasks."
+              "We are only collecting Co-borrower's information for now. Checking credit score will be done in tasks."
             }
             tipSx={{ mb: 0 }}
           >
-            <StyledFormItem label={'What is your citizenship status?'} sub>
+            <StyledFormItem
+              label={"What is Co-borrower's citizenship status?"}
+              sub
+            >
               <StyledSelectOption
                 onChange={changeFieldValue('citizenship')}
                 options={OPTIONS_COMMON_CITIZEN_TYPE}
@@ -135,10 +145,13 @@ export const FixCoBorrowerInfo: FC = observer(() => {
             <StyledFormItem
               label={'Personal Information'}
               sub
-              tip={`By entering your phone number,  you're authorizing ${
+              tip={`By entering co-borrower's phone number, you are authorizing ${
                 //sass
                 ' ' + saasState?.organizationName || ' YouLand'
-              } to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may.`}
+              } to use this number to call, text and send ${
+                HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER]
+                  .the_third_subject
+              } messages by any method. We don't charge for contacting you, but your service provider may.`}
             >
               <Stack gap={3} maxWidth={600} width={'100%'}>
                 <Stack>
@@ -205,7 +218,7 @@ export const FixCoBorrowerInfo: FC = observer(() => {
               {coBorrowerInfo.citizenship !==
                 CommonBorrowerType.foreign_national && (
                 <StyledFormItem
-                  label={'Your Co-borrower Social Security Number'}
+                  label={"The Co-borrower's Social Security Number"}
                   sub
                 >
                   <Stack gap={3} maxWidth={600} width={'100%'}>
@@ -227,13 +240,20 @@ export const FixCoBorrowerInfo: FC = observer(() => {
                   ml={2}
                   variant={'body2'}
                 >
-                  I, {coBorrowerInfo.firstName || 'borrower'}{' '}
-                  {coBorrowerInfo.lastName || 'name'} , authorize
+                  I,{' '}
+                  {userType === UserType.CUSTOMER
+                    ? `${coBorrowerInfo.firstName || 'borrower'}
+              ${coBorrowerInfo.lastName || 'name'} , authorize `
+                    : `the ${POSFindLabel(
+                        OPTIONS_COMMON_USER_TYPE,
+                        userType as UserType,
+                      ).toLowerCase()} , authorize `}
                   {
                     //sass
                     ' ' + saasState?.organizationName || ' YouLand'
                   }{' '}
-                  to verify my credit. I&apos;ve also read and agreed to
+                  to verify co-borrower&apos;s credit. I&apos;ve also read and
+                  agreed to
                   {
                     //sass
                     ' ' + saasState?.organizationName || ' YouLand'

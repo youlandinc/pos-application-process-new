@@ -1,13 +1,14 @@
-import { HASH_COMMON_PERSON } from '@/constants';
-import { UserType } from '@/types';
 import { FC } from 'react';
 import { Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { StyledFormItem } from '@/components/atoms';
+import { HASH_COMMON_PERSON } from '@/constants';
 import { useSessionStorageState } from '@/hooks';
+import { UserType } from '@/types';
+
+import { StyledFormItem } from '@/components/atoms';
 
 export const BridgeNotice: FC = observer(() => {
   const { saasState } = useSessionStorageState('tenantConfig');
@@ -17,7 +18,7 @@ export const BridgeNotice: FC = observer(() => {
     <>
       <StyledFormItem
         label={`Let's check ${
-          HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].pronoun
+          HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
         } credit.`}
       >
         <Typography color={'info.main'} textAlign={'center'} variant={'body1'}>
@@ -25,8 +26,8 @@ export const BridgeNotice: FC = observer(() => {
           normal part of the process and won&apos;t lower{' '}
           {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].pronoun} credit
           score at all. It just helps us figure out{' '}
-          {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].pronoun} general
-          price range.
+          {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun}{' '}
+          general price range.
         </Typography>
         <Typography
           color={'info.main'}
@@ -40,7 +41,8 @@ export const BridgeNotice: FC = observer(() => {
             ' ' + saasState?.organizationName || ' YouLand'
           }{' '}
           to do a soft pull on{' '}
-          {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].pronoun} credit.
+          {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun}{' '}
+          credit.
         </Typography>
       </StyledFormItem>
     </>
