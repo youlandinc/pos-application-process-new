@@ -167,7 +167,7 @@ export const BridgePurchaseEstimateRate: FC<{
     try {
       await _updateRatesProductSelected(processId, { id });
       if (nextStep) {
-        await nextStep(() => setCheckLoading(false));
+        nextStep(() => setCheckLoading(false));
       }
     } catch (err) {
       enqueueSnackbar(err as string, {
