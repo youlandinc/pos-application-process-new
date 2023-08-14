@@ -45,11 +45,11 @@ export const PaymentMethods = forwardRef<
             </Box>
             , We will help you confirm the rate upon receipt of payment.
           </Typography>
-          <Typography color={'info.main'} mt={1.5} variant={'body1'}>
-            We’ll reach out to schedule your appraisal, which is when someone
-            visits the property to determine its value, if an interior
-            inspection is needed.
-          </Typography>
+          {/*<Typography color={'info.main'} mt={1.5} variant={'body1'}>*/}
+          {/*  We’ll reach out to schedule your appraisal, which is when someone*/}
+          {/*  visits the property to determine its value, if an interior*/}
+          {/*  inspection is needed.*/}
+          {/*</Typography>*/}
           <Typography color={'info.main'} mt={1.5} variant={'body1'}>
             California law requires that all residential properties be equipped
             with both a mounted carbon monoxide detector and a double-strapped

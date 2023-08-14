@@ -45,6 +45,11 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
   const [stateId, setStateId] = useState<string | undefined>('');
   const [entityState, setEntityState] = useState<string | undefined>();
 
+  const [trustName, setTrustName] = useState<string | undefined>('');
+
+  const [authorizedSignatoryName, setAuthorizedSignatoryName] =
+    useState<string>('');
+
   const { loading } = useAsync(async () => {
     if (!router.query.taskId) {
       await router.push({
@@ -62,6 +67,8 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
           entityType,
           signatoryTitle,
           stateId,
+          authorizedSignatoryName,
+          trustName,
         } = res.data;
 
         setBorrowerType(borrowerType || undefined);
@@ -70,6 +77,9 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
         setSignatoryTitle(signatoryTitle || undefined);
         setEntityState(entityState || undefined);
         setStateId(stateId || undefined);
+
+        setAuthorizedSignatoryName(authorizedSignatoryName || undefined);
+        setTrustName(trustName || undefined);
       })
       .catch((err) =>
         enqueueSnackbar(err as string, {
@@ -87,8 +97,9 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
   const isDisabled = useMemo(() => {
     switch (borrowerType) {
       case DashboardTaskBorrowerType.individual:
-      case DashboardTaskBorrowerType.trust:
         return false;
+      case DashboardTaskBorrowerType.trust:
+        return !trustName && !signatoryTitle;
       case DashboardTaskBorrowerType.entity:
         return (
           !entityName &&
@@ -105,6 +116,7 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
     entityType,
     signatoryTitle,
     stateId,
+    trustName,
   ]);
 
   const handledSubmit = useCallback(async () => {
@@ -118,6 +130,8 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
         entityType,
         signatoryTitle,
         stateId,
+        trustName,
+        authorizedSignatoryName,
       },
     };
     try {
@@ -135,6 +149,7 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
       setSaveLoading(false);
     }
   }, [
+    authorizedSignatoryName,
     borrowerType,
     enqueueSnackbar,
     entityName,
@@ -143,6 +158,7 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
     router,
     signatoryTitle,
     stateId,
+    trustName,
   ]);
 
   return loading ? (
@@ -182,6 +198,11 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
                 value={entityName}
               />
               <StyledTextField
+                disabled
+                label={'Authorized Signatory Name'}
+                value={authorizedSignatoryName}
+              />
+              <StyledTextField
                 label={'Authorized Signatory Title'}
                 onChange={(e) => setSignatoryTitle(e.target.value)}
                 value={signatoryTitle}
@@ -206,6 +227,36 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
                 onChange={(e) => setEntityState(e.target.value as string)}
                 options={OPTIONS_COMMON_STATE}
                 value={entityState}
+              />
+            </Stack>
+          </StyledFormItem>
+        )}
+      </Transitions>
+
+      <Transitions
+        style={{
+          display:
+            borrowerType === DashboardTaskBorrowerType.trust ? 'flex' : 'none',
+          width: '100%',
+        }}
+      >
+        {borrowerType === DashboardTaskBorrowerType.trust && (
+          <StyledFormItem label={'Trust Information'} sub>
+            <Stack gap={3} maxWidth={600} width={'100%'}>
+              <StyledTextField
+                label={'Trust Name'}
+                onChange={(e) => setTrustName(e.target.value)}
+                value={trustName}
+              />
+              <StyledTextField
+                disabled
+                label={'Authorized Signatory Name'}
+                value={authorizedSignatoryName}
+              />
+              <StyledTextField
+                label={'Authorized Signatory Title'}
+                onChange={(e) => setSignatoryTitle(e.target.value)}
+                value={signatoryTitle}
               />
             </Stack>
           </StyledFormItem>

@@ -88,6 +88,7 @@ export const PipelineProfile: FC = observer(() => {
               </Typography>
               <StyledStatus status={BROKER_GOVERNMENT_ID.taskStatus} />
             </Stack>
+
             <Stack
               alignItems={'center'}
               className={'task_item'}
@@ -174,25 +175,26 @@ export const PipelineProfile: FC = observer(() => {
               <StyledStatus status={LENDER_AGREEMENT.taskStatus} />
             </Stack>
 
-            <Stack
-              alignItems={'center'}
-              className={'task_item'}
-              flexDirection={'row'}
-              justifyContent={'space-between'}
-              onClick={() => handleEnterSubTask('/pipeline/task/government')}
-            >
-              <Typography className={'task_label'} variant={'h6'}>
-                {LENDER_GOVERNMENT_ID.taskName}{' '}
-                <Typography
-                  component={'span'}
-                  sx={{ color: 'info.A100', fontSize: 'inherit' }}
-                  variant={'h6'}
-                >
-                  (Optional)
-                </Typography>
-              </Typography>
-              <StyledStatus status={LENDER_GOVERNMENT_ID.taskStatus} />
-            </Stack>
+            {/*<Stack*/}
+            {/*  alignItems={'center'}*/}
+            {/*  className={'task_item'}*/}
+            {/*  flexDirection={'row'}*/}
+            {/*  justifyContent={'space-between'}*/}
+            {/*  onClick={() => handleEnterSubTask('/pipeline/task/government')}*/}
+            {/*>*/}
+            {/*  <Typography className={'task_label'} variant={'h6'}>*/}
+            {/*    {LENDER_GOVERNMENT_ID.taskName}{' '}*/}
+            {/*    <Typography*/}
+            {/*      component={'span'}*/}
+            {/*      sx={{ color: 'info.A100', fontSize: 'inherit' }}*/}
+            {/*      variant={'h6'}*/}
+            {/*    >*/}
+            {/*      (Optional)*/}
+            {/*    </Typography>*/}
+            {/*  </Typography>*/}
+            {/*  <StyledStatus status={LENDER_GOVERNMENT_ID.taskStatus} />*/}
+            {/*</Stack>*/}
+
             <Stack
               alignItems={'center'}
               className={'task_item'}
@@ -356,8 +358,6 @@ export const PipelineProfile: FC = observer(() => {
     BROKER_QUESTIONNAIRE.taskStatus,
     LENDER_AGREEMENT.taskName,
     LENDER_AGREEMENT.taskStatus,
-    LENDER_GOVERNMENT_ID.taskName,
-    LENDER_GOVERNMENT_ID.taskStatus,
     LENDER_LICENSE.taskName,
     LENDER_LICENSE.taskStatus,
     LENDER_QUESTIONNAIRE.taskName,
