@@ -4,12 +4,16 @@ import {
   BridgeRefinance,
   FixPurchase,
   FixRefinance,
+  GroundPurchase,
+  GroundRefinance,
   MortgagePurchase,
   MortgageRefinance,
   SBridgePurchase,
   SBridgeRefinance,
   SFixPurchase,
   SFixRefinance,
+  SGroundPurchase,
+  SGroundRefinance,
   SMortgagePurchase,
   SMortgageRefinance,
 } from '@/models/application/base';
@@ -24,6 +28,8 @@ const Union = types.union({
       | SBridgeRefinance
       | SFixPurchase
       | SFixRefinance
+      | SGroundPurchase
+      | SGroundRefinance
       | undefined,
   ) => {
     if (!snapshot) {
@@ -48,10 +54,10 @@ const Union = types.union({
       case 'FixAndFlipRefinance':
         return FixRefinance;
 
-      //case 'GroundPurchase':
-      //  return GroundPurchase;
-      //case 'GroundRefinance':
-      //  return GroundRefinance;
+      case 'GroundUpConstructionPurchase':
+        return GroundPurchase;
+      case 'GroundUpConstructionRefinance':
+        return GroundRefinance;
       default:
         return types.undefined;
     }
