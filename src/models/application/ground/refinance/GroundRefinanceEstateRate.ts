@@ -1,10 +1,11 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { GroundRefinanceEstimateRateData } from '@/types/application/ground';
+import { GREstimateRateData } from '@/types/application/ground';
 
 import { VariableName } from '@/types/enum';
 
 export const GroundRefinanceEstimateRate = types
   .model({
+    closeDate: types.maybeNull(types.union(types.Date, types.string)),
     homeValue: types.maybe(types.number),
     balance: types.maybe(types.number),
     isCashOut: types.maybe(types.boolean),
@@ -24,8 +25,16 @@ export const GroundRefinanceEstimateRate = types
     ) {
       self[key] = value;
     },
-    getPostData(): Variable<GroundRefinanceEstimateRateData> {
-      const { homeValue, balance, isCashOut, cashOutAmount, cor, arv } = self;
+    getPostData(): Variable<GREstimateRateData> {
+      const {
+        homeValue,
+        balance,
+        isCashOut,
+        cashOutAmount,
+        cor,
+        arv,
+        closeDate,
+      } = self;
 
       return {
         name: VariableName.estimateRate,
@@ -37,11 +46,20 @@ export const GroundRefinanceEstimateRate = types
           cashOutAmount,
           cor,
           arv,
+          closeDate,
         },
       };
     },
-    injectServerData(value: GroundRefinanceEstimateRateData) {
-      const { homeValue, balance, isCashOut, cashOutAmount, cor, arv } = value;
+    injectServerData(value: GREstimateRateData) {
+      const {
+        homeValue,
+        balance,
+        isCashOut,
+        cashOutAmount,
+        cor,
+        arv,
+        closeDate,
+      } = value;
 
       self.homeValue = homeValue;
       self.balance = balance;
@@ -49,6 +67,7 @@ export const GroundRefinanceEstimateRate = types
       self.cashOutAmount = cashOutAmount;
       self.cor = cor;
       self.arv = arv;
+      self.closeDate = closeDate as unknown as null;
     },
   }));
 

@@ -895,6 +895,7 @@ export const FormData = {
         reference: ChannelOpt.default,
       },
       estimateRate: {
+        closeDate: undefined,
         purchasePrice: undefined,
         purchaseLoanAmount: undefined,
         isRehab: false,
@@ -991,6 +992,7 @@ export const FormData = {
         reference: ChannelOpt.default,
       },
       estimateRate: {
+        closeDate: undefined,
         homeValue: undefined,
         balance: undefined,
         isCashOut: false,

@@ -1,10 +1,11 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { GroundPurchaseEstimateRateData } from '@/types/application/ground';
+import { GPEstimateRateData } from '@/types/application/ground';
 
 import { VariableName } from '@/types/enum';
 
 export const GroundPurchaseEstimateRate = types
   .model({
+    closeDate: types.maybeNull(types.union(types.Date, types.string)),
     purchasePrice: types.maybe(types.number),
     purchaseLoanAmount: types.maybe(types.number),
     cor: types.maybe(types.number),
@@ -22,12 +23,13 @@ export const GroundPurchaseEstimateRate = types
     ) {
       self[key] = value;
     },
-    getPostData(): Variable<GroundPurchaseEstimateRateData> {
-      const { purchasePrice, purchaseLoanAmount, cor, arv } = self;
+    getPostData(): Variable<GPEstimateRateData> {
+      const { purchasePrice, purchaseLoanAmount, cor, arv, closeDate } = self;
       return {
         name: VariableName.estimateRate,
         type: 'json',
         value: {
+          closeDate,
           purchasePrice,
           purchaseLoanAmount,
           cor,
@@ -35,12 +37,13 @@ export const GroundPurchaseEstimateRate = types
         },
       };
     },
-    injectServerData(value: GroundPurchaseEstimateRateData) {
-      const { purchasePrice, purchaseLoanAmount, cor, arv } = value;
+    injectServerData(value: GPEstimateRateData) {
+      const { purchasePrice, purchaseLoanAmount, cor, arv, closeDate } = value;
       self.purchaseLoanAmount = purchaseLoanAmount;
       self.purchasePrice = purchasePrice;
       self.cor = cor;
       self.arv = arv;
+      self.closeDate = closeDate as unknown as null;
     },
   }));
 
