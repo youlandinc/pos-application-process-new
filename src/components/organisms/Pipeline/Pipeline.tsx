@@ -132,6 +132,7 @@ export const Pipeline: FC = observer(() => {
     if (!row) {
       return;
     }
+    console.log(row.productType);
     switch (row.loanStage) {
       case LoanStage.Application:
         window.location.href = `/application/${POSGetProductTypeByUrl(
