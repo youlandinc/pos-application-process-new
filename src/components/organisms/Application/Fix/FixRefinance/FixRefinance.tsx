@@ -7,7 +7,7 @@ import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { IApplicationForm, IBpmn } from '@/models/base';
-import { IBridgeStarting } from '@/models/application/bridge';
+import { IFixStarting } from '@/models/application/fix';
 import { IWhereKnowUs } from '@/models/application/common/WhereKnowUs';
 import { FixAndFlipRefinanceState, ServerTaskKey } from '@/types/enum';
 import { useAutoSave, useStoreData } from '@/hooks';
@@ -106,7 +106,7 @@ const useStateMachine = (
   router: NextRouter,
 ) => {
   const state = applicationForm.formData.state as FixAndFlipRefinanceState;
-  const starting = applicationForm.formData.starting as IBridgeStarting;
+  const starting = applicationForm.formData.starting as IFixStarting;
   const whereKnowUs = applicationForm.formData.whereKnowUs as IWhereKnowUs;
 
   const { enqueueSnackbar } = useSnackbar();
