@@ -88,7 +88,11 @@ export const Pipeline: FC = observer(() => {
     setFetchLoading(true);
     return await _fetchAllProcesses(params)
       .then((res) => {
-        const obj: { [key: string]: { [key: string]: unknown } } = {};
+        const obj: {
+          [key: string]: {
+            [key: string]: unknown;
+          };
+        } = {};
         const temp = isChange
           ? res.data.content
           : [...listData, ...res.data.content].reduce((cur, next) => {
@@ -132,7 +136,6 @@ export const Pipeline: FC = observer(() => {
     if (!row) {
       return;
     }
-    console.log(row.productType);
     switch (row.loanStage) {
       case LoanStage.Application:
         window.location.href = `/application/${POSGetProductTypeByUrl(
