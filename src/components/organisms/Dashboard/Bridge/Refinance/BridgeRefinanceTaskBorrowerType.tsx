@@ -115,6 +115,7 @@ export const BridgeRefinanceTaskBorrowerType: FC = observer(() => {
     entityType,
     signatoryTitle,
     stateId,
+    trustName,
   ]);
 
   const handledSubmit = useCallback(async () => {
