@@ -7,9 +7,9 @@ import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { IApplicationForm, IBpmn } from '@/models/base';
-import { IBridgeStarting } from '@/models/application/bridge';
+import { IGroundStarting } from '@/models/application/ground';
 import { IWhereKnowUs } from '@/models/application/common/WhereKnowUs';
-import { BridgePurchaseState, ServerTaskKey } from '@/types/enum';
+import { GroundUpConstructionPurchaseState, ServerTaskKey } from '@/types/enum';
 import { useAutoSave, useStoreData } from '@/hooks';
 import { _updateTask } from '@/requests';
 
@@ -17,11 +17,11 @@ import { Transitions } from '@/components/atoms';
 
 import {
   Auth,
-  BridgeCelebrate,
-  BridgeCreditScore,
-  BridgePurchaseEstimateRate,
-  BridgeRefuse,
-  BridgeStarting,
+  GroundCelebrate,
+  GroundCreditScore,
+  GroundPurchaseEstimateRate,
+  GroundRefuse,
+  GroundStarting,
   WhereKnow,
 } from '@/components/molecules/Application';
 
@@ -41,10 +41,10 @@ const useGenerateComponent = () => {
         completeTaskState: AsyncState,
         changeTaskState: AsyncState,
       ) => {
-        switch (state as BridgePurchaseState) {
-          case BridgePurchaseState.starting:
+        switch (state as GroundUpConstructionPurchaseState) {
+          case GroundUpConstructionPurchaseState.starting:
             return (
-              <BridgeStarting
+              <GroundStarting
                 changeTaskState={changeTaskState}
                 completeTaskState={completeTaskState}
                 nextStep={next}
@@ -52,7 +52,7 @@ const useGenerateComponent = () => {
                 updateState={updateState}
               />
             );
-          case BridgePurchaseState.auth:
+          case GroundUpConstructionPurchaseState.auth:
             return (
               <Auth
                 changeTaskState={changeTaskState}
@@ -62,9 +62,9 @@ const useGenerateComponent = () => {
                 updateState={updateState}
               />
             );
-          case BridgePurchaseState.creditScore:
+          case GroundUpConstructionPurchaseState.creditScore:
             return (
-              <BridgeCreditScore
+              <GroundCreditScore
                 changeTaskState={changeTaskState}
                 completeTaskState={completeTaskState}
                 nextStep={next}
@@ -72,7 +72,7 @@ const useGenerateComponent = () => {
                 updateState={updateState}
               />
             );
-          case BridgePurchaseState.whereKnowUs:
+          case GroundUpConstructionPurchaseState.whereKnowUs:
             return (
               <WhereKnow
                 changeTaskState={changeTaskState}
@@ -82,12 +82,12 @@ const useGenerateComponent = () => {
                 updateState={updateState}
               />
             );
-          case BridgePurchaseState.estimateRate:
-            return <BridgePurchaseEstimateRate nextStep={next} />;
-          case BridgePurchaseState.celebrate:
-            return <BridgeCelebrate nextStep={next} />;
-          case BridgePurchaseState.refuse:
-            return <BridgeRefuse nextStep={next} />;
+          case GroundUpConstructionPurchaseState.estimateRate:
+            return <GroundPurchaseEstimateRate nextStep={next} />;
+          case GroundUpConstructionPurchaseState.celebrate:
+            return <GroundCelebrate nextStep={next} />;
+          case GroundUpConstructionPurchaseState.refuse:
+            return <GroundRefuse nextStep={next} />;
         }
       },
     [state],
@@ -105,8 +105,9 @@ const useStateMachine = (
   handleBack: () => void,
   router: NextRouter,
 ) => {
-  const state = applicationForm.formData.state as BridgePurchaseState;
-  const starting = applicationForm.formData.starting as IBridgeStarting;
+  const state = applicationForm.formData
+    .state as GroundUpConstructionPurchaseState;
+  const starting = applicationForm.formData.starting as IGroundStarting;
   const whereKnowUs = applicationForm.formData.whereKnowUs as IWhereKnowUs;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -121,7 +122,7 @@ const useStateMachine = (
 
   const transitions = useRef<
     Record<
-      BridgePurchaseState,
+      GroundUpConstructionPurchaseState,
       {
         next: (cb?: () => void) => void;
         back?: () => void;
@@ -134,10 +135,12 @@ const useStateMachine = (
         await handledNextTask([postData], () => {
           if (session) {
             applicationForm.formData.changeState(
-              BridgePurchaseState.creditScore,
+              GroundUpConstructionPurchaseState.creditScore,
             );
           } else {
-            applicationForm.formData.changeState(BridgePurchaseState.auth);
+            applicationForm.formData.changeState(
+              GroundUpConstructionPurchaseState.auth,
+            );
           }
         });
       },
@@ -147,22 +150,32 @@ const useStateMachine = (
     },
     auth: {
       next: () => {
-        applicationForm.formData.changeState(BridgePurchaseState.creditScore);
+        applicationForm.formData.changeState(
+          GroundUpConstructionPurchaseState.creditScore,
+        );
       },
       back: async () => {
         await handledPrevTask(ServerTaskKey.starting, () => {
-          applicationForm.formData.changeState(BridgePurchaseState.starting);
+          applicationForm.formData.changeState(
+            GroundUpConstructionPurchaseState.starting,
+          );
         });
-        applicationForm.formData.changeState(BridgePurchaseState.starting);
+        applicationForm.formData.changeState(
+          GroundUpConstructionPurchaseState.starting,
+        );
       },
     },
     creditScore: {
       next: () => {
-        applicationForm.formData.changeState(BridgePurchaseState.whereKnowUs);
+        applicationForm.formData.changeState(
+          GroundUpConstructionPurchaseState.whereKnowUs,
+        );
       },
       back: async () => {
         await handledPrevTask(ServerTaskKey.starting, () => {
-          applicationForm.formData.changeState(BridgePurchaseState.starting);
+          applicationForm.formData.changeState(
+            GroundUpConstructionPurchaseState.starting,
+          );
         });
       },
     },
@@ -171,13 +184,15 @@ const useStateMachine = (
         const postData = whereKnowUs.getPostData();
         await handledNextTask([postData], () => {
           applicationForm.formData.changeState(
-            BridgePurchaseState.estimateRate,
+            GroundUpConstructionPurchaseState.estimateRate,
           );
         });
       },
       back: async () => {
         await handledPrevTask(ServerTaskKey.about_other, () => {
-          applicationForm.formData.changeState(BridgePurchaseState.creditScore);
+          applicationForm.formData.changeState(
+            GroundUpConstructionPurchaseState.creditScore,
+          );
         });
       },
     },
@@ -187,7 +202,7 @@ const useStateMachine = (
         try {
           await _updateTask(taskId as string, 'complete');
           await applicationForm.formData.changeState(
-            BridgePurchaseState.celebrate,
+            GroundUpConstructionPurchaseState.celebrate,
           );
         } catch (err) {
           enqueueSnackbar(err as string, {
@@ -231,7 +246,7 @@ const useStateMachine = (
   };
 };
 
-export const GroundUpPurchaseForm = observer(
+export const GroundPurchaseForm = observer(
   (props: { handleBack: () => void }) => {
     const { handleBack } = props;
 

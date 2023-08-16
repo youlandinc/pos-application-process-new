@@ -6,7 +6,7 @@ import { useMst } from '@/models/Root';
 import { POSLayout } from '@/components/molecules';
 import { LoanApplication } from '@/components/organisms';
 
-export const GroundUpPage: FC = observer(() => {
+export const GroundPage: FC = observer(() => {
   const {
     applicationForm: { applicationType },
   } = useMst();
