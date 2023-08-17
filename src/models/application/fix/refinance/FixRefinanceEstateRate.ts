@@ -5,6 +5,7 @@ import { VariableName } from '@/types/enum';
 
 export const FixRefinanceEstimateRate = types
   .model({
+    closeDate: types.maybeNull(types.union(types.Date, types.string)),
     homeValue: types.maybe(types.number),
     balance: types.maybe(types.number),
     isCashOut: types.maybe(types.boolean),
@@ -25,7 +26,15 @@ export const FixRefinanceEstimateRate = types
       self[key] = value;
     },
     getPostData(): Variable<FREstimateRateData> {
-      const { homeValue, balance, isCashOut, cashOutAmount, cor, arv } = self;
+      const {
+        homeValue,
+        balance,
+        isCashOut,
+        cashOutAmount,
+        cor,
+        arv,
+        closeDate,
+      } = self;
 
       return {
         name: VariableName.estimateRate,
@@ -37,11 +46,20 @@ export const FixRefinanceEstimateRate = types
           cashOutAmount,
           cor,
           arv,
+          closeDate,
         },
       };
     },
     injectServerData(value: FREstimateRateData) {
-      const { homeValue, balance, isCashOut, cashOutAmount, cor, arv } = value;
+      const {
+        homeValue,
+        balance,
+        isCashOut,
+        cashOutAmount,
+        cor,
+        arv,
+        closeDate,
+      } = value;
 
       self.homeValue = homeValue;
       self.balance = balance;
@@ -49,6 +67,7 @@ export const FixRefinanceEstimateRate = types
       self.cashOutAmount = cashOutAmount;
       self.cor = cor;
       self.arv = arv;
+      self.closeDate = closeDate as unknown as null;
     },
   }));
 

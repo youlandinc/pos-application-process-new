@@ -5,8 +5,8 @@ import {
   BREstimateRateData,
   FPEstimateRateData,
   FREstimateRateData,
-  GroundPurchaseEstimateRateData,
-  GroundRefinanceEstimateRateData,
+  GPEstimateRateData,
+  GREstimateRateData,
   MortgagePropertyNewData,
   MortgageStartingData,
   MRStartingData,
@@ -46,8 +46,8 @@ export type BRQueryData = BREstimateRateData;
 export type FPQueryData = FPEstimateRateData;
 export type FRQueryData = FREstimateRateData;
 
-export type GPQueryData = GroundPurchaseEstimateRateData;
-export type GRQueryData = GroundRefinanceEstimateRateData;
+export type GPQueryData = GPEstimateRateData;
+export type GRQueryData = GREstimateRateData;
 
 export const _fetchRatesProductPreview = (
   processInsId = '',

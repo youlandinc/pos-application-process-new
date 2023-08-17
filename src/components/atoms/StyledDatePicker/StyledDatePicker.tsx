@@ -12,6 +12,7 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
   label = 'Date',
   validate,
   disabled = false,
+  disableFuture = true,
   ...rest
 }) => {
   return (
@@ -19,7 +20,7 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
       <DatePicker
         closeOnSelect
         disabled={disabled}
-        disableFuture
+        disableFuture={disableFuture}
         label={label}
         minDate={null}
         onChange={onChange}

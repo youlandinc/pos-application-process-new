@@ -5,6 +5,7 @@ import { VariableName } from '@/types/enum';
 
 export const FixPurchaseEstimateRate = types
   .model({
+    closeDate: types.maybeNull(types.union(types.Date, types.string)),
     purchasePrice: types.maybe(types.number),
     purchaseLoanAmount: types.maybe(types.number),
     cor: types.maybe(types.number),
@@ -20,11 +21,10 @@ export const FixPurchaseEstimateRate = types
       key: T,
       value: (typeof self)[T],
     ) {
-      1;
       self[key] = value;
     },
     getPostData(): Variable<FPEstimateRateData> {
-      const { purchasePrice, purchaseLoanAmount, cor, arv } = self;
+      const { purchasePrice, purchaseLoanAmount, cor, arv, closeDate } = self;
       return {
         name: VariableName.estimateRate,
         type: 'json',
@@ -33,15 +33,17 @@ export const FixPurchaseEstimateRate = types
           purchaseLoanAmount,
           cor,
           arv,
+          closeDate,
         },
       };
     },
     injectServerData(value: FPEstimateRateData) {
-      const { purchasePrice, purchaseLoanAmount, cor, arv } = value;
+      const { purchasePrice, purchaseLoanAmount, cor, arv, closeDate } = value;
       self.purchaseLoanAmount = purchaseLoanAmount;
       self.purchasePrice = purchasePrice;
       self.cor = cor;
       self.arv = arv;
+      self.closeDate = closeDate as unknown as null;
     },
   }));
 

@@ -5,6 +5,7 @@ import { VariableName } from '@/types/enum';
 
 export const BPEstimateRate = types
   .model({
+    closeDate: types.maybeNull(types.union(types.Date, types.string)),
     purchasePrice: types.maybe(types.number),
     purchaseLoanAmount: types.maybe(types.number),
   })
@@ -21,20 +22,22 @@ export const BPEstimateRate = types
       self[key] = value;
     },
     getPostData(): Variable<BPEstimateRateData> {
-      const { purchasePrice, purchaseLoanAmount } = self;
+      const { purchasePrice, purchaseLoanAmount, closeDate } = self;
       return {
         name: VariableName.estimateRate,
         type: 'json',
         value: {
           purchasePrice,
           purchaseLoanAmount,
+          closeDate,
         },
       };
     },
     injectServerData(value: BPEstimateRateData) {
-      const { purchasePrice, purchaseLoanAmount } = value;
+      const { purchasePrice, purchaseLoanAmount, closeDate } = value;
       self.purchaseLoanAmount = purchaseLoanAmount;
       self.purchasePrice = purchasePrice;
+      self.closeDate = closeDate as unknown as null;
     },
   }));
 

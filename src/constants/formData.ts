@@ -505,6 +505,7 @@ export const FormData = {
         reference: ChannelOpt.default,
       },
       estimateRate: {
+        closeDate: null,
         purchasePrice: undefined,
         purchaseLoanAmount: undefined,
         isRehab: false,
@@ -601,6 +602,7 @@ export const FormData = {
         reference: ChannelOpt.default,
       },
       estimateRate: {
+        closeDate: null,
         homeValue: undefined,
         balance: undefined,
         isCashOut: false,
@@ -700,6 +702,7 @@ export const FormData = {
         reference: ChannelOpt.default,
       },
       estimateRate: {
+        closeDate: null,
         purchasePrice: undefined,
         purchaseLoanAmount: undefined,
         isRehab: false,
@@ -796,6 +799,7 @@ export const FormData = {
         reference: ChannelOpt.default,
       },
       estimateRate: {
+        closeDate: null,
         homeValue: undefined,
         balance: undefined,
         isCashOut: false,
@@ -895,6 +899,7 @@ export const FormData = {
         reference: ChannelOpt.default,
       },
       estimateRate: {
+        closeDate: null,
         purchasePrice: undefined,
         purchaseLoanAmount: undefined,
         isRehab: false,
@@ -991,6 +996,7 @@ export const FormData = {
         reference: ChannelOpt.default,
       },
       estimateRate: {
+        closeDate: null,
         homeValue: undefined,
         balance: undefined,
         isCashOut: false,
@@ -1242,5 +1248,4 @@ export const FormData = {
       },
     },
   },
-  task: {},
 };
