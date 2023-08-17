@@ -1,3 +1,4 @@
+import { addDays, compareDesc, isValid as dateValid, isDate } from 'date-fns';
 import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
@@ -8,6 +9,7 @@ import { LoanStage, UserType } from '@/types/enum';
 import {
   StyledButton,
   StyledCheckbox,
+  StyledDatePicker,
   StyledFormItem,
   StyledTextFieldNumber,
   StyledTooltip,
@@ -28,6 +30,7 @@ interface FixRefinanceRatesSearchProps {
   loading: boolean;
   userType: UserType;
   loanStage?: LoanStage;
+  isDashboard?: boolean;
 }
 
 export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
@@ -37,6 +40,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
   loading,
   userType,
   loanStage = LoanStage.Application,
+  isDashboard = false,
 }) => {
   const {
     cor,
@@ -52,10 +56,27 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
     agentFee,
     lenderProcessingFee,
     lenderPoints,
+    closeDate,
   } = searchForm;
 
   const [LTVError, setLTVError] = useState<string>('');
   const [LTCError, setLTCError] = useState<string>('');
+
+  const [date, setDate] = useState<null | Date | string>(
+    closeDate ? closeDate : addDays(new Date(), 7),
+  );
+
+  const closeDateError = useMemo(() => {
+    if (!dateValid(date)) {
+      return ['Please select or enter a valid date'];
+    }
+
+    if (isDate(date) && compareDesc(new Date(), date as Date) === -1) {
+      return ['Date out of range, please enter a future date.'];
+    }
+
+    return undefined;
+  }, [date]);
 
   const loanAmount = useMemo(() => {
     let total = 0;
@@ -471,6 +492,36 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
         label={'Estimate fix and flip loan rate'}
         labelSx={{ m: 0 }}
       >
+        {!isDashboard && (
+          <StyledFormItem
+            alignItems={'flex-start'}
+            gap={3}
+            label={'Prefer close date'}
+            labelSx={{ textAlign: 'center', width: '100%' }}
+            maxWidth={900}
+            mt={3}
+            sub
+            tip={
+              '"Preferred Close Date" is the date on which you wish to complete a real estate transaction or loan application. We will stay in touch with you to ensure that the transaction is completed at the most suitable time.'
+            }
+            width={'100%'}
+          >
+            <StyledDatePicker
+              disableFuture={false}
+              disablePast
+              label={'Prefer close date'}
+              onChange={(value) => {
+                setSearchForm({
+                  ...searchForm,
+                  closeDate: value as Date,
+                });
+                setDate(value as Date);
+              }}
+              validate={closeDateError}
+              value={date}
+            />
+          </StyledFormItem>
+        )}
         <StyledFormItem
           alignItems={'flex-start'}
           gap={3}

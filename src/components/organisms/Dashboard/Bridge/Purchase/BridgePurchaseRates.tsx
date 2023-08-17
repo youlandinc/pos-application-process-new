@@ -188,6 +188,7 @@ export const BridgePurchaseRates: FC = observer(() => {
       width={'100%'}
     >
       <BridgePurchaseRatesSearch
+        isDashboard={true}
         loading={loading || initLoading}
         loanStage={loanStage}
         onCheck={onCheckGetList}

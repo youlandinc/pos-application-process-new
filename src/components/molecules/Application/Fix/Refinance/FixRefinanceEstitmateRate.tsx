@@ -1,3 +1,5 @@
+import { POSTypeOf } from '@/utils';
+import { addDays, format, isDate } from 'date-fns';
 import { FC, useState } from 'react';
 import { useSnackbar } from 'notistack';
 
@@ -40,6 +42,7 @@ const initialize: FRQueryData = {
   officerPoints: undefined,
   officerProcessingFee: undefined,
   agentFee: undefined,
+  closeDate: null,
 };
 
 export interface FixRefinanceLoanInfo {
@@ -101,7 +104,12 @@ export const FixRefinanceEstimateRate: FC<{
   const [loading, setLoading] = useState(false);
   const [checkLoading, setCheckLoading] = useState(false);
 
-  const [searchForm, setSearchForm] = useState<FRQueryData>(initialize);
+  const [searchForm, setSearchForm] = useState<FRQueryData>({
+    ...initialize,
+    closeDate: estimateRate.closeDate
+      ? new Date(estimateRate.closeDate)
+      : initialize.closeDate,
+  });
   const [productList, setProductList] = useState<RatesProductData[]>();
   const [isFirstSearch, setIsFirstSearch] = useState<boolean>(true);
 
@@ -122,6 +130,11 @@ export const FixRefinanceEstimateRate: FC<{
       type: 'json',
       value: {
         ...searchForm,
+        closeDate: isDate(searchForm.closeDate)
+          ? format(searchForm.closeDate as Date, 'yyyy-MM-dd O')
+          : POSTypeOf(searchForm.closeDate) === 'Null'
+          ? format(addDays(new Date(), 7), 'yyyy-MM-dd O')
+          : searchForm.closeDate,
       },
     };
     for (const [key, value] of Object.entries(searchForm)) {
@@ -129,7 +142,14 @@ export const FixRefinanceEstimateRate: FC<{
     }
     await _updateProcessVariables(processId as string, [postData])
       .then(async () => {
-        const res = await _fetchRatesProductPreview(processId, searchForm);
+        const res = await _fetchRatesProductPreview(processId, {
+          ...searchForm,
+          closeDate: isDate(searchForm.closeDate)
+            ? format(searchForm.closeDate as Date, 'yyyy-MM-dd O')
+            : POSTypeOf(searchForm.closeDate) === 'Null'
+            ? format(addDays(new Date(), 7), 'yyyy-MM-dd O')
+            : searchForm.closeDate,
+        });
         if (res.status === 200) {
           setProductList(res.data.products);
         }

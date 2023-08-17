@@ -2,10 +2,10 @@ import { FC } from 'react';
 import { CircularProgress } from '@mui/material';
 import dynamic from 'next/dynamic';
 
-const DynamicGroundUpPage = dynamic(
+const DynamicGroundPage = dynamic(
   () =>
-    import('@/views/Application/GroundUpPage/GroundUpPage').then(
-      (mod) => mod.GroundUpPage,
+    import('@/views/Application/GroundPage/GroundPage').then(
+      (mod) => mod.GroundPage,
     ),
   {
     loading: () => <CircularProgress />,
@@ -14,7 +14,7 @@ const DynamicGroundUpPage = dynamic(
 );
 
 const GroundUpConstruction: FC = () => {
-  return <DynamicGroundUpPage />;
+  return <DynamicGroundPage />;
 };
 
 export default GroundUpConstruction;

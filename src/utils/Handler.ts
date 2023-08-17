@@ -14,7 +14,7 @@ export const POSGetProductTypeByUrl = (val: string): string => {
       return 'bridge';
     case 'Fix':
       return 'fix_and_flip';
-    case 'Ground':
+    case 'Ground-up':
       return 'ground_up_construction';
     default:
       return '';

@@ -35,7 +35,7 @@ export interface GroundCoBorrowerCondition {
   isCoBorrower: boolean | undefined;
 }
 
-export interface GroundPurchaseEstimateRateData {
+export interface GPEstimateRateData {
   purchasePrice: number | undefined;
   purchaseLoanAmount: number | undefined;
   cor: number | undefined;
@@ -47,9 +47,10 @@ export interface GroundPurchaseEstimateRateData {
   officerPoints?: number | undefined;
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
+  closeDate: string | undefined | Date | null;
 }
 
-export interface GroundRefinanceEstimateRateData {
+export interface GREstimateRateData {
   homeValue: number | undefined;
   balance: number | undefined;
   isCashOut: boolean;
@@ -63,4 +64,5 @@ export interface GroundRefinanceEstimateRateData {
   officerPoints?: number | undefined;
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
+  closeDate: string | undefined | Date | null;
 }
