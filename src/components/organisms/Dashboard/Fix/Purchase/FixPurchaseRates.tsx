@@ -194,6 +194,7 @@ export const FixPurchaseRates: FC = observer(() => {
       width={'100%'}
     >
       <FixPurchaseRatesSearch
+        isDashboard={true}
         loading={loading || initLoading}
         loanStage={loanStage}
         onCheck={onCheckGetList}

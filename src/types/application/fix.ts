@@ -47,6 +47,7 @@ export interface FPEstimateRateData {
   officerPoints?: number | undefined;
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
+  closeDate?: string | null | Date | undefined;
 }
 
 export interface FREstimateRateData {
@@ -63,4 +64,5 @@ export interface FREstimateRateData {
   officerPoints?: number | undefined;
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
+  closeDate?: string | null | Date | undefined;
 }

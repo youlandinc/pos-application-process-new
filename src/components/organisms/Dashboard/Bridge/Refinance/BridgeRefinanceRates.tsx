@@ -190,6 +190,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
       width={'100%'}
     >
       <BridgeRefinanceRatesSearch
+        isDashboard={true}
         loading={loading || initLoading}
         loanStage={loanStage}
         onCheck={onCheckGetList}

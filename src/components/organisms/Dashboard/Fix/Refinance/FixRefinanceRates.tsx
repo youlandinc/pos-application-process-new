@@ -196,6 +196,7 @@ export const FixRefinanceRates: FC = observer(() => {
       width={'100%'}
     >
       <FixRefinanceRatesSearch
+        isDashboard={true}
         loading={loading || initLoading}
         loanStage={loanStage}
         onCheck={onCheckGetList}
