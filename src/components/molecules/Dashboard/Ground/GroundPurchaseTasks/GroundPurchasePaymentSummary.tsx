@@ -2,11 +2,11 @@ import { FC } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { POSFormatDollar, POSFormatLocalPercent } from '@/utils';
-import { GroundPurchaseRatesLoanInfo, RatesProductData } from '@/types';
+import { GPRatesLoanInfo, RatesProductData } from '@/types';
 
 interface GroundPurchasePaymentSummaryProps {
   productInfo:
-    | (GroundPurchaseRatesLoanInfo &
+    | (GPRatesLoanInfo &
         Pick<
           RatesProductData,
           'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm'
