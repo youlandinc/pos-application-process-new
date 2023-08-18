@@ -121,6 +121,8 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
         case SceneType.bridge_refinance:
         case SceneType.fix_purchase:
         case SceneType.fix_refinance:
+        case SceneType.ground_purchase:
+        case SceneType.ground_refinance:
           formatMenuList = list.reduce((acc: MenuItems[], next: MenuItems) => {
             if (next.key !== 'application_summary') {
               acc.push(next);

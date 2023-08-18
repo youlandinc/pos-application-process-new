@@ -35,10 +35,10 @@ const productList = [
     name: 'Fix and Flip',
     url: '/application/fix_and_flip',
   },
-  //{
-  //  name: 'Ground-up Construction',
-  //  url: '/application/ground_up_construction',
-  //},
+  {
+    name: 'Ground-up Construction',
+    url: '/application/ground_up_construction',
+  },
   //{ name: 'Jumbo', url: '/application/jumbo' },
   //{ name: 'Crypto mortgage', url: '/application/crypto_mortgage' },
   //{ name: 'Crypto loan', url: '/application/crypto_loan' },
