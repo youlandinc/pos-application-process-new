@@ -128,6 +128,7 @@ export const GroundRefinanceRatesDrawer: FC<
     selectedItem?.officerProcessingFee,
     userType,
   ]);
+
   return (
     <StyledDrawer
       anchor={'right'}
