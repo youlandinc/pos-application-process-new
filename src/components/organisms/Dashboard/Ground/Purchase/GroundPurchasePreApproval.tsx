@@ -18,8 +18,8 @@ import {
   POSNotUndefined,
 } from '@/utils';
 import {
-  FPEstimateRateData,
-  FPPreApprovalLetterData,
+  GPEstimateRateData,
+  GPPreApprovalLetterData,
   PropertyOpt,
   PropertyUnitOpt,
   RatesProductData,
@@ -71,7 +71,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
       errors: {},
     }),
   );
-  const [rateData, setRateData] = useState<FPEstimateRateData>();
+  const [rateData, setRateData] = useState<GPEstimateRateData>();
 
   const [LTVError, setLTVError] = useState<undefined | string[]>(undefined);
   const [LTCError, setLTCError] = useState<undefined | string[]>(undefined);
@@ -122,7 +122,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
     if (!router.query.processId) {
       return;
     }
-    return await _fetchPreApprovedLetterInfo<FPPreApprovalLetterData>(processId)
+    return await _fetchPreApprovedLetterInfo<GPPreApprovalLetterData>(processId)
       .then((res) => {
         const { data } = res;
         setLoanStage(data?.loanStage);
@@ -197,9 +197,9 @@ export const GroundPurchasePreApproval: FC = observer(() => {
       ...rateData,
     };
     const { data, status } =
-      await _fetchPreApprovedLetterCheck<FPPreApprovalLetterData>(
+      await _fetchPreApprovedLetterCheck<GPPreApprovalLetterData>(
         router.query.processId as string,
-        postData as FPPreApprovalLetterData,
+        postData as GPPreApprovalLetterData,
       );
     if (status === 200) {
       setCheckResult(!!data);
@@ -481,7 +481,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
               label="Broker Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as FPEstimateRateData),
+                  ...(rateData as GPEstimateRateData),
                   brokerPoints: floatValue,
                 })
               }
@@ -496,7 +496,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
               label="Broker Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as FPEstimateRateData),
+                  ...(rateData as GPEstimateRateData),
                   brokerProcessingFee: floatValue,
                 });
               }}
@@ -516,7 +516,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
               label="Lender Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as FPEstimateRateData),
+                  ...(rateData as GPEstimateRateData),
                   lenderPoints: floatValue,
                 })
               }
@@ -531,7 +531,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
               label="Lender Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as FPEstimateRateData),
+                  ...(rateData as GPEstimateRateData),
                   lenderProcessingFee: floatValue,
                 });
               }}
@@ -551,7 +551,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
               label="Loan Officer Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as FPEstimateRateData),
+                  ...(rateData as GPEstimateRateData),
                   officerPoints: floatValue,
                 })
               }
@@ -566,7 +566,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
               label="Loan Officer Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as FPEstimateRateData),
+                  ...(rateData as GPEstimateRateData),
                   officerProcessingFee: floatValue,
                 });
               }}
@@ -585,7 +585,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
               label="Real Estate Agent Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as FPEstimateRateData),
+                  ...(rateData as GPEstimateRateData),
                   agentFee: floatValue,
                 });
               }}
@@ -607,7 +607,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
             label="Purchase Price"
             onValueChange={({ floatValue }) =>
               setRateData({
-                ...(rateData as FPEstimateRateData),
+                ...(rateData as GPEstimateRateData),
                 purchasePrice: floatValue,
               })
             }
@@ -620,7 +620,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
             label="Purchase Loan Amount"
             onValueChange={({ floatValue }) => {
               setRateData({
-                ...(rateData as FPEstimateRateData),
+                ...(rateData as GPEstimateRateData),
                 purchaseLoanAmount: floatValue,
               });
             }}
@@ -647,7 +647,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
             label={'Estimated rehab loan amount'}
             onValueChange={({ floatValue }) => {
               setRateData({
-                ...(rateData as FPEstimateRateData),
+                ...(rateData as GPEstimateRateData),
                 cor: floatValue,
               });
             }}
@@ -660,7 +660,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
             label={'After repair value (ARV)'}
             onValueChange={({ floatValue }) => {
               setRateData({
-                ...(rateData as FPEstimateRateData),
+                ...(rateData as GPEstimateRateData),
                 arv: floatValue,
               });
             }}

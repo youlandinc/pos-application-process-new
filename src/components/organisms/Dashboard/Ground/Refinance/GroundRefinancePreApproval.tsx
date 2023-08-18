@@ -18,8 +18,8 @@ import {
   POSNotUndefined,
 } from '@/utils';
 import {
-  FREstimateRateData,
-  FRPreApprovalLetterData,
+  GREstimateRateData,
+  GRPreApprovalLetterData,
   PropertyOpt,
   PropertyUnitOpt,
   RatesProductData,
@@ -72,7 +72,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
       errors: {},
     }),
   );
-  const [rateData, setRateData] = useState<FREstimateRateData>();
+  const [rateData, setRateData] = useState<GREstimateRateData>();
 
   const [LTVError, setLTVError] = useState<undefined | string[]>(undefined);
   const [LTCError, setLTCError] = useState<undefined | string[]>(undefined);
@@ -145,7 +145,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
     if (!router.query.processId) {
       return;
     }
-    return await _fetchPreApprovedLetterInfo<FRPreApprovalLetterData>(processId)
+    return await _fetchPreApprovedLetterInfo<GRPreApprovalLetterData>(processId)
       .then((res) => {
         const { data } = res;
         setLoanStage(data?.loanStage);
@@ -225,7 +225,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
     };
     const { data, status } = await _fetchPreApprovedLetterCheck(
       router.query.processId as string,
-      postData as FRPreApprovalLetterData,
+      postData as GRPreApprovalLetterData,
     );
     if (status === 200) {
       setCheckResult(!!data);
@@ -508,7 +508,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
               label="Broker Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as FREstimateRateData),
+                  ...(rateData as GREstimateRateData),
                   brokerPoints: floatValue,
                 })
               }
@@ -523,7 +523,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
               label="Broker Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as FREstimateRateData),
+                  ...(rateData as GREstimateRateData),
                   brokerProcessingFee: floatValue,
                 });
               }}
@@ -543,7 +543,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
               label="Lender Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as FREstimateRateData),
+                  ...(rateData as GREstimateRateData),
                   lenderPoints: floatValue,
                 })
               }
@@ -558,7 +558,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
               label="Lender Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as FREstimateRateData),
+                  ...(rateData as GREstimateRateData),
                   lenderProcessingFee: floatValue,
                 });
               }}
@@ -578,7 +578,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
               label="Loan Officer Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as FREstimateRateData),
+                  ...(rateData as GREstimateRateData),
                   officerPoints: floatValue,
                 })
               }
@@ -593,7 +593,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
               label="Loan Officer Processing Fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
-                  ...(rateData as FREstimateRateData),
+                  ...(rateData as GREstimateRateData),
                   officerProcessingFee: floatValue,
                 });
               }}
@@ -613,7 +613,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
               label="Real Estate Agent Origination Fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
-                  ...(rateData as FREstimateRateData),
+                  ...(rateData as GREstimateRateData),
                   agentFee: floatValue,
                 })
               }
@@ -637,7 +637,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
             label="As-is Property Value"
             onValueChange={({ floatValue }) =>
               setRateData({
-                ...(rateData as FREstimateRateData),
+                ...(rateData as GREstimateRateData),
                 homeValue: floatValue,
               })
             }
@@ -650,7 +650,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
             label="Payoff Amount"
             onValueChange={({ floatValue }) => {
               setRateData({
-                ...(rateData as FREstimateRateData),
+                ...(rateData as GREstimateRateData),
                 balance: floatValue,
               });
             }}
@@ -675,7 +675,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
             label={'Cash Out'}
             onChange={(e) => {
               setRateData({
-                ...(rateData as FREstimateRateData),
+                ...(rateData as GREstimateRateData),
                 isCashOut: e.target.checked,
               });
             }}
@@ -710,7 +710,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
             label={'Estimated rehab loan amount'}
             onValueChange={({ floatValue }) => {
               setRateData({
-                ...(rateData as FREstimateRateData),
+                ...(rateData as GREstimateRateData),
                 cor: floatValue,
               });
             }}
@@ -723,7 +723,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
             label={'After repair value (ARV)'}
             onValueChange={({ floatValue }) => {
               setRateData({
-                ...(rateData as FREstimateRateData),
+                ...(rateData as GREstimateRateData),
                 arv: floatValue,
               });
             }}
