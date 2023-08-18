@@ -151,7 +151,14 @@ export const GroundRefinanceRates: FC = observer(() => {
   };
 
   const onListItemClick = async (item: RatesProductData) => {
-    const { paymentOfMonth, interestRateOfYear, loanTerm, id } = item;
+    const {
+      paymentOfMonth,
+      interestRateOfYear,
+      loanTerm,
+      id,
+      totalClosingCash,
+      proRatedInterest,
+    } = item;
     const postData = {
       id,
       queryParams: {
@@ -164,6 +171,8 @@ export const GroundRefinanceRates: FC = observer(() => {
         interestRateOfYear,
         loanTerm,
         id,
+        totalClosingCash,
+        proRatedInterest,
       }),
     );
     open();
