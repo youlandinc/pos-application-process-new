@@ -10,6 +10,8 @@ import {
   BridgeRefinancePreApproval,
   FixPurchasePreApproval,
   FixRefinancePreApproval,
+  GroundPurchasePreApproval,
+  GroundRefinancePreApproval,
 } from '@/components/organisms';
 
 export const PreApprovalLetterPage: FC = observer(() => {
@@ -30,6 +32,12 @@ export const PreApprovalLetterPage: FC = observer(() => {
       }
       case SceneType.fix_refinance: {
         return <FixRefinancePreApproval />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchasePreApproval />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinancePreApproval />;
       }
       default: {
         return <BridgePurchasePreApproval />;

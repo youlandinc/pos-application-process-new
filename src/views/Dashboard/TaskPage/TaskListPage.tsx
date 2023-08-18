@@ -11,6 +11,8 @@ import {
   BridgeRefinanceTaskList,
   FixPurchaseTaskList,
   FixRefinanceTaskList,
+  GroundPurchaseTaskList,
+  GroundRefinanceTaskList,
 } from '@/components/organisms';
 
 export const TaskListPage: FC = observer(() => {
@@ -31,6 +33,12 @@ export const TaskListPage: FC = observer(() => {
       }
       case SceneType.fix_refinance: {
         return <FixRefinanceTaskList />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseTaskList />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinanceTaskList />;
       }
       default:
         return <BridgePurchaseTaskList />;
