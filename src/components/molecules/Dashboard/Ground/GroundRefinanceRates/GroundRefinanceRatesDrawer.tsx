@@ -293,11 +293,7 @@ export const GroundRefinanceRatesDrawer: FC<
                   ['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'
                 }
               >
-                {POSFormatDollar(
-                  (selectedItem?.totalClosingCash as number) -
-                    (selectedItem?.proRatedInterest as number) +
-                    (selectedItem?.paymentOfMonth as number) / 30,
-                )}
+                {POSFormatDollar(selectedItem?.totalClosingCash as number)}
               </Typography>
             </Typography>
 
@@ -325,9 +321,7 @@ export const GroundRefinanceRatesDrawer: FC<
                 label={'Document Preparation Fee'}
               />
               <CardItem
-                info={POSFormatDollar(
-                  (selectedItem?.paymentOfMonth as number) / 30,
-                )}
+                info={POSFormatDollar(selectedItem?.proRatedInterest as number)}
                 label={'Pro-rated Interest'}
               />
               <CardItem
