@@ -60,7 +60,9 @@ export type OverviewSummaryData =
   | BPOverviewSummaryData
   | BROverviewSummaryData
   | FROverviewSummaryData
-  | FPOverviewSummaryData;
+  | FPOverviewSummaryData
+  | GROverviewSummaryData
+  | GPOverviewSummaryData;
 
 export type BaseOverviewSummaryData = {
   loanAmount: number;
@@ -122,7 +124,9 @@ interface DashboardTaskItem<
     | BPDashboardTaskKey
     | BRDashboardTaskKey
     | FPDashboardTaskKey
-    | FRDashboardTaskKey,
+    | FRDashboardTaskKey
+    | GPDashboardTaskKey
+    | GRDashboardTaskKey,
 > {
   title: string;
   children: Array<{ code: T; url: string }>;
@@ -133,7 +137,9 @@ export interface DashboardTaskList<
     | BPDashboardTaskKey
     | BRDashboardTaskKey
     | FPDashboardTaskKey
-    | FRDashboardTaskKey,
+    | FRDashboardTaskKey
+    | GPDashboardTaskKey
+    | GRDashboardTaskKey,
 > {
   ApplicationInformation: DashboardTaskItem<T>;
   BorrowerInformation: DashboardTaskItem<T>;

@@ -9,6 +9,8 @@ import {
   BridgeRefinanceOverview,
   FixPurchaseOverview,
   FixRefinanceOverview,
+  GroundPurchaseOverview,
+  GroundRefinanceOverview,
 } from '@/components/organisms';
 
 export const OverviewPage: FC = observer(() => {
@@ -36,8 +38,15 @@ export const OverviewPage: FC = observer(() => {
       case SceneType.fix_refinance: {
         return <FixRefinanceOverview />;
       }
-      default:
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseOverview />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinanceOverview />;
+      }
+      default: {
         return <BridgePurchaseOverview />;
+      }
     }
   }, [scene]);
   return <>{renderOverPage}</>;

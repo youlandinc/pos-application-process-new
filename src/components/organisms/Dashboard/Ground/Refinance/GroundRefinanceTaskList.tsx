@@ -14,9 +14,9 @@ import { POSFlex } from '@/styles';
 import { _fetchLoanTask } from '@/requests/dashboard';
 import {
   DashboardTaskList,
-  FixDashboardLoanTask,
-  FixDashboardTaskMap,
-  FRDashboardTaskKey,
+  GRDashboardTaskKey,
+  GroundDashboardLoanTask,
+  GroundDashboardTaskMap,
   LoanStage,
 } from '@/types';
 
@@ -27,20 +27,20 @@ import {
 } from '@/components/atoms';
 import { DashboardHeader } from '@/components/molecules';
 
-const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
+const GroundRefinanceDashboardTaskMap: DashboardTaskList<GRDashboardTaskKey> = {
   ApplicationInformation: {
     title: 'Application Information',
     children: [
       {
-        code: 'FR_APPLICATION_LOAN',
+        code: 'GR_APPLICATION_LOAN',
         url: '/dashboard/tasks/loan_details',
       },
       {
-        code: 'FR_APPLICATION_PROPERTY',
+        code: 'GR_APPLICATION_PROPERTY',
         url: '/dashboard/tasks/property_details',
       },
       {
-        code: 'FR_APPLICATION_INVESTMENT',
+        code: 'GR_APPLICATION_INVESTMENT',
         url: '/dashboard/tasks/investment_experience',
       },
     ],
@@ -49,19 +49,19 @@ const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
     title: 'Borrower Information',
     children: [
       {
-        code: 'FR_BORROWER_PERSONAL',
+        code: 'GR_BORROWER_PERSONAL',
         url: '/dashboard/tasks/personal_details',
       },
       {
-        code: 'FR_BORROWER_DEMOGRAPHICS',
+        code: 'GR_BORROWER_DEMOGRAPHICS',
         url: '/dashboard/tasks/demographics_information',
       },
       {
-        code: 'FR_BORROWER_GUARANTOR',
+        code: 'GR_BORROWER_GUARANTOR',
         url: '/dashboard/tasks/borrower_type',
       },
       {
-        code: 'FR_BORROWER_CO_BORROWER',
+        code: 'GR_BORROWER_CO_BORROWER',
         url: '/dashboard/tasks/co_borrower_details',
       },
     ],
@@ -70,11 +70,11 @@ const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
     title: 'Property Appraisal',
     children: [
       {
-        code: 'FR_APPRAISAL_COST',
+        code: 'GR_APPRAISAL_COST',
         url: '/dashboard/tasks/cost',
       },
       {
-        code: 'FR_APPRAISAL_PROPERTY_DETAILS',
+        code: 'GR_APPRAISAL_PROPERTY_DETAILS',
         url: '/dashboard/tasks/property_inspection',
       },
     ],
@@ -83,11 +83,11 @@ const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
     title: 'Third-party Information',
     children: [
       {
-        code: 'FR_THIRD_CLOSING',
+        code: 'GR_THIRD_CLOSING',
         url: '/dashboard/tasks/company_information',
       },
       {
-        code: 'FR_THIRD_INSURANCE',
+        code: 'GR_THIRD_INSURANCE',
         url: '/dashboard/tasks/insurance_information',
       },
     ],
@@ -96,7 +96,7 @@ const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
   //  title: 'Set up auto Pay',
   //  children: [
   //    {
-  //      code: 'FR_THIRD_CLOSING',
+  //      code: 'GR_THIRD_CLOSING',
   //      url: '/dashboard/tasks/company_information',
   //    },
   //  ],
@@ -105,26 +105,26 @@ const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
     title: 'Documents & Materials',
     children: [
       // {
-      //   code: 'FR_DOCUMENTS_CONTRACT',
+      //   code: 'GR_DOCUMENTS_CONTRACT',
       //   url: '/dashboard/tasks/contract',
       // },
       {
-        code: 'FR_DOCUMENTS_PICTURES',
+        code: 'GR_DOCUMENTS_PICTURES',
         url: '/dashboard/tasks/upload_pictures',
       },
       {
-        code: 'FR_DOCUMENTS_REVIEW',
+        code: 'GR_DOCUMENTS_REVIEW',
         url: '/dashboard/tasks/agreements',
       },
       {
-        code: 'FR_DOCUMENTS_DOCUMENTS',
+        code: 'GR_DOCUMENTS_DOCUMENTS',
         url: '/dashboard/tasks/documents',
       },
     ],
   },
 };
 
-export const FixRefinanceTaskList: FC = observer(() => {
+export const GroundRefinanceTaskList: FC = observer(() => {
   const {
     selectedProcessData: { loanStage },
   } = useMst();
@@ -135,7 +135,7 @@ export const FixRefinanceTaskList: FC = observer(() => {
   const breakpoints = useBreakpoints();
 
   const [taskDetails, setTaskDetails] =
-    useSetState<FixDashboardTaskMap<FRDashboardTaskKey>>();
+    useSetState<GroundDashboardTaskMap<GRDashboardTaskKey>>();
 
   const [total, setTotal] = useState(9);
   const [current, setCurrent] = useState(0);
@@ -144,7 +144,7 @@ export const FixRefinanceTaskList: FC = observer(() => {
     if (!router.query.processId) {
       return;
     }
-    return await _fetchLoanTask<FixDashboardLoanTask>(
+    return await _fetchLoanTask<GroundDashboardLoanTask>(
       router.query.processId as string,
     )
       .then((res) => {
@@ -174,11 +174,11 @@ export const FixRefinanceTaskList: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
-              {FixRefinanceDashboardTaskMap.ApplicationInformation.title}
+              {GroundRefinanceDashboardTaskMap.ApplicationInformation.title}
             </Typography>
           </Box>
 
-          {FixRefinanceDashboardTaskMap.ApplicationInformation.children.map(
+          {GroundRefinanceDashboardTaskMap.ApplicationInformation.children.map(
             (sonItem) => (
               <Box
                 key={sonItem.code}
@@ -217,10 +217,10 @@ export const FixRefinanceTaskList: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
-              {FixRefinanceDashboardTaskMap.BorrowerInformation.title}
+              {GroundRefinanceDashboardTaskMap.BorrowerInformation.title}
             </Typography>
           </Box>
-          {FixRefinanceDashboardTaskMap.BorrowerInformation.children.map(
+          {GroundRefinanceDashboardTaskMap.BorrowerInformation.children.map(
             (sonItem) => (
               <Box
                 key={sonItem.code}
@@ -259,10 +259,10 @@ export const FixRefinanceTaskList: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
-              {FixRefinanceDashboardTaskMap.PropertyAppraisal.title}
+              {GroundRefinanceDashboardTaskMap.PropertyAppraisal.title}
             </Typography>
           </Box>
-          {FixRefinanceDashboardTaskMap.PropertyAppraisal.children.map(
+          {GroundRefinanceDashboardTaskMap.PropertyAppraisal.children.map(
             (sonItem) => (
               <Box
                 key={sonItem.code}
@@ -301,10 +301,10 @@ export const FixRefinanceTaskList: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
-              {FixRefinanceDashboardTaskMap.ThirdPartyInformation.title}
+              {GroundRefinanceDashboardTaskMap.ThirdPartyInformation.title}
             </Typography>
           </Box>
-          {FixRefinanceDashboardTaskMap.ThirdPartyInformation.children.map(
+          {GroundRefinanceDashboardTaskMap.ThirdPartyInformation.children.map(
             (sonItem) => (
               <Box
                 key={sonItem.code}
@@ -343,10 +343,10 @@ export const FixRefinanceTaskList: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'h7' : 'h6'}
             >
-              {FixRefinanceDashboardTaskMap.DocumentsMaterials.title}
+              {GroundRefinanceDashboardTaskMap.DocumentsMaterials.title}
             </Typography>
           </Box>
-          {FixRefinanceDashboardTaskMap.DocumentsMaterials.children.map(
+          {GroundRefinanceDashboardTaskMap.DocumentsMaterials.children.map(
             (sonItem) => {
               if (taskDetails[sonItem.code]) {
                 return (
