@@ -96,6 +96,8 @@ export interface RatesProductData {
   category: string;
   feature: LoanType;
   status: string;
+  totalClosingCash: number;
+  proRatedInterest: number;
 
   // unique identity just for product
   selected?: boolean;
