@@ -47,7 +47,7 @@ export interface GPEstimateRateData {
   officerPoints?: number | undefined;
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
-  closeDate: string | undefined | Date | null;
+  closeDate?: string | undefined | Date | null;
 }
 
 export interface GREstimateRateData {
@@ -64,5 +64,5 @@ export interface GREstimateRateData {
   officerPoints?: number | undefined;
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
-  closeDate: string | undefined | Date | null;
+  closeDate?: string | undefined | Date | null;
 }

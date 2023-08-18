@@ -3,6 +3,10 @@ import {
   BRDashboardTaskKey,
   FPDashboardTaskKey,
   FRDashboardTaskKey,
+  GPDashboardTaskKey,
+  GPOverviewSummaryData,
+  GRDashboardTaskKey,
+  GROverviewSummaryData,
   PropertyOpt,
 } from '@/types';
 import { LoanStage, LoanType } from '@/types/enum';
@@ -92,6 +96,7 @@ export interface RatesProductData {
   category: string;
   feature: LoanType;
   status: string;
+
   // unique identity just for product
   selected?: boolean;
   updated?: boolean;

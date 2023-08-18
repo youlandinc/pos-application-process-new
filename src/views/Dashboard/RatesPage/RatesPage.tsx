@@ -10,6 +10,8 @@ import {
   BridgeRefinanceRates,
   FixPurchaseRates,
   FixRefinanceRates,
+  GroundPurchaseRates,
+  GroundRefinanceRates,
 } from '@/components/organisms';
 
 export const RatesPage: FC = observer(() => {
@@ -30,6 +32,12 @@ export const RatesPage: FC = observer(() => {
       }
       case SceneType.fix_refinance: {
         return <FixRefinanceRates />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseRates />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinanceRates />;
       }
       default:
         return <BridgePurchaseRates />;

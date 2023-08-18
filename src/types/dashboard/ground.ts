@@ -29,7 +29,7 @@ export type GROverviewSummaryData = BaseOverviewSummaryData & {
   isCashOut: boolean;
 };
 
-export type FPRatesLoanInfo = Pick<
+export type GPRatesLoanInfo = Pick<
   GPEstimateRateData,
   'purchasePrice' | 'purchaseLoanAmount' | 'cor'
 > & {
