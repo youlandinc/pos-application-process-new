@@ -11,6 +11,8 @@ import {
   BridgeRefinanceTaskCoBorrowerDetails,
   FixPurchaseTaskCoBorrowerDetails,
   FixRefinanceTaskCoBorrowerDetails,
+  GroundPurchaseTaskCoBorrowerDetails,
+  GroundRefinanceTaskCoBorrowerDetails,
 } from '@/components/organisms';
 
 export const CoBorrowerDetailsPage: FC = observer(() => {
@@ -31,6 +33,12 @@ export const CoBorrowerDetailsPage: FC = observer(() => {
       }
       case SceneType.fix_refinance: {
         return <FixRefinanceTaskCoBorrowerDetails />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseTaskCoBorrowerDetails />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinanceTaskCoBorrowerDetails />;
       }
       default:
         return <BridgePurchaseTaskCoBorrowerDetails />;

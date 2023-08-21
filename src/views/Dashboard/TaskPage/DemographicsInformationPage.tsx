@@ -11,6 +11,8 @@ import {
   BridgeRefinanceTaskDemographicsInformation,
   FixPurchaseTaskDemographicsInformation,
   FixRefinanceTaskDemographicsInformation,
+  GroundPurchaseTaskDemographicsInformation,
+  GroundRefinanceTaskDemographicsInformation,
 } from '@/components/organisms';
 
 export const DemographicsInformationPage: FC = observer(() => {
@@ -31,6 +33,12 @@ export const DemographicsInformationPage: FC = observer(() => {
       }
       case SceneType.fix_refinance: {
         return <FixRefinanceTaskDemographicsInformation />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseTaskDemographicsInformation />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinanceTaskDemographicsInformation />;
       }
       default:
         return <BridgePurchaseTaskDemographicsInformation />;

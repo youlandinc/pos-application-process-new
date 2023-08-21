@@ -11,6 +11,8 @@ import {
   BridgeRefinanceTaskInvestmentExperience,
   FixPurchaseTaskInvestmentExperience,
   FixRefinanceTaskInvestmentExperience,
+  GroundPurchaseTaskInvestmentExperience,
+  GroundRefinanceTaskInvestmentExperience,
 } from '@/components/organisms';
 
 export const InvestmentExperiencePage: FC = observer(() => {
@@ -31,6 +33,12 @@ export const InvestmentExperiencePage: FC = observer(() => {
       }
       case SceneType.fix_refinance: {
         return <FixRefinanceTaskInvestmentExperience />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseTaskInvestmentExperience />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinanceTaskInvestmentExperience />;
       }
       default:
         return <BridgePurchaseTaskInvestmentExperience />;

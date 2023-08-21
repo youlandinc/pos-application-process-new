@@ -220,7 +220,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               />
               <CardItem
                 info={POSFormatPercent(selectedItem?.ltv)}
-                label={'Loan-to-Value (LTV)'}
+                label={'Loan-to-Value(LTV)'}
               />
 
               <CardItem

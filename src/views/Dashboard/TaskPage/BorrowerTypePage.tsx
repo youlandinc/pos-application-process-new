@@ -11,6 +11,8 @@ import {
   BridgeRefinanceTaskBorrowerType,
   FixPurchaseTaskBorrowerType,
   FixRefinanceTaskBorrowerType,
+  GroundPurchaseTaskBorrowerType,
+  GroundRefinanceTaskBorrowerType,
 } from '@/components/organisms';
 
 export const BorrowerTypePage: FC = observer(() => {
@@ -31,6 +33,12 @@ export const BorrowerTypePage: FC = observer(() => {
       }
       case SceneType.fix_refinance: {
         return <FixRefinanceTaskBorrowerType />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseTaskBorrowerType />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinanceTaskBorrowerType />;
       }
       default:
         return <BridgePurchaseTaskBorrowerType />;
