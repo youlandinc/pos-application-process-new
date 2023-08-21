@@ -232,7 +232,7 @@ export const BridgeRefinanceRatesDrawer: FC<
               />
               <BridgeRefinanceCardItem
                 info={POSFormatPercent(selectedItem?.ltv)}
-                label={'Loan-to-Value'}
+                label={'Loan-to-Value(LTV)'}
               />
             </Stack>
           </Stack>
