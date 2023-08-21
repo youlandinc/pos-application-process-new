@@ -231,7 +231,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               />
               <BridgePurchaseCardItem
                 info={POSFormatPercent(selectedItem?.ltv)}
-                label={'Loan-to-Value (LTV)'}
+                label={'Loan-to-Value(LTV)'}
               />
             </Stack>
           </Stack>

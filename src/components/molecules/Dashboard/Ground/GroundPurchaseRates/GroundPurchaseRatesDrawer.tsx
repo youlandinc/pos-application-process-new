@@ -228,7 +228,11 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               <GroundCardItem info={selectedItem?.lien} label={'Lien'} />
               <GroundCardItem
                 info={POSFormatPercent(selectedItem?.ltv)}
-                label={'Loan-to-Value (LTV)'}
+                label={'Loan-to-Value(LTV)'}
+              />
+              <GroundCardItem
+                info={POSFormatPercent(selectedItem?.ltc)}
+                label={'Loan-to-Cost(LTC)'}
               />
             </Stack>
           </Stack>

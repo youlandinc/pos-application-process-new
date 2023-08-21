@@ -239,11 +239,11 @@ export const FixRefinanceRatesDrawer: FC<FixRefinanceRatesDrawerProps> = ({
               />
               <FixRefinanceCardItem
                 info={POSFormatPercent(selectedItem?.ltv)}
-                label={'Loan-to-Value'}
+                label={'Loan-to-Value(LTV)'}
               />
               <FixRefinanceCardItem
                 info={POSFormatPercent(selectedItem?.ltc)}
-                label={'Loan-to-Cost'}
+                label={'Loan-to-Cost(LTC)'}
               />
             </Stack>
           </Stack>
