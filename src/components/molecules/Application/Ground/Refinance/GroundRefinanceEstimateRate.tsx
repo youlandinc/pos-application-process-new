@@ -169,7 +169,14 @@ export const GroundRefinanceEstimateRate: FC<{
   };
 
   const onListItemClick = async (item: RatesProductData) => {
-    const { paymentOfMonth, interestRateOfYear, loanTerm, id } = item;
+    const {
+      paymentOfMonth,
+      interestRateOfYear,
+      loanTerm,
+      id,
+      totalClosingCash,
+      proRatedInterest,
+    } = item;
     if (nextStep) {
       const temp = productList!.map((item) => {
         item.selected = false;
@@ -184,6 +191,8 @@ export const GroundRefinanceEstimateRate: FC<{
         interestRateOfYear,
         loanTerm,
         id,
+        totalClosingCash,
+        proRatedInterest,
       }),
     );
     open();
