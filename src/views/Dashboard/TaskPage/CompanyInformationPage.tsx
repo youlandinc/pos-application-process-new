@@ -10,6 +10,8 @@ import {
   BridgeRefinanceTaskCompanyInformation,
   FixPurchaseTaskCompanyInformation,
   FixRefinanceTaskCompanyInformation,
+  GroundPurchaseTaskCompanyInformation,
+  GroundRefinanceTaskCompanyInformation,
 } from '@/components/organisms';
 
 export const CompanyInformationPage: FC = observer(() => {
@@ -30,6 +32,12 @@ export const CompanyInformationPage: FC = observer(() => {
       }
       case SceneType.fix_refinance: {
         return <FixRefinanceTaskCompanyInformation />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseTaskCompanyInformation />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinanceTaskCompanyInformation />;
       }
       default:
         return <BridgePurchaseTaskCompanyInformation />;

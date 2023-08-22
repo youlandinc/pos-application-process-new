@@ -50,6 +50,20 @@ export type BaseOverviewThirdParty = {
   docPreparationFee: number;
   proRatedInterest: number;
   thirdPartyCosts: string;
+  // broker
+  brokerPoints: number;
+  brokerOriginationFee: number;
+  brokerProcessingFee: number;
+  // lender
+  lenderPoints: number;
+  lenderOriginationFee: number;
+  lenderProcessingFee: number;
+  // officer
+  officerPoints: number;
+  officerOriginationFee: number;
+  officerProcessingFee: number;
+  // agent
+  agentFee: number;
 };
 
 export interface OverviewClosingCostData {

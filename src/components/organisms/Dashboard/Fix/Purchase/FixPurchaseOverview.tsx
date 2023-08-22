@@ -1,3 +1,4 @@
+import { useMst } from '@/models/Root';
 import { FC, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -7,7 +8,7 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 
 import { AUTO_HIDE_DURATION, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
-import { FPOverviewSummaryData } from '@/types';
+import { FPOverviewSummaryData, UserType } from '@/types';
 import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
 import {
   POSFindLabel,
@@ -25,6 +26,8 @@ import {
 } from '@/components/molecules';
 
 export const FixPurchaseOverview: FC = observer(() => {
+  const { userType } = useMst();
+
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { saasState } = useSessionStorageState('tenantConfig');
@@ -138,6 +141,77 @@ export const FixPurchaseOverview: FC = observer(() => {
             },
           ],
         });
+        let temp: { label: string; info: string }[];
+        switch (userType) {
+          case UserType.BROKER: {
+            temp = [
+              {
+                label: 'Broker Origination Fee',
+                info: `${POSFormatDollar(
+                  thirdParty?.brokerOriginationFee,
+                )}(${POSFormatPercent(
+                  (thirdParty?.brokerPoints as number) / 100,
+                )})`,
+              },
+              {
+                label: 'Broker Processing Fee',
+                info: POSFormatDollar(thirdParty?.brokerProcessingFee),
+              },
+            ];
+            break;
+          }
+          case UserType.LENDER: {
+            temp = [
+              {
+                label: 'Lender Origination Fee',
+                info: `${POSFormatDollar(
+                  thirdParty?.lenderOriginationFee,
+                )}(${POSFormatPercent(
+                  (thirdParty?.lenderPoints as number) / 100,
+                )})`,
+              },
+              {
+                label: 'Lender Processing Fee',
+                info: POSFormatDollar(thirdParty?.lenderProcessingFee),
+              },
+            ];
+            break;
+          }
+          case UserType.LOAN_OFFICER: {
+            temp = [
+              {
+                label: 'Lender Origination Fee',
+                info: `${POSFormatDollar(
+                  thirdParty?.officerOriginationFee,
+                )}(${POSFormatPercent(
+                  (thirdParty?.officerPoints as number) / 100,
+                )})`,
+              },
+              {
+                label: 'Lender Processing Fee',
+                info: POSFormatDollar(thirdParty?.officerProcessingFee),
+              },
+            ];
+            break;
+          }
+          case UserType.REAL_ESTATE_AGENT: {
+            temp = [
+              {
+                label: 'Referral Fee',
+                info: `${POSFormatDollar(thirdParty?.agentFee)}`,
+              },
+            ];
+            break;
+          }
+          case UserType.CUSTOMER: {
+            temp = [];
+            break;
+          }
+          default: {
+            temp = [];
+            break;
+          }
+        }
         setThirdParty({
           title: 'Est. Cash Required at Closing',
           subTitle: 'Total',
@@ -166,6 +240,7 @@ export const FixPurchaseOverview: FC = observer(() => {
               info: POSFormatDollar(thirdParty?.proRatedInterest),
             },
             { label: 'Third-party Costs', info: thirdParty?.thirdPartyCosts },
+            ...temp,
           ],
         });
       })

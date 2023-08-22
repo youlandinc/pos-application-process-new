@@ -8,6 +8,8 @@ import {
   BridgeRefinanceTaskUploadPictures,
   FixPurchaseTaskUploadPictures,
   FixRefinanceTaskUploadPictures,
+  GroundPurchaseTaskUploadPictures,
+  GroundRefinanceTaskUploadPictures,
 } from '@/components/organisms';
 
 export const UploadPicturesPage: FC = observer(() => {
@@ -28,6 +30,12 @@ export const UploadPicturesPage: FC = observer(() => {
       }
       case SceneType.fix_refinance: {
         return <FixRefinanceTaskUploadPictures />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseTaskUploadPictures />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinanceTaskUploadPictures />;
       }
       default:
         return <BridgePurchaseTaskUploadPictures />;

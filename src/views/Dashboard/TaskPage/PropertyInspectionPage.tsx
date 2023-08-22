@@ -10,6 +10,8 @@ import {
   BridgeRefinanceTaskPropertyInspection,
   FixPurchaseTaskPropertyInspection,
   FixRefinanceTaskPropertyInspection,
+  GroundPurchaseTaskPropertyInspection,
+  GroundRefinanceTaskPropertyInspection,
 } from '@/components/organisms';
 
 export const PropertyInspectionPage: FC = observer(() => {
@@ -30,6 +32,12 @@ export const PropertyInspectionPage: FC = observer(() => {
       }
       case SceneType.fix_refinance: {
         return <FixRefinanceTaskPropertyInspection />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseTaskPropertyInspection />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinanceTaskPropertyInspection />;
       }
       default:
         return <BridgePurchaseTaskPropertyInspection />;
