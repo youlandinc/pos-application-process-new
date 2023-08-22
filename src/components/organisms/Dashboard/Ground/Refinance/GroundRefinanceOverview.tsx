@@ -1,22 +1,3 @@
-import { FC, useState } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useAsync } from 'react-use';
-import { useSnackbar } from 'notistack';
-
-import { observer } from 'mobx-react-lite';
-
-import { AUTO_HIDE_DURATION, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
-import { GROverviewSummaryData } from '@/types';
-import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
-import {
-  POSFindLabel,
-  POSFormatDollar,
-  POSFormatLocalPercent,
-  POSFormatPercent,
-} from '@/utils';
-import { useSessionStorageState } from '@/hooks';
-
 import { StyledButton } from '@/components/atoms';
 import {
   CommonOverviewInfo,
@@ -24,10 +5,33 @@ import {
   DashboardHeader,
 } from '@/components/molecules';
 
+import { AUTO_HIDE_DURATION, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
+import { useSessionStorageState } from '@/hooks';
+import { useMst } from '@/models/Root';
+import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
+import { GROverviewSummaryData, UserType } from '@/types';
+import {
+  POSFindLabel,
+  POSFormatDollar,
+  POSFormatLocalPercent,
+  POSFormatPercent,
+} from '@/utils';
+import { Box, Stack, Typography } from '@mui/material';
+
+import { observer } from 'mobx-react-lite';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import { FC, useState } from 'react';
+import { useAsync } from 'react-use';
+
 export const GroundRefinanceOverview: FC = observer(() => {
   const router = useRouter();
+
+  const { userType } = useMst();
+
   const { enqueueSnackbar } = useSnackbar();
   const { saasState } = useSessionStorageState('tenantConfig');
+
   // const tenantConfig = utils.getTenantConfig();
 
   const [summary, setSummary] = useState<CommonOverviewInfo>();
@@ -139,6 +143,77 @@ export const GroundRefinanceOverview: FC = observer(() => {
             },
           ],
         });
+        let temp: { label: string; info: string }[];
+        switch (userType) {
+          case UserType.BROKER: {
+            temp = [
+              {
+                label: 'Broker Origination Fee',
+                info: `${POSFormatDollar(
+                  thirdParty?.brokerOriginationFee,
+                )}(${POSFormatPercent(
+                  (thirdParty?.brokerPoints as number) / 100,
+                )})`,
+              },
+              {
+                label: 'Broker Processing Fee',
+                info: POSFormatDollar(thirdParty?.brokerProcessingFee),
+              },
+            ];
+            break;
+          }
+          case UserType.LENDER: {
+            temp = [
+              {
+                label: 'Lender Origination Fee',
+                info: `${POSFormatDollar(
+                  thirdParty?.lenderOriginationFee,
+                )}(${POSFormatPercent(
+                  (thirdParty?.lenderPoints as number) / 100,
+                )})`,
+              },
+              {
+                label: 'Lender Processing Fee',
+                info: POSFormatDollar(thirdParty?.lenderProcessingFee),
+              },
+            ];
+            break;
+          }
+          case UserType.LOAN_OFFICER: {
+            temp = [
+              {
+                label: 'Lender Origination Fee',
+                info: `${POSFormatDollar(
+                  thirdParty?.officerOriginationFee,
+                )}(${POSFormatPercent(
+                  (thirdParty?.officerPoints as number) / 100,
+                )})`,
+              },
+              {
+                label: 'Lender Processing Fee',
+                info: POSFormatDollar(thirdParty?.officerProcessingFee),
+              },
+            ];
+            break;
+          }
+          case UserType.REAL_ESTATE_AGENT: {
+            temp = [
+              {
+                label: 'Referral Fee',
+                info: `${POSFormatDollar(thirdParty?.agentFee)}`,
+              },
+            ];
+            break;
+          }
+          case UserType.CUSTOMER: {
+            temp = [];
+            break;
+          }
+          default: {
+            temp = [];
+            break;
+          }
+        }
         setThirdParty({
           title: 'Est. Cash Required at Closing',
           subTitle: 'Total',
@@ -163,6 +238,7 @@ export const GroundRefinanceOverview: FC = observer(() => {
               info: POSFormatDollar(thirdParty?.proRatedInterest),
             },
             { label: 'Third-party Costs', info: thirdParty?.thirdPartyCosts },
+            ...temp,
           ],
         });
       })
