@@ -10,6 +10,8 @@ import {
   BridgeRefinanceTaskDocuments,
   FixPurchaseTaskDocuments,
   FixRefinanceTaskDocuments,
+  GroundPurchaseTaskDocuments,
+  GroundRefinanceTaskDocuments,
 } from '@/components/organisms';
 
 export const DocumentsPage: FC = observer(() => {
@@ -30,6 +32,12 @@ export const DocumentsPage: FC = observer(() => {
       }
       case SceneType.fix_refinance: {
         return <FixRefinanceTaskDocuments />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseTaskDocuments />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinanceTaskDocuments />;
       }
       default:
         return <BridgePurchaseTaskDocuments />;

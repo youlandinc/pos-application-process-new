@@ -11,3 +11,13 @@ export * from './GroundRefinanceTaskPersonalDetails';
 export * from './GroundRefinanceTaskDemograhpicsInformation';
 export * from './GroundRefinanceTaskBorrowerType';
 export * from './GroundRefinanceTaskCoBorrowerDetails';
+
+export * from './GroundRefinanceTaskPayment';
+export * from './GroundRefinanceTaskPropertyInspection';
+
+export * from './GroundRefinanceTaskCompanyInformation';
+export * from './GroundRefinanceTaskInsuranceInformation';
+
+export * from './GroundRefinanceTaskUploadPictures';
+export * from './GroundRefinanceTaskAgreements';
+export * from './GroundRefinanceTaskDocuments';
