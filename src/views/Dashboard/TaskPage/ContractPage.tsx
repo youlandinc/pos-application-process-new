@@ -8,6 +8,7 @@ import { SceneType } from '@/types';
 import {
   BridgePurchaseTaskContract,
   FixPurchaseTaskContract,
+  GroundPurchaseTaskContract,
 } from '@/components/organisms';
 
 export const ContractPage: FC = observer(() => {
@@ -22,6 +23,9 @@ export const ContractPage: FC = observer(() => {
       }
       case SceneType.fix_purchase: {
         return <FixPurchaseTaskContract />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseTaskContract />;
       }
       default:
         return <BridgePurchaseTaskContract />;

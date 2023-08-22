@@ -10,6 +10,8 @@ import {
   BridgeRefinanceTaskInsuranceInformation,
   FixPurchaseTaskInsuranceInformation,
   FixRefinanceTaskInsuranceInformation,
+  GroundPurchaseTaskInsuranceInformation,
+  GroundRefinanceTaskInsuranceInformation,
 } from '@/components/organisms';
 
 export const InsuranceInformationPage: FC = observer(() => {
@@ -30,6 +32,12 @@ export const InsuranceInformationPage: FC = observer(() => {
       }
       case SceneType.fix_refinance: {
         return <FixRefinanceTaskInsuranceInformation />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseTaskInsuranceInformation />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinanceTaskInsuranceInformation />;
       }
       default:
         return <BridgePurchaseTaskInsuranceInformation />;

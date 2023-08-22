@@ -10,6 +10,8 @@ import {
   BridgeRefinanceTaskPayment,
   FixPurchaseTaskPayment,
   FixRefinanceTaskPayment,
+  GroundPurchaseTaskPayment,
+  GroundRefinanceTaskPayment,
 } from '@/components/organisms';
 
 export const PaymentPage: FC = observer(() => {
@@ -30,6 +32,12 @@ export const PaymentPage: FC = observer(() => {
       }
       case SceneType.fix_refinance: {
         return <FixRefinanceTaskPayment />;
+      }
+      case SceneType.ground_purchase: {
+        return <GroundPurchaseTaskPayment />;
+      }
+      case SceneType.ground_refinance: {
+        return <GroundRefinanceTaskPayment />;
       }
       default:
         return <BridgePurchaseTaskPayment />;
