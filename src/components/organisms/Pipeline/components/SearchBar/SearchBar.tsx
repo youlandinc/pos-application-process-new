@@ -229,13 +229,13 @@ export const SearchBar: FC<SearchBarProps> = ({
               onValueChange(true);
             }}
             options={OPTIONS_LOAN_SPECIES}
-            value={searchForm.loanSpecies}
             sx={{
               flex: 1,
               flexShrink: 0,
               width: 'calc(25% - 36px)',
               maxWidth: 'calc(25% - 36px)',
             }}
+            value={searchForm.loanSpecies}
           />
           <Box className={'search_condition'}>
             <StyledSelectMultiple
