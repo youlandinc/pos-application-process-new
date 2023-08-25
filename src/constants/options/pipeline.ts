@@ -74,6 +74,16 @@ export const OPTIONS_LOAN_SPECIES: Option[] = [
     value: LoanSpecies.Bridge,
     label: 'Bridge',
   },
+  {
+    key: LoanSpecies.FixAndFlip,
+    value: LoanSpecies.FixAndFlip,
+    label: 'Fix and Flip',
+  },
+  {
+    key: LoanSpecies.GroundUpConstruction,
+    value: LoanSpecies.GroundUpConstruction,
+    label: 'Ground-up Construction',
+  },
 ];
 
 export const OPTIONS_LOAN_PURPOSE: Option[] = [

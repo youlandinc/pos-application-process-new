@@ -84,7 +84,7 @@ export const Login: FC<LoginProps> = observer(
         try {
           const { data } = await _userSingIn(params);
           userpool.setLastAuthUserBase(data);
-          await detectUserActiveService.setDetectUserActiveService(
+          detectUserActiveService.setDetectUserActiveService(
             new DetectActiveService(data),
           );
           await handledLoginSuccess(data);
