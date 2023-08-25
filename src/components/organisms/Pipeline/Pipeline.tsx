@@ -180,7 +180,7 @@ export const Pipeline: FC = observer(() => {
   );
 
   const handledConfirmDelete = useCallback(async () => {
-    await setDeleteLoading(true);
+    setDeleteLoading(true);
     try {
       await _deleteProcess(deleteId);
       if (isLastPage) {
