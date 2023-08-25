@@ -1,3 +1,6 @@
+import { useMst } from '@/models/Root';
+import { DetectActiveService } from '@/services/DetectActive';
+import { User } from '@/types/user';
 import {
   ChangeEventHandler,
   FC,
@@ -25,8 +28,13 @@ import {
   SignUpSchema,
   userpool,
 } from '@/constants';
-import { BizType, UserType } from '@/types';
-import { _userSendCode, _userSingUp, _userVerifyCode } from '@/requests';
+import { BizType, LoginType, UserType } from '@/types';
+import {
+  _userSendCode,
+  _userSingIn,
+  _userSingUp,
+  _userVerifyCode,
+} from '@/requests';
 
 import {
   StyledBoxWrap,
@@ -46,6 +54,9 @@ export const SignUp: FC<SignUpProps> = observer(
     const router = useRouter();
     const { saasState } = useSessionStorageState('tenantConfig');
     const { enqueueSnackbar } = useSnackbar();
+
+    const store = useMst();
+    const { detectUserActiveService } = store;
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -128,6 +139,63 @@ export const SignUp: FC<SignUpProps> = observer(
       [confirmedPassword, email, enqueueSnackbar, open, password, userType],
     );
 
+    const handledLoginSuccess = useCallback(
+      async (profile: User.UserSignInRequest) => {
+        successCb && successCb();
+        if (!profile) {
+          return;
+        }
+        store.injectCognitoUserProfile(profile);
+        store.injectCognitoUserSession(profile);
+        const {
+          userProfile: { userType, loginType },
+        } = profile;
+        store.updateUserType(userType as UserType);
+        store.updateLoginType(loginType as LoginType);
+        const { asPath } = router;
+        if (asPath.includes('processId')) {
+          setLoading(false);
+          return router.push(asPath);
+        }
+        await router.push('/');
+      },
+      [router, store, successCb],
+    );
+
+    const handledLogin = useCallback(async () => {
+      setLoading(true);
+      const params = {
+        appkey: LOGIN_APP_KEY,
+        loginType: LoginType.YLACCOUNT_LOGIN,
+        emailParam: {
+          account: email,
+          password: userpool.encode(password),
+        },
+      };
+
+      try {
+        const { data } = await _userSingIn(params);
+        userpool.setLastAuthUserBase(data);
+        detectUserActiveService.setDetectUserActiveService(
+          new DetectActiveService(data),
+        );
+        await handledLoginSuccess(data);
+      } catch (err) {
+        enqueueSnackbar(err as string, {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
+      } finally {
+        setLoading(false);
+      }
+    }, [
+      detectUserActiveService,
+      email,
+      enqueueSnackbar,
+      handledLoginSuccess,
+      password,
+    ]);
+
     const handledResendOtp = useCallback(async () => {
       if (loading) {
         return;
@@ -164,7 +232,9 @@ export const SignUp: FC<SignUpProps> = observer(
         close();
         if (isRedirect) {
           await router.push('./login');
+          return;
         }
+        await handledLogin();
       } catch (err) {
         enqueueSnackbar(err as string, {
           variant: 'error',
@@ -173,7 +243,16 @@ export const SignUp: FC<SignUpProps> = observer(
       } finally {
         setLoading(false);
       }
-    }, [close, email, enqueueSnackbar, isRedirect, otp, router, successCb]);
+    }, [
+      close,
+      email,
+      enqueueSnackbar,
+      handledLogin,
+      isRedirect,
+      otp,
+      router,
+      successCb,
+    ]);
 
     const isDisabled = useMemo(() => {
       for (const [, value] of Object.entries(passwordError)) {

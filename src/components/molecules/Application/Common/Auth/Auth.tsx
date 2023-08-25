@@ -58,11 +58,7 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
         <Transitions style={{ width: '100%' }}>
           {authType === 'sign_up' ? (
             <>
-              <SignUp
-                isNestForm={true}
-                isRedirect={false}
-                successCb={() => setAuthType('login')}
-              />
+              <SignUp isNestForm={true} isRedirect={false} />
               <Box className="POS_tc POS_mt_3">
                 <Typography component={'div'} variant={'body2'}>
                   Already have an account?{' '}
