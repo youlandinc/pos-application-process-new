@@ -230,7 +230,6 @@ export const SearchBar: FC<SearchBarProps> = ({
               }}
               options={OPTIONS_LOAN_SPECIES}
               value={searchForm.loanSpecies}
-              sx={{ maxWidth: '100%' }}
             />
           </Box>
           <Box className={'search_condition'}>
