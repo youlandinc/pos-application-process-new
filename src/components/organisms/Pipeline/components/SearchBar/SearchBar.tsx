@@ -202,6 +202,7 @@ export const SearchBar: FC<SearchBarProps> = ({
               flex: 1,
               flexShrink: 0,
               width: 'calc(25% - 36px)',
+              maxWidth: 'calc(25% - 36px)',
             },
           }}
         >
@@ -221,17 +222,21 @@ export const SearchBar: FC<SearchBarProps> = ({
               value={searchForm.propertyAddress}
             />
           </Box>
-          <Box className={'search_condition'}>
-            <StyledSelectMultiple
-              label={'Loan Type'}
-              onValueChange={(e) => {
-                onParamsChange('loanSpecies', e);
-                onValueChange(true);
-              }}
-              options={OPTIONS_LOAN_SPECIES}
-              value={searchForm.loanSpecies}
-            />
-          </Box>
+          <StyledSelectMultiple
+            label={'Loan Type'}
+            onValueChange={(e) => {
+              onParamsChange('loanSpecies', e);
+              onValueChange(true);
+            }}
+            options={OPTIONS_LOAN_SPECIES}
+            value={searchForm.loanSpecies}
+            sx={{
+              flex: 1,
+              flexShrink: 0,
+              width: 'calc(25% - 36px)',
+              maxWidth: 'calc(25% - 36px)',
+            }}
+          />
           <Box className={'search_condition'}>
             <StyledSelectMultiple
               label={'Loan Purpose'}
