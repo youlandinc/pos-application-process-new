@@ -32,7 +32,7 @@ const SignUpPage: FC = observer((): JSX.Element => {
 
   return (
     <Box>
-      <DynamicSignUp />
+      <DynamicSignUp isRedirect={false} />
     </Box>
   );
 });

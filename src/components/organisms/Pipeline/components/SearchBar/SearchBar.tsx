@@ -202,6 +202,7 @@ export const SearchBar: FC<SearchBarProps> = ({
               flex: 1,
               flexShrink: 0,
               width: 'calc(25% - 36px)',
+              maxWidth: 'calc(25% - 36px)',
             },
           }}
         >
