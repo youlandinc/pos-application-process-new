@@ -157,6 +157,8 @@ export enum LoanStage {
 export enum LoanSpecies {
   Mortgage = 'Mortgage',
   Bridge = 'Bridge',
+  FixAndFlip = 'FixAndFlip',
+  GroundUpConstruction = 'GroundUpConstruction',
 }
 
 export enum LoanPurpose {
