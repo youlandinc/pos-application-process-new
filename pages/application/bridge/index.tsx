@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { CircularProgress } from '@mui/material';
 import dynamic from 'next/dynamic';
 
 const DynamicBridgePage = dynamic(
@@ -8,8 +7,7 @@ const DynamicBridgePage = dynamic(
       (mod) => mod.BridgePage,
     ),
   {
-    loading: () => <CircularProgress />,
-    ssr: false,
+    ssr: true,
   },
 );
 

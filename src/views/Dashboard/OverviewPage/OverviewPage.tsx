@@ -49,5 +49,6 @@ export const OverviewPage: FC = observer(() => {
       }
     }
   }, [scene]);
+
   return <>{renderOverPage}</>;
 });

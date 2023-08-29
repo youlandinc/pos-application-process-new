@@ -7,6 +7,7 @@ export * from './StyledProgressBlock';
 export * from './StyledProgressLine';
 
 export * from './StyledLoading';
+export * from './StyledGlobalLoading';
 
 export * from './StyledBoxWrap';
 
