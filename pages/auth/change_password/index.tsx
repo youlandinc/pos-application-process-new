@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Box, CircularProgress } from '@mui/material';
+import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
@@ -10,22 +10,7 @@ const DynamicChangePassword = dynamic(
       (mod) => mod.ChangePassword,
     ),
   {
-    loading: () => (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minWidth: 375,
-          minHeight: 667,
-        }}
-      >
-        <CircularProgress />
-      </div>
-    ),
-    ssr: false,
+    ssr: true,
   },
 );
 

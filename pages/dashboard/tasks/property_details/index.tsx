@@ -3,14 +3,11 @@ import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
 
-import { CircularProgress } from '@mui/material';
-
 const DynamicDashboardPage = dynamic(
   () =>
     import('@/views/Dashboard/DashboardPage').then((mod) => mod.DashboardPage),
   {
-    loading: () => <CircularProgress />,
-    ssr: false,
+    ssr: true,
   },
 );
 
@@ -20,8 +17,7 @@ const DynamicPropertyDetailsPage = dynamic(
       (mod) => mod.PropertyDetailsPage,
     ),
   {
-    loading: () => <CircularProgress />,
-    ssr: false,
+    ssr: true,
   },
 );
 const TaskPropertyDetails: FC = observer(() => {
