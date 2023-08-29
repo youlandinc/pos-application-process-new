@@ -1,28 +1,12 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import { CircularProgress } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 
 const DynamicEntrance = dynamic(
   () => import('@/views/EntrancePage').then((mod) => mod.EntrancePage),
   {
-    loading: () => (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minWidth: 375,
-          minHeight: 667,
-        }}
-      >
-        <CircularProgress />
-      </div>
-    ),
-    ssr: false,
+    ssr: true,
   },
 );
 
