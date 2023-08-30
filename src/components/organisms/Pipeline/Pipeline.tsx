@@ -138,9 +138,17 @@ export const Pipeline: FC = observer(() => {
     }
     switch (row.loanStage) {
       case LoanStage.Application:
-        window.location.href = `/application/${POSGetProductTypeByUrl(
-          row.productType,
-        )}?processId=${row.youlandId}`;
+        await router.push(
+          `/application/${POSGetProductTypeByUrl(row.productType)}?processId=${
+            row.youlandId
+          }`,
+          `/application/${POSGetProductTypeByUrl(row.productType)}?processId=${
+            row.youlandId
+          }`,
+          {
+            shallow: true,
+          },
+        );
         break;
       case LoanStage.Refusal:
         enqueueSnackbar(
@@ -214,9 +222,7 @@ export const Pipeline: FC = observer(() => {
   return (!pipelineInitialized ||
     !pipelineStatusInitialized ||
     !pipelineStatus) &&
-    userType !== UserType.CUSTOMER ? (
-    <></>
-  ) : (
+    userType !== UserType.CUSTOMER ? null : (
     <>
       <SearchBar
         onParamsChange={(k, v) =>
@@ -232,7 +238,7 @@ export const Pipeline: FC = observer(() => {
 
       {firstLoading && (
         <Box mt={3}>
-          <StyledLoading sx={{ color: 'primary.main' }} />
+          <StyledLoading sx={{ color: 'text.grey' }} />
         </Box>
       )}
 
@@ -243,9 +249,7 @@ export const Pipeline: FC = observer(() => {
         justifyContent={'flex-start'}
         mt={3}
       >
-        {firstLoading ? (
-          <></>
-        ) : listData.length > 0 ? (
+        {firstLoading ? null : listData.length > 0 ? (
           listData.map((item) => (
             <LoanItemCard
               formData={item}

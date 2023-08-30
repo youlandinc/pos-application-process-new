@@ -115,6 +115,9 @@ const RootStore = types.model(RootModel).actions((self) => {
     setPersistDataLoaded() {
       self.persistDataLoaded = true;
     },
+    resetApplicationForm() {
+      self.applicationForm.resetForm();
+    },
     logout() {
       if (Router.pathname === '/auth/sign_in') {
         return;

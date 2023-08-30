@@ -1,16 +1,13 @@
 import { FC } from 'react';
 import dynamic from 'next/dynamic';
 
-import { StyledLoading } from '@/components/atoms';
-
 const DynamicPipelineProfile = dynamic(
   () =>
     import('@/components/organisms/Pipeline/PipelineProfile').then(
       (mod) => mod.PipelineProfile,
     ),
   {
-    loading: () => <StyledLoading />,
-    ssr: false,
+    ssr: true,
   },
 );
 

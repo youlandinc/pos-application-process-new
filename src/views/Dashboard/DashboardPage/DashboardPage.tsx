@@ -23,7 +23,6 @@ export const DashboardPage: FC<{ children?: ReactNode }> = observer(
     return !pipelineStatusInitialized ? (
       <></>
     ) : (
-      //<StyledLoading sx={{ color: 'primary.main' }} />
       <POSLayout scene={'dashboard'}>
         <>{children}</>
       </POSLayout>

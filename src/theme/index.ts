@@ -40,6 +40,7 @@ declare module '@mui/material/styles/createPalette' {
     hover: string;
     focus: string;
     outline: string;
+    grey: string;
   }
 
   interface TypeBackground {
@@ -113,6 +114,7 @@ export const theme = createTheme({
       focus: '#202939',
       outline: '#D2D6E1',
       white: '#FFFFFF',
+      grey: '#E3E3EE',
     },
     background: {
       border_default: '#D2D6E1',

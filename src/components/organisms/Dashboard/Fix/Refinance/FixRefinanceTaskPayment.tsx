@@ -433,7 +433,7 @@ export const FixRefinanceTaskPayment: FC = observer(() => {
   ]);
 
   return loading ? (
-    <StyledLoading sx={{ color: 'primary.main' }} />
+    <StyledLoading sx={{ color: 'text.grey' }} />
   ) : paymentStatus === DashboardTaskPaymentMethodsStatus.undone ? (
     <>
       {renderNode}

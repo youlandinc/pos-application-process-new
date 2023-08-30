@@ -8,7 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION, OPTIONS_COMMON_USER_TYPE } from '@/constants';
-import { useAsyncEffect, useBreakpoints } from '@/hooks';
+import { useAsyncEffect } from '@/hooks';
 import { Address, IAddress } from '@/models/common/Address';
 import { LoanStage, UserType } from '@/types/enum';
 import {
@@ -43,7 +43,6 @@ export const BridgePurchasePreApproval: FC = observer(() => {
   const { userType } = useMst();
 
   const router = useRouter();
-  const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
 
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
@@ -79,6 +78,8 @@ export const BridgePurchasePreApproval: FC = observer(() => {
 
   const [checkResult, setCheckResult] = useState<unknown>();
   const [checkLoading, setCheckLoading] = useState<boolean>(false);
+
+  const [firstLoading, setFirstLoading] = useState<boolean>(true);
 
   const LTV = useMemo(() => {
     if (!rateData?.purchaseLoanAmount || !rateData?.purchasePrice) {
@@ -144,12 +145,16 @@ export const BridgePurchasePreApproval: FC = observer(() => {
           officerProcessingFee,
           agentFee,
         });
+        setFirstLoading(false);
       })
       .catch((err) => {
         enqueueSnackbar(err as string, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
-          onClose: () => router.push('/pipeline'),
+          onClose: () => {
+            router.push('/pipeline');
+            setFirstLoading(false);
+          },
         });
       });
   }, []);
@@ -652,38 +657,53 @@ export const BridgePurchasePreApproval: FC = observer(() => {
   const infoRef = useRef<HTMLInputElement>(null);
 
   return (
-    <Transitions
-      style={{
-        margin: ['xs', 'sm', 'md'].includes(breakpoints) ? 0 : '0 auto',
-      }}
-    >
-      {tableStatus === 'view' ? (
-        <PreApprovalInfo
-          loading={initState.loading}
-          loanAmount={loanAmount}
-          loanStage={loanStage}
-          onClickEdit={onChangeTableStatus}
-          processId={router.query.processId as string}
-          ref={infoRef}
-        />
-      ) : (
-        <>
-          <PreApprovalEdit
-            address={address}
-            clickable={!clickable}
-            editable={checkLoading}
-            onClickCancel={onChangeTableStatus}
-            onClickCheck={onClickCheck}
-            onTypeChange={setPropertyType}
-            onUnitChange={setPropertyUnit}
-            propertyType={propertyType}
-            propertyUnit={propertyUnit}
-            resultList={renderResultList}
+    <>
+      <Transitions
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+        }}
+      >
+        {initState.loading || firstLoading ? (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
           >
-            {renderEditChildren}
-          </PreApprovalEdit>
-        </>
-      )}
-    </Transitions>
+            <StyledLoading sx={{ color: 'text.grey', m: 0 }} />
+          </Stack>
+        ) : (
+          <>
+            {tableStatus === 'view' ? (
+              <PreApprovalInfo
+                loading={initState.loading}
+                loanAmount={loanAmount}
+                loanStage={loanStage}
+                onClickEdit={onChangeTableStatus}
+                processId={router.query.processId as string}
+                ref={infoRef}
+              />
+            ) : (
+              <PreApprovalEdit
+                address={address}
+                clickable={!clickable}
+                editable={checkLoading}
+                onClickCancel={onChangeTableStatus}
+                onClickCheck={onClickCheck}
+                onTypeChange={setPropertyType}
+                onUnitChange={setPropertyUnit}
+                propertyType={propertyType}
+                propertyUnit={propertyUnit}
+                resultList={renderResultList}
+              >
+                {renderEditChildren}
+              </PreApprovalEdit>
+            )}
+          </>
+        )}
+      </Transitions>
+    </>
   );
 });

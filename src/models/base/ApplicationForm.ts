@@ -88,6 +88,11 @@ export const ApplicationForm = types
     setInitialized(initialized: boolean) {
       self.initialized = initialized;
     },
+    resetForm() {
+      self.formData = undefined;
+      self.initialized = false;
+      self.applicationType = undefined;
+    },
   }));
 
 export type IApplicationForm = Instance<typeof ApplicationForm>;

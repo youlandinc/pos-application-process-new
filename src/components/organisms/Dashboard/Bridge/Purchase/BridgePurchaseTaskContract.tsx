@@ -141,7 +141,7 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
   }, [router, contractFiles, isAccepted, enqueueSnackbar]);
 
   return loading ? (
-    <StyledLoading sx={{ color: 'primary.main' }} />
+    <StyledLoading sx={{ color: 'text.grey' }} />
   ) : (
     <StyledFormItem
       gap={6}

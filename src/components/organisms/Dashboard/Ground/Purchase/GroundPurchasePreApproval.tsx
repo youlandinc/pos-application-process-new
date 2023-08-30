@@ -419,7 +419,7 @@ export const GroundPurchasePreApproval: FC = observer(() => {
       >
         {checkLoading ? (
           <StyledLoading
-            sx={{ justifyContent: 'flex-start', color: 'primary.main' }}
+            sx={{ justifyContent: 'flex-start', color: 'text.grey' }}
           />
         ) : checkResult ? (
           <Stack

@@ -13,7 +13,7 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { _fetchMyTeamData } from '@/requests/saas';
 import { POSFormatUSPhoneToText } from '@/utils';
 
-import { StyledFormItem, StyledLoading } from '@/components/atoms';
+import { StyledFormItem, StyledLoading, Transitions } from '@/components/atoms';
 import { DashboardServiceCardItem } from '@/components/molecules';
 
 import MY_TEAM from '@/svg/dashboard/my_team.svg';
@@ -57,16 +57,23 @@ export const TeamPage: FC = () => {
   });
 
   return (
-    <>
+    <Transitions
+      style={{
+        display: 'flex',
+        width: '100%',
+        justifyContent: 'center',
+      }}
+    >
       {loading ? (
-        <StyledLoading
-          sx={{
-            color: 'primary.main',
-            width: 24,
-            height: 24,
-            marginLeft: 24,
-          }}
-        />
+        <Stack
+          alignItems={'center'}
+          justifyContent={'center'}
+          margin={'auto 0'}
+          minHeight={'calc(667px - 46px)'}
+          width={'100%'}
+        >
+          <StyledLoading sx={{ color: 'text.grey' }} />
+        </Stack>
       ) : (
         <StyledFormItem
           gap={6}
@@ -168,6 +175,6 @@ export const TeamPage: FC = () => {
           </Stack>
         </StyledFormItem>
       )}
-    </>
+    </Transitions>
   );
 };

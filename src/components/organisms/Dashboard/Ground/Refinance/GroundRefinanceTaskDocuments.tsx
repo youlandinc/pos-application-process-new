@@ -362,7 +362,7 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
   ]);
 
   return loading ? (
-    <StyledLoading sx={{ color: 'primary.main' }} />
+    <StyledLoading sx={{ color: 'text.grey' }} />
   ) : (
     <StyledFormItem
       gap={3}
