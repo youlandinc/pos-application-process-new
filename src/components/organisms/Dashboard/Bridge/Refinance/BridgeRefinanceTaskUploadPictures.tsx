@@ -149,7 +149,7 @@ export const BridgeRefinanceTaskUploadPictures: FC = observer(() => {
   }, [enqueueSnackbar, router]);
 
   return loading ? (
-    <StyledLoading sx={{ color: 'primary.main' }} />
+    <StyledLoading sx={{ color: 'text.grey' }} />
   ) : (
     <StyledFormItem
       gap={6}

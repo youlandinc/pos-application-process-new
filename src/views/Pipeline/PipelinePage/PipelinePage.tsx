@@ -1,5 +1,5 @@
+import { Box } from '@mui/material';
 import { FC, ReactNode, useEffect } from 'react';
-import { Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -41,16 +41,19 @@ export const PipelinePage: FC<{ children?: ReactNode }> = observer(
     ]);
 
     return !pipelineTask.pipelineInitialized ? (
-      <Stack
-        alignItems={'center'}
-        height={'100vh'}
-        justifyContent={'center'}
-        minHeight={667}
-        minWidth={375}
-        width={'100vw'}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minWidth: 375,
+          minHeight: 667,
+          width: '100vw',
+          height: '100vh',
+        }}
       >
-        <StyledLoading sx={{ color: 'primary.main' }} />
-      </Stack>
+        <StyledLoading sx={{ color: 'text.grey' }} />
+      </Box>
     ) : (
       <POSLayout scene={'pipeline'}>
         <>{children}</>

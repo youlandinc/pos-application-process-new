@@ -151,7 +151,7 @@ export const PreApprovalInfo = forwardRef<
               >
                 {loading ? (
                   <StyledLoading
-                    sx={{ justifyContent: 'flex-start', color: 'primary.main' }}
+                    sx={{ justifyContent: 'flex-start', color: 'text.grey' }}
                   />
                 ) : (
                   POSFormatDollar(loanAmount)

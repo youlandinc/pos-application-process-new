@@ -157,7 +157,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
       <Box className={'uploadBox'}>
         <StyledButton color={'inherit'} disabled={loading}>
           {loading ? (
-            <StyledLoading sx={{ color: 'primary.main' }} />
+            <StyledLoading sx={{ color: 'text.grey' }} />
           ) : (
             <label
               className={'uploadBtn'}

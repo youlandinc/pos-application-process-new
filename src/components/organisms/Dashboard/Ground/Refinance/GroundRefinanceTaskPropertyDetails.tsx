@@ -119,7 +119,7 @@ export const GroundRefinanceTaskPropertyDetails: FC = observer(() => {
   }, [address, enqueueSnackbar, propertyType, propertyUnit, router]);
 
   return loading ? (
-    <StyledLoading sx={{ color: 'primary.main' }} />
+    <StyledLoading sx={{ color: 'text.grey' }} />
   ) : (
     <StyledFormItem
       gap={6}

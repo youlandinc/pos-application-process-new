@@ -168,7 +168,21 @@ export default function MyApp(props: MyAppProps) {
       );
     }
     if (loading) {
-      return <StyledLoading sx={{ color: 'primary.main' }} />;
+      return (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minWidth: 375,
+            minHeight: 667,
+            width: '100vw',
+            height: '100vh',
+          }}
+        >
+          <StyledLoading sx={{ color: '#E3E3EE' }} />
+        </div>
+      );
     }
   }, [Component, StyledMaterialDesignContent, loading, pageProps, saasState]);
 

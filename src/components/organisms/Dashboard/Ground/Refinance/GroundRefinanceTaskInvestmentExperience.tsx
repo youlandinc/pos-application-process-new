@@ -134,7 +134,7 @@ export const GroundRefinanceTaskInvestmentExperience: FC = observer(() => {
   }, [enqueueSnackbar, investmentFiles, propertiesNum, router]);
 
   return loading ? (
-    <StyledLoading sx={{ color: 'primary.main' }} />
+    <StyledLoading sx={{ color: 'text.grey' }} />
   ) : (
     <StyledFormItem
       gap={6}

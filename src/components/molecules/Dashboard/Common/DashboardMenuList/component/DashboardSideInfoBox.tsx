@@ -106,7 +106,7 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
         }}
       >
         {/*{loading ? (*/}
-        {/*  <StyledLoading sx={{ color: 'primary.main' }} />*/}
+        {/*  <StyledLoading sx={{ color: 'text.grey' }} />*/}
         {/*) : (*/}
         <>
           <Typography mb={1} variant={'subtitle1'}>

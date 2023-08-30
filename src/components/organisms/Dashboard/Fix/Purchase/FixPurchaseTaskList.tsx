@@ -440,7 +440,7 @@ export const FixPurchaseTaskList: FC = observer(() => {
       />
 
       {loading ? (
-        <StyledLoading sx={{ color: 'primary.main' }} />
+        <StyledLoading sx={{ color: 'text.grey' }} />
       ) : (
         <>
           <Stack alignItems={'center'} mb={3}>
