@@ -170,7 +170,7 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
           justifyContent: 'center',
         }}
       >
-        {!loading ? (
+        {loading ? (
           <Stack
             alignItems={'center'}
             justifyContent={'center'}
