@@ -1,4 +1,3 @@
-import { StyledLoading, Transitions } from '@/components/atoms';
 import { FC, useCallback, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -22,6 +21,7 @@ import {
   BPQueryData,
 } from '@/requests/dashboard';
 
+import { StyledLoading, Transitions } from '@/components/atoms';
 import {
   BridgePurchaseRatesDrawer,
   BridgePurchaseRatesSearch,

@@ -1,13 +1,14 @@
-import { StyledButton } from '@/components/atoms';
-import {
-  CommonOverviewInfo,
-  DashboardCard,
-  DashboardHeader,
-} from '@/components/molecules';
+import { FC, useState } from 'react';
+import { Box, Stack, Typography } from '@mui/material';
+import { useAsync } from 'react-use';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
 import { useSessionStorageState } from '@/hooks';
-import { useMst } from '@/models/Root';
 import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
 import { GROverviewSummaryData, UserType } from '@/types';
 import {
@@ -16,13 +17,13 @@ import {
   POSFormatLocalPercent,
   POSFormatPercent,
 } from '@/utils';
-import { Box, Stack, Typography } from '@mui/material';
 
-import { observer } from 'mobx-react-lite';
-import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
-import { FC, useState } from 'react';
-import { useAsync } from 'react-use';
+import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
+import {
+  CommonOverviewInfo,
+  DashboardCard,
+  DashboardHeader,
+} from '@/components/molecules';
 
 export const GroundRefinanceOverview: FC = observer(() => {
   const router = useRouter();
@@ -252,146 +253,167 @@ export const GroundRefinanceOverview: FC = observer(() => {
   });
 
   return (
-    <Stack
-      alignItems={'flex-start'}
-      className={'container'}
-      flexDirection={'column'}
-      justifyContent={'center'}
-      maxWidth={900}
-      mx={{ lg: 'auto', xs: 0 }}
-      px={{ xl: 0, lg: 3, xs: 0 }}
-      width={'100%'}
+    <Transitions
+      style={{
+        display: 'flex',
+        width: '100%',
+        justifyContent: 'center',
+      }}
     >
-      <DashboardHeader
-        subTitle={
-          'Everything about your loan found in one place. Get updates and see what needs to be done before you close.'
-        }
-        title={'Your Loan Overview'}
-      />
-      <Stack
-        alignItems={'flex-start'}
-        flexDirection={'column'}
-        gap={3}
-        justifyContent={'flex-start'}
-        width={'100%'}
-      >
+      {loading ? (
         <Stack
-          flex={1}
-          flexDirection={{ xl: 'row', xs: 'column' }}
-          gap={3}
-          minHeight={loading ? 464 : 'unset'}
+          alignItems={'center'}
+          justifyContent={'center'}
+          margin={'auto 0'}
+          minHeight={'calc(667px - 46px)'}
           width={'100%'}
         >
-          <DashboardCard
-            dataList={summary?.info}
-            flex={1}
-            loading={loading}
-            subInfo={summary?.subInfo}
-            subTitle={summary?.subTitle}
-            title={summary?.title}
-          >
-            <StyledButton
-              className={'cardButton'}
-              color={'primary'}
-              onClick={async () =>
-                await router.push({
-                  pathname: '/dashboard/pre_approval_letter',
-                  query: router.query,
-                })
-              }
-              sx={{ mt: 'auto' }}
-              variant={'contained'}
-            >
-              View Letter
-            </StyledButton>
-          </DashboardCard>
-          <DashboardCard
-            dataList={product?.info}
-            flex={1}
-            loading={loading}
-            subInfo={product?.subInfo}
-            subTitle={product?.subTitle}
-            title={product?.title}
-          >
-            <StyledButton
-              className={'cardButton'}
-              color={'primary'}
-              onClick={async () =>
-                await router.push({
-                  pathname: '/dashboard/rates',
-                  query: router.query,
-                })
-              }
-              sx={{ mt: 'auto' }}
-              variant={'contained'}
-            >
-              Explore Rate
-            </StyledButton>
-          </DashboardCard>
+          <StyledLoading sx={{ color: 'text.grey' }} />
         </Stack>
-
-        <Stack
-          flex={1}
-          flexDirection={{ xl: 'row', xs: 'column' }}
-          gap={3}
-          minHeight={loading ? 464 : 'unset'}
+      ) : (
+        <Box
+          alignItems={'flex-start'}
+          component={'div'}
+          display={'flex'}
+          flexDirection={'column'}
+          justifyContent={'center'}
+          maxWidth={900}
+          mx={{ lg: 'auto', xs: 0 }}
+          px={{ xl: 0, lg: 3, xs: 0 }}
           width={'100%'}
         >
-          <DashboardCard
-            dataList={loanDetail?.info}
-            flex={1}
-            loading={loading}
-            subInfo={loanDetail?.subInfo}
-            subTitle={loanDetail?.subTitle}
-            title={loanDetail?.title}
-          />
-          <DashboardCard
-            dataList={thirdParty?.info}
-            flex={1}
-            loading={loading}
-            subInfo={thirdParty?.subInfo}
-            subTitle={thirdParty?.subTitle}
-            title={thirdParty?.title}
-          />
-        </Stack>
-      </Stack>
-
-      <Box color={'text.secondary'} mt={6}>
-        <Typography component={'div'} variant={'body2'}>
-          Check out your list of{' '}
-          <Box
-            className={'link_style'}
-            component={'span'}
-            onClick={() =>
-              router.push({
-                pathname: '/dashboard/tasks',
-                query: router.query,
-              })
+          <DashboardHeader
+            subTitle={
+              'Everything about your loan found in one place. Get updates and see what needs to be done before you close.'
             }
+            title={'Your Loan Overview'}
+          />
+          <Stack
+            alignItems={'flex-start'}
+            flexDirection={'column'}
+            gap={3}
+            justifyContent={'flex-start'}
+            width={'100%'}
           >
-            Tasks
-          </Box>{' '}
-          to see what you need to take care of to secure your loan.
-        </Typography>
-        <Typography component={'div'} mt={3} variant={'body3'}>
-          <Box>Disclaimer</Box>
-          <Box mt={1.25}>
-            The total loan amount is an estimate, and may be subject to change.
-            The amount also does not include third party settlement costs that
-            may be required to close your loan. For more details on those
-            potential costs, please contact your settlement agent.
+            <Stack
+              flex={1}
+              flexDirection={{ xl: 'row', xs: 'column' }}
+              gap={3}
+              minHeight={loading ? 464 : 'unset'}
+              width={'100%'}
+            >
+              <DashboardCard
+                dataList={summary?.info}
+                flex={1}
+                loading={loading}
+                subInfo={summary?.subInfo}
+                subTitle={summary?.subTitle}
+                title={summary?.title}
+              >
+                <StyledButton
+                  className={'cardButton'}
+                  color={'primary'}
+                  onClick={async () =>
+                    await router.push({
+                      pathname: '/dashboard/pre_approval_letter',
+                      query: router.query,
+                    })
+                  }
+                  sx={{ mt: 'auto' }}
+                  variant={'contained'}
+                >
+                  View Letter
+                </StyledButton>
+              </DashboardCard>
+              <DashboardCard
+                dataList={product?.info}
+                flex={1}
+                loading={loading}
+                subInfo={product?.subInfo}
+                subTitle={product?.subTitle}
+                title={product?.title}
+              >
+                <StyledButton
+                  className={'cardButton'}
+                  color={'primary'}
+                  onClick={async () =>
+                    await router.push({
+                      pathname: '/dashboard/rates',
+                      query: router.query,
+                    })
+                  }
+                  sx={{ mt: 'auto' }}
+                  variant={'contained'}
+                >
+                  Explore Rate
+                </StyledButton>
+              </DashboardCard>
+            </Stack>
+
+            <Stack
+              flex={1}
+              flexDirection={{ xl: 'row', xs: 'column' }}
+              gap={3}
+              minHeight={loading ? 464 : 'unset'}
+              width={'100%'}
+            >
+              <DashboardCard
+                dataList={loanDetail?.info}
+                flex={1}
+                loading={loading}
+                subInfo={loanDetail?.subInfo}
+                subTitle={loanDetail?.subTitle}
+                title={loanDetail?.title}
+              />
+              <DashboardCard
+                dataList={thirdParty?.info}
+                flex={1}
+                loading={loading}
+                subInfo={thirdParty?.subInfo}
+                subTitle={thirdParty?.subTitle}
+                title={thirdParty?.title}
+              />
+            </Stack>
+          </Stack>
+
+          <Box color={'text.secondary'} mt={6}>
+            <Typography component={'div'} variant={'body2'}>
+              Check out your list of{' '}
+              <Box
+                className={'link_style'}
+                component={'span'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks',
+                    query: router.query,
+                  })
+                }
+              >
+                Tasks
+              </Box>{' '}
+              to see what you need to take care of to secure your loan.
+            </Typography>
+            <Typography component={'div'} mt={3} variant={'body3'}>
+              <Box>Disclaimer</Box>
+              <Box mt={1.25}>
+                The total loan amount is an estimate, and may be subject to
+                change. The amount also does not include third party settlement
+                costs that may be required to close your loan. For more details
+                on those potential costs, please contact your settlement agent.
+              </Box>
+              <Box mt={1.25}>
+                Rates displayed are subject to rate lock and are not to be
+                considered an extension or offer of credit by
+                {
+                  // todo: sass
+                  ' ' + saasState?.organizationName || ' YouLand'
+                }
+                .
+              </Box>
+            </Typography>
           </Box>
-          <Box mt={1.25}>
-            Rates displayed are subject to rate lock and are not to be
-            considered an extension or offer of credit by
-            {
-              // todo: sass
-              ' ' + saasState?.organizationName || ' YouLand'
-            }
-            .
-          </Box>
-        </Typography>
-      </Box>
-    </Stack>
+        </Box>
+      )}
+    </Transitions>
   );
 });
