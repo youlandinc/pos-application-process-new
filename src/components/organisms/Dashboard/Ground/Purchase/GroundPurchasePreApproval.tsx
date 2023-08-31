@@ -7,8 +7,8 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { useAsyncEffect } from '@/hooks';
 import { AUTO_HIDE_DURATION, OPTIONS_COMMON_USER_TYPE } from '@/constants';
-import { useAsyncEffect, useBreakpoints } from '@/hooks';
 import { Address, IAddress } from '@/models/common/Address';
 import { LoanStage, UserType } from '@/types/enum';
 import {
@@ -43,7 +43,6 @@ export const GroundPurchasePreApproval: FC = observer(() => {
   const { userType } = useMst();
 
   const router = useRouter();
-  const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
 
   const [updateLoading, setUpdateLoading] = useState(false);
@@ -80,6 +79,8 @@ export const GroundPurchasePreApproval: FC = observer(() => {
 
   const [checkResult, setCheckResult] = useState<unknown>();
   const [checkLoading, setCheckLoading] = useState<boolean>(false);
+
+  const [firstLoading, setFirstLoading] = useState<boolean>(true);
 
   const editLoanAmount = useMemo(() => {
     return (rateData?.purchaseLoanAmount as number) + (rateData?.cor as number);
@@ -167,12 +168,16 @@ export const GroundPurchasePreApproval: FC = observer(() => {
           officerProcessingFee,
           agentFee,
         });
+        setFirstLoading(false);
       })
       .catch((err) => {
         enqueueSnackbar(err as string, {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
-          onClose: () => router.push('/pipeline'),
+          onClose: () => {
+            router.push('/pipeline');
+            setFirstLoading(false);
+          },
         });
       });
   }, []);
@@ -709,34 +714,47 @@ export const GroundPurchasePreApproval: FC = observer(() => {
   return (
     <Transitions
       style={{
-        margin: ['xs', 'sm', 'md'].includes(breakpoints) ? 0 : '0 auto',
+        display: 'flex',
+        width: '100%',
+        justifyContent: 'center',
       }}
     >
-      {tableStatus === 'view' ? (
-        <PreApprovalInfo
-          loading={initState.loading}
-          loanAmount={loanAmount}
-          loanStage={loanStage}
-          onClickEdit={onChangeTableStatus}
-          processId={router.query.processId as string}
-          ref={infoRef}
-        />
+      {initState.loading || firstLoading ? (
+        <Stack
+          alignItems={'center'}
+          justifyContent={'center'}
+          minHeight={'calc(667px - 46px)'}
+          width={'100%'}
+        >
+          <StyledLoading sx={{ color: 'text.grey', m: 0 }} />
+        </Stack>
       ) : (
         <>
-          <PreApprovalEdit
-            address={address}
-            clickable={!clickable}
-            editable={checkLoading}
-            onClickCancel={onChangeTableStatus}
-            onClickCheck={onClickCheck}
-            onTypeChange={setPropertyType}
-            onUnitChange={setPropertyUnit}
-            propertyType={propertyType}
-            propertyUnit={propertyUnit}
-            resultList={renderResultList}
-          >
-            {renderEditChildren}
-          </PreApprovalEdit>
+          {tableStatus === 'view' ? (
+            <PreApprovalInfo
+              loading={initState.loading}
+              loanAmount={loanAmount}
+              loanStage={loanStage}
+              onClickEdit={onChangeTableStatus}
+              processId={router.query.processId as string}
+              ref={infoRef}
+            />
+          ) : (
+            <PreApprovalEdit
+              address={address}
+              clickable={!clickable}
+              editable={checkLoading}
+              onClickCancel={onChangeTableStatus}
+              onClickCheck={onClickCheck}
+              onTypeChange={setPropertyType}
+              onUnitChange={setPropertyUnit}
+              propertyType={propertyType}
+              propertyUnit={propertyUnit}
+              resultList={renderResultList}
+            >
+              {renderEditChildren}
+            </PreApprovalEdit>
+          )}
         </>
       )}
     </Transitions>

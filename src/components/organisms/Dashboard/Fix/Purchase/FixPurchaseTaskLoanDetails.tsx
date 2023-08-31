@@ -14,6 +14,7 @@ import {
   StyledFormItem,
   StyledLoading,
   StyledTextFieldNumber,
+  Transitions,
 } from '@/components/atoms';
 import { useSessionStorageState } from '@/hooks';
 
@@ -107,137 +108,164 @@ export const FixPurchaseTaskLoanDetails: FC = () => {
     router,
   ]);
 
-  return loading ? (
-    <StyledLoading sx={{ color: 'text.grey' }} />
-  ) : (
-    <StyledFormItem
-      gap={6}
-      label={'Loan Details'}
-      tip={
-        'Below are all of the details we have about your deal. If you have to change these details you may do so below, please note that changes may affect your Loan-to-Value or your rate.'
-      }
-      tipSx={{ mb: 0 }}
-    >
-      <StyledFormItem
-        label={'Purchase price'}
-        sub
-        tip={
-          'The price you paid or are paying for the property that the loan is for.'
-        }
+  return (
+    <>
+      <Transitions
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+        }}
       >
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledTextFieldNumber
-            label={'Purchase Price'}
-            onValueChange={({ floatValue }) => {
-              setPurchasePrice(floatValue);
-            }}
-            prefix={'$'}
-            value={purchasePrice}
-          />
-        </Stack>
-      </StyledFormItem>
+        {loading ? (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            margin={'auto 0'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
+          >
+            <StyledLoading sx={{ color: 'text.grey' }} />
+          </Stack>
+        ) : (
+          <StyledFormItem
+            gap={6}
+            label={'Loan Details'}
+            maxWidth={900}
+            mx={{ lg: 'auto', xs: 0 }}
+            px={{ lg: 3, xs: 0 }}
+            tip={
+              'Below are all of the details we have about your deal. If you have to change these details you may do so below, please note that changes may affect your Loan-to-Value or your rate.'
+            }
+            tipSx={{ mb: 0 }}
+            width={'100%'}
+          >
+            <StyledFormItem
+              label={'Purchase price'}
+              sub
+              tip={
+                'The price you paid or are paying for the property that the loan is for.'
+              }
+            >
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledTextFieldNumber
+                  label={'Purchase Price'}
+                  onValueChange={({ floatValue }) => {
+                    setPurchasePrice(floatValue);
+                  }}
+                  prefix={'$'}
+                  value={purchasePrice}
+                />
+              </Stack>
+            </StyledFormItem>
 
-      <StyledFormItem
-        label={'As-is property value'}
-        sub
-        tip={
-          'Your estimate of the current value of the property (before any rehabilitation).'
-        }
-      >
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledTextFieldNumber
-            label={'As-is Property Value'}
-            onValueChange={({ floatValue }) => {
-              setPropertyValue(floatValue);
-            }}
-            prefix={'$'}
-            value={propertyValue}
-          />
-        </Stack>
-      </StyledFormItem>
+            <StyledFormItem
+              label={'As-is property value'}
+              sub
+              tip={
+                'Your estimate of the current value of the property (before any rehabilitation).'
+              }
+            >
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledTextFieldNumber
+                  label={'As-is Property Value'}
+                  onValueChange={({ floatValue }) => {
+                    setPropertyValue(floatValue);
+                  }}
+                  prefix={'$'}
+                  value={propertyValue}
+                />
+              </Stack>
+            </StyledFormItem>
 
-      <StyledFormItem
-        label={'Estimated rehab loan amount'}
-        sub
-        tip={`Total cost that you would like ${
-          //sass
-          saasState?.organizationName || 'YouLand'
-        } to finance.`}
-      >
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledTextFieldNumber
-            label={'Estimated Rehab Loan Amount'}
-            onValueChange={({ floatValue }) => {
-              setCor(floatValue);
-            }}
-            prefix={'$'}
-            value={cor}
-          />
-        </Stack>
-      </StyledFormItem>
-      <StyledFormItem label={'Estimated date to finish your rehab project'} sub>
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledDatePicker
-            disableFuture={false}
-            disablePast={false}
-            label={'MM/DD/YYYY'}
-            onChange={(date) => {
-              setCorDate(date);
-            }}
-            //validate={}
-            value={corDate}
-          />
-        </Stack>
-      </StyledFormItem>
-      <StyledFormItem
-        label={'After repair value'}
-        sub
-        tip={
-          'Once all improvements to the property have been made, how much will the property be worth?'
-        }
-      >
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledTextFieldNumber
-            label={'After repair property value'}
-            onValueChange={({ floatValue }) => {
-              setArv(floatValue);
-            }}
-            prefix={'$'}
-            value={arv}
-          />
-        </Stack>
-      </StyledFormItem>
+            <StyledFormItem
+              label={'Estimated rehab loan amount'}
+              sub
+              tip={`Total cost that you would like ${
+                //sass
+                saasState?.organizationName || 'YouLand'
+              } to finance.`}
+            >
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledTextFieldNumber
+                  label={'Estimated Rehab Loan Amount'}
+                  onValueChange={({ floatValue }) => {
+                    setCor(floatValue);
+                  }}
+                  prefix={'$'}
+                  value={cor}
+                />
+              </Stack>
+            </StyledFormItem>
+            <StyledFormItem
+              label={'Estimated date to finish your rehab project'}
+              sub
+            >
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledDatePicker
+                  disableFuture={false}
+                  disablePast={false}
+                  label={'MM/DD/YYYY'}
+                  onChange={(date) => {
+                    setCorDate(date);
+                  }}
+                  //validate={}
+                  value={corDate}
+                />
+              </Stack>
+            </StyledFormItem>
+            <StyledFormItem
+              label={'After repair value'}
+              sub
+              tip={
+                'Once all improvements to the property have been made, how much will the property be worth?'
+              }
+            >
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledTextFieldNumber
+                  label={'After repair property value'}
+                  onValueChange={({ floatValue }) => {
+                    setArv(floatValue);
+                  }}
+                  prefix={'$'}
+                  value={arv}
+                />
+              </Stack>
+            </StyledFormItem>
 
-      <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
-        maxWidth={600}
-        width={'100%'}
-      >
-        <StyledButton
-          color={'info'}
-          onClick={() =>
-            router.push({
-              pathname: '/dashboard/tasks',
-              query: { processId: router.query.processId },
-            })
-          }
-          sx={{ flex: 1 }}
-          variant={'text'}
-        >
-          Back
-        </StyledButton>
-        <StyledButton
-          disabled={!isDisabled || saveLoading}
-          loading={saveLoading}
-          loadingText={'Saving...'}
-          onClick={handledSubmit}
-          sx={{ flex: 1 }}
-        >
-          Save
-        </StyledButton>
-      </Stack>
-    </StyledFormItem>
+            <Stack
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              maxWidth={600}
+              width={'100%'}
+            >
+              <StyledButton
+                color={'info'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  })
+                }
+                sx={{ flex: 1 }}
+                variant={'text'}
+              >
+                Back
+              </StyledButton>
+              <StyledButton
+                disabled={!isDisabled || saveLoading}
+                loading={saveLoading}
+                loadingText={'Saving...'}
+                onClick={handledSubmit}
+                sx={{ flex: 1 }}
+              >
+                Save
+              </StyledButton>
+            </Stack>
+          </StyledFormItem>
+        )}
+      </Transitions>
+    </>
   );
 };

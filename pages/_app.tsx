@@ -50,6 +50,9 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
+const handledRouteStart = () => NProgress.start();
+const handledRouteDone = () => NProgress.done();
+
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const { enqueueSnackbar } = useSnackbar();
@@ -69,8 +72,6 @@ export default function MyApp(props: MyAppProps) {
   }, []);
 
   useEffect(() => {
-    const handledRouteStart = () => NProgress.start();
-    const handledRouteDone = () => NProgress.done();
     Router.events.on('routeChangeStart', handledRouteStart);
     Router.events.on('routeChangeComplete', handledRouteDone);
     Router.events.on('routeChangeError', handledRouteDone);
