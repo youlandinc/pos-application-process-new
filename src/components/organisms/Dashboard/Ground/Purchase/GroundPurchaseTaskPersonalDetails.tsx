@@ -206,154 +206,180 @@ export const GroundPurchaseTaskPersonalDetails: FC = observer(() => {
     router,
   ]);
 
-  return loading ? (
-    <StyledLoading sx={{ color: 'text.grey' }} />
-  ) : (
-    <StyledFormItem
-      gap={6}
-      label={'Personal Details'}
-      tip={
-        'Please enter and confirm all of your personally identifiable information so we may begin processing your application.'
-      }
-      tipSx={{ mb: 0 }}
-    >
-      <StyledFormItem label={'What is your marital status?'} sub>
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledSelectOption
-            onChange={(value) =>
-              setMarital(value as string as DashboardTaskMaritalStatus)
-            }
-            options={OPTIONS_TASK_MARTIAL_STATUS}
-            value={marital}
-          />
-        </Stack>
-      </StyledFormItem>
-
-      <StyledFormItem label={'Current Address'} sub>
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledGoogleAutoComplete address={address} disabled />
-        </Stack>
-      </StyledFormItem>
-
-      <StyledFormItem
-        label={
-          'In the past 3 years, how many times have you had a credit account with 60 or more days delinquent?'
-        }
-        sub
+  return (
+    <>
+      <Transitions
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+        }}
       >
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledTextFieldNumber
-            decimalScale={0}
-            label={'Delinquent Times'}
-            onValueChange={({ formattedValue }) => {
-              setDelinquentTimes(formattedValue);
-            }}
-            thousandSeparator={false}
-            value={delinquentTimes}
-          />
-        </Stack>
-      </StyledFormItem>
-
-      <StyledFormItem
-        label={'Have you declared bankruptcy within the past 7 years?'}
-        sub
-      >
-        <StyledButtonGroup
-          onChange={(e, value) => {
-            if (value !== null) {
-              setIsBankruptcy(value === 'yes');
+        {loading ? (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            margin={'auto 0'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
+          >
+            <StyledLoading sx={{ color: 'text.grey' }} />
+          </Stack>
+        ) : (
+          <StyledFormItem
+            gap={6}
+            label={'Personal Details'}
+            maxWidth={900}
+            mx={{ lg: 'auto', xs: 0 }}
+            px={{ lg: 3, xs: 0 }}
+            tip={
+              'Please enter and confirm all of your personally identifiable information so we may begin processing your application.'
             }
-          }}
-          options={OPTIONS_COMMON_YES_OR_NO}
-          sx={{ width: '100%', maxWidth: 600 }}
-          value={isBankruptcy}
-        />
-        <Transitions
-          style={{
-            display: isBankruptcy ? 'block' : 'none',
-            width: '100%',
-            maxWidth: 600,
-          }}
-        >
-          {isBankruptcy && (
-            <Stack mt={3}>
-              <StyledDatePicker
-                label={'Bankruptcy Filing Date'}
-                onChange={(date) => {
-                  setBankruptDate(date);
+            tipSx={{ mb: 0 }}
+            width={'100%'}
+          >
+            <StyledFormItem label={'What is your marital status?'} sub>
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledSelectOption
+                  onChange={(value) =>
+                    setMarital(value as string as DashboardTaskMaritalStatus)
+                  }
+                  options={OPTIONS_TASK_MARTIAL_STATUS}
+                  value={marital}
+                />
+              </Stack>
+            </StyledFormItem>
+
+            <StyledFormItem label={'Current Address'} sub>
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledGoogleAutoComplete address={address} disabled />
+              </Stack>
+            </StyledFormItem>
+
+            <StyledFormItem
+              label={
+                'In the past 3 years, how many times have you had a credit account with 60 or more days delinquent?'
+              }
+              sub
+            >
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledTextFieldNumber
+                  decimalScale={0}
+                  label={'Delinquent Times'}
+                  onValueChange={({ formattedValue }) => {
+                    setDelinquentTimes(formattedValue);
+                  }}
+                  thousandSeparator={false}
+                  value={delinquentTimes}
+                />
+              </Stack>
+            </StyledFormItem>
+
+            <StyledFormItem
+              label={'Have you declared bankruptcy within the past 7 years?'}
+              sub
+            >
+              <StyledButtonGroup
+                onChange={(e, value) => {
+                  if (value !== null) {
+                    setIsBankruptcy(value === 'yes');
+                  }
                 }}
-                value={bankruptDate}
+                options={OPTIONS_COMMON_YES_OR_NO}
+                sx={{ width: '100%', maxWidth: 600 }}
+                value={isBankruptcy}
               />
-            </Stack>
-          )}
-        </Transitions>
-      </StyledFormItem>
-
-      <StyledFormItem
-        label={'Have you had property foreclosure upon in the past 7 years?'}
-        sub
-      >
-        <StyledButtonGroup
-          onChange={(e, value) => {
-            if (value !== null) {
-              setIsForeclosure(value === 'yes');
-            }
-          }}
-          options={OPTIONS_COMMON_YES_OR_NO}
-          sx={{ width: '100%', maxWidth: 600 }}
-          value={isForeclosure}
-        />
-        <Transitions
-          style={{
-            display: isForeclosure ? 'block' : 'none',
-            width: '100%',
-            maxWidth: 600,
-          }}
-        >
-          {isForeclosure && (
-            <Stack mt={3}>
-              <StyledDatePicker
-                label={'Property Foreclosure Filing Date'}
-                onChange={(date) => {
-                  setForeclosureDate(date);
+              <Transitions
+                style={{
+                  display: isBankruptcy ? 'block' : 'none',
+                  width: '100%',
+                  maxWidth: 600,
                 }}
-                value={foreclosureDate}
-              />
-            </Stack>
-          )}
-        </Transitions>
-      </StyledFormItem>
+              >
+                {isBankruptcy && (
+                  <Stack mt={3}>
+                    <StyledDatePicker
+                      label={'Bankruptcy Filing Date'}
+                      onChange={(date) => {
+                        setBankruptDate(date);
+                      }}
+                      value={bankruptDate}
+                    />
+                  </Stack>
+                )}
+              </Transitions>
+            </StyledFormItem>
 
-      <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
-        maxWidth={600}
-        width={'100%'}
-      >
-        <StyledButton
-          color={'info'}
-          onClick={() =>
-            router.push({
-              pathname: '/dashboard/tasks',
-              query: { processId: router.query.processId },
-            })
-          }
-          sx={{ flex: 1 }}
-          variant={'text'}
-        >
-          Back
-        </StyledButton>
-        <StyledButton
-          disabled={!isDisabled || saveLoading}
-          loading={saveLoading}
-          loadingText={'Saving...'}
-          onClick={handledSubmit}
-          sx={{ flex: 1 }}
-        >
-          Save
-        </StyledButton>
-      </Stack>
-    </StyledFormItem>
+            <StyledFormItem
+              label={
+                'Have you had property foreclosure upon in the past 7 years?'
+              }
+              sub
+            >
+              <StyledButtonGroup
+                onChange={(e, value) => {
+                  if (value !== null) {
+                    setIsForeclosure(value === 'yes');
+                  }
+                }}
+                options={OPTIONS_COMMON_YES_OR_NO}
+                sx={{ width: '100%', maxWidth: 600 }}
+                value={isForeclosure}
+              />
+              <Transitions
+                style={{
+                  display: isForeclosure ? 'block' : 'none',
+                  width: '100%',
+                  maxWidth: 600,
+                }}
+              >
+                {isForeclosure && (
+                  <Stack mt={3}>
+                    <StyledDatePicker
+                      label={'Property Foreclosure Filing Date'}
+                      onChange={(date) => {
+                        setForeclosureDate(date);
+                      }}
+                      value={foreclosureDate}
+                    />
+                  </Stack>
+                )}
+              </Transitions>
+            </StyledFormItem>
+
+            <Stack
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              maxWidth={600}
+              width={'100%'}
+            >
+              <StyledButton
+                color={'info'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  })
+                }
+                sx={{ flex: 1 }}
+                variant={'text'}
+              >
+                Back
+              </StyledButton>
+              <StyledButton
+                disabled={!isDisabled || saveLoading}
+                loading={saveLoading}
+                loadingText={'Saving...'}
+                onClick={handledSubmit}
+                sx={{ flex: 1 }}
+              >
+                Save
+              </StyledButton>
+            </Stack>
+          </StyledFormItem>
+        )}
+      </Transitions>
+    </>
   );
 });
