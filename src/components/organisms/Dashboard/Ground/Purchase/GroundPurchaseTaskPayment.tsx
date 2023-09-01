@@ -30,7 +30,7 @@ import {
   TaskFiles,
 } from '@/types';
 
-import { StyledButton, StyledLoading } from '@/components/atoms';
+import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
 import {
   GroundPurchasePaymentSummary,
   PaymentMethods,
@@ -432,14 +432,39 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
     tableStatus,
   ]);
 
-  return loading ? (
-    <StyledLoading sx={{ color: 'text.grey' }} />
-  ) : paymentStatus === DashboardTaskPaymentMethodsStatus.undone ? (
+  return (
     <>
-      {renderNode}
-      {renderButton}
+      <Transitions
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+        }}
+      >
+        {loading ? (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            margin={'auto 0'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
+          >
+            <StyledLoading sx={{ color: 'text.grey' }} />
+          </Stack>
+        ) : paymentStatus === DashboardTaskPaymentMethodsStatus.undone ? (
+          <Transitions
+            style={{
+              width: '100%',
+              maxWidth: 900,
+            }}
+          >
+            {renderNode}
+            {renderButton}
+          </Transitions>
+        ) : (
+          <PaymentStatus paymentStatus={paymentStatus} />
+        )}
+      </Transitions>
     </>
-  ) : (
-    <PaymentStatus paymentStatus={paymentStatus} />
   );
 });
