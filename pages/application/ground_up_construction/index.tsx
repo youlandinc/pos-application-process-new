@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { CircularProgress } from '@mui/material';
 import dynamic from 'next/dynamic';
 
 const DynamicGroundPage = dynamic(
@@ -8,8 +7,7 @@ const DynamicGroundPage = dynamic(
       (mod) => mod.GroundPage,
     ),
   {
-    loading: () => <CircularProgress />,
-    ssr: false,
+    ssr: true,
   },
 );
 

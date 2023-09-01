@@ -120,7 +120,7 @@ export const Entrance: FC = observer(() => {
             justifyContent={'flex-start'}
             minHeight={'calc(100vh - 92px)'}
             px={{ lg: 0, xs: 'clamp(24px,6.4vw,80px)' }}
-            py={'clamp(40px,7vw,80px) '}
+            py={'clamp(40px,6.4vw,80px) '}
             width={{ xxl: 1440, xl: 1240, lg: 938, xs: '100%' }}
           >
             <StyledFormItem
@@ -135,7 +135,10 @@ export const Entrance: FC = observer(() => {
                     color={'info'}
                     disabled={loading}
                     key={item.name + index}
-                    onClick={() => (window.location.href = item.url)}
+                    onClick={async () => {
+                      store.resetApplicationForm();
+                      await router.push(item.url, item.url, { shallow: true });
+                    }}
                     sx={{
                       ...POSFont('20px !important', 600, 1.5, 'text.primary'),
                       width: { md: 600, xs: '100%' },

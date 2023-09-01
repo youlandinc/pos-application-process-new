@@ -342,363 +342,411 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
     stateId,
   ]);
 
-  return loading ? (
-    <StyledLoading sx={{ color: 'primary.main' }} />
-  ) : tableView === 'form' ? (
-    <StyledFormItem
-      gap={6}
-      label={'Co-borrower Details'}
-      tip={
-        "This means your assets and income will be counted together. You can't remove your co-borrower once you have started your application unless you restart a new one.If there is a co-borrower, credit report and background check fees need to be charged for both individuals."
-      }
-      tipSx={{ mb: 0 }}
-    >
-      <StyledFormItem
-        label={'Would you like to add a co-borrower to your loan?'}
-        sub
-      >
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledButtonGroup
-            disabled={isConfirm}
-            onChange={(e, value) => {
-              if (value !== null) {
-                setIsCoBorrower(value === 'yes');
-              }
-            }}
-            options={OPTIONS_COMMON_YES_OR_NO}
-            value={isCoBorrower}
-          />
-        </Stack>
-      </StyledFormItem>
-
+  return (
+    <>
       <Transitions
         style={{
-          display: isCoBorrower ? 'flex' : 'none',
-          flexDirection: 'column',
-          gap: 48,
-          alignItems: 'center',
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
         }}
       >
-        {isCoBorrower && (
-          <>
+        {loading ? (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            margin={'auto 0'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
+          >
+            <StyledLoading sx={{ color: 'text.grey' }} />
+          </Stack>
+        ) : tableView === 'form' ? (
+          <StyledFormItem
+            gap={6}
+            label={'Co-borrower Details'}
+            maxWidth={900}
+            mx={{ lg: 'auto', xs: 0 }}
+            px={{ lg: 3, xs: 0 }}
+            tip={
+              "This means your assets and income will be counted together. You can't remove your co-borrower once you have started your application unless you restart a new one.If there is a co-borrower, credit report and background check fees need to be charged for both individuals."
+            }
+            tipSx={{ mb: 0 }}
+            width={'100%'}
+          >
             <StyledFormItem
-              label={'Borrower Type'}
+              label={'Would you like to add a co-borrower to your loan?'}
               sub
-              tip={
-                'If you represent an entity, please update the borrower type below, We will convert the co-borrower information into a guarantor for this entity.'
-              }
             >
               <Stack maxWidth={600} width={'100%'}>
-                <StyledSelectOption
+                <StyledButtonGroup
                   disabled={isConfirm}
-                  onChange={(value) =>
-                    setBorrowerType(
-                      value as string as DashboardTaskBorrowerType,
-                    )
-                  }
-                  options={OPTIONS_TASK_BORROWER_TYPE}
-                  value={borrowerType}
-                />
-              </Stack>
-            </StyledFormItem>
-
-            <StyledFormItem label={'What is your citizenship status?'} sub>
-              <Stack maxWidth={600} width={'100%'}>
-                <StyledSelectOption
-                  disabled={isConfirm}
-                  onChange={(value) =>
-                    setCitizenship(value as string as CommonBorrowerType)
-                  }
-                  options={OPTIONS_COMMON_CITIZEN_TYPE}
-                  value={citizenship}
+                  onChange={(e, value) => {
+                    if (value !== null) {
+                      setIsCoBorrower(value === 'yes');
+                    }
+                  }}
+                  options={OPTIONS_COMMON_YES_OR_NO}
+                  value={isCoBorrower}
                 />
               </Stack>
             </StyledFormItem>
 
             <Transitions
               style={{
-                display:
-                  borrowerType === DashboardTaskBorrowerType.entity
-                    ? 'flex'
-                    : 'none',
-                width: '100%',
+                display: isCoBorrower ? 'flex' : 'none',
+                flexDirection: 'column',
+                gap: 48,
+                alignItems: 'center',
               }}
             >
-              {borrowerType === DashboardTaskBorrowerType.entity && (
-                <StyledFormItem label={'Entity Information'} sub>
-                  <Stack
-                    flexDirection={'column'}
-                    gap={3}
-                    maxWidth={600}
-                    width={'100%'}
+              {isCoBorrower && (
+                <>
+                  <StyledFormItem
+                    label={'Borrower Type'}
+                    sub
+                    tip={
+                      'If you represent an entity, please update the borrower type below, We will convert the co-borrower information into a guarantor for this entity.'
+                    }
                   >
-                    <StyledTextField
+                    <Stack maxWidth={600} width={'100%'}>
+                      <StyledSelectOption
+                        disabled={isConfirm}
+                        onChange={(value) =>
+                          setBorrowerType(
+                            value as string as DashboardTaskBorrowerType,
+                          )
+                        }
+                        options={OPTIONS_TASK_BORROWER_TYPE}
+                        value={borrowerType}
+                      />
+                    </Stack>
+                  </StyledFormItem>
+
+                  <StyledFormItem
+                    label={'What is your citizenship status?'}
+                    sub
+                  >
+                    <Stack maxWidth={600} width={'100%'}>
+                      <StyledSelectOption
+                        disabled={isConfirm}
+                        onChange={(value) =>
+                          setCitizenship(value as string as CommonBorrowerType)
+                        }
+                        options={OPTIONS_COMMON_CITIZEN_TYPE}
+                        value={citizenship}
+                      />
+                    </Stack>
+                  </StyledFormItem>
+
+                  <Transitions
+                    style={{
+                      display:
+                        borrowerType === DashboardTaskBorrowerType.entity
+                          ? 'flex'
+                          : 'none',
+                      width: '100%',
+                    }}
+                  >
+                    {borrowerType === DashboardTaskBorrowerType.entity && (
+                      <StyledFormItem label={'Entity Information'} sub>
+                        <Stack
+                          flexDirection={'column'}
+                          gap={3}
+                          maxWidth={600}
+                          width={'100%'}
+                        >
+                          <StyledTextField
+                            disabled={isConfirm}
+                            label={'Authorized Signatory Title'}
+                            onChange={(e) => setSignatoryTitle(e.target.value)}
+                            value={signatoryTitle}
+                          />
+                          <StyledSelect
+                            disabled={isConfirm}
+                            label={'Entity Type'}
+                            onChange={(e) =>
+                              setEntityType(
+                                e.target
+                                  .value as DashboardTaskBorrowerEntityType,
+                              )
+                            }
+                            options={OPTIONS_TASK_ENTITY_TYPE}
+                            value={entityType}
+                          />
+                          <StyledTextField
+                            disabled={isConfirm}
+                            label={'Secretary of State ID'}
+                            onChange={(e) => setStateId(e.target.value)}
+                            value={stateId}
+                          />
+                          <StyledSelect
+                            disabled={isConfirm}
+                            label={'Formation State'}
+                            onChange={(e) =>
+                              setEntityState(e.target.value as string)
+                            }
+                            options={OPTIONS_COMMON_STATE}
+                            value={entityState}
+                          />
+                        </Stack>
+                      </StyledFormItem>
+                    )}
+                  </Transitions>
+
+                  <StyledFormItem
+                    label={'Personal Information'}
+                    sub
+                    tip={`By entering your phone number,  you're authorizing ${
+                      //sass
+                      saasState?.organizationName || 'YouLand'
+                    } to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may.`}
+                  >
+                    <Stack gap={3} maxWidth={600} width={'100%'}>
+                      <StyledTextField
+                        disabled={isConfirm}
+                        label={'First Name'}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        value={firstName}
+                      />
+                      <StyledTextField
+                        disabled={isConfirm}
+                        label={'Last Name'}
+                        onChange={(e) => setLastName(e.target.value)}
+                        value={lastName}
+                      />
+                      <StyledDatePicker
+                        disabled={isConfirm}
+                        label={'Date of Birth'}
+                        onChange={(value) => setDateOfBirth(value)}
+                        value={dateOfBirth}
+                      />
+                      <StyledTextFieldPhone
+                        disabled={isConfirm}
+                        label={'Phone Number'}
+                        onValueChange={({ value }) => setPhoneNumber(value)}
+                        value={phoneNumber}
+                      />
+                      <StyledTextField
+                        disabled={isConfirm}
+                        label={'Email'}
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
+                      />
+                      <StyledSelect
+                        disabled={isConfirm}
+                        label={'Gender'}
+                        onChange={(e) =>
+                          setGender(
+                            e.target.value as string as DashboardTaskGender,
+                          )
+                        }
+                        options={OPTIONS_TASK_GENDER}
+                        value={gender}
+                      />
+                      <StyledSelect
+                        disabled={isConfirm}
+                        label={'Marital Status'}
+                        onChange={(e) =>
+                          setMarital(
+                            e.target
+                              .value as string as DashboardTaskMaritalStatus,
+                          )
+                        }
+                        options={OPTIONS_TASK_MARTIAL_STATUS}
+                        value={marital}
+                      />
+                      <StyledTextFieldNumber
+                        decimalScale={0}
+                        disabled={isConfirm}
+                        label={'Delinquent Times'}
+                        onValueChange={({ formattedValue }) =>
+                          setDelinquentTimes(formattedValue)
+                        }
+                        thousandSeparator={false}
+                        value={delinquentTimes}
+                      />
+                      <StyledDatePicker
+                        disabled={isConfirm}
+                        label={'Bankruptcy Filing Date'}
+                        onChange={(value) => setBankruptDate(value)}
+                        value={bankruptDate}
+                      />
+                      <StyledDatePicker
+                        disabled={isConfirm}
+                        label={'Property Foreclosure Filing Date'}
+                        onChange={(value) => setForeclosureDate(value)}
+                        value={foreclosureDate}
+                      />
+                    </Stack>
+                  </StyledFormItem>
+
+                  <StyledFormItem label={'Current Address'} sub>
+                    <Stack maxWidth={600} width={'100%'}>
+                      <StyledGoogleAutoComplete
+                        address={address}
+                        disabled={isConfirm}
+                      />
+                    </Stack>
+                  </StyledFormItem>
+
+                  {citizenship !== CommonBorrowerType.foreign_national && (
+                    <StyledFormItem
+                      label={'Your Co-borrower Social Security Number'}
+                      sub
+                    >
+                      <Stack maxWidth={600} width={'100%'}>
+                        <StyledTextFieldSocialNumber
+                          disabled={isConfirm}
+                          label={'Social Security Number'}
+                          onValueChange={(v) => setSsn(v)}
+                          value={ssn}
+                        />
+                      </Stack>
+                    </StyledFormItem>
+                  )}
+
+                  {!isConfirm ? (
+                    <StyledCheckbox
+                      checked={authorizedCreditCheck}
                       disabled={isConfirm}
-                      label={'Authorized Signatory Title'}
-                      onChange={(e) => setSignatoryTitle(e.target.value)}
-                      value={signatoryTitle}
-                    />
-                    <StyledSelect
-                      disabled={isConfirm}
-                      label={'Entity Type'}
-                      onChange={(e) =>
-                        setEntityType(
-                          e.target.value as DashboardTaskBorrowerEntityType,
-                        )
+                      label={
+                        <Typography
+                          color={'text.primary'}
+                          component={'div'}
+                          ml={2}
+                          variant={'body2'}
+                        >
+                          I, {firstName || 'borrower'} {lastName || 'name'} ,
+                          authorize{' '}
+                          {
+                            //sass
+                            saasState?.organizationName || 'YouLand'
+                          }{' '}
+                          to verify my credit. I&apos;ve also read and agreed to{' '}
+                          {
+                            //sass
+                            saasState?.organizationName || 'YouLand'
+                          }{' '}
+                          &apos;s{' '}
+                          <Typography
+                            className={'link_style'}
+                            component={'span'}
+                            onClick={() =>
+                              window.open(
+                                'https://www.youland.com/legal/terms/',
+                              )
+                            }
+                          >
+                            Terms of Use
+                          </Typography>
+                          ,{' '}
+                          <Typography
+                            className={'link_style'}
+                            component={'span'}
+                            onClick={() =>
+                              window.open(
+                                'https://www.youland.com/legal/privacy/',
+                              )
+                            }
+                          >
+                            Privacy Policy
+                          </Typography>{' '}
+                          and consent to{' '}
+                          <Typography
+                            className={'link_style'}
+                            component={'span'}
+                            onClick={() =>
+                              window.open(
+                                'https://www.youland.com/legal/e-loan-doc/',
+                              )
+                            }
+                          >
+                            Receive Electronic Loan Documents
+                          </Typography>
+                          .
+                        </Typography>
                       }
-                      options={OPTIONS_TASK_ENTITY_TYPE}
-                      value={entityType}
+                      onChange={(e) =>
+                        setAuthorizedCreditCheck(e.target.checked)
+                      }
+                      sx={{ maxWidth: 600 }}
                     />
-                    <StyledTextField
-                      disabled={isConfirm}
-                      label={'Secretary of State ID'}
-                      onChange={(e) => setStateId(e.target.value)}
-                      value={stateId}
+                  ) : citizenship !== CommonBorrowerType.foreign_national ? (
+                    <StyledFormItem
+                      label={`Credit Score is ${creditScore}`}
+                      labelSx={{ m: 0 }}
+                      sub
+                      tipSx={{ m: 0 }}
                     />
-                    <StyledSelect
-                      disabled={isConfirm}
-                      label={'Formation State'}
-                      onChange={(e) => setEntityState(e.target.value as string)}
-                      options={OPTIONS_COMMON_STATE}
-                      value={entityState}
-                    />
-                  </Stack>
-                </StyledFormItem>
+                  ) : null}
+                </>
               )}
             </Transitions>
 
-            <StyledFormItem
-              label={'Personal Information'}
-              sub
-              tip={`By entering your phone number,  you're authorizing ${
-                //sass
-                saasState?.organizationName || 'YouLand'
-              } to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may.`}
+            <Stack
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              maxWidth={600}
+              width={'100%'}
             >
-              <Stack gap={3} maxWidth={600} width={'100%'}>
-                <StyledTextField
-                  disabled={isConfirm}
-                  label={'First Name'}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  value={firstName}
-                />
-                <StyledTextField
-                  disabled={isConfirm}
-                  label={'Last Name'}
-                  onChange={(e) => setLastName(e.target.value)}
-                  value={lastName}
-                />
-                <StyledDatePicker
-                  disabled={isConfirm}
-                  label={'Date of Birth'}
-                  onChange={(value) => setDateOfBirth(value)}
-                  value={dateOfBirth}
-                />
-                <StyledTextFieldPhone
-                  disabled={isConfirm}
-                  label={'Phone Number'}
-                  onValueChange={({ value }) => setPhoneNumber(value)}
-                  value={phoneNumber}
-                />
-                <StyledTextField
-                  disabled={isConfirm}
-                  label={'Email'}
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
-                />
-                <StyledSelect
-                  disabled={isConfirm}
-                  label={'Gender'}
-                  onChange={(e) =>
-                    setGender(e.target.value as string as DashboardTaskGender)
-                  }
-                  options={OPTIONS_TASK_GENDER}
-                  value={gender}
-                />
-                <StyledSelect
-                  disabled={isConfirm}
-                  label={'Marital Status'}
-                  onChange={(e) =>
-                    setMarital(
-                      e.target.value as string as DashboardTaskMaritalStatus,
-                    )
-                  }
-                  options={OPTIONS_TASK_MARTIAL_STATUS}
-                  value={marital}
-                />
-                <StyledTextFieldNumber
-                  decimalScale={0}
-                  disabled={isConfirm}
-                  label={'Delinquent Times'}
-                  onValueChange={({ formattedValue }) =>
-                    setDelinquentTimes(formattedValue)
-                  }
-                  thousandSeparator={false}
-                  value={delinquentTimes}
-                />
-                <StyledDatePicker
-                  disabled={isConfirm}
-                  label={'Bankruptcy Filing Date'}
-                  onChange={(value) => setBankruptDate(value)}
-                  value={bankruptDate}
-                />
-                <StyledDatePicker
-                  disabled={isConfirm}
-                  label={'Property Foreclosure Filing Date'}
-                  onChange={(value) => setForeclosureDate(value)}
-                  value={foreclosureDate}
-                />
-              </Stack>
-            </StyledFormItem>
-
-            <StyledFormItem label={'Current Address'} sub>
-              <Stack maxWidth={600} width={'100%'}>
-                <StyledGoogleAutoComplete
-                  address={address}
-                  disabled={isConfirm}
-                />
-              </Stack>
-            </StyledFormItem>
-
-            {citizenship !== CommonBorrowerType.foreign_national && (
-              <StyledFormItem
-                label={'Your Co-borrower Social Security Number'}
-                sub
-              >
-                <Stack maxWidth={600} width={'100%'}>
-                  <StyledTextFieldSocialNumber
-                    disabled={isConfirm}
-                    label={'Social Security Number'}
-                    onValueChange={(v) => setSsn(v)}
-                    value={ssn}
-                  />
-                </Stack>
-              </StyledFormItem>
-            )}
-
-            {!isConfirm ? (
-              <StyledCheckbox
-                checked={authorizedCreditCheck}
-                disabled={isConfirm}
-                label={
-                  <Typography
-                    color={'text.primary'}
-                    component={'div'}
-                    ml={2}
-                    variant={'body2'}
-                  >
-                    I, {firstName || 'borrower'} {lastName || 'name'} ,
-                    authorize{' '}
-                    {
-                      //sass
-                      saasState?.organizationName || 'YouLand'
-                    }{' '}
-                    to verify my credit. I&apos;ve also read and agreed to{' '}
-                    {
-                      //sass
-                      saasState?.organizationName || 'YouLand'
-                    }{' '}
-                    &apos;s{' '}
-                    <Typography
-                      className={'link_style'}
-                      component={'span'}
-                      onClick={() =>
-                        window.open('https://www.youland.com/legal/terms/')
-                      }
-                    >
-                      Terms of Use
-                    </Typography>
-                    ,{' '}
-                    <Typography
-                      className={'link_style'}
-                      component={'span'}
-                      onClick={() =>
-                        window.open('https://www.youland.com/legal/privacy/')
-                      }
-                    >
-                      Privacy Policy
-                    </Typography>{' '}
-                    and consent to{' '}
-                    <Typography
-                      className={'link_style'}
-                      component={'span'}
-                      onClick={() =>
-                        window.open('https://www.youland.com/legal/e-loan-doc/')
-                      }
-                    >
-                      Receive Electronic Loan Documents
-                    </Typography>
-                    .
-                  </Typography>
+              <StyledButton
+                color={isConfirm ? 'primary' : 'info'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  })
                 }
-                onChange={(e) => setAuthorizedCreditCheck(e.target.checked)}
-                sx={{ maxWidth: 600 }}
-              />
-            ) : citizenship !== CommonBorrowerType.foreign_national ? (
-              <StyledFormItem
-                label={`Credit Score is ${creditScore}`}
-                labelSx={{ m: 0 }}
-                sub
-                tipSx={{ m: 0 }}
-              />
-            ) : null}
-          </>
+                sx={{ flex: 1 }}
+                variant={isConfirm ? 'contained' : 'text'}
+              >
+                Back
+              </StyledButton>
+              {!isConfirm && (
+                <StyledButton
+                  disabled={!isDisabled || saveLoading}
+                  loading={saveLoading}
+                  loadingText={'Saving...'}
+                  onClick={handledSubmit}
+                  sx={{ flex: 1 }}
+                >
+                  Next
+                </StyledButton>
+              )}
+            </Stack>
+          </StyledFormItem>
+        ) : (
+          <Stack
+            alignItems={'center'}
+            gap={3}
+            maxWidth={900}
+            mx={{ lg: 'auto', xs: 0 }}
+            px={{ lg: 3, xs: 0 }}
+            width={'100%'}
+          >
+            <DashboardScoreResult score={creditScore} />
+            <StyledButton
+              disabled={!isDisabled || saveLoading}
+              loading={saveLoading}
+              loadingText={'Saving...'}
+              onClick={async () => {
+                if (creditScore && creditScore > 640) {
+                  await router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  });
+                }
+                setTableView('form');
+              }}
+              sx={{ width: '100%', maxWidth: 600 }}
+            >
+              Next
+            </StyledButton>
+          </Stack>
         )}
       </Transitions>
-
-      <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
-        maxWidth={600}
-        width={'100%'}
-      >
-        <StyledButton
-          color={isConfirm ? 'primary' : 'info'}
-          onClick={() =>
-            router.push({
-              pathname: '/dashboard/tasks',
-              query: { processId: router.query.processId },
-            })
-          }
-          sx={{ flex: 1 }}
-          variant={isConfirm ? 'contained' : 'text'}
-        >
-          Back
-        </StyledButton>
-        {!isConfirm && (
-          <StyledButton
-            disabled={!isDisabled || saveLoading}
-            loading={saveLoading}
-            loadingText={'Saving...'}
-            onClick={handledSubmit}
-            sx={{ flex: 1 }}
-          >
-            Next
-          </StyledButton>
-        )}
-      </Stack>
-    </StyledFormItem>
-  ) : (
-    <Stack alignItems={'center'} gap={3}>
-      <DashboardScoreResult score={creditScore} />
-      <StyledButton
-        disabled={!isDisabled || saveLoading}
-        loading={saveLoading}
-        loadingText={'Saving...'}
-        onClick={async () => {
-          if (creditScore && creditScore > 640) {
-            await router.push({
-              pathname: '/dashboard/tasks',
-              query: { processId: router.query.processId },
-            });
-          }
-          setTableView('form');
-        }}
-        sx={{ width: '100%', maxWidth: 600 }}
-      >
-        Next
-      </StyledButton>
-    </Stack>
+    </>
   );
 });

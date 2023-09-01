@@ -444,7 +444,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
     <>
       <StyledFormItem
         gap={3}
-        label={'Estimate bridge loan rate'}
+        label={'Estimate your stabilized bridge loan rate'}
         labelSx={{ m: 0 }}
       >
         {!isDashboard && (

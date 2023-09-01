@@ -50,6 +50,9 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
+const handledRouteStart = () => NProgress.start();
+const handledRouteDone = () => NProgress.done();
+
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const { enqueueSnackbar } = useSnackbar();
@@ -69,8 +72,6 @@ export default function MyApp(props: MyAppProps) {
   }, []);
 
   useEffect(() => {
-    const handledRouteStart = () => NProgress.start();
-    const handledRouteDone = () => NProgress.done();
     Router.events.on('routeChangeStart', handledRouteStart);
     Router.events.on('routeChangeComplete', handledRouteDone);
     Router.events.on('routeChangeError', handledRouteDone);
@@ -168,7 +169,21 @@ export default function MyApp(props: MyAppProps) {
       );
     }
     if (loading) {
-      return <StyledLoading sx={{ color: 'primary.main' }} />;
+      return (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minWidth: 375,
+            minHeight: 667,
+            width: '100vw',
+            height: '100vh',
+          }}
+        >
+          <StyledLoading sx={{ color: '#E3E3EE' }} />
+        </div>
+      );
     }
   }, [Component, StyledMaterialDesignContent, loading, pageProps, saasState]);
 

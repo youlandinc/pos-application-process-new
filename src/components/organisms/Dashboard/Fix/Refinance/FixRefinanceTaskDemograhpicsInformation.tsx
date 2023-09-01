@@ -347,439 +347,465 @@ export const FixRefinanceTaskDemographicsInformation: FC = observer(() => {
     white,
   ]);
 
-  return loading ? (
-    <StyledLoading sx={{ color: 'primary.main' }} />
-  ) : (
-    <StyledFormItem
-      gap={6}
-      label={'Government Requested Information for you'}
-      tip={
-        "The following information is requested by the Federal Government for certain types of loans related to a dwelling in order to monitor the lender's compliance with equal credit opportunity, fair housing, and home mortgage disclosure laws. The law provides that a lender may not discriminate either on the basis of this information, or whether you choose to disclose it. You may select one or more designations for Ethnicity and one or more designations for Race. You are not required to provide this information, but are encouraged to do so."
-      }
-      tipSx={{ mb: 0 }}
-    >
-      <StyledFormItem
-        label={'What is your ethnicity?'}
-        sub
-        tip={'You can choose one or more.'}
+  return (
+    <>
+      <Transitions
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+        }}
       >
-        <Stack gap={3} maxWidth={600} width={'100%'}>
-          <StyledCheckbox
-            checked={latino}
-            label={'Hispanic or Latino'}
-            onChange={(e) => {
-              handledResetEthnicity();
-              setLatino(e.target.checked);
-            }}
-          />
-          <Transitions
-            style={{
-              display: latino ? 'flex' : 'none',
-              padding: '0 24px',
-              flexDirection: 'column',
-            }}
+        {loading ? (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            margin={'auto 0'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
           >
-            {latino && (
-              <>
-                <Stack flexDirection={'row'} width={'100%'}>
-                  <StyledCheckbox
-                    checked={mexican}
-                    label={'Mexican'}
-                    onChange={(e) => {
-                      handledResetEthnicity(true);
-                      setMexican(e.target.checked);
-                    }}
-                  />
-                  <StyledCheckbox
-                    checked={puertoRican}
-                    label={'Puerto Rican'}
-                    onChange={(e) => {
-                      handledResetEthnicity(true);
-                      setPuertoRican(e.target.checked);
-                    }}
-                  />
-                  <StyledCheckbox
-                    checked={cuban}
-                    label={'Cuban'}
-                    onChange={(e) => {
-                      handledResetEthnicity(true);
-                      setCuban(e.target.checked);
-                    }}
-                  />
-                </Stack>
-                <Box mt={1}>
-                  <StyledCheckbox
-                    checked={otherLatino}
-                    label={' Other Hispanic or Latino'}
-                    onChange={(e) => {
-                      handledResetEthnicity(true);
-                      setOtherLatino(e.target.checked);
-                    }}
-                  />
-                  <Transitions
-                    style={{
-                      display: otherLatino ? 'block' : 'none',
-                    }}
-                  >
-                    {otherLatino && (
-                      <>
-                        <StyledTextField
-                          maxRows={4}
-                          minRows={1}
-                          multiline
-                          onChange={(e) => setOtherLatinoText(e.target.value)}
-                          value={otherLatinoText}
-                        />
-                        <Typography
-                          color={'info.main'}
-                          component={'div'}
-                          mt={1}
-                          textAlign={'center'}
-                          variant={'body3'}
-                        >
-                          For example, Argentinian, Colombian, Nicaraguan, El
-                          Salvadoran, Venezuelan, etc.
-                        </Typography>
-                      </>
-                    )}
-                  </Transitions>
-                </Box>
-              </>
-            )}
-          </Transitions>
-
-          <StyledCheckbox
-            checked={notLatino}
-            label={'Not Hispanic or Latino'}
-            onChange={(e) => {
-              handledResetEthnicity();
-              setNotLatino(e.target.checked);
-            }}
-          />
-          <StyledCheckbox
-            checked={notProvideEthnicity}
-            label={'I do not wish to provide this information'}
-            onChange={(e) => {
-              handledResetEthnicity();
-              setNotProvideEthnicity(e.target.checked);
-            }}
-          />
-        </Stack>
-      </StyledFormItem>
-
-      <StyledFormItem
-        label={'What is your race?'}
-        sub
-        tip={'You can choose one or more.'}
-      >
-        <Stack gap={3} maxWidth={600} width={'100%'}>
-          <Box>
-            <StyledCheckbox
-              checked={american}
-              label={'American Indian or Alaska Native'}
-              onChange={(e) => {
-                handledResetRace();
-                setAmerican(e.target.checked);
-              }}
-            />
-            <Transitions
-              style={{
-                display: american ? 'block' : 'none',
-                width: '100%',
-              }}
+            <StyledLoading sx={{ color: 'text.grey' }} />
+          </Stack>
+        ) : (
+          <StyledFormItem
+            gap={6}
+            label={'Government Requested Information for you'}
+            maxWidth={900}
+            mx={{ lg: 'auto', xs: 0 }}
+            px={{ lg: 3, xs: 0 }}
+            tip={
+              "The following information is requested by the Federal Government for certain types of loans related to a dwelling in order to monitor the lender's compliance with equal credit opportunity, fair housing, and home mortgage disclosure laws. The law provides that a lender may not discriminate either on the basis of this information, or whether you choose to disclose it. You may select one or more designations for Ethnicity and one or more designations for Race. You are not required to provide this information, but are encouraged to do so."
+            }
+            tipSx={{ mb: 0 }}
+            width={'100%'}
+          >
+            <StyledFormItem
+              label={'What is your ethnicity?'}
+              sub
+              tip={'You can choose one or more.'}
             >
-              {american && (
-                <StyledTextField
-                  label={'Name of enrolled or principal tribe'}
-                  onChange={(e) => setTribeText(e.target.value)}
-                  value={tribeText}
+              <Stack gap={3} maxWidth={600} width={'100%'}>
+                <StyledCheckbox
+                  checked={latino}
+                  label={'Hispanic or Latino'}
+                  onChange={(e) => {
+                    handledResetEthnicity();
+                    setLatino(e.target.checked);
+                  }}
                 />
-              )}
-            </Transitions>
-          </Box>
+                <Transitions
+                  style={{
+                    display: latino ? 'flex' : 'none',
+                    padding: '0 24px',
+                    flexDirection: 'column',
+                  }}
+                >
+                  {latino && (
+                    <>
+                      <Stack flexDirection={'row'} width={'100%'}>
+                        <StyledCheckbox
+                          checked={mexican}
+                          label={'Mexican'}
+                          onChange={(e) => {
+                            handledResetEthnicity(true);
+                            setMexican(e.target.checked);
+                          }}
+                        />
+                        <StyledCheckbox
+                          checked={puertoRican}
+                          label={'Puerto Rican'}
+                          onChange={(e) => {
+                            handledResetEthnicity(true);
+                            setPuertoRican(e.target.checked);
+                          }}
+                        />
+                        <StyledCheckbox
+                          checked={cuban}
+                          label={'Cuban'}
+                          onChange={(e) => {
+                            handledResetEthnicity(true);
+                            setCuban(e.target.checked);
+                          }}
+                        />
+                      </Stack>
+                      <Box mt={1}>
+                        <StyledCheckbox
+                          checked={otherLatino}
+                          label={' Other Hispanic or Latino'}
+                          onChange={(e) => {
+                            handledResetEthnicity(true);
+                            setOtherLatino(e.target.checked);
+                          }}
+                        />
+                        <Transitions
+                          style={{
+                            display: otherLatino ? 'block' : 'none',
+                          }}
+                        >
+                          {otherLatino && (
+                            <>
+                              <StyledTextField
+                                maxRows={4}
+                                minRows={1}
+                                multiline
+                                onChange={(e) =>
+                                  setOtherLatinoText(e.target.value)
+                                }
+                                value={otherLatinoText}
+                              />
+                              <Typography
+                                color={'info.main'}
+                                component={'div'}
+                                mt={1}
+                                textAlign={'center'}
+                                variant={'body3'}
+                              >
+                                For example, Argentinian, Colombian, Nicaraguan,
+                                El Salvadoran, Venezuelan, etc.
+                              </Typography>
+                            </>
+                          )}
+                        </Transitions>
+                      </Box>
+                    </>
+                  )}
+                </Transitions>
 
-          <StyledCheckbox
-            checked={isAsian}
-            label={'Asian'}
-            onChange={(e) => {
-              handledResetRace();
-              setIsAsian(e.target.checked);
-            }}
-          />
+                <StyledCheckbox
+                  checked={notLatino}
+                  label={'Not Hispanic or Latino'}
+                  onChange={(e) => {
+                    handledResetEthnicity();
+                    setNotLatino(e.target.checked);
+                  }}
+                />
+                <StyledCheckbox
+                  checked={notProvideEthnicity}
+                  label={'I do not wish to provide this information'}
+                  onChange={(e) => {
+                    handledResetEthnicity();
+                    setNotProvideEthnicity(e.target.checked);
+                  }}
+                />
+              </Stack>
+            </StyledFormItem>
 
-          <Transitions
-            style={{
-              display: isAsian ? 'flex' : 'none',
-              width: '100%',
-              flexDirection: 'column',
-              padding: '0 24px',
-            }}
-          >
-            {isAsian && (
-              <>
-                <Stack flexDirection={'row'} flexWrap={'wrap'} gap={1}>
+            <StyledFormItem
+              label={'What is your race?'}
+              sub
+              tip={'You can choose one or more.'}
+            >
+              <Stack gap={3} maxWidth={600} width={'100%'}>
+                <Box>
                   <StyledCheckbox
-                    checked={asianIndian}
-                    label={'Asian Indian'}
+                    checked={american}
+                    label={'American Indian or Alaska Native'}
                     onChange={(e) => {
-                      handledResetRace(true);
-                      setAsianIndian(e.target.checked);
-                    }}
-                  />
-                  <StyledCheckbox
-                    checked={chinese}
-                    label={'Chinese'}
-                    onChange={(e) => {
-                      handledResetRace(true);
-                      setChinese(e.target.checked);
-                    }}
-                  />
-                  <StyledCheckbox
-                    checked={filipino}
-                    label={'Filipino'}
-                    onChange={(e) => {
-                      handledResetRace(true);
-                      setFilipino(e.target.checked);
-                    }}
-                  />
-                  <StyledCheckbox
-                    checked={japanese}
-                    label={'Japanese'}
-                    onChange={(e) => {
-                      handledResetRace(true);
-                      setJapanese(e.target.checked);
-                    }}
-                  />
-                  <StyledCheckbox
-                    checked={korean}
-                    label={'Korean'}
-                    onChange={(e) => {
-                      handledResetRace(true);
-                      setKorean(e.target.checked);
-                    }}
-                  />
-                </Stack>
-                <Box mt={1}>
-                  <StyledCheckbox
-                    checked={otherAsian}
-                    label={'Other Hispanic or Latino'}
-                    onChange={(e) => {
-                      handledResetRace(true);
-                      setOtherAsian(e.target.checked);
+                      handledResetRace();
+                      setAmerican(e.target.checked);
                     }}
                   />
                   <Transitions
                     style={{
-                      display: otherAsian ? 'block' : 'none',
+                      display: american ? 'block' : 'none',
                       width: '100%',
                     }}
                   >
-                    {otherAsian && (
-                      <>
-                        <StyledTextField
-                          maxRows={4}
-                          minRows={1}
-                          multiline
-                          onChange={(e) => {
-                            setOtherAsianText(e.target.value);
-                          }}
-                          value={otherAsianText}
-                        />
-                        <Typography
-                          color={'info.main'}
-                          component={'div'}
-                          mt={1}
-                          textAlign={'center'}
-                          variant={'body3'}
-                        >
-                          For example, Argentinian, Colombian, Nicaraguan, El
-                          Salvadoran, Venezuelan, etc.
-                        </Typography>
-                      </>
+                    {american && (
+                      <StyledTextField
+                        label={'Name of enrolled or principal tribe'}
+                        onChange={(e) => setTribeText(e.target.value)}
+                        value={tribeText}
+                      />
                     )}
                   </Transitions>
                 </Box>
-              </>
-            )}
-          </Transitions>
 
-          <StyledCheckbox
-            checked={black}
-            label={'Black or African American'}
-            onChange={(e) => {
-              handledResetRace();
-              setBlack(e.target.checked);
-            }}
-          />
-          <StyledCheckbox
-            checked={islander}
-            label={'Native Hawaiian or Other Pacific Islander'}
-            onChange={(e) => {
-              handledResetRace();
-              setIslander(e.target.checked);
-            }}
-          />
-          <Transitions
-            style={{
-              display: islander ? 'flex' : 'none',
-              width: '100%',
-              flexDirection: 'column',
-              padding: '0 24px',
-            }}
-          >
-            {islander && (
-              <>
-                <Stack flexDirection={'row'} gap={3}>
-                  <StyledCheckbox
-                    checked={hawaiian}
-                    label={'Native Hawaiian'}
-                    onChange={(e) => {
-                      handledResetRace(true);
-                      setHawaiian(e.target.checked);
-                    }}
-                  />
-                  <StyledCheckbox
-                    checked={chamorro}
-                    label={'Guamanian or Chamorro'}
-                    onChange={(e) => {
-                      handledResetRace(true);
-                      setChamorro(e.target.checked);
-                    }}
-                  />
-                  <StyledCheckbox
-                    checked={samoan}
-                    label={'Samoan'}
-                    onChange={(e) => {
-                      handledResetRace(true);
-                      setSamoan(e.target.checked);
-                    }}
-                  />
-                </Stack>
-                <Box mt={1}>
-                  <StyledCheckbox
-                    checked={otherIslander}
-                    label={'Other Hispanic or Latino'}
-                    onChange={(e) => {
-                      handledResetRace(true);
-                      setOtherIslander(e.target.checked);
-                    }}
-                  />
-                  <Transitions
-                    style={{
-                      display: otherIslander ? 'block' : 'none',
-                      width: '100%',
-                    }}
-                  >
-                    {otherIslander && (
-                      <>
-                        <StyledTextField
-                          maxRows={4}
-                          minRows={1}
-                          multiline
+                <StyledCheckbox
+                  checked={isAsian}
+                  label={'Asian'}
+                  onChange={(e) => {
+                    handledResetRace();
+                    setIsAsian(e.target.checked);
+                  }}
+                />
+
+                <Transitions
+                  style={{
+                    display: isAsian ? 'flex' : 'none',
+                    width: '100%',
+                    flexDirection: 'column',
+                    padding: '0 24px',
+                  }}
+                >
+                  {isAsian && (
+                    <>
+                      <Stack flexDirection={'row'} flexWrap={'wrap'} gap={1}>
+                        <StyledCheckbox
+                          checked={asianIndian}
+                          label={'Asian Indian'}
                           onChange={(e) => {
-                            setOtherIslanderText(e.target.value);
+                            handledResetRace(true);
+                            setAsianIndian(e.target.checked);
                           }}
-                          value={otherIslanderText}
                         />
-                        <Typography
-                          color={'info.main'}
-                          component={'div'}
-                          mt={1}
-                          textAlign={'center'}
-                          variant={'body3'}
+                        <StyledCheckbox
+                          checked={chinese}
+                          label={'Chinese'}
+                          onChange={(e) => {
+                            handledResetRace(true);
+                            setChinese(e.target.checked);
+                          }}
+                        />
+                        <StyledCheckbox
+                          checked={filipino}
+                          label={'Filipino'}
+                          onChange={(e) => {
+                            handledResetRace(true);
+                            setFilipino(e.target.checked);
+                          }}
+                        />
+                        <StyledCheckbox
+                          checked={japanese}
+                          label={'Japanese'}
+                          onChange={(e) => {
+                            handledResetRace(true);
+                            setJapanese(e.target.checked);
+                          }}
+                        />
+                        <StyledCheckbox
+                          checked={korean}
+                          label={'Korean'}
+                          onChange={(e) => {
+                            handledResetRace(true);
+                            setKorean(e.target.checked);
+                          }}
+                        />
+                      </Stack>
+                      <Box mt={1}>
+                        <StyledCheckbox
+                          checked={otherAsian}
+                          label={'Other Hispanic or Latino'}
+                          onChange={(e) => {
+                            handledResetRace(true);
+                            setOtherAsian(e.target.checked);
+                          }}
+                        />
+                        <Transitions
+                          style={{
+                            display: otherAsian ? 'block' : 'none',
+                            width: '100%',
+                          }}
                         >
-                          For example, Argentinian, Colombian, Nicaraguan, El
-                          Salvadoran, Venezuelan, etc.
-                        </Typography>
-                      </>
-                    )}
-                  </Transitions>
-                </Box>
-              </>
-            )}
-          </Transitions>
+                          {otherAsian && (
+                            <>
+                              <StyledTextField
+                                maxRows={4}
+                                minRows={1}
+                                multiline
+                                onChange={(e) => {
+                                  setOtherAsianText(e.target.value);
+                                }}
+                                value={otherAsianText}
+                              />
+                              <Typography
+                                color={'info.main'}
+                                component={'div'}
+                                mt={1}
+                                textAlign={'center'}
+                                variant={'body3'}
+                              >
+                                For example, Argentinian, Colombian, Nicaraguan,
+                                El Salvadoran, Venezuelan, etc.
+                              </Typography>
+                            </>
+                          )}
+                        </Transitions>
+                      </Box>
+                    </>
+                  )}
+                </Transitions>
 
-          <StyledCheckbox
-            checked={white}
-            label={'White'}
-            onChange={(e) => {
-              handledResetRace();
-              setWhite(e.target.checked);
-            }}
-          />
-          <StyledCheckbox
-            checked={notProvideRace}
-            label={'I do not wish to provide this information'}
-            onChange={(e) => {
-              handledResetRace();
-              setNotProvideRace(e.target.checked);
-            }}
-          />
-        </Stack>
-      </StyledFormItem>
+                <StyledCheckbox
+                  checked={black}
+                  label={'Black or African American'}
+                  onChange={(e) => {
+                    handledResetRace();
+                    setBlack(e.target.checked);
+                  }}
+                />
+                <StyledCheckbox
+                  checked={islander}
+                  label={'Native Hawaiian or Other Pacific Islander'}
+                  onChange={(e) => {
+                    handledResetRace();
+                    setIslander(e.target.checked);
+                  }}
+                />
+                <Transitions
+                  style={{
+                    display: islander ? 'flex' : 'none',
+                    width: '100%',
+                    flexDirection: 'column',
+                    padding: '0 24px',
+                  }}
+                >
+                  {islander && (
+                    <>
+                      <Stack flexDirection={'row'} gap={3}>
+                        <StyledCheckbox
+                          checked={hawaiian}
+                          label={'Native Hawaiian'}
+                          onChange={(e) => {
+                            handledResetRace(true);
+                            setHawaiian(e.target.checked);
+                          }}
+                        />
+                        <StyledCheckbox
+                          checked={chamorro}
+                          label={'Guamanian or Chamorro'}
+                          onChange={(e) => {
+                            handledResetRace(true);
+                            setChamorro(e.target.checked);
+                          }}
+                        />
+                        <StyledCheckbox
+                          checked={samoan}
+                          label={'Samoan'}
+                          onChange={(e) => {
+                            handledResetRace(true);
+                            setSamoan(e.target.checked);
+                          }}
+                        />
+                      </Stack>
+                      <Box mt={1}>
+                        <StyledCheckbox
+                          checked={otherIslander}
+                          label={'Other Hispanic or Latino'}
+                          onChange={(e) => {
+                            handledResetRace(true);
+                            setOtherIslander(e.target.checked);
+                          }}
+                        />
+                        <Transitions
+                          style={{
+                            display: otherIslander ? 'block' : 'none',
+                            width: '100%',
+                          }}
+                        >
+                          {otherIslander && (
+                            <>
+                              <StyledTextField
+                                maxRows={4}
+                                minRows={1}
+                                multiline
+                                onChange={(e) => {
+                                  setOtherIslanderText(e.target.value);
+                                }}
+                                value={otherIslanderText}
+                              />
+                              <Typography
+                                color={'info.main'}
+                                component={'div'}
+                                mt={1}
+                                textAlign={'center'}
+                                variant={'body3'}
+                              >
+                                For example, Argentinian, Colombian, Nicaraguan,
+                                El Salvadoran, Venezuelan, etc.
+                              </Typography>
+                            </>
+                          )}
+                        </Transitions>
+                      </Box>
+                    </>
+                  )}
+                </Transitions>
 
-      <StyledFormItem label={'What is your sex?'} sub>
-        <Stack gap={3} maxWidth={600} width={'100%'}>
-          <StyledCheckbox
-            checked={male}
-            label={'Male'}
-            onChange={(e) => {
-              setFemale(false);
-              setNotProvideGender(false);
-              setMale(e.target.checked);
-            }}
-          />
-          <StyledCheckbox
-            checked={female}
-            label={'Female'}
-            onChange={(e) => {
-              setMale(false);
-              setNotProvideGender(false);
-              setFemale(e.target.checked);
-            }}
-          />
-          <StyledCheckbox
-            checked={notProvideGender}
-            label={'I do not wish to provide this information'}
-            onChange={(e) => {
-              setMale(false);
-              setFemale(false);
-              setNotProvideGender(e.target.checked);
-            }}
-          />
-        </Stack>
-      </StyledFormItem>
+                <StyledCheckbox
+                  checked={white}
+                  label={'White'}
+                  onChange={(e) => {
+                    handledResetRace();
+                    setWhite(e.target.checked);
+                  }}
+                />
+                <StyledCheckbox
+                  checked={notProvideRace}
+                  label={'I do not wish to provide this information'}
+                  onChange={(e) => {
+                    handledResetRace();
+                    setNotProvideRace(e.target.checked);
+                  }}
+                />
+              </Stack>
+            </StyledFormItem>
 
-      <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
-        maxWidth={600}
-        width={'100%'}
-      >
-        <StyledButton
-          color={'info'}
-          onClick={() =>
-            router.push({
-              pathname: '/dashboard/tasks',
-              query: { processId: router.query.processId },
-            })
-          }
-          sx={{ flex: 1 }}
-          variant={'text'}
-        >
-          Back
-        </StyledButton>
-        <StyledButton
-          disabled={!isDisabled || saveLoading}
-          loading={saveLoading}
-          loadingText={'Saving...'}
-          onClick={handledSubmit}
-          sx={{ flex: 1 }}
-        >
-          Save
-        </StyledButton>
-      </Stack>
-    </StyledFormItem>
+            <StyledFormItem label={'What is your sex?'} sub>
+              <Stack gap={3} maxWidth={600} width={'100%'}>
+                <StyledCheckbox
+                  checked={male}
+                  label={'Male'}
+                  onChange={(e) => {
+                    setFemale(false);
+                    setNotProvideGender(false);
+                    setMale(e.target.checked);
+                  }}
+                />
+                <StyledCheckbox
+                  checked={female}
+                  label={'Female'}
+                  onChange={(e) => {
+                    setMale(false);
+                    setNotProvideGender(false);
+                    setFemale(e.target.checked);
+                  }}
+                />
+                <StyledCheckbox
+                  checked={notProvideGender}
+                  label={'I do not wish to provide this information'}
+                  onChange={(e) => {
+                    setMale(false);
+                    setFemale(false);
+                    setNotProvideGender(e.target.checked);
+                  }}
+                />
+              </Stack>
+            </StyledFormItem>
+
+            <Stack
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              maxWidth={600}
+              width={'100%'}
+            >
+              <StyledButton
+                color={'info'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  })
+                }
+                sx={{ flex: 1 }}
+                variant={'text'}
+              >
+                Back
+              </StyledButton>
+              <StyledButton
+                disabled={!isDisabled || saveLoading}
+                loading={saveLoading}
+                loadingText={'Saving...'}
+                onClick={handledSubmit}
+                sx={{ flex: 1 }}
+              >
+                Save
+              </StyledButton>
+            </Stack>
+          </StyledFormItem>
+        )}
+      </Transitions>
+    </>
   );
 });

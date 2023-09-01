@@ -45,6 +45,38 @@ ul {
   }
 }
 
+@-webkit-keyframes svg-text-anim {
+  40% {
+    stroke-dashoffset: 0;
+    fill: transparent;
+  }
+  60% {
+    stroke-dashoffset: 0;
+    fill: #e3e3ee;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    fill: #e3e3ee;
+  }
+  
+}
+/* Most browsers */
+@keyframes svg-text-anim {
+  40% {
+    stroke-dashoffset: 0;
+    fill: transparent;
+  }
+  60% {
+    stroke-dashoffset: 0;
+    fill: #e3e3ee;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    fill: #e3e3ee;
+  }
+  
+}
+
 /*for stripe.js components reset style*/
 .StripeElement {
   display: block;

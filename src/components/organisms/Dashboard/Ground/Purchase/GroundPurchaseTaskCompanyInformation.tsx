@@ -299,254 +299,288 @@ export const GroundPurchaseTaskCompanyInformation: FC = observer(() => {
     whoIsManaging,
   ]);
 
-  return loading ? (
-    <StyledLoading sx={{ color: 'primary.main' }} />
-  ) : (
-    <StyledFormItem
-      gap={6}
-      label={'Closing Agent / Title Company Information(Optional)'}
-      tip={`A closing agent assists with closing and verifies there are no outstanding title issues. ${
-        saasState?.organizationName || 'YouLand'
-      } also orders a Title Commitment and a Title Report on the property from this agent.`}
-      tipSx={{ mb: 0 }}
-    >
-      <StyledButton
-        color={'info'}
-        disabled={saveLoading || skipLoading}
-        onClick={handledSkip}
-        sx={{ width: '100%', maxWidth: 276 }}
-        variant={'outlined'}
-      >
-        Skip
-      </StyledButton>
-
-      <StyledFormItem
-        gap={3}
-        label={'Provide contact details'}
-        labelSx={{ mb: 0 }}
-        maxWidth={600}
-        sub
-      >
-        <StyledTextField
-          label={'Contact First Name'}
-          onChange={(e) =>
-            setContactForm({ ...contactForm, firstName: e.target.value })
-          }
-          value={contactForm.firstName}
-        />
-        <StyledTextField
-          label={'Contact Last Name'}
-          onChange={(e) =>
-            setContactForm({ ...contactForm, lastName: e.target.value })
-          }
-          value={contactForm.lastName}
-        />
-        <StyledTextFieldPhone
-          label={'Phone Number'}
-          onValueChange={({ value }) => {
-            setContactForm({ ...contactForm, phoneNumber: value });
-          }}
-          value={contactForm.phoneNumber}
-        />
-        <StyledTextField
-          label={'Email'}
-          onChange={(e) =>
-            setContactForm({ ...contactForm, email: e.target.value })
-          }
-          value={contactForm.email}
-        />
-        <StyledTextField
-          label={'Company Name'}
-          onChange={(e) =>
-            setContactForm({ ...contactForm, companyName: e.target.value })
-          }
-          value={contactForm.companyName}
-        />
-        <StyledTextField
-          label={'Title Order Number'}
-          onChange={(e) =>
-            setContactForm({
-              ...contactForm,
-              titleOrderNumber: e.target.value,
-            })
-          }
-          value={contactForm.titleOrderNumber}
-        />
-        <StyledDatePicker
-          label={'Title Effective Date'}
-          onChange={(date) =>
-            setContactForm({ ...contactForm, contractDate: date })
-          }
-          value={contactForm.contractDate}
-        />
-        <StyledGoogleAutoComplete address={clientContactAddress} />
-      </StyledFormItem>
-
-      <StyledFormItem
-        label={
-          'Who is signing the closing instructions on behalf of the title company?'
-        }
-      >
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledSelectOption
-            onChange={(value) =>
-              setInstructions(value as string as DashboardTaskInstructions)
-            }
-            options={OPTIONS_TASK_INSTRUCTIONS}
-            value={instructions}
-          />
-        </Stack>
-      </StyledFormItem>
-
-      <StyledFormItem
-        label={'Is the title company also managing loan closing?'}
-        maxWidth={600}
-        sub
-      >
-        <StyledButtonGroup
-          onChange={(e, value) => {
-            if (value !== null) {
-              setIsLoanClosing(value === 'yes');
-            }
-          }}
-          options={OPTIONS_COMMON_YES_OR_NO}
-          sx={{ width: '100%', maxWidth: 600 }}
-          value={isLoanClosing}
-        />
-      </StyledFormItem>
-
+  return (
+    <>
       <Transitions
         style={{
-          maxWidth: 600,
-          width: '100%',
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          width: '100%',
+          justifyContent: 'center',
         }}
       >
-        {POSNotUndefined(isLoanClosing) ? (
-          !isLoanClosing ? (
+        {loading ? (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            margin={'auto 0'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
+          >
+            <StyledLoading sx={{ color: 'text.grey' }} />
+          </Stack>
+        ) : (
+          <StyledFormItem
+            gap={6}
+            label={'Closing Agent / Title Company Information(Optional)'}
+            maxWidth={900}
+            mx={{ lg: 'auto', xs: 0 }}
+            px={{ lg: 3, xs: 0 }}
+            tip={`A closing agent assists with closing and verifies there are no outstanding title issues. ${
+              saasState?.organizationName || 'YouLand'
+            } also orders a Title Commitment and a Title Report on the property from this agent.`}
+            tipSx={{ mb: 0 }}
+            width={'100%'}
+          >
+            <StyledButton
+              color={'info'}
+              disabled={saveLoading || skipLoading}
+              onClick={handledSkip}
+              sx={{ width: '100%', maxWidth: 276 }}
+              variant={'outlined'}
+            >
+              Skip
+            </StyledButton>
+
             <StyledFormItem
               gap={3}
-              label={'Who is managing loan closing?'}
+              label={'Provide contact details'}
               labelSx={{ mb: 0 }}
+              maxWidth={600}
               sub
-              width={'100%'}
             >
-              <StyledSelectOption
-                onChange={(value) =>
-                  setWhoIsManaging(value as string as DashboardTaskLoanClosing)
-                }
-                options={OPTIONS_TASK_MANAGING_LOAN_CLOSING}
-                value={whoIsManaging}
-              />
-
               <StyledTextField
-                label={'First Name'}
+                label={'Contact First Name'}
                 onChange={(e) =>
-                  setManageForm({
-                    ...manageForm,
-                    firstName: e.target.value,
-                  })
+                  setContactForm({ ...contactForm, firstName: e.target.value })
                 }
-                value={manageForm.firstName}
+                value={contactForm.firstName}
               />
               <StyledTextField
-                label={'Last Name'}
+                label={'Contact Last Name'}
                 onChange={(e) =>
-                  setManageForm({
-                    ...manageForm,
-                    lastName: e.target.value,
-                  })
+                  setContactForm({ ...contactForm, lastName: e.target.value })
                 }
-                value={manageForm.lastName}
+                value={contactForm.lastName}
               />
               <StyledTextFieldPhone
                 label={'Phone Number'}
                 onValueChange={({ value }) => {
-                  setManageForm({ ...manageForm, phoneNumber: value });
+                  setContactForm({ ...contactForm, phoneNumber: value });
                 }}
-                value={manageForm.phoneNumber}
+                value={contactForm.phoneNumber}
               />
               <StyledTextField
                 label={'Email'}
                 onChange={(e) =>
-                  setManageForm({
-                    ...manageForm,
-                    email: e.target.value,
-                  })
+                  setContactForm({ ...contactForm, email: e.target.value })
                 }
-                value={manageForm.email}
+                value={contactForm.email}
               />
               <StyledTextField
                 label={'Company Name'}
                 onChange={(e) =>
-                  setManageForm({
-                    ...manageForm,
+                  setContactForm({
+                    ...contactForm,
                     companyName: e.target.value,
                   })
                 }
-                value={manageForm.companyName}
+                value={contactForm.companyName}
               />
               <StyledTextField
-                label={
-                  whoIsManaging === DashboardTaskLoanClosing.escrow_company
-                    ? 'Escrow Number'
-                    : 'Closing Attorney File No.'
-                }
+                label={'Title Order Number'}
                 onChange={(e) =>
-                  setManageForm({
-                    ...manageForm,
+                  setContactForm({
+                    ...contactForm,
                     titleOrderNumber: e.target.value,
                   })
                 }
-                value={manageForm.titleOrderNumber}
+                value={contactForm.titleOrderNumber}
               />
-
-              <StyledGoogleAutoComplete address={clientManageAddress} />
+              <StyledDatePicker
+                label={'Title Effective Date'}
+                onChange={(date) =>
+                  setContactForm({ ...contactForm, contractDate: date })
+                }
+                value={contactForm.contractDate}
+              />
+              <StyledGoogleAutoComplete address={clientContactAddress} />
             </StyledFormItem>
-          ) : (
-            <StyledTextFieldNumber
-              decimalScale={0}
-              label={'Escrow Number'}
-              onValueChange={({ floatValue }) => setEscrowNumber(floatValue)}
-              thousandSeparator={false}
-              value={escrowNumber}
-            />
-          )
-        ) : null}
-      </Transitions>
 
-      <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
-        maxWidth={600}
-        width={'100%'}
-      >
-        <StyledButton
-          color={'info'}
-          onClick={() =>
-            router.push({
-              pathname: '/dashboard/tasks',
-              query: { processId: router.query.processId },
-            })
-          }
-          sx={{ flex: 1 }}
-          variant={'text'}
-        >
-          Back
-        </StyledButton>
-        <StyledButton
-          disabled={saveLoading || skipLoading || !isDisabled}
-          loading={saveLoading}
-          loadingText={'Saving...'}
-          onClick={handledSubmit}
-          sx={{ flex: 1 }}
-        >
-          Save
-        </StyledButton>
-      </Stack>
-    </StyledFormItem>
+            <StyledFormItem
+              label={
+                'Who is signing the closing instructions on behalf of the title company?'
+              }
+            >
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledSelectOption
+                  onChange={(value) =>
+                    setInstructions(
+                      value as string as DashboardTaskInstructions,
+                    )
+                  }
+                  options={OPTIONS_TASK_INSTRUCTIONS}
+                  value={instructions}
+                />
+              </Stack>
+            </StyledFormItem>
+
+            <StyledFormItem
+              label={'Is the title company also managing loan closing?'}
+              maxWidth={600}
+              sub
+            >
+              <StyledButtonGroup
+                onChange={(e, value) => {
+                  if (value !== null) {
+                    setIsLoanClosing(value === 'yes');
+                  }
+                }}
+                options={OPTIONS_COMMON_YES_OR_NO}
+                sx={{ width: '100%', maxWidth: 600 }}
+                value={isLoanClosing}
+              />
+            </StyledFormItem>
+
+            <Transitions
+              style={{
+                maxWidth: 600,
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              {POSNotUndefined(isLoanClosing) ? (
+                !isLoanClosing ? (
+                  <StyledFormItem
+                    gap={3}
+                    label={'Who is managing loan closing?'}
+                    labelSx={{ mb: 0 }}
+                    sub
+                    width={'100%'}
+                  >
+                    <StyledSelectOption
+                      onChange={(value) =>
+                        setWhoIsManaging(
+                          value as string as DashboardTaskLoanClosing,
+                        )
+                      }
+                      options={OPTIONS_TASK_MANAGING_LOAN_CLOSING}
+                      value={whoIsManaging}
+                    />
+
+                    <StyledTextField
+                      label={'First Name'}
+                      onChange={(e) =>
+                        setManageForm({
+                          ...manageForm,
+                          firstName: e.target.value,
+                        })
+                      }
+                      value={manageForm.firstName}
+                    />
+                    <StyledTextField
+                      label={'Last Name'}
+                      onChange={(e) =>
+                        setManageForm({
+                          ...manageForm,
+                          lastName: e.target.value,
+                        })
+                      }
+                      value={manageForm.lastName}
+                    />
+                    <StyledTextFieldPhone
+                      label={'Phone Number'}
+                      onValueChange={({ value }) => {
+                        setManageForm({ ...manageForm, phoneNumber: value });
+                      }}
+                      value={manageForm.phoneNumber}
+                    />
+                    <StyledTextField
+                      label={'Email'}
+                      onChange={(e) =>
+                        setManageForm({
+                          ...manageForm,
+                          email: e.target.value,
+                        })
+                      }
+                      value={manageForm.email}
+                    />
+                    <StyledTextField
+                      label={'Company Name'}
+                      onChange={(e) =>
+                        setManageForm({
+                          ...manageForm,
+                          companyName: e.target.value,
+                        })
+                      }
+                      value={manageForm.companyName}
+                    />
+                    <StyledTextField
+                      label={
+                        whoIsManaging ===
+                        DashboardTaskLoanClosing.escrow_company
+                          ? 'Escrow Number'
+                          : 'Closing Attorney File No.'
+                      }
+                      onChange={(e) =>
+                        setManageForm({
+                          ...manageForm,
+                          titleOrderNumber: e.target.value,
+                        })
+                      }
+                      value={manageForm.titleOrderNumber}
+                    />
+
+                    <StyledGoogleAutoComplete address={clientManageAddress} />
+                  </StyledFormItem>
+                ) : (
+                  <StyledTextFieldNumber
+                    decimalScale={0}
+                    label={'Escrow Number'}
+                    onValueChange={({ floatValue }) =>
+                      setEscrowNumber(floatValue)
+                    }
+                    thousandSeparator={false}
+                    value={escrowNumber}
+                  />
+                )
+              ) : null}
+            </Transitions>
+
+            <Stack
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              maxWidth={600}
+              width={'100%'}
+            >
+              <StyledButton
+                color={'info'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  })
+                }
+                sx={{ flex: 1 }}
+                variant={'text'}
+              >
+                Back
+              </StyledButton>
+              <StyledButton
+                disabled={saveLoading || skipLoading || !isDisabled}
+                loading={saveLoading}
+                loadingText={'Saving...'}
+                onClick={handledSubmit}
+                sx={{ flex: 1 }}
+              >
+                Save
+              </StyledButton>
+            </Stack>
+          </StyledFormItem>
+        )}
+      </Transitions>
+    </>
   );
 });

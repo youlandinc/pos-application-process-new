@@ -134,111 +134,140 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
     router,
   ]);
 
-  return loading ? (
-    <StyledLoading sx={{ color: 'primary.main' }} />
-  ) : (
-    <StyledFormItem
-      gap={6}
-      label={'Property Details'}
-      tip={
-        'To revise the address on this loan application please reach out to your account manager.'
-      }
-      tipSx={{ mb: 0 }}
-    >
-      <StyledFormItem
-        label={'Property address'}
-        sub
-        tip={
-          'The price you paid or are paying for the property that the loan is for.'
-        }
-      >
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledGoogleAutoComplete address={address} disabled />
-        </Stack>
-      </StyledFormItem>
-
-      <StyledFormItem label={'What is the property type?'} sub>
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledSelectOption
-            onChange={(value) => {
-              setPropertyType(value as PropertyOpt);
-            }}
-            options={OPTIONS_MORTGAGE_PROPERTY}
-            value={propertyType}
-          />
-        </Stack>
-      </StyledFormItem>
-
+  return (
+    <>
       <Transitions
         style={{
-          display:
-            propertyType === PropertyOpt.twoToFourFamily ? 'block' : 'none',
+          display: 'flex',
           width: '100%',
+          justifyContent: 'center',
         }}
       >
-        {propertyType === PropertyOpt.twoToFourFamily && (
-          <StyledFormItem label={'How many units will the property have?'} sub>
-            <Stack maxWidth={600} width={'100%'}>
-              <StyledSelectOption
-                onChange={(value) => {
-                  setPropertyUnit(value as PropertyUnitOpt);
-                }}
-                options={OPTIONS_MORTGAGE_UNIT}
-                value={propertyUnit}
-              />
+        {loading ? (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            margin={'auto 0'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
+          >
+            <StyledLoading sx={{ color: 'text.grey' }} />
+          </Stack>
+        ) : (
+          <StyledFormItem
+            gap={6}
+            label={'Property Details'}
+            maxWidth={900}
+            mx={{ lg: 'auto', xs: 0 }}
+            px={{ lg: 3, xs: 0 }}
+            tip={
+              'To revise the address on this loan application please reach out to your account manager.'
+            }
+            tipSx={{ mb: 0 }}
+            width={'100%'}
+          >
+            <StyledFormItem
+              label={'Property address'}
+              sub
+              tip={
+                'The price you paid or are paying for the property that the loan is for.'
+              }
+            >
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledGoogleAutoComplete address={address} disabled />
+              </Stack>
+            </StyledFormItem>
+
+            <StyledFormItem label={'What is the property type?'} sub>
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledSelectOption
+                  onChange={(value) => {
+                    setPropertyType(value as PropertyOpt);
+                  }}
+                  options={OPTIONS_MORTGAGE_PROPERTY}
+                  value={propertyType}
+                />
+              </Stack>
+            </StyledFormItem>
+
+            <Transitions
+              style={{
+                display:
+                  propertyType === PropertyOpt.twoToFourFamily
+                    ? 'block'
+                    : 'none',
+                width: '100%',
+              }}
+            >
+              {propertyType === PropertyOpt.twoToFourFamily && (
+                <StyledFormItem
+                  label={'How many units will the property have?'}
+                  sub
+                >
+                  <Stack maxWidth={600} width={'100%'}>
+                    <StyledSelectOption
+                      onChange={(value) => {
+                        setPropertyUnit(value as PropertyUnitOpt);
+                      }}
+                      options={OPTIONS_MORTGAGE_UNIT}
+                      value={propertyUnit}
+                    />
+                  </Stack>
+                </StyledFormItem>
+              )}
+            </Transitions>
+
+            <StyledFormItem
+              label={'Do you plan to occupy the property?'}
+              sub
+              tip={'Your intended use of the home.'}
+            >
+              <Stack maxWidth={600} width={'100%'}>
+                <StyledButtonGroup
+                  onChange={(e, value) => {
+                    if (value !== null) {
+                      setIsOccupied(value === 'yes');
+                    }
+                  }}
+                  options={OPTIONS_COMMON_YES_OR_NO}
+                  value={isOccupied}
+                />
+              </Stack>
+            </StyledFormItem>
+
+            <Stack
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              maxWidth={600}
+              width={'100%'}
+            >
+              <StyledButton
+                color={'info'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  })
+                }
+                sx={{ flex: 1 }}
+                variant={'text'}
+              >
+                Back
+              </StyledButton>
+              <StyledButton
+                disabled={!isDisabled || saveLoading}
+                loading={saveLoading}
+                loadingText={'Saving...'}
+                onClick={handledSubmit}
+                sx={{ flex: 1 }}
+              >
+                Save
+              </StyledButton>
             </Stack>
           </StyledFormItem>
         )}
       </Transitions>
-
-      <StyledFormItem
-        label={'Do you plan to occupy the property?'}
-        sub
-        tip={'Your intended use of the home.'}
-      >
-        <Stack maxWidth={600} width={'100%'}>
-          <StyledButtonGroup
-            onChange={(e, value) => {
-              if (value !== null) {
-                setIsOccupied(value === 'yes');
-              }
-            }}
-            options={OPTIONS_COMMON_YES_OR_NO}
-            value={isOccupied}
-          />
-        </Stack>
-      </StyledFormItem>
-
-      <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
-        maxWidth={600}
-        width={'100%'}
-      >
-        <StyledButton
-          color={'info'}
-          onClick={() =>
-            router.push({
-              pathname: '/dashboard/tasks',
-              query: { processId: router.query.processId },
-            })
-          }
-          sx={{ flex: 1 }}
-          variant={'text'}
-        >
-          Back
-        </StyledButton>
-        <StyledButton
-          disabled={!isDisabled || saveLoading}
-          loading={saveLoading}
-          loadingText={'Saving...'}
-          onClick={handledSubmit}
-          sx={{ flex: 1 }}
-        >
-          Save
-        </StyledButton>
-      </Stack>
-    </StyledFormItem>
+    </>
   );
 });

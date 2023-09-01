@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite';
 
 import { useCheckProcessId } from '@/hooks';
 
-import { StyledLoading } from '@/components/atoms';
 import { POSLayout } from '@/components/molecules';
 
 export const DashboardPage: FC<{ children?: ReactNode }> = observer(
@@ -22,7 +21,7 @@ export const DashboardPage: FC<{ children?: ReactNode }> = observer(
     }, [fetchPipelineStatus]);
 
     return !pipelineStatusInitialized ? (
-      <StyledLoading sx={{ color: 'primary.main' }} />
+      <></>
     ) : (
       <POSLayout scene={'dashboard'}>
         <>{children}</>

@@ -25,6 +25,7 @@ import {
   StyledTextField,
   StyledTextFieldPhone,
   StyledUploadBox,
+  Transitions,
 } from '@/components/atoms';
 
 export const FixRefinanceTaskInsuranceInformation: FC = observer(() => {
@@ -214,102 +215,126 @@ export const FixRefinanceTaskInsuranceInformation: FC = observer(() => {
     phoneNumber,
   ]);
 
-  return loading ? (
-    <StyledLoading sx={{ color: 'primary.main' }} />
-  ) : (
-    <StyledFormItem
-      gap={6}
-      label={'Homeowner Insurance Policy(Optional)'}
-      tip={
-        'Homeowner insurance must comply with our Policy Guidelines and it is required to close your loan. Once you are covered, provide your insurance provider’s contact information. This allows us to speak directly with your provider on the details and get confirmation that your home is insured.'
-      }
-      tipSx={{ mb: 0 }}
-    >
-      <StyledButton
-        color={'info'}
-        disabled={saveLoading || skipLoading}
-        onClick={handledSkip}
-        sx={{ width: '100%', maxWidth: 276 }}
-        variant={'outlined'}
+  return (
+    <>
+      <Transitions
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+        }}
       >
-        Skip
-      </StyledButton>
+        {loading ? (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            margin={'auto 0'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
+          >
+            <StyledLoading sx={{ color: 'text.grey' }} />
+          </Stack>
+        ) : (
+          <StyledFormItem
+            gap={6}
+            label={'Homeowner Insurance Policy(Optional)'}
+            maxWidth={900}
+            mx={{ lg: 'auto', xs: 0 }}
+            px={{ lg: 3, xs: 0 }}
+            tip={
+              'Homeowner insurance must comply with our Policy Guidelines and it is required to close your loan. Once you are covered, provide your insurance provider’s contact information. This allows us to speak directly with your provider on the details and get confirmation that your home is insured.'
+            }
+            tipSx={{ mb: 0 }}
+            width={'100%'}
+          >
+            <StyledButton
+              color={'info'}
+              disabled={saveLoading || skipLoading}
+              onClick={handledSkip}
+              sx={{ width: '100%', maxWidth: 276 }}
+              variant={'outlined'}
+            >
+              Skip
+            </StyledButton>
 
-      <StyledFormItem
-        gap={3}
-        label={'Insurance provider information'}
-        labelSx={{ mb: 0 }}
-        maxWidth={600}
-        sub
-      >
-        <StyledTextField
-          label={'Company Name'}
-          onChange={(e) => setCompanyName(e.target.value)}
-          value={companyName}
-        />
-        <StyledTextField
-          label={'Agent Name'}
-          onChange={(e) => setAgentName(e.target.value)}
-          value={agentName}
-        />
+            <StyledFormItem
+              gap={3}
+              label={'Insurance provider information'}
+              labelSx={{ mb: 0 }}
+              maxWidth={600}
+              sub
+            >
+              <StyledTextField
+                label={'Company Name'}
+                onChange={(e) => setCompanyName(e.target.value)}
+                value={companyName}
+              />
+              <StyledTextField
+                label={'Agent Name'}
+                onChange={(e) => setAgentName(e.target.value)}
+                value={agentName}
+              />
 
-        <StyledTextFieldPhone
-          label={'Phone Number'}
-          onValueChange={({ value }) => setPhoneNumber(value)}
-          value={phoneNumber}
-        />
-        <StyledTextField
-          label={'Email'}
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-        />
+              <StyledTextFieldPhone
+                label={'Phone Number'}
+                onValueChange={({ value }) => setPhoneNumber(value)}
+                value={phoneNumber}
+              />
+              <StyledTextField
+                label={'Email'}
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+              />
 
-        <StyledGoogleAutoComplete address={address} />
-      </StyledFormItem>
+              <StyledGoogleAutoComplete address={address} />
+            </StyledFormItem>
 
-      <StyledFormItem
-        label={'Upload your evidence of insurance'}
-        maxWidth={900}
-        sub
-      >
-        <StyledUploadBox
-          fileList={insuranceFiles}
-          loading={uploadLoading}
-          onDelete={handledDelete}
-          onSuccess={handledSuccess}
-        />
-      </StyledFormItem>
+            <StyledFormItem
+              label={'Upload your evidence of insurance'}
+              maxWidth={900}
+              sub
+            >
+              <StyledUploadBox
+                fileList={insuranceFiles}
+                loading={uploadLoading}
+                onDelete={handledDelete}
+                onSuccess={handledSuccess}
+              />
+            </StyledFormItem>
 
-      <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
-        maxWidth={600}
-        width={'100%'}
-      >
-        <StyledButton
-          color={'info'}
-          onClick={() =>
-            router.push({
-              pathname: '/dashboard/tasks',
-              query: { processId: router.query.processId },
-            })
-          }
-          sx={{ flex: 1 }}
-          variant={'text'}
-        >
-          Back
-        </StyledButton>
-        <StyledButton
-          disabled={saveLoading || skipLoading || !isDisabled}
-          loading={saveLoading}
-          loadingText={'Saving...'}
-          onClick={handledSubmit}
-          sx={{ flex: 1 }}
-        >
-          Save
-        </StyledButton>
-      </Stack>
-    </StyledFormItem>
+            <Stack
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              maxWidth={600}
+              width={'100%'}
+            >
+              <StyledButton
+                color={'info'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  })
+                }
+                sx={{ flex: 1 }}
+                variant={'text'}
+              >
+                Back
+              </StyledButton>
+              <StyledButton
+                disabled={saveLoading || skipLoading || !isDisabled}
+                loading={saveLoading}
+                loadingText={'Saving...'}
+                onClick={handledSubmit}
+                sx={{ flex: 1 }}
+              >
+                Save
+              </StyledButton>
+            </Stack>
+          </StyledFormItem>
+        )}
+      </Transitions>
+    </>
   );
 });

@@ -24,6 +24,7 @@ import {
   StyledLoading,
   StyledProgressBlock,
   StyledProgressLine,
+  Transitions,
 } from '@/components/atoms';
 import { DashboardHeader } from '@/components/molecules';
 
@@ -422,34 +423,48 @@ export const BridgeRefinanceTaskList: FC = observer(() => {
   }, [loanStage]);
 
   return (
-    <Stack
-      flexDirection={'column'}
-      justifyContent={'center'}
-      maxWidth={900}
-      mx={{ lg: 'auto', xs: 0 }}
-      px={{ lg: 3, xs: 0 }}
-      sx={TaskListStyles}
-      width={'100%'}
+    <Transitions
+      style={{
+        display: 'flex',
+        width: '100%',
+        justifyContent: 'center',
+      }}
     >
-      <DashboardHeader
-        subTitle={
-          'You can make updates to the task before the loan is approved.'
-        }
-        title={'Your Tasks Checklist'}
-      />
-
       {loading ? (
-        <StyledLoading sx={{ color: 'primary.main' }} />
+        <Stack
+          alignItems={'center'}
+          justifyContent={'center'}
+          minHeight={'calc(667px - 46px)'}
+          width={'100%'}
+        >
+          <StyledLoading sx={{ color: 'text.grey', m: 0 }} />
+        </Stack>
       ) : (
-        <>
+        <Box
+          display={'flex'}
+          flexDirection={'column'}
+          justifyContent={'center'}
+          maxWidth={900}
+          mx={{ lg: 'auto', xs: 0 }}
+          px={{ lg: 3, xs: 0 }}
+          sx={TaskListStyles}
+          width={'100%'}
+        >
+          <DashboardHeader
+            subTitle={
+              'You can make updates to the task before the loan is approved.'
+            }
+            title={'Your Tasks Checklist'}
+          />
+
           <Stack alignItems={'center'} mb={3}>
             <StyledProgressLine current={current} total={total} />
           </Stack>
           {renderStage}
           {renderTaskList}
-        </>
+        </Box>
       )}
-    </Stack>
+    </Transitions>
   );
 });
 

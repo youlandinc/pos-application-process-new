@@ -31,7 +31,7 @@ export const RatesList: FC<RatesProductListProps> = ({
       {isFirstSearch ? (
         <></>
       ) : loading ? (
-        <StyledLoading sx={{ color: 'primary.main' }} />
+        <StyledLoading sx={{ color: 'text.grey', m: '48px auto 48px auto' }} />
       ) : productList.length > 0 ? (
         <>
           {label ? (

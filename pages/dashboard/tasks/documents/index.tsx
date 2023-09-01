@@ -1,14 +1,12 @@
 import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import dynamic from 'next/dynamic';
-import { CircularProgress } from '@mui/material';
 
 const DynamicDashboardPage = dynamic(
   () =>
     import('@/views/Dashboard/DashboardPage').then((mod) => mod.DashboardPage),
   {
-    loading: () => <CircularProgress />,
-    ssr: false,
+    ssr: true,
   },
 );
 
@@ -18,8 +16,7 @@ const DynamicDocumentsPage = dynamic(
       (mod) => mod.DocumentsPage,
     ),
   {
-    loading: () => <CircularProgress />,
-    ssr: false,
+    ssr: true,
   },
 );
 const TaskDocuments: FC = observer(() => {

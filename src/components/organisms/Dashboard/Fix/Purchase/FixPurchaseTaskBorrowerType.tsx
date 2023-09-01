@@ -161,138 +161,167 @@ export const FixPurchaseTaskBorrowerType: FC = observer(() => {
     trustName,
   ]);
 
-  return loading ? (
-    <StyledLoading sx={{ color: 'primary.main' }} />
-  ) : (
-    <StyledFormItem
-      gap={6}
-      label={'Borrower Type'}
-      tip={
-        'If you represent an entity/trust, please update the borrower type below, and we will convert the previously filled borrower information into a guarantor for this entity/trust.'
-      }
-      tipSx={{ mb: 0 }}
-    >
-      <Stack maxWidth={600} width={'100%'}>
-        <StyledSelectOption
-          onChange={(value) =>
-            setBorrowerType(value as string as DashboardTaskBorrowerType)
-          }
-          options={OPTIONS_TASK_BORROWER_TYPE}
-          value={borrowerType}
-        />
-      </Stack>
-
+  return (
+    <>
       <Transitions
         style={{
-          display:
-            borrowerType === DashboardTaskBorrowerType.entity ? 'flex' : 'none',
+          display: 'flex',
           width: '100%',
+          justifyContent: 'center',
         }}
       >
-        {borrowerType === DashboardTaskBorrowerType.entity && (
-          <StyledFormItem label={'Entity Information'} sub>
-            <Stack gap={3} maxWidth={600} width={'100%'}>
-              <StyledTextField
-                label={'Entity Name'}
-                onChange={(e) => setEntityName(e.target.value)}
-                value={entityName}
-              />
-              <StyledTextField
-                disabled
-                label={'Authorized Signatory Name'}
-                value={authorizedSignatoryName}
-              />
-              <StyledTextField
-                label={'Authorized Signatory Title'}
-                onChange={(e) => setSignatoryTitle(e.target.value)}
-                value={signatoryTitle}
-              />
-              <StyledSelect
-                label={'Entity Type'}
-                onChange={(e) =>
-                  setEntityType(
-                    e.target.value as string as DashboardTaskBorrowerEntityType,
-                  )
+        {loading ? (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            margin={'auto 0'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
+          >
+            <StyledLoading sx={{ color: 'text.grey' }} />
+          </Stack>
+        ) : (
+          <StyledFormItem
+            gap={6}
+            label={'Borrower Type'}
+            maxWidth={900}
+            mx={{ lg: 'auto', xs: 0 }}
+            px={{ lg: 3, xs: 0 }}
+            tip={
+              'If you represent an entity/trust, please update the borrower type below, and we will convert the previously filled borrower information into a guarantor for this entity/trust.'
+            }
+            tipSx={{ mb: 0 }}
+            width={'100%'}
+          >
+            <Stack maxWidth={600} width={'100%'}>
+              <StyledSelectOption
+                onChange={(value) =>
+                  setBorrowerType(value as string as DashboardTaskBorrowerType)
                 }
-                options={OPTIONS_TASK_ENTITY_TYPE}
-                value={entityType}
+                options={OPTIONS_TASK_BORROWER_TYPE}
+                value={borrowerType}
               />
-              <StyledTextField
-                label={'Secretary of State ID'}
-                onChange={(e) => setStateId(e.target.value)}
-                value={stateId}
-              />
-              <StyledSelect
-                label={'Formation State'}
-                onChange={(e) => setEntityState(e.target.value as string)}
-                options={OPTIONS_COMMON_STATE}
-                value={entityState}
-              />
+            </Stack>
+
+            <Transitions
+              style={{
+                display:
+                  borrowerType === DashboardTaskBorrowerType.entity
+                    ? 'flex'
+                    : 'none',
+                width: '100%',
+              }}
+            >
+              {borrowerType === DashboardTaskBorrowerType.entity && (
+                <StyledFormItem label={'Entity Information'} sub>
+                  <Stack gap={3} maxWidth={600} width={'100%'}>
+                    <StyledTextField
+                      label={'Entity Name'}
+                      onChange={(e) => setEntityName(e.target.value)}
+                      value={entityName}
+                    />
+                    <StyledTextField
+                      disabled
+                      label={'Authorized Signatory Name'}
+                      value={authorizedSignatoryName}
+                    />
+                    <StyledTextField
+                      label={'Authorized Signatory Title'}
+                      onChange={(e) => setSignatoryTitle(e.target.value)}
+                      value={signatoryTitle}
+                    />
+                    <StyledSelect
+                      label={'Entity Type'}
+                      onChange={(e) =>
+                        setEntityType(
+                          e.target
+                            .value as string as DashboardTaskBorrowerEntityType,
+                        )
+                      }
+                      options={OPTIONS_TASK_ENTITY_TYPE}
+                      value={entityType}
+                    />
+                    <StyledTextField
+                      label={'Secretary of State ID'}
+                      onChange={(e) => setStateId(e.target.value)}
+                      value={stateId}
+                    />
+                    <StyledSelect
+                      label={'Formation State'}
+                      onChange={(e) => setEntityState(e.target.value as string)}
+                      options={OPTIONS_COMMON_STATE}
+                      value={entityState}
+                    />
+                  </Stack>
+                </StyledFormItem>
+              )}
+            </Transitions>
+
+            <Transitions
+              style={{
+                display:
+                  borrowerType === DashboardTaskBorrowerType.trust
+                    ? 'flex'
+                    : 'none',
+                width: '100%',
+              }}
+            >
+              {borrowerType === DashboardTaskBorrowerType.trust && (
+                <StyledFormItem label={'Trust Information'} sub>
+                  <Stack gap={3} maxWidth={600} width={'100%'}>
+                    <StyledTextField
+                      label={'Trust Name'}
+                      onChange={(e) => setTrustName(e.target.value)}
+                      value={trustName}
+                    />
+                    <StyledTextField
+                      disabled
+                      label={'Authorized Signatory Name'}
+                      value={authorizedSignatoryName}
+                    />
+                    <StyledTextField
+                      label={'Authorized Signatory Title'}
+                      onChange={(e) => setSignatoryTitle(e.target.value)}
+                      value={signatoryTitle}
+                    />
+                  </Stack>
+                </StyledFormItem>
+              )}
+            </Transitions>
+
+            <Stack
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              maxWidth={600}
+              width={'100%'}
+            >
+              <StyledButton
+                color={'info'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  })
+                }
+                sx={{ flex: 1 }}
+                variant={'text'}
+              >
+                Back
+              </StyledButton>
+              <StyledButton
+                disabled={isDisabled || saveLoading}
+                loading={saveLoading}
+                loadingText={'Saving...'}
+                onClick={handledSubmit}
+                sx={{ flex: 1 }}
+              >
+                Save
+              </StyledButton>
             </Stack>
           </StyledFormItem>
         )}
       </Transitions>
-
-      <Transitions
-        style={{
-          display:
-            borrowerType === DashboardTaskBorrowerType.trust ? 'flex' : 'none',
-          width: '100%',
-        }}
-      >
-        {borrowerType === DashboardTaskBorrowerType.trust && (
-          <StyledFormItem label={'Trust Information'} sub>
-            <Stack gap={3} maxWidth={600} width={'100%'}>
-              <StyledTextField
-                label={'Trust Name'}
-                onChange={(e) => setTrustName(e.target.value)}
-                value={trustName}
-              />
-              <StyledTextField
-                disabled
-                label={'Authorized Signatory Name'}
-                value={authorizedSignatoryName}
-              />
-              <StyledTextField
-                label={'Authorized Signatory Title'}
-                onChange={(e) => setSignatoryTitle(e.target.value)}
-                value={signatoryTitle}
-              />
-            </Stack>
-          </StyledFormItem>
-        )}
-      </Transitions>
-
-      <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
-        maxWidth={600}
-        width={'100%'}
-      >
-        <StyledButton
-          color={'info'}
-          onClick={() =>
-            router.push({
-              pathname: '/dashboard/tasks',
-              query: { processId: router.query.processId },
-            })
-          }
-          sx={{ flex: 1 }}
-          variant={'text'}
-        >
-          Back
-        </StyledButton>
-        <StyledButton
-          disabled={isDisabled || saveLoading}
-          loading={saveLoading}
-          loadingText={'Saving...'}
-          onClick={handledSubmit}
-          sx={{ flex: 1 }}
-        >
-          Save
-        </StyledButton>
-      </Stack>
-    </StyledFormItem>
+    </>
   );
 });
