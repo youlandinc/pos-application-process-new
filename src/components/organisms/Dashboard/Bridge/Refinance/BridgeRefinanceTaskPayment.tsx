@@ -1,4 +1,3 @@
-import { POSNotUndefined } from '@/utils';
 import { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -6,6 +5,8 @@ import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
+
+import { POSNotUndefined } from '@/utils';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import {
@@ -22,7 +23,7 @@ import {
   TaskFiles,
 } from '@/types';
 
-import { StyledButton, StyledLoading } from '@/components/atoms';
+import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
 import {
   BridgeRefinancePaymentSummary,
   PaymentMethods,
@@ -426,14 +427,39 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
     tableStatus,
   ]);
 
-  return loading ? (
-    <StyledLoading sx={{ color: 'text.grey' }} />
-  ) : paymentStatus === DashboardTaskPaymentMethodsStatus.undone ? (
+  return (
     <>
-      {renderNode}
-      {renderButton}
+      <Transitions
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+        }}
+      >
+        {loading ? (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            margin={'auto 0'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
+          >
+            <StyledLoading sx={{ color: 'text.grey' }} />
+          </Stack>
+        ) : paymentStatus === DashboardTaskPaymentMethodsStatus.undone ? (
+          <Transitions
+            style={{
+              width: '100%',
+              maxWidth: 900,
+            }}
+          >
+            {renderNode}
+            {renderButton}
+          </Transitions>
+        ) : (
+          <PaymentStatus paymentStatus={paymentStatus} />
+        )}
+      </Transitions>
     </>
-  ) : (
-    <PaymentStatus paymentStatus={paymentStatus} />
   );
 });

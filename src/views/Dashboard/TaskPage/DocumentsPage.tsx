@@ -46,8 +46,6 @@ export const DocumentsPage: FC = observer(() => {
 
   return (
     <Stack
-      flexDirection={'column'}
-      justifyContent={'flex-start'}
       maxWidth={900}
       mx={{ lg: 'auto', xs: 0 }}
       px={{ lg: 3, xs: 0 }}

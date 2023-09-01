@@ -19,6 +19,7 @@ import {
   StyledLoading,
   StyledTextField,
   StyledTextFieldPhone,
+  Transitions,
 } from '@/components/atoms';
 
 export const FixPurchaseTaskPropertyInspection: FC = observer(() => {
@@ -113,84 +114,108 @@ export const FixPurchaseTaskPropertyInspection: FC = observer(() => {
     return !contactName || !phoneNumber || !email;
   }, [contactName, email, phoneNumber]);
 
-  return loading ? (
-    <StyledLoading sx={{ color: 'text.grey' }} />
-  ) : (
-    <StyledFormItem
-      gap={3}
-      label={'Property Inspection Details(Optional)'}
-      labelSx={{ mb: 0 }}
-    >
-      <StyledButton
-        color={'info'}
-        disabled={saveLoading || skipLoading}
-        onClick={handledSkip}
-        sx={{ width: '100%', maxWidth: 276 }}
-        variant={'outlined'}
+  return (
+    <>
+      <Transitions
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+        }}
       >
-        Skip
-      </StyledButton>
+        {loading ? (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            margin={'auto 0'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
+          >
+            <StyledLoading sx={{ color: 'text.grey' }} />
+          </Stack>
+        ) : (
+          <StyledFormItem
+            gap={3}
+            label={'Property Inspection Details(Optional)'}
+            labelSx={{ mb: 0 }}
+            maxWidth={900}
+            mx={{ lg: 'auto', xs: 0 }}
+            px={{ lg: 3, xs: 0 }}
+            width={'100%'}
+          >
+            <StyledButton
+              color={'info'}
+              disabled={saveLoading || skipLoading}
+              onClick={handledSkip}
+              sx={{ width: '100%', maxWidth: 276 }}
+              variant={'outlined'}
+            >
+              Skip
+            </StyledButton>
 
-      <StyledFormItem
-        gap={3}
-        label={'Property inspection contact information'}
-        labelSx={{ mb: 0 }}
-        maxWidth={600}
-        sub
-      >
-        <StyledTextField
-          label={'Contact Name'}
-          onChange={(e) => setContactName(e.target.value)}
-          value={contactName}
-        />
+            <StyledFormItem
+              gap={3}
+              label={'Property inspection contact information'}
+              labelSx={{ mb: 0 }}
+              maxWidth={600}
+              sub
+            >
+              <StyledTextField
+                label={'Contact Name'}
+                onChange={(e) => setContactName(e.target.value)}
+                value={contactName}
+              />
 
-        <StyledTextFieldPhone
-          label={'Phone Number'}
-          onValueChange={({ value }) => setPhoneNumber(value)}
-          value={phoneNumber}
-        />
-        <StyledTextField
-          label={'Email'}
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-        />
-        <StyledTextField
-          label={'Property Access Instructions(Optional)'}
-          onChange={(e) => setInstructions(e.target.value)}
-          value={instructions}
-        />
-      </StyledFormItem>
+              <StyledTextFieldPhone
+                label={'Phone Number'}
+                onValueChange={({ value }) => setPhoneNumber(value)}
+                value={phoneNumber}
+              />
+              <StyledTextField
+                label={'Email'}
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+              />
+              <StyledTextField
+                label={'Property Access Instructions(Optional)'}
+                onChange={(e) => setInstructions(e.target.value)}
+                value={instructions}
+              />
+            </StyledFormItem>
 
-      <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
-        maxWidth={600}
-        width={'100%'}
-      >
-        <StyledButton
-          color={'info'}
-          onClick={() =>
-            router.push({
-              pathname: '/dashboard/tasks',
-              query: { processId: router.query.processId },
-            })
-          }
-          sx={{ flex: 1 }}
-          variant={'text'}
-        >
-          Back
-        </StyledButton>
-        <StyledButton
-          disabled={saveLoading || skipLoading || isDisabled}
-          loading={saveLoading}
-          loadingText={'Saving...'}
-          onClick={handledSubmit}
-          sx={{ flex: 1 }}
-        >
-          Save
-        </StyledButton>
-      </Stack>
-    </StyledFormItem>
+            <Stack
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              maxWidth={600}
+              width={'100%'}
+            >
+              <StyledButton
+                color={'info'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  })
+                }
+                sx={{ flex: 1 }}
+                variant={'text'}
+              >
+                Back
+              </StyledButton>
+              <StyledButton
+                disabled={saveLoading || skipLoading || isDisabled}
+                loading={saveLoading}
+                loadingText={'Saving...'}
+                onClick={handledSubmit}
+                sx={{ flex: 1 }}
+              >
+                Save
+              </StyledButton>
+            </Stack>
+          </StyledFormItem>
+        )}
+      </Transitions>
+    </>
   );
 });

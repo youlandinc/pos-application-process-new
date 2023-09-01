@@ -28,6 +28,7 @@ import {
   StyledLoading,
   StyledProgressLine,
   StyledUploadButtonBox,
+  Transitions,
 } from '@/components/atoms';
 
 const hash = {
@@ -361,232 +362,246 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
     w9Files,
   ]);
 
-  return loading ? (
-    <StyledLoading sx={{ color: 'text.grey' }} />
-  ) : (
-    <StyledFormItem
-      gap={3}
-      label={'Documents'}
-      tip={
-        <Stack alignItems={'center'}>
-          <StyledProgressLine current={computedCurrent} total={total} />
-        </Stack>
-      }
-    >
-      <Stack gap={6} maxWidth={900} width={'100%'}>
-        <StyledUploadButtonBox
-          fileList={form1003Files}
-          label={
-            <Stack flexDirection={'column'} width={'100%'}>
-              1003 Form{' '}
-              <Typography
-                color={'primary.main'}
-                onClick={() =>
-                  window.open(
-                    'https://youland-template-file.s3.us-west-1.amazonaws.com/1003_2021V.pdf',
-                  )
-                }
-                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-                variant={'body1'}
-              >
-                1003 Form.pdf
-              </Typography>
-            </Stack>
-          }
-          loading={uploadLoading}
-          onDelete={(index) => handledDelete(index, 'form1003')}
-          onSuccess={(files) => handledSuccess(files, 'form1003')}
-        />
-        <StyledUploadButtonBox
-          fileList={identificationFiles}
-          label={'Personal identification of guarantor and/or borrower'}
-          loading={uploadLoading}
-          onDelete={(index) => handledDelete(index, 'identification')}
-          onSuccess={(files) => handledSuccess(files, 'identification')}
-        />
-
-        <StyledUploadButtonBox
-          fileList={w9Files}
-          label={
-            <Stack flexDirection={'column'} width={'100%'}>
-              W9 Form
-              <Typography
-                color={'primary.main'}
-                onClick={() =>
-                  window.open(
-                    'https://youland-template-file.s3.us-west-1.amazonaws.com/fw9.pdf',
-                  )
-                }
-                sx={{
-                  textDecoration: 'underline',
-                  cursor: 'pointer',
-                }}
-                variant={'body1'}
-              >
-                W9 Form.pdf
-              </Typography>
-            </Stack>
-          }
-          loading={uploadLoading}
-          onDelete={(index) => handledDelete(index, 'w9')}
-          onSuccess={(files) => handledSuccess(files, 'w9')}
-        />
-
-        <StyledUploadButtonBox
-          fileList={authorizationFiles}
-          label={
-            <Stack flexDirection={'column'} width={'100%'}>
-              Borrower authorization form{' '}
-              <Typography
-                color={'primary.main'}
-                onClick={() =>
-                  window.open(
-                    'https://youland-template-file.s3.us-west-1.amazonaws.com/Borrower+authorization+form.pdf',
-                  )
-                }
-                sx={{ textDecoration: 'underline', cursor: 'pointer' }}
-                variant={'body1'}
-              >
-                Borrower authorization form.pdf
-              </Typography>
-            </Stack>
-          }
-          loading={uploadLoading}
-          onDelete={(index) => handledDelete(index, 'authorization')}
-          onSuccess={(files) => handledSuccess(files, 'authorization')}
-        />
-
-        <StyledUploadButtonBox
-          fileList={bankFiles}
-          label={'Proof of Liquidity (Bank Statement)'}
-          loading={uploadLoading}
-          onDelete={(index) => handledDelete(index, 'bank')}
-          onSuccess={(files) => handledSuccess(files, 'bank')}
-        />
-
-        <StyledUploadButtonBox
-          fileList={prelimFiles}
-          label={'Prelim or title commitment'}
-          loading={uploadLoading}
-          onDelete={(index) => handledDelete(index, 'prelim')}
-          onSuccess={(files) => handledSuccess(files, 'prelim')}
-        />
-
-        <StyledUploadButtonBox
-          fileList={insuranceFiles}
-          label={'Evidence of insurance'}
-          loading={uploadLoading}
-          onDelete={(index) => handledDelete(index, 'insurance')}
-          onSuccess={(files) => handledSuccess(files, 'insurance')}
-        />
-
-        <StyledUploadButtonBox
-          fileList={payoffFiles}
-          label={'Lender payoff letter'}
-          loading={uploadLoading}
-          onDelete={(index) => handledDelete(index, 'payoff')}
-          onSuccess={(files) => handledSuccess(files, 'payoff')}
-        />
-
-        {show1 && (
-          <StyledUploadButtonBox
-            fileList={budgetFiles}
-            label={'Rehabilitation budget'}
-            loading={uploadLoading}
-            onDelete={(index) => handledDelete(index, 'budget')}
-            onSuccess={(files) => handledSuccess(files, 'budget')}
-          />
-        )}
-
-        {show2 && (
-          <>
-            <StyledUploadButtonBox
-              fileList={questionnaireFiles}
-              label={'Completed condominium questionnaire'}
-              loading={uploadLoading}
-              onDelete={(index) => handledDelete(index, 'questionnaire')}
-              onSuccess={(files) => handledSuccess(files, 'questionnaire')}
-            />
-
-            <StyledUploadButtonBox
-              fileList={policyFiles}
-              label={'Copy of condominium master insurance policy/certificate'}
-              loading={uploadLoading}
-              onDelete={(index) => handledDelete(index, 'policy')}
-              onSuccess={(files) => handledSuccess(files, 'policy')}
-            />
-          </>
-        )}
-
-        {show3 && (
-          <>
-            <StyledUploadButtonBox
-              fileList={articlesFiles}
-              label={
-                'Certificates of formation/Filed articles of organization/incorporation'
-              }
-              loading={uploadLoading}
-              onDelete={(index) => handledDelete(index, 'articles')}
-              onSuccess={(files) => handledSuccess(files, 'articles')}
-            />
-
-            <StyledUploadButtonBox
-              fileList={lawsFiles}
-              label={'Operating agreement/partnership agreement/by laws'}
-              loading={uploadLoading}
-              onDelete={(index) => handledDelete(index, 'laws')}
-              onSuccess={(files) => handledSuccess(files, 'laws')}
-            />
-
-            <StyledUploadButtonBox
-              fileList={standingFiles}
-              label={'Certificate of good standing from state of organization'}
-              loading={uploadLoading}
-              onDelete={(index) => handledDelete(index, 'standing')}
-              onSuccess={(files) => handledSuccess(files, 'standing')}
-            />
-          </>
-        )}
-
-        <StyledUploadButtonBox
-          fileList={otherFiles}
-          label={'Other'}
-          loading={uploadLoading}
-          onDelete={(index) => handledDelete(index, 'other')}
-          onSuccess={(files) => handledSuccess(files, 'other')}
-        />
-      </Stack>
-
-      <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
-        maxWidth={600}
-        width={'100%'}
+  return (
+    <>
+      <Transitions
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+        }}
       >
-        <StyledButton
-          color={'info'}
-          onClick={() =>
-            router.push({
-              pathname: '/dashboard/tasks',
-              query: { processId: router.query.processId },
-            })
-          }
-          sx={{ flex: 1 }}
-          variant={'text'}
-        >
-          Back
-        </StyledButton>
-        <StyledButton
-          disabled={saveLoading}
-          loading={saveLoading}
-          loadingText={'Saving...'}
-          onClick={handledSubmit}
-          sx={{ flex: 1 }}
-        >
-          Save
-        </StyledButton>
-      </Stack>
-    </StyledFormItem>
+        {loading ? (
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            margin={'auto 0'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
+          >
+            <StyledLoading sx={{ color: 'text.grey' }} />
+          </Stack>
+        ) : (
+          <StyledFormItem
+            gap={3}
+            label={'Documents'}
+            maxWidth={900}
+            mx={{ lg: 'auto', xs: 0 }}
+            px={{ lg: 3, xs: 0 }}
+            tip={
+              <Stack alignItems={'center'}>
+                <StyledProgressLine current={computedCurrent} total={total} />
+              </Stack>
+            }
+            width={'100%'}
+          >
+            <Stack gap={6} maxWidth={900} width={'100%'}>
+              <StyledUploadButtonBox
+                fileList={form1003Files}
+                label={
+                  <Stack flexDirection={'column'} width={'100%'}>
+                    1003 Form{' '}
+                    <Typography
+                      color={'primary.main'}
+                      onClick={() =>
+                        window.open(
+                          'https://youland-template-file.s3.us-west-1.amazonaws.com/1003_2021V.pdf',
+                        )
+                      }
+                      sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                      variant={'body1'}
+                    >
+                      1003 Form.pdf
+                    </Typography>
+                  </Stack>
+                }
+                loading={uploadLoading}
+                onDelete={(index) => handledDelete(index, 'form1003')}
+                onSuccess={(files) => handledSuccess(files, 'form1003')}
+              />
+              <StyledUploadButtonBox
+                fileList={identificationFiles}
+                label={'Personal identification of guarantor and/or borrower'}
+                loading={uploadLoading}
+                onDelete={(index) => handledDelete(index, 'identification')}
+                onSuccess={(files) => handledSuccess(files, 'identification')}
+              />
+
+              <StyledUploadButtonBox
+                fileList={w9Files}
+                label={
+                  <Stack flexDirection={'column'} width={'100%'}>
+                    W9 Form
+                    <Typography
+                      color={'primary.main'}
+                      onClick={() =>
+                        window.open(
+                          'https://youland-template-file.s3.us-west-1.amazonaws.com/fw9.pdf',
+                        )
+                      }
+                      sx={{
+                        textDecoration: 'underline',
+                        cursor: 'pointer',
+                      }}
+                      variant={'body1'}
+                    >
+                      W9 Form.pdf
+                    </Typography>
+                  </Stack>
+                }
+                loading={uploadLoading}
+                onDelete={(index) => handledDelete(index, 'w9')}
+                onSuccess={(files) => handledSuccess(files, 'w9')}
+              />
+
+              <StyledUploadButtonBox
+                fileList={authorizationFiles}
+                label={
+                  <Stack flexDirection={'column'} width={'100%'}>
+                    Borrower authorization form{' '}
+                    <Typography
+                      color={'primary.main'}
+                      onClick={() =>
+                        window.open(
+                          'https://youland-template-file.s3.us-west-1.amazonaws.com/Borrower+authorization+form.pdf',
+                        )
+                      }
+                      sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                      variant={'body1'}
+                    >
+                      Borrower authorization form.pdf
+                    </Typography>
+                  </Stack>
+                }
+                loading={uploadLoading}
+                onDelete={(index) => handledDelete(index, 'authorization')}
+                onSuccess={(files) => handledSuccess(files, 'authorization')}
+              />
+
+              <StyledUploadButtonBox
+                fileList={bankFiles}
+                label={'Proof of Liquidity (Bank Statement)'}
+                loading={uploadLoading}
+                onDelete={(index) => handledDelete(index, 'bank')}
+                onSuccess={(files) => handledSuccess(files, 'bank')}
+              />
+
+              <StyledUploadButtonBox
+                fileList={prelimFiles}
+                label={'Prelim or title commitment'}
+                loading={uploadLoading}
+                onDelete={(index) => handledDelete(index, 'prelim')}
+                onSuccess={(files) => handledSuccess(files, 'prelim')}
+              />
+
+              {show1 && (
+                <StyledUploadButtonBox
+                  fileList={budgetFiles}
+                  label={'Rehabilitation budget'}
+                  loading={uploadLoading}
+                  onDelete={(index) => handledDelete(index, 'budget')}
+                  onSuccess={(files) => handledSuccess(files, 'budget')}
+                />
+              )}
+
+              {show2 && (
+                <>
+                  <StyledUploadButtonBox
+                    fileList={questionnaireFiles}
+                    label={'Completed condominium questionnaire'}
+                    loading={uploadLoading}
+                    onDelete={(index) => handledDelete(index, 'questionnaire')}
+                    onSuccess={(files) =>
+                      handledSuccess(files, 'questionnaire')
+                    }
+                  />
+
+                  <StyledUploadButtonBox
+                    fileList={policyFiles}
+                    label={
+                      'Copy of condominium master insurance policy/certificate'
+                    }
+                    loading={uploadLoading}
+                    onDelete={(index) => handledDelete(index, 'policy')}
+                    onSuccess={(files) => handledSuccess(files, 'policy')}
+                  />
+                </>
+              )}
+
+              {show3 && (
+                <>
+                  <StyledUploadButtonBox
+                    fileList={articlesFiles}
+                    label={
+                      'Certificates of formation/Filed articles of organization/incorporation'
+                    }
+                    loading={uploadLoading}
+                    onDelete={(index) => handledDelete(index, 'articles')}
+                    onSuccess={(files) => handledSuccess(files, 'articles')}
+                  />
+
+                  <StyledUploadButtonBox
+                    fileList={lawsFiles}
+                    label={'Operating agreement/partnership agreement/by laws'}
+                    loading={uploadLoading}
+                    onDelete={(index) => handledDelete(index, 'laws')}
+                    onSuccess={(files) => handledSuccess(files, 'laws')}
+                  />
+
+                  <StyledUploadButtonBox
+                    fileList={standingFiles}
+                    label={
+                      'Certificate of good standing from state of organization'
+                    }
+                    loading={uploadLoading}
+                    onDelete={(index) => handledDelete(index, 'standing')}
+                    onSuccess={(files) => handledSuccess(files, 'standing')}
+                  />
+                </>
+              )}
+
+              <StyledUploadButtonBox
+                fileList={otherFiles}
+                label={'Other'}
+                loading={uploadLoading}
+                onDelete={(index) => handledDelete(index, 'other')}
+                onSuccess={(files) => handledSuccess(files, 'other')}
+              />
+            </Stack>
+
+            <Stack
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              maxWidth={600}
+              width={'100%'}
+            >
+              <StyledButton
+                color={'info'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  })
+                }
+                sx={{ flex: 1 }}
+                variant={'text'}
+              >
+                Back
+              </StyledButton>
+              <StyledButton
+                disabled={saveLoading}
+                loading={saveLoading}
+                loadingText={'Saving...'}
+                onClick={handledSubmit}
+                sx={{ flex: 1 }}
+              >
+                Save
+              </StyledButton>
+            </Stack>
+          </StyledFormItem>
+        )}
+      </Transitions>
+    </>
   );
 });
