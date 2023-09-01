@@ -34,6 +34,7 @@ export const Pipeline: FC = observer(() => {
     pipelineTask: { pipelineInitialized },
     userType,
     session,
+    selectedProcessData,
   } = useMst();
 
   const [firstLoading, setFirstLoading] = useState<boolean>(true);
@@ -161,6 +162,7 @@ export const Pipeline: FC = observer(() => {
         );
         break;
       default:
+        selectedProcessData.setLoading(true);
         await router.push({
           pathname: '/dashboard/overview',
           query: { processId: row.youlandId },

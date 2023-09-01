@@ -15,17 +15,14 @@ import {
 
 export const OverviewPage: FC = observer(() => {
   const {
-    selectedProcessData: { scene },
+    selectedProcessData: { scene, loading },
   } = useMst();
+
   const renderOverPage = useMemo(() => {
+    if (loading) {
+      return null;
+    }
     switch (scene) {
-      // todo
-      // case 'mortgage purchase': {
-      //   return <MortgagePurchaseOverview />;
-      // }
-      // case 'mortgage refinance': {
-      //   return <MortgageRefinanceOverview />;
-      // }
       case SceneType.bridge_purchase: {
         return <BridgePurchaseOverview />;
       }
@@ -48,7 +45,7 @@ export const OverviewPage: FC = observer(() => {
         return <BridgePurchaseOverview />;
       }
     }
-  }, [scene]);
+  }, [scene, loading]);
 
   return <>{renderOverPage}</>;
 });
