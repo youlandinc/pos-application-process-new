@@ -23,7 +23,6 @@ export const SelectedProcessData = types
       types.literal(SceneType.ground_purchase),
       types.literal(SceneType.ground_refinance),
     ),
-
     loanStage: types.union(
       types.literal(LoanStage.Application),
       types.literal(LoanStage.PreApproved),
@@ -43,6 +42,9 @@ export const SelectedProcessData = types
     },
     setLoanStage(loanStage: LoanStage) {
       self.loanStage = loanStage;
+    },
+    setLoading(loading: boolean) {
+      self.loading = loading;
     },
   }))
   .actions((self) => {
