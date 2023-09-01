@@ -44,14 +44,5 @@ export const DocumentsPage: FC = observer(() => {
     }
   }, [scene]);
 
-  return (
-    <Stack
-      maxWidth={900}
-      mx={{ lg: 'auto', xs: 0 }}
-      px={{ lg: 3, xs: 0 }}
-      width={'100%'}
-    >
-      {renderNode}
-    </Stack>
-  );
+  return <>{renderNode}</>;
 });
