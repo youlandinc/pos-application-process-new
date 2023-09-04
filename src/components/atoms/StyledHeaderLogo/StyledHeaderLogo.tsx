@@ -15,8 +15,11 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
 
   const Logo = useMemo(() => {
     if (saasState?.logoUrl) {
-      // eslint-disable-next-line @next/next/no-img-element
-      return <img alt="" height={'100%'} src={saasState?.logoUrl || logoUrl} />;
+      return (
+        <picture style={{ height: '100%' }}>
+          <img alt="" height={'100%'} src={saasState?.logoUrl || logoUrl} />
+        </picture>
+      );
     }
     return <Box className={'logo_name'}>{saasState?.organizationName}</Box>;
   }, [logoUrl, saasState?.logoUrl, saasState?.organizationName]);
