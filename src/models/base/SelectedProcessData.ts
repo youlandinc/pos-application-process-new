@@ -11,6 +11,7 @@ export const SelectedProcessData = types
   .model({
     data: types.maybe(types.frozen<ProcessData>()),
     loading: types.boolean,
+    processId: types.maybe(types.string),
     scene: types.union(
       types.literal(SceneType.default),
       types.literal(SceneType.unknown),
@@ -49,6 +50,9 @@ export const SelectedProcessData = types
   }))
   .actions((self) => {
     const fetchProcessData = flow(function* (processId) {
+      if (processId === self.processId || !processId) {
+        return;
+      }
       self.loading = true;
       try {
         const res: AxiosResponse<ProcessData> = yield _fetchProcessData(
@@ -69,6 +73,7 @@ export const SelectedProcessData = types
         } = clientAppProgressData;
         self.setScene(`${productCategory} ${applicationType}` as SceneType);
         self.setLoanStage(res.data.stage as string as LoanStage);
+        self.processId = res.data.extra.id;
       } catch (e) {
         enqueueSnackbar(e as string, {
           variant: 'error',
