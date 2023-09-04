@@ -239,9 +239,15 @@ export const Pipeline: FC = observer(() => {
       />
 
       {firstLoading && (
-        <Box mt={3}>
+        <Stack
+          alignItems={'center'}
+          justifyContent={'center'}
+          margin={'auto 0'}
+          minHeight={'calc(667px - 46px)'}
+          width={'100%'}
+        >
           <StyledLoading sx={{ color: 'text.grey' }} />
-        </Box>
+        </Stack>
       )}
 
       <Stack

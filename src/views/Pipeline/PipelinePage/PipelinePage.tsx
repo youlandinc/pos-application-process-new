@@ -41,19 +41,7 @@ export const PipelinePage: FC<{ children?: ReactNode }> = observer(
     ]);
 
     return !pipelineTask.pipelineInitialized ? (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minWidth: 375,
-          minHeight: 667,
-          width: '100vw',
-          height: '100vh',
-        }}
-      >
-        <StyledLoading sx={{ color: 'text.grey' }} />
-      </Box>
+      <></>
     ) : (
       <POSLayout scene={'pipeline'}>
         <>{children}</>
