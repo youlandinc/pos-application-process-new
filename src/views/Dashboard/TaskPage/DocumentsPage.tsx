@@ -1,6 +1,5 @@
 import { SceneType } from '@/types';
 import { FC, useMemo } from 'react';
-import { Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';

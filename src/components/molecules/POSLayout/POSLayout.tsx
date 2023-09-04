@@ -39,7 +39,9 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
       <POSHeader scene={scene} store={store} />
       <StyledBoxWrap
         sx={{
-          display: scene === 'dashboard' ? 'flex' : 'block',
+          display:
+            scene === 'dashboard' || scene === 'pipeline' ? 'flex' : 'block',
+          flexDirection: scene === 'dashboard' ? 'row' : 'column',
         }}
       >
         {scene === 'dashboard' && ['lg', 'xl', 'xxl'].includes(breakpoint) && (

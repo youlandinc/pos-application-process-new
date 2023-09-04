@@ -1,5 +1,5 @@
 import { FC, ReactNode, useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Skeleton, Stack, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 
 import { ISelectedProcessData } from '@/models/base';
@@ -8,8 +8,6 @@ import { OPTIONS_COMMON_STATE, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
 import { POSFlex } from '@/styles';
 import { VariableName } from '@/types';
 import { POSFindLabel, POSFindSpecificVariable } from '@/utils';
-
-//import { StyledLoading } from '@/components/atoms';
 
 interface DashboardSideInfoBoxProps {
   info: ISelectedProcessData;
@@ -24,10 +22,7 @@ interface IBorrowerSummaryData {
 }
 
 export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
-  ({
-    info,
-    //loading
-  }) => {
+  ({ info, loading }) => {
     const { data } = info;
 
     const [borrowerSummaryData, setBorrowerSummaryData] =
@@ -85,10 +80,6 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
                 (item) => item.value === (address && address.state),
               )?.label || ''
             ),
-          //occupancyType: POSFindLabel(
-          //  OPTIONS_MORTGAGE_OCCUPANCY,
-          //  parsedData.occupancyOpt || '',
-          //),
           propertyType: propertyInfo,
         });
       }
@@ -105,61 +96,65 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
           minHeight: 100,
         }}
       >
-        {/*{loading ? (*/}
-        {/*  <StyledLoading sx={{ color: 'text.grey' }} />*/}
-        {/*) : (*/}
-        <>
-          <Typography mb={1} variant={'subtitle1'}>
-            {borrowerSummaryData?.productType}
-          </Typography>
-          <Box
-            className={'customInfo_list'}
-            component={'ul'}
-            sx={{
-              width: '100%',
-              p: 0,
-              listStyle: 'none',
-            }}
-          >
-            {borrowerSummaryData?.address && (
-              <Box
-                color={'text.primary'}
-                component={'li'}
-                display={'flex'}
-                fontSize={14}
-                lineHeight={1.5}
-                width={'100%'}
-              >
-                {borrowerSummaryData.address}
-              </Box>
-            )}
-            {borrowerSummaryData?.occupancyType && (
-              <Box
-                color={'text.primary'}
-                component={'li'}
-                display={'flex'}
-                fontSize={14}
-                lineHeight={1.5}
-                width={'100%'}
-              >
-                {borrowerSummaryData.occupancyType}
-              </Box>
-            )}
-            {borrowerSummaryData?.propertyType && (
-              <Box
-                color={'text.primary'}
-                component={'li'}
-                display={'flex'}
-                fontSize={14}
-                lineHeight={1.5}
-                width={'100%'}
-              >
-                {borrowerSummaryData.propertyType}
-              </Box>
-            )}
-          </Box>
-        </>
-        {/*)}*/}
+        {loading ? (
+          <Stack gap={1}>
+            <Skeleton animation={'wave'} height={24} variant="rounded" />
+            <Skeleton animation={'wave'} height={36} variant="rounded" />
+            <Skeleton animation={'wave'} height={18} variant="rounded" />
+          </Stack>
+        ) : (
+          <>
+            <Typography mb={1} variant={'subtitle1'}>
+              {borrowerSummaryData?.productType}
+            </Typography>
+            <Box
+              className={'customInfo_list'}
+              component={'ul'}
+              sx={{
+                width: '100%',
+                p: 0,
+                listStyle: 'none',
+              }}
+            >
+              {borrowerSummaryData?.address && (
+                <Box
+                  color={'text.primary'}
+                  component={'li'}
+                  display={'flex'}
+                  fontSize={14}
+                  lineHeight={1.5}
+                  width={'100%'}
+                >
+                  {borrowerSummaryData.address}
+                </Box>
+              )}
+              {borrowerSummaryData?.occupancyType && (
+                <Box
+                  color={'text.primary'}
+                  component={'li'}
+                  display={'flex'}
+                  fontSize={14}
+                  lineHeight={1.5}
+                  width={'100%'}
+                >
+                  {borrowerSummaryData.occupancyType}
+                </Box>
+              )}
+              {borrowerSummaryData?.propertyType && (
+                <Box
+                  color={'text.primary'}
+                  component={'li'}
+                  display={'flex'}
+                  fontSize={14}
+                  lineHeight={1.5}
+                  width={'100%'}
+                >
+                  {borrowerSummaryData.propertyType}
+                </Box>
+              )}
+            </Box>
+          </>
+        )}
       </Box>
     );
   },
