@@ -17,6 +17,7 @@ export * from './StyledButton';
 export * from './StyledButtonGroup';
 
 export * from './StyledRadioGroup';
+export * from './StyledRadioGroup/StyledRadio';
 
 export * from './StyledTooltip';
 
