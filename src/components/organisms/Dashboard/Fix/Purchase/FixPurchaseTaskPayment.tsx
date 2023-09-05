@@ -122,6 +122,7 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
   >();
   const [haveAppraisal, setHaveAppraisal] = useState<boolean | undefined>();
   const [appraisalFiles, setAppraisalFiles] = useState<TaskFiles[]>([]);
+  const [isExpedited, setIsExpedited] = useState<boolean>(false);
   const [paymentDetail, setPaymentDetail] = useState<
     SPaymentDetails | undefined
   >();
@@ -143,10 +144,12 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
           paymentStatus,
           isConfirm,
           isNotice,
+          isExpedited,
         } = res.data;
         setProductInfo(productInfo);
-        setHaveAppraisal(haveAppraisal ?? undefined);
+        setHaveAppraisal(haveAppraisal ?? false);
         setAppraisalFiles(appraisalFiles ?? []);
+        setIsExpedited(isExpedited ?? false);
         setNoticeCheck(isNotice ?? undefined);
         setSummaryCheck(isConfirm ?? undefined);
         if (appraisalFiles?.length > 0) {
@@ -237,6 +240,7 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
         appraisalFiles: haveAppraisal ? appraisalFiles : [],
         isNotice: noticeCheck,
         isConfirm: summaryCheck,
+        isExpedited,
       },
     };
 
@@ -258,6 +262,7 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
     appraisalFiles,
     enqueueSnackbar,
     haveAppraisal,
+    isExpedited,
     noticeCheck,
     productInfo,
     router.query.processId,
@@ -282,6 +287,7 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
             check={summaryCheck}
             fileList={appraisalFiles}
             haveAppraisal={haveAppraisal}
+            isExpedited={isExpedited}
             loanSummary={
               <FixPurchasePaymentSummary productInfo={productInfo} />
             }
@@ -290,6 +296,11 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
             onHaveAppraisalChange={(e, value) => {
               if (value !== null) {
                 setHaveAppraisal(value === 'yes');
+              }
+            }}
+            onIsExpeditedChange={(e, value) => {
+              if (value !== null) {
+                setIsExpedited(value === 'yes');
               }
             }}
             onUploadLoadingChange={setUploadLoading}
@@ -309,6 +320,7 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
   }, [
     appraisalFiles,
     haveAppraisal,
+    isExpedited,
     noticeCheck,
     paymentCheck,
     paymentDetail,
