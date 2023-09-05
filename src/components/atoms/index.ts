@@ -16,7 +16,7 @@ export * from './StyledHeaderLogo';
 export * from './StyledButton';
 export * from './StyledButtonGroup';
 
-export * from './StyledRadio';
+export * from './StyledRadioGroup';
 
 export * from './StyledTooltip';
 

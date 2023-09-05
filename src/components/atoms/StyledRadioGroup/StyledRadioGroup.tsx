@@ -3,14 +3,17 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  Icon,
   Radio,
   RadioGroup,
 } from '@mui/material';
 
-import React from 'react';
-import { StyledRadioStyles, StyledStyledRadioProps } from './index';
+import { StyledRadioGroupStyles, StyledStyledRadioProps } from './index';
 
-export const StyledRadio: FC<StyledStyledRadioProps> = ({
+import RADIO_CHECKED from './checked.svg';
+import RADIO_STATIC from './static.svg';
+
+export const StyledRadioGroup: FC<StyledStyledRadioProps> = ({
   sx,
   value,
   label,
@@ -22,7 +25,7 @@ export const StyledRadio: FC<StyledStyledRadioProps> = ({
       <FormLabel>{label}</FormLabel>
       <RadioGroup
         sx={{
-          ...StyledRadioStyles,
+          ...StyledRadioGroupStyles,
           ...sx,
         }}
         value={value}
@@ -30,7 +33,12 @@ export const StyledRadio: FC<StyledStyledRadioProps> = ({
       >
         {options?.map((item, index) => (
           <FormControlLabel
-            control={<Radio />}
+            control={
+              <Radio
+                checkedIcon={<Icon component={RADIO_CHECKED} />}
+                icon={<Icon component={RADIO_STATIC} />}
+              />
+            }
             disabled={item.disabled}
             key={index}
             label={item.label}
