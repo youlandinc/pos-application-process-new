@@ -1,13 +1,12 @@
-import { FormControlLabel, Icon, Radio, RadioProps } from '@mui/material';
 import { FC } from 'react';
-import { StyledRadioGroupStyles } from './StyledRadioGroupStyles';
+import { FormControlLabel, Icon, Radio, RadioProps } from '@mui/material';
+
+import { StyledRadioGroupStyles, StyledRadioProps } from './index';
 
 import RADIO_CHECKED from './checked.svg';
 import RADIO_STATIC from './static.svg';
-import { StyledRadioProps } from './StyledRadioGroup.types';
 
-export const StyledRadio: FC<RadioProps> = (props) => {
-  const { sx, ...rest } = props;
+export const StyledRadio: FC<RadioProps> = ({ sx, ...rest }) => {
   return (
     <Radio
       checkedIcon={<Icon component={RADIO_CHECKED} />}
@@ -21,8 +20,12 @@ export const StyledRadio: FC<RadioProps> = (props) => {
   );
 };
 
-export const StyledRadioWithLabel: FC<StyledRadioProps> = (props) => {
-  const { label, value, disabled, ...rest } = props;
+export const StyledRadioWithLabel: FC<StyledRadioProps> = ({
+  label,
+  value,
+  disabled,
+  ...rest
+}) => {
   return (
     <FormControlLabel
       control={<StyledRadio {...rest} />}

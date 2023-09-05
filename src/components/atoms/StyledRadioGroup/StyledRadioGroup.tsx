@@ -1,9 +1,12 @@
-import { FormControl, FormLabel, RadioGroup } from '@mui/material';
 import { FC } from 'react';
 
-import { StyledRadioGroupStyles, StyledStyledRadioProps } from './index';
+import { FormControl, FormLabel, RadioGroup } from '@mui/material';
 
-import { StyledRadioWithLabel } from './StyledRadio';
+import {
+  StyledRadioGroupStyles,
+  StyledRadioWithLabel,
+  StyledStyledRadioProps,
+} from './index';
 
 export const StyledRadioGroup: FC<StyledStyledRadioProps> = ({
   sx,

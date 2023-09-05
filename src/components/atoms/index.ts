@@ -16,8 +16,8 @@ export * from './StyledHeaderLogo';
 export * from './StyledButton';
 export * from './StyledButtonGroup';
 
+// includes StyledRadio & StyledRadioWithLabel
 export * from './StyledRadioGroup';
-export * from './StyledRadioGroup/StyledRadio';
 
 export * from './StyledTooltip';
 
