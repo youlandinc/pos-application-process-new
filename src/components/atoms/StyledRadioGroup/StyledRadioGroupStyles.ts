@@ -1,4 +1,4 @@
-export const StyledRadioStyles = {
+export const StyledRadioGroupStyles = {
   '& .MuiRadio-root': {
     color: 'text.secondary',
     boxShadow: 'none',
