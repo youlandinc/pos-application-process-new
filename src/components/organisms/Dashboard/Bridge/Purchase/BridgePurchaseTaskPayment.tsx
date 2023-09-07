@@ -114,8 +114,9 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
         'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm'
       >
   >();
-  const [haveAppraisal, setHaveAppraisal] = useState<boolean | undefined>();
+  const [haveAppraisal, setHaveAppraisal] = useState<boolean>(false);
   const [appraisalFiles, setAppraisalFiles] = useState<TaskFiles[]>([]);
+  const [isExpedited, setIsExpedited] = useState<boolean>(false);
   const [paymentDetail, setPaymentDetail] = useState<
     SPaymentDetails | undefined
   >();
@@ -137,10 +138,12 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
           paymentStatus,
           isConfirm,
           isNotice,
+          isExpedited,
         } = res.data;
         setProductInfo(productInfo);
-        setHaveAppraisal(haveAppraisal ?? undefined);
+        setHaveAppraisal(haveAppraisal ?? false);
         setAppraisalFiles(appraisalFiles ?? []);
+        setIsExpedited(isExpedited ?? false);
         setNoticeCheck(isNotice ?? undefined);
         setSummaryCheck(isConfirm ?? undefined);
         if (appraisalFiles?.length > 0) {
@@ -231,6 +234,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
         appraisalFiles: haveAppraisal ? appraisalFiles : [],
         isNotice: noticeCheck,
         isConfirm: summaryCheck,
+        isExpedited,
       },
     };
 
@@ -252,6 +256,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
     appraisalFiles,
     enqueueSnackbar,
     haveAppraisal,
+    isExpedited,
     noticeCheck,
     productInfo,
     router.query.processId,
@@ -276,6 +281,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
             check={summaryCheck}
             fileList={appraisalFiles}
             haveAppraisal={haveAppraisal}
+            isExpedited={isExpedited}
             loanSummary={
               <BridgePurchasePaymentSummary productInfo={productInfo} />
             }
@@ -284,6 +290,11 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
             onHaveAppraisalChange={(e, value) => {
               if (value !== null) {
                 setHaveAppraisal(value === 'yes');
+              }
+            }}
+            onIsExpeditedChange={(e, value) => {
+              if (value !== null) {
+                setIsExpedited(value === 'yes');
               }
             }}
             onUploadLoadingChange={setUploadLoading}
@@ -303,6 +314,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
   }, [
     appraisalFiles,
     haveAppraisal,
+    isExpedited,
     noticeCheck,
     paymentCheck,
     paymentDetail,
