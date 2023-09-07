@@ -14,12 +14,12 @@ export const StyledCheckboxStyles = {
     mt: '-11px',
     mr: '-11px',
     '& svg': {
-      //fill: '#9095A3',
+      fill: '#9095A3',
     },
   },
   '& .Mui-checked': {
     '& svg': {
-      //fill: '#1134E3 !important',
+      fill: '#1134E3 !important',
     },
   },
   '& .Mui-disabled': {
