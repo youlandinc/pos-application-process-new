@@ -3,7 +3,7 @@ export const StyledSelectMultipleStyle = {
     '& .MuiCheckbox-root': {
       m: 0,
       '& svg': {
-        fill: '#9095A3',
+        //fill: '#9095A3',
       },
     },
   },
