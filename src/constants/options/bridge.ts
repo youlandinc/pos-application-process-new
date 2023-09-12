@@ -14,17 +14,17 @@ export const OPTIONS_BRIDGE_CHANNEL: Option[] = [
   {
     key: ChannelOpt.lending_tree,
     value: ChannelOpt.lending_tree,
-    label: 'Lending Tree',
+    label: 'Lending tree',
   },
   {
     key: ChannelOpt.public_transit,
     value: ChannelOpt.public_transit,
-    label: 'Public Transit',
+    label: 'Public transit',
   },
   {
     key: ChannelOpt.news_outlet,
     value: ChannelOpt.news_outlet,
-    label: 'TV/News Outlet',
+    label: 'TV/News outlet',
   },
   {
     key: ChannelOpt.real_estate_agent,
@@ -54,12 +54,12 @@ export const OPTIONS_BRIDGE_CHANNEL: Option[] = [
   {
     key: ChannelOpt.credit_karma,
     value: ChannelOpt.credit_karma,
-    label: 'Credit Karma',
+    label: 'Credit karma',
   },
   {
     key: ChannelOpt.direct_mail,
     value: ChannelOpt.direct_mail,
-    label: 'Direct Mail',
+    label: 'Direct mail',
   },
   {
     key: ChannelOpt.facebook,
@@ -82,11 +82,11 @@ export const OPTIONS_BRIDGE_PROPERTY_NUMBER: Option[] = [
   {
     key: PropertyNumberOpt.one_to_four,
     value: PropertyNumberOpt.one_to_four,
-    label: '1-4 Properties',
+    label: '1-4 properties',
   },
   {
     key: PropertyNumberOpt.five_more,
     value: PropertyNumberOpt.five_more,
-    label: '5+ Properties',
+    label: '5+ properties',
   },
 ];
