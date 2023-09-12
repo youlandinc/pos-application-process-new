@@ -135,7 +135,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
   const onDialogConfirmDelete = async () => {
     setDeleteLoading(true);
     try {
-      await onDelete(deleteIndex);
+      onDelete(deleteIndex);
     } finally {
       setDeleteLoading(false);
     }
