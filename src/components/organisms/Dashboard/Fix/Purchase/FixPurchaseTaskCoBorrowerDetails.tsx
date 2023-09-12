@@ -1,22 +1,13 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import { format, isDate, isValid } from 'date-fns';
+import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
 
-import { POSNotUndefined } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
-import { Address, IAddress } from '@/models/common/Address';
-import {
-  CommonBorrowerType,
-  DashboardTaskBorrowerEntityType,
-  DashboardTaskBorrowerType,
-  DashboardTaskGender,
-  DashboardTaskMaritalStatus,
-} from '@/types';
 import {
   AUTO_HIDE_DURATION,
   OPTIONS_COMMON_CITIZEN_TYPE,
@@ -27,6 +18,15 @@ import {
   OPTIONS_TASK_GENDER,
   OPTIONS_TASK_MARTIAL_STATUS,
 } from '@/constants';
+import { Address, IAddress } from '@/models/common/Address';
+import {
+  CommonBorrowerType,
+  DashboardTaskBorrowerEntityType,
+  DashboardTaskBorrowerType,
+  DashboardTaskGender,
+  DashboardTaskMaritalStatus,
+} from '@/types';
+import { POSNotUndefined } from '@/utils';
 import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 
 import {
@@ -82,6 +82,8 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
   const [stateId, setStateId] = useState<string | undefined>();
   const [entityState, setEntityState] = useState<string | undefined>();
 
+  const [trustName, setTrustName] = useState<string | undefined>();
+
   const [firstName, setFirstName] = useState<string | undefined>();
   const [lastName, setLastName] = useState<string | undefined>();
   const [dateOfBirth, setDateOfBirth] = useState<unknown | Date | null>(null);
@@ -126,6 +128,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
           marital,
           phoneNumber,
           propAddr,
+          trustName,
           signatoryTitle,
           ssn,
           stateId,
@@ -152,16 +155,19 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
         setStateId(stateId || '');
         setSignatoryTitle(signatoryTitle || '');
 
+        setTrustName(trustName || '');
+
         setFirstName(firstName || '');
         setLastName(lastName || '');
-        setPhoneNumber(phoneNumber || undefined);
+        setPhoneNumber(phoneNumber || '');
         setEmail(email || '');
         setDelinquentTimes(delinquentTimes || '');
 
         setCitizenship(citizenship || undefined);
         setMarital(marital || undefined);
         setGender(gender || undefined);
-        setSsn(ssn || undefined);
+
+        setSsn(ssn || '');
 
         setIsConfirm(isConfirm || false);
         setCreditScore(creditScore || 0);
@@ -190,74 +196,82 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
       return false;
     }
 
-    const dateValid = isValid(dateOfBirth) && isDate(dateOfBirth);
-    const conditionA =
-      !!firstName &&
-      !!lastName &&
-      !!phoneNumber &&
-      !!email &&
-      dateValid &&
-      !!gender &&
-      !!marital &&
-      address.checkAddressValid &&
-      !!ssn &&
-      authorizedCreditCheck;
-
-    const conditionB =
-      !!firstName &&
-      !!lastName &&
-      !!phoneNumber &&
-      !!email &&
-      dateValid &&
-      !!gender &&
-      !!marital &&
-      address.checkAddressValid;
-
-    if (
-      isCoBorrower &&
-      (!POSNotUndefined(borrowerType) || !POSNotUndefined(citizenship))
-    ) {
-      return false;
-    }
-
     if (!isCoBorrower) {
       return true;
     }
 
-    if (borrowerType === DashboardTaskBorrowerType.individual) {
-      if (citizenship === CommonBorrowerType.foreign_national) {
-        return conditionB;
-      }
-      return conditionA;
+    const dateValid = isValid(dateOfBirth) && isDate(dateOfBirth);
+    const conditionForeign =
+      dateValid &&
+      address.checkAddressValid &&
+      !!firstName &&
+      !!lastName &&
+      !!phoneNumber &&
+      !!email &&
+      !!gender &&
+      !!marital;
+
+    const conditionLocal =
+      dateValid &&
+      address.checkAddressValid &&
+      authorizedCreditCheck &&
+      !!firstName &&
+      !!lastName &&
+      !!phoneNumber &&
+      !!email &&
+      !!gender &&
+      !!marital &&
+      !!ssn;
+
+    switch (borrowerType) {
+      case DashboardTaskBorrowerType.entity:
+        if (citizenship === CommonBorrowerType.foreign_national) {
+          return (
+            conditionForeign &&
+            !!signatoryTitle &&
+            !!entityType &&
+            !!stateId &&
+            !!entityState
+          );
+        }
+        return (
+          conditionLocal &&
+          !!signatoryTitle &&
+          !!entityType &&
+          !!stateId &&
+          !!entityState
+        );
+      case DashboardTaskBorrowerType.trust:
+        if (citizenship === CommonBorrowerType.foreign_national) {
+          return conditionForeign && !!trustName && !!signatoryTitle;
+        }
+        return conditionLocal && !!trustName && !!signatoryTitle;
+      case DashboardTaskBorrowerType.individual:
+        return citizenship === CommonBorrowerType.foreign_national
+          ? conditionForeign
+          : conditionLocal;
+      default:
+        return false;
     }
-    if (citizenship === CommonBorrowerType.foreign_national) {
-      return conditionB;
-    }
-    return (
-      conditionA &&
-      !!entityType &&
-      !!entityState &&
-      !!stateId &&
-      !!signatoryTitle
-    );
   }, [
-    address.checkAddressValid,
-    authorizedCreditCheck,
-    citizenship,
-    borrowerType,
-    dateOfBirth,
-    email,
-    entityState,
-    entityType,
-    firstName,
-    gender,
     isCoBorrower,
+    dateOfBirth,
+    address.checkAddressValid,
+    firstName,
     lastName,
-    marital,
     phoneNumber,
-    signatoryTitle,
+    email,
+    gender,
+    marital,
+    authorizedCreditCheck,
     ssn,
+    borrowerType,
+    citizenship,
+    signatoryTitle,
+    entityType,
     stateId,
+    entityState,
+    trustName,
   ]);
 
   const handledSubmit = useCallback(async () => {
@@ -277,6 +291,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
         email,
         entityState,
         entityType,
+        trustName,
         firstName,
         gender,
         isCoBorrower,
@@ -340,6 +355,90 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
     signatoryTitle,
     ssn,
     stateId,
+    trustName,
+  ]);
+
+  const renderConditionForm = useMemo(() => {
+    switch (borrowerType) {
+      case DashboardTaskBorrowerType.entity:
+        return (
+          <StyledFormItem label={'Entity information'} sub>
+            <Stack
+              flexDirection={'column'}
+              gap={3}
+              maxWidth={600}
+              width={'100%'}
+            >
+              <StyledTextField
+                disabled={isConfirm}
+                label={'Authorized signatory title'}
+                onChange={(e) => setSignatoryTitle(e.target.value)}
+                value={signatoryTitle}
+              />
+              <StyledSelect
+                disabled={isConfirm}
+                label={'Entity type'}
+                onChange={(e) =>
+                  setEntityType(
+                    e.target.value as DashboardTaskBorrowerEntityType,
+                  )
+                }
+                options={OPTIONS_TASK_ENTITY_TYPE}
+                value={entityType}
+              />
+              <StyledTextField
+                disabled={isConfirm}
+                label={'Secretary of state ID'}
+                onChange={(e) => setStateId(e.target.value)}
+                value={stateId}
+              />
+              <StyledSelect
+                disabled={isConfirm}
+                label={'Formation state'}
+                onChange={(e) => setEntityState(e.target.value as string)}
+                options={OPTIONS_COMMON_STATE}
+                value={entityState}
+              />
+            </Stack>
+          </StyledFormItem>
+        );
+      case DashboardTaskBorrowerType.trust:
+        return (
+          <StyledFormItem label={'Trust information'} sub>
+            <Stack
+              flexDirection={'column'}
+              gap={3}
+              maxWidth={600}
+              width={'100%'}
+            >
+              <StyledTextField
+                disabled={isConfirm}
+                label={'Trust name'}
+                onChange={(e) => setTrustName(e.target.value)}
+                value={trustName}
+              />
+              <StyledTextField
+                disabled={isConfirm}
+                label={'Authorized signatory title'}
+                onChange={(e) => setSignatoryTitle(e.target.value)}
+                value={signatoryTitle}
+              />
+            </Stack>
+          </StyledFormItem>
+        );
+
+      case DashboardTaskBorrowerType.individual:
+      default:
+        return null;
+    }
+  }, [
+    borrowerType,
+    entityState,
+    entityType,
+    isConfirm,
+    signatoryTitle,
+    stateId,
+    trustName,
   ]);
 
   return (
@@ -403,7 +502,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
               {isCoBorrower && (
                 <>
                   <StyledFormItem
-                    label={'Borrower Type'}
+                    label={'Borrower type'}
                     sub
                     tip={
                       'If you represent an entity, please update the borrower type below, We will convert the co-borrower information into a guarantor for this entity.'
@@ -442,60 +541,18 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                   <Transitions
                     style={{
                       display:
-                        borrowerType === DashboardTaskBorrowerType.entity
+                        borrowerType === DashboardTaskBorrowerType.entity ||
+                        borrowerType === DashboardTaskBorrowerType.trust
                           ? 'flex'
                           : 'none',
                       width: '100%',
                     }}
                   >
-                    {borrowerType === DashboardTaskBorrowerType.entity && (
-                      <StyledFormItem label={'Entity Information'} sub>
-                        <Stack
-                          flexDirection={'column'}
-                          gap={3}
-                          maxWidth={600}
-                          width={'100%'}
-                        >
-                          <StyledTextField
-                            disabled={isConfirm}
-                            label={'Authorized Signatory Title'}
-                            onChange={(e) => setSignatoryTitle(e.target.value)}
-                            value={signatoryTitle}
-                          />
-                          <StyledSelect
-                            disabled={isConfirm}
-                            label={'Entity Type'}
-                            onChange={(e) =>
-                              setEntityType(
-                                e.target
-                                  .value as DashboardTaskBorrowerEntityType,
-                              )
-                            }
-                            options={OPTIONS_TASK_ENTITY_TYPE}
-                            value={entityType}
-                          />
-                          <StyledTextField
-                            disabled={isConfirm}
-                            label={'Secretary of State ID'}
-                            onChange={(e) => setStateId(e.target.value)}
-                            value={stateId}
-                          />
-                          <StyledSelect
-                            disabled={isConfirm}
-                            label={'Formation State'}
-                            onChange={(e) =>
-                              setEntityState(e.target.value as string)
-                            }
-                            options={OPTIONS_COMMON_STATE}
-                            value={entityState}
-                          />
-                        </Stack>
-                      </StyledFormItem>
-                    )}
+                    {renderConditionForm}
                   </Transitions>
 
                   <StyledFormItem
-                    label={'Personal Information'}
+                    label={'Personal information'}
                     sub
                     tip={`By entering your phone number,  you're authorizing ${
                       //sass
@@ -505,25 +562,25 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                     <Stack gap={3} maxWidth={600} width={'100%'}>
                       <StyledTextField
                         disabled={isConfirm}
-                        label={'First Name'}
+                        label={'First name'}
                         onChange={(e) => setFirstName(e.target.value)}
                         value={firstName}
                       />
                       <StyledTextField
                         disabled={isConfirm}
-                        label={'Last Name'}
+                        label={'Last name'}
                         onChange={(e) => setLastName(e.target.value)}
                         value={lastName}
                       />
                       <StyledDatePicker
                         disabled={isConfirm}
-                        label={'Date of Birth'}
+                        label={'Date of birth'}
                         onChange={(value) => setDateOfBirth(value)}
                         value={dateOfBirth}
                       />
                       <StyledTextFieldPhone
                         disabled={isConfirm}
-                        label={'Phone Number'}
+                        label={'Phone number'}
                         onValueChange={({ value }) => setPhoneNumber(value)}
                         value={phoneNumber}
                       />
@@ -546,7 +603,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                       />
                       <StyledSelect
                         disabled={isConfirm}
-                        label={'Marital Status'}
+                        label={'Marital status'}
                         onChange={(e) =>
                           setMarital(
                             e.target
@@ -559,7 +616,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                       <StyledTextFieldNumber
                         decimalScale={0}
                         disabled={isConfirm}
-                        label={'Delinquent Times'}
+                        label={'Delinquent times'}
                         onValueChange={({ formattedValue }) =>
                           setDelinquentTimes(formattedValue)
                         }
@@ -568,20 +625,20 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                       />
                       <StyledDatePicker
                         disabled={isConfirm}
-                        label={'Bankruptcy Filing Date'}
+                        label={'Bankruptcy filing date'}
                         onChange={(value) => setBankruptDate(value)}
                         value={bankruptDate}
                       />
                       <StyledDatePicker
                         disabled={isConfirm}
-                        label={'Property Foreclosure Filing Date'}
+                        label={'Property foreclosure filing date'}
                         onChange={(value) => setForeclosureDate(value)}
                         value={foreclosureDate}
                       />
                     </Stack>
                   </StyledFormItem>
 
-                  <StyledFormItem label={'Current Address'} sub>
+                  <StyledFormItem label={'Current address'} sub>
                     <Stack maxWidth={600} width={'100%'}>
                       <StyledGoogleAutoComplete
                         address={address}
@@ -592,13 +649,13 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
 
                   {citizenship !== CommonBorrowerType.foreign_national && (
                     <StyledFormItem
-                      label={'Your Co-borrower Social Security Number'}
+                      label={"Your co-borrower's social security number"}
                       sub
                     >
                       <Stack maxWidth={600} width={'100%'}>
                         <StyledTextFieldSocialNumber
                           disabled={isConfirm}
-                          label={'Social Security Number'}
+                          label={'Social security number'}
                           onValueChange={(v) => setSsn(v)}
                           value={ssn}
                         />
@@ -674,7 +731,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                     />
                   ) : citizenship !== CommonBorrowerType.foreign_national ? (
                     <StyledFormItem
-                      label={`Credit Score is ${creditScore}`}
+                      label={`Credit score is ${creditScore}`}
                       labelSx={{ m: 0 }}
                       sub
                       tipSx={{ m: 0 }}

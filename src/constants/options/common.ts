@@ -55,7 +55,7 @@ export const HASH_COMMON_PERSON = {
 
 export const OPTIONS_COMMON_CITIZEN_TYPE: Option[] = [
   {
-    label: 'US Citizen',
+    label: 'US citizen',
     value: CommonBorrowerType.us_citizen,
     key: CommonBorrowerType.us_citizen,
   },
@@ -65,7 +65,7 @@ export const OPTIONS_COMMON_CITIZEN_TYPE: Option[] = [
     key: CommonBorrowerType.permanent_resident_alien,
   },
   {
-    label: 'Foreign National',
+    label: 'Foreign national',
     value: CommonBorrowerType.foreign_national,
     key: CommonBorrowerType.foreign_national,
   },

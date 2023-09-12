@@ -7,12 +7,14 @@ export const StyledTextFieldOtp: FC<StyledTextFieldOtpProps> = ({
   onChange,
   disabled,
   values,
+  fields = 4,
 }) => {
   return (
     <>
       <ReactCodeInput
         className={'OPT_TextField_inputStyle_container'}
         disabled={disabled}
+        fields={fields}
         onChange={onChange}
         values={values}
       />

@@ -18,7 +18,6 @@ import { POSFlex } from '@/styles';
 import {
   StyledBoxWrap,
   StyledButton,
-  StyledTextField,
   StyledTextFieldPassword,
   Transitions,
 } from '@/components/atoms';
@@ -134,13 +133,13 @@ export const ChangePassword: FC = () => {
               component={'form'}
               onSubmit={onSubmitClick}
             >
-              <StyledTextField
+              <StyledTextFieldPassword
                 inputProps={{
                   autoComplete: 'new-password',
                 }}
-                label={'Existing Password'}
+                label={'Existing password'}
                 onChange={(e) => setOldPassword(e.target.value)}
-                placeholder={'Existing Password'}
+                placeholder={'Existing password'}
                 required
                 value={oldPassword}
               />
@@ -218,7 +217,7 @@ export const ChangePassword: FC = () => {
                 type={'submit'}
                 variant="contained"
               >
-                Change Password
+                Change password
               </StyledButton>
             </Box>
 
