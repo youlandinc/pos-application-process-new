@@ -15,7 +15,7 @@ export const OPTIONS_TASK_CITIZENSHIP_STATUS: Option[] = [
   {
     key: DashboardTaskCitizenshipStatus.us_citizen,
     value: DashboardTaskCitizenshipStatus.us_citizen,
-    label: 'US Citizen',
+    label: 'US citizen',
   },
   {
     key: DashboardTaskCitizenshipStatus.permanent_resident_alien,
@@ -68,7 +68,7 @@ export const OPTIONS_TASK_ENTITY_TYPE: Option[] = [
   {
     key: DashboardTaskBorrowerEntityType.limited_liability_company,
     value: DashboardTaskBorrowerEntityType.limited_liability_company,
-    label: 'Limited Liability Company',
+    label: 'Limited liability company',
   },
   {
     key: DashboardTaskBorrowerEntityType.corporation,
@@ -78,12 +78,12 @@ export const OPTIONS_TASK_ENTITY_TYPE: Option[] = [
   {
     key: DashboardTaskBorrowerEntityType.limited_partnership,
     value: DashboardTaskBorrowerEntityType.limited_partnership,
-    label: 'Limited Partnership',
+    label: 'Limited partnership',
   },
   {
     key: DashboardTaskBorrowerEntityType.limited_company,
     value: DashboardTaskBorrowerEntityType.limited_company,
-    label: 'Limited Company',
+    label: 'Limited company',
   },
   {
     key: DashboardTaskBorrowerEntityType.individual,
@@ -114,17 +114,17 @@ export const OPTIONS_TASK_INSTRUCTIONS: Option[] = [
   {
     key: DashboardTaskInstructions.title_officer,
     value: DashboardTaskInstructions.title_officer,
-    label: 'Title Officer',
+    label: 'Title officer',
   },
   {
     key: DashboardTaskInstructions.issuing_agent,
     value: DashboardTaskInstructions.issuing_agent,
-    label: 'Issuing Agent',
+    label: 'Issuing agent',
   },
   {
     key: DashboardTaskInstructions.closing_attorney,
     value: DashboardTaskInstructions.closing_attorney,
-    label: 'Closing Attorney',
+    label: 'Closing attorney',
   },
 ];
 
@@ -132,12 +132,12 @@ export const OPTIONS_TASK_MANAGING_LOAN_CLOSING: Option[] = [
   {
     key: DashboardTaskLoanClosing.escrow_company,
     value: DashboardTaskLoanClosing.escrow_company,
-    label: 'Escrow Company',
+    label: 'Escrow company',
   },
   {
     key: DashboardTaskLoanClosing.closing_attorney,
     value: DashboardTaskLoanClosing.closing_attorney,
-    label: 'Closing Attorney',
+    label: 'Closing attorney',
   },
 ];
 
@@ -150,7 +150,7 @@ export const OPTIONS_TASK_AUTOMATIC_PAYMENT: Option[] = [
   {
     key: DashboardTaskAutomaticPayment.ach_debit,
     value: DashboardTaskAutomaticPayment.ach_debit,
-    label: 'ACH Debit',
+    label: 'ACH debit',
   },
 ];
 
@@ -191,16 +191,16 @@ export const OPTIONS_TASK_EXIT_STRATEGY: Option[] = [
   {
     key: DashboardTaskExitStrategy.rehab_and_sell,
     value: DashboardTaskExitStrategy.rehab_and_sell,
-    label: 'Rehab and Sell',
+    label: 'Rehab and sell',
   },
   {
     key: DashboardTaskExitStrategy.rehab_rent_refinance,
     value: DashboardTaskExitStrategy.rehab_rent_refinance,
-    label: 'Rehab and Rental',
+    label: 'Rehab and rental',
   },
   {
     key: DashboardTaskExitStrategy.obtain_long_term_financing,
     value: DashboardTaskExitStrategy.obtain_long_term_financing,
-    label: 'Obtain Long Term Financing',
+    label: 'Obtain long term financing',
   },
 ];
