@@ -175,7 +175,7 @@ const _StyledPaymentCard = forwardRef<
               component={'label'}
               id={'cardNumber'}
             >
-              Card Number
+              Card number
               <CardNumberElement
                 className={'payment_cardNumber_input'}
                 id={'cardNumber'}

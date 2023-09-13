@@ -162,7 +162,7 @@ export const BridgePurchaseTaskContract: FC = observer(() => {
         ) : (
           <StyledFormItem
             gap={6}
-            label={'Upload Your Purchase Contract'}
+            label={'Upload your purchase contract'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}

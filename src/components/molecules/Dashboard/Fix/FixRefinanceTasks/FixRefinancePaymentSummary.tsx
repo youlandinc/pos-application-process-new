@@ -38,7 +38,7 @@ export const FixRefinancePaymentSummary: FC<
       p={3}
       width={'100%'}
     >
-      <Typography variant={'h4'}>Your Rate</Typography>
+      <Typography variant={'h4'}>Your rate</Typography>
       <Stack width={'100%'}>
         <Stack
           alignItems={'center'}

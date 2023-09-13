@@ -232,7 +232,7 @@ export const FixRefinanceTaskPersonalDetails: FC = observer(() => {
         ) : (
           <StyledFormItem
             gap={6}
-            label={'Personal Details'}
+            label={'Personal details'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
@@ -303,7 +303,7 @@ export const FixRefinanceTaskPersonalDetails: FC = observer(() => {
                 {isBankruptcy && (
                   <Stack mt={3}>
                     <StyledDatePicker
-                      label={'Bankruptcy Filing Date'}
+                      label={'Bankruptcy filing date'}
                       onChange={(date) => {
                         setBankruptDate(date);
                       }}
@@ -340,7 +340,7 @@ export const FixRefinanceTaskPersonalDetails: FC = observer(() => {
                 {isForeclosure && (
                   <Stack mt={3}>
                     <StyledDatePicker
-                      label={'Property Foreclosure Filing Date'}
+                      label={'Property foreclosure filing date'}
                       onChange={(date) => {
                         setForeclosureDate(date);
                       }}

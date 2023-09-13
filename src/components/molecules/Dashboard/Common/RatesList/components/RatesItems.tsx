@@ -29,7 +29,7 @@ export const RatesItems: FC<{
                   ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
                 }
               >
-                Total Borrower Points
+                Total borrower points
               </Typography>
               <Typography
                 variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h5'}
@@ -47,7 +47,7 @@ export const RatesItems: FC<{
                   ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
                 }
               >
-                Total Origination Fee
+                Total origination fee
               </Typography>
               <Typography
                 variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h5'}
@@ -119,7 +119,7 @@ export const RatesItems: FC<{
               ['xs', 'sm', 'md'].includes(breakpoint as string) ? 'h7' : 'h5'
             }
           >
-            {product.loanTerm} Months
+            {product.loanTerm} months
           </Typography>
         </Stack>
 
@@ -177,7 +177,7 @@ export const RatesItems: FC<{
         onClick={() => onClick(product)}
         variant={product.selected ? 'contained' : 'outlined'}
       >
-        {product.selected ? 'See Cost' : 'Select'}
+        {product.selected ? 'See cost' : 'Select'}
       </StyledButton>
     </Stack>
   );

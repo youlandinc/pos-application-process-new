@@ -237,7 +237,7 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
         ) : (
           <StyledFormItem
             gap={6}
-            label={'Homeowner Insurance Policy(Optional)'}
+            label={'Homeowner Insurance Policy(optional)'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
@@ -265,12 +265,12 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
               sub
             >
               <StyledTextField
-                label={'Company Name'}
+                label={'Company name'}
                 onChange={(e) => setCompanyName(e.target.value)}
                 value={companyName}
               />
               <StyledTextField
-                label={'Agent Name'}
+                label={'Agent name'}
                 onChange={(e) => setAgentName(e.target.value)}
                 value={agentName}
               />

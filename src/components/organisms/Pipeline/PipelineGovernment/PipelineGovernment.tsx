@@ -36,13 +36,13 @@ export const PipelineGovernment: FC = observer(() => {
     switch (userType) {
       case UserType.BROKER: {
         return {
-          label: "Broker's Government ID",
+          label: "Broker's government ID",
           government: BROKER_GOVERNMENT_ID,
         };
       }
       case UserType.LENDER: {
         return {
-          label: "Lender's Government ID",
+          label: "Lender's government ID",
           government: LENDER_GOVERNMENT_ID,
         };
       }
@@ -132,7 +132,9 @@ export const PipelineGovernment: FC = observer(() => {
       <StyledFormItem
         label={computedGovernment.label}
         sx={{ width: '100%' }}
-        tip={'Please upload your driver\'s license or government issued ID (driver\'s license, US passport, US military ID) to verify your identity.'}
+        tip={
+          "Please upload your driver's license or government issued ID (driver's license, US passport, US military ID) to verify your identity."
+        }
       >
         <Stack alignItems={'center'} gap={3} width={'100%'}>
           <Stack width={'100%'}>

@@ -65,7 +65,7 @@ const list: MenuItems[] = [
   //  key: 'loan_estimate',
   //},
   {
-    label: 'My Team',
+    label: 'My team',
     path: 'team',
     key: 'team',
     icon: <PeopleAltOutlined />,

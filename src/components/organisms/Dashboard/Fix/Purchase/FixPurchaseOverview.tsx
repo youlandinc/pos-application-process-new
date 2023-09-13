@@ -121,7 +121,7 @@ export const FixPurchaseOverview: FC = observer(() => {
               ),
             },
             {
-              label: 'Pre-payment Penalty',
+              label: 'Pre-payment penalty',
               info: loanDetail?.penalty
                 ? POSFormatDollar(loanDetail?.penalty)
                 : 'N/A',
@@ -222,7 +222,7 @@ export const FixPurchaseOverview: FC = observer(() => {
               info: POSFormatDollar(thirdParty?.downPayment),
             },
             {
-              label: 'Origination Fee',
+              label: 'Origination fee',
               info: `${POSFormatDollar(
                 thirdParty?.originationFee,
               )}(${POSFormatLocalPercent(thirdParty?.originationFeePer)})`,
@@ -287,7 +287,7 @@ export const FixPurchaseOverview: FC = observer(() => {
             subTitle={
               'Everything about your loan found in one place. Get updates and see what needs to be done before you close.'
             }
-            title={'Your Loan Overview'}
+            title={'Your loan overview'}
           />
 
           <Stack
@@ -322,7 +322,7 @@ export const FixPurchaseOverview: FC = observer(() => {
                   }
                   variant={'contained'}
                 >
-                  View Letter
+                  View letter
                 </StyledButton>
               </DashboardCard>
               <DashboardCard
@@ -344,7 +344,7 @@ export const FixPurchaseOverview: FC = observer(() => {
                   sx={{ mt: 'auto' }}
                   variant={'contained'}
                 >
-                  Explore Rate
+                  Explore rate
                 </StyledButton>
               </DashboardCard>
             </Stack>

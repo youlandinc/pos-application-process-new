@@ -115,7 +115,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               size={'small'}
               variant={'text'}
             >
-              Sign Up
+              Sign up
             </StyledButton>
             <StyledButton
               color={'info'}
@@ -126,7 +126,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               size={'small'}
               variant={'text'}
             >
-              Log In
+              Log in
             </StyledButton>
           </Box>
         ) : (
@@ -145,7 +145,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                     : ''
                 }
               />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View All Loans'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
           </Box>
@@ -167,7 +167,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                     : ''
                 }
               />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View All Loans'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
             </StyledButton>
             <StyledButton
               className={'POS_mr_3'}
@@ -183,7 +183,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                     : ''
                 }
               />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start New Loan'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
           </Box>
@@ -206,7 +206,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                     : ''
                 }
               />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View All Loans'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
             </StyledButton>
             <StyledButton
               className={'POS_mr_3'}
@@ -223,7 +223,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                     : ''
                 }
               />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start New Loan'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
           </Box>
@@ -238,12 +238,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           header: (
             <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
               <Typography variant={'h6'}>
-                Welcome to{' '}
-                {
-                  //sass
-                  saasState?.organizationName || ' YouLand'
-                }{' '}
-                !
+                Welcome to {saasState?.organizationName || ' YouLand'} !
               </Typography>
               <StyledButton color={'info'} isIconButton onClick={close}>
                 <CloseOutlined />
@@ -269,7 +264,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                   onClick={() => setAuthType('sign_up')}
                   variant={'body2'}
                 >
-                  Sign Up
+                  Sign up
                 </Typography>
               </Typography>
               <Typography
@@ -278,7 +273,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 onClick={() => setAuthType('reset_password')}
                 variant={'body2'}
               >
-                Forgot Password?
+                Forgot password?
               </Typography>
             </Box>
           ),
@@ -288,7 +283,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         return {
           header: (
             <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
-              <Typography variant={'h6'}>Reset Password</Typography>
+              <Typography variant={'h6'}>Reset password</Typography>
               <StyledButton color={'info'} isIconButton onClick={close}>
                 <CloseOutlined />
               </StyledButton>
@@ -308,7 +303,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               onClick={() => setAuthType('login')}
               variant={'body2'}
             >
-              Back to Log In
+              Back to log in
             </Typography>
           ),
         };
@@ -317,7 +312,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         return {
           header: (
             <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
-              <Typography variant={'h6'}>Sign Up</Typography>
+              <Typography variant={'h6'}>Sign up</Typography>
               <StyledButton color={'info'} isIconButton onClick={close}>
                 <CloseOutlined />
               </StyledButton>
@@ -340,7 +335,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                   onClick={() => setAuthType('login')}
                   variant={'body2'}
                 >
-                  Log In
+                  Log in
                 </Typography>
               </Typography>
               <Typography sx={{ color: 'info.main', mt: 3 }} variant={'body2'}>
@@ -353,11 +348,8 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                   Term of Use{' '}
                 </Link>
                 and to receive
-                {
-                  //sass
-                  ' ' + saasState?.organizationName || ' YouLand'
-                }{' '}
-                emails & updates and acknowledge that you read our{' '}
+                {' ' + saasState?.organizationName || ' YouLand'} emails &
+                updates and acknowledge that you read our{' '}
                 <Link
                   className="link_style"
                   href={'https://www.youland.com/legal/privacy/'}

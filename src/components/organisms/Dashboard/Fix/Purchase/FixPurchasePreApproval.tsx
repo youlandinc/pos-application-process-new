@@ -587,7 +587,7 @@ export const FixPurchasePreApproval: FC = observer(() => {
           <>
             <StyledTextFieldNumber
               disabled={checkLoading}
-              label="Real Estate Agent Processing Fee"
+              label="Real estate agent referral fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
                   ...(rateData as FPEstimateRateData),

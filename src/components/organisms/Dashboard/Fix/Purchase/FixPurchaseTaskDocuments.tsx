@@ -439,7 +439,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
                 fileList={authorizationFiles}
                 label={
                   <Stack flexDirection={'column'} width={'100%'}>
-                    Borrower authorization form{' '}
+                    Borrower Authorization Form{' '}
                     <Typography
                       color={'primary.main'}
                       onClick={() =>
@@ -450,7 +450,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
                       sx={{ textDecoration: 'underline', cursor: 'pointer' }}
                       variant={'body1'}
                     >
-                      Borrower authorization form.pdf
+                      Borrower Authorization Form.pdf
                     </Typography>
                   </Stack>
                 }
@@ -469,7 +469,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
 
               <StyledUploadButtonBox
                 fileList={prelimFiles}
-                label={'Prelim or title commitment'}
+                label={'Prelim or Title Commitment'}
                 loading={uploadLoading}
                 onDelete={(index) => handledDelete(index, 'prelim')}
                 onSuccess={(files) => handledSuccess(files, 'prelim')}
@@ -478,7 +478,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
               {show1 && (
                 <StyledUploadButtonBox
                   fileList={budgetFiles}
-                  label={'Rehabilitation budget'}
+                  label={'Rehabilitation Budget'}
                   loading={uploadLoading}
                   onDelete={(index) => handledDelete(index, 'budget')}
                   onSuccess={(files) => handledSuccess(files, 'budget')}
@@ -489,7 +489,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
                 <>
                   <StyledUploadButtonBox
                     fileList={questionnaireFiles}
-                    label={'Completed condominium questionnaire'}
+                    label={'Completed Condominium Questionnaire'}
                     loading={uploadLoading}
                     onDelete={(index) => handledDelete(index, 'questionnaire')}
                     onSuccess={(files) =>
@@ -500,7 +500,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
                   <StyledUploadButtonBox
                     fileList={policyFiles}
                     label={
-                      'Copy of condominium master insurance policy/certificate'
+                      'Copy of Condominium Master Insurance Policy/Certificate'
                     }
                     loading={uploadLoading}
                     onDelete={(index) => handledDelete(index, 'policy')}
@@ -514,7 +514,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
                   <StyledUploadButtonBox
                     fileList={articlesFiles}
                     label={
-                      'Certificates of formation/Filed articles of organization/incorporation'
+                      'Certificates of formation/filed articles of organization/incorporation'
                     }
                     loading={uploadLoading}
                     onDelete={(index) => handledDelete(index, 'articles')}
@@ -523,7 +523,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
 
                   <StyledUploadButtonBox
                     fileList={lawsFiles}
-                    label={'Operating agreement/partnership agreement/by laws'}
+                    label={'Operating Agreement, Partnership Agreement, Bylaws'}
                     loading={uploadLoading}
                     onDelete={(index) => handledDelete(index, 'laws')}
                     onSuccess={(files) => handledSuccess(files, 'laws')}
@@ -532,7 +532,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
                   <StyledUploadButtonBox
                     fileList={standingFiles}
                     label={
-                      'Certificate of good standing from state of organization'
+                      'Certificate of Good Standing from State of Organization'
                     }
                     loading={uploadLoading}
                     onDelete={(index) => handledDelete(index, 'standing')}

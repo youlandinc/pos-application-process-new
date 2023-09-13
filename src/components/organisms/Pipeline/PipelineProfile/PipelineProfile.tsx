@@ -120,7 +120,7 @@ export const PipelineProfile: FC = observer(() => {
                   sx={{ color: 'info.A100', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
-                  (Optional)
+                  (optional)
                 </Typography>
               </Typography>
               <StyledStatus status={BROKER_QUESTIONNAIRE.taskStatus} />
@@ -169,7 +169,7 @@ export const PipelineProfile: FC = observer(() => {
                   sx={{ color: 'info.A100', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
-                  (Optional)
+                  (optional)
                 </Typography>
               </Typography>
               <StyledStatus status={LENDER_AGREEMENT.taskStatus} />
@@ -189,7 +189,7 @@ export const PipelineProfile: FC = observer(() => {
             {/*      sx={{ color: 'info.A100', fontSize: 'inherit' }}*/}
             {/*      variant={'h6'}*/}
             {/*    >*/}
-            {/*      (Optional)*/}
+            {/*      (optional)*/}
             {/*    </Typography>*/}
             {/*  </Typography>*/}
             {/*  <StyledStatus status={LENDER_GOVERNMENT_ID.taskStatus} />*/}
@@ -209,7 +209,7 @@ export const PipelineProfile: FC = observer(() => {
                   sx={{ color: 'info.A100', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
-                  (Optional)
+                  (optional)
                 </Typography>
               </Typography>
               <StyledStatus status={W9_FORM.taskStatus} />
@@ -233,7 +233,7 @@ export const PipelineProfile: FC = observer(() => {
                   sx={{ color: 'info.A100', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
-                  (Optional)
+                  (optional)
                 </Typography>
               </Typography>
               <StyledStatus status={LENDER_QUESTIONNAIRE.taskStatus} />
@@ -252,7 +252,7 @@ export const PipelineProfile: FC = observer(() => {
                   sx={{ color: 'info.A100', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
-                  (Optional)
+                  (optional)
                 </Typography>
               </Typography>
               <StyledStatus status={ACH_INFORMATION.taskStatus} />
@@ -379,15 +379,15 @@ export const PipelineProfile: FC = observer(() => {
   const userTask = useMemo(() => {
     switch (userType) {
       case UserType.BROKER:
-        return 'Broker Tasks';
+        return 'Broker tasks';
       case UserType.LENDER:
-        return 'Lender Tasks';
+        return 'Lender tasks';
       case UserType.LOAN_OFFICER:
-        return 'Loan Officer Tasks';
+        return 'Loan officer tasks';
       case UserType.REAL_ESTATE_AGENT:
-        return 'Real Estate Agent Tasks';
+        return 'Real estate agent tasks';
       default:
-        return 'Broker Tasks';
+        return 'Broker tasks';
     }
   }, [userType]);
 
@@ -435,7 +435,7 @@ export const PipelineProfile: FC = observer(() => {
           }
           sx={{ mt: 2 }}
         >
-          Start New Loan
+          Start new loan
         </StyledButton>
       </Stack>
     </StyledFormItem>
