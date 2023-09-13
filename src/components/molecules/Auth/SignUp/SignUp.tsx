@@ -1,6 +1,3 @@
-import { useMst } from '@/models/Root';
-import { DetectActiveService } from '@/services/DetectActive';
-import { User } from '@/types/user';
 import {
   ChangeEventHandler,
   FC,
@@ -17,8 +14,11 @@ import { useSnackbar } from 'notistack';
 import { validate } from 'validate.js';
 
 import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
+import { DetectActiveService } from '@/services/DetectActive';
 import { useSessionStorageState, useSwitch } from '@/hooks';
+import { User } from '@/types/user';
 import { SignUpProps, SignUpStyles } from './index';
 import { POSFlex } from '@/styles';
 import {
@@ -273,7 +273,7 @@ export const SignUp: FC<SignUpProps> = observer(
         >
           <StyledSelect
             disabled={loading}
-            label={'Select Role'}
+            label={'Select role'}
             onChange={(e) =>
               setUserType(e.target.value as keyof typeof UserType)
             }
@@ -364,7 +364,7 @@ export const SignUp: FC<SignUpProps> = observer(
             type={'submit'}
             variant="contained"
           >
-            Create Account
+            Create account
           </StyledButton>
         </Box>
       );
@@ -400,7 +400,7 @@ export const SignUp: FC<SignUpProps> = observer(
 
               <Box className="sign_up_form">
                 <Typography className="form_title" variant="h3">
-                  Sign Up
+                  Sign up
                 </Typography>
 
                 {FormBody}
@@ -408,7 +408,7 @@ export const SignUp: FC<SignUpProps> = observer(
                   <Typography variant="body2">
                     Already have an account?{' '}
                     <Link className="link_style" href={'/auth/login/'}>
-                      Log In
+                      Log in
                     </Link>
                   </Typography>
                   <Typography
@@ -424,11 +424,8 @@ export const SignUp: FC<SignUpProps> = observer(
                       Term of Use{' '}
                     </Link>
                     and to receive
-                    {
-                      //sass
-                      ' ' + saasState?.organizationName || ' YouLand'
-                    }{' '}
-                    emails & updates and acknowledge that you read our{' '}
+                    {' ' + saasState?.organizationName || ' YouLand'} emails &
+                    updates and acknowledge that you read our{' '}
                     <Link
                       className="link_style"
                       href={'https://www.youland.com/legal/privacy/'}

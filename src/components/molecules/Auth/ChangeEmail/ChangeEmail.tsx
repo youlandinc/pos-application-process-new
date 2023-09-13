@@ -123,7 +123,7 @@ export const ChangeEmail: FC = observer(() => {
 
           <Box className="change_email_form">
             <Typography className="form_title" variant="h3">
-              Change Email
+              Change email
             </Typography>
             <Box
               className="form_body"
@@ -138,9 +138,9 @@ export const ChangeEmail: FC = observer(() => {
               />
               <StyledTextField
                 disabled={loading}
-                label={'New Email'}
+                label={'New email'}
                 onChange={(e) => setNewEmail(e.target.value)}
-                placeholder={'New Email'}
+                placeholder={'New email'}
                 required
                 validate={formError?.email}
                 value={newEmail}
@@ -152,7 +152,7 @@ export const ChangeEmail: FC = observer(() => {
                 type={'submit'}
                 variant="contained"
               >
-                Change Email
+                Change email
               </StyledButton>
             </Box>
             <Box className="form_foot">
