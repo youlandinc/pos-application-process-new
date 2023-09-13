@@ -107,9 +107,8 @@ export const PaymentSummary: FC<PaymentSummaryProps> = ({
       />
       <StyledFormItem
         gap={3}
-        label={'Do you have a recent Property Appraisal？'}
+        label={'Do you have a recent property appraisal？'}
         sub
-        // tip={'Next, fill out your Experience Verification Sheet'}
         tipSx={{ m: 0 }}
       >
         <StyledButtonGroup

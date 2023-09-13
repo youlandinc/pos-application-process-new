@@ -27,22 +27,22 @@ import { MyAccountButtonProps, MyAccountStyles } from './index';
 import { StyledButton } from '@/components/atoms';
 
 const MENU_LIST_CUSTOMER = [
-  { label: 'Change Email', url: '/auth/change_email' },
+  { label: 'Change email', url: '/auth/change_email' },
   {
-    label: 'Change Password',
+    label: 'Change password',
     url: '/auth/change_password',
   },
-  { label: 'Sign Out', url: 'sign_out' },
+  { label: 'Sign out', url: 'sign_out' },
 ];
 
 const MENU_LIST_NOT_CUSTOMER = [
-  { label: 'My Profile', url: '/pipeline/profile' },
-  { label: 'Change Email', url: '/auth/change_email' },
+  { label: 'My profile', url: '/pipeline/profile' },
+  { label: 'Change email', url: '/auth/change_email' },
   {
-    label: 'Change Password',
+    label: 'Change password',
     url: '/auth/change_password',
   },
-  { label: 'Sign Out', url: 'sign_out' },
+  { label: 'Sign out', url: 'sign_out' },
 ];
 
 export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
@@ -94,7 +94,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
             onClick={(e) => handledMenuItemClick(e, 'sign_out')}
             sx={MyAccountStyles.menu_item}
           >
-            Sign Out
+            Sign out
           </MenuItem>
         );
       case 'dashboard':
@@ -125,7 +125,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
             onClick={(e) => handledMenuItemClick(e, 'sign_out')}
             sx={MyAccountStyles.menu_item}
           >
-            Sign Out
+            Sign out
           </MenuItem>
         );
     }
@@ -142,7 +142,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
       >
         {!['sm', 'xs', 'md'].includes(breakpoint) ? (
           <>
-            My Account
+            My account
             <ExpandMoreOutlined
               className={'POS_icon_right'}
               sx={

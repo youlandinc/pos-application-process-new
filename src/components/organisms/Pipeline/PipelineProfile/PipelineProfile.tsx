@@ -435,7 +435,7 @@ export const PipelineProfile: FC = observer(() => {
           }
           sx={{ mt: 2 }}
         >
-          Start New Loan
+          Start new loan
         </StyledButton>
       </Stack>
     </StyledFormItem>

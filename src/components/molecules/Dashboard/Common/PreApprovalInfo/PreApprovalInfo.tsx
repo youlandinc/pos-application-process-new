@@ -191,7 +191,7 @@ export const PreApprovalInfo = forwardRef<
               }}
               variant={'contained'}
             >
-              {viewLoading ? 'Viewing...' : 'View Letter'}
+              {viewLoading ? 'Viewing...' : 'View letter'}
             </StyledButton>
 
             <StyledButton
@@ -320,7 +320,7 @@ export const PreApprovalInfo = forwardRef<
             justifyContent={'space-between'}
             pb={3}
           >
-            <Typography variant={'h6'}>Your Pre-Approval Letter</Typography>
+            <Typography variant={'h6'}>Your pre-approval letter</Typography>
             <StyledButton isIconButton onClick={close}>
               <CloseOutlined />
             </StyledButton>
