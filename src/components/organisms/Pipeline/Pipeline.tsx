@@ -293,7 +293,7 @@ export const Pipeline: FC = observer(() => {
             sx={{ width: 274 }}
             variant={'outlined'}
           >
-            Load More
+            Load more
           </StyledButton>
         </Box>
       )}

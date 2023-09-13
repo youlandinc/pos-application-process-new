@@ -36,14 +36,14 @@ export const PipelineLicense: FC = observer(() => {
     switch (userType) {
       case UserType.BROKER: {
         return {
-          label: "Broker's License",
+          label: "Broker's license",
           license: BROKER_LICENSE,
           name: 'broker',
         };
       }
       case UserType.LENDER: {
         return {
-          label: "Lender's License",
+          label: "Lender's license",
           license: LENDER_LICENSE,
           name: 'lender',
         };

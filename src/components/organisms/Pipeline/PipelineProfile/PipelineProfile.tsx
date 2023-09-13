@@ -120,7 +120,7 @@ export const PipelineProfile: FC = observer(() => {
                   sx={{ color: 'info.A100', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
-                  (Optional)
+                  (optional)
                 </Typography>
               </Typography>
               <StyledStatus status={BROKER_QUESTIONNAIRE.taskStatus} />
@@ -169,7 +169,7 @@ export const PipelineProfile: FC = observer(() => {
                   sx={{ color: 'info.A100', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
-                  (Optional)
+                  (optional)
                 </Typography>
               </Typography>
               <StyledStatus status={LENDER_AGREEMENT.taskStatus} />
@@ -189,7 +189,7 @@ export const PipelineProfile: FC = observer(() => {
             {/*      sx={{ color: 'info.A100', fontSize: 'inherit' }}*/}
             {/*      variant={'h6'}*/}
             {/*    >*/}
-            {/*      (Optional)*/}
+            {/*      (optional)*/}
             {/*    </Typography>*/}
             {/*  </Typography>*/}
             {/*  <StyledStatus status={LENDER_GOVERNMENT_ID.taskStatus} />*/}
@@ -209,7 +209,7 @@ export const PipelineProfile: FC = observer(() => {
                   sx={{ color: 'info.A100', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
-                  (Optional)
+                  (optional)
                 </Typography>
               </Typography>
               <StyledStatus status={W9_FORM.taskStatus} />
@@ -233,7 +233,7 @@ export const PipelineProfile: FC = observer(() => {
                   sx={{ color: 'info.A100', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
-                  (Optional)
+                  (optional)
                 </Typography>
               </Typography>
               <StyledStatus status={LENDER_QUESTIONNAIRE.taskStatus} />
@@ -252,7 +252,7 @@ export const PipelineProfile: FC = observer(() => {
                   sx={{ color: 'info.A100', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
-                  (Optional)
+                  (optional)
                 </Typography>
               </Typography>
               <StyledStatus status={ACH_INFORMATION.taskStatus} />

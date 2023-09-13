@@ -161,11 +161,11 @@ export const PipelineAch: FC = observer(() => {
           <Stack alignItems={'center'} gap={3} width={'100%'}>
             <Stack width={'100%'}>
               <StyledTextField
-                label={'Bank Name'}
+                label={'Bank name'}
                 onChange={(e) =>
                   computedAch.ach.changeFieldValue('bankName', e.target.value)
                 }
-                placeholder={'Bank Name'}
+                placeholder={'Bank name'}
                 value={computedAch.ach.taskForm.bankName}
               />
             </Stack>
@@ -173,7 +173,7 @@ export const PipelineAch: FC = observer(() => {
               <Stack width={'100%'}>
                 <StyledGoogleAutoComplete
                   address={computedAch.ach.taskForm.address}
-                  label={'Bank Address'}
+                  label={'Bank address'}
                 />
               </Stack>
             )}
@@ -183,14 +183,14 @@ export const PipelineAch: FC = observer(() => {
               width={'100%'}
             >
               <StyledTextField
-                label={'Account Holder Name'}
+                label={'Account holder name'}
                 onChange={(e) =>
                   computedAch.ach.changeFieldValue(
                     'accountName',
                     e.target.value,
                   )
                 }
-                placeholder={'Account Holder Name'}
+                placeholder={'Account holder name'}
                 value={computedAch.ach.taskForm.accountName}
               />
               <StyledTextField
@@ -211,18 +211,18 @@ export const PipelineAch: FC = observer(() => {
               width={'100%'}
             >
               <StyledTextField
-                label={'Account Number'}
+                label={'Account number'}
                 onChange={(e) =>
                   computedAch.ach.changeFieldValue(
                     'accountNumber',
                     e.target.value,
                   )
                 }
-                placeholder={'Account Number'}
+                placeholder={'Account number'}
                 value={computedAch.ach.taskForm.accountNumber}
               />
               <StyledSelect
-                label={'Account Type'}
+                label={'Account type'}
                 onChange={(e) =>
                   computedAch.ach.changeFieldValue(
                     'accountType',
@@ -247,7 +247,7 @@ export const PipelineAch: FC = observer(() => {
                 }}
                 variant={'outlined'}
               >
-                Generate File
+                Generate file
               </StyledButton>
             )}
 
@@ -336,7 +336,7 @@ export const PipelineAch: FC = observer(() => {
               onClick={handledSaveFile}
               sx={{ flexShrink: 0, height: 56, width: 200 }}
             >
-              I Agree
+              I agree
             </StyledButton>
           </Stack>
         }
