@@ -168,7 +168,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
     }
     return ['xs', 'sm', 'md', 'lg'].includes(breakpoint) || isNestForm
       ? 'Send'
-      : 'Send Verification Code';
+      : 'Send verification code';
   }, [breakpoint, isNestForm, seconds]);
 
   const isDisabled = useMemo(() => {
@@ -204,9 +204,9 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
             inputProps={{
               autoComplete: 'new-password',
             }}
-            label={'Verification Code'}
+            label={'Verification code'}
             onChange={(e) => setVerificationCode(e.target.value)}
-            placeholder={'Verification Code'}
+            placeholder={'Verification code'}
             required
             value={verificationCode}
           />
@@ -286,7 +286,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
           type={'submit'}
           variant="contained"
         >
-          Set Password
+          Set password
         </StyledButton>
       </Box>
     );
@@ -321,14 +321,14 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
 
             <Box className="forgot_password_form">
               <Typography className="form_title" variant="h3">
-                Reset Password
+                Reset password
               </Typography>
 
               {FormBody}
 
               <Box className="form_foot">
                 <StyledButton color="info" variant="text">
-                  <Link href={'./login/'}> Back to Log In</Link>
+                  <Link href={'./login/'}> Back to log in</Link>
                 </StyledButton>
               </Box>
             </Box>

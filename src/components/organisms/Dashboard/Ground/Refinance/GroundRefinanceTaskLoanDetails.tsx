@@ -192,20 +192,20 @@ export const GroundRefinanceTaskLoanDetails: FC = () => {
         ) : (
           <StyledFormItem
             gap={6}
-            label={'Loan Details'}
+            label={'Loan details'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
-              'Below are all of the details we have about your deal. If you have to change these details you may do so below, please note that changes may affect your Loan-to-Value or your rate.'
+              'Below are all of the details we have about your deal. If you have to change these details you may do so below, please note that changes may affect your Loan-to-value or your rate.'
             }
             tipSx={{ mb: 0 }}
             width={'100%'}
           >
-            <StyledFormItem label={'As-is Property Value'} sub>
+            <StyledFormItem label={'As-is property value'} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldNumber
-                  label={'As-is Property Value'}
+                  label={'As-is property value'}
                   onValueChange={({ floatValue }) => {
                     setHomeValue(floatValue);
                   }}
@@ -215,10 +215,10 @@ export const GroundRefinanceTaskLoanDetails: FC = () => {
               </Stack>
             </StyledFormItem>
 
-            <StyledFormItem label={'Payoff Amount'} sub>
+            <StyledFormItem label={'Payoff amount'} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldNumber
-                  label={'Payoff Amount'}
+                  label={'Payoff amount'}
                   onValueChange={({ floatValue }) => {
                     setBalance(floatValue);
                   }}
@@ -252,10 +252,10 @@ export const GroundRefinanceTaskLoanDetails: FC = () => {
               }}
             >
               {isCashOut && (
-                <StyledFormItem label={'Cash Out Amount'} sub>
+                <StyledFormItem label={'Cash out amount'} sub>
                   <Stack maxWidth={600} width={'100%'}>
                     <StyledTextFieldNumber
-                      label={'Cash Out Amount'}
+                      label={'Cash out amount'}
                       onValueChange={({ floatValue }) => {
                         setCashOutAmount(floatValue);
                       }}
@@ -268,7 +268,7 @@ export const GroundRefinanceTaskLoanDetails: FC = () => {
             </Transitions>
 
             <StyledFormItem
-              label={'Estimated Rehab Loan Amount'}
+              label={'Estimated rehab loan amount'}
               sub
               tip={`Total cost that you would like ${
                 //sass
@@ -277,7 +277,7 @@ export const GroundRefinanceTaskLoanDetails: FC = () => {
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldNumber
-                  label={'Estimated Rehab Loan Amount'}
+                  label={'Estimated rehab loan amount'}
                   onValueChange={({ floatValue }) => {
                     setCor(floatValue);
                   }}

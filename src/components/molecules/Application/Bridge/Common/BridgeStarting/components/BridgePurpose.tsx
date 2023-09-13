@@ -41,7 +41,6 @@ export const BridgePurpose: FC<BridgePurposeProps> = observer((props) => {
       justifyContent={'center'}
       width={'100%'}
     >
-      {/*todo : saas*/}
       <StyledFormItem
         label={`How many properties have ${
           HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject
@@ -62,7 +61,6 @@ export const BridgePurpose: FC<BridgePurposeProps> = observer((props) => {
       </StyledFormItem>
       <Transitions>
         {propertyNumber && (
-          //  todo : saas
           <StyledFormItem
             alignItems={'center'}
             label={`What's the address of the property ${

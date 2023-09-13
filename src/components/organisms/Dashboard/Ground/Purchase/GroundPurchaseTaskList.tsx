@@ -30,7 +30,7 @@ import { DashboardHeader } from '@/components/molecules';
 
 const GroundPurchaseDashboardTaskMap: DashboardTaskList<GPDashboardTaskKey> = {
   ApplicationInformation: {
-    title: 'Application Information',
+    title: 'Application information',
     children: [
       {
         code: 'GP_APPLICATION_LOAN',
@@ -47,7 +47,7 @@ const GroundPurchaseDashboardTaskMap: DashboardTaskList<GPDashboardTaskKey> = {
     ],
   },
   BorrowerInformation: {
-    title: 'Borrower Information',
+    title: 'Borrower information',
     children: [
       {
         code: 'GP_BORROWER_PERSONAL',
@@ -68,7 +68,7 @@ const GroundPurchaseDashboardTaskMap: DashboardTaskList<GPDashboardTaskKey> = {
     ],
   },
   PropertyAppraisal: {
-    title: 'Property Appraisal',
+    title: 'Property appraisal',
     children: [
       {
         code: 'GP_APPRAISAL_COST',
@@ -81,7 +81,7 @@ const GroundPurchaseDashboardTaskMap: DashboardTaskList<GPDashboardTaskKey> = {
     ],
   },
   ThirdPartyInformation: {
-    title: 'Third-party Information',
+    title: 'Third-party information',
     children: [
       {
         code: 'GP_THIRD_CLOSING',
@@ -455,7 +455,7 @@ export const GroundPurchaseTaskList: FC = observer(() => {
             subTitle={
               'You can make updates to the task before the loan is approved.'
             }
-            title={'Your Tasks Checklist'}
+            title={'Your tasks checklist'}
           />
           <Stack alignItems={'center'} mb={3}>
             <StyledProgressLine current={current} total={total} />

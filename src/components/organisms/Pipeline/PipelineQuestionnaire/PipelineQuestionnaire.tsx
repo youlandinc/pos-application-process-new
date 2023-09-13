@@ -84,9 +84,9 @@ export const PipelineQuestionnaire: FC = observer(() => {
     switch (userType) {
       case UserType.BROKER: {
         return {
-          label: 'Broker Questionnaire (Optional)',
+          label: 'Broker questionnaire (optional)',
           tip: 'Please indicate the states in which you are licensed to broker loans and the type of license you hold in each state',
-          listTitle: 'Broker Name ',
+          listTitle: 'Broker name ',
           fileName: 'Broker Questionnaire.pdf',
           dialogHeader: 'Broker Questionnaire',
           userName: 'broker',
@@ -95,9 +95,9 @@ export const PipelineQuestionnaire: FC = observer(() => {
       }
       case UserType.LENDER: {
         return {
-          label: 'Lender Questionnaire (Optional)',
+          label: 'Lender questionnaire (optional)',
           tip: 'Please indicate the states in which you are licensed to lender loans and the type of license you hold in each state',
-          listTitle: 'Lender Name ',
+          listTitle: 'Lender name ',
           fileName: 'Lender Questionnaire.pdf',
           dialogHeader: 'Lender Questionnaire',
           userName: 'lender',
@@ -277,7 +277,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
                       value={item.ownerName}
                     />
                     <StyledTextFieldSocialNumber
-                      label={'Social Security Number'}
+                      label={'Social security number'}
                       onValueChange={(v) => {
                         computedQuestionnaire.questionnaire.changeLicensesFieldValue(
                           'ssn',
@@ -299,7 +299,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
                     width={'100%'}
                   >
                     <StyledDatePicker
-                      label={'Date of Birth'}
+                      label={'Date of birth'}
                       onChange={(date) => {
                         computedQuestionnaire.questionnaire.changeLicensesFieldValue(
                           'birthday',

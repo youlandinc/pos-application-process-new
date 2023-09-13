@@ -171,7 +171,7 @@ export const GroundRefinanceTaskUploadPictures: FC = observer(() => {
         ) : (
           <StyledFormItem
             gap={6}
-            label={'Upload Pictures (Optional)'}
+            label={'Upload photos (optional)'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}

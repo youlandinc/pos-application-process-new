@@ -63,7 +63,7 @@ export const BridgeRefuse: FC<{ nextStep: () => void }> = observer(
               justifyContent={'center'}
               width={'100%'}
             >
-              Your Credit Score is
+              Your credit score is
               <AnimatedNumbers
                 animateToNumber={score}
                 configs={(number, index) => {
@@ -111,7 +111,7 @@ export const BridgeRefuse: FC<{ nextStep: () => void }> = observer(
             onClick={nextStep}
             sx={{ maxWidth: 600, width: '100%', mt: 11 }}
           >
-            Go Back Home
+            Go back home
           </StyledButton>
         </StyledFormItem>
       </>

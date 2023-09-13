@@ -48,7 +48,7 @@ export const DashboardScoreResult: FC<{ score: number | undefined }> = ({
             justifyContent={'center'}
             width={'100%'}
           >
-            Your Credit Score is
+            Your credit score is
             <AnimatedNumbers
               animateToNumber={score!}
               configs={(number, index) => {

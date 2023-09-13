@@ -119,7 +119,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
       e.preventDefault();
       e.stopPropagation();
       handledClose(e);
-      await onDelete();
+      onDelete();
     },
     [handledClose, onDelete],
   );
@@ -255,17 +255,17 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
         }}
       >
         <Box className={'product_item'}>
-          <Box>Loan Type</Box>
+          <Box>Loan type</Box>
           <Typography variant={'subtitle1'}>{productType}</Typography>
         </Box>
         <Box className={'product_item'}>
-          <Box>Loan Amount</Box>
+          <Box>Loan amount</Box>
           <Typography variant={'subtitle1'}>
             {POSFormatDollar(loanAmount)}
           </Typography>
         </Box>
         <Box className={'product_item'}>
-          <Box>Application Date</Box>
+          <Box>Application date</Box>
           <Typography variant={'subtitle1'}>
             {format(new Date(applicationTime), 'MM/dd/yyyy')}
           </Typography>
@@ -279,7 +279,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
           userType === UserType.LENDER) && (
           <>
             <Box className={'product_item'}>
-              <Box>Origination Fee</Box>
+              <Box>Origination fee</Box>
               <Typography variant={'subtitle1'}>
                 {`${POSFormatDollar(
                   brokerOriginationFee ||
@@ -294,7 +294,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
               </Typography>
             </Box>
             <Box className={'product_item'}>
-              <Box>Processing Fee</Box>
+              <Box>Processing fee</Box>
               <Typography variant={'subtitle1'}>
                 {POSFormatDollar(
                   brokerProcessingFee ||
@@ -308,7 +308,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
 
         {userType === UserType.REAL_ESTATE_AGENT && (
           <Box className={'product_item'}>
-            <Box>Referral Fee</Box>
+            <Box>Referral fee</Box>
             <Typography variant={'subtitle1'}>
               {POSFormatDollar(agentFee)}
             </Typography>

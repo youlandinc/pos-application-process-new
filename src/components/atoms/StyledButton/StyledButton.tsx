@@ -35,6 +35,7 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
       <>
         {isIconButton ? (
           <IconButton
+            disableRipple
             onClick={(e) => {
               if (!loading && onClick) {
                 onClick(e);
@@ -58,6 +59,7 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
           </IconButton>
         ) : (
           <Button
+            disableRipple
             onClick={(e) => {
               if (!loading && onClick) {
                 onClick(e);

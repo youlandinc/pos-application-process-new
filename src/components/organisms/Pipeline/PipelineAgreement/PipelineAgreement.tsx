@@ -60,7 +60,7 @@ export const PipelineAgreement: FC = observer(() => {
         return {
           isRenderLicense: false,
           isGenerateFile: true,
-          label: 'Broker Agreement',
+          label: 'Broker agreement',
           tip: 'Please fill out and read our broker agreement.',
           username: 'broker',
           upperName: 'Broker',
@@ -70,7 +70,7 @@ export const PipelineAgreement: FC = observer(() => {
         return {
           isRenderLicense: false,
           isGenerateFile: true,
-          label: 'Lender Agreement',
+          label: 'Lender agreement',
           tip: 'Please fill out and read our lender agreement.',
           username: 'lender',
           upperName: 'Lender',
@@ -80,20 +80,20 @@ export const PipelineAgreement: FC = observer(() => {
         return {
           isRenderLicense: true,
           isGenerateFile: false,
-          label: 'Loan Officer Information',
+          label: 'Loan officer information',
           tip: 'Please fill out the information that pertains to you.',
           username: 'loan officer',
-          upperName: 'Loan Officer',
+          upperName: 'Loan officer',
           agreement: LOAN_OFFICER_AGREEMENT,
         };
       case UserType.REAL_ESTATE_AGENT:
         return {
           isRenderLicense: true,
           isGenerateFile: false,
-          label: 'Real Estate Agent Information',
+          label: 'Real estate agent information',
           tip: 'Please fill out the information that pertains to you.',
           username: 'real estate agent',
-          upperName: 'Real Estate Agent',
+          upperName: 'Real estate agent',
           agreement: REAL_ESTATE_AGENT_AGREEMENT,
         };
       default:
@@ -178,14 +178,14 @@ export const PipelineAgreement: FC = observer(() => {
           <Stack alignItems={'center'} gap={3} width={'100%'}>
             <Stack width={'100%'}>
               <StyledTextField
-                label={'Company Name'}
+                label={'Company name'}
                 onChange={(e) => {
                   computedAgreement.agreement.changeFieldValue(
                     'company',
                     e.target.value,
                   );
                 }}
-                placeholder={'Company Name'}
+                placeholder={'Company name'}
                 value={computedAgreement.agreement.taskForm.company}
               />
             </Stack>
@@ -195,25 +195,25 @@ export const PipelineAgreement: FC = observer(() => {
               width={'100%'}
             >
               <StyledTextField
-                label={'Your Full Name'}
+                label={'Your full name'}
                 onChange={(e) => {
                   computedAgreement.agreement.changeFieldValue(
                     'fullName',
                     e.target.value,
                   );
                 }}
-                placeholder={'Your Full Name'}
+                placeholder={'Your full name'}
                 value={computedAgreement.agreement.taskForm.fullName}
               />
               <StyledTextFieldPhone
-                label={'Phone Number'}
+                label={'Phone number'}
                 onValueChange={({ value }) =>
                   computedAgreement.agreement.changeFieldValue(
                     'phoneNumber',
                     value,
                   )
                 }
-                placeholder={'Phone Number'}
+                placeholder={'Phone number'}
                 value={computedAgreement.agreement.taskForm.phoneNumber}
               />
             </Stack>
@@ -223,25 +223,25 @@ export const PipelineAgreement: FC = observer(() => {
               width={'100%'}
             >
               <StyledTextField
-                label={'Your Title'}
+                label={'Your title'}
                 onChange={(e) =>
                   computedAgreement.agreement.changeFieldValue(
                     'title',
                     e.target.value,
                   )
                 }
-                placeholder={'Your Title'}
+                placeholder={'Your title'}
                 value={computedAgreement.agreement.taskForm.title}
               />
               <StyledTextField
-                label={'Your Email'}
+                label={'Your email'}
                 onChange={(e) =>
                   computedAgreement.agreement.changeFieldValue(
                     'email',
                     e.target.value,
                   )
                 }
-                placeholder={'Your Email'}
+                placeholder={'Your email'}
                 value={computedAgreement.agreement.taskForm.email}
               />
             </Stack>
@@ -283,7 +283,7 @@ export const PipelineAgreement: FC = observer(() => {
                 }}
                 variant={'outlined'}
               >
-                Generate File
+                Generate file
               </StyledButton>
             )}
             <Transitions>
@@ -373,7 +373,7 @@ export const PipelineAgreement: FC = observer(() => {
               onClick={handledSaveFile}
               sx={{ flexShrink: 0, height: 56, width: 200 }}
             >
-              I Agree
+              I agree
             </StyledButton>
           </Stack>
         }

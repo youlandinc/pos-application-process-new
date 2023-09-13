@@ -136,7 +136,7 @@ export const GroundRefinanceTaskPropertyInspection: FC = observer(() => {
         ) : (
           <StyledFormItem
             gap={3}
-            label={'Property Inspection Details(Optional)'}
+            label={'Property inspection details(optional)'}
             labelSx={{ mb: 0 }}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
@@ -161,13 +161,13 @@ export const GroundRefinanceTaskPropertyInspection: FC = observer(() => {
               sub
             >
               <StyledTextField
-                label={'Contact Name'}
+                label={'Contact name'}
                 onChange={(e) => setContactName(e.target.value)}
                 value={contactName}
               />
 
               <StyledTextFieldPhone
-                label={'Phone Number'}
+                label={'Phone number'}
                 onValueChange={({ value }) => setPhoneNumber(value)}
                 value={phoneNumber}
               />
@@ -177,7 +177,7 @@ export const GroundRefinanceTaskPropertyInspection: FC = observer(() => {
                 value={email}
               />
               <StyledTextField
-                label={'Property Access Instructions(Optional)'}
+                label={'Property access instructions(optional)'}
                 onChange={(e) => setInstructions(e.target.value)}
                 value={instructions}
               />

@@ -493,7 +493,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             <StyledTextFieldNumber
               decimalScale={3}
               disabled={checkLoading}
-              label="Broker Origination Fee"
+              label="Broker origination fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
                   ...(rateData as BREstimateRateData),
@@ -508,7 +508,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             />
             <StyledTextFieldNumber
               disabled={checkLoading}
-              label="Broker Processing Fee"
+              label="Broker processing fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
                   ...(rateData as BREstimateRateData),
@@ -528,7 +528,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             <StyledTextFieldNumber
               decimalScale={3}
               disabled={checkLoading}
-              label="Lender Origination Fee"
+              label="Lender origination fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
                   ...(rateData as BREstimateRateData),
@@ -543,7 +543,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             />
             <StyledTextFieldNumber
               disabled={checkLoading}
-              label="Lender Processing Fee"
+              label="Lender processing fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
                   ...(rateData as BREstimateRateData),
@@ -563,7 +563,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             <StyledTextFieldNumber
               decimalScale={3}
               disabled={checkLoading}
-              label="Loan Officer Origination Fee"
+              label="Loan officer origination fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
                   ...(rateData as BREstimateRateData),
@@ -578,7 +578,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             />
             <StyledTextFieldNumber
               disabled={checkLoading}
-              label="Loan Officer Processing Fee"
+              label="Loan officer processing fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
                   ...(rateData as BREstimateRateData),
@@ -598,7 +598,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             <StyledTextFieldNumber
               decimalScale={3}
               disabled={checkLoading}
-              label="Real Estate Agent Origination Fee"
+              label="Real estate agent referral fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
                   ...(rateData as BREstimateRateData),
@@ -622,7 +622,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           <StyledTextFieldNumber
             disabled={checkLoading}
             error={!!LTVError}
-            label="As-is Property Value"
+            label="As-is property value"
             onValueChange={({ floatValue }) =>
               setRateData({
                 ...(rateData as BREstimateRateData),
@@ -635,7 +635,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           <StyledTextFieldNumber
             disabled={checkLoading}
             error={!!LTVError}
-            label="Payoff Amount"
+            label="Payoff amount"
             onValueChange={({ floatValue }) => {
               setRateData({
                 ...(rateData as BREstimateRateData),
@@ -647,7 +647,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
           />
           <StyledTextFieldNumber
             disabled
-            label="Loan-to-Value"
+            label="Loan-to-value"
             onValueChange={() => undefined}
             percentage
             suffix={'%'}
@@ -678,7 +678,7 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
             {rateData?.isCashOut && (
               <StyledTextFieldNumber
                 disabled={checkLoading}
-                label={'Cash Out Amount'}
+                label={'Cash out amount'}
                 onValueChange={({ floatValue }) => {
                   setRateData({
                     ...rateData,

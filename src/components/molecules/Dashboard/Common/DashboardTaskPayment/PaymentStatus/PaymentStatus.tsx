@@ -26,7 +26,7 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
           <>
             <StyledFormItem
               gap={3}
-              label={'Payment Successful!'}
+              label={'Payment successful!'}
               labelSx={{ color: 'success.main' }}
               tip={
                 <>
@@ -39,7 +39,7 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                   <Typography mt={1.5} variant={'body1'}>
                     Should you require additional assistance, email us at
                     <Typography className={'link_style'} component={'span'}>
-                      {/* todo sass */}{' '}
+                      {' '}
                       {saasState?.extInfo?.posSettings?.email ||
                         'borrow@youland.com'}{' '}
                     </Typography>
@@ -62,7 +62,7 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                 }
                 sx={{ width: '100%', maxWidth: 600 }}
               >
-                Go to Tasks
+                Go to tasks
               </StyledButton>
             </StyledFormItem>
           </>
@@ -72,7 +72,7 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
           <>
             <StyledFormItem
               gap={3}
-              label={'Payment Failed!'}
+              label={'Payment failed!'}
               labelSx={{ color: 'error.main' }}
               tip={
                 'It seems we have not received money. You may contact your payment provider for further details.'
@@ -95,14 +95,14 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                   sx={{ flex: 1 }}
                   variant={'text'}
                 >
-                  Go to Tasks
+                  Go to tasks
                 </StyledButton>
                 <StyledButton
                   onClick={async () => {
                     await _restartPaymentPipeline(
                       router.query.taskId as string,
                     );
-                    await router.reload();
+                    router.reload();
                   }}
                   sx={{ flex: 1 }}
                 >
@@ -125,14 +125,14 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                   money is safe! If money was debited from your account, you can
                   call toll free at{' '}
                   <span className={'link_style'}>
-                    {/* todo sass */}{' '}
+                    {' '}
                     {POSFormatUSPhoneToText(
                       saasState?.extInfo?.posSettings?.phone,
                     ) || '1-833-968-5263'}{' '}
                   </span>{' '}
                   or email us at
                   <span className={'link_style'}>
-                    {/* todo sass */}{' '}
+                    {' '}
                     {saasState?.extInfo?.posSettings?.email ||
                       'borrow@youland.com'}{' '}
                   </span>
@@ -149,7 +149,7 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                 }
                 sx={{ width: '100%', maxWidth: 600 }}
               >
-                Go to Overview
+                Go to overview
               </StyledButton>
             </StyledFormItem>
           </>

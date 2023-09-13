@@ -321,7 +321,7 @@ export const FixRefinanceTaskCompanyInformation: FC = observer(() => {
         ) : (
           <StyledFormItem
             gap={6}
-            label={'Closing Agent / Title Company Information(Optional)'}
+            label={'Closing agent / Title company information(optional)'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
@@ -349,21 +349,21 @@ export const FixRefinanceTaskCompanyInformation: FC = observer(() => {
               sub
             >
               <StyledTextField
-                label={'Contact First Name'}
+                label={'Contact first name'}
                 onChange={(e) =>
                   setContactForm({ ...contactForm, firstName: e.target.value })
                 }
                 value={contactForm.firstName}
               />
               <StyledTextField
-                label={'Contact Last Name'}
+                label={'Contact last name'}
                 onChange={(e) =>
                   setContactForm({ ...contactForm, lastName: e.target.value })
                 }
                 value={contactForm.lastName}
               />
               <StyledTextFieldPhone
-                label={'Phone Number'}
+                label={'Phone number'}
                 onValueChange={({ value }) => {
                   setContactForm({ ...contactForm, phoneNumber: value });
                 }}
@@ -377,7 +377,7 @@ export const FixRefinanceTaskCompanyInformation: FC = observer(() => {
                 value={contactForm.email}
               />
               <StyledTextField
-                label={'Company Name'}
+                label={'Company name'}
                 onChange={(e) =>
                   setContactForm({
                     ...contactForm,
@@ -470,7 +470,7 @@ export const FixRefinanceTaskCompanyInformation: FC = observer(() => {
                     />
 
                     <StyledTextField
-                      label={'First Name'}
+                      label={'First name'}
                       onChange={(e) =>
                         setManageForm({
                           ...manageForm,
@@ -480,7 +480,7 @@ export const FixRefinanceTaskCompanyInformation: FC = observer(() => {
                       value={manageForm.firstName}
                     />
                     <StyledTextField
-                      label={'Last Name'}
+                      label={'Last name'}
                       onChange={(e) =>
                         setManageForm({
                           ...manageForm,
@@ -490,7 +490,7 @@ export const FixRefinanceTaskCompanyInformation: FC = observer(() => {
                       value={manageForm.lastName}
                     />
                     <StyledTextFieldPhone
-                      label={'Phone Number'}
+                      label={'Phone number'}
                       onValueChange={({ value }) => {
                         setManageForm({ ...manageForm, phoneNumber: value });
                       }}
@@ -507,7 +507,7 @@ export const FixRefinanceTaskCompanyInformation: FC = observer(() => {
                       value={manageForm.email}
                     />
                     <StyledTextField
-                      label={'Company Name'}
+                      label={'Company name'}
                       onChange={(e) =>
                         setManageForm({
                           ...manageForm,
@@ -520,8 +520,8 @@ export const FixRefinanceTaskCompanyInformation: FC = observer(() => {
                       label={
                         whoIsManaging ===
                         DashboardTaskLoanClosing.escrow_company
-                          ? 'Escrow Number'
-                          : 'Closing Attorney File No.'
+                          ? 'Escrow number'
+                          : 'Closing attorney file No.'
                       }
                       onChange={(e) =>
                         setManageForm({
@@ -536,7 +536,7 @@ export const FixRefinanceTaskCompanyInformation: FC = observer(() => {
                 ) : (
                   <StyledTextFieldNumber
                     decimalScale={0}
-                    label={'Escrow Number'}
+                    label={'Escrow number'}
                     onValueChange={({ floatValue }) =>
                       setEscrowNumber(floatValue)
                     }

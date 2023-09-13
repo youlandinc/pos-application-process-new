@@ -24,7 +24,7 @@ export const StyledCheckboxStyles = {
   },
   '& .Mui-disabled': {
     '& svg': {
-      fill: '#CDCDCD !important',
+      //fill: '#CDCDCD !important',
     },
   },
 } as const;

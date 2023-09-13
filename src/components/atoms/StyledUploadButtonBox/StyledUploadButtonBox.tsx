@@ -111,7 +111,7 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
   );
 
   const onDialogConfirmDelete = async () => {
-    await onDelete(deleteIndex);
+    onDelete(deleteIndex);
     close();
   };
 
@@ -260,7 +260,7 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
         }}
         open={visible}
         transitionDuration={300}
-      ></StyledDialog>
+      />
     </Box>
   );
 };

@@ -30,7 +30,7 @@ import { DashboardHeader } from '@/components/molecules';
 
 const GroundRefinanceDashboardTaskMap: DashboardTaskList<GRDashboardTaskKey> = {
   ApplicationInformation: {
-    title: 'Application Information',
+    title: 'Application information',
     children: [
       {
         code: 'GR_APPLICATION_LOAN',
@@ -47,7 +47,7 @@ const GroundRefinanceDashboardTaskMap: DashboardTaskList<GRDashboardTaskKey> = {
     ],
   },
   BorrowerInformation: {
-    title: 'Borrower Information',
+    title: 'Borrower information',
     children: [
       {
         code: 'GR_BORROWER_PERSONAL',
@@ -68,7 +68,7 @@ const GroundRefinanceDashboardTaskMap: DashboardTaskList<GRDashboardTaskKey> = {
     ],
   },
   PropertyAppraisal: {
-    title: 'Property Appraisal',
+    title: 'Property appraisal',
     children: [
       {
         code: 'GR_APPRAISAL_COST',
@@ -81,7 +81,7 @@ const GroundRefinanceDashboardTaskMap: DashboardTaskList<GRDashboardTaskKey> = {
     ],
   },
   ThirdPartyInformation: {
-    title: 'Third-party Information',
+    title: 'Third-party information',
     children: [
       {
         code: 'GR_THIRD_CLOSING',
@@ -454,7 +454,7 @@ export const GroundRefinanceTaskList: FC = observer(() => {
             subTitle={
               'You can make updates to the task before the loan is approved.'
             }
-            title={'Your Tasks Checklist'}
+            title={'Your tasks checklist'}
           />
 
           {loading ? (

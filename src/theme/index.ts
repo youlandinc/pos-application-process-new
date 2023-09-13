@@ -69,7 +69,7 @@ export const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#1134E3',
+      main: '#5B76BC',
       A100: '#0C249F',
       A200: 'rgba(17, 52, 227, 0.2)',
     },

@@ -51,7 +51,7 @@ export const OPTIONS_MORTGAGE_PROPERTY: Option[] = [
   {
     key: PropertyOpt.twoToFourFamily,
     value: PropertyOpt.twoToFourFamily,
-    label: '2-4 Units',
+    label: '2-4 units',
   },
 ];
 
@@ -59,17 +59,17 @@ export const OPTIONS_MORTGAGE_UNIT: Option[] = [
   {
     key: PropertyUnitOpt.twoUnits + '',
     value: PropertyUnitOpt.twoUnits,
-    label: '2 Units',
+    label: '2 units',
   },
   {
     key: PropertyUnitOpt.threeUnits + '',
     value: PropertyUnitOpt.threeUnits,
-    label: '3 Units',
+    label: '3 units',
   },
   {
     key: PropertyUnitOpt.fourUnits + '',
     value: PropertyUnitOpt.fourUnits,
-    label: '4 Units',
+    label: '4 units',
   },
 ];
 
@@ -95,7 +95,7 @@ export const OPTIONS_MORTGAGE_OFFER: Option[] = [
   {
     key: OfferOpt.preApproval,
     value: OfferOpt.preApproval,
-    label: 'Get a Pre-approval Letter',
+    label: 'Get a pre-approval letter',
   },
   {
     key: OfferOpt.isAfford,
@@ -213,7 +213,7 @@ export const OPTIONS_MORTGAGE_CO_BORROWER_RELATIONSHIP = [
   {
     value: RelationshipOpt.legallySeparated,
     key: RelationshipOpt.legallySeparated,
-    label: 'Legally Separated',
+    label: 'Legally separated',
   },
 ];
 
@@ -249,41 +249,41 @@ export const OPTIONS_MORTGAGE_RATES_PRODUCT: Option[] = [
   {
     key: LoanType.ADJUSTABLE_51,
     value: LoanType.ADJUSTABLE_51,
-    label: '5/1 Adjustable',
+    label: '5/1 adjustable',
   },
   {
     key: LoanType.ADJUSTABLE_71,
     value: LoanType.ADJUSTABLE_71,
-    label: '7/1 Adjustable',
+    label: '7/1 adjustable',
   },
   {
     key: LoanType.FIXED_YEAR_5,
     value: LoanType.FIXED_YEAR_5,
-    label: '5-Year Fixed',
+    label: '5-year fixed',
   },
   {
     key: LoanType.FIXED_YEAR_10,
     value: LoanType.FIXED_YEAR_10,
-    label: '10-Year Fixed',
+    label: '10-year fixed',
   },
   {
     key: LoanType.FIXED_YEAR_15,
     value: LoanType.FIXED_YEAR_15,
-    label: '15-Year Fixed',
+    label: '15-year fixed',
   },
   {
     key: LoanType.FIXED_YEAR_20,
     value: LoanType.FIXED_YEAR_20,
-    label: '20-Year Fixed',
+    label: '20-year fixed',
   },
   {
     key: LoanType.FIXED_YEAR_25,
     value: LoanType.FIXED_YEAR_25,
-    label: '25-Year Fixed',
+    label: '25-year fixed',
   },
   {
     key: LoanType.FIXED_YEAR_30,
     value: LoanType.FIXED_YEAR_30,
-    label: '30-Year Fixed',
+    label: '30-year fixed',
   },
 ];

@@ -369,7 +369,7 @@ export const GroundPurchaseTaskDemographicsInformation: FC = observer(() => {
         ) : (
           <StyledFormItem
             gap={6}
-            label={'Government Requested Information for you'}
+            label={'Government requested information for you'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}

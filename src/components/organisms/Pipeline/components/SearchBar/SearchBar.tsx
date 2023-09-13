@@ -47,13 +47,13 @@ export const SearchBar: FC<SearchBarProps> = ({
   const role = useMemo(() => {
     switch (userType) {
       case UserType.BROKER:
-        return 'for Broker';
+        return 'for broker';
       case UserType.LENDER:
-        return 'for Table Funding';
+        return 'for table funding';
       case UserType.LOAN_OFFICER:
-        return 'for Loan Officer';
+        return 'for loan officer';
       case UserType.REAL_ESTATE_AGENT:
-        return 'for Real Estate Agent';
+        return 'for real estate agent';
       default:
         return '';
     }
@@ -104,18 +104,18 @@ export const SearchBar: FC<SearchBarProps> = ({
                         />
                       ),
                     }}
-                    label={'Property Address'}
+                    label={'Property address'}
                     onChange={(e) => {
                       onParamsChange('propertyAddress', e.target.value);
                       onValueChange(true);
                     }}
-                    placeholder={'Property Address'}
+                    placeholder={'Property address'}
                     value={searchForm.propertyAddress}
                   />
                 </Box>
                 <Box className={'search_condition'}>
                   <StyledSelectMultiple
-                    label={'Loan Type'}
+                    label={'Loan type'}
                     onValueChange={(e) => {
                       onParamsChange('loanSpecies', e);
                       onValueChange(true);
@@ -126,7 +126,7 @@ export const SearchBar: FC<SearchBarProps> = ({
                 </Box>
                 <Box className={'search_condition'}>
                   <StyledSelectMultiple
-                    label={'Loan Purpose'}
+                    label={'Loan purpose'}
                     onValueChange={(e) => {
                       onParamsChange('loanPurpose', e);
                       onValueChange(true);
@@ -138,12 +138,12 @@ export const SearchBar: FC<SearchBarProps> = ({
                 <Box className={'search_condition'}>
                   <StyledDateRange
                     dateRange={searchForm.dateRange}
-                    label={'Application Date'}
+                    label={'Application date'}
                     onChange={(date: [Date | null, Date | null]) => {
                       onParamsChange('dateRange', date);
                       onValueChange(true);
                     }}
-                    placeholderText={'Application Date'}
+                    placeholderText={'Application date'}
                   />
                 </Box>
                 <Box className={'search_condition'}>
@@ -213,17 +213,17 @@ export const SearchBar: FC<SearchBarProps> = ({
                   <SearchOutlined sx={{ mr: 1, color: 'rgba(0,0,0,.54)' }} />
                 ),
               }}
-              label={'Property Address'}
+              label={'Property address'}
               onChange={(e) => {
                 onParamsChange('propertyAddress', e.target.value);
                 onValueChange(true);
               }}
-              placeholder={'Property Address'}
+              placeholder={'Property address'}
               value={searchForm.propertyAddress}
             />
           </Box>
           <StyledSelectMultiple
-            label={'Loan Type'}
+            label={'Loan type'}
             onValueChange={(e) => {
               onParamsChange('loanSpecies', e);
               onValueChange(true);
@@ -239,7 +239,7 @@ export const SearchBar: FC<SearchBarProps> = ({
           />
           <Box className={'search_condition'}>
             <StyledSelectMultiple
-              label={'Loan Purpose'}
+              label={'Loan purpose'}
               onValueChange={(e) => {
                 onParamsChange('loanPurpose', e);
                 onValueChange(true);
@@ -251,12 +251,12 @@ export const SearchBar: FC<SearchBarProps> = ({
           <Box className={'search_condition'}>
             <StyledDateRange
               dateRange={searchForm.dateRange}
-              label={'Application Date'}
+              label={'Application date'}
               onChange={(date: [Date | null, Date | null]) => {
                 onParamsChange('dateRange', date);
                 onValueChange(true);
               }}
-              placeholderText={'Application Date'}
+              placeholderText={'Application date'}
             />
           </Box>
           <Box className={'search_condition'}>

@@ -107,7 +107,7 @@ export const GroundPurchaseTaskAgreements: FC = observer(() => {
           fontWeight={600}
           onClick={handledViewPDF}
         >
-          View Construction Holdback Process
+          View construction holdback process
         </Typography>
 
         <Stack

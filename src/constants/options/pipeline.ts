@@ -14,12 +14,12 @@ export const OPTIONS_PIPELINE_LICENSE_TYPE: Option[] = [
     value: PipelineLicenseTypeOpt.nmls,
   },
   {
-    label: 'DRE Broker',
+    label: 'DRE broker',
     key: PipelineLicenseTypeOpt.dre_broker,
     value: PipelineLicenseTypeOpt.dre_broker,
   },
   {
-    label: 'DRE Sale Person',
+    label: 'DRE sale person',
     key: PipelineLicenseTypeOpt.dre_sale_person,
     value: PipelineLicenseTypeOpt.dre_sale_person,
   },
@@ -39,12 +39,12 @@ export const OPTIONS_LOAN_STAGE: Option[] = [
   {
     key: LoanStage.RateLocking,
     value: LoanStage.RateLocking,
-    label: 'Rate Locking',
+    label: 'Rate locking',
   },
   {
     key: LoanStage.RateLocked,
     value: LoanStage.RateLocked,
-    label: 'Rate Locked',
+    label: 'Rate locked',
   },
   {
     key: LoanStage.Approved,
@@ -54,7 +54,7 @@ export const OPTIONS_LOAN_STAGE: Option[] = [
   {
     key: LoanStage.FinalClosing,
     value: LoanStage.FinalClosing,
-    label: 'Final Closing',
+    label: 'Final closing',
   },
   {
     key: LoanStage.Refusal,
@@ -103,12 +103,12 @@ export const OPTIONS_LICENSE_TYPE: Option[] = [
   {
     key: PipelineLicenseType.NMLS_LICENSE,
     value: PipelineLicenseType.NMLS_LICENSE,
-    label: 'NMLS License',
+    label: 'NMLS license',
   },
   {
     key: PipelineLicenseType.DRE_LICENSE,
     value: PipelineLicenseType.DRE_LICENSE,
-    label: 'Dre License',
+    label: 'Dre license',
   },
 ];
 

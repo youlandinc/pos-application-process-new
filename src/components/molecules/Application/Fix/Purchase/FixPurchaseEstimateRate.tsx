@@ -21,6 +21,7 @@ import {
   _updateRatesProductSelected,
   FPQueryData,
 } from '@/requests/dashboard';
+
 import {
   FixPurchaseRatesDrawer,
   FixPurchaseRatesSearch,

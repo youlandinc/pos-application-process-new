@@ -32,7 +32,7 @@ export const DashboardCard: FC<DashboardCardProps> = ({
   subInfo = POSFormatDollar(125000),
   dataList = [
     {
-      label: 'Purchase Price',
+      label: 'Purchase price',
       info: POSFormatDollar(125000),
     },
   ],
