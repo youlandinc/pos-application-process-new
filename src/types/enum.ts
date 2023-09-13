@@ -145,12 +145,12 @@ export enum LoanType {
 }
 
 export enum LoanStage {
-  Application = 'Application',
-  PreApproved = 'Pre Approved',
-  RateLocking = 'Rate Locking',
-  RateLocked = 'Rate Locked',
+  Application = 'Manual entry',
+  PreApproved = 'Pre-approved',
+  RateLocking = 'Rate locking',
+  RateLocked = 'Rate locked',
   Approved = 'Approved',
-  FinalClosing = 'Final Closing',
+  FinalClosing = 'Final closing',
   Refusal = 'Rejected',
 }
 
