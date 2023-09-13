@@ -30,7 +30,7 @@ import { DashboardHeader } from '@/components/molecules';
 
 const BridgeRefinanceDashboardTaskMap: DashboardTaskList<BRDashboardTaskKey> = {
   ApplicationInformation: {
-    title: 'Application Information',
+    title: 'Application information',
     children: [
       {
         code: 'BR_APPLICATION_LOAN',
@@ -47,7 +47,7 @@ const BridgeRefinanceDashboardTaskMap: DashboardTaskList<BRDashboardTaskKey> = {
     ],
   },
   BorrowerInformation: {
-    title: 'Borrower Information',
+    title: 'Borrower information',
     children: [
       {
         code: 'BR_BORROWER_PERSONAL',
@@ -68,7 +68,7 @@ const BridgeRefinanceDashboardTaskMap: DashboardTaskList<BRDashboardTaskKey> = {
     ],
   },
   PropertyAppraisal: {
-    title: 'Property Appraisal',
+    title: 'Property appraisal',
     children: [
       {
         code: 'BR_APPRAISAL_COST',
@@ -81,7 +81,7 @@ const BridgeRefinanceDashboardTaskMap: DashboardTaskList<BRDashboardTaskKey> = {
     ],
   },
   ThirdPartyInformation: {
-    title: 'Third-party Information',
+    title: 'Third-party information',
     children: [
       {
         code: 'BR_THIRD_CLOSING',
@@ -454,7 +454,7 @@ export const BridgeRefinanceTaskList: FC = observer(() => {
             subTitle={
               'You can make updates to the task before the loan is approved.'
             }
-            title={'Your Tasks Checklist'}
+            title={'Your tasks checklist'}
           />
 
           <Stack alignItems={'center'} mb={3}>

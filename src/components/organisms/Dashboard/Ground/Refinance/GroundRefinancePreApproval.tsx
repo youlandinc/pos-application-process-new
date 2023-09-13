@@ -615,7 +615,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
             <StyledTextFieldNumber
               decimalScale={3}
               disabled={checkLoading}
-              label="Real Estate Agent Origination Fee"
+              label="Real estate agent referral fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
                   ...(rateData as GREstimateRateData),

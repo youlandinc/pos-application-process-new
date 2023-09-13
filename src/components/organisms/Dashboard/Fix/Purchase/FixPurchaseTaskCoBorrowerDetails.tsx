@@ -463,7 +463,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
         ) : tableView === 'form' ? (
           <StyledFormItem
             gap={6}
-            label={'Co-borrower Details'}
+            label={'Co-borrower details'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}

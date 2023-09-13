@@ -156,7 +156,7 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
         ) : (
           <StyledFormItem
             gap={6}
-            label={'Property Details'}
+            label={'Property details'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}

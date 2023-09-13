@@ -30,7 +30,7 @@ import { DashboardHeader } from '@/components/molecules';
 
 const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
   ApplicationInformation: {
-    title: 'Application Information',
+    title: 'Application information',
     children: [
       {
         code: 'FR_APPLICATION_LOAN',
@@ -47,7 +47,7 @@ const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
     ],
   },
   BorrowerInformation: {
-    title: 'Borrower Information',
+    title: 'Borrower information',
     children: [
       {
         code: 'FR_BORROWER_PERSONAL',
@@ -68,7 +68,7 @@ const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
     ],
   },
   PropertyAppraisal: {
-    title: 'Property Appraisal',
+    title: 'Property appraisal',
     children: [
       {
         code: 'FR_APPRAISAL_COST',
@@ -81,7 +81,7 @@ const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
     ],
   },
   ThirdPartyInformation: {
-    title: 'Third-party Information',
+    title: 'Third-party information',
     children: [
       {
         code: 'FR_THIRD_CLOSING',
@@ -454,7 +454,7 @@ export const FixRefinanceTaskList: FC = observer(() => {
             subTitle={
               'You can make updates to the task before the loan is approved.'
             }
-            title={'Your Tasks Checklist'}
+            title={'Your tasks checklist'}
           />
 
           {loading ? (

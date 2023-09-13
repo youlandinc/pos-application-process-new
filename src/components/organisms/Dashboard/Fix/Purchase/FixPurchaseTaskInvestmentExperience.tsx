@@ -156,7 +156,7 @@ export const FixPurchaseTaskInvestmentExperience: FC = observer(() => {
         ) : (
           <StyledFormItem
             gap={6}
-            label={'Real Estate Investment Experience'}
+            label={'Real estate investment experience'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
@@ -184,7 +184,7 @@ export const FixPurchaseTaskInvestmentExperience: FC = observer(() => {
             </StyledFormItem>
 
             <StyledFormItem
-              label={'Upload track record (Optional)'}
+              label={'Upload track record (optional)'}
               sub
               tip={
                 <Stack color={'info.main'}>

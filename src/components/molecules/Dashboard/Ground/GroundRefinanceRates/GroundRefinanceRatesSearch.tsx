@@ -580,7 +580,7 @@ export const GroundRefinanceRatesSearch: FC<
               <Typography variant={'body1'}>Loan to value</Typography>
               <StyledTooltip
                 title={
-                  'LTV [Remaining balance + Cash out (if any)] / Home value'
+                  'LTV [Payoff amount + Cash out (if any)] / As-is property value'
                 }
               >
                 <InfoOutlined sx={{ width: 16, height: 16 }} />

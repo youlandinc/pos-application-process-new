@@ -98,7 +98,7 @@ export const TeamPage: FC = () => {
             width={'100%'}
           >
             <Stack color={'text.primary'} flex={1.5} flexShrink={0} gap={1.5}>
-              <Typography variant={'h4'}>Hours of Operation</Typography>
+              <Typography variant={'h4'}>Hours of operation</Typography>
 
               <Typography
                 color={'text.secondary'}

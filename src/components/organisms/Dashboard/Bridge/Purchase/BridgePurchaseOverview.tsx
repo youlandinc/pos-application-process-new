@@ -118,7 +118,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
               ),
             },
             {
-              label: 'Pre-payment Penalty',
+              label: 'Pre-payment penalty',
               info: loanDetail?.penalty
                 ? POSFormatDollar(loanDetail?.penalty)
                 : 'N/A',
@@ -211,7 +211,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
               info: POSFormatDollar(thirdParty?.downPayment),
             },
             {
-              label: 'Origination Fee',
+              label: 'Origination fee',
               info: `${POSFormatDollar(
                 thirdParty?.originationFee,
               )}(${POSFormatLocalPercent(thirdParty?.originationFeePer)})`,
@@ -278,7 +278,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
                 subTitle={
                   'Everything about your loan found in one place. Get updates and see what needs to be done before you close.'
                 }
-                title={'Your Loan Overview'}
+                title={'Your loan overview'}
               />
 
               <Stack
@@ -313,7 +313,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
                       }
                       variant={'contained'}
                     >
-                      View Letter
+                      View letter
                     </StyledButton>
                   </DashboardCard>
                   <DashboardCard
@@ -335,7 +335,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
                       sx={{ mt: 'auto' }}
                       variant={'contained'}
                     >
-                      Explore Rate
+                      Explore rate
                     </StyledButton>
                   </DashboardCard>
                 </Stack>
@@ -395,11 +395,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
                   <Box mt={1.25}>
                     Rates displayed are subject to rate lock and are not to be
                     considered an extension or offer of credit by
-                    {
-                      // todo: sass
-                      ' ' + saasState?.organizationName || ' YouLand'
-                    }
-                    .
+                    {' ' + saasState?.organizationName || ' YouLand'}.
                   </Box>
                 </Typography>
               </Box>
