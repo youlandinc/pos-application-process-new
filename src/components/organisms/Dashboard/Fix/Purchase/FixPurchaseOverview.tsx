@@ -63,7 +63,7 @@ export const FixPurchaseOverview: FC = observer(() => {
               info: POSFormatDollar(summary?.purchaseLoanAmount),
             },
             {
-              label: 'Rehab Loan Amount',
+              label: 'Rehab loan amount',
               info: summary?.cor ? POSFormatDollar(summary.cor) : 'N/A',
             },
             {
@@ -136,7 +136,7 @@ export const FixPurchaseOverview: FC = observer(() => {
               info: POSFormatPercent(loanDetail?.ltv),
             },
             {
-              label: 'Loan to Cost(LTC)',
+              label: 'Loan to cost(LTC)',
               info: POSFormatPercent(loanDetail?.ltc),
             },
           ],

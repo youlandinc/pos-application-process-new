@@ -1,12 +1,11 @@
-import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
-import { addDays, compareDesc, isValid as dateValid, isDate } from 'date-fns';
 import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
+import { addDays, compareDesc, isValid as dateValid, isDate } from 'date-fns';
 
 import { FPQueryData } from '@/requests/dashboard';
 import { LoanStage, UserType } from '@/types/enum';
-
+import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
 import {
   POSFindLabel,
   POSFormatDollar,
@@ -103,7 +102,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
       (loanAmount as number) / ((cor as number) + (purchasePrice as number));
     setLTCError(
       result > 0.75
-        ? 'Reduce your purchase loan amount or rehab loan amount. Your Loan-to-Cost should be no more than 75%'
+        ? 'Reduce your purchase loan amount or rehab loan amount. Your loan-to-cost should be no more than 75%'
         : '',
     );
     return result;
@@ -581,7 +580,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
             >
               <Stack flex={1} gap={1}>
                 <Typography variant={'body1'}>
-                  Estimated Rehab Loan Amount
+                  Estimated rehab loan amount
                 </Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
@@ -597,7 +596,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
               </Stack>
               <Stack flex={1} gap={1}>
                 <Typography variant={'body1'}>
-                  After Repair Value (ARV){' '}
+                  After repair value (ARV){' '}
                   <StyledTooltip
                     title={'ARV (Purchase price + Estimated rehab loan amount)'}
                   >
@@ -624,7 +623,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
               justifyContent={'flex-start'}
               width={{ md: 'calc(50% - 12px)', xs: '100%' }}
             >
-              <Typography variant={'body1'}>Loan to Cost</Typography>
+              <Typography variant={'body1'}>Loan to cost</Typography>
               <StyledTooltip
                 title={
                   'LTC (Total loan amount / [Purchase price + Rehab loan amount])'

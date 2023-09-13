@@ -113,7 +113,7 @@ export const GroundRefinancePaymentSummary: FC<
           justifyContent={'space-between'}
           py={1.5}
         >
-          <Typography variant={'body1'}>Rehab Loan Amount</Typography>
+          <Typography variant={'body1'}>Rehab loan amount</Typography>
           <Typography variant={'subtitle1'}>
             {productInfo?.cor ? POSFormatDollar(productInfo.cor) : 'N/A'}
           </Typography>

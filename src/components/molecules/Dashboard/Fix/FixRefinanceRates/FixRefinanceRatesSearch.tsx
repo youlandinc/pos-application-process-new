@@ -1,7 +1,7 @@
-import { addDays, compareDesc, isValid as dateValid, isDate } from 'date-fns';
 import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
+import { addDays, compareDesc, isValid as dateValid, isDate } from 'date-fns';
 
 import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
 import { FRQueryData } from '@/requests/dashboard';
@@ -115,7 +115,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
     const result = cor === 0 ? 0 : loanAmount! / (cor! + homeValue!);
     setLTCError(
       result > 0.75
-        ? 'Reduce your loan amount or rehab cost. Your Loan-to-Cost should be no more than 75%'
+        ? 'Reduce your loan amount or rehab cost. Your loan-to-cost should be no more than 75%'
         : '',
     );
     return result;
@@ -640,7 +640,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
             >
               <Stack flex={1} gap={1}>
                 <Typography variant={'body1'}>
-                  Estimated Rehab Loan Amount
+                  Estimated rehab loan amount
                 </Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
@@ -656,10 +656,10 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
               </Stack>
               <Stack flex={1} gap={1}>
                 <Typography variant={'body1'}>
-                  After Repair Value (ARV){' '}
+                  After repair value (ARV){' '}
                   <StyledTooltip
                     title={
-                      'ARV (As-is property value + Estimated Rehab Loan Amount)'
+                      'ARV (As-is property value + Estimated rehab loan amount)'
                     }
                   >
                     <InfoOutlined sx={{ width: 16, height: 16 }} />
@@ -685,10 +685,10 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
               justifyContent={'flex-start'}
               width={{ md: 'calc(50% - 12px)', xs: '100%' }}
             >
-              <Typography variant={'body1'}>Loan to Cost</Typography>
+              <Typography variant={'body1'}>Loan to cost</Typography>
               <StyledTooltip
                 title={
-                  'Loan to Cost (LTC) – Total loan amount/(As is value + Rehab Amount)'
+                  'Loan to cost (LTC) – Total loan amount/(As is value + Rehab amount)'
                 }
               >
                 <InfoOutlined sx={{ width: 16, height: 16 }} />

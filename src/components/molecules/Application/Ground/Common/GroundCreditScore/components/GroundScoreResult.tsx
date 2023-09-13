@@ -61,7 +61,7 @@ export const GroundScoreResult: FC<{ role: 'self' | 'coBorrower' }> = observer(
               justifyContent={'center'}
               width={'100%'}
             >
-              Your Credit Score is
+              Your credit score is
               <AnimatedNumbers
                 animateToNumber={info.creditScore as number}
                 configs={(number, index) => {

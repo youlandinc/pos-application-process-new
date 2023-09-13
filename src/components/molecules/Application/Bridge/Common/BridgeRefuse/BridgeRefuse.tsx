@@ -63,7 +63,7 @@ export const BridgeRefuse: FC<{ nextStep: () => void }> = observer(
               justifyContent={'center'}
               width={'100%'}
             >
-              Your Credit Score is
+              Your credit score is
               <AnimatedNumbers
                 animateToNumber={score}
                 configs={(number, index) => {

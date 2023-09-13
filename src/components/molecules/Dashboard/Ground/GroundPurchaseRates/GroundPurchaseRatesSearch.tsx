@@ -102,7 +102,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
       (loanAmount as number) / ((cor as number) + (purchasePrice as number));
     setLTCError(
       result > 0.75
-        ? 'Reduce your purchase loan amount or rehab loan amount. Your Loan-to-Cost should be no more than 75%'
+        ? 'Reduce your purchase loan amount or rehab loan amount. Your loan-to-cost should be no more than 75%'
         : '',
     );
     return result;
@@ -579,7 +579,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
             >
               <Stack flex={1} gap={1}>
                 <Typography variant={'body1'}>
-                  Estimated Rehab Loan Amount
+                  Estimated rehab loan amount
                 </Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
@@ -595,7 +595,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
               </Stack>
               <Stack flex={1} gap={1}>
                 <Typography variant={'body1'}>
-                  After Repair Value (ARV){' '}
+                  After repair value (ARV){' '}
                   <StyledTooltip
                     title={'ARV (Purchase price + Estimated rehab loan amount)'}
                   >
@@ -622,7 +622,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
               justifyContent={'flex-start'}
               width={{ md: 'calc(50% - 12px)', xs: '100%' }}
             >
-              <Typography variant={'body1'}>Loan to Cost</Typography>
+              <Typography variant={'body1'}>Loan to cost</Typography>
               <StyledTooltip
                 title={
                   'LTC (Total loan amount / [Purchase price + Rehab loan amount])'

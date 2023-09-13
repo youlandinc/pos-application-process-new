@@ -199,7 +199,7 @@ export const GroundRefinanceRatesDrawer: FC<
                 info={
                   selectedItem?.cor ? POSFormatDollar(selectedItem?.cor) : 'N/A'
                 }
-                label={'Rehab Loan Amount'}
+                label={'Rehab loan amount'}
               />
             </Stack>
           </Stack>
@@ -246,7 +246,7 @@ export const GroundRefinanceRatesDrawer: FC<
               />
               <CardItem
                 info={POSFormatPercent(selectedItem?.ltc)}
-                label={'Loan-to-Cost(LTC)'}
+                label={'Loan-to-cost(LTC)'}
               />
             </Stack>
           </Stack>

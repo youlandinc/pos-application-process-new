@@ -232,7 +232,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               />
               <GroundCardItem
                 info={POSFormatPercent(selectedItem?.ltc)}
-                label={'Loan-to-Cost(LTC)'}
+                label={'Loan-to-cost(LTC)'}
               />
             </Stack>
           </Stack>

@@ -107,7 +107,7 @@ export const GroundCelebrate: FC<{ nextStep: () => void }> = observer(
               padding: '0 !important',
             }}
           >
-            Go To Dashboard
+            Go to dashboard
           </StyledButton>
         </Stack>
       </StyledFormItem>

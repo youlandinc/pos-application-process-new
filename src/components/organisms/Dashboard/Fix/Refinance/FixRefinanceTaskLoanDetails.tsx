@@ -268,7 +268,7 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
             </Transitions>
 
             <StyledFormItem
-              label={'Estimated Rehab Loan Amount'}
+              label={'Estimated rehab loan amount'}
               sub
               tip={`Total cost that you would like ${
                 //sass
@@ -277,7 +277,7 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldNumber
-                  label={'Estimated Rehab Loan Amount'}
+                  label={'Estimated rehab loan amount'}
                   onValueChange={({ floatValue }) => {
                     setCor(floatValue);
                   }}

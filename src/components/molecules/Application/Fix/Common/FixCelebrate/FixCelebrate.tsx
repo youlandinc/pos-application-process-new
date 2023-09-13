@@ -1,17 +1,16 @@
-import { HASH_COMMON_PERSON } from '@/constants';
 import { FC, useMemo } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { HASH_COMMON_PERSON } from '@/constants';
 import { POSFormatDollar, POSUpperFirstLetter } from '@/utils';
 import { UserType } from '@/types/enum';
 import { useSessionStorageState } from '@/hooks';
 
 import { StyledButton, StyledFormItem } from '@/components/atoms';
 
-// saas
 export const FixCelebrate: FC<{ nextStep: () => void }> = observer(
   ({ nextStep }) => {
     const {
@@ -106,7 +105,7 @@ export const FixCelebrate: FC<{ nextStep: () => void }> = observer(
               padding: '0 !important',
             }}
           >
-            Go To Dashboard
+            Go to dashboard
           </StyledButton>
         </Stack>
       </StyledFormItem>

@@ -1,7 +1,7 @@
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 
 import { useBreakpoints } from '@/hooks';
 import { RatesProductData } from '@/types';
@@ -196,7 +196,7 @@ export const FixRefinanceRatesDrawer: FC<FixRefinanceRatesDrawerProps> = ({
                 info={
                   selectedItem?.cor ? POSFormatDollar(selectedItem?.cor) : 'N/A'
                 }
-                label={'Rehab Loan Amount'}
+                label={'Rehab loan amount'}
               />
             </Stack>
           </Stack>
@@ -243,7 +243,7 @@ export const FixRefinanceRatesDrawer: FC<FixRefinanceRatesDrawerProps> = ({
               />
               <FixRefinanceCardItem
                 info={POSFormatPercent(selectedItem?.ltc)}
-                label={'Loan-to-Cost(LTC)'}
+                label={'Loan-to-cost(LTC)'}
               />
             </Stack>
           </Stack>

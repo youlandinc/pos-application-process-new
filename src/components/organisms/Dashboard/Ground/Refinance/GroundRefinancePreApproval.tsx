@@ -135,7 +135,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
     setLTCError(
       result > 0.75
         ? [
-            'Reduce your cash out amount or rehab cost. Your Loan-to-Cost should be no more than 75%',
+            'Reduce your cash out amount or rehab cost. Your loan-to-cost should be no more than 75%',
           ]
         : undefined,
     );
@@ -738,7 +738,7 @@ export const GroundRefinancePreApproval: FC = observer(() => {
           <StyledTextFieldNumber
             decimalScale={3}
             disabled
-            label={'Loan-to-Cost'}
+            label={'Loan-to-cost'}
             onValueChange={() => undefined}
             percentage={true}
             suffix={'%'}

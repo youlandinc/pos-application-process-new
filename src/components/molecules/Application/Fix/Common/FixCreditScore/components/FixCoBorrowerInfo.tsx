@@ -1,6 +1,6 @@
-import { POSFindLabel } from '@/utils';
-import { Stack, Typography } from '@mui/material';
 import { ChangeEvent, FC, useCallback } from 'react';
+import { Stack, Typography } from '@mui/material';
+import { NumberFormatValues } from 'react-number-format';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -15,7 +15,9 @@ import {
   IPersonalInfo,
   SPersonalInfo,
 } from '@/models/application/common/CreditScore';
+import { POSFindLabel } from '@/utils';
 import { CommonBorrowerType, UserType } from '@/types';
+import { useSessionStorageState } from '@/hooks';
 
 import {
   StyledButtonGroup,
@@ -29,8 +31,6 @@ import {
   StyledTextFieldSocialNumber,
   Transitions,
 } from '@/components/atoms';
-import { NumberFormatValues } from 'react-number-format';
-import { useSessionStorageState } from '@/hooks';
 
 export const FixCoBorrowerInfo: FC = observer(() => {
   const {
@@ -128,12 +128,12 @@ export const FixCoBorrowerInfo: FC = observer(() => {
             label={'Tell us about Co-borrower'}
             labelSx={{ mb: 0 }}
             tip={
-              "We are only collecting Co-borrower's information for now. Checking credit score will be done in tasks."
+              "We are only collecting co-borrower's information for now. Checking credit score will be done in tasks."
             }
             tipSx={{ mb: 0 }}
           >
             <StyledFormItem
-              label={"What is Co-borrower's citizenship status?"}
+              label={"What is co-borrower's citizenship status?"}
               sub
             >
               <StyledSelectOption
@@ -143,7 +143,7 @@ export const FixCoBorrowerInfo: FC = observer(() => {
               />
             </StyledFormItem>
             <StyledFormItem
-              label={'Personal Information'}
+              label={'Personal information'}
               sub
               tip={`By entering co-borrower's phone number, you are authorizing ${
                 //sass

@@ -102,7 +102,7 @@ export const GroundPersonInfo: FC = observer(() => {
           />
         </StyledFormItem>
         <StyledFormItem
-          label={'Personal Information'}
+          label={'Personal information'}
           sub
           tip={`By entering ${
             HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun

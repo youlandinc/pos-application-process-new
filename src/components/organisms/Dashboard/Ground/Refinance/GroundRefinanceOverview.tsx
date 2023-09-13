@@ -66,7 +66,7 @@ export const GroundRefinanceOverview: FC = observer(() => {
               info: POSFormatDollar(summary.cashOutAmount),
             },
             {
-              label: 'Rehab Loan Amount',
+              label: 'Rehab loan amount',
               info: summary?.cor ? POSFormatDollar(summary.cor) : 'N/A',
             },
             {
@@ -139,7 +139,7 @@ export const GroundRefinanceOverview: FC = observer(() => {
               info: POSFormatPercent(loanDetail?.ltv),
             },
             {
-              label: 'Loan to Cost(LTC)',
+              label: 'Loan to cost(LTC)',
               info: POSFormatPercent(loanDetail?.ltc),
             },
           ],

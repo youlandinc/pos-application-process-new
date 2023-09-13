@@ -1,4 +1,3 @@
-import { POSFindLabel, POSUpperFirstLetter } from '@/utils';
 import { ChangeEvent, FC, useCallback } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { NumberFormatValues } from 'react-number-format';
@@ -17,6 +16,7 @@ import {
   IPersonalInfo,
   SPersonalInfo,
 } from '@/models/application/common/CreditScore';
+import { POSFindLabel, POSUpperFirstLetter } from '@/utils';
 
 import {
   StyledCheckbox,
@@ -30,7 +30,6 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-// todo : saas
 export const FixPersonInfo: FC = observer(() => {
   const {
     applicationForm: {
@@ -103,7 +102,7 @@ export const FixPersonInfo: FC = observer(() => {
           />
         </StyledFormItem>
         <StyledFormItem
-          label={'Personal Information'}
+          label={'Personal information'}
           sub
           tip={`By entering ${
             HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
@@ -211,11 +210,7 @@ export const FixPersonInfo: FC = observer(() => {
                     OPTIONS_COMMON_USER_TYPE,
                     userType as UserType,
                   ).toLowerCase()} , authorize `}
-              {
-                //sass
-                ' ' + saasState?.organizationName || ' YouLand'
-              }{' '}
-              to verify{' '}
+              {' ' + saasState?.organizationName || ' YouLand'} to verify{' '}
               {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_oneself}{' '}
               credit. I have also read and agreed to
               {

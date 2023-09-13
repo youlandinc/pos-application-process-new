@@ -188,7 +188,7 @@ export const GroundPurchaseTaskLoanDetails: FC = () => {
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldNumber
-                  label={'Estimated Rehab Loan Amount'}
+                  label={'Estimated rehab loan amount'}
                   onValueChange={({ floatValue }) => {
                     setCor(floatValue);
                   }}

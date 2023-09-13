@@ -103,7 +103,7 @@ export const BridgePersonInfo: FC = observer(() => {
           />
         </StyledFormItem>
         <StyledFormItem
-          label={'Personal Information'}
+          label={'Personal information'}
           sub
           // todo : person
           tip={`By entering ${
