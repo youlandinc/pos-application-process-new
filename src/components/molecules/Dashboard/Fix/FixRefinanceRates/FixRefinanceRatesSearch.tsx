@@ -496,7 +496,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
           <StyledFormItem
             alignItems={'flex-start'}
             gap={3}
-            label={'Prefer close date'}
+            label={'Preferred close date'}
             labelSx={{ textAlign: 'center', width: '100%' }}
             maxWidth={900}
             mt={3}
@@ -509,7 +509,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
             <StyledDatePicker
               disableFuture={false}
               disablePast
-              label={'Prefer close date'}
+              label={'Preferred close date'}
               onChange={(value) => {
                 setSearchForm({
                   ...searchForm,
