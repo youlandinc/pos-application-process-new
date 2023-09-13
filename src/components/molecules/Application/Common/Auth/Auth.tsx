@@ -37,7 +37,6 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
   }, [bpmn.owners, nextStep, session]);
 
   return (
-    // todo : saas
     <Stack
       alignItems={'center'}
       flexDirection={'column'}
@@ -50,8 +49,8 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
           authType === 'login'
             ? `Welcome to ${' ' + saasState?.organizationName || 'YouLand'} !`
             : authType === 'sign_up'
-            ? 'Sign Up'
-            : 'Rest Password'
+            ? 'Sign up'
+            : 'Rest password'
         }
         sx={{ maxWidth: 600 }}
       >
@@ -68,7 +67,7 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
                     onClick={() => setAuthType('login')}
                     variant={'body2'}
                   >
-                    Log In
+                    Log in
                   </Typography>
                 </Typography>
                 <Typography
@@ -119,7 +118,7 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
                     onClick={() => setAuthType('sign_up')}
                     variant={'body2'}
                   >
-                    Sign Up
+                    Sign up
                   </Typography>
                 </Typography>
                 <Typography
@@ -128,7 +127,7 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
                   onClick={() => setAuthType('reset_password')}
                   variant={'body2'}
                 >
-                  Forgot Password?
+                  Forgot password?
                 </Typography>
               </Stack>
             </>
@@ -145,7 +144,7 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
                 onClick={() => setAuthType('login')}
                 variant={'body2'}
               >
-                Back to Log In
+                Back to log in
               </Typography>
             </>
           )}
