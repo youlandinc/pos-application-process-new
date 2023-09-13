@@ -1,3 +1,24 @@
+import { ChangeEvent, FC, useCallback } from 'react';
+import { Stack, Typography } from '@mui/material';
+import { NumberFormatValues } from 'react-number-format';
+
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
+import { useSessionStorageState } from '@/hooks';
+import {
+  HASH_COMMON_PERSON,
+  OPTIONS_COMMON_CITIZEN_TYPE,
+  OPTIONS_COMMON_USER_TYPE,
+  OPTIONS_COMMON_YES_OR_NO,
+} from '@/constants';
+import {
+  IPersonalInfo,
+  SPersonalInfo,
+} from '@/models/application/common/CreditScore';
+import { POSFindLabel } from '@/utils';
+import { CommonBorrowerType, UserType } from '@/types';
+
 import {
   StyledButtonGroup,
   StyledCheckbox,
@@ -10,26 +31,6 @@ import {
   StyledTextFieldSocialNumber,
   Transitions,
 } from '@/components/atoms';
-
-import {
-  HASH_COMMON_PERSON,
-  OPTIONS_COMMON_CITIZEN_TYPE,
-  OPTIONS_COMMON_USER_TYPE,
-  OPTIONS_COMMON_YES_OR_NO,
-} from '@/constants';
-import { useSessionStorageState } from '@/hooks';
-import {
-  IPersonalInfo,
-  SPersonalInfo,
-} from '@/models/application/common/CreditScore';
-import { useMst } from '@/models/Root';
-import { CommonBorrowerType, UserType } from '@/types';
-import { POSFindLabel } from '@/utils';
-import { Stack, Typography } from '@mui/material';
-
-import { observer } from 'mobx-react-lite';
-import { ChangeEvent, FC, useCallback } from 'react';
-import { NumberFormatValues } from 'react-number-format';
 
 export const BridgeCoBorrowerInfo: FC = observer(() => {
   const {
@@ -87,7 +88,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
     <>
       <StyledFormItem
         alignItems={'center'}
-        label={`Would you like to add a Co-borrower to ${
+        label={`Would you like to add a co-borrower to ${
           userType === UserType.CUSTOMER ? 'your' : ''
         } loan?`}
         tip={
@@ -124,15 +125,15 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
         {isCoBorrower && (
           <StyledFormItem
             gap={6}
-            label={'Tell us about Co-borrower'}
+            label={'Tell us about co-borrower'}
             labelSx={{ mb: 0 }}
             tip={
-              "We are only collecting Co-borrower's information for now. Checking credit score will be done in tasks."
+              "We are only collecting co-borrower's information for now. Checking credit score will be done in tasks."
             }
             tipSx={{ mb: 0 }}
           >
             <StyledFormItem
-              label={"What is Co-borrower's citizenship status?"}
+              label={"What is co-borrower's citizenship status?"}
               sub
             >
               <StyledSelectOption
@@ -142,7 +143,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
               />
             </StyledFormItem>
             <StyledFormItem
-              label={'Personal Information'}
+              label={'Personal information'}
               sub
               tip={`By entering co-borrower's phone number, you are authorizing ${
                 //sass
@@ -155,25 +156,25 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
               <Stack gap={3} maxWidth={600} width={'100%'}>
                 <Stack>
                   <StyledTextField
-                    label={'First Name'}
+                    label={'First name'}
                     onChange={changeFieldValue('firstName')}
-                    placeholder={'First Name'}
+                    placeholder={'First name'}
                     validate={coBorrowerInfo.errors.firstName}
                     value={coBorrowerInfo.firstName}
                   />
                 </Stack>
                 <Stack>
                   <StyledTextField
-                    label={'Last Name'}
+                    label={'Last name'}
                     onChange={changeFieldValue('lastName')}
-                    placeholder={'Last Name'}
+                    placeholder={'Last name'}
                     validate={coBorrowerInfo.errors.lastName}
                     value={coBorrowerInfo.lastName}
                   />
                 </Stack>
                 <Stack>
                   <StyledDatePicker
-                    label={'Date of Birth'}
+                    label={'Date of birth'}
                     onChange={changeFieldValue('dateOfBirth')}
                     validate={coBorrowerInfo.errors.dateOfBirth}
                     value={coBorrowerInfo.dateOfBirth}
@@ -181,9 +182,9 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
                 </Stack>
                 <Stack>
                   <StyledTextFieldPhone
-                    label={'Phone Number'}
+                    label={'Phone number'}
                     onValueChange={changeFieldValue('phoneNumber')}
-                    placeholder={'Phone Number'}
+                    placeholder={'Phone number'}
                     validate={coBorrowerInfo.errors.phoneNumber}
                     value={coBorrowerInfo.phoneNumber}
                   />
@@ -199,7 +200,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
                 </Stack>
               </Stack>
             </StyledFormItem>
-            <StyledFormItem label={'Current Address'} sub>
+            <StyledFormItem label={'Current address'} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledGoogleAutoComplete address={coBorrowerInfo.address} />
               </Stack>
@@ -217,7 +218,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
               {coBorrowerInfo.citizenship !==
                 CommonBorrowerType.foreign_national && (
                 <StyledFormItem
-                  label={"The Co-borrower's Social Security Number"}
+                  label={"The co-borrower's social security number"}
                   sub
                 >
                   <Stack gap={3} maxWidth={600} width={'100%'}>

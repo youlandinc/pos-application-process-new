@@ -112,7 +112,7 @@ export const FixPurchasePreApproval: FC = observer(() => {
     setLTCError(
       result > 0.75
         ? [
-            'Reduce your purchase loan amount or rehab loan amount. Your Loan-to-Cost should be no more than 75%',
+            'Reduce your purchase loan amount or rehab loan amount. Your loan-to-cost should be no more than 75%',
           ]
         : undefined,
     );
@@ -483,7 +483,7 @@ export const FixPurchasePreApproval: FC = observer(() => {
             <StyledTextFieldNumber
               decimalScale={3}
               disabled={checkLoading}
-              label="Broker Origination Fee"
+              label="Broker origination fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
                   ...(rateData as FPEstimateRateData),
@@ -498,7 +498,7 @@ export const FixPurchasePreApproval: FC = observer(() => {
             />
             <StyledTextFieldNumber
               disabled={checkLoading}
-              label="Broker Processing Fee"
+              label="Broker processing fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
                   ...(rateData as FPEstimateRateData),
@@ -518,7 +518,7 @@ export const FixPurchasePreApproval: FC = observer(() => {
             <StyledTextFieldNumber
               decimalScale={3}
               disabled={checkLoading}
-              label="Lender Origination Fee"
+              label="Lender origination fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
                   ...(rateData as FPEstimateRateData),
@@ -533,7 +533,7 @@ export const FixPurchasePreApproval: FC = observer(() => {
             />
             <StyledTextFieldNumber
               disabled={checkLoading}
-              label="Lender Processing Fee"
+              label="Lender processing fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
                   ...(rateData as FPEstimateRateData),
@@ -553,7 +553,7 @@ export const FixPurchasePreApproval: FC = observer(() => {
             <StyledTextFieldNumber
               decimalScale={3}
               disabled={checkLoading}
-              label="Loan Officer Origination Fee"
+              label="Loan officer origination fee"
               onValueChange={({ floatValue }) =>
                 setRateData({
                   ...(rateData as FPEstimateRateData),
@@ -568,7 +568,7 @@ export const FixPurchasePreApproval: FC = observer(() => {
             />
             <StyledTextFieldNumber
               disabled={checkLoading}
-              label="Loan Officer Processing Fee"
+              label="Loan officer processing fee"
               onValueChange={({ floatValue }) => {
                 setRateData({
                   ...(rateData as FPEstimateRateData),
@@ -609,7 +609,7 @@ export const FixPurchasePreApproval: FC = observer(() => {
           <StyledTextFieldNumber
             disabled={checkLoading}
             error={!!LTVError}
-            label="Purchase Price"
+            label="Purchase price"
             onValueChange={({ floatValue }) =>
               setRateData({
                 ...(rateData as FPEstimateRateData),
@@ -622,7 +622,7 @@ export const FixPurchasePreApproval: FC = observer(() => {
           <StyledTextFieldNumber
             disabled={checkLoading}
             error={!!LTVError}
-            label="Purchase Loan Amount"
+            label="Purchase loan amount"
             onValueChange={({ floatValue }) => {
               setRateData({
                 ...(rateData as FPEstimateRateData),
@@ -635,7 +635,7 @@ export const FixPurchasePreApproval: FC = observer(() => {
           <StyledTextFieldNumber
             decimalScale={3}
             disabled
-            label="Loan-to-Value"
+            label="Loan-to-value"
             onValueChange={() => undefined}
             percentage
             suffix={'%'}
@@ -675,7 +675,7 @@ export const FixPurchasePreApproval: FC = observer(() => {
           <StyledTextFieldNumber
             decimalScale={3}
             disabled
-            label={'Loan-to-Cost'}
+            label={'Loan-to-cost'}
             onValueChange={() => undefined}
             percentage={true}
             suffix={'%'}

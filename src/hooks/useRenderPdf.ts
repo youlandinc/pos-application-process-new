@@ -8,9 +8,7 @@ export const useRenderPdf = (
       if (!element.current?.shadowRoot) {
         element.current?.attachShadow({ mode: 'open' });
       }
-      (element.current?.shadowRoot as ShadowRoot).innerHTML = `${
-        string || '123'
-      }`;
+      (element.current?.shadowRoot as ShadowRoot).innerHTML = `${string || ''}`;
     },
     [element],
   );

@@ -1,4 +1,3 @@
-import { POSFindLabel, POSUpperFirstLetter } from '@/utils';
 import { ChangeEvent, FC, useCallback } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { NumberFormatValues } from 'react-number-format';
@@ -17,6 +16,7 @@ import {
   IPersonalInfo,
   SPersonalInfo,
 } from '@/models/application/common/CreditScore';
+import { POSFindLabel, POSUpperFirstLetter } from '@/utils';
 
 import {
   StyledCheckbox,
@@ -30,7 +30,6 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-// todo : saas
 export const FixPersonInfo: FC = observer(() => {
   const {
     applicationForm: {
@@ -103,7 +102,7 @@ export const FixPersonInfo: FC = observer(() => {
           />
         </StyledFormItem>
         <StyledFormItem
-          label={'Personal Information'}
+          label={'Personal information'}
           sub
           tip={`By entering ${
             HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
@@ -118,25 +117,25 @@ export const FixPersonInfo: FC = observer(() => {
           <Stack gap={3} maxWidth={600} width={'100%'}>
             <Stack>
               <StyledTextField
-                label={'First Name'}
+                label={'First name'}
                 onChange={changeFieldValue('firstName')}
-                placeholder={'First Name'}
+                placeholder={'First name'}
                 validate={selfInfo.errors.firstName}
                 value={selfInfo.firstName}
               />
             </Stack>
             <Stack>
               <StyledTextField
-                label={'Last Name'}
+                label={'Last name'}
                 onChange={changeFieldValue('lastName')}
-                placeholder={'Last Name'}
+                placeholder={'Last name'}
                 validate={selfInfo.errors.lastName}
                 value={selfInfo.lastName}
               />
             </Stack>
             <Stack>
               <StyledDatePicker
-                label={'Date of Birth'}
+                label={'Date of birth'}
                 onChange={changeFieldValue('dateOfBirth')}
                 validate={selfInfo.errors.dateOfBirth}
                 value={selfInfo.dateOfBirth}
@@ -144,9 +143,9 @@ export const FixPersonInfo: FC = observer(() => {
             </Stack>
             <Stack>
               <StyledTextFieldPhone
-                label={'Phone Number'}
+                label={'Phone number'}
                 onValueChange={changeFieldValue('phoneNumber')}
-                placeholder={'Phone Number'}
+                placeholder={'Phone number'}
                 validate={selfInfo.errors.phoneNumber}
                 value={selfInfo.phoneNumber}
               />
@@ -162,7 +161,7 @@ export const FixPersonInfo: FC = observer(() => {
             </Stack>
           </Stack>
         </StyledFormItem>
-        <StyledFormItem label={'Current Address'} sub>
+        <StyledFormItem label={'Current address'} sub>
           <Stack gap={3} maxWidth={600} width={'100%'}>
             <StyledGoogleAutoComplete address={selfInfo.address} />
           </Stack>
@@ -211,11 +210,7 @@ export const FixPersonInfo: FC = observer(() => {
                     OPTIONS_COMMON_USER_TYPE,
                     userType as UserType,
                   ).toLowerCase()} , authorize `}
-              {
-                //sass
-                ' ' + saasState?.organizationName || ' YouLand'
-              }{' '}
-              to verify{' '}
+              {' ' + saasState?.organizationName || ' YouLand'} to verify{' '}
               {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_oneself}{' '}
               credit. I have also read and agreed to
               {

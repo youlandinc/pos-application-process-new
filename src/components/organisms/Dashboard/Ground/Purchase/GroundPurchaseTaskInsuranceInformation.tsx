@@ -276,7 +276,7 @@ export const GroundPurchaseTaskInsuranceInformation: FC = observer(() => {
               />
 
               <StyledTextFieldPhone
-                label={'Phone Number'}
+                label={'Phone number'}
                 onValueChange={({ value }) => setPhoneNumber(value)}
                 value={phoneNumber}
               />

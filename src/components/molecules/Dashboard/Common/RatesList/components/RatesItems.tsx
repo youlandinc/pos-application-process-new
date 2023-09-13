@@ -69,7 +69,7 @@ export const RatesItems: FC<{
                 ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
               }
             >
-              Referral Fee
+              Referral fee
             </Typography>
             <Typography
               variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h5'}
@@ -112,7 +112,7 @@ export const RatesItems: FC<{
               ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
             }
           >
-            Loan Term
+            Loan term
           </Typography>
           <Typography
             variant={
@@ -154,7 +154,7 @@ export const RatesItems: FC<{
               ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
             }
           >
-            Monthly Payment
+            Monthly payment
             <StyledTooltip
               title={
                 'The current interest calculation is based on dutch basis. However, the actual calculation will be non-dutch based on the actual draw schedule.'

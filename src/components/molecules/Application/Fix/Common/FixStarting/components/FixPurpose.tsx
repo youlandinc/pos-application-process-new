@@ -4,18 +4,19 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import {
+  HASH_COMMON_PERSON,
+  OPTIONS_BRIDGE_PROPERTY_NUMBER,
+} from '@/constants';
 import { PropertyNumberOpt, UserType } from '@/types';
 import { IFixPurpose } from '@/models/application/fix';
+
 import {
   StyledFormItem,
   StyledGoogleAutoComplete,
   StyledSelectOption,
   Transitions,
 } from '@/components/atoms';
-import {
-  HASH_COMMON_PERSON,
-  OPTIONS_BRIDGE_PROPERTY_NUMBER,
-} from '@/constants';
 
 interface FixPurposeProps {
   purpose: IFixPurpose;
@@ -62,7 +63,6 @@ export const FixPurpose: FC<FixPurposeProps> = observer((props) => {
       </StyledFormItem>
       <Transitions>
         {propertyNumber && (
-          //  todo : saas
           <StyledFormItem
             alignItems={'center'}
             label={`What's the address of the property ${

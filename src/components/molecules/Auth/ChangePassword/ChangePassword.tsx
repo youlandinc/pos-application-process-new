@@ -125,7 +125,7 @@ export const ChangePassword: FC = () => {
 
           <Box className="change_password_form">
             <Typography className="form_title" variant="h3">
-              Change Password
+              Change password
             </Typography>
 
             <Box
@@ -157,7 +157,7 @@ export const ChangePassword: FC = () => {
                   }}
                   label={'Password'}
                   onChange={handledPasswordChange}
-                  placeholder={'New Password'}
+                  placeholder={'New password'}
                   required
                   value={password}
                 />
@@ -206,7 +206,7 @@ export const ChangePassword: FC = () => {
                 }}
                 label={'Confirm password'}
                 onChange={(e) => setConfirmedPassword(e.target.value)}
-                placeholder={'Confirmed New Password'}
+                placeholder={'Confirmed new password'}
                 required
                 validate={formError?.confirmedPassword}
                 value={confirmedPassword}

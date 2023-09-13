@@ -29,7 +29,6 @@ export const FixNotice: FC = observer(() => {
           {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun}{' '}
           general price range.
         </Typography>
-        {/*todo : saas */}
         <Typography
           color={'info.main'}
           mt={1.5}

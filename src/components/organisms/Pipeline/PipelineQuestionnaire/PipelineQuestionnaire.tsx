@@ -299,7 +299,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
                     width={'100%'}
                   >
                     <StyledDatePicker
-                      label={'Date of Birth'}
+                      label={'Date of birth'}
                       onChange={(date) => {
                         computedQuestionnaire.questionnaire.changeLicensesFieldValue(
                           'birthday',

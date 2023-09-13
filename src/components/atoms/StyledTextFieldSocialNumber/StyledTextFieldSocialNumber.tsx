@@ -76,11 +76,11 @@ export const StyledTextFieldSocialNumber: FC<
       <TextField
         error={!!(validate?.length && validate[0])}
         helperText={validate?.length && validate[0]}
-        label={'Social Security Number'}
+        label={'Social security number'}
         onBlur={handledBlur}
         onChange={handledChange}
         onFocus={handledFocus}
-        placeholder={'Social Security Number'}
+        placeholder={'Social security number'}
         sx={{
           ...StyledTextFieldStyles,
           ...sx,

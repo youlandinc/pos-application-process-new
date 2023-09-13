@@ -206,14 +206,14 @@ export const PipelineAgreement: FC = observer(() => {
                 value={computedAgreement.agreement.taskForm.fullName}
               />
               <StyledTextFieldPhone
-                label={'Phone Number'}
+                label={'Phone number'}
                 onValueChange={({ value }) =>
                   computedAgreement.agreement.changeFieldValue(
                     'phoneNumber',
                     value,
                   )
                 }
-                placeholder={'Phone Number'}
+                placeholder={'Phone number'}
                 value={computedAgreement.agreement.taskForm.phoneNumber}
               />
             </Stack>

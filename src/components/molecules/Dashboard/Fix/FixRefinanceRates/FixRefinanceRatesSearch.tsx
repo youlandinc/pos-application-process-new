@@ -1,7 +1,7 @@
-import { addDays, compareDesc, isValid as dateValid, isDate } from 'date-fns';
 import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
+import { addDays, compareDesc, isValid as dateValid, isDate } from 'date-fns';
 
 import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
 import { FRQueryData } from '@/requests/dashboard';
@@ -115,7 +115,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
     const result = cor === 0 ? 0 : loanAmount! / (cor! + homeValue!);
     setLTCError(
       result > 0.75
-        ? 'Reduce your loan amount or rehab cost. Your Loan-to-Cost should be no more than 75%'
+        ? 'Reduce your loan amount or rehab cost. Your loan-to-cost should be no more than 75%'
         : '',
     );
     return result;
@@ -282,7 +282,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
         return (
           <StyledFormItem
             gap={3}
-            label={'Broker Origination Compensation'}
+            label={'Broker origination compensation'}
             labelSx={{ m: 0 }}
             sub
           >
@@ -293,7 +293,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography>Broker Origination Fee</Typography>
+                <Typography>Broker origination fee</Typography>
                 <StyledTextFieldNumber
                   decimalScale={3}
                   disabled={loading || loanStage === LoanStage.Approved}
@@ -311,7 +311,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                 />
               </Stack>
               <Stack flex={1} gap={1}>
-                <Typography>Broker Processing Fee</Typography>
+                <Typography>Broker processing fee</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
@@ -332,7 +332,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
         return (
           <StyledFormItem
             gap={3}
-            label={'Lender Origination Compensation'}
+            label={'Lender origination compensation'}
             labelSx={{ m: 0 }}
             sub
           >
@@ -343,7 +343,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography>Lender Origination Fee</Typography>
+                <Typography>Lender origination fee</Typography>
                 <StyledTextFieldNumber
                   decimalScale={3}
                   disabled={loading || loanStage === LoanStage.Approved}
@@ -361,7 +361,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                 />
               </Stack>
               <Stack flex={1} gap={1}>
-                <Typography>Lender Processing Fee</Typography>
+                <Typography>Lender processing fee</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
@@ -382,7 +382,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
         return (
           <StyledFormItem
             gap={3}
-            label={'Loan Officer Origination Compensation'}
+            label={'Loan officer origination compensation'}
             labelSx={{ m: 0 }}
             sub
           >
@@ -393,7 +393,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography>Loan Officer Origination Compensation</Typography>
+                <Typography>Loan officer origination compensation</Typography>
                 <StyledTextFieldNumber
                   decimalScale={3}
                   disabled={loading || loanStage === LoanStage.Approved}
@@ -411,7 +411,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                 />
               </Stack>
               <Stack flex={1} gap={1}>
-                <Typography>Loan Officer Processing Fee</Typography>
+                <Typography>Loan officer processing fee</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
@@ -432,7 +432,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
         return (
           <StyledFormItem
             gap={3}
-            label={'Real Estate Agent Origination Compensation'}
+            label={'Real estate agent origination compensation'}
             labelSx={{ m: 0 }}
             sub
           >
@@ -444,7 +444,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
             >
               <Stack flex={1} gap={1}>
                 <Typography>
-                  Real Estate Agent Origination Compensation
+                  Real estate agent origination compensation
                 </Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
@@ -502,7 +502,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
             mt={3}
             sub
             tip={
-              '"Preferred Close Date" is the date on which you wish to complete a real estate transaction or loan application. We will stay in touch with you to ensure that the transaction is completed at the most suitable time.'
+              '"Preferred close date" is the date on which you wish to complete a real estate transaction or loan application. We will stay in touch with you to ensure that the transaction is completed at the most suitable time.'
             }
             width={'100%'}
           >
@@ -525,7 +525,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
         <StyledFormItem
           alignItems={'flex-start'}
           gap={3}
-          label={`Total Loan Amount: ${POSFormatDollar(loanAmount)}`}
+          label={`Total loan amount: ${POSFormatDollar(loanAmount)}`}
           labelSx={{ textAlign: 'center', width: '100%' }}
           maxWidth={900}
           mt={3}
@@ -539,7 +539,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography variant={'body1'}>As-is Property Value</Typography>
+                <Typography variant={'body1'}>As-is property value</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
@@ -553,7 +553,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                 />
               </Stack>
               <Stack flex={1} gap={1}>
-                <Typography variant={'body1'}>Payoff Amount</Typography>
+                <Typography variant={'body1'}>Payoff amount</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
@@ -574,10 +574,10 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
               justifyContent={'flex-start'}
               width={{ md: 'calc(50% - 12px)', xs: '100%' }}
             >
-              <Typography variant={'body1'}>Loan to Value</Typography>
+              <Typography variant={'body1'}>Loan to value</Typography>
               <StyledTooltip
                 title={
-                  'LTV [Remaining Balance + Cash Out (if any)] / Home Value'
+                  'LTV [Remaining balance + Cash out (if any)] / Home value'
                 }
               >
                 <InfoOutlined sx={{ width: 16, height: 16 }} />
@@ -599,7 +599,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
           <StyledCheckbox
             checked={isCashOut}
             disabled={loading || loanStage === LoanStage.Approved}
-            label={'Cash Out Amount'}
+            label={'Cash out amount'}
             onChange={(e) => {
               setSearchForm({
                 ...searchForm,
@@ -616,7 +616,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
           >
             {isCashOut && (
               <Stack flex={1} gap={1}>
-                <Typography variant={'body1'}>Cash Out Amount</Typography>
+                <Typography variant={'body1'}>Cash out amount</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
@@ -640,7 +640,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
             >
               <Stack flex={1} gap={1}>
                 <Typography variant={'body1'}>
-                  Estimated Rehab Loan Amount
+                  Estimated rehab loan amount
                 </Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
@@ -656,10 +656,10 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
               </Stack>
               <Stack flex={1} gap={1}>
                 <Typography variant={'body1'}>
-                  After Repair Value (ARV){' '}
+                  After repair value (ARV){' '}
                   <StyledTooltip
                     title={
-                      'ARV (As-is Property Value + Estimated Rehab Loan Amount)'
+                      'ARV (As-is property value + Estimated rehab loan amount)'
                     }
                   >
                     <InfoOutlined sx={{ width: 16, height: 16 }} />
@@ -685,10 +685,10 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
               justifyContent={'flex-start'}
               width={{ md: 'calc(50% - 12px)', xs: '100%' }}
             >
-              <Typography variant={'body1'}>Loan to Cost</Typography>
+              <Typography variant={'body1'}>Loan to cost</Typography>
               <StyledTooltip
                 title={
-                  'Loan to Cost (LTC) – Total Loan Amount/(As is value + Rehab Amount)'
+                  'Loan to cost (LTC) – Total loan amount/(As is value + Rehab amount)'
                 }
               >
                 <InfoOutlined sx={{ width: 16, height: 16 }} />

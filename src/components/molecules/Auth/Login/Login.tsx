@@ -164,12 +164,7 @@ export const Login: FC<LoginProps> = observer(
 
               <Box className="sign_in_form">
                 <Typography className="form_title" variant="h3">
-                  Welcome to{' '}
-                  {
-                    //sass
-                    saasState?.organizationName || 'YouLand'
-                  }
-                  !
+                  Welcome to {saasState?.organizationName || 'YouLand'}!
                 </Typography>
                 {FormBody}
                 <Box className="form_foot">
@@ -180,11 +175,11 @@ export const Login: FC<LoginProps> = observer(
                       component={'span'}
                       variant={'body2'}
                     >
-                      <Link href={'./sign_up/'}> Sign Up</Link>
+                      <Link href={'./sign_up/'}> Sign up</Link>
                     </Typography>
                   </Typography>
                   <Typography color={'primary'} variant="body2">
-                    <Link href={'./forgot_password/'}>Forgot Password?</Link>
+                    <Link href={'./forgot_password/'}>Forgot password?</Link>
                   </Typography>
                 </Box>
               </Box>

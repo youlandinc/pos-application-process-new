@@ -1,10 +1,11 @@
-import { POSCreateDebounceFunction } from '@/utils';
 import { FC, useCallback, useEffect } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
+
+import { POSCreateDebounceFunction } from '@/utils';
 
 import { IPersonalInfo } from '@/models/application/common/CreditScore';
 import { StyledFormItem } from '@/components/atoms';
@@ -61,7 +62,7 @@ export const GroundScoreResult: FC<{ role: 'self' | 'coBorrower' }> = observer(
               justifyContent={'center'}
               width={'100%'}
             >
-              Your Credit Score is
+              Your credit score is
               <AnimatedNumbers
                 animateToNumber={info.creditScore as number}
                 configs={(number, index) => {
