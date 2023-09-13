@@ -52,15 +52,15 @@ export const BridgeRefinanceOverview: FC = observer(() => {
         const [line_1, line_2] = summary.address.split('NEW_LINE');
         setSummary({
           title: 'Refinance',
-          subTitle: 'Total Loan Amount',
+          subTitle: 'Total loan amount',
           subInfo: POSFormatDollar(summary.loanAmount),
           info: [
             {
-              label: 'Payoff Amount',
+              label: 'Payoff amount',
               info: POSFormatDollar(summary.balance),
             },
             {
-              label: 'Cash Out Amount',
+              label: 'Cash out amount',
               info: POSFormatDollar(summary.cashOutAmount),
             },
             {
@@ -93,25 +93,25 @@ export const BridgeRefinanceOverview: FC = observer(() => {
         });
         setProduct({
           title: 'Rate',
-          subTitle: 'Interest Rate',
+          subTitle: 'Interest rate',
           subInfo: POSFormatLocalPercent(product.interestRateOfYear),
           info: [
-            { label: 'Loan Term', info: `${product.loanTerm} months` },
+            { label: 'Loan term', info: `${product.loanTerm} months` },
             {
-              label: 'Monthly Payment',
+              label: 'Monthly payment',
               info: POSFormatDollar(product.paymentOfMonth),
             },
             { label: 'Status', info: product.status },
           ],
         });
         setLoanDetail({
-          title: 'Loan Details',
-          subTitle: 'Preferred Close Date',
+          title: 'Loan details',
+          subTitle: 'Preferred close date',
           subInfo: loanDetail?.closeDate,
           info: [
             { label: 'Amortization', info: loanDetail?.amortization },
             {
-              label: 'Property Type',
+              label: 'Property type',
               info: POSFindLabel(
                 OPTIONS_MORTGAGE_PROPERTY,
                 loanDetail?.propertyType as string,
@@ -125,7 +125,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
             },
             { label: 'Lien', info: loanDetail?.lien },
             {
-              label: 'Loan to Value(LTV)',
+              label: 'Loan to value(LTV)',
               info: POSFormatPercent(loanDetail?.ltv),
             },
           ],
@@ -135,7 +135,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
           case UserType.BROKER: {
             temp = [
               {
-                label: 'Broker Origination Fee',
+                label: 'Broker origination fee',
                 info: `${POSFormatDollar(
                   thirdParty?.brokerOriginationFee,
                 )}(${POSFormatPercent(
@@ -143,7 +143,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
                 )})`,
               },
               {
-                label: 'Broker Processing Fee',
+                label: 'Broker processing fee',
                 info: POSFormatDollar(thirdParty?.brokerProcessingFee),
               },
             ];
@@ -152,7 +152,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
           case UserType.LENDER: {
             temp = [
               {
-                label: 'Lender Origination Fee',
+                label: 'Lender origination fee',
                 info: `${POSFormatDollar(
                   thirdParty?.lenderOriginationFee,
                 )}(${POSFormatPercent(
@@ -160,7 +160,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
                 )})`,
               },
               {
-                label: 'Lender Processing Fee',
+                label: 'Lender processing fee',
                 info: POSFormatDollar(thirdParty?.lenderProcessingFee),
               },
             ];
@@ -169,7 +169,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
           case UserType.LOAN_OFFICER: {
             temp = [
               {
-                label: 'Lender Origination Fee',
+                label: 'Lender origination fee',
                 info: `${POSFormatDollar(
                   thirdParty?.officerOriginationFee,
                 )}(${POSFormatPercent(
@@ -177,7 +177,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
                 )})`,
               },
               {
-                label: 'Lender Processing Fee',
+                label: 'Lender processing fee',
                 info: POSFormatDollar(thirdParty?.officerProcessingFee),
               },
             ];
@@ -186,7 +186,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
           case UserType.REAL_ESTATE_AGENT: {
             temp = [
               {
-                label: 'Referral Fee',
+                label: 'Referral fee',
                 info: `${POSFormatDollar(thirdParty?.agentFee)}`,
               },
             ];
@@ -202,7 +202,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
           }
         }
         setThirdParty({
-          title: 'Est. Cash Required at Closing',
+          title: 'Est. cash required at closing',
           subTitle: 'Total',
           subInfo: POSFormatDollar(thirdParty?.totalClosingCash),
           info: [
@@ -213,18 +213,18 @@ export const BridgeRefinanceOverview: FC = observer(() => {
               )}(${POSFormatLocalPercent(thirdParty?.originationFeePer)})`,
             },
             {
-              label: 'Underwriting Fee',
+              label: 'Underwriting fee',
               info: POSFormatDollar(thirdParty?.underwritingFee),
             },
             {
-              label: 'Document Preparation Fee',
+              label: 'Document preparation fee',
               info: POSFormatDollar(thirdParty?.docPreparationFee),
             },
             {
-              label: 'Pro-rated Interest',
+              label: 'Pro-rated interest',
               info: POSFormatDollar(thirdParty?.proRatedInterest),
             },
-            { label: 'Third-party Costs', info: thirdParty?.thirdPartyCosts },
+            { label: 'Third-party costs', info: thirdParty?.thirdPartyCosts },
             ...temp,
           ],
         });

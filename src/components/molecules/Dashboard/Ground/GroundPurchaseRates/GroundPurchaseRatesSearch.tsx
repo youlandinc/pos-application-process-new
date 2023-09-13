@@ -258,7 +258,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
         return (
           <StyledFormItem
             gap={3}
-            label={'Broker Origination Compensation'}
+            label={'Broker origination compensation'}
             labelSx={{ m: 0 }}
             sub
           >
@@ -269,7 +269,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography>Broker Origination Fee</Typography>
+                <Typography>Broker origination fee</Typography>
                 <StyledTextFieldNumber
                   decimalScale={3}
                   disabled={loading || loanStage === LoanStage.Approved}
@@ -287,7 +287,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
                 />
               </Stack>
               <Stack flex={1} gap={1}>
-                <Typography>Broker Processing Fee</Typography>
+                <Typography>Broker processing fee</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
@@ -308,7 +308,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
         return (
           <StyledFormItem
             gap={3}
-            label={'Lender Origination Compensation'}
+            label={'Lender origination compensation'}
             labelSx={{ m: 0 }}
             sub
           >
@@ -319,7 +319,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography>Lender Origination Fee</Typography>
+                <Typography>Lender origination fee</Typography>
                 <StyledTextFieldNumber
                   decimalScale={3}
                   disabled={loading || loanStage === LoanStage.Approved}
@@ -337,7 +337,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
                 />
               </Stack>
               <Stack flex={1} gap={1}>
-                <Typography>Lender Processing Fee</Typography>
+                <Typography>Lender processing fee</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
@@ -358,7 +358,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
         return (
           <StyledFormItem
             gap={3}
-            label={'Loan Officer Origination Compensation'}
+            label={'Loan officer origination compensation'}
             labelSx={{ m: 0 }}
             sub
           >
@@ -369,7 +369,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography>Loan Officer Origination Compensation</Typography>
+                <Typography>Loan officer origination compensation</Typography>
                 <StyledTextFieldNumber
                   decimalScale={3}
                   disabled={loading || loanStage === LoanStage.Approved}
@@ -387,7 +387,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
                 />
               </Stack>
               <Stack flex={1} gap={1}>
-                <Typography>Loan Officer Processing Fee</Typography>
+                <Typography>Loan officer processing fee</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
@@ -408,7 +408,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
         return (
           <StyledFormItem
             gap={3}
-            label={'Real Estate Agent Origination Compensation'}
+            label={'Real estate agent origination compensation'}
             labelSx={{ m: 0 }}
             sub
           >
@@ -420,7 +420,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
             >
               <Stack flex={1} gap={1}>
                 <Typography>
-                  Real Estate Agent Origination Compensation
+                  Real estate agent origination compensation
                 </Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
@@ -478,7 +478,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
             mt={3}
             sub
             tip={
-              '"Preferred Close Date" is the date on which you wish to complete a real estate transaction or loan application. We will stay in touch with you to ensure that the transaction is completed at the most suitable time.'
+              '"Preferred close date" is the date on which you wish to complete a real estate transaction or loan application. We will stay in touch with you to ensure that the transaction is completed at the most suitable time.'
             }
             width={'100%'}
           >
@@ -502,7 +502,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
         <StyledFormItem
           alignItems={'flex-start'}
           gap={3}
-          label={`Total Loan Amount: ${POSFormatDollar(loanAmount)}`}
+          label={`Total loan amount: ${POSFormatDollar(loanAmount)}`}
           labelSx={{ textAlign: 'center', width: '100%' }}
           maxWidth={900}
           mt={3}
@@ -516,7 +516,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography variant={'body1'}>Purchase Price</Typography>
+                <Typography variant={'body1'}>Purchase price</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
@@ -530,7 +530,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
                 />
               </Stack>
               <Stack flex={1} gap={1}>
-                <Typography variant={'body1'}>Purchase Loan Amount</Typography>
+                <Typography variant={'body1'}>Purchase loan amount</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
                   onValueChange={({ floatValue }) => {
@@ -551,9 +551,9 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
               justifyContent={'flex-start'}
               width={{ md: 'calc(50% - 12px)', xs: '100%' }}
             >
-              <Typography variant={'body1'}>Loan to Value</Typography>
+              <Typography variant={'body1'}>Loan to value</Typography>
               <StyledTooltip
-                title={'LTV (Purchase Loan Amount to Purchase Price)'}
+                title={'LTV (Purchase loan amount to purchase price)'}
               >
                 <InfoOutlined sx={{ width: 16, height: 16 }} />
               </StyledTooltip>

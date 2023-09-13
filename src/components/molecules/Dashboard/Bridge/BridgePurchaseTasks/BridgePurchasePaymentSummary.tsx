@@ -46,7 +46,7 @@ export const BridgePurchasePaymentSummary: FC<
           justifyContent={'space-between'}
           py={1.5}
         >
-          <Typography variant={'body1'}>Interest Rate</Typography>
+          <Typography variant={'body1'}>Interest rate</Typography>
           <Typography variant={'subtitle1'}>
             {POSFormatLocalPercent(productInfo?.interestRateOfYear)}
           </Typography>
@@ -59,7 +59,7 @@ export const BridgePurchasePaymentSummary: FC<
           justifyContent={'space-between'}
           py={1.5}
         >
-          <Typography variant={'body1'}>Loan Term</Typography>
+          <Typography variant={'body1'}>Loan term</Typography>
           <Typography variant={'subtitle1'}>
             {productInfo?.loanTerm} months
           </Typography>
@@ -72,7 +72,7 @@ export const BridgePurchasePaymentSummary: FC<
           justifyContent={'space-between'}
           py={1.5}
         >
-          <Typography variant={'body1'}>Purchase Loan Amount</Typography>
+          <Typography variant={'body1'}>Purchase loan amount</Typography>
           <Typography variant={'subtitle1'}>
             {POSFormatDollar(productInfo?.purchaseLoanAmount)}
           </Typography>
@@ -85,7 +85,7 @@ export const BridgePurchasePaymentSummary: FC<
           justifyContent={'space-between'}
           py={1.5}
         >
-          <Typography variant={'body1'}>Total Loan Amount</Typography>
+          <Typography variant={'body1'}>Total loan amount</Typography>
           <Typography variant={'subtitle1'}>
             {POSFormatDollar(productInfo?.totalLoanAmount)}
           </Typography>
@@ -98,7 +98,7 @@ export const BridgePurchasePaymentSummary: FC<
           justifyContent={'space-between'}
           py={1.5}
         >
-          <Typography variant={'body1'}>Monthly Payment</Typography>
+          <Typography variant={'body1'}>Monthly payment</Typography>
           <Typography variant={'subtitle1'}>
             {POSFormatDollar(productInfo?.paymentOfMonth)}
           </Typography>

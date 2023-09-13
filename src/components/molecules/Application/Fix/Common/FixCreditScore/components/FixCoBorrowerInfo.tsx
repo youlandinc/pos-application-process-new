@@ -156,25 +156,25 @@ export const FixCoBorrowerInfo: FC = observer(() => {
               <Stack gap={3} maxWidth={600} width={'100%'}>
                 <Stack>
                   <StyledTextField
-                    label={'First Name'}
+                    label={'First name'}
                     onChange={changeFieldValue('firstName')}
-                    placeholder={'First Name'}
+                    placeholder={'First name'}
                     validate={coBorrowerInfo.errors.firstName}
                     value={coBorrowerInfo.firstName}
                   />
                 </Stack>
                 <Stack>
                   <StyledTextField
-                    label={'Last Name'}
+                    label={'Last name'}
                     onChange={changeFieldValue('lastName')}
-                    placeholder={'Last Name'}
+                    placeholder={'Last name'}
                     validate={coBorrowerInfo.errors.lastName}
                     value={coBorrowerInfo.lastName}
                   />
                 </Stack>
                 <Stack>
                   <StyledDatePicker
-                    label={'Date of Birth'}
+                    label={'Date of birth'}
                     onChange={changeFieldValue('dateOfBirth')}
                     validate={coBorrowerInfo.errors.dateOfBirth}
                     value={coBorrowerInfo.dateOfBirth}
@@ -182,9 +182,9 @@ export const FixCoBorrowerInfo: FC = observer(() => {
                 </Stack>
                 <Stack>
                   <StyledTextFieldPhone
-                    label={'Phone Number'}
+                    label={'Phone number'}
                     onValueChange={changeFieldValue('phoneNumber')}
-                    placeholder={'Phone Number'}
+                    placeholder={'Phone number'}
                     validate={coBorrowerInfo.errors.phoneNumber}
                     value={coBorrowerInfo.phoneNumber}
                   />
@@ -200,7 +200,7 @@ export const FixCoBorrowerInfo: FC = observer(() => {
                 </Stack>
               </Stack>
             </StyledFormItem>
-            <StyledFormItem label={'Current Address'} sub>
+            <StyledFormItem label={'Current address'} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledGoogleAutoComplete address={coBorrowerInfo.address} />
               </Stack>
@@ -218,7 +218,7 @@ export const FixCoBorrowerInfo: FC = observer(() => {
               {coBorrowerInfo.citizenship !==
                 CommonBorrowerType.foreign_national && (
                 <StyledFormItem
-                  label={"The Co-borrower's Social Security Number"}
+                  label={"The co-borrower's social security number"}
                   sub
                 >
                   <Stack gap={3} maxWidth={600} width={'100%'}>

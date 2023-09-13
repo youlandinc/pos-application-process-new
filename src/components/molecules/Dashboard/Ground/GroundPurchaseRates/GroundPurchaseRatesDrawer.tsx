@@ -63,11 +63,11 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               )}(${POSFormatPercent(
                 (selectedItem?.brokerPoints as number) / 100,
               )})`}
-              label={'Broker Origination Fee'}
+              label={'Broker origination fee'}
             />
             <GroundCardItem
               info={POSFormatDollar(selectedItem?.brokerProcessingFee)}
-              label={'Broker Processing Fee'}
+              label={'Broker processing fee'}
             />
           </>
         );
@@ -80,11 +80,11 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               )}(${POSFormatPercent(
                 (selectedItem?.lenderPoints as number) / 100,
               )})`}
-              label={'Lender Origination Fee'}
+              label={'Lender origination fee'}
             />
             <GroundCardItem
               info={POSFormatDollar(selectedItem?.lenderProcessingFee)}
-              label={'Lender Processing Fee'}
+              label={'Lender processing fee'}
             />
           </>
         );
@@ -97,11 +97,11 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               )}(${POSFormatPercent(
                 (selectedItem?.officerPoints as number) / 100,
               )})`}
-              label={'Loan Officer Origination Fee'}
+              label={'Loan officer origination fee'}
             />
             <GroundCardItem
               info={POSFormatDollar(selectedItem?.officerProcessingFee)}
-              label={'Loan Officer Processing Fee'}
+              label={'Loan officer processing fee'}
             />
           </>
         );
@@ -110,7 +110,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
           <>
             <GroundCardItem
               info={POSFormatDollar(selectedItem?.agentFee)}
-              label={'Referral Fee'}
+              label={'Referral fee'}
             />
           </>
         );
@@ -183,15 +183,15 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               />
               <GroundCardItem
                 info={POSFormatDollar(selectedItem?.totalLoanAmount)}
-                label={'Total Loan Amount'}
+                label={'Total loan amount'}
               />
               <GroundCardItem
                 info={POSFormatDollar(selectedItem?.purchasePrice)}
-                label={'Purchase Price'}
+                label={'Purchase price'}
               />
               <GroundCardItem
                 info={POSFormatDollar(selectedItem?.purchaseLoanAmount)}
-                label={'Purchase Loan Amount'}
+                label={'Purchase loan amount'}
               />
             </Stack>
           </Stack>
@@ -200,7 +200,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
             >
-              Loan Details
+              Loan details
             </Typography>
 
             <Stack
@@ -219,16 +219,16 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
                   OPTIONS_MORTGAGE_PROPERTY,
                   selectedItem?.propertyType as string,
                 )}
-                label={'Property Type'}
+                label={'Property type'}
               />
               <GroundCardItem
                 info={selectedItem?.closeDate}
-                label={'Preferred Close Date'}
+                label={'Preferred close date'}
               />
               <GroundCardItem info={selectedItem?.lien} label={'Lien'} />
               <GroundCardItem
                 info={POSFormatPercent(selectedItem?.ltv)}
-                label={'Loan-to-Value(LTV)'}
+                label={'Loan-to-value(LTV)'}
               />
               <GroundCardItem
                 info={POSFormatPercent(selectedItem?.ltc)}
@@ -253,15 +253,15 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
             >
               <GroundCardItem
                 info={POSFormatPercent(selectedItem?.interestRateOfYear)}
-                label={'Interest Rate'}
+                label={'Interest rate'}
               />
               <GroundCardItem
                 info={`${selectedItem?.loanTerm} months`}
-                label={'Loan Term'}
+                label={'Loan term'}
               />
               <GroundCardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}
-                label={'Monthly Payment'}
+                label={'Monthly payment'}
               />
             </Stack>
           </Stack>
@@ -273,7 +273,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               justifyContent={'space-between'}
               variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
             >
-              Est. Cash Required at Closing
+              Est. cash required at closing
               <Typography
                 component={'span'}
                 variant={
@@ -293,7 +293,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
             >
               <GroundCardItem
                 info={POSFormatDollar(selectedItem?.downPayment)}
-                label={'Down Payment'}
+                label={'Down payment'}
               />
               <GroundCardItem
                 info={`${POSFormatDollar(
@@ -301,23 +301,23 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
                 )}(${POSFormatPercent(
                   selectedItem?.originationFeePer || 0.015,
                 )})`}
-                label={'Lender Origination Fee'}
+                label={'Lender origination fee'}
               />
               <GroundCardItem
                 info={POSFormatDollar(selectedItem?.underwritingFee)}
-                label={'Underwriting Fee'}
+                label={'Underwriting fee'}
               />
               <GroundCardItem
                 info={POSFormatDollar(selectedItem?.docPreparationFee)}
-                label={'Document Preparation Fee'}
+                label={'Document preparation fee'}
               />
               <GroundCardItem
                 info={POSFormatDollar(selectedItem?.proRatedInterest as number)}
-                label={'Pro-rated Interest'}
+                label={'Pro-rated interest'}
               />
               <GroundCardItem
                 info={selectedItem?.thirdPartyCosts}
-                label={'Third-party Costs'}
+                label={'Third-party costs'}
               />
               {renderByUserType}
             </Stack>
@@ -334,7 +334,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               onClick={() => nextStep(selectedItem?.id as string)}
               size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
             >
-              Check My Pre-approval
+              Check my pre-approval
             </StyledButton>
           ) : (
             <StyledButton
@@ -346,7 +346,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               }
               size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
             >
-              Confirm Rate
+              Confirm rate
             </StyledButton>
           )}
         </Stack>
@@ -361,7 +361,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
           <Typography
             variant={['xs', 'sm'].includes(breakpoints) ? 'h4' : 'h5'}
           >
-            Rate Summary
+            Rate summary
           </Typography>
           <StyledButton isIconButton onClick={onCancel}>
             <CloseOutlined />

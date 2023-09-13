@@ -63,11 +63,11 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               )}(${POSFormatPercent(
                 (selectedItem?.brokerPoints as number) / 100,
               )})`}
-              label={'Broker Origination Fee'}
+              label={'Broker origination fee'}
             />
             <CardItem
               info={POSFormatDollar(selectedItem?.brokerProcessingFee)}
-              label={'Broker Processing Fee'}
+              label={'Broker processing fee'}
             />
           </>
         );
@@ -80,11 +80,11 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               )}(${POSFormatPercent(
                 (selectedItem?.officerPoints as number) / 100,
               )})`}
-              label={'Loan Officer Origination Fee'}
+              label={'Loan officer origination fee'}
             />
             <CardItem
               info={POSFormatDollar(selectedItem?.officerProcessingFee)}
-              label={'Loan Officer Processing Fee'}
+              label={'Loan officer processing fee'}
             />
           </>
         );
@@ -93,7 +93,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
           <>
             <CardItem
               info={POSFormatDollar(selectedItem?.agentFee)}
-              label={'Referral Fee'}
+              label={'Referral fee'}
             />
           </>
         );
@@ -163,15 +163,15 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               />
               <CardItem
                 info={POSFormatDollar(selectedItem?.totalLoanAmount)}
-                label={'Total Loan Amount'}
+                label={'Total loan amount'}
               />
               <CardItem
                 info={POSFormatDollar(selectedItem?.purchasePrice)}
-                label={'Purchase Price'}
+                label={'Purchase price'}
               />
               <CardItem
                 info={POSFormatDollar(selectedItem?.purchaseLoanAmount)}
-                label={'Purchase Loan Amount'}
+                label={'Purchase loan amount'}
               />
               <CardItem
                 info={
@@ -186,7 +186,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
             >
-              Loan Details
+              Loan details
             </Typography>
 
             <Stack
@@ -205,11 +205,11 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
                   OPTIONS_MORTGAGE_PROPERTY,
                   selectedItem?.propertyType as string,
                 )}
-                label={'Property Type'}
+                label={'Property type'}
               />
               <CardItem
                 info={selectedItem?.closeDate}
-                label={'Preferred Close Date'}
+                label={'Preferred close date'}
               />
               <CardItem info={selectedItem?.lien} label={'Lien'} />
               <CardItem
@@ -220,7 +220,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               />
               <CardItem
                 info={POSFormatPercent(selectedItem?.ltv)}
-                label={'Loan-to-Value(LTV)'}
+                label={'Loan-to-value(LTV)'}
               />
 
               <CardItem
@@ -246,15 +246,15 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
             >
               <CardItem
                 info={POSFormatPercent(selectedItem?.interestRateOfYear)}
-                label={'Interest Rate'}
+                label={'Interest rate'}
               />
               <CardItem
                 info={`${selectedItem?.loanTerm} months`}
-                label={'Loan Term'}
+                label={'Loan term'}
               />
               <CardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}
-                label={'Monthly Payment'}
+                label={'Monthly payment'}
               />
             </Stack>
           </Stack>
@@ -266,7 +266,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               justifyContent={'space-between'}
               variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
             >
-              Est. Cash Required at Closing
+              Est. cash required at closing
               <Typography
                 component={'span'}
                 variant={
@@ -286,7 +286,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
             >
               <CardItem
                 info={POSFormatDollar(selectedItem?.downPayment)}
-                label={'Down Payment'}
+                label={'Down payment'}
               />
               <CardItem
                 info={`${POSFormatDollar(
@@ -294,23 +294,23 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
                 )}(${POSFormatPercent(
                   selectedItem?.originationFeePer || 0.015,
                 )})`}
-                label={'Lender Origination Fee'}
+                label={'Lender origination fee'}
               />
               <CardItem
                 info={POSFormatDollar(selectedItem?.underwritingFee)}
-                label={'Underwriting Fee'}
+                label={'Underwriting fee'}
               />
               <CardItem
                 info={POSFormatDollar(selectedItem?.docPreparationFee)}
-                label={'Document Preparation Fee'}
+                label={'Document preparation fee'}
               />
               <CardItem
                 info={POSFormatDollar(selectedItem?.proRatedInterest as number)}
-                label={'Pro-rated Interest'}
+                label={'Pro-rated interest'}
               />
               <CardItem
                 info={selectedItem?.thirdPartyCosts}
-                label={'Third-party Costs'}
+                label={'Third-party costs'}
               />
               {renderByUserType}
             </Stack>
@@ -327,7 +327,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               onClick={() => nextStep(selectedItem?.id as string)}
               size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
             >
-              Check My Pre-approval
+              Check my pre-approval
             </StyledButton>
           ) : (
             <StyledButton
@@ -339,7 +339,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               }
               size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
             >
-              Confirm Rate
+              Confirm rate
             </StyledButton>
           )}
         </Stack>
@@ -354,7 +354,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
           <Typography
             variant={['xs', 'sm'].includes(breakpoints) ? 'h4' : 'h5'}
           >
-            Rate Summary
+            Rate summary
           </Typography>
           <StyledButton isIconButton onClick={onCancel}>
             <CloseOutlined />

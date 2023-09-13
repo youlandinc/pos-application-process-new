@@ -111,7 +111,7 @@ export const BridgeRefuse: FC<{ nextStep: () => void }> = observer(
             onClick={nextStep}
             sx={{ maxWidth: 600, width: '100%', mt: 11 }}
           >
-            Go Back Home
+            Go back home
           </StyledButton>
         </StyledFormItem>
       </>

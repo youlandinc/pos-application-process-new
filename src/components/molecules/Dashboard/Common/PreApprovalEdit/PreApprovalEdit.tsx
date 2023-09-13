@@ -59,7 +59,7 @@ export const PreApprovalEdit: FC<PreApprovalEditProps> = (props) => {
         <Stack width={'100%'}>
           <StyledSelect
             disabled={editable}
-            label="Property Type"
+            label="Property type"
             onChange={(e) => onTypeChange(e.target.value as PropertyOpt)}
             options={OPTIONS_MORTGAGE_PROPERTY}
             sx={{ maxWidth: '100%' }}

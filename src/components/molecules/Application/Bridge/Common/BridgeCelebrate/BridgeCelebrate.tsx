@@ -11,7 +11,6 @@ import { UserType } from '@/types/enum';
 
 import { StyledButton, StyledFormItem } from '@/components/atoms';
 
-// saas
 export const BridgeCelebrate: FC<{ nextStep: () => void }> = observer(
   ({ nextStep }) => {
     const {
@@ -106,7 +105,7 @@ export const BridgeCelebrate: FC<{ nextStep: () => void }> = observer(
               padding: '0 !important',
             }}
           >
-            Go To Dashboard
+            Go to dashboard
           </StyledButton>
         </Stack>
       </StyledFormItem>

@@ -254,7 +254,7 @@ export const GroundRefinanceTaskPersonalDetails: FC = observer(() => {
               </Stack>
             </StyledFormItem>
 
-            <StyledFormItem label={'Current Address'} sub>
+            <StyledFormItem label={'Current address'} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledGoogleAutoComplete address={address} disabled />
               </Stack>

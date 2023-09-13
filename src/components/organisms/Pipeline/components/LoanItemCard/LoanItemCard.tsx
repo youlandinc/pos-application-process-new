@@ -308,7 +308,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
 
         {userType === UserType.REAL_ESTATE_AGENT && (
           <Box className={'product_item'}>
-            <Box>Referral Fee</Box>
+            <Box>Referral fee</Box>
             <Typography variant={'subtitle1'}>
               {POSFormatDollar(agentFee)}
             </Typography>

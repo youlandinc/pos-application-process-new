@@ -117,25 +117,25 @@ export const GroundPersonInfo: FC = observer(() => {
           <Stack gap={3} maxWidth={600} width={'100%'}>
             <Stack>
               <StyledTextField
-                label={'First Name'}
+                label={'First name'}
                 onChange={changeFieldValue('firstName')}
-                placeholder={'First Name'}
+                placeholder={'First name'}
                 validate={selfInfo.errors.firstName}
                 value={selfInfo.firstName}
               />
             </Stack>
             <Stack>
               <StyledTextField
-                label={'Last Name'}
+                label={'Last name'}
                 onChange={changeFieldValue('lastName')}
-                placeholder={'Last Name'}
+                placeholder={'Last name'}
                 validate={selfInfo.errors.lastName}
                 value={selfInfo.lastName}
               />
             </Stack>
             <Stack>
               <StyledDatePicker
-                label={'Date of Birth'}
+                label={'Date of birth'}
                 onChange={changeFieldValue('dateOfBirth')}
                 validate={selfInfo.errors.dateOfBirth}
                 value={selfInfo.dateOfBirth}
@@ -143,9 +143,9 @@ export const GroundPersonInfo: FC = observer(() => {
             </Stack>
             <Stack>
               <StyledTextFieldPhone
-                label={'Phone Number'}
+                label={'Phone number'}
                 onValueChange={changeFieldValue('phoneNumber')}
-                placeholder={'Phone Number'}
+                placeholder={'Phone number'}
                 validate={selfInfo.errors.phoneNumber}
                 value={selfInfo.phoneNumber}
               />
@@ -161,7 +161,7 @@ export const GroundPersonInfo: FC = observer(() => {
             </Stack>
           </Stack>
         </StyledFormItem>
-        <StyledFormItem label={'Current Address'} sub>
+        <StyledFormItem label={'Current address'} sub>
           <Stack gap={3} maxWidth={600} width={'100%'}>
             <StyledGoogleAutoComplete address={selfInfo.address} />
           </Stack>

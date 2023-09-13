@@ -63,11 +63,11 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               )}(${POSFormatPercent(
                 (selectedItem?.brokerPoints as number) / 100,
               )})`}
-              label={'Broker Origination Fee'}
+              label={'Broker origination fee'}
             />
             <BridgePurchaseCardItem
               info={POSFormatDollar(selectedItem?.brokerProcessingFee)}
-              label={'Broker Processing Fee'}
+              label={'Broker processing fee'}
             />
           </>
         );
@@ -80,11 +80,11 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               )}(${POSFormatPercent(
                 (selectedItem?.lenderPoints as number) / 100,
               )})`}
-              label={'Lender Origination Fee'}
+              label={'Lender origination fee'}
             />
             <BridgePurchaseCardItem
               info={POSFormatDollar(selectedItem?.lenderProcessingFee)}
-              label={'Lender Processing Fee'}
+              label={'Lender processing fee'}
             />
           </>
         );
@@ -97,11 +97,11 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               )}(${POSFormatPercent(
                 (selectedItem?.officerPoints as number) / 100,
               )})`}
-              label={'Loan Officer Origination Fee'}
+              label={'Loan officer origination fee'}
             />
             <BridgePurchaseCardItem
               info={POSFormatDollar(selectedItem?.officerProcessingFee)}
-              label={'Loan Officer Processing Fee'}
+              label={'Loan officer processing fee'}
             />
           </>
         );
@@ -110,7 +110,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
           <>
             <BridgePurchaseCardItem
               info={POSFormatDollar(selectedItem?.agentFee)}
-              label={'Referral Fee'}
+              label={'Referral fee'}
             />
           </>
         );
@@ -183,15 +183,15 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               />
               <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.totalLoanAmount)}
-                label={'Total Loan Amount'}
+                label={'Total loan amount'}
               />
               <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.purchasePrice)}
-                label={'Purchase Price'}
+                label={'Purchase price'}
               />
               <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.purchaseLoanAmount)}
-                label={'Purchase Loan Amount'}
+                label={'Purchase loan amount'}
               />
             </Stack>
           </Stack>
@@ -200,7 +200,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
             >
-              Loan Details
+              Loan details
             </Typography>
 
             <Stack
@@ -219,11 +219,11 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
                   OPTIONS_MORTGAGE_PROPERTY,
                   selectedItem?.propertyType as string,
                 )}
-                label={'Property Type'}
+                label={'Property type'}
               />
               <BridgePurchaseCardItem
                 info={selectedItem?.closeDate}
-                label={'Preferred Close Date'}
+                label={'Preferred close date'}
               />
               <BridgePurchaseCardItem
                 info={selectedItem?.lien}
@@ -231,7 +231,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               />
               <BridgePurchaseCardItem
                 info={POSFormatPercent(selectedItem?.ltv)}
-                label={'Loan-to-Value(LTV)'}
+                label={'Loan-to-value(LTV)'}
               />
             </Stack>
           </Stack>
@@ -252,15 +252,15 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
             >
               <BridgePurchaseCardItem
                 info={POSFormatPercent(selectedItem?.interestRateOfYear)}
-                label={'Interest Rate'}
+                label={'Interest rate'}
               />
               <BridgePurchaseCardItem
                 info={`${selectedItem?.loanTerm} months`}
-                label={'Loan Term'}
+                label={'Loan term'}
               />
               <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}
-                label={'Monthly Payment'}
+                label={'Monthly payment'}
               />
             </Stack>
           </Stack>
@@ -272,7 +272,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               justifyContent={'space-between'}
               variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
             >
-              Est. Cash Required at Closing
+              Est. cash required at closing
               <Typography
                 component={'span'}
                 variant={
@@ -292,7 +292,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
             >
               <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.downPayment)}
-                label={'Down Payment'}
+                label={'Down payment'}
               />
               <BridgePurchaseCardItem
                 info={`${POSFormatDollar(
@@ -300,23 +300,23 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
                 )}(${POSFormatPercent(
                   selectedItem?.originationFeePer || 0.015,
                 )})`}
-                label={'Lender Origination Fee'}
+                label={'Lender origination fee'}
               />
               <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.underwritingFee)}
-                label={'Underwriting Fee'}
+                label={'Underwriting fee'}
               />
               <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.docPreparationFee)}
-                label={'Document Preparation Fee'}
+                label={'Document preparation fee'}
               />
               <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.proRatedInterest as number)}
-                label={'Pro-rated Interest'}
+                label={'Pro-rated interest'}
               />
               <BridgePurchaseCardItem
                 info={selectedItem?.thirdPartyCosts}
-                label={'Third-party Costs'}
+                label={'Third-party costs'}
               />
               {renderByUserType}
             </Stack>
@@ -333,7 +333,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               onClick={() => nextStep(selectedItem?.id as string)}
               size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
             >
-              Check My Pre-approval
+              Check my pre-approval
             </StyledButton>
           ) : (
             <StyledButton
@@ -345,7 +345,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
               }
               size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
             >
-              Confirm Rate
+              Confirm rate
             </StyledButton>
           )}
         </Stack>
@@ -360,7 +360,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
           <Typography
             variant={['xs', 'sm'].includes(breakpoints) ? 'h4' : 'h5'}
           >
-            Rate Summary
+            Rate summary
           </Typography>
           <StyledButton isIconButton onClick={onCancel}>
             <CloseOutlined />

@@ -349,21 +349,21 @@ export const GroundPurchaseTaskCompanyInformation: FC = observer(() => {
               sub
             >
               <StyledTextField
-                label={'Contact First Name'}
+                label={'Contact First name'}
                 onChange={(e) =>
                   setContactForm({ ...contactForm, firstName: e.target.value })
                 }
                 value={contactForm.firstName}
               />
               <StyledTextField
-                label={'Contact Last Name'}
+                label={'Contact Last name'}
                 onChange={(e) =>
                   setContactForm({ ...contactForm, lastName: e.target.value })
                 }
                 value={contactForm.lastName}
               />
               <StyledTextFieldPhone
-                label={'Phone Number'}
+                label={'Phone number'}
                 onValueChange={({ value }) => {
                   setContactForm({ ...contactForm, phoneNumber: value });
                 }}
@@ -470,7 +470,7 @@ export const GroundPurchaseTaskCompanyInformation: FC = observer(() => {
                     />
 
                     <StyledTextField
-                      label={'First Name'}
+                      label={'First name'}
                       onChange={(e) =>
                         setManageForm({
                           ...manageForm,
@@ -480,7 +480,7 @@ export const GroundPurchaseTaskCompanyInformation: FC = observer(() => {
                       value={manageForm.firstName}
                     />
                     <StyledTextField
-                      label={'Last Name'}
+                      label={'Last name'}
                       onChange={(e) =>
                         setManageForm({
                           ...manageForm,
@@ -490,7 +490,7 @@ export const GroundPurchaseTaskCompanyInformation: FC = observer(() => {
                       value={manageForm.lastName}
                     />
                     <StyledTextFieldPhone
-                      label={'Phone Number'}
+                      label={'Phone number'}
                       onValueChange={({ value }) => {
                         setManageForm({ ...manageForm, phoneNumber: value });
                       }}
