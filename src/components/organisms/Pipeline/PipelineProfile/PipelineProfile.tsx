@@ -379,15 +379,15 @@ export const PipelineProfile: FC = observer(() => {
   const userTask = useMemo(() => {
     switch (userType) {
       case UserType.BROKER:
-        return 'Broker Tasks';
+        return 'Broker tasks';
       case UserType.LENDER:
-        return 'Lender Tasks';
+        return 'Lender tasks';
       case UserType.LOAN_OFFICER:
-        return 'Loan Officer Tasks';
+        return 'Loan officer tasks';
       case UserType.REAL_ESTATE_AGENT:
-        return 'Real Estate Agent Tasks';
+        return 'Real estate agent tasks';
       default:
-        return 'Broker Tasks';
+        return 'Broker tasks';
     }
   }, [userType]);
 
