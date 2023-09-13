@@ -1,4 +1,3 @@
-import { POSFindLabel, POSUpperFirstLetter } from '@/utils';
 import { ChangeEvent, FC, useCallback } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { NumberFormatValues } from 'react-number-format';
@@ -11,6 +10,7 @@ import {
   OPTIONS_COMMON_CITIZEN_TYPE,
   OPTIONS_COMMON_USER_TYPE,
 } from '@/constants';
+import { POSFindLabel, POSUpperFirstLetter } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
 import { CommonBorrowerType, UserType } from '@/types';
 import {
@@ -210,17 +210,10 @@ export const GroundPersonInfo: FC = observer(() => {
                     OPTIONS_COMMON_USER_TYPE,
                     userType as UserType,
                   ).toLowerCase()} , authorize `}
-              {
-                //sass
-                ' ' + saasState?.organizationName || ' YouLand'
-              }{' '}
-              to verify{' '}
+              {' ' + saasState?.organizationName || ' YouLand'} to verify{' '}
               {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_oneself}{' '}
               credit. I have also read and agreed to
-              {
-                //sass
-                ' ' + saasState?.organizationName || ' YouLand'
-              }
+              {' ' + saasState?.organizationName || ' YouLand'}
               &apos;s{' '}
               <Typography
                 className={'link_style'}

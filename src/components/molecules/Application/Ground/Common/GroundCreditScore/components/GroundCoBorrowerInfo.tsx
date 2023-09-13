@@ -1,10 +1,11 @@
-import { POSFindLabel } from '@/utils';
-import { Stack, Typography } from '@mui/material';
 import { ChangeEvent, FC, useCallback } from 'react';
+import { Stack, Typography } from '@mui/material';
+import { NumberFormatValues } from 'react-number-format';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { POSFindLabel } from '@/utils';
 import {
   HASH_COMMON_PERSON,
   OPTIONS_COMMON_CITIZEN_TYPE,
@@ -16,6 +17,7 @@ import {
   SPersonalInfo,
 } from '@/models/application/common/CreditScore';
 import { CommonBorrowerType, UserType } from '@/types';
+import { useSessionStorageState } from '@/hooks';
 
 import {
   StyledButtonGroup,
@@ -29,8 +31,6 @@ import {
   StyledTextFieldSocialNumber,
   Transitions,
 } from '@/components/atoms';
-import { NumberFormatValues } from 'react-number-format';
-import { useSessionStorageState } from '@/hooks';
 
 export const GroundCoBorrowerInfo: FC = observer(() => {
   const {
@@ -146,7 +146,6 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
               label={'Personal information'}
               sub
               tip={`By entering co-borrower's phone number, you are authorizing ${
-                //sass
                 ' ' + saasState?.organizationName || ' YouLand'
               } to use this number to call, text and send ${
                 HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER]
@@ -248,17 +247,9 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
                         OPTIONS_COMMON_USER_TYPE,
                         userType as UserType,
                       ).toLowerCase()} , authorize `}
-                  {
-                    //sass
-                    ' ' + saasState?.organizationName || ' YouLand'
-                  }{' '}
-                  to verify co-borrower&apos;s credit. I&apos;ve also read and
-                  agreed to
-                  {
-                    //sass
-                    ' ' + saasState?.organizationName || ' YouLand'
-                  }{' '}
-                  &apos;s{' '}
+                  {' ' + saasState?.organizationName || ' YouLand'} to verify
+                  co-borrower&apos;s credit. I&apos;ve also read and agreed to
+                  {' ' + saasState?.organizationName || ' YouLand'} &apos;s{' '}
                   <Typography
                     className={'link_style'}
                     component={'span'}
