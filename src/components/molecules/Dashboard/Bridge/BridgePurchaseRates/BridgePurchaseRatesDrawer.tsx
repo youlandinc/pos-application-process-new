@@ -1,4 +1,4 @@
-import { useBreakpoints } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
@@ -27,17 +27,15 @@ interface BridgePurchaseRatesDrawerProps {
   loading?: boolean;
 }
 
-export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
-  props,
-) => {
-  const {
-    onCancel,
-    visible,
-    selectedItem,
-    nextStep,
-    userType,
-    loading = false,
-  } = props;
+export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = ({
+  onCancel,
+  visible,
+  selectedItem,
+  nextStep,
+  userType,
+  loading = false,
+}) => {
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const router = useRouter();
   const breakpoints = useBreakpoints();
@@ -300,7 +298,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = (
                 )}(${POSFormatPercent(
                   selectedItem?.originationFeePer || 0.015,
                 )})`}
-                label={'Lender origination fee'}
+                label={`${saasState?.organizationName} origination fee`}
               />
               <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.underwritingFee)}

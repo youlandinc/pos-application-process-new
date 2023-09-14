@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 
-import { useBreakpoints } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { BridgeRefinanceLoanInfo } from '@/components/molecules/Application';
 import { RatesProductData } from '@/types';
 import { UserType } from '@/types/enum';
@@ -37,6 +37,8 @@ export const BridgeRefinanceRatesDrawer: FC<
   userType,
   loading = false,
 }) => {
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   const router = useRouter();
   const breakpoints = useBreakpoints();
 
@@ -297,7 +299,7 @@ export const BridgeRefinanceRatesDrawer: FC<
                 )}(${POSFormatPercent(
                   selectedItem?.originationFeePer || 0.015,
                 )})`}
-                label={'Lender origination fee'}
+                label={`${saasState?.organizationName} origination fee`}
               />
               <BridgeRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.underwritingFee)}

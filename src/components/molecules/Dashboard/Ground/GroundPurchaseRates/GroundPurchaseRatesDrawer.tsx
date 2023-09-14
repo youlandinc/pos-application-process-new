@@ -4,7 +4,7 @@ import { Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 
 import { GroundPurchaseLoanInfo } from '@/components/molecules/Application/Ground';
-import { useBreakpoints } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { RatesProductData } from '@/types';
 import { UserType } from '@/types/enum';
 import { POSFindLabel, POSFormatDollar, POSFormatPercent } from '@/utils';
@@ -27,17 +27,15 @@ interface GroundPurchaseRatesDrawerProps {
   loading?: boolean;
 }
 
-export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
-  props,
-) => {
-  const {
-    onCancel,
-    visible,
-    selectedItem,
-    nextStep,
-    userType,
-    loading = false,
-  } = props;
+export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = ({
+  onCancel,
+  visible,
+  selectedItem,
+  nextStep,
+  userType,
+  loading = false,
+}) => {
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const router = useRouter();
   const breakpoints = useBreakpoints();
@@ -57,7 +55,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
       case UserType.BROKER:
         return (
           <>
-            <GroundCardItem
+            <GroundPurchaseCardItem
               info={`${POSFormatDollar(
                 selectedItem?.brokerOriginationFee,
               )}(${POSFormatPercent(
@@ -65,7 +63,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               )})`}
               label={'Broker origination fee'}
             />
-            <GroundCardItem
+            <GroundPurchaseCardItem
               info={POSFormatDollar(selectedItem?.brokerProcessingFee)}
               label={'Broker processing fee'}
             />
@@ -74,7 +72,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
       case UserType.LENDER:
         return (
           <>
-            <GroundCardItem
+            <GroundPurchaseCardItem
               info={`${POSFormatDollar(
                 selectedItem?.lenderOriginationFee,
               )}(${POSFormatPercent(
@@ -82,7 +80,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               )})`}
               label={'Lender origination fee'}
             />
-            <GroundCardItem
+            <GroundPurchaseCardItem
               info={POSFormatDollar(selectedItem?.lenderProcessingFee)}
               label={'Lender processing fee'}
             />
@@ -91,7 +89,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
       case UserType.LOAN_OFFICER:
         return (
           <>
-            <GroundCardItem
+            <GroundPurchaseCardItem
               info={`${POSFormatDollar(
                 selectedItem?.officerOriginationFee,
               )}(${POSFormatPercent(
@@ -99,7 +97,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               )})`}
               label={'Loan officer origination fee'}
             />
-            <GroundCardItem
+            <GroundPurchaseCardItem
               info={POSFormatDollar(selectedItem?.officerProcessingFee)}
               label={'Loan officer processing fee'}
             />
@@ -108,7 +106,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
       case UserType.REAL_ESTATE_AGENT:
         return (
           <>
-            <GroundCardItem
+            <GroundPurchaseCardItem
               info={POSFormatDollar(selectedItem?.agentFee)}
               label={'Referral fee'}
             />
@@ -156,7 +154,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               p={1.5}
               width={'100%'}
             >
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={
                   <Typography variant={'inherit'}>
                     {`${selectedItem?.firstName} ${selectedItem?.lastName}`}
@@ -164,7 +162,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
                 }
                 label={'Borrower'}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={
                   <Typography
                     component={'div'}
@@ -181,15 +179,15 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
                 }
                 label={'Address'}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.totalLoanAmount)}
                 label={'Total loan amount'}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.purchasePrice)}
                 label={'Purchase price'}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.purchaseLoanAmount)}
                 label={'Purchase loan amount'}
               />
@@ -210,27 +208,30 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               p={1.5}
               width={'100%'}
             >
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={selectedItem?.amortization}
                 label={'Amortization'}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={POSFindLabel(
                   OPTIONS_MORTGAGE_PROPERTY,
                   selectedItem?.propertyType as string,
                 )}
                 label={'Property type'}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={selectedItem?.closeDate}
                 label={'Preferred close date'}
               />
-              <GroundCardItem info={selectedItem?.lien} label={'Lien'} />
-              <GroundCardItem
+              <GroundPurchaseCardItem
+                info={selectedItem?.lien}
+                label={'Lien'}
+              />
+              <GroundPurchaseCardItem
                 info={POSFormatPercent(selectedItem?.ltv)}
                 label={'Loan-to-value(LTV)'}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={POSFormatPercent(selectedItem?.ltc)}
                 label={'Loan-to-cost(LTC)'}
               />
@@ -251,15 +252,15 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               p={1.5}
               width={'100%'}
             >
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={POSFormatPercent(selectedItem?.interestRateOfYear)}
                 label={'Interest rate'}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={`${selectedItem?.loanTerm} months`}
                 label={'Loan term'}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}
                 label={'Monthly payment'}
               />
@@ -291,31 +292,31 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
               p={1.5}
               width={'100%'}
             >
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.downPayment)}
                 label={'Down payment'}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={`${POSFormatDollar(
                   selectedItem?.originationFee,
                 )}(${POSFormatPercent(
                   selectedItem?.originationFeePer || 0.015,
                 )})`}
-                label={'Lender origination fee'}
+                label={`${saasState?.organizationName} origination fee`}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.underwritingFee)}
                 label={'Underwriting fee'}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.docPreparationFee)}
                 label={'Document preparation fee'}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.proRatedInterest as number)}
                 label={'Pro-rated interest'}
               />
-              <GroundCardItem
+              <GroundPurchaseCardItem
                 info={selectedItem?.thirdPartyCosts}
                 label={'Third-party costs'}
               />
@@ -376,7 +377,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = (
   );
 };
 
-const GroundCardItem: FC<{ label: string; info: ReactNode }> = ({
+const GroundPurchaseCardItem: FC<{ label: string; info: ReactNode }> = ({
   label,
   info,
 }) => {
