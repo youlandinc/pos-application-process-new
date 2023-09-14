@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { FixPurchaseLoanInfo } from '@/components/molecules/Application';
 import { RatesProductData } from '@/types';
 import { UserType } from '@/types/enum';
-import { useBreakpoints } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { POSFindLabel, POSFormatDollar, POSFormatPercent } from '@/utils';
 import { OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
 
@@ -27,17 +27,15 @@ interface FixPurchaseRatesDrawerProps {
   loading?: boolean;
 }
 
-export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
-  props,
-) => {
-  const {
-    onCancel,
-    visible,
-    selectedItem,
-    nextStep,
-    userType,
-    loading = false,
-  } = props;
+export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = ({
+  onCancel,
+  visible,
+  selectedItem,
+  nextStep,
+  userType,
+  loading = false,
+}) => {
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const router = useRouter();
   const breakpoints = useBreakpoints();
@@ -57,7 +55,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
       case UserType.BROKER:
         return (
           <>
-            <CardItem
+            <FixPurchaseCardItem
               info={`${POSFormatDollar(
                 selectedItem?.brokerOriginationFee,
               )}(${POSFormatPercent(
@@ -65,16 +63,33 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               )})`}
               label={'Broker origination fee'}
             />
-            <CardItem
+            <FixPurchaseCardItem
               info={POSFormatDollar(selectedItem?.brokerProcessingFee)}
               label={'Broker processing fee'}
+            />
+          </>
+        );
+      case UserType.LENDER:
+        return (
+          <>
+            <FixPurchaseCardItem
+              info={`${POSFormatDollar(
+                selectedItem?.lenderOriginationFee,
+              )}(${POSFormatPercent(
+                (selectedItem?.lenderPoints as number) / 100,
+              )})`}
+              label={'Lender origination fee'}
+            />
+            <FixPurchaseCardItem
+              info={POSFormatDollar(selectedItem?.lenderProcessingFee)}
+              label={'Lender processing fee'}
             />
           </>
         );
       case UserType.LOAN_OFFICER:
         return (
           <>
-            <CardItem
+            <FixPurchaseCardItem
               info={`${POSFormatDollar(
                 selectedItem?.officerOriginationFee,
               )}(${POSFormatPercent(
@@ -82,7 +97,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               )})`}
               label={'Loan officer origination fee'}
             />
-            <CardItem
+            <FixPurchaseCardItem
               info={POSFormatDollar(selectedItem?.officerProcessingFee)}
               label={'Loan officer processing fee'}
             />
@@ -91,7 +106,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
       case UserType.REAL_ESTATE_AGENT:
         return (
           <>
-            <CardItem
+            <FixPurchaseCardItem
               info={POSFormatDollar(selectedItem?.agentFee)}
               label={'Referral fee'}
             />
@@ -105,6 +120,9 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
     selectedItem?.brokerOriginationFee,
     selectedItem?.brokerPoints,
     selectedItem?.brokerProcessingFee,
+    selectedItem?.lenderOriginationFee,
+    selectedItem?.lenderPoints,
+    selectedItem?.lenderProcessingFee,
     selectedItem?.officerOriginationFee,
     selectedItem?.officerPoints,
     selectedItem?.officerProcessingFee,
@@ -136,7 +154,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <FixPurchaseCardItem
                 info={
                   <Typography variant={'inherit'}>
                     {`${selectedItem?.firstName} ${selectedItem?.lastName}`}
@@ -144,7 +162,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
                 }
                 label={'Borrower'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={
                   <Typography
                     component={'div'}
@@ -161,19 +179,19 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
                 }
                 label={'Address'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.totalLoanAmount)}
                 label={'Total loan amount'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.purchasePrice)}
                 label={'Purchase price'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.purchaseLoanAmount)}
                 label={'Purchase loan amount'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={
                   selectedItem?.cor ? POSFormatDollar(selectedItem?.cor) : 'N/A'
                 }
@@ -196,34 +214,34 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <FixPurchaseCardItem
                 info={selectedItem?.amortization}
                 label={'Amortization'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={POSFindLabel(
                   OPTIONS_MORTGAGE_PROPERTY,
                   selectedItem?.propertyType as string,
                 )}
                 label={'Property type'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={selectedItem?.closeDate}
                 label={'Preferred close date'}
               />
-              <CardItem info={selectedItem?.lien} label={'Lien'} />
-              <CardItem
+              <FixPurchaseCardItem info={selectedItem?.lien} label={'Lien'} />
+              <FixPurchaseCardItem
                 info={
                   selectedItem?.arv ? POSFormatDollar(selectedItem?.arv) : 'N/A'
                 }
                 label={'Estimated ARV'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={POSFormatPercent(selectedItem?.ltv)}
                 label={'Loan-to-value(LTV)'}
               />
 
-              <CardItem
+              <FixPurchaseCardItem
                 info={POSFormatPercent(selectedItem?.ltc)}
                 label={'Loan-to-cost(LTC)'}
               />
@@ -244,15 +262,15 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <FixPurchaseCardItem
                 info={POSFormatPercent(selectedItem?.interestRateOfYear)}
                 label={'Interest rate'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={`${selectedItem?.loanTerm} months`}
                 label={'Loan term'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}
                 label={'Monthly payment'}
               />
@@ -284,31 +302,31 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <FixPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.downPayment)}
                 label={'Down payment'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={`${POSFormatDollar(
                   selectedItem?.originationFee,
                 )}(${POSFormatPercent(
                   selectedItem?.originationFeePer || 0.015,
                 )})`}
-                label={'Lender origination fee'}
+                label={`${saasState?.organizationName} origination fee`}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.underwritingFee)}
                 label={'Underwriting fee'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.docPreparationFee)}
                 label={'Document preparation fee'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.proRatedInterest as number)}
                 label={'Pro-rated interest'}
               />
-              <CardItem
+              <FixPurchaseCardItem
                 info={selectedItem?.thirdPartyCosts}
                 label={'Third-party costs'}
               />
@@ -369,7 +387,10 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = (
   );
 };
 
-const CardItem: FC<{ label: string; info: ReactNode }> = ({ label, info }) => {
+const FixPurchaseCardItem: FC<{ label: string; info: ReactNode }> = ({
+  label,
+  info,
+}) => {
   const breakpoints = useBreakpoints();
 
   return (
