@@ -183,7 +183,7 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
         ) : (
           <StyledFormItem
             gap={6}
-            label={'Borrower Type'}
+            label={'Borrower type'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
@@ -213,25 +213,25 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
               }}
             >
               {borrowerType === DashboardTaskBorrowerType.entity && (
-                <StyledFormItem label={'Entity Information'} sub>
+                <StyledFormItem label={'Entity information'} sub>
                   <Stack gap={3} maxWidth={600} width={'100%'}>
                     <StyledTextField
-                      label={'Entity Name'}
+                      label={'Entity name'}
                       onChange={(e) => setEntityName(e.target.value)}
                       value={entityName}
                     />
                     <StyledTextField
                       disabled
-                      label={'Authorized Signatory Name'}
+                      label={'Authorized signatory name'}
                       value={authorizedSignatoryName}
                     />
                     <StyledTextField
-                      label={'Authorized Signatory Title'}
+                      label={'Authorized signatory Title'}
                       onChange={(e) => setSignatoryTitle(e.target.value)}
                       value={signatoryTitle}
                     />
                     <StyledSelect
-                      label={'Entity Type'}
+                      label={'Entity type'}
                       onChange={(e) =>
                         setEntityType(
                           e.target
@@ -242,12 +242,12 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
                       value={entityType}
                     />
                     <StyledTextField
-                      label={'Secretary of State ID'}
+                      label={'Secretary of state ID'}
                       onChange={(e) => setStateId(e.target.value)}
                       value={stateId}
                     />
                     <StyledSelect
-                      label={'Formation State'}
+                      label={'Formation state'}
                       onChange={(e) => setEntityState(e.target.value as string)}
                       options={OPTIONS_COMMON_STATE}
                       value={entityState}
@@ -267,7 +267,7 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
               }}
             >
               {borrowerType === DashboardTaskBorrowerType.trust && (
-                <StyledFormItem label={'Trust Information'} sub>
+                <StyledFormItem label={'Trust information'} sub>
                   <Stack gap={3} maxWidth={600} width={'100%'}>
                     <StyledTextField
                       label={'Trust Name'}
@@ -276,11 +276,11 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
                     />
                     <StyledTextField
                       disabled
-                      label={'Authorized Signatory Name'}
+                      label={'Authorized signatory name'}
                       value={authorizedSignatoryName}
                     />
                     <StyledTextField
-                      label={'Authorized Signatory Title'}
+                      label={'Authorized signatory title'}
                       onChange={(e) => setSignatoryTitle(e.target.value)}
                       value={signatoryTitle}
                     />

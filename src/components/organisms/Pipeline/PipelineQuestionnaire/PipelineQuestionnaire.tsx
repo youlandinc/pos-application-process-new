@@ -471,7 +471,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
               onClick={handledSaveFile}
               sx={{ flexShrink: 0, height: 56, width: 200 }}
             >
-              I Agree
+              I agree
             </StyledButton>
           </Stack>
         }

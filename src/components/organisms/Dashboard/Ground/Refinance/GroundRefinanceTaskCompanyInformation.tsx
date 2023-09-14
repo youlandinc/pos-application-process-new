@@ -387,7 +387,7 @@ export const GroundRefinanceTaskCompanyInformation: FC = observer(() => {
                 value={contactForm.companyName}
               />
               <StyledTextField
-                label={'Title Order Number'}
+                label={'Title order number'}
                 onChange={(e) =>
                   setContactForm({
                     ...contactForm,
@@ -397,7 +397,7 @@ export const GroundRefinanceTaskCompanyInformation: FC = observer(() => {
                 value={contactForm.titleOrderNumber}
               />
               <StyledDatePicker
-                label={'Title Effective Date'}
+                label={'Title effective date'}
                 onChange={(date) =>
                   setContactForm({ ...contactForm, contractDate: date })
                 }

@@ -20,12 +20,12 @@ export const OPTIONS_TASK_CITIZENSHIP_STATUS: Option[] = [
   {
     key: DashboardTaskCitizenshipStatus.permanent_resident_alien,
     value: DashboardTaskCitizenshipStatus.permanent_resident_alien,
-    label: 'Permanent Resident-Alien',
+    label: 'Permanent resident-alien',
   },
   {
     key: DashboardTaskCitizenshipStatus.non_permanent_resident_alien,
     value: DashboardTaskCitizenshipStatus.non_permanent_resident_alien,
-    label: 'Non-Permanent Resident-Alien',
+    label: 'Non-permanent resident-alien',
   },
 ];
 export const OPTIONS_TASK_MARTIAL_STATUS: Option[] = [

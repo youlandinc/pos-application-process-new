@@ -173,7 +173,7 @@ export const BridgeRefinanceTaskInvestmentExperience: FC = observer(() => {
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldNumber
                   decimalScale={0}
-                  label={'Track Record'}
+                  label={'Track record'}
                   onValueChange={({ formattedValue }) =>
                     setPropertiesNum(formattedValue)
                   }
