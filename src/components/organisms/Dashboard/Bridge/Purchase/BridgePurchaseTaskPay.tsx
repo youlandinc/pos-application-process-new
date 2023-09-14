@@ -234,7 +234,7 @@ export const BridgePurchaseTaskPay: FC = observer(() => {
               loadingText={'Processing...'}
               // onClick={handledSaveFile}
             >
-              I Agree
+              I agree
             </StyledButton>
           </Stack>
         }
