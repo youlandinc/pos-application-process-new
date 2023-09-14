@@ -109,7 +109,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
       e.preventDefault();
       e.stopPropagation();
       handledClose(e);
-      await onView();
+      onView();
     },
     [handledClose, onView],
   );

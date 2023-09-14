@@ -163,6 +163,7 @@ export const Pipeline: FC = observer(() => {
         break;
       default:
         selectedProcessData.setLoading(true);
+        selectedProcessData.setProcessId('');
         await router.push({
           pathname: '/dashboard/overview',
           query: { processId: row.youlandId },
