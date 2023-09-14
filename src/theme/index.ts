@@ -70,7 +70,7 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: '#5B76BC',
-      A100: '#0C249F',
+      A100: '#3C538F',
       A200: 'rgba(17, 52, 227, 0.2)',
     },
     secondary: {

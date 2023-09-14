@@ -178,7 +178,9 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
           >
             <Paper>
               <ClickAwayListener onClickAway={handledClose}>
-                <MenuList sx={{ mt: 2, width: 170 }}>{renderMenuList}</MenuList>
+                <MenuList sx={{ mt: 2, width: 170, p: 0 }}>
+                  {renderMenuList}
+                </MenuList>
               </ClickAwayListener>
             </Paper>
           </Grow>
