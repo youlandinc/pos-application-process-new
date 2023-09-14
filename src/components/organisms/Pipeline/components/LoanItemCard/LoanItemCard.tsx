@@ -213,15 +213,21 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
             >
               <Paper>
                 <ClickAwayListener onClickAway={handledClose}>
-                  <MenuList sx={{ mt: 1.5, width: 180 }}>
-                    <MenuItem onClick={handledView} sx={{ width: '100%' }}>
+                  <MenuList sx={{ mt: 1.5, width: 180, p: 0 }}>
+                    <MenuItem
+                      onClick={handledView}
+                      sx={{ width: '100%', p: 3 }}
+                    >
                       <Icon
                         className={'POS_mr_3'}
                         component={RemoveRedEyeOutlined}
                       />
                       View
                     </MenuItem>
-                    <MenuItem onClick={handledDelete} sx={{ width: '100%' }}>
+                    <MenuItem
+                      onClick={handledDelete}
+                      sx={{ width: '100%', p: 3 }}
+                    >
                       <Icon
                         className={'POS_mr_3'}
                         component={DeleteForeverOutlined}
