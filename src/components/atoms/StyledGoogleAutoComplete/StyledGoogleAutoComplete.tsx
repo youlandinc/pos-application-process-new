@@ -215,7 +215,7 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
           {...params}
           fullWidth
           label={label || 'Add a location'}
-          placeholder="City,State,or Zip"
+          placeholder="Address"
           variant="outlined"
         />
       )}
