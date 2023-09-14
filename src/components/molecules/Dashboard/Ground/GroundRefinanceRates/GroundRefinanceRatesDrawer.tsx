@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 
-import { useBreakpoints } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { RatesProductData } from '@/types';
 import { UserType } from '@/types/enum';
 import { POSFindLabel, POSFormatDollar, POSFormatPercent } from '@/utils';
@@ -37,6 +37,8 @@ export const GroundRefinanceRatesDrawer: FC<
   userType,
   loading = false,
 }) => {
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   const router = useRouter();
   const breakpoints = useBreakpoints();
 
@@ -55,7 +57,7 @@ export const GroundRefinanceRatesDrawer: FC<
       case UserType.BROKER:
         return (
           <>
-            <CardItem
+            <GroundRefinanceCardItem
               info={`${POSFormatDollar(
                 selectedItem?.brokerOriginationFee,
               )}(${POSFormatPercent(
@@ -63,7 +65,7 @@ export const GroundRefinanceRatesDrawer: FC<
               )})`}
               label={'Broker origination fee'}
             />
-            <CardItem
+            <GroundRefinanceCardItem
               info={POSFormatDollar(selectedItem?.brokerProcessingFee)}
               label={'Broker processing fee'}
             />
@@ -72,7 +74,7 @@ export const GroundRefinanceRatesDrawer: FC<
       case UserType.LENDER:
         return (
           <>
-            <CardItem
+            <GroundRefinanceCardItem
               info={`${POSFormatDollar(
                 selectedItem?.lenderOriginationFee,
               )}(${POSFormatPercent(
@@ -80,7 +82,7 @@ export const GroundRefinanceRatesDrawer: FC<
               )})`}
               label={'Lender origination fee'}
             />
-            <CardItem
+            <GroundRefinanceCardItem
               info={POSFormatDollar(selectedItem?.lenderProcessingFee)}
               label={'Lender processing fee'}
             />
@@ -89,7 +91,7 @@ export const GroundRefinanceRatesDrawer: FC<
       case UserType.LOAN_OFFICER:
         return (
           <>
-            <CardItem
+            <GroundRefinanceCardItem
               info={`${POSFormatDollar(
                 selectedItem?.officerOriginationFee,
               )}(${POSFormatPercent(
@@ -97,7 +99,7 @@ export const GroundRefinanceRatesDrawer: FC<
               )})`}
               label={'Loan officer origination fee'}
             />
-            <CardItem
+            <GroundRefinanceCardItem
               info={POSFormatDollar(selectedItem?.officerProcessingFee)}
               label={'Loan officer processing fee'}
             />
@@ -106,7 +108,7 @@ export const GroundRefinanceRatesDrawer: FC<
       case UserType.REAL_ESTATE_AGENT:
         return (
           <>
-            <CardItem
+            <GroundRefinanceCardItem
               info={POSFormatDollar(selectedItem?.agentFee)}
               label={'Referral fee'}
             />
@@ -154,7 +156,7 @@ export const GroundRefinanceRatesDrawer: FC<
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <GroundRefinanceCardItem
                 info={
                   <Typography variant={'inherit'}>
                     {`${selectedItem?.firstName} ${selectedItem?.lastName}`}
@@ -162,7 +164,7 @@ export const GroundRefinanceRatesDrawer: FC<
                 }
                 label={'Borrower'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={
                   <Typography
                     component={'div'}
@@ -179,23 +181,23 @@ export const GroundRefinanceRatesDrawer: FC<
                 }
                 label={'Address'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.totalLoanAmount)}
                 label={'Total loan amount'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.homeValue)}
                 label={'As-is property value'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.balance)}
                 label={'Payoff amount'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.cashOutAmount)}
                 label={'Cash out amount'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={
                   selectedItem?.cor ? POSFormatDollar(selectedItem?.cor) : 'N/A'
                 }
@@ -218,33 +220,36 @@ export const GroundRefinanceRatesDrawer: FC<
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <GroundRefinanceCardItem
                 info={selectedItem?.amortization}
                 label={'Amortization'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={POSFindLabel(
                   OPTIONS_MORTGAGE_PROPERTY,
                   selectedItem?.propertyType as string,
                 )}
                 label={'Property type'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={selectedItem?.closeDate}
                 label={'Preferred close date'}
               />
-              <CardItem info={selectedItem?.lien} label={'Lien'} />
-              <CardItem
+              <GroundRefinanceCardItem
+                info={selectedItem?.lien}
+                label={'Lien'}
+              />
+              <GroundRefinanceCardItem
                 info={
                   selectedItem?.arv ? POSFormatDollar(selectedItem?.arv) : 'N/A'
                 }
                 label={'Estimated ARV'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={POSFormatPercent(selectedItem?.ltv)}
                 label={'Loan-to-value(LTV)'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={POSFormatPercent(selectedItem?.ltc)}
                 label={'Loan-to-cost(LTC)'}
               />
@@ -265,15 +270,15 @@ export const GroundRefinanceRatesDrawer: FC<
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <GroundRefinanceCardItem
                 info={POSFormatPercent(selectedItem?.interestRateOfYear)}
                 label={'Interest rate'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={`${selectedItem?.loanTerm} months`}
                 label={'Loan term'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}
                 label={'Monthly payment'}
               />
@@ -305,27 +310,27 @@ export const GroundRefinanceRatesDrawer: FC<
               p={1.5}
               width={'100%'}
             >
-              <CardItem
+              <GroundRefinanceCardItem
                 info={`${POSFormatDollar(
                   selectedItem?.originationFee,
                 )}(${POSFormatPercent(
                   selectedItem?.originationFeePer || 0.015,
                 )})`}
-                label={'Lender origination fee'}
+                label={`${saasState?.organizationName} origination fee`}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.underwritingFee)}
                 label={'Underwriting fee'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.docPreparationFee)}
                 label={'Document preparation fee'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.proRatedInterest as number)}
                 label={'Pro-rated interest'}
               />
-              <CardItem
+              <GroundRefinanceCardItem
                 info={selectedItem?.thirdPartyCosts}
                 label={'Third-party costs'}
               />
@@ -386,7 +391,10 @@ export const GroundRefinanceRatesDrawer: FC<
   );
 };
 
-const CardItem: FC<{ label: string; info: ReactNode }> = ({ label, info }) => {
+const GroundRefinanceCardItem: FC<{ label: string; info: ReactNode }> = ({
+  label,
+  info,
+}) => {
   const breakpoints = useBreakpoints();
 
   return (

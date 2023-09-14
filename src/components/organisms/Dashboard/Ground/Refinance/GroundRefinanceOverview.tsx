@@ -183,7 +183,7 @@ export const GroundRefinanceOverview: FC = observer(() => {
           case UserType.LOAN_OFFICER: {
             temp = [
               {
-                label: 'Lender origination fee',
+                label: 'Loan officer origination fee',
                 info: `${POSFormatDollar(
                   thirdParty?.officerOriginationFee,
                 )}(${POSFormatPercent(
@@ -191,7 +191,7 @@ export const GroundRefinanceOverview: FC = observer(() => {
                 )})`,
               },
               {
-                label: 'Lender processing fee',
+                label: 'Loan officer processing fee',
                 info: POSFormatDollar(thirdParty?.officerProcessingFee),
               },
             ];

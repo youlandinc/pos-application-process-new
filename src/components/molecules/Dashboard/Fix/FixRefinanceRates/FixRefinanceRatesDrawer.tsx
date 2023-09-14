@@ -3,7 +3,7 @@ import { Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 
-import { useBreakpoints } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { RatesProductData } from '@/types';
 import { UserType } from '@/types/enum';
 import { POSFindLabel, POSFormatDollar, POSFormatPercent } from '@/utils';
@@ -35,6 +35,8 @@ export const FixRefinanceRatesDrawer: FC<FixRefinanceRatesDrawerProps> = ({
   userType,
   loading = false,
 }) => {
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   const router = useRouter();
   const breakpoints = useBreakpoints();
 
@@ -308,7 +310,7 @@ export const FixRefinanceRatesDrawer: FC<FixRefinanceRatesDrawerProps> = ({
                 )}(${POSFormatPercent(
                   selectedItem?.originationFeePer || 0.015,
                 )})`}
-                label={'Lender origination fee'}
+                label={`${saasState?.organizationName} origination fee`}
               />
               <FixRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.underwritingFee)}
