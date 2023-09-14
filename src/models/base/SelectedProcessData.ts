@@ -47,6 +47,9 @@ export const SelectedProcessData = types
     setLoading(loading: boolean) {
       self.loading = loading;
     },
+    setProcessId(id: string) {
+      self.processId = id;
+    },
   }))
   .actions((self) => {
     const fetchProcessData = flow(function* (processId) {
