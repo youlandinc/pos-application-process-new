@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 
-const CONSTANT_COLOR_HUE = 330;
+const CONSTANT_COLOR_HUE = 222;
 //const CONSTANT_COLOR_SATURATION = 42;
 //const CONSTANT_COLOR_LIGHTNESS = 55;
 

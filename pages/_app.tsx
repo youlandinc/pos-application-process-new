@@ -139,13 +139,13 @@ export default function MyApp(props: MyAppProps) {
     if (saasState) {
       const saasTheme = createTheme(theme, {
         palette: {
-          //primary: {
-          //  main: `hsla(${saasState?.posSettings?.h},42%,55%,1)`,
-          //  darker: `hsla(${saasState?.posSettings?.h},40%,40%,1)`,
-          //  dark: `hsla(${saasState?.posSettings?.h},40%,40%,1)`,
-          //  lighter: `hsla(${saasState?.posSettings?.h},100%,95%,1)`,
-          //  light: `hsla(${saasState?.posSettings?.h},32%,98%,1)`,
-          //},
+          primary: {
+            main: `hsla(${saasState?.posSettings?.h},42%,55%,1)`,
+            darker: `hsla(${saasState?.posSettings?.h},40%,40%,1)`,
+            dark: `hsla(${saasState?.posSettings?.h},40%,40%,1)`,
+            lighter: `hsla(${saasState?.posSettings?.h},100%,95%,1)`,
+            light: `hsla(${saasState?.posSettings?.h},32%,98%,1)`,
+          },
         },
       });
       return (
