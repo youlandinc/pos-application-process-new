@@ -97,7 +97,7 @@ export const RatesItems: FC<{
       p={3}
       sx={{
         transition: 'all .3s',
-        '&:hover': { borderColor: '#1134E3' },
+        '&:hover': { borderColor: 'primary.main' },
       }}
       width={{ xl: 'calc(50% - 12px)', xs: '100%' }}
     >

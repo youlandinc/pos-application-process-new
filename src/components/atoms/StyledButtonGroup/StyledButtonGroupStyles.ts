@@ -11,8 +11,9 @@ export const StyledButtonGroupStyles = {
     py: 2,
     px: 6,
     '&.Mui-selected': {
-      bgcolor: 'primary.A200',
+      bgcolor: 'primary.lighter',
       borderColor: 'primary.main',
+      color: 'primary.dark',
     },
     '&:disabled': {
       color: 'text.disabled',

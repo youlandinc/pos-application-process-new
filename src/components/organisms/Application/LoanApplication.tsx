@@ -208,20 +208,21 @@ const useInitProcessData = (
 
 const LoanApplicationButtonStyles = {
   ...POSFlex('center', 'center', 'row'),
-  ...POSFont(20, 600, 1.5, 'text.primary'),
+  ...POSFont(20, 600, 1.5, 'info.darker'),
   cursor: 'pointer',
   height: 64,
   width: '100%',
   maxWidth: 600,
-  border: '2px solid #C5D1FF',
+  border: '2px solid',
+  borderColor: 'text.secondary',
   borderRadius: 2,
   transition: 'all .3s',
   '&:hover': {
     borderColor: 'primary.main',
   },
   '&.active': {
-    bgcolor: '#C5D1FF',
-    color: 'primary.main',
+    bgcolor: 'primary.lighter',
+    color: 'primary.dark',
     borderColor: 'primary.main',
   },
 };

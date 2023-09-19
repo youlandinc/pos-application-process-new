@@ -29,7 +29,7 @@ export const BridgeRefinancePaymentSummary: FC<
   return (
     <Stack
       alignItems={'center'}
-      bgcolor={'info.A100'}
+      bgcolor={'info.darker'}
       borderRadius={2}
       color={'text.white'}
       gap={1.5}

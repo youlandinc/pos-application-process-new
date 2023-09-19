@@ -67,7 +67,11 @@ export const SearchBar: FC<SearchBarProps> = ({
     >
       <Typography variant={'h4'}>
         Pipeline{' '}
-        <Typography color={'#9DAEEB'} component={'span'} variant={'inherit'}>
+        <Typography
+          color={'primary.main'}
+          component={'span'}
+          variant={'inherit'}
+        >
           {role}
         </Typography>
       </Typography>

@@ -215,13 +215,17 @@ export const FixPurchaseTaskInvestmentExperience: FC = observer(() => {
                 </Typography>
 
                 <Typography
-                  className={'link_style'}
                   component={'span'}
                   fontWeight={600}
                   onClick={() => {
                     window.open(
                       'https://youland-template-file.s3.us-west-1.amazonaws.com/Sample-project-experience-template.xlsx',
                     );
+                  }}
+                  sx={{
+                    color: 'primary.main',
+                    cursor: 'pointer',
+                    fontWeight: 600,
                   }}
                 >
                   Sample project experience template

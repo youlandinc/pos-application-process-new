@@ -26,6 +26,7 @@ export const StyledCheckbox: FC<StyledCheckboxProps> = ({
           <Checkbox
             checked={checked}
             checkedIcon={<Icon component={checkedIcon || CHECKBOX_CHECKED} />}
+            disableRipple
             icon={<Icon component={icon || CHECKBOX_STATIC} />}
             indeterminate={indeterminate}
             indeterminateIcon={

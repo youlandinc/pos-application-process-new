@@ -1,20 +1,25 @@
+import { theme } from '@/theme';
+
 export const StyledSelectMultipleStyle = {
   checkboxSx: {
     '& .MuiCheckbox-root': {
       m: 0,
-      '& svg': {
-        //fill: '#9095A3',
-      },
     },
   },
   list: {
     width: 'auto',
-    '& .Mui-selected': {
-      bgcolor: '#C5D1FF !important',
+    p: 0,
+    mt: 0,
+    '& .MuiMenuItem-root:hover': {
+      bgcolor: `${theme.palette.primary.light} !important`,
+    },
+    '& .MuiMenuItem-root.Mui-selected': {
+      bgcolor: `${theme.palette.primary.lighter} !important`,
     },
     '& .MuiMenuItem-root': {
       fontSize: 14,
       color: 'text.primary',
+      bgcolor: 'transparent !important',
     },
     '& .MuiButtonBase-root': {
       '& .MuiFormControlLabel-root': {

@@ -261,12 +261,16 @@ export const PipelineAch: FC = observer(() => {
                 >
                   The attached document is the{' '}
                   <Typography
-                    className={'link_style'}
                     component={'span'}
                     fontWeight={600}
                     onClick={() =>
                       window.open(computedAch.ach.taskForm.documentFile.url)
                     }
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
                   >
                     ACH Information.pdf
                   </Typography>{' '}

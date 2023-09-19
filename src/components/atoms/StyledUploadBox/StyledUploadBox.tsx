@@ -171,7 +171,14 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
                   {['xs', 'sm', 'md'].includes(breakpoint)
                     ? 'Click '
                     : 'Drop files here or click '}
-                  <Box className="link_style" component={'span'}>
+                  <Box
+                    component={'span'}
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
+                  >
                     browse
                   </Box>{' '}
                   thorough your machine.

@@ -296,7 +296,6 @@ export const PipelineAgreement: FC = observer(() => {
                 >
                   The attached document is the{' '}
                   <Typography
-                    className={'link_style'}
                     component={'span'}
                     fontWeight={600}
                     onClick={() =>
@@ -304,6 +303,11 @@ export const PipelineAgreement: FC = observer(() => {
                         computedAgreement.agreement.taskForm.documentFile.url,
                       )
                     }
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
                   >
                     {computedAgreement.upperName} Agreement.pdf
                   </Typography>{' '}

@@ -1,4 +1,5 @@
 import { POSFont } from '@/styles';
+import { theme } from '@/theme';
 
 export const StyledCheckboxStyles = {
   alignItems: 'flex-start',
@@ -10,21 +11,21 @@ export const StyledCheckboxStyles = {
     whiteSpace: 'normal',
     ...POSFont(14, 400, 1.5, 'text.primary'),
   },
+  '& .Mui-checked': {
+    '& svg > path': {
+      fill: `${theme.palette.primary.main} !important`,
+    },
+  },
   '& .MuiCheckbox-root': {
     mt: '-11px',
     mr: '-11px',
-    '& svg': {
-      //fill: '#9095A3',
-    },
-  },
-  '& .Mui-checked': {
-    '& svg': {
-      //fill: '#1134E3 !important',
+    '& svg > path': {
+      fill: '#929292',
     },
   },
   '& .Mui-disabled': {
-    '& svg': {
-      //fill: '#CDCDCD !important',
+    '& svg > path': {
+      fill: `${theme.palette.action.disabled} !important`,
     },
   },
 } as const;
