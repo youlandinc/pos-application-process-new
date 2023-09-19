@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import {
   CloseOutlined,
@@ -7,7 +7,6 @@ import {
   WidgetsOutlined,
 } from '@mui/icons-material';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 
 import { observer } from 'mobx-react-lite';
 
@@ -56,7 +55,6 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const [authType, setAuthType] = useState<
     'login' | 'sign_up' | 'reset_password'
   >('login');
-  const [target, setTarget] = useState<'_top' | '_blank'>('_top');
 
   const hasSession = useMemo<boolean>(() => !!session, [session]);
 
@@ -65,15 +63,15 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     [router.query],
   );
 
-  useEffect(() => {
-    setTarget('_blank');
-  }, []);
-
   const handledLoginSuccess = usePersistFn(() => {
     close();
     if (
       initialized &&
-      (bpmn.owners as Array<{ userId: string }>).length === 0
+      (
+        bpmn.owners as Array<{
+          userId: string;
+        }>
+      ).length === 0
     ) {
       bindProcess();
     }
@@ -259,18 +257,26 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               <Typography variant={'body2'}>
                 Don&apos;t have an account?{' '}
                 <Typography
-                  className={'link_style'}
                   component={'span'}
                   onClick={() => setAuthType('sign_up')}
+                  sx={{
+                    color: 'primary.main',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                  }}
                   variant={'body2'}
                 >
                   Sign up
                 </Typography>
               </Typography>
               <Typography
-                className={'link_style'}
                 color={'primary'}
                 onClick={() => setAuthType('reset_password')}
+                sx={{
+                  color: 'primary.main',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                }}
                 variant={'body2'}
               >
                 Forgot password?
@@ -298,9 +304,10 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           ),
           footer: (
             <Typography
-              className={'link_style POS_mt_3'}
               color={'info'}
+              mt={3}
               onClick={() => setAuthType('login')}
+              sx={{ color: 'primary.main', cursor: 'pointer', fontWeight: 600 }}
               variant={'body2'}
             >
               Back to log in
@@ -330,9 +337,13 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               <Typography component={'div'} variant={'body2'}>
                 Already have an account?{' '}
                 <Typography
-                  className={'link_style'}
                   component={'span'}
                   onClick={() => setAuthType('login')}
+                  sx={{
+                    color: 'primary.main',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                  }}
                   variant={'body2'}
                 >
                   Log in
@@ -340,23 +351,37 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               </Typography>
               <Typography sx={{ color: 'info.main', mt: 3 }} variant={'body2'}>
                 By signing up, you agree to our{' '}
-                <Link
-                  className="link_style"
-                  href={'https://www.youland.com/legal/terms/'}
-                  target={target}
+                <Typography
+                  component={'span'}
+                  onClick={() =>
+                    window.open('https://www.youland.com/legal/terms/')
+                  }
+                  sx={{
+                    color: 'primary.main',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                  }}
+                  variant={'body2'}
                 >
                   Term of Use{' '}
-                </Link>
+                </Typography>
                 and to receive
                 {' ' + saasState?.organizationName || ' YouLand'} emails &
                 updates and acknowledge that you read our{' '}
-                <Link
-                  className="link_style"
-                  href={'https://www.youland.com/legal/privacy/'}
-                  target={target}
+                <Typography
+                  component={'span'}
+                  onClick={() =>
+                    window.open('https://www.youland.com/legal/privacy/')
+                  }
+                  sx={{
+                    color: 'primary.main',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                  }}
+                  variant={'body2'}
                 >
                   Privacy Policy
-                </Link>
+                </Typography>
                 .
               </Typography>
             </Box>
@@ -369,7 +394,6 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     handledLoginSuccess,
     handledSignUpAndResetSuccess,
     saasState?.organizationName,
-    target,
   ]);
 
   return (

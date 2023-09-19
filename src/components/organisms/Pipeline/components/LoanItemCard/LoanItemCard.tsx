@@ -216,7 +216,11 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
                   <MenuList sx={{ mt: 1.5, width: 180, p: 0 }}>
                     <MenuItem
                       onClick={handledView}
-                      sx={{ width: '100%', p: 3 }}
+                      sx={{
+                        width: '100%',
+                        p: 3,
+                        '&:hover': { bgcolor: 'primary.light' },
+                      }}
                     >
                       <Icon
                         className={'POS_mr_3'}
@@ -226,7 +230,11 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
                     </MenuItem>
                     <MenuItem
                       onClick={handledDelete}
-                      sx={{ width: '100%', p: 3 }}
+                      sx={{
+                        width: '100%',
+                        p: 3,
+                        '&:hover': { bgcolor: 'primary.light' },
+                      }}
                     >
                       <Icon
                         className={'POS_mr_3'}

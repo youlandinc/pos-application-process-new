@@ -402,9 +402,7 @@ export const GroundRefinanceTaskList: FC = observer(() => {
       <Typography
         alignItems={'center'}
         bgcolor={
-          loanStage === LoanStage.Approved
-            ? '#E1EFE4'
-            : 'rgba(17, 52, 227, 0.10)'
+          loanStage === LoanStage.Approved ? '#E1EFE4' : 'primary.lighter'
         }
         borderRadius={2}
         color={
@@ -417,7 +415,7 @@ export const GroundRefinanceTaskList: FC = observer(() => {
         variant={'subtitle3'}
         width={120}
       >
-        {loanStage === LoanStage.Approved ? 'Approved' : 'In Progress'}
+        {loanStage === LoanStage.Approved ? 'Approved' : 'In progress'}
       </Typography>
     );
   }, [loanStage]);
@@ -490,7 +488,7 @@ const TaskListStyles: SxProps = {
       '&:hover': {
         cursor: 'pointer',
         borderRadius: 1,
-        bgcolor: '#F4F6FA',
+        bgcolor: 'primary.light',
       },
       '&:first-of-type': {
         '&:hover': {

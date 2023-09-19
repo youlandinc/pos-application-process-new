@@ -23,6 +23,7 @@ export const StyledTextFieldPassword: FC<StyledTextFieldPasswordProps> = ({
           endAdornment: (
             <InputAdornment position="end">
               <IconButton
+                disableRipple
                 edge="end"
                 onClick={onToggleVisibleClick}
                 tabIndex={-1}

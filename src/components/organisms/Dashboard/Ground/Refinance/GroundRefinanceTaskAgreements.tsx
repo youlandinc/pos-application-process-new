@@ -102,10 +102,10 @@ export const GroundRefinanceTaskAgreements: FC = observer(() => {
         maxWidth={900}
       >
         <Typography
-          className={'link_style'}
           component={'span'}
           fontWeight={600}
           onClick={handledViewPDF}
+          sx={{ color: 'primary.main', cursor: 'pointer', fontWeight: 600 }}
         >
           View construction holdback process
         </Typography>

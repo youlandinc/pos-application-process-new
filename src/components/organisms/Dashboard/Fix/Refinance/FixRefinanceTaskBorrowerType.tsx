@@ -269,7 +269,7 @@ export const FixRefinanceTaskBorrowerType: FC = observer(() => {
                 <StyledFormItem label={'Trust information'} sub>
                   <Stack gap={3} maxWidth={600} width={'100%'}>
                     <StyledTextField
-                      label={'Trust Name'}
+                      label={'Trust name'}
                       onChange={(e) => setTrustName(e.target.value)}
                       value={trustName}
                     />

@@ -226,7 +226,7 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
                       value={authorizedSignatoryName}
                     />
                     <StyledTextField
-                      label={'Authorized signatory Title'}
+                      label={'Authorized signatory title'}
                       onChange={(e) => setSignatoryTitle(e.target.value)}
                       value={signatoryTitle}
                     />
@@ -270,7 +270,7 @@ export const BridgePurchaseTaskBorrowerType: FC = observer(() => {
                 <StyledFormItem label={'Trust information'} sub>
                   <Stack gap={3} maxWidth={600} width={'100%'}>
                     <StyledTextField
-                      label={'Trust Name'}
+                      label={'Trust name'}
                       onChange={(e) => setTrustName(e.target.value)}
                       value={trustName}
                     />

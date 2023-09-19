@@ -251,31 +251,43 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
                   co-borrower&apos;s credit. I&apos;ve also read and agreed to
                   {' ' + saasState?.organizationName || ' YouLand'} &apos;s{' '}
                   <Typography
-                    className={'link_style'}
                     component={'span'}
                     onClick={() =>
                       window.open('https://www.youland.com/legal/terms/')
                     }
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
                   >
                     Terms of Use
                   </Typography>
                   ,{' '}
                   <Typography
-                    className={'link_style'}
                     component={'span'}
                     onClick={() =>
                       window.open('https://www.youland.com/legal/privacy/')
                     }
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
                   >
                     Privacy Policy
                   </Typography>{' '}
                   and consent to{' '}
                   <Typography
-                    className={'link_style'}
                     component={'span'}
                     onClick={() =>
                       window.open('https://www.youland.com/legal/e-loan-doc/')
                     }
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
                   >
                     Receive Electronic Loan Documents
                   </Typography>

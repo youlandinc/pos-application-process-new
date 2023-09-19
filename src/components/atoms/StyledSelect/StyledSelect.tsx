@@ -49,6 +49,9 @@ export const StyledSelect: FC<StyledSelectProps> = ({
                   ...sxList,
                 },
               },
+              PaperProps: {
+                style: { marginTop: 12 },
+              },
             },
           }}
           label={label}

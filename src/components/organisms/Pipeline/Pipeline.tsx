@@ -303,7 +303,7 @@ export const Pipeline: FC = observer(() => {
           <Typography
             component={'div'}
             mt={3}
-            sx={{ color: 'info.A100', overflow: 'hidden' }}
+            sx={{ color: 'info.darker', overflow: 'hidden' }}
             variant={'body2'}
           >
             {deleteLoading

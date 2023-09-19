@@ -68,6 +68,9 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
                   ...sxList,
                 },
               },
+              PaperProps: {
+                style: { marginTop: 12 },
+              },
             },
           }}
           label={label}
@@ -89,7 +92,7 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
           {...rest}
         >
           {options.map((opt) => (
-            <MenuItem key={opt.key} value={opt.value}>
+            <MenuItem disableRipple key={opt.key} value={opt.value}>
               <StyledCheckbox
                 checked={selectValue.indexOf(opt.value as any) > -1}
                 sx={StyledSelectMultipleStyle.checkboxSx}

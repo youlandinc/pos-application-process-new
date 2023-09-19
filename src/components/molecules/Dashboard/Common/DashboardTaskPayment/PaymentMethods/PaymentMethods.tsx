@@ -40,7 +40,10 @@ export const PaymentMethods = forwardRef<
         <>
           <Typography color={'info.main'} variant={'body1'}>
             Please pay the appraisal cost of ${paymentDetail?.amount} by{' '}
-            <Box className={'link_style'} component={'span'}>
+            <Box
+              component={'span'}
+              sx={{ color: 'primary.main', cursor: 'pointer', fontWeight: 600 }}
+            >
               {format(new Date(), 'MM/dd/yyyy')}
             </Box>
             , We will help you confirm the rate upon receipt of payment.
