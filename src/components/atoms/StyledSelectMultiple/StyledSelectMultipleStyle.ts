@@ -1,30 +1,7 @@
-import { theme } from '@/theme';
-
 export const StyledSelectMultipleStyle = {
   checkboxSx: {
     '& .MuiCheckbox-root': {
       m: 0,
-    },
-  },
-  list: {
-    width: 'auto',
-    p: 0,
-    mt: 0,
-    '& .MuiMenuItem-root:hover': {
-      bgcolor: `${theme.palette.primary.light} !important`,
-    },
-    '& .MuiMenuItem-root.Mui-selected': {
-      bgcolor: `${theme.palette.primary.lighter} !important`,
-    },
-    '& .MuiMenuItem-root': {
-      fontSize: 14,
-      color: 'text.primary',
-      bgcolor: 'transparent !important',
-    },
-    '& .MuiButtonBase-root': {
-      '& .MuiFormControlLabel-root': {
-        width: 'auto',
-      },
     },
   },
   root: {

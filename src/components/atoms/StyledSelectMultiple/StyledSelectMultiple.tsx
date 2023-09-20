@@ -8,6 +8,8 @@ import {
   Select,
 } from '@mui/material';
 
+import { useSessionStorageState } from '@/hooks';
+
 import { StyledSelectMultipleProps, StyledSelectMultipleStyle } from './index';
 
 import { POSFindLabel, POSTypeOf } from '@/utils';
@@ -26,6 +28,7 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
   ...rest
 }) => {
   const [selectValue, setSelectValue] = useState(['']);
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const handledChange = (e: any) => {
     const {
@@ -64,7 +67,29 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
             MenuProps: {
               MenuListProps: {
                 sx: {
-                  ...StyledSelectMultipleStyle.list,
+                  width: 'auto',
+                  p: 0,
+                  mt: 0,
+                  '& .MuiMenuItem-root:hover': {
+                    bgcolor: `hsla(${
+                      saasState?.posSettings?.h || 222
+                    },32%,98%,1) !important`,
+                  },
+                  '& .MuiMenuItem-root.Mui-selected': {
+                    bgcolor: `hsla(${
+                      saasState?.posSettings?.h || 222
+                    },100%,95%,1) !important`,
+                  },
+                  '& .MuiMenuItem-root': {
+                    fontSize: 14,
+                    color: 'text.primary',
+                    bgcolor: 'transparent !important',
+                  },
+                  '& .MuiButtonBase-root': {
+                    '& .MuiFormControlLabel-root': {
+                      width: 'auto',
+                    },
+                  },
                   ...sxList,
                 },
               },

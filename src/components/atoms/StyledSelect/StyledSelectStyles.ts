@@ -1,5 +1,3 @@
-import { theme } from '@/theme';
-
 export const StyledSelectStyles = {
   root: {
     width: '100%',
@@ -20,20 +18,6 @@ export const StyledSelectStyles = {
       '& .MuiOutlinedInput-input': {
         background: 'transparent',
       },
-    },
-  },
-  list: {
-    p: 0,
-    m: 0,
-    '& .MuiMenuItem-root:hover': {
-      bgcolor: `${theme.palette.primary.light} !important`,
-    },
-    '& .Mui-selected': {
-      bgcolor: `${theme.palette.primary.lighter} !important`,
-    },
-    '& .MuiMenuItem-root': {
-      fontSize: 14,
-      color: 'text.primary',
     },
   },
   helperText: {
