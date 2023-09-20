@@ -1,4 +1,5 @@
 import { Transitions } from '@/components/atoms';
+import { useSessionStorageState } from '@/hooks';
 import { FC } from 'react';
 import {
   Box,
@@ -24,6 +25,8 @@ export const StyledSelect: FC<StyledSelectProps> = ({
   required,
   ...rest
 }) => {
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   return (
     <>
       <FormControl
@@ -45,7 +48,24 @@ export const StyledSelect: FC<StyledSelectProps> = ({
             MenuProps: {
               MenuListProps: {
                 sx: {
-                  ...StyledSelectStyles.list,
+                  list: {
+                    p: 0,
+                    m: 0,
+                    '& .MuiMenuItem-root:hover': {
+                      bgcolor: `hsla(${
+                        saasState?.posSettings?.h || 222
+                      },32%,98%,1) !important`,
+                    },
+                    '& .Mui-selected': {
+                      bgcolor: `hsla(${
+                        saasState?.posSettings?.h || 222
+                      },100%,95%,1) !important`,
+                    },
+                    '& .MuiMenuItem-root': {
+                      fontSize: 14,
+                      color: 'text.primary',
+                    },
+                  },
                   ...sxList,
                 },
               },
