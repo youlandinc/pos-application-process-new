@@ -145,7 +145,7 @@ export const BridgePurchaseTaskPay: FC = observer(() => {
                     }}
                     variant={'outlined'}
                   >
-                    Generate File
+                    Generate file
                   </StyledButton>
                 </Stack>
               </StyledFormItem>
@@ -184,8 +184,8 @@ export const BridgePurchaseTaskPay: FC = observer(() => {
               }
             >
               <Stack maxWidth={600} mt={3} width={'100%'}>
-                <StyledButton color={'primary'} variant={'outlined'}>
-                  Link Account
+                <StyledButton color={'info'} variant={'outlined'}>
+                  Link account
                 </StyledButton>
               </Stack>
             </StyledFormItem>
@@ -229,8 +229,8 @@ export const BridgePurchaseTaskPay: FC = observer(() => {
             width={'100%'}
           >
             <Typography variant={'body1'}>
-              &quot;By clicking the below button, I hereby agree to the above
-              broker agreement.&quot;
+              &quot;By clicking the button, I hereby agree to the above broker
+              agreement.&quot;
             </Typography>
             <StyledButton
               disabled={agreeLoading}

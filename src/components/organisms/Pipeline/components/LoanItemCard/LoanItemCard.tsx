@@ -215,6 +215,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
                 <ClickAwayListener onClickAway={handledClose}>
                   <MenuList sx={{ mt: 1.5, width: 180, p: 0 }}>
                     <MenuItem
+                      disableRipple
                       onClick={handledView}
                       sx={{
                         width: '100%',
@@ -229,6 +230,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
                       View
                     </MenuItem>
                     <MenuItem
+                      disableRipple
                       onClick={handledDelete}
                       sx={{
                         width: '100%',

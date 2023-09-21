@@ -235,6 +235,7 @@ export const PipelineAch: FC = observer(() => {
             </Stack>
             {computedAch.isGenerateFile && (
               <StyledButton
+                color={'info'}
                 disabled={
                   !computedAch.ach.checkTaskFormValid || genLoading || loading
                 }

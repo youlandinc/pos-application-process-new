@@ -48,23 +48,19 @@ export const StyledSelect: FC<StyledSelectProps> = ({
             MenuProps: {
               MenuListProps: {
                 sx: {
-                  list: {
-                    p: 0,
-                    m: 0,
-                    '& .MuiMenuItem-root:hover': {
-                      bgcolor: `hsla(${
-                        saasState?.posSettings?.h || 222
-                      },32%,98%,1) !important`,
-                    },
-                    '& .Mui-selected': {
-                      bgcolor: `hsla(${
-                        saasState?.posSettings?.h || 222
-                      },100%,95%,1) !important`,
-                    },
-                    '& .MuiMenuItem-root': {
-                      fontSize: 14,
-                      color: 'text.primary',
-                    },
+                  p: 0,
+                  m: 0,
+                  '& .MuiMenuItem-root:hover': {
+                    bgcolor: 'rgba(144, 149, 163, 0.1) !important',
+                  },
+                  '& .Mui-selected': {
+                    bgcolor: `hsla(${
+                      saasState?.posSettings?.h || 222
+                    },100%,95%,1) !important`,
+                  },
+                  '& .MuiMenuItem-root': {
+                    fontSize: 14,
+                    color: 'text.primary',
                   },
                   ...sxList,
                 },

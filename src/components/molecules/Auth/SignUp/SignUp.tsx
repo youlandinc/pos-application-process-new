@@ -500,6 +500,7 @@ export const SignUp: FC<SignUpProps> = observer(
           footer={
             <Box mt={3}>
               <StyledButton
+                color={'info'}
                 disabled={loading}
                 onClick={close}
                 size={'small'}

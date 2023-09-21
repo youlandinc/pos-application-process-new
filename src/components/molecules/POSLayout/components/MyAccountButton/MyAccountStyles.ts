@@ -6,7 +6,7 @@ export const MyAccountStyles = {
     width: '100%',
     p: 1.5,
     '&:hover': {
-      bgcolor: 'primary.light',
+      bgcolor: 'info.dark',
     },
   },
 } as const;
