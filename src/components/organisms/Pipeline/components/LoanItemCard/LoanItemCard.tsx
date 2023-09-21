@@ -220,7 +220,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
                       sx={{
                         width: '100%',
                         p: 3,
-                        '&:hover': { bgcolor: 'primary.light' },
+                        '&:hover': { bgcolor: 'info.dark' },
                       }}
                     >
                       <Icon
@@ -235,7 +235,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
                       sx={{
                         width: '100%',
                         p: 3,
-                        '&:hover': { bgcolor: 'primary.light' },
+                        '&:hover': { bgcolor: 'info.dark' },
                       }}
                     >
                       <Icon
