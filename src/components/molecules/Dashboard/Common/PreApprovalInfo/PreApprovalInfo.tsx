@@ -320,7 +320,7 @@ export const PreApprovalInfo = forwardRef<
             justifyContent={'space-between'}
             pb={3}
           >
-            <Typography variant={'h6'}>Your pre-approval letter</Typography>
+            <Typography variant={'h6'}>Pre-Approval Letter</Typography>
             <StyledButton isIconButton onClick={close}>
               <CloseOutlined />
             </StyledButton>

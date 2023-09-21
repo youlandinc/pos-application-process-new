@@ -3,12 +3,10 @@ import {
   FC,
   FormEventHandler,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
 import { Box, Icon, Typography } from '@mui/material';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { validate } from 'validate.js';
@@ -63,7 +61,6 @@ export const SignUp: FC<SignUpProps> = observer(
     const [confirmedPassword, setConfirmedPassword] = useState('');
     const [userType, setUserType] = useState<keyof typeof UserType>();
     const [otp, setOtp] = useState('');
-    const [target, setTarget] = useState<'_top' | '_blank'>('_top');
     const [loading, setLoading] = useState<boolean>(false);
     const [formError, setFormError] = useState<
       Partial<Record<keyof typeof SignUpSchema, string[]>> | undefined
@@ -82,10 +79,6 @@ export const SignUp: FC<SignUpProps> = observer(
     });
 
     const { open, close, visible } = useSwitch(false);
-
-    useEffect(() => {
-      setTarget('_blank');
-    }, []);
 
     const handledPasswordChange: ChangeEventHandler<HTMLInputElement> =
       useCallback((e) => {
@@ -407,32 +400,55 @@ export const SignUp: FC<SignUpProps> = observer(
                 <Box className="form_foot">
                   <Typography variant="body2">
                     Already have an account?{' '}
-                    <Link className="link_style" href={'/auth/login/'}>
+                    <Typography
+                      component={'span'}
+                      onClick={() => router.push('/auth/login')}
+                      sx={{
+                        color: 'primary.main',
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                      }}
+                      variant="body2"
+                    >
                       Log in
-                    </Link>
+                    </Typography>
                   </Typography>
                   <Typography
                     sx={{ color: 'info.main', mt: 3 }}
                     variant="body2"
                   >
                     By signing up, you agree to our{' '}
-                    <Link
-                      className="link_style"
-                      href={'https://www.youland.com/legal/terms/'}
-                      target={target}
+                    <Typography
+                      component={'span'}
+                      onClick={() =>
+                        window.open('https://www.youland.com/legal/terms/')
+                      }
+                      sx={{
+                        color: 'primary.main',
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                      }}
+                      variant={'body2'}
                     >
                       Term of Use{' '}
-                    </Link>
+                    </Typography>
                     and to receive
                     {' ' + saasState?.organizationName || ' YouLand'} emails &
                     updates and acknowledge that you read our{' '}
-                    <Link
-                      className="link_style"
-                      href={'https://www.youland.com/legal/privacy/'}
-                      target={target}
+                    <Typography
+                      component={'span'}
+                      onClick={() =>
+                        window.open('https://www.youland.com/legal/privacy/')
+                      }
+                      sx={{
+                        color: 'primary.main',
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                      }}
+                      variant={'body2'}
                     >
                       Privacy Policy
-                    </Link>
+                    </Typography>
                     .
                   </Typography>
                 </Box>
@@ -484,6 +500,7 @@ export const SignUp: FC<SignUpProps> = observer(
           footer={
             <Box mt={3}>
               <StyledButton
+                color={'info'}
                 disabled={loading}
                 onClick={close}
                 size={'small'}

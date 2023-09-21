@@ -20,15 +20,6 @@ export const StyledSelectStyles = {
       },
     },
   },
-  list: {
-    '& .Mui-selected': {
-      bgcolor: '#C5D1FF !important',
-    },
-    '& .MuiMenuItem-root': {
-      fontSize: 14,
-      color: 'text.primary',
-    },
-  },
   helperText: {
     p: 0,
     m: 0,

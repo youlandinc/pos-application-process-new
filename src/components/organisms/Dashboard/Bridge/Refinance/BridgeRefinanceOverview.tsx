@@ -366,7 +366,6 @@ export const BridgeRefinanceOverview: FC = observer(() => {
             <Typography component={'div'} variant={'body2'}>
               Check out your list of{' '}
               <Box
-                className={'link_style'}
                 component={'span'}
                 onClick={() =>
                   router.push({
@@ -374,6 +373,11 @@ export const BridgeRefinanceOverview: FC = observer(() => {
                     query: router.query,
                   })
                 }
+                sx={{
+                  color: 'primary.main',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                }}
               >
                 Tasks
               </Box>{' '}

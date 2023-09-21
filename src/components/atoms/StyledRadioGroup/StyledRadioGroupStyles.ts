@@ -3,7 +3,7 @@ export const StyledRadioGroupStyles = {
     color: 'text.secondary',
     boxShadow: 'none',
     '&:hover': {
-      bgcolor: 'primary.A200',
+      bgcolor: 'primary.dark',
     },
 
     '&.Mui-checked': {

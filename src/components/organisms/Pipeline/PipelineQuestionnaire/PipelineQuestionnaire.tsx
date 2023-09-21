@@ -229,7 +229,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
                     </Box>
                     {index !== 0 && (
                       <StyledButton
-                        color={'primary'}
+                        color={'info'}
                         onClick={() =>
                           computedQuestionnaire.questionnaire.removeLicenses(
                             index,
@@ -243,7 +243,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
                     )}
                     {index === 0 && (
                       <StyledButton
-                        color={'primary'}
+                        color={'info'}
                         disabled={isAddLicense}
                         onClick={() =>
                           computedQuestionnaire.questionnaire.addLicenses(
@@ -364,7 +364,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
           </Transitions>
           <Stack alignItems={'center'} gap={3} sx={{ mt: 3 }} width={'100%'}>
             <StyledButton
-              color={'primary'}
+              color={'info'}
               disabled={
                 !computedQuestionnaire.questionnaire.checkLicensesValid ||
                 genLoading ||
@@ -379,7 +379,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
               }}
               variant={'outlined'}
             >
-              Generate File
+              Generate file
             </StyledButton>
             <Transitions>
               {computedQuestionnaire.questionnaire.taskForm.documentFile && (
@@ -391,7 +391,6 @@ export const PipelineQuestionnaire: FC = observer(() => {
                 >
                   The attached document is the{' '}
                   <Typography
-                    className={'link_style'}
                     component={'span'}
                     fontWeight={600}
                     onClick={() =>
@@ -400,6 +399,11 @@ export const PipelineQuestionnaire: FC = observer(() => {
                           .documentFile.url,
                       )
                     }
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
                   >
                     {computedQuestionnaire.fileName}
                   </Typography>{' '}
@@ -459,10 +463,9 @@ export const PipelineQuestionnaire: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoint) ? 'body3' : 'body1'}
             >
-              &quot;By clicking the below button, I hereby agree to the above
-              broker agreement and authorize{' '}
-              {saasState?.organizationName || 'YouLand'} to check my
-              background.&quot;
+              &quot;By clicking the button, I hereby agree to the above broker
+              agreement and authorize {saasState?.organizationName || 'YouLand'}{' '}
+              to check my background.&quot;
             </Typography>
             <StyledButton
               disabled={agreeLoading}

@@ -38,13 +38,27 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                   </Typography>
                   <Typography mt={1.5} variant={'body1'}>
                     Should you require additional assistance, email us at
-                    <Typography className={'link_style'} component={'span'}>
+                    <Typography
+                      component={'span'}
+                      sx={{
+                        color: 'primary.main',
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                      }}
+                    >
                       {' '}
                       {saasState?.extInfo?.posSettings?.email ||
                         'borrow@youland.com'}{' '}
                     </Typography>
                     or call toll free at{' '}
-                    <Typography className={'link_style'} component={'span'}>
+                    <Typography
+                      component={'span'}
+                      sx={{
+                        color: 'primary.main',
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                      }}
+                    >
                       {POSFormatUSPhoneToText(
                         saasState?.extInfo?.posSettings?.phone,
                       ) || '1-833-968-5263'}{' '}
@@ -124,14 +138,26 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                   Your transaction is still in progress. Don&apos;t worry your
                   money is safe! If money was debited from your account, you can
                   call toll free at{' '}
-                  <span className={'link_style'}>
+                  <span
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
+                  >
                     {' '}
                     {POSFormatUSPhoneToText(
                       saasState?.extInfo?.posSettings?.phone,
                     ) || '1-833-968-5263'}{' '}
                   </span>{' '}
                   or email us at
-                  <span className={'link_style'}>
+                  <span
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
+                  >
                     {' '}
                     {saasState?.extInfo?.posSettings?.email ||
                       'borrow@youland.com'}{' '}

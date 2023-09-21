@@ -1,5 +1,5 @@
 import { ChangeEvent, useCallback, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import {
   CloseOutlined,
   CloudUploadOutlined,
@@ -220,26 +220,25 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
           </Box>
         }
         footer={
-          <>
-            <StyledButton
-              color="error"
-              onClick={onDialogConfirmDelete}
-              size="small"
-              variant="contained"
-            >
-              Delete
-            </StyledButton>
+          <Stack flexDirection={'row'} gap={1} mt={3}>
             <StyledButton
               autoFocus
-              color="info"
+              color={'info'}
               onClick={close}
-              size="small"
-              sx={{ ml: 3 }}
-              variant="outlined"
+              size={'small'}
+              variant={'outlined'}
             >
               Cancel
             </StyledButton>
-          </>
+            <StyledButton
+              autoFocus
+              color={'error'}
+              onClick={onDialogConfirmDelete}
+              size={'small'}
+            >
+              Confirm
+            </StyledButton>
+          </Stack>
         }
         header={
           <>

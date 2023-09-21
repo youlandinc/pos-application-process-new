@@ -61,7 +61,7 @@ export const PipelineAgreement: FC = observer(() => {
           isRenderLicense: false,
           isGenerateFile: true,
           label: 'Broker agreement',
-          tip: 'Please fill out and read our broker agreement.',
+          tip: "Please fill in the fields below and we'll generate a broker agreement for you.",
           username: 'broker',
           upperName: 'Broker',
           agreement: BROKER_AGREEMENT,
@@ -71,7 +71,7 @@ export const PipelineAgreement: FC = observer(() => {
           isRenderLicense: false,
           isGenerateFile: true,
           label: 'Lender agreement',
-          tip: 'Please fill out and read our lender agreement.',
+          tip: "Please fill in the fields below and we'll generate a lender agreement for you.",
           username: 'lender',
           upperName: 'Lender',
           agreement: LENDER_AGREEMENT,
@@ -81,7 +81,7 @@ export const PipelineAgreement: FC = observer(() => {
           isRenderLicense: true,
           isGenerateFile: false,
           label: 'Loan officer information',
-          tip: 'Please fill out the information that pertains to you.',
+          tip: "Please fill in the fields below and we'll generate a loan officer agreement for you.",
           username: 'loan officer',
           upperName: 'Loan officer',
           agreement: LOAN_OFFICER_AGREEMENT,
@@ -91,7 +91,7 @@ export const PipelineAgreement: FC = observer(() => {
           isRenderLicense: true,
           isGenerateFile: false,
           label: 'Real estate agent information',
-          tip: 'Please fill out the information that pertains to you.',
+          tip: "Please fill in the fields below and we'll generate a real estate agent agreement for you.",
           username: 'real estate agent',
           upperName: 'Real estate agent',
           agreement: REAL_ESTATE_AGENT_AGREEMENT,
@@ -175,76 +175,98 @@ export const PipelineAgreement: FC = observer(() => {
           sx={{ width: '100%' }}
           tip={computedAgreement.tip}
         >
-          <Stack alignItems={'center'} gap={3} width={'100%'}>
-            <Stack width={'100%'}>
-              <StyledTextField
-                label={'Company name'}
-                onChange={(e) => {
-                  computedAgreement.agreement.changeFieldValue(
-                    'company',
-                    e.target.value,
-                  );
-                }}
-                placeholder={'Company name'}
-                value={computedAgreement.agreement.taskForm.company}
-              />
+          <Stack gap={3} mt={3} width={'100%'}>
+            <Typography color={'info.main'} variant={'body1'}>
+              Company information
+            </Typography>
+            <Stack gap={3} width={'100%'}>
+              <Stack width={'100%'}>
+                <StyledTextField
+                  label={'Company name'}
+                  onChange={(e) => {
+                    computedAgreement.agreement.changeFieldValue(
+                      'company',
+                      e.target.value,
+                    );
+                  }}
+                  placeholder={'Company name'}
+                  value={computedAgreement.agreement.taskForm.company}
+                />
+              </Stack>
+              {computedAgreement.agreement && (
+                <Stack width={'100%'}>
+                  <StyledGoogleAutoComplete
+                    address={computedAgreement.agreement.taskForm.address}
+                  />
+                </Stack>
+              )}
             </Stack>
-            <Stack
-              flexDirection={{ lg: 'row', xs: 'column' }}
-              gap={3}
-              width={'100%'}
-            >
-              <StyledTextField
-                label={'Your full name'}
-                onChange={(e) => {
-                  computedAgreement.agreement.changeFieldValue(
-                    'fullName',
-                    e.target.value,
-                  );
-                }}
-                placeholder={'Your full name'}
-                value={computedAgreement.agreement.taskForm.fullName}
-              />
-              <StyledTextFieldPhone
-                label={'Phone number'}
-                onValueChange={({ value }) =>
-                  computedAgreement.agreement.changeFieldValue(
-                    'phoneNumber',
-                    value,
-                  )
-                }
-                placeholder={'Phone number'}
-                value={computedAgreement.agreement.taskForm.phoneNumber}
-              />
+          </Stack>
+          <Stack gap={3} mt={6} width={'100%'}>
+            <Typography color={'info.main'} variant={'body1'}>
+              Personal information
+            </Typography>
+            <Stack gap={3} width={'100%'}>
+              <Stack
+                flexDirection={{ lg: 'row', xs: 'column' }}
+                gap={3}
+                width={'100%'}
+              >
+                <StyledTextField
+                  label={'Full name'}
+                  onChange={(e) => {
+                    computedAgreement.agreement.changeFieldValue(
+                      'fullName',
+                      e.target.value,
+                    );
+                  }}
+                  placeholder={'Your full name'}
+                  value={computedAgreement.agreement.taskForm.fullName}
+                />
+                <StyledTextFieldPhone
+                  label={'Phone number'}
+                  onValueChange={({ value }) =>
+                    computedAgreement.agreement.changeFieldValue(
+                      'phoneNumber',
+                      value,
+                    )
+                  }
+                  placeholder={'Phone number'}
+                  value={computedAgreement.agreement.taskForm.phoneNumber}
+                />
+              </Stack>
+              <Stack
+                flexDirection={{ lg: 'row', xs: 'column' }}
+                gap={3}
+                width={'100%'}
+              >
+                <StyledTextField
+                  label={'Your title'}
+                  onChange={(e) =>
+                    computedAgreement.agreement.changeFieldValue(
+                      'title',
+                      e.target.value,
+                    )
+                  }
+                  placeholder={'Your title'}
+                  value={computedAgreement.agreement.taskForm.title}
+                />
+                <StyledTextField
+                  label={'Your email'}
+                  onChange={(e) =>
+                    computedAgreement.agreement.changeFieldValue(
+                      'email',
+                      e.target.value,
+                    )
+                  }
+                  placeholder={'Your email'}
+                  value={computedAgreement.agreement.taskForm.email}
+                />
+              </Stack>
             </Stack>
-            <Stack
-              flexDirection={{ lg: 'row', xs: 'column' }}
-              gap={3}
-              width={'100%'}
-            >
-              <StyledTextField
-                label={'Your title'}
-                onChange={(e) =>
-                  computedAgreement.agreement.changeFieldValue(
-                    'title',
-                    e.target.value,
-                  )
-                }
-                placeholder={'Your title'}
-                value={computedAgreement.agreement.taskForm.title}
-              />
-              <StyledTextField
-                label={'Your email'}
-                onChange={(e) =>
-                  computedAgreement.agreement.changeFieldValue(
-                    'email',
-                    e.target.value,
-                  )
-                }
-                placeholder={'Your email'}
-                value={computedAgreement.agreement.taskForm.email}
-              />
-            </Stack>
+          </Stack>
+
+          <Stack alignItems={'center'} gap={3} mt={3} width={'100%'}>
             {computedAgreement.isRenderLicense && (
               <Stack width={'100%'}>
                 <StyledSelect
@@ -260,15 +282,9 @@ export const PipelineAgreement: FC = observer(() => {
                 />
               </Stack>
             )}
-            {computedAgreement.agreement && (
-              <Stack width={'100%'}>
-                <StyledGoogleAutoComplete
-                  address={computedAgreement.agreement.taskForm.address}
-                />
-              </Stack>
-            )}
             {computedAgreement.isGenerateFile && (
               <StyledButton
+                color={'info'}
                 disabled={
                   !computedAgreement.agreement.checkTaskFormValid ||
                   genLoading ||
@@ -294,9 +310,8 @@ export const PipelineAgreement: FC = observer(() => {
                   textAlign={'center'}
                   variant={'body1'}
                 >
-                  The attached document is the{' '}
+                  Here is the{' '}
                   <Typography
-                    className={'link_style'}
                     component={'span'}
                     fontWeight={600}
                     onClick={() =>
@@ -304,10 +319,15 @@ export const PipelineAgreement: FC = observer(() => {
                         computedAgreement.agreement.taskForm.documentFile.url,
                       )
                     }
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
                   >
-                    {computedAgreement.upperName} Agreement.pdf
+                    {computedAgreement.upperName} Agreement
                   </Typography>{' '}
-                  that you have confirmed. In case you need to make any changes,
+                  that you have requested. In case you need to make any changes,
                   a new agreement will be generated and require your agreement
                   again.
                 </Typography>
@@ -363,7 +383,7 @@ export const PipelineAgreement: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoint) ? 'body3' : 'body1'}
             >
-              &quot;By clicking the below button, I hereby agree to the above
+              &quot;By clicking the button, I hereby agree to the above{' '}
               {computedAgreement.username} agreement.&quot;
             </Typography>
             <StyledButton

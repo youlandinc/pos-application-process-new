@@ -2,24 +2,6 @@ export const StyledSelectMultipleStyle = {
   checkboxSx: {
     '& .MuiCheckbox-root': {
       m: 0,
-      '& svg': {
-        //fill: '#9095A3',
-      },
-    },
-  },
-  list: {
-    width: 'auto',
-    '& .Mui-selected': {
-      bgcolor: '#C5D1FF !important',
-    },
-    '& .MuiMenuItem-root': {
-      fontSize: 14,
-      color: 'text.primary',
-    },
-    '& .MuiButtonBase-root': {
-      '& .MuiFormControlLabel-root': {
-        width: 'auto',
-      },
     },
   },
   root: {

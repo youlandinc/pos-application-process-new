@@ -23,6 +23,11 @@ export const StyledProgressBlock: FC<StyledProgressBlockProps> = ({
       maxHeight={24}
       minWidth={48}
       p={'4px 12px'}
+      sx={{
+        '&:hover': {
+          bgcolor: '#9095A3 !important',
+        },
+      }}
       variant={'subtitle3'}
     >
       {current}/{total}

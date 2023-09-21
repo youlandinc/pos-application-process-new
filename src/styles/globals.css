@@ -58,7 +58,6 @@ ul {
     stroke-dashoffset: 0;
     fill: #e3e3ee;
   }
-  
 }
 /* Most browsers */
 @keyframes svg-text-anim {
@@ -74,7 +73,6 @@ ul {
     stroke-dashoffset: 0;
     fill: #e3e3ee;
   }
-  
 }
 
 /*for stripe.js components reset style*/
@@ -175,7 +173,7 @@ ul {
   width: 100%;
   z-index: 20000;
   height: 3px;
-  background: #3f81e9;
+  background: #e3e3ee;
 }
 
 #nprogress .spinner-icon {

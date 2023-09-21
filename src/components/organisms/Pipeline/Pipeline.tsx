@@ -303,42 +303,42 @@ export const Pipeline: FC = observer(() => {
           <Typography
             component={'div'}
             mt={3}
-            sx={{ color: 'info.A100', overflow: 'hidden' }}
+            sx={{ color: 'info.darker', overflow: 'hidden' }}
             variant={'body2'}
           >
             {deleteLoading
               ? 'Deleting...'
               : `Are you sure you want to delete ${
                   deleteAddress[0] ? deleteAddress[0] : 'this application ?'
-                } ${deleteAddress[1] ? deleteAddress[1] + ' ?' : ''}`}
+                } ${deleteAddress[1] ? deleteAddress[1] + '?' : ''}`}
           </Typography>
         }
         disableEscapeKeyDown
         footer={
-          <Box mt={3}>
+          <Stack flexDirection={'row'} gap={1} mt={3}>
             <StyledButton
-              className={'POS_mr_1'}
-              color={'error'}
+              color={'info'}
               disabled={deleteLoading}
               onClick={close}
               size={'small'}
+              variant={'outlined'}
             >
               Cancel
             </StyledButton>
             <StyledButton
+              color={'error'}
               disabled={deleteLoading}
               onClick={handledConfirmDelete}
               size={'small'}
-              variant={'outlined'}
             >
               Confirm
             </StyledButton>
-          </Box>
+          </Stack>
         }
         header={
           <Stack alignItems={'flex-start'} flexDirection={'row'}>
             <DeleteForever className={'POS_mr_1'} />
-            <Typography variant={'h6'}>Delete ?</Typography>
+            <Typography variant={'h6'}>Delete?</Typography>
           </Stack>
         }
         onClose={handledClose}

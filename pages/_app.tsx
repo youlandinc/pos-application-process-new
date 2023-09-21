@@ -1,3 +1,4 @@
+import { createTheme } from '@mui/material/styles';
 import { useEffect, useMemo } from 'react';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
@@ -7,12 +8,7 @@ import Script from 'next/script';
 import { useAsync } from 'react-use';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import {
-  Color,
-  PaletteColorOptions,
-  styled,
-  ThemeProvider,
-} from '@mui/material';
+import { styled, ThemeProvider } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -86,15 +82,13 @@ export default function MyApp(props: MyAppProps) {
     '&.notistack-MuiContent-success': {
       color: theme.palette.success.main,
       '&::before': {
-        backgroundColor: (theme.palette.success as PaletteColorOptions & Color)
-          .A200,
+        backgroundColor: theme.palette.success.dark,
       },
     },
     '&.notistack-MuiContent-error': {
       color: theme.palette.error.main,
       '&::before': {
-        backgroundColor: (theme.palette.error as PaletteColorOptions & Color)
-          .A200,
+        backgroundColor: theme.palette.error.dark,
       },
     },
     '&.notistack-MuiContent-info': {
@@ -103,8 +97,7 @@ export default function MyApp(props: MyAppProps) {
         color: theme.palette.primary.main,
       },
       '&::before': {
-        backgroundColor: (theme.palette.primary as PaletteColorOptions & Color)
-          .A200,
+        backgroundColor: theme.palette.primary.dark,
       },
     },
     '&.notistack-MuiContent-default': {
@@ -137,16 +130,26 @@ export default function MyApp(props: MyAppProps) {
       color: theme.palette.warning.main,
 
       '&::before': {
-        backgroundColor: (theme.palette.warning as PaletteColorOptions & Color)
-          .A200,
+        backgroundColor: theme.palette.warning.dark,
       },
     },
   }));
 
   const renderComponent = useMemo(() => {
     if (saasState) {
+      const saasTheme = createTheme(theme, {
+        palette: {
+          primary: {
+            main: `hsla(${saasState?.posSettings?.h},42%,55%,1)`,
+            darker: `hsla(${saasState?.posSettings?.h},40%,40%,1)`,
+            dark: `hsla(${saasState?.posSettings?.h},40%,40%,1)`,
+            lighter: `hsla(${saasState?.posSettings?.h},100%,95%,1)`,
+            light: `hsla(${saasState?.posSettings?.h},32%,98%,1)`,
+          },
+        },
+      });
       return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={saasTheme}>
           <CssBaseline />
           <LocalizationProvider apterLocale={en} dateAdapter={AdapterDateFns}>
             <SnackbarProvider

@@ -597,7 +597,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
                 <Typography variant={'body1'}>
                   After repair value (ARV){' '}
                   <StyledTooltip
-                    title={'ARV (Purchase price + Estimated rehab loan amount)'}
+                    title={'How much your property will be worth after rehab'}
                   >
                     <InfoOutlined sx={{ width: 16, height: 16 }} />
                   </StyledTooltip>

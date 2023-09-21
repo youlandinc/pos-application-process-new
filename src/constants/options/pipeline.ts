@@ -108,7 +108,7 @@ export const OPTIONS_LICENSE_TYPE: Option[] = [
   {
     key: PipelineLicenseType.DRE_LICENSE,
     value: PipelineLicenseType.DRE_LICENSE,
-    label: 'Dre license',
+    label: 'DRE license',
   },
 ];
 

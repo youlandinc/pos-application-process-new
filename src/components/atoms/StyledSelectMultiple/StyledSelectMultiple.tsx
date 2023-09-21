@@ -8,6 +8,8 @@ import {
   Select,
 } from '@mui/material';
 
+import { useSessionStorageState } from '@/hooks';
+
 import { StyledSelectMultipleProps, StyledSelectMultipleStyle } from './index';
 
 import { POSFindLabel, POSTypeOf } from '@/utils';
@@ -26,6 +28,7 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
   ...rest
 }) => {
   const [selectValue, setSelectValue] = useState(['']);
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const handledChange = (e: any) => {
     const {
@@ -64,9 +67,32 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
             MenuProps: {
               MenuListProps: {
                 sx: {
-                  ...StyledSelectMultipleStyle.list,
+                  width: 'auto',
+                  p: 0,
+                  mt: 0,
+                  '& .MuiMenuItem-root:hover': {
+                    bgcolor: 'rgba(144, 149, 163, 0.1) !important',
+                  },
+                  '& .MuiMenuItem-root.Mui-selected': {
+                    bgcolor: `hsla(${
+                      saasState?.posSettings?.h || 222
+                    },100%,95%,1) !important`,
+                  },
+                  '& .MuiMenuItem-root': {
+                    fontSize: 14,
+                    color: 'text.primary',
+                    bgcolor: 'transparent !important',
+                  },
+                  '& .MuiButtonBase-root': {
+                    '& .MuiFormControlLabel-root': {
+                      width: 'auto',
+                    },
+                  },
                   ...sxList,
                 },
+              },
+              PaperProps: {
+                style: { marginTop: 12 },
               },
             },
           }}
@@ -89,7 +115,7 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
           {...rest}
         >
           {options.map((opt) => (
-            <MenuItem key={opt.key} value={opt.value}>
+            <MenuItem disableRipple key={opt.key} value={opt.value}>
               <StyledCheckbox
                 checked={selectValue.indexOf(opt.value as any) > -1}
                 sx={StyledSelectMultipleStyle.checkboxSx}

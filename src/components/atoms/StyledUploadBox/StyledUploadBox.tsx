@@ -1,5 +1,5 @@
 import { ChangeEvent, DragEvent, useCallback, useState } from 'react';
-import { Box, Icon, Typography } from '@mui/material';
+import { Box, Icon, Stack, Typography } from '@mui/material';
 import {
   CloseOutlined,
   DeleteForeverOutlined,
@@ -138,9 +138,10 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
       onDelete(deleteIndex);
     } finally {
       setDeleteLoading(false);
+      setTimeout(() => {
+        close();
+      }, 300);
     }
-
-    close();
   };
 
   return (
@@ -155,7 +156,15 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
         type="file"
       />
       <Box className={'uploadBox'}>
-        <StyledButton color={'inherit'} disabled={loading}>
+        <StyledButton
+          color={'inherit'}
+          disabled={loading}
+          sx={{
+            '&.MuiButton-root.Mui-disabled': {
+              bgcolor: 'transparent !important',
+            },
+          }}
+        >
           {loading ? (
             <StyledLoading sx={{ color: 'text.grey' }} />
           ) : (
@@ -171,7 +180,14 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
                   {['xs', 'sm', 'md'].includes(breakpoint)
                     ? 'Click '
                     : 'Drop files here or click '}
-                  <Box className="link_style" component={'span'}>
+                  <Box
+                    component={'span'}
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
+                  >
                     browse
                   </Box>{' '}
                   thorough your machine.
@@ -256,31 +272,29 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
           </Box>
         }
         footer={
-          <>
+          <Stack flexDirection={'row'} gap={1} mt={3}>
             <StyledButton
-              color="error"
-              disabled={deleteLoading}
-              onClick={onDialogConfirmDelete}
-              size="small"
-              variant="contained"
-            >
-              Delete
-            </StyledButton>
-            <StyledButton
-              autoFocus
-              color="info"
+              color={'info'}
               disabled={deleteLoading}
               onClick={close}
-              size="small"
-              sx={{ ml: 3 }}
-              variant="outlined"
+              size={'small'}
+              variant={'outlined'}
             >
               Cancel
             </StyledButton>
-          </>
+            <StyledButton
+              autoFocus
+              color={'error'}
+              disabled={deleteLoading}
+              onClick={onDialogConfirmDelete}
+              size={'small'}
+            >
+              Confirm
+            </StyledButton>
+          </Stack>
         }
         header={
-          <>
+          <Stack alignItems={'center'} flexDirection={'row'}>
             <DeleteForeverOutlined
               sx={{
                 mr: 1.5,
@@ -289,7 +303,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
               }}
             />
             Delete?
-          </>
+          </Stack>
         }
         onClose={(event, reason) => {
           if (reason !== 'backdropClick') {

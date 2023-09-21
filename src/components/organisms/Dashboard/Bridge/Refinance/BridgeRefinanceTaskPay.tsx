@@ -136,6 +136,7 @@ export const BridgeRefinanceTaskPay: FC = observer(() => {
                 </Stack>
                 <Stack gap={3} width={'100%'}>
                   <StyledButton
+                    color={'info'}
                     loading={genLoading}
                     loadingText={'Generating...'}
                     sx={{
@@ -144,7 +145,7 @@ export const BridgeRefinanceTaskPay: FC = observer(() => {
                     }}
                     variant={'outlined'}
                   >
-                    Generate File
+                    Generate file
                   </StyledButton>
                 </Stack>
               </StyledFormItem>
@@ -156,9 +157,13 @@ export const BridgeRefinanceTaskPay: FC = observer(() => {
               >
                 The attached document is the{' '}
                 <Typography
-                  className={'link_style'}
                   component={'span'}
                   fontWeight={600}
+                  sx={{
+                    color: 'primary.main',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                  }}
                   // onClick={() =>
                   //   window.open(computedAch.ach.taskForm.documentFile.url)
                   // }
@@ -179,8 +184,8 @@ export const BridgeRefinanceTaskPay: FC = observer(() => {
               }
             >
               <Stack maxWidth={600} mt={3} width={'100%'}>
-                <StyledButton color={'primary'} variant={'outlined'}>
-                  Link Account
+                <StyledButton color={'info'} variant={'outlined'}>
+                  Link account
                 </StyledButton>
               </Stack>
             </StyledFormItem>
@@ -224,8 +229,8 @@ export const BridgeRefinanceTaskPay: FC = observer(() => {
             width={'100%'}
           >
             <Typography variant={'body1'}>
-              &quot;By clicking the below button, I hereby agree to the above
-              broker agreement.&quot;
+              &quot;By clicking the button, I hereby agree to the above broker
+              agreement.&quot;
             </Typography>
             <StyledButton
               disabled={agreeLoading}

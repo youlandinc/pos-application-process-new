@@ -1,5 +1,9 @@
 import { createTheme } from '@mui/material/styles';
 
+const CONSTANT_COLOR_HUE = 222;
+//const CONSTANT_COLOR_SATURATION = 42;
+//const CONSTANT_COLOR_LIGHTNESS = 55;
+
 declare module '@mui/material/styles' {
   interface BreakpointOverrides {
     xs: true;
@@ -28,6 +32,18 @@ declare module '@mui/material/Typography' {
     body3: true;
     subtitle3: true;
     h7: true;
+  }
+}
+
+declare module '@mui/material/styles' {
+  interface PaletteColor {
+    darker?: string;
+    lighter?: string;
+  }
+
+  interface SimplePaletteColorOptions {
+    darker?: string;
+    lighter?: string;
   }
 }
 
@@ -69,36 +85,39 @@ export const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#5B76BC',
-      A100: '#3C538F',
-      A200: 'rgba(17, 52, 227, 0.2)',
+      main: `hsla(${CONSTANT_COLOR_HUE},42%,55%,1)`,
+      darker: `hsla(${CONSTANT_COLOR_HUE},40%,40%,1)`,
+      dark: `hsla(${CONSTANT_COLOR_HUE},40%,40%,1)`,
+      lighter: `hsla(${CONSTANT_COLOR_HUE},100%,95%,1)`,
+      light: `hsla(${CONSTANT_COLOR_HUE},32%,98%,1)`,
+      contrastText: '#fff',
     },
     secondary: {
       main: '#F3D370',
-      A100: '#D9B239',
-      A200: 'rgba(243, 211, 112, 0.2)',
+      darker: '#D9B239',
+      dark: 'rgba(243, 211, 112, 0.2)',
     },
     success: {
       main: '#36B37E',
       contrastText: '#fff',
-      A100: '#0A5554',
-      A200: 'rgba(225, 239, 228, 1)',
+      darker: '#0A5554',
+      dark: 'rgba(225, 239, 228, 1)',
     },
     warning: {
       main: '#FFAB00',
       contrastText: '#fff',
-      A100: '#7A4100',
-      A200: 'rgba(255, 171, 0, 0.2)',
+      darker: '#7A4100',
+      dark: 'rgba(255, 171, 0, 0.2)',
     },
     error: {
-      main: '#FF5630',
-      A100: '#7A0916',
-      A200: 'rgba(255, 86, 48, 0.2)',
+      main: '#DE6449',
+      darker: '#BB482E',
+      dark: '#CD5135',
     },
     info: {
       main: '#9095A3',
-      A100: '#636A7C',
-      A200: 'rgba(144, 149, 163, 0.2)',
+      darker: '#636A7C',
+      dark: 'rgba(144, 149, 163, 0.1)',
     },
     action: {
       default: '#D2D6E1',

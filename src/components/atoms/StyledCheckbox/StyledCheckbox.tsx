@@ -1,7 +1,11 @@
+import { POSFont } from '@/styles';
+import { theme } from '@/theme';
 import { FC } from 'react';
 import { Checkbox, FormControlLabel, Icon } from '@mui/material';
 
-import { StyledCheckboxProps, StyledCheckboxStyles } from './index';
+import { useSessionStorageState } from '@/hooks';
+
+import { StyledCheckboxProps } from './index';
 
 import CHECKBOX_STATIC from './static.svg';
 import CHECKBOX_CHECKED from './checked.svg';
@@ -19,6 +23,8 @@ export const StyledCheckbox: FC<StyledCheckboxProps> = ({
   sx,
   ...rest
 }) => {
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   return (
     <>
       <FormControlLabel
@@ -26,6 +32,7 @@ export const StyledCheckbox: FC<StyledCheckboxProps> = ({
           <Checkbox
             checked={checked}
             checkedIcon={<Icon component={checkedIcon || CHECKBOX_CHECKED} />}
+            disableRipple
             icon={<Icon component={icon || CHECKBOX_STATIC} />}
             indeterminate={indeterminate}
             indeterminateIcon={
@@ -37,7 +44,37 @@ export const StyledCheckbox: FC<StyledCheckboxProps> = ({
           />
         }
         label={label}
-        sx={{ ...StyledCheckboxStyles, ...sx }}
+        sx={{
+          alignItems: 'flex-start',
+          // width: '100%',
+          '& .MuiFormControlLabel-label': {
+            width: '100%',
+            ml: 1.5,
+            wordBreak: 'break-word',
+            whiteSpace: 'normal',
+            ...POSFont(14, 400, 1.5, 'text.primary'),
+          },
+          '& .Mui-checked': {
+            '& svg > path': {
+              fill: `hsla(${
+                saasState?.posSettings?.h || 222
+              },42%,55%,1) !important`,
+            },
+          },
+          '& .MuiCheckbox-root': {
+            mt: '-11px',
+            mr: '-11px',
+            '& svg > path': {
+              fill: '#929292',
+            },
+          },
+          '& .Mui-disabled': {
+            '& svg > path': {
+              fill: `${theme.palette.action.disabled} !important`,
+            },
+          },
+          ...sx,
+        }}
       />
     </>
   );

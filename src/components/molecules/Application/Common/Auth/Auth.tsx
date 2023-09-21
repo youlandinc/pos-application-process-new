@@ -62,9 +62,13 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
                 <Typography component={'div'} variant={'body2'}>
                   Already have an account?{' '}
                   <Typography
-                    className={'link_style'}
                     component={'span'}
                     onClick={() => setAuthType('login')}
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
                     variant={'body2'}
                   >
                     Log in
@@ -77,11 +81,15 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
                 >
                   By signing up, you agree to our{' '}
                   <Typography
-                    className="link_style"
                     component={'span'}
                     onClick={() =>
                       window.open('https://www.youland.com/legal/terms/')
                     }
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
                     variant={'body2'}
                   >
                     Term of Use{' '}
@@ -89,11 +97,15 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
                   and to receive YouLand emails & updates and acknowledge that
                   you read our{' '}
                   <Typography
-                    className="link_style"
                     component={'span'}
                     onClick={() =>
                       window.open('https://www.youland.com/legal/privacy/')
                     }
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
                     variant={'body2'}
                   >
                     Privacy Policy
@@ -113,18 +125,26 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
                 <Typography variant={'body2'}>
                   Don&apos;t have an account?{' '}
                   <Typography
-                    className={'link_style'}
                     component={'span'}
                     onClick={() => setAuthType('sign_up')}
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
                     variant={'body2'}
                   >
                     Sign up
                   </Typography>
                 </Typography>
                 <Typography
-                  className={'link_style'}
                   color={'primary'}
                   onClick={() => setAuthType('reset_password')}
+                  sx={{
+                    color: 'primary.main',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                  }}
                   variant={'body2'}
                 >
                   Forgot password?
@@ -139,9 +159,15 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
                 successCb={() => setAuthType('login')}
               />
               <Typography
-                className={'link_style POS_mt_3 POS_tr'}
                 color={'info'}
+                mt={3}
                 onClick={() => setAuthType('login')}
+                sx={{
+                  color: 'primary.main',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                }}
+                textAlign={'right'}
                 variant={'body2'}
               >
                 Back to log in

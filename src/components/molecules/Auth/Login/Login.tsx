@@ -173,12 +173,17 @@ export const Login: FC<LoginProps> = observer(
                     <Typography
                       color={'primary'}
                       component={'span'}
+                      fontWeight={600}
                       variant={'body2'}
                     >
                       <Link href={'./sign_up/'}> Sign up</Link>
                     </Typography>
                   </Typography>
-                  <Typography color={'primary'} variant="body2">
+                  <Typography
+                    color={'primary'}
+                    fontWeight={600}
+                    variant="body2"
+                  >
                     <Link href={'./forgot_password/'}>Forgot password?</Link>
                   </Typography>
                 </Box>

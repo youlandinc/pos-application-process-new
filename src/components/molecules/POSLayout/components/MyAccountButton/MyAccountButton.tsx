@@ -91,6 +91,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
       case 'application':
         return (
           <MenuItem
+            disableRipple
             onClick={(e) => handledMenuItemClick(e, 'sign_out')}
             sx={MyAccountStyles.menu_item}
           >
@@ -102,6 +103,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
         if (userType === UserType.CUSTOMER) {
           return MENU_LIST_CUSTOMER.map((item, index) => (
             <MenuItem
+              disableRipple
               key={`${item.label}_${index}`}
               onClick={(e) => handledMenuItemClick(e, item.url)}
               sx={MyAccountStyles.menu_item}
@@ -112,6 +114,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
         }
         return MENU_LIST_NOT_CUSTOMER.map((item, index) => (
           <MenuItem
+            disableRipple
             key={`${item.label}_${index}`}
             onClick={(e) => handledMenuItemClick(e, item.url)}
             sx={MyAccountStyles.menu_item}
@@ -122,6 +125,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
       default:
         return (
           <MenuItem
+            disableRipple
             onClick={(e) => handledMenuItemClick(e, 'sign_out')}
             sx={MyAccountStyles.menu_item}
           >
