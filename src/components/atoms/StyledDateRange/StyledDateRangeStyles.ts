@@ -49,7 +49,8 @@ export const StyledDateRangeStyles = {
       color: 'text.primary',
       '&:hover': {
         borderRadius: '50% !important',
-        bgcolor: 'primary.dark',
+        bgcolor: 'info.dark',
+        color: 'text.primary',
       },
     },
     '& .react-datepicker__triangle::after, .react-datepicker__triangle::before':
@@ -60,10 +61,19 @@ export const StyledDateRangeStyles = {
       borderRadius: '50%',
       bgcolor: 'primary.main',
       color: 'text.white',
+      '&:hover': {
+        bgcolor: 'primary.darker',
+        color: 'primary.contrastText',
+      },
     },
     '& .react-datepicker__day--in-selecting-range': {
-      bgcolor: 'primary.dark',
+      bgcolor: 'primary.main',
+      color: 'primary.contrastText',
       borderRadius: '50% !important',
+      '&:hover': {
+        bgcolor: 'primary.darker',
+        color: 'primary.contrastText',
+      },
     },
     '& .react-datepicker__header': {
       bgcolor: 'background.white',

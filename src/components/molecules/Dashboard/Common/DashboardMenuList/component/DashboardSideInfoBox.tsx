@@ -92,7 +92,7 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
           maxWidth: 280,
           borderRadius: 2,
           p: 3,
-          bgcolor: 'primary.light',
+          bgcolor: 'info.dark',
           minHeight: 100,
         }}
       >
