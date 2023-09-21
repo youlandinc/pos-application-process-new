@@ -100,6 +100,7 @@ export const PreApprovalEdit: FC<PreApprovalEditProps> = (props) => {
           width={'100%'}
         >
           <StyledButton
+            color={'info'}
             onClick={onClickCancel}
             sx={{ width: 130 }}
             variant={'outlined'}

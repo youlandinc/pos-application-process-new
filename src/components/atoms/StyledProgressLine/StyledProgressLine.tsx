@@ -20,9 +20,9 @@ export const StyledProgressLine: FC<StyledProgressLineProps> = ({
       maxWidth={600}
       width={'100%'}
     >
-      <Box bgcolor={'#C2EBD6'} borderRadius={1} flex={1} height={4}>
+      <Box bgcolor={'primary.lighter'} borderRadius={1} flex={1} height={4}>
         <Box
-          bgcolor={'success.main'}
+          bgcolor={'primary.main'}
           borderRadius={1}
           height={4}
           sx={{ transition: 'width 1s ease-in-out' }}

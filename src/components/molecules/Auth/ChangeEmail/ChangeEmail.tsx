@@ -207,6 +207,7 @@ export const ChangeEmail: FC = observer(() => {
         footer={
           <>
             <StyledButton
+              color={'info'}
               disabled={loading}
               onClick={close}
               size={'small'}

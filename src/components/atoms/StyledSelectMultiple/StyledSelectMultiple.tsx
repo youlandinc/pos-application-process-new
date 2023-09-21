@@ -71,9 +71,7 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
                   p: 0,
                   mt: 0,
                   '& .MuiMenuItem-root:hover': {
-                    bgcolor: `hsla(${
-                      saasState?.posSettings?.h || 222
-                    },32%,98%,1) !important`,
+                    bgcolor: 'rgba(144, 149, 163, 0.1) !important',
                   },
                   '& .MuiMenuItem-root.Mui-selected': {
                     bgcolor: `hsla(${

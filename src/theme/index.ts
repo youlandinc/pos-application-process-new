@@ -110,14 +110,14 @@ export const theme = createTheme({
       dark: 'rgba(255, 171, 0, 0.2)',
     },
     error: {
-      main: '#FF5630',
-      darker: '#7A0916',
-      dark: 'rgba(255, 86, 48, 0.2)',
+      main: '#DE6449',
+      darker: '#BB482E',
+      dark: '#CD5135',
     },
     info: {
       main: '#9095A3',
       darker: '#636A7C',
-      dark: 'rgba(144, 149, 163, 0.2)',
+      dark: 'rgba(144, 149, 163, 0.1)',
     },
     action: {
       default: '#D2D6E1',

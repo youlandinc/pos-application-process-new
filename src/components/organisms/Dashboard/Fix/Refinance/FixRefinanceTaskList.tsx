@@ -480,7 +480,9 @@ const TaskListStyles: SxProps = {
     mb: 3,
     borderRadius: 2,
     '& .Finish': {
-      color: 'success.main',
+      color: 'primary.main',
+      width: { xs: 16, md: 24 },
+      ml: 3,
     },
     '& div': {
       height: 48,

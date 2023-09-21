@@ -11,8 +11,8 @@ export const StyledUploadBoxStyles: SxProps = {
     },
   },
   '& .upload_img': {
-    width: '40%',
-    height: '100%',
+    width: 200,
+    height: 140,
     mr: {
       lg: 6,
       sx: 0,
@@ -65,7 +65,7 @@ export const StyledUploadBoxStyles: SxProps = {
     overflow: 'hidden',
     display: 'block',
     textAlign: 'center',
-    bgcolor: 'action.hover',
+    bgcolor: 'transparent',
     borderRadius: 2,
     lineHeight: '236px',
     minHeight: 236,
@@ -75,14 +75,16 @@ export const StyledUploadBoxStyles: SxProps = {
   },
   '& button': {
     width: '100%',
-    bgcolor: 'action.hover',
+    bgcolor: 'transparent',
+    minHeight: 236,
+    height: '100%',
   },
   '& .uploadBtn': {
     width: '100%',
     p: { md: 6, xs: 3 },
     textTransform: 'none',
     cursor: 'pointer',
-    ...POSFlex('center', 'space-between', { lg: 'row', xs: 'column' }),
+    ...POSFlex('center', 'center', { lg: 'row', xs: 'column' }),
   },
   ' input': {
     width: '100%',
