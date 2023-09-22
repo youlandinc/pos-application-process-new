@@ -5,7 +5,7 @@ export const StyledDatePickerStyles: SxProps = {
   borderRadius: 2,
   padding: 0,
   '& label.Mui-focused': {
-    color: 'info.darker',
+    color: 'text.focus',
   },
   '& .MuiOutlinedInput-root': {
     borderRadius: 2,
@@ -22,7 +22,7 @@ export const StyledDatePickerStyles: SxProps = {
     },
     '&:hover fieldset': {
       borderColor: 'background.border_hover',
-      color: 'background.border_hover',
+      color: 'text.primary',
     },
     '&.Mui-focused fieldset': {
       border: '1px solid',

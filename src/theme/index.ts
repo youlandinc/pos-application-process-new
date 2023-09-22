@@ -37,8 +37,10 @@ declare module '@mui/material/Typography' {
 
 declare module '@mui/material/styles' {
   interface PaletteColor {
-    dark?: string;
+    darker?: string;
+    darkest?: string;
     lighter?: string;
+    lightest?: string;
   }
 
   interface SimplePaletteColorOptions {
@@ -88,12 +90,12 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: `hsla(${CONSTANT_COLOR_HUE},42%,55%,1)`,
-      dark: `hsla(${CONSTANT_COLOR_HUE},40%,40%,1)`,
+      dark: `hsla(${CONSTANT_COLOR_HUE},43%,50%,1)`,
       darker: `hsla(${CONSTANT_COLOR_HUE},38%,30%,1)`,
-      darkest: '',
-      light: `hsla(${CONSTANT_COLOR_HUE},32%,98%,1)`,
-      lighter: `hsla(${CONSTANT_COLOR_HUE},100%,95%,1)`,
-      lightest: '',
+      darkest: `hsla(${CONSTANT_COLOR_HUE},28%,18%,1)`,
+      light: `hsla(${CONSTANT_COLOR_HUE},100%,92%,1)`,
+      lighter: `hsla(${CONSTANT_COLOR_HUE},100%,97%,1)`,
+      lightest: `hsla(${CONSTANT_COLOR_HUE},32%,98%,1)`,
       contrastText: '#fff',
     },
     secondary: {

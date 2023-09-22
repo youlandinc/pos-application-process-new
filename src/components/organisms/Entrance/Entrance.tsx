@@ -84,7 +84,7 @@ export const Entrance: FC = observer(() => {
   }, [router.query.token]);
 
   return (
-    <Box sx={{ bgcolor: '#F5F8FA' }}>
+    <Box sx={{ bgcolor: 'primary.lightest' }}>
       <Stack
         alignItems={'center'}
         flexDirection={'row'}
