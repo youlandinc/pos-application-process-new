@@ -19,7 +19,7 @@ export const StyledDialog: FC<StyledDialogProps> = ({
   const handledClass = (name: string) => {
     switch (name) {
       // case 'contained':
-      //   return props.color + '.darker';
+      //   return props.color + '.dark';
       case 'dialog_header':
         return `dialog_header ${content || footer ? 'POS_pb_0' : ' POS_pb_3'}`;
 

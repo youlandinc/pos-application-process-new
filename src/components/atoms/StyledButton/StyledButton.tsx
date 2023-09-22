@@ -20,15 +20,15 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
     const handledSx = () => {
       switch (variant) {
         // case 'contained':
-        //   return props.color + '.darker';
+        //   return props.color + '.dark';
         case 'text':
-          return rest.color + '.dark';
+          return rest.color + '.darker';
 
         case 'outlined':
-          return rest.color + '.dark';
+          return rest.color + '.darker';
 
         default:
-          return rest.color + (isIconButton ? '.dark' : '.darker');
+          return rest.color + (isIconButton ? '.darker' : '.dark');
       }
     };
     return (

@@ -6,7 +6,7 @@ import { StyledTooltipProps, StyledTooltipStyles } from './index';
 export const StyledTooltip: FC<StyledTooltipProps> = ({
   sx,
   children,
-  theme = 'dark',
+  theme = 'darker',
   ...rest
 }) => {
   const [open, setOpen] = useState(false);

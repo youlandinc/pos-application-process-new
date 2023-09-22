@@ -1,6 +1,6 @@
 import { SxProps, TooltipProps } from '@mui/material';
 
 export interface StyledTooltipProps extends TooltipProps {
-  theme?: 'dark' | 'main';
+  theme?: 'darker' | 'main';
   sx?: SxProps;
 }

@@ -35,12 +35,7 @@ export const SignUpStyles = {
     ...POSFlex('center', 'center', 'row'),
     width: '100%',
     height: '100%',
-    '& .sign_up_img': {
-      display: { xs: 'none', lg: 'block' },
-      width: '100%',
-      height: 'auto',
-      flex: 1,
-    },
+    '& .sign_up_img': {},
     '& .sign_up_form': {
       flex: 1,
       py: 6.5,

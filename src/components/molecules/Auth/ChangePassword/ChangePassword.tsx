@@ -1,3 +1,4 @@
+import { useSessionStorageState } from '@/hooks';
 import {
   ChangeEventHandler,
   FC,
@@ -34,6 +35,7 @@ import { _userChangePassword } from '@/requests';
 export const ChangePassword: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [oldPassword, setOldPassword] = useState('');
 
@@ -119,8 +121,16 @@ export const ChangePassword: FC = () => {
       <StyledBoxWrap sx={{ ...POSFlex('center', 'center', 'column') }}>
         <Box sx={ChangePasswordStyles}>
           <Icon
-            className="change_password_img"
             component={CHANGE_PASSWORD_SVG}
+            sx={{
+              flex: 1,
+              width: '100%',
+              height: 'auto',
+              display: { xs: 'none', lg: 'block' },
+              '& .change_password_svg__pos_svg_theme_color': {
+                fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+              },
+            }}
           />
 
           <Box className="change_password_form">

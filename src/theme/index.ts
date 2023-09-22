@@ -37,13 +37,15 @@ declare module '@mui/material/Typography' {
 
 declare module '@mui/material/styles' {
   interface PaletteColor {
-    darker?: string;
+    dark?: string;
     lighter?: string;
   }
 
   interface SimplePaletteColorOptions {
     darker?: string;
+    darkest?: string;
     lighter?: string;
+    lightest?: string;
   }
 }
 
@@ -86,38 +88,40 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: `hsla(${CONSTANT_COLOR_HUE},42%,55%,1)`,
-      darker: `hsla(${CONSTANT_COLOR_HUE},40%,40%,1)`,
       dark: `hsla(${CONSTANT_COLOR_HUE},40%,40%,1)`,
-      lighter: `hsla(${CONSTANT_COLOR_HUE},100%,95%,1)`,
+      darker: `hsla(${CONSTANT_COLOR_HUE},38%,30%,1)`,
+      darkest: '',
       light: `hsla(${CONSTANT_COLOR_HUE},32%,98%,1)`,
+      lighter: `hsla(${CONSTANT_COLOR_HUE},100%,95%,1)`,
+      lightest: '',
       contrastText: '#fff',
     },
     secondary: {
       main: '#F3D370',
-      darker: '#D9B239',
-      dark: 'rgba(243, 211, 112, 0.2)',
+      dark: '#D9B239',
+      darker: 'rgba(243, 211, 112, 0.2)',
     },
     success: {
       main: '#36B37E',
       contrastText: '#fff',
-      darker: '#0A5554',
-      dark: 'rgba(225, 239, 228, 1)',
+      dark: '#0A5554',
+      darker: 'rgba(225, 239, 228, 1)',
     },
     warning: {
       main: '#FFAB00',
       contrastText: '#fff',
-      darker: '#7A4100',
-      dark: 'rgba(255, 171, 0, 0.2)',
+      dark: '#7A4100',
+      darker: 'rgba(255, 171, 0, 0.2)',
     },
     error: {
       main: '#DE6449',
-      darker: '#BB482E',
-      dark: '#CD5135',
+      dark: '#BB482E',
+      darker: '#CD5135',
     },
     info: {
       main: '#9095A3',
-      darker: '#636A7C',
-      dark: 'rgba(144, 149, 163, 0.1)',
+      dark: '#636A7C',
+      darker: 'rgba(144, 149, 163, 0.1)',
     },
     action: {
       default: '#D2D6E1',

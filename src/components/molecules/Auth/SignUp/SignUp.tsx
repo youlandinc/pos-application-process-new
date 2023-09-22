@@ -389,7 +389,18 @@ export const SignUp: FC<SignUpProps> = observer(
             }}
           >
             <Box sx={SignUpStyles.singUp}>
-              <Icon className="sign_up_img" component={SIGN_UP_SVG} />
+              <Icon
+                component={SIGN_UP_SVG}
+                sx={{
+                  display: { xs: 'none', lg: 'block' },
+                  width: '100%',
+                  height: 'auto',
+                  flex: 1,
+                  '& .sign_up_svg__pos_svg_theme_color': {
+                    fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                  },
+                }}
+              />
 
               <Box className="sign_up_form">
                 <Typography className="form_title" variant="h3">
