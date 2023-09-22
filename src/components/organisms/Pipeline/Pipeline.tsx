@@ -11,7 +11,7 @@ import { useMst } from '@/models/Root';
 
 import { POSGetProductTypeByUrl } from '@/utils';
 import { _deleteProcess, _fetchAllProcesses } from '@/requests';
-import { useSwitch } from '@/hooks';
+import { useSessionStorageState, useSwitch } from '@/hooks';
 import { LoanStage, UserType } from '@/types';
 import { AUTO_HIDE_DURATION, PAGE_SIZE } from '@/constants';
 import { StyledButton, StyledDialog, StyledLoading } from '@/components/atoms';
@@ -28,6 +28,7 @@ import PIPELINE_NO_RESULT from '@/svg/pipeline/pipeline_no_result.svg';
 export const Pipeline: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const {
     userSetting: { pipelineStatus, pipelineStatusInitialized },
@@ -275,6 +276,9 @@ export const Pipeline: FC = observer(() => {
               sx={{
                 width: { md: 544, xs: '100%' },
                 height: 'auto',
+                '& .pipeline_no_result_svg__pos_svg_theme_color': {
+                  fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                },
               }}
             />
             <Typography mt={6} textAlign={'center'} variant={'body1'}>
@@ -303,7 +307,7 @@ export const Pipeline: FC = observer(() => {
           <Typography
             component={'div'}
             mt={3}
-            sx={{ color: 'info.darker', overflow: 'hidden' }}
+            sx={{ color: 'info.dark', overflow: 'hidden' }}
             variant={'body2'}
           >
             {deleteLoading

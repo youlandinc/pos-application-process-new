@@ -13,7 +13,7 @@ export const StyledButtonGroupStyles = {
     '&.Mui-selected': {
       bgcolor: 'primary.lighter',
       borderColor: 'primary.main',
-      color: 'primary.dark',
+      color: 'primary.darker',
     },
     '&:disabled': {
       color: 'text.disabled',

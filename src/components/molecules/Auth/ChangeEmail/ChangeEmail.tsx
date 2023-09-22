@@ -7,7 +7,7 @@ import { validate } from 'validate.js';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useSwitch } from '@/hooks';
+import { useSessionStorageState, useSwitch } from '@/hooks';
 import { ChangeEmailStyles } from './index';
 import { POSFlex } from '@/styles';
 import {
@@ -33,6 +33,8 @@ export const ChangeEmail: FC = observer(() => {
   const router = useRouter();
   const { userProfile } = useMst();
   const { enqueueSnackbar } = useSnackbar();
+
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const { email = '' } = userProfile || {};
   const [newEmail, setNewEmail] = useState('');
@@ -119,7 +121,18 @@ export const ChangeEmail: FC = observer(() => {
         }}
       >
         <Box sx={ChangeEmailStyles}>
-          <Icon className="change_email_img" component={CHANGE_EMAIL_SVG} />
+          <Icon
+            component={CHANGE_EMAIL_SVG}
+            sx={{
+              flex: 1,
+              width: '100%',
+              height: 'auto',
+              display: { xs: 'none', lg: 'block' },
+              '& .change_email_svg__pos_svg_theme_color': {
+                fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+              },
+            }}
+          />
 
           <Box className="change_email_form">
             <Typography className="form_title" variant="h3">

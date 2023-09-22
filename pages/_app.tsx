@@ -82,13 +82,13 @@ export default function MyApp(props: MyAppProps) {
     '&.notistack-MuiContent-success': {
       color: theme.palette.success.main,
       '&::before': {
-        backgroundColor: theme.palette.success.dark,
+        backgroundColor: theme.palette.success.darker,
       },
     },
     '&.notistack-MuiContent-error': {
       color: theme.palette.error.main,
       '&::before': {
-        backgroundColor: theme.palette.error.dark,
+        backgroundColor: theme.palette.error.darker,
       },
     },
     '&.notistack-MuiContent-info': {
@@ -97,7 +97,7 @@ export default function MyApp(props: MyAppProps) {
         color: theme.palette.primary.main,
       },
       '&::before': {
-        backgroundColor: theme.palette.primary.dark,
+        backgroundColor: theme.palette.primary.darker,
       },
     },
     '&.notistack-MuiContent-default': {
@@ -130,7 +130,7 @@ export default function MyApp(props: MyAppProps) {
       color: theme.palette.warning.main,
 
       '&::before': {
-        backgroundColor: theme.palette.warning.dark,
+        backgroundColor: theme.palette.warning.darker,
       },
     },
   }));
@@ -141,10 +141,12 @@ export default function MyApp(props: MyAppProps) {
         palette: {
           primary: {
             main: `hsla(${saasState?.posSettings?.h},42%,55%,1)`,
-            darker: `hsla(${saasState?.posSettings?.h},40%,40%,1)`,
-            dark: `hsla(${saasState?.posSettings?.h},40%,40%,1)`,
-            lighter: `hsla(${saasState?.posSettings?.h},100%,95%,1)`,
-            light: `hsla(${saasState?.posSettings?.h},32%,98%,1)`,
+            dark: `hsla(${saasState?.posSettings?.h},43%,50%,1)`,
+            darker: `hsla(${saasState?.posSettings?.h},38%,30%,1)`,
+            darkest: `hsla(${saasState?.posSettings?.h},28%,18%,1)`,
+            light: `hsla(${saasState?.posSettings?.h},100%,92%,1)`,
+            lighter: `hsla(${saasState?.posSettings?.h},100%,97%,1)`,
+            lightest: `hsla(${saasState?.posSettings?.h},32%,98%,1)`,
           },
         },
       });

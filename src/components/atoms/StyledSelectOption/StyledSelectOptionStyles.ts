@@ -2,7 +2,7 @@ import { POSFlex, POSFont } from '@/styles';
 
 export const StyledSelectOptionStyles = {
   ...POSFlex('center', 'center', 'row'),
-  ...POSFont({ xs: 16, md: 20 }, 600, 1.5, 'info.darker'),
+  ...POSFont({ xs: 16, md: 20 }, 600, 1.5, 'info.dark'),
   cursor: 'pointer',
   height: 64,
   width: '100%',
@@ -17,7 +17,7 @@ export const StyledSelectOptionStyles = {
   },
   '&.active': {
     bgcolor: 'primary.lighter',
-    color: 'primary.dark',
+    color: 'primary.darker',
     borderColor: 'primary.main',
   },
   '&.disabled': {

@@ -27,7 +27,7 @@ export const FixPurchasePaymentSummary: FC<FixPurchasePaymentSummaryProps> = ({
   return (
     <Stack
       alignItems={'center'}
-      bgcolor={'info.darker'}
+      bgcolor={'info.dark'}
       borderRadius={2}
       color={'text.white'}
       gap={1.5}

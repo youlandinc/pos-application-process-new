@@ -24,22 +24,25 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-import FORGOT_PASSWORD_SVG from '@/svg/auth/forgot_password.svg';
 import {
   AUTO_HIDE_DURATION,
   ForgotPasswordSchema,
   LOGIN_APP_KEY,
   userpool,
 } from '@/constants';
-import { useBreakpoints } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { BizType } from '@/types';
 import { _userResetPassword, _userSendCode } from '@/requests';
+
+import FORGOT_PASSWORD_SVG from '@/svg/auth/forgot_password.svg';
 
 export const ForgotPassword: FC<ForgotPasswordProps> = ({
   isNestForm = false,
   successCb,
   isRedirect = true,
 }) => {
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   const breakpoint = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
@@ -315,8 +318,16 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
         <StyledBoxWrap sx={{ ...POSFlex('center', 'center', 'column') }}>
           <Box sx={ForgotPasswordStyles.forgotPassword}>
             <Icon
-              className="forgot_password_img"
               component={FORGOT_PASSWORD_SVG}
+              sx={{
+                flex: 1,
+                width: '100%',
+                height: 'auto',
+                display: { xs: 'none', lg: 'block' },
+                '& .forgot_password_svg__pos_svg_theme_color': {
+                  fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                },
+              }}
             />
 
             <Box className="forgot_password_form">

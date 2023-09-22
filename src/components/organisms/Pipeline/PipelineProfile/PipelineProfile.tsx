@@ -117,7 +117,7 @@ export const PipelineProfile: FC = observer(() => {
                 {BROKER_QUESTIONNAIRE.taskName}{' '}
                 <Typography
                   component={'span'}
-                  sx={{ color: 'info.darker', fontSize: 'inherit' }}
+                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
                   (optional)
@@ -166,7 +166,7 @@ export const PipelineProfile: FC = observer(() => {
                 {LENDER_AGREEMENT.taskName}{' '}
                 <Typography
                   component={'span'}
-                  sx={{ color: 'info.darker', fontSize: 'inherit' }}
+                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
                   (optional)
@@ -186,7 +186,7 @@ export const PipelineProfile: FC = observer(() => {
             {/*    {LENDER_GOVERNMENT_ID.taskName}{' '}*/}
             {/*    <Typography*/}
             {/*      component={'span'}*/}
-            {/*      sx={{ color: 'info.darker', fontSize: 'inherit' }}*/}
+            {/*      sx={{ color: 'info.dark', fontSize: 'inherit' }}*/}
             {/*      variant={'h6'}*/}
             {/*    >*/}
             {/*      (optional)*/}
@@ -206,7 +206,7 @@ export const PipelineProfile: FC = observer(() => {
                 {W9_FORM.taskName}{' '}
                 <Typography
                   component={'span'}
-                  sx={{ color: 'info.darker', fontSize: 'inherit' }}
+                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
                   (optional)
@@ -230,7 +230,7 @@ export const PipelineProfile: FC = observer(() => {
                 {LENDER_QUESTIONNAIRE.taskName}{' '}
                 <Typography
                   component={'span'}
-                  sx={{ color: 'info.darker', fontSize: 'inherit' }}
+                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
                   (optional)
@@ -249,7 +249,7 @@ export const PipelineProfile: FC = observer(() => {
                 {ACH_INFORMATION.taskName}{' '}
                 <Typography
                   component={'span'}
-                  sx={{ color: 'info.darker', fontSize: 'inherit' }}
+                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
                   variant={'h6'}
                 >
                   (optional)

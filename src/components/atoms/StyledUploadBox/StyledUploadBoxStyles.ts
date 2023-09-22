@@ -10,18 +10,7 @@ export const StyledUploadBoxStyles: SxProps = {
       color: 'primary.main',
     },
   },
-  '& .upload_img': {
-    width: 200,
-    height: 140,
-    mr: {
-      lg: 6,
-      sx: 0,
-    },
-    mb: {
-      lg: 0,
-      xs: 3,
-    },
-  },
+  '& .upload_img': {},
   '& .upload_text': {
     textAlign: {
       lg: 'left',

@@ -261,53 +261,53 @@ export const PreApprovalInfo = forwardRef<
           </StyledButton>
         </ActionCard>
 
-        {![
-          LoanStage.RateLocked,
-          LoanStage.RateLocking,
-          LoanStage.Approved,
-        ].includes(loanStage as LoanStage) && (
-          <ActionCard
-            bgcolor={'action.hover'}
-            boxShadow={'none'}
-            label={
-              <Box>
-                <Box
-                  color={'text.primary'}
-                  fontSize={{ md: 24, xs: 18 }}
-                  fontWeight={600}
-                  lineHeight={1.5}
-                  mb={1.5}
-                >
-                  Edit your pre-approval letter
-                </Box>
-                <Box
-                  color={'text.primary'}
-                  fontSize={{ md: 16, xs: 12 }}
-                  fontWeight={400}
-                  lineHeight={1.5}
-                >
-                  You can edit the purchase price and down payment amounts on
-                  your letter so that it is personalized to a specific property
-                  when you&apos;re making offers.
-                </Box>
-              </Box>
-            }
-            mt={3}
-          >
-            <StyledButton
-              color={'primary'}
-              disabled={loading}
-              onClick={onClickEdit}
-              sx={{
-                width: { xl: 200, xs: '100%' },
-                mt: { xl: 0, xs: 3 },
-              }}
-              variant={'contained'}
-            >
-              Edit amount
-            </StyledButton>
-          </ActionCard>
-        )}
+        {/*{![*/}
+        {/*  LoanStage.RateLocked,*/}
+        {/*  LoanStage.RateLocking,*/}
+        {/*  LoanStage.Approved,*/}
+        {/*].includes(loanStage as LoanStage) && (*/}
+        {/*  <ActionCard*/}
+        {/*    bgcolor={'action.hover'}*/}
+        {/*    boxShadow={'none'}*/}
+        {/*    label={*/}
+        {/*      <Box>*/}
+        {/*        <Box*/}
+        {/*          color={'text.primary'}*/}
+        {/*          fontSize={{ md: 24, xs: 18 }}*/}
+        {/*          fontWeight={600}*/}
+        {/*          lineHeight={1.5}*/}
+        {/*          mb={1.5}*/}
+        {/*        >*/}
+        {/*          Edit your pre-approval letter*/}
+        {/*        </Box>*/}
+        {/*        <Box*/}
+        {/*          color={'text.primary'}*/}
+        {/*          fontSize={{ md: 16, xs: 12 }}*/}
+        {/*          fontWeight={400}*/}
+        {/*          lineHeight={1.5}*/}
+        {/*        >*/}
+        {/*          You can edit the purchase price and down payment amounts on*/}
+        {/*          your letter so that it is personalized to a specific property*/}
+        {/*          when you&apos;re making offers.*/}
+        {/*        </Box>*/}
+        {/*      </Box>*/}
+        {/*    }*/}
+        {/*    mt={3}*/}
+        {/*  >*/}
+        {/*    <StyledButton*/}
+        {/*      color={'primary'}*/}
+        {/*      disabled={loading}*/}
+        {/*      onClick={onClickEdit}*/}
+        {/*      sx={{*/}
+        {/*        width: { xl: 200, xs: '100%' },*/}
+        {/*        mt: { xl: 0, xs: 3 },*/}
+        {/*      }}*/}
+        {/*      variant={'contained'}*/}
+        {/*    >*/}
+        {/*      Edit amount*/}
+        {/*    </StyledButton>*/}
+        {/*  </ActionCard>*/}
+        {/*)}*/}
       </Box>
 
       <StyledDialog

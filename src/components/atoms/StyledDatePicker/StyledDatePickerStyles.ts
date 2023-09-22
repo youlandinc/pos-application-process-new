@@ -22,7 +22,7 @@ export const StyledDatePickerStyles: SxProps = {
     },
     '&:hover fieldset': {
       borderColor: 'background.border_hover',
-      color: 'background.border_hover',
+      color: 'text.primary',
     },
     '&.Mui-focused fieldset': {
       border: '1px solid',

@@ -43,13 +43,13 @@ export const StyledDateRangeStyles = {
     '& .react-datepicker__day': {
       width: 36,
       height: 36,
-      lineHeight: '36px',
+      lineHeight: '34px',
       fontSize: 14,
       borderRadius: '50%',
       color: 'text.primary',
       '&:hover': {
         borderRadius: '50% !important',
-        bgcolor: 'info.dark',
+        bgcolor: 'info.darker',
         color: 'text.primary',
       },
     },
@@ -62,7 +62,7 @@ export const StyledDateRangeStyles = {
       bgcolor: 'primary.main',
       color: 'text.white',
       '&:hover': {
-        bgcolor: 'primary.darker',
+        bgcolor: 'primary.dark',
         color: 'primary.contrastText',
       },
     },
@@ -71,7 +71,7 @@ export const StyledDateRangeStyles = {
       color: 'primary.contrastText',
       borderRadius: '50% !important',
       '&:hover': {
-        bgcolor: 'primary.darker',
+        bgcolor: 'primary.dark',
         color: 'primary.contrastText',
       },
     },
@@ -98,11 +98,14 @@ export const StyledDateRangeStyles = {
         borderRadius: 8,
         ...POSFont(14, 400, 1.5, 'text.primary'),
         '&:hover': {
-          bgcolor: 'primary.dark',
+          bgcolor: 'info.darker',
         },
         '&.isSelected': {
           bgcolor: 'primary.main',
           color: 'text.white',
+          '&:hover': {
+            bgcolor: 'primary.dark',
+          },
         },
       },
     },
