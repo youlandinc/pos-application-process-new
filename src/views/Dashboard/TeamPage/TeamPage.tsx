@@ -93,7 +93,7 @@ export const TeamPage: FC = () => {
         >
           <Stack
             alignItems={'center'}
-            bgcolor={'info.darker'}
+            bgcolor={'primary.lightest'}
             borderRadius={2}
             flexDirection={{ xl: 'row', xs: 'column' }}
             gap={3}

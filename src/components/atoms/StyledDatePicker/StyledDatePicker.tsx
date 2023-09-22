@@ -30,6 +30,24 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
         slotProps={{
           toolbar: { hidden: true },
           actionBar: { actions: [] },
+          desktopPaper: {
+            sx: {
+              '& .MuiPickersDay-root': {
+                '& .Mui-focused': {
+                  bgcolor: 'transparent',
+                },
+                '&:hover': {
+                  bgcolor: 'info.darker',
+                },
+                '&.Mui-selected': {
+                  bgcolor: 'primary.main',
+                },
+                '&.Mui-selected:hover': {
+                  bgcolor: 'primary.dark',
+                },
+              },
+            },
+          },
           textField: {
             FormHelperTextProps: {
               // BUG :libraries,mui types bug
@@ -57,9 +75,18 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
             error: !!validate?.length,
           },
         }}
-        sx={StyledDatePickerStyles}
+        sx={{
+          ...StyledDatePickerStyles,
+          //'& .MuiPickersDay-root': {
+          //  '& .Mui-selected': {
+          //    bgcolor: 'primary.darkest',
+          //  },
+          //},
+          '& .MuiDateCalendar-root': {
+            bgcolor: 'black',
+          },
+        }}
         value={value}
-        //desktopModeMediaQuery={theme.breakpoints.up('lg')}
         {...rest}
       />
     </>
