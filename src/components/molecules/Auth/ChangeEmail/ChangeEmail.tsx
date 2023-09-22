@@ -129,7 +129,7 @@ export const ChangeEmail: FC = observer(() => {
               height: 'auto',
               display: { xs: 'none', lg: 'block' },
               '& .change_email_svg__pos_svg_theme_color': {
-                fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
               },
             }}
           />

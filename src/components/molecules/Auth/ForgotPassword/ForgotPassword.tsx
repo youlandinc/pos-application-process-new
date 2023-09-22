@@ -325,7 +325,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
                 height: 'auto',
                 display: { xs: 'none', lg: 'block' },
                 '& .forgot_password_svg__pos_svg_theme_color': {
-                  fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                  fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
                 },
               }}
             />

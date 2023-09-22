@@ -277,7 +277,7 @@ export const Pipeline: FC = observer(() => {
                 width: { md: 544, xs: '100%' },
                 height: 'auto',
                 '& .pipeline_no_result_svg__pos_svg_theme_color': {
-                  fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                  fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
                 },
               }}
             />

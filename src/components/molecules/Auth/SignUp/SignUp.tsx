@@ -397,7 +397,7 @@ export const SignUp: FC<SignUpProps> = observer(
                   height: 'auto',
                   flex: 1,
                   '& .sign_up_svg__pos_svg_theme_color': {
-                    fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                    fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
                   },
                 }}
               />
