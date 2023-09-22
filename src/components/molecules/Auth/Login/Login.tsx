@@ -22,8 +22,9 @@ import {
   StyledTextFieldPassword,
 } from '@/components/atoms';
 
-import LOG_IN_SVG from '@/svg/auth/log_in.svg';
 import { useSessionStorageState } from '@/hooks';
+
+import LOG_IN_SVG from '@/svg/auth/log_in.svg';
 
 export const Login: FC<LoginProps> = observer(
   ({ to, successCb, isNestForm = false }) => {
@@ -160,7 +161,18 @@ export const Login: FC<LoginProps> = observer(
             }}
           >
             <Box sx={LoginStyles.login}>
-              <Icon className="sign_in_img" component={LOG_IN_SVG} />
+              <Icon
+                component={LOG_IN_SVG}
+                sx={{
+                  flex: 1,
+                  width: '100%',
+                  height: 'auto',
+                  display: { xs: 'none', lg: 'block' },
+                  '& .log_in_svg__pos_svg_theme_color': {
+                    fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                  },
+                }}
+              />
 
               <Box className="sign_in_form">
                 <Typography className="form_title" variant="h3">

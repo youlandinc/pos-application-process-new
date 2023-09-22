@@ -37,7 +37,7 @@ export const DashboardHeader: FC<DashboardHeaderProps> = ({
         <Typography
           component={'div'}
           mb={6}
-          sx={{ color: 'info.darker', ...subTitleSx }}
+          sx={{ color: 'info.dark', ...subTitleSx }}
           textAlign={'center'}
           variant={'body1'}
         >

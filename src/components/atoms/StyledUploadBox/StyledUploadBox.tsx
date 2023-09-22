@@ -10,7 +10,7 @@ import {
 import { useSnackbar } from 'notistack';
 
 import { _downloadBrokerFile } from '@/requests';
-import { useBreakpoints, useSwitch } from '@/hooks';
+import { useBreakpoints, useSessionStorageState, useSwitch } from '@/hooks';
 
 import {
   StyledButton,
@@ -40,6 +40,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
     loading,
   } = props;
 
+  const { saasState } = useSessionStorageState('tenantConfig');
   const { enqueueSnackbar } = useSnackbar();
   const breakpoint = useBreakpoints();
 
@@ -173,7 +174,18 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
               htmlFor="file-upload"
               {...dragEvents}
             >
-              <Icon className="upload_img" component={UPLOAD_SVG} />
+              <Icon
+                component={UPLOAD_SVG}
+                sx={{
+                  width: 200,
+                  height: 140,
+                  mr: { lg: 6, sx: 0 },
+                  mb: { lg: 0, xs: 3 },
+                  '& .upload_svg__pos_svg_theme_color': {
+                    fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                  },
+                }}
+              />
               <Box className="upload_text">
                 <Typography variant={'h5'}>{uploadText}</Typography>
                 <Typography variant={'body2'}>

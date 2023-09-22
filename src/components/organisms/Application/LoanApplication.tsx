@@ -208,7 +208,7 @@ const useInitProcessData = (
 
 const LoanApplicationButtonStyles = {
   ...POSFlex('center', 'center', 'row'),
-  ...POSFont(20, 600, 1.5, 'info.darker'),
+  ...POSFont(20, 600, 1.5, 'info.dark'),
   cursor: 'pointer',
   height: 64,
   width: '100%',
@@ -222,7 +222,7 @@ const LoanApplicationButtonStyles = {
   },
   '&.active': {
     bgcolor: 'primary.lighter',
-    color: 'primary.dark',
+    color: 'primary.darker',
     borderColor: 'primary.main',
   },
 };

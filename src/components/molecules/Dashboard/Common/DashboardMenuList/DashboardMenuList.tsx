@@ -159,7 +159,7 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
             '& .item': {
               cursor: 'pointer',
               '&:hover': {
-                bgcolor: 'info.dark',
+                bgcolor: 'info.darker',
               },
               '&.active': {
                 bgcolor: 'primary.lighter',

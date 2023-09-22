@@ -1,7 +1,7 @@
 export const StyledTooltipStyles = {
   fontSize: 12,
   fontWeight: 400,
-  '&.dark': {
+  '&.darker': {
     bgcolor: 'text.primary',
     '& .MuiTooltip-arrow': {
       color: 'text.primary',

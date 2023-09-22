@@ -16,6 +16,8 @@ import { POSFormatUSPhoneToText } from '@/utils';
 import { StyledFormItem, StyledLoading, Transitions } from '@/components/atoms';
 import { DashboardServiceCardItem } from '@/components/molecules';
 
+import { useSessionStorageState } from '@/hooks';
+
 import MY_TEAM from '@/svg/dashboard/my_team.svg';
 
 export interface TeamMemberData {
@@ -27,6 +29,8 @@ export interface TeamMemberData {
 }
 
 export const TeamPage: FC = () => {
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   const { enqueueSnackbar } = useSnackbar();
   const [teamList, setTeamList] = useState<TeamMemberData[]>();
   const [slogan, setSlogan] = useState<string>('');
@@ -89,7 +93,7 @@ export const TeamPage: FC = () => {
         >
           <Stack
             alignItems={'center'}
-            bgcolor={'info.dark'}
+            bgcolor={'info.darker'}
             borderRadius={2}
             flexDirection={{ xl: 'row', xs: 'column' }}
             gap={3}
@@ -164,6 +168,9 @@ export const TeamPage: FC = () => {
               sx={{
                 width: { xl: '60%', xs: '85%' },
                 height: 'auto',
+                '& .my_team_svg__pos_svg_theme_color': {
+                  fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                },
               }}
             />
           </Stack>

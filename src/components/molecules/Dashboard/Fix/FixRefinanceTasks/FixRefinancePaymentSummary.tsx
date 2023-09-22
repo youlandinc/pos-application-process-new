@@ -30,7 +30,7 @@ export const FixRefinancePaymentSummary: FC<
   return (
     <Stack
       alignItems={'center'}
-      bgcolor={'info.darker'}
+      bgcolor={'info.dark'}
       borderRadius={2}
       color={'text.white'}
       gap={1.5}
