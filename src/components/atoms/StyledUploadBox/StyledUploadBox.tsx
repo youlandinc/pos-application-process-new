@@ -182,7 +182,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
                   mr: { lg: 6, sx: 0 },
                   mb: { lg: 0, xs: 3 },
                   '& .upload_svg__pos_svg_theme_color': {
-                    fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                    fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
                   },
                 }}
               />

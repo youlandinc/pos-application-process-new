@@ -57,7 +57,7 @@ export const StyledCheckbox: FC<StyledCheckboxProps> = ({
           '& .Mui-checked': {
             '& svg > path': {
               fill: `hsla(${
-                saasState?.posSettings?.h || 222
+                saasState?.posSettings?.h ?? 222
               },42%,55%,1) !important`,
             },
           },

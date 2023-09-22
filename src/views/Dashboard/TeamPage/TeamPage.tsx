@@ -169,7 +169,7 @@ export const TeamPage: FC = () => {
                 width: { xl: '60%', xs: '85%' },
                 height: 'auto',
                 '& .my_team_svg__pos_svg_theme_color': {
-                  fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                  fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
                 },
               }}
             />
