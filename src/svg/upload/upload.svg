@@ -27,23 +27,40 @@
     <rect x="118.9" y="71.1699" width="4.94761" height="2.17768" fill="#CDCDCD"/>
 
     <rect x="29.5234" y="30.7383" width="65.0553" height="35.9207" fill="white"/>
-    <path class="pos_svg_theme_color"
-          d="M42.1509 53.0898C45.9082 53.0898 48.9541 50.038 48.9541 46.2734C48.9541 42.5088 45.9082 39.457 42.1509 39.457C38.3936 39.457 35.3477 42.5088 35.3477 46.2734C35.3477 50.038 38.3936 53.0898 42.1509 53.0898Z"
-          fill="yellow"/>
+    <path
+            class="pos_svg_theme_color"
+            d="M42.1509 53.0898C45.9082 53.0898 48.9541 50.038 48.9541 46.2734C48.9541 42.5088 45.9082 39.457 42.1509 39.457C38.3936 39.457 35.3477 42.5088 35.3477 46.2734C35.3477 50.038 38.3936 53.0898 42.1509 53.0898Z"
+            fill="yellow"
+    />
     <rect x="57.25" y="38.1934" width="29.6444" height="1.86747" fill="#CDCDCD"/>
     <rect x="57.25" y="42.957" width="15.1008" height="1.86747" fill="#CDCDCD"/>
     <rect x="57.25" y="47.7207" width="24.4243" height="1.86747" fill="#CDCDCD"/>
     <rect x="57.25" y="52.4824" width="29.6444" height="1.86747" fill="#CDCDCD"/>
-    <rect class="pos_svg_theme_color" x="78.7324" y="59.1406" width="8.34043" height="3.34146" fill="yellow"/>
+    <rect
+            class="pos_svg_theme_color"
+            x="78.7324"
+            y="59.1406"
+            width="8.34043"
+            height="3.34146"
+            fill="yellow"
+    />
 
     <rect x="76.2305" y="80.8594" width="62.5532" height="34.25" fill="white"/>
     <path class="pos_svg_theme_color"
           d="M88.012 102.436C91.5869 102.436 94.485 99.5322 94.485 95.9503C94.485 92.3685 91.5869 89.4648 88.012 89.4648C84.4371 89.4648 81.5391 92.3685 81.5391 95.9503C81.5391 99.5322 84.4371 102.436 88.012 102.436Z"
-          fill="yellow"/>
+          fill="yellow"
+    />
     <rect x="102.379" y="88.2637" width="28.2016" height="1.77648" fill="#CDCDCD"/>
     <rect x="102.379" y="92.7949" width="14.366" height="1.77648" fill="#CDCDCD"/>
     <rect x="102.379" y="97.3281" width="23.2354" height="1.77648" fill="#CDCDCD"/>
     <rect x="102.379" y="101.857" width="28.2016" height="1.77648" fill="#CDCDCD"/>
-    <rect class="pos_svg_theme_color" x="122.771" y="108.398" width="7.8043" height="3.43507" fill="yellow"/>
+    <rect
+            class="pos_svg_theme_color"
+            x="122.771"
+            y="108.398"
+            width="7.8043"
+            height="3.43507"
+            fill="yellow"
+    />
 
 </svg>

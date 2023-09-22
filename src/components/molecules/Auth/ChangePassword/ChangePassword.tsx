@@ -128,7 +128,7 @@ export const ChangePassword: FC = () => {
               height: 'auto',
               display: { xs: 'none', lg: 'block' },
               '& .change_password_svg__pos_svg_theme_color': {
-                fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
               },
             }}
           />

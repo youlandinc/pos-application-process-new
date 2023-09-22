@@ -169,7 +169,7 @@ export const Login: FC<LoginProps> = observer(
                   height: 'auto',
                   display: { xs: 'none', lg: 'block' },
                   '& .log_in_svg__pos_svg_theme_color': {
-                    fill: `hsla(${saasState?.posSettings?.h || 222},42%,55%,1)`,
+                    fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
                   },
                 }}
               />
