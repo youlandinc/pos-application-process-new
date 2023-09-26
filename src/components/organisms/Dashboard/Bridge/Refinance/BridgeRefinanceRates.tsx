@@ -1,6 +1,10 @@
-import { StyledLoading, Transitions } from '@/components/atoms';
+import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
+import RATE_CONFIRMED from '@/svg/dashboard/rate_confirmed.svg';
+import RATE_CURRENT from '@/svg/dashboard/rate_current.svg';
+import { POSFormatDollar, POSFormatPercent } from '@/utils';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { FC, useCallback, useState } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Icon, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
@@ -52,16 +56,24 @@ export const BridgeRefinanceRates: FC = observer(() => {
   const { open, visible, close } = useSwitch(false);
 
   const [loading, setLoading] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const [view, setView] = useState<'current' | 'confirmed' | 'other'>(
+    'current',
+  );
   const [loanStage, setLoanStage] = useState<LoanStage>(LoanStage.PreApproved);
   const [searchForm, setSearchForm] = useState<BRQueryData>(initialize);
   const [productList, setProductList] = useState<RatesProductData[]>();
-  const [loanInfo, setLoanInfo] = useState<BridgeRefinanceLoanInfo>();
   const [, setEncompassData] = useState<Encompass>();
+  const [loanInfo, setLoanInfo] = useState<
+    BridgeRefinanceLoanInfo & RatesProductData
+  >();
+
   const [selectedItem, setSelectedItem] = useState<
     BridgeRefinanceLoanInfo &
       Pick<
         RatesProductData,
-        'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm' | 'id'
+        'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm' | 'id' | 'selected'
       >
   >();
 
@@ -74,12 +86,24 @@ export const BridgeRefinanceRates: FC = observer(() => {
       _fetchRatesLoanInfo(router.query.processId as string),
     ])
       .then((res) => {
-        const { products } = res[0].data;
+        const { products, selectedProduct } = res[0].data;
         setProductList(products);
         const { info, loanStage, encompass } = res[1].data;
+        switch (loanStage) {
+          case LoanStage.Approved:
+            setView('confirmed');
+            break;
+          default:
+            setView('current');
+        }
         setLoanStage(loanStage);
         setEncompassData(encompass);
-        setLoanInfo(info);
+
+        setLoanInfo({
+          ...info,
+          ...selectedProduct,
+        });
+
         const {
           homeValue,
           balance,
@@ -146,13 +170,8 @@ export const BridgeRefinanceRates: FC = observer(() => {
       id,
       totalClosingCash,
       proRatedInterest,
+      selected,
     } = item;
-    const postData = {
-      id,
-      queryParams: {
-        ...searchForm,
-      },
-    };
     setSelectedItem(
       Object.assign(loanInfo as BridgeRefinanceLoanInfo, {
         paymentOfMonth,
@@ -161,16 +180,10 @@ export const BridgeRefinanceRates: FC = observer(() => {
         id,
         totalClosingCash,
         proRatedInterest,
+        selected,
       }),
     );
     open();
-    if (!item.selected) {
-      productList?.forEach((item) => (item.selected = false));
-      item.selected = true;
-      if (loanStage !== LoanStage.Approved) {
-        await updateSelectedProduct(postData);
-      }
-    }
   };
 
   const updateSelectedProduct = useCallback(
@@ -188,6 +201,33 @@ export const BridgeRefinanceRates: FC = observer(() => {
     },
     [router.query.processId],
   );
+
+  const handledViewDetails = useCallback(() => {
+    setSelectedItem(loanInfo);
+    open();
+  }, [loanInfo, open]);
+
+  const handledConfirmedRate = async () => {
+    setConfirmLoading(true);
+    const postData = {
+      id: selectedItem!.id,
+      queryParams: {
+        ...searchForm,
+      },
+    };
+    try {
+      await updateSelectedProduct(postData);
+    } finally {
+      close();
+      productList?.forEach(
+        (item) => (item.selected = selectedItem!.id === item.id),
+      );
+      setConfirmLoading(false);
+      setTimeout(async () => {
+        setView('current');
+      }, 1000);
+    }
+  };
 
   return (
     <Transitions
@@ -217,53 +257,249 @@ export const BridgeRefinanceRates: FC = observer(() => {
           px={{ lg: 3, xs: 0 }}
           width={'100%'}
         >
-          {' '}
-          <BridgeRefinanceRatesSearch
-            isDashboard={true}
-            loading={loading || initLoading}
-            loanStage={loanStage}
-            onCheck={onCheckGetList}
-            searchForm={searchForm}
-            setSearchForm={setSearchForm}
-            userType={userType as UserType}
-          />
-          <RatesList
-            label={
+          <Transitions
+            style={{
+              width: '100%',
+            }}
+          >
+            {view === 'other' ? (
               <>
                 <Typography
-                  color={'info.main'}
-                  mt={6}
-                  textAlign={'center'}
-                  variant={'body1'}
+                  color={'text.primary'}
+                  mb={6}
+                  mt={-4.5}
+                  onClick={() => {
+                    setView('current');
+                  }}
+                  sx={{
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1.5,
+                    fontSize: 14,
+                  }}
+                  variant={'h6'}
                 >
-                  The following loan programs are available for you
+                  <ArrowBackIcon sx={{ fontSize: 16, mb: 0.25 }} />
+                  Back to current rate
                 </Typography>
-                <Typography
-                  color={'info.main'}
-                  mt={1.5}
-                  textAlign={'center'}
-                  variant={'body3'}
-                >
-                  {/* todo sass */}
-                  Rates displayed are subject to rate confirm and are not to be
-                  considered an extension or offer of credit by{' '}
-                  {saasState?.organizationName || 'YouLand'}.
-                </Typography>
+                <BridgeRefinanceRatesSearch
+                  isDashboard={true}
+                  loading={loading || initLoading}
+                  loanStage={loanStage}
+                  onCheck={onCheckGetList}
+                  searchForm={searchForm}
+                  setSearchForm={setSearchForm}
+                  userType={userType as UserType}
+                />
+                <RatesList
+                  loading={loading || initLoading}
+                  loanStage={loanStage}
+                  onClick={onListItemClick}
+                  productList={productList || []}
+                  userType={userType}
+                />
+                <BridgeRefinanceRatesDrawer
+                  close={close}
+                  loading={confirmLoading}
+                  onCancel={handledConfirmedRate}
+                  selectedItem={selectedItem}
+                  userType={userType as UserType}
+                  visible={visible}
+                />
               </>
-            }
-            loading={loading || initLoading}
-            loanStage={loanStage}
-            onClick={onListItemClick}
-            productList={productList || []}
-            userType={userType}
-          />
-          <BridgeRefinanceRatesDrawer
-            // loanStage={loanStage}
-            onCancel={close}
-            selectedItem={selectedItem}
-            userType={userType as UserType}
-            visible={visible}
-          />
+            ) : (
+              <Stack alignItems={'center'} gap={6} width={'100%'}>
+                <Typography
+                  color={'text.primary'}
+                  textAlign={'center'}
+                  variant={'h4'}
+                >
+                  {view === 'current'
+                    ? 'View selected rate'
+                    : 'View confirmed rate'}
+                </Typography>
+
+                <Stack
+                  alignItems={'center'}
+                  border={'2px solid'}
+                  borderColor={'background.border_default'}
+                  borderRadius={2}
+                  maxWidth={600}
+                  p={3}
+                  width={'100%'}
+                >
+                  <Stack
+                    alignItems={'center'}
+                    flexDirection={{ md: 'row', xs: 'column' }}
+                    gap={{ md: 0, xs: 1.5 }}
+                    justifyContent={'space-between'}
+                    py={1.5}
+                    width={'100%'}
+                  >
+                    <Typography variant={'subtitle1'}>
+                      Stabilized Bridge ｜ Refinance
+                    </Typography>
+                    <Box
+                      onClick={() => handledViewDetails()}
+                      sx={{
+                        color: 'primary.main',
+                        fontSize: 16,
+                        lineHeight: 1.5,
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        transition: 'all .3s',
+                        '&:hover': {
+                          color: 'primary.dark',
+                        },
+                      }}
+                    >
+                      View details
+                    </Box>
+                  </Stack>
+
+                  <Icon
+                    component={
+                      view === 'current' ? RATE_CURRENT : RATE_CONFIRMED
+                    }
+                    sx={{
+                      width: 184,
+                      height: 146,
+                      mt: 1.5,
+                      '& .rate_current_svg__pos_svg_theme_color,& .rate_confirmed_svg__pos_svg_theme_color ':
+                        {
+                          fill: `hsla(${
+                            saasState?.posSettings?.h ?? 222
+                          },42%,55%,1)`,
+                        },
+                    }}
+                  />
+
+                  <Stack
+                    alignItems={'center'}
+                    borderBottom={'1px solid '}
+                    borderColor={'background.border_default'}
+                    flexDirection={'row'}
+                    justifyContent={'space-between'}
+                    py={1.5}
+                    width={'100%'}
+                  >
+                    <Typography variant={'body1'}>Interest rate</Typography>
+                    <Typography variant={'h4'}>
+                      {POSFormatPercent(loanInfo?.interestRateOfYear)}
+                    </Typography>
+                  </Stack>
+
+                  <Stack
+                    alignItems={'center'}
+                    flexDirection={'row'}
+                    justifyContent={'space-between'}
+                    py={1.5}
+                    width={'100%'}
+                  >
+                    <Typography variant={'body1'}>Loan term</Typography>
+                    <Typography variant={'subtitle1'}>
+                      {loanInfo?.loanTerm} months
+                    </Typography>
+                  </Stack>
+
+                  <Stack
+                    alignItems={'center'}
+                    flexDirection={'row'}
+                    justifyContent={'space-between'}
+                    py={1.5}
+                    width={'100%'}
+                  >
+                    <Typography variant={'body1'}>
+                      As-is property value
+                    </Typography>
+                    <Typography variant={'subtitle1'}>
+                      {POSFormatDollar(loanInfo?.homeValue)}
+                    </Typography>
+                  </Stack>
+
+                  <Stack
+                    alignItems={'center'}
+                    flexDirection={'row'}
+                    justifyContent={'space-between'}
+                    py={1.5}
+                    width={'100%'}
+                  >
+                    <Typography variant={'body1'}>Payoff amount</Typography>
+                    <Typography variant={'subtitle1'}>
+                      {POSFormatDollar(loanInfo?.balance)}
+                    </Typography>
+                  </Stack>
+
+                  {loanInfo?.isCashOut && (
+                    <Stack
+                      alignItems={'center'}
+                      flexDirection={'row'}
+                      justifyContent={'space-between'}
+                      py={1.5}
+                      width={'100%'}
+                    >
+                      <Typography variant={'body1'}>Cash out amount</Typography>
+                      <Typography variant={'subtitle1'}>
+                        {POSFormatDollar(loanInfo?.cashOutAmount)}
+                      </Typography>
+                    </Stack>
+                  )}
+
+                  <Stack
+                    alignItems={'center'}
+                    flexDirection={'row'}
+                    justifyContent={'space-between'}
+                    py={1.5}
+                    width={'100%'}
+                  >
+                    <Typography variant={'body1'}>Total loan amount</Typography>
+                    <Typography variant={'subtitle1'}>
+                      {POSFormatDollar(loanInfo?.totalLoanAmount)}
+                    </Typography>
+                  </Stack>
+
+                  <Stack
+                    alignItems={'center'}
+                    flexDirection={'row'}
+                    justifyContent={'space-between'}
+                    py={1.5}
+                    width={'100%'}
+                  >
+                    <Typography variant={'body1'}>Monthly payment</Typography>
+                    <Typography variant={'subtitle1'}>
+                      {POSFormatDollar(loanInfo?.paymentOfMonth)}
+                    </Typography>
+                  </Stack>
+                </Stack>
+
+                {view === 'current' && (
+                  <Stack alignItems={'center'} gap={3}>
+                    <Typography color={'text.secondary'} variant={'body1'}>
+                      Check out the other loan programs you qualify for below.
+                    </Typography>
+
+                    <StyledButton
+                      onClick={() => setView('other')}
+                      sx={{ maxWidth: 180 }}
+                      variant={'outlined'}
+                    >
+                      View other rate
+                    </StyledButton>
+                  </Stack>
+                )}
+
+                <BridgeRefinanceRatesDrawer
+                  close={close}
+                  isCurrent={true}
+                  onCancel={close}
+                  selectedItem={selectedItem}
+                  userType={userType as UserType}
+                  visible={visible}
+                />
+              </Stack>
+            )}
+          </Transitions>
         </Box>
       )}
     </Transitions>

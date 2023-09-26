@@ -1,5 +1,4 @@
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 
@@ -18,13 +17,19 @@ interface BridgeRefinanceRatesDrawerProps {
     | (BridgeRefinanceLoanInfo &
         Pick<
           RatesProductData,
-          'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm' | 'id'
+          | 'paymentOfMonth'
+          | 'interestRateOfYear'
+          | 'loanTerm'
+          | 'id'
+          | 'selected'
         >)
     | undefined;
   visible: boolean;
   nextStep?: (id: string) => void;
   userType: UserType;
   loading?: boolean;
+  close: () => void;
+  isCurrent?: boolean;
 }
 
 export const BridgeRefinanceRatesDrawer: FC<
@@ -36,10 +41,11 @@ export const BridgeRefinanceRatesDrawer: FC<
   nextStep,
   userType,
   loading = false,
+  isCurrent = false,
+  close,
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
 
-  const router = useRouter();
   const breakpoints = useBreakpoints();
 
   const [line_1, setLine_1] = useState<string>();
@@ -135,12 +141,6 @@ export const BridgeRefinanceRatesDrawer: FC<
       anchor={'right'}
       content={
         <Stack gap={3} px={{ md: 6, xs: 1.5 }} py={3} width={'100%'}>
-          <Typography
-            variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
-          >
-            Get a closer look at all your costs
-          </Typography>
-
           <Stack gap={1.5} width={'100%'}>
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
@@ -336,15 +336,12 @@ export const BridgeRefinanceRatesDrawer: FC<
             </StyledButton>
           ) : (
             <StyledButton
-              onClick={() =>
-                router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { processId: router.query.processId },
-                })
-              }
+              disabled={loading}
+              loading={loading}
+              onClick={onCancel}
               size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
             >
-              Confirm rate
+              {isCurrent || selectedItem?.selected ? 'Back' : 'Confirm rate'}
             </StyledButton>
           )}
         </Stack>
@@ -359,9 +356,9 @@ export const BridgeRefinanceRatesDrawer: FC<
           <Typography
             variant={['xs', 'sm'].includes(breakpoints) ? 'h4' : 'h5'}
           >
-            Rate summary
+            View loan details
           </Typography>
-          <StyledButton isIconButton onClick={onCancel}>
+          <StyledButton isIconButton onClick={close}>
             <CloseOutlined />
           </StyledButton>
         </Stack>
@@ -374,10 +371,10 @@ export const BridgeRefinanceRatesDrawer: FC<
   );
 };
 
-const BridgeRefinanceCardItem: FC<{ label: string; info: ReactNode }> = ({
-  label,
-  info,
-}) => {
+const BridgeRefinanceCardItem: FC<{
+  label: string;
+  info: ReactNode;
+}> = ({ label, info }) => {
   const breakpoints = useBreakpoints();
 
   return (

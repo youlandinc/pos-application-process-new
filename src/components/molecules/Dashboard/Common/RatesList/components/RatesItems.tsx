@@ -69,12 +69,12 @@ export const RatesItems: FC<{
                 ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
               }
             >
-              Referral fee
+              {POSFormatDollar(product.agentFee)}
             </Typography>
             <Typography
               variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h5'}
             >
-              {POSFormatDollar(product.agentFee)}
+              Referral fee
             </Typography>
           </Stack>
         );
@@ -112,6 +112,26 @@ export const RatesItems: FC<{
               ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
             }
           >
+            Interest rate
+          </Typography>
+          <Typography
+            variant={
+              ['xs', 'sm', 'md'].includes(breakpoint as string) ? 'h7' : 'h5'
+            }
+          >
+            {POSFormatPercent(product.interestRateOfYear)}
+          </Typography>
+        </Stack>
+        <Stack
+          alignItems={'flex-end'}
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+        >
+          <Typography
+            variant={
+              ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
+            }
+          >
             Loan term
           </Typography>
           <Typography
@@ -129,26 +149,6 @@ export const RatesItems: FC<{
           justifyContent={'space-between'}
         >
           <Typography
-            variant={
-              ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
-            }
-          >
-            Rate
-          </Typography>
-          <Typography
-            variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h5'}
-          >
-            {POSFormatPercent(product.interestRateOfYear)}
-          </Typography>
-        </Stack>
-
-        <Stack
-          alignItems={'flex-end'}
-          flexDirection={'row'}
-          justifyContent={'space-between'}
-        >
-          <Typography
-            component={'div'}
             sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}
             variant={
               ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
@@ -164,6 +164,7 @@ export const RatesItems: FC<{
             </StyledTooltip>
           </Typography>
           <Typography
+            component={'div'}
             variant={['xs', 'sm', 'md'].includes(breakpoint) ? 'h7' : 'h5'}
           >
             {POSFormatDollar(product.paymentOfMonth)}
@@ -175,9 +176,19 @@ export const RatesItems: FC<{
 
       <StyledButton
         onClick={() => onClick(product)}
-        variant={product.selected ? 'contained' : 'outlined'}
+        onMouseEnter={(e) => {
+          if (product.selected) {
+            e.currentTarget.innerHTML = 'View details';
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (product.selected) {
+            e.currentTarget.innerHTML = 'Current rate';
+          }
+        }}
+        variant={!product.selected ? 'contained' : 'outlined'}
       >
-        {product.selected ? 'See cost' : 'Select'}
+        {product.selected ? 'Current rate' : 'View details'}
       </StyledButton>
     </Stack>
   );
