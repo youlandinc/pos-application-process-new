@@ -5,7 +5,7 @@ export const StyledButtonStyles = {
     ...POSFont(16, 600, 1.5),
     textTransform: 'none',
     padding: '15px 20px',
-    borderRadius: 2,
+    borderRadius: 3,
     boxShadow: 'none',
   },
   '&.MuiButton-contained:disabled': {

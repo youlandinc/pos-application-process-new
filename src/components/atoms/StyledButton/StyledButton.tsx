@@ -1,3 +1,4 @@
+import { StyledLoading } from '@/components/atoms';
 import { forwardRef } from 'react';
 import { Button, IconButton } from '@mui/material';
 
@@ -10,7 +11,7 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
       loading,
       isIconButton = false,
       onClick,
-      loadingText = 'Loading...',
+      loadingText,
       sx,
       variant = 'contained',
       ...rest
@@ -55,7 +56,17 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
             }}
             {...rest}
           >
-            <>{loading ? loadingText : children}</>
+            <>
+              {loading ? (
+                loadingText ? (
+                  loadingText
+                ) : (
+                  <StyledLoading size={24} sx={{ color: 'text.grey', m: 0 }} />
+                )
+              ) : (
+                children
+              )}
+            </>
           </IconButton>
         ) : (
           <Button
@@ -78,7 +89,15 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
             variant={variant}
             {...rest}
           >
-            <>{loading ? loadingText : children}</>
+            {loading ? (
+              loadingText ? (
+                loadingText
+              ) : (
+                <StyledLoading size={24} sx={{ color: 'text.grey', m: 0 }} />
+              )
+            ) : (
+              children
+            )}
           </Button>
         )}
       </>

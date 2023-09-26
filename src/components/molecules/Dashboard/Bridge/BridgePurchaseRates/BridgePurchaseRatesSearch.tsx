@@ -237,8 +237,15 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
         return (
           <StyledFormItem
             gap={3}
-            label={'Broker origination compensation'}
-            labelSx={{ m: 0 }}
+            label={'Broker compensation'}
+            labelSx={{
+              m: 0,
+              textAlign: 'left',
+              color: 'info.dark',
+              fontWeight: 400,
+              fontSize: 20,
+              pl: '4px',
+            }}
             sub
           >
             <Stack
@@ -248,10 +255,10 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography>Broker origination fee</Typography>
                 <StyledTextFieldNumber
                   decimalScale={3}
                   disabled={loading || loanStage === LoanStage.Approved}
+                  label={'Broker origination fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
                       ...searchForm,
@@ -266,9 +273,9 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                 />
               </Stack>
               <Stack flex={1} gap={1}>
-                <Typography>Broker processing fee</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
+                  label={'Broker processing fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
                       ...searchForm,
@@ -287,8 +294,15 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
         return (
           <StyledFormItem
             gap={3}
-            label={'Lender origination compensation'}
-            labelSx={{ m: 0 }}
+            label={'Lender compensation'}
+            labelSx={{
+              m: 0,
+              textAlign: 'left',
+              color: 'info.dark',
+              fontWeight: 400,
+              fontSize: 20,
+              pl: '4px',
+            }}
             sub
           >
             <Stack
@@ -298,10 +312,10 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography>Lender origination fee</Typography>
                 <StyledTextFieldNumber
                   decimalScale={3}
                   disabled={loading || loanStage === LoanStage.Approved}
+                  label={'Lender origination fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
                       ...searchForm,
@@ -316,9 +330,9 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                 />
               </Stack>
               <Stack flex={1} gap={1}>
-                <Typography>Lender processing fee</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
+                  label={'Lender processing fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
                       ...searchForm,
@@ -337,8 +351,16 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
         return (
           <StyledFormItem
             gap={3}
-            label={'Loan officer origination compensation'}
-            labelSx={{ m: 0 }}
+            label={'Loan officer compensation'}
+            labelSx={{
+              m: 0,
+              textAlign: 'left',
+              color: 'info.dark',
+              fontWeight: 400,
+              fontSize: 20,
+
+              pl: '4px',
+            }}
             sub
           >
             <Stack
@@ -348,10 +370,10 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography>Loan officer origination compensation</Typography>
                 <StyledTextFieldNumber
                   decimalScale={3}
                   disabled={loading || loanStage === LoanStage.Approved}
+                  label={'Loan officer origination fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
                       ...searchForm,
@@ -366,9 +388,9 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                 />
               </Stack>
               <Stack flex={1} gap={1}>
-                <Typography>Loan officer processing fee</Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
+                  label={'Loan officer processing fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
                       ...searchForm,
@@ -387,8 +409,16 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
         return (
           <StyledFormItem
             gap={3}
-            label={'Real estate agent origination compensation'}
-            labelSx={{ m: 0 }}
+            label={'Real estate agent compensation'}
+            labelSx={{
+              m: 0,
+              textAlign: 'left',
+              color: 'info.dark',
+              fontWeight: 400,
+              fontSize: 20,
+
+              pl: '4px',
+            }}
             sub
           >
             <Stack
@@ -398,11 +428,9 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               width={'100%'}
             >
               <Stack flex={1} gap={1}>
-                <Typography>
-                  Real estate agent origination compensation
-                </Typography>
                 <StyledTextFieldNumber
                   disabled={loading || loanStage === LoanStage.Approved}
+                  label={'Real estate agent fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
                       ...searchForm,
@@ -443,22 +471,51 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
   return (
     <>
       <StyledFormItem
-        gap={3}
-        label={'Estimate your stabilized bridge loan rate'}
-        labelSx={{ m: 0 }}
+        gap={2.5}
+        label={
+          isDashboard
+            ? 'View other rates'
+            : 'Estimate your stabilized bridge loan rate'
+        }
+        labelSx={{
+          m: 0,
+          marginBottom: `${isDashboard ? 0 : '24px'} !important`,
+        }}
       >
         {!isDashboard && (
           <StyledFormItem
             alignItems={'flex-start'}
             gap={3}
-            label={'Preferred close date'}
-            labelSx={{ textAlign: 'center', width: '100%' }}
-            maxWidth={900}
-            mt={3}
-            sub
-            tip={
-              '"Preferred close date" is the date on which you wish to complete a real estate transaction or loan application. We will stay in touch with you to ensure that the transaction is completed at the most suitable time.'
+            label={
+              <Stack alignItems={'center'} flexDirection={'row'} gap={1} mb={2}>
+                Preferred close date
+                <StyledTooltip
+                  title={
+                    '"Preferred close date" is the date on which you wish to complete a real estate transaction or loan application. We will stay in touch with you to ensure that the transaction is completed at the most suitable time.'
+                  }
+                >
+                  <InfoOutlined
+                    sx={{
+                      width: 16,
+                      height: 16,
+                      mb: 0.125,
+                      color: 'info.main',
+                    }}
+                  />
+                </StyledTooltip>
+              </Stack>
             }
+            labelSx={{
+              m: 0,
+              textAlign: 'left',
+              color: 'info.main',
+              fontWeight: 400,
+              fontSize: 20,
+              pl: '4px',
+            }}
+            maxWidth={900}
+            sub
+            sx={{ mb: 3 }}
             width={'100%'}
           >
             <StyledDatePicker
@@ -481,62 +538,75 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
         <StyledFormItem
           alignItems={'flex-start'}
           gap={3}
-          label={`Total loan amount: ${POSFormatDollar(purchaseLoanAmount)}`}
-          labelSx={{ textAlign: 'center', width: '100%' }}
+          label={'Loan details'}
+          labelSx={{
+            m: 0,
+            textAlign: 'left',
+            color: 'info.main',
+            fontWeight: 400,
+            fontSize: 20,
+            pl: '4px',
+          }}
           maxWidth={900}
-          mt={3}
           sub
+          sx={{ mb: 3 }}
           width={'100%'}
+          //mt={3}
         >
-          <Stack gap={1} width={'100%'}>
+          <Stack gap={0.5} width={'100%'}>
             <Stack
               flexDirection={{ lg: 'row', xs: 'column' }}
               gap={3}
               width={'100%'}
             >
-              <Stack flex={1} gap={1}>
-                <Typography variant={'body1'}>Purchase price</Typography>
-                <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
-                  onValueChange={({ floatValue }) => {
-                    setSearchForm({
-                      ...searchForm,
-                      purchasePrice: floatValue,
-                    });
-                  }}
-                  prefix={'$'}
-                  value={purchasePrice}
-                />
-              </Stack>
-              <Stack flex={1} gap={1}>
-                <Typography variant={'body1'}>Purchase loan amount</Typography>
-                <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
-                  onValueChange={({ floatValue }) => {
-                    setSearchForm({
-                      ...searchForm,
-                      purchaseLoanAmount: floatValue,
-                    });
-                  }}
-                  prefix={'$'}
-                  value={purchaseLoanAmount}
-                />
-              </Stack>
+              <StyledTextFieldNumber
+                disabled={loading || loanStage === LoanStage.Approved}
+                label={'Purchase price'}
+                onValueChange={({ floatValue }) => {
+                  setSearchForm({
+                    ...searchForm,
+                    purchasePrice: floatValue,
+                  });
+                }}
+                prefix={'$'}
+                value={purchasePrice}
+              />
+
+              <StyledTextFieldNumber
+                disabled={loading || loanStage === LoanStage.Approved}
+                label={'Purchase loan amount'}
+                onValueChange={({ floatValue }) => {
+                  setSearchForm({
+                    ...searchForm,
+                    purchaseLoanAmount: floatValue,
+                  });
+                }}
+                prefix={'$'}
+                value={purchaseLoanAmount}
+              />
             </Stack>
+
             <Stack
               alignItems={'center'}
               flexDirection={'row'}
-              gap={1}
+              gap={0.5}
               justifyContent={'flex-start'}
+              pl={0.5}
               width={{ md: 'calc(50% - 12px)', xs: '100%' }}
             >
-              <Typography variant={'body1'}>Loan to value</Typography>
+              <Typography color={'info.main'} variant={'body2'}>
+                Loan to value
+              </Typography>
               <StyledTooltip
-                title={'LTV (Purchase loan amount to purchase price)'}
+                title={
+                  'LTV [Payoff amount + Cash out (if any)] / As-is property value'
+                }
               >
-                <InfoOutlined sx={{ width: 16, height: 16 }} />
+                <InfoOutlined
+                  sx={{ width: 14, height: 14, mb: 0.125, color: 'info.main' }}
+                />
               </StyledTooltip>
-              <Typography ml={'auto'} variant={'body1'}>
+              <Typography color={'info.main'} ml={'auto'} variant={'body2'}>
                 {POSFormatPercent(LTV)}
               </Typography>
             </Stack>
@@ -552,6 +622,33 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
         </StyledFormItem>
 
         {renderByUserType}
+
+        <Stack
+          alignItems={'stretch'}
+          flexDirection={'row'}
+          gap={0.5}
+          justifyContent={'flex-end'}
+          width={'100%'}
+        >
+          <Typography
+            color={'info.main'}
+            component={'div'}
+            textAlign={'right'}
+            variant={'h7'}
+            width={'100%'}
+          >
+            Total loan amount:
+          </Typography>
+          <Typography
+            color={'primary.main'}
+            component={'div'}
+            mt={'-3px'}
+            textAlign={'right'}
+            variant={'h5'}
+          >
+            {POSFormatDollar(purchaseLoanAmount)}
+          </Typography>
+        </Stack>
 
         <StyledButton
           disabled={!isValid || loading || loanStage === LoanStage.Approved}

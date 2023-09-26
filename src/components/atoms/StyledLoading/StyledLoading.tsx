@@ -3,10 +3,10 @@ import { CircularProgress } from '@mui/material';
 
 import { StyledLoadingProps, StyledLoadingStyles } from './index';
 
-export const StyledLoading: FC<StyledLoadingProps> = ({ sx }) => {
+export const StyledLoading: FC<StyledLoadingProps> = ({ sx, size }) => {
   return (
     <>
-      <CircularProgress sx={{ ...StyledLoadingStyles, ...sx }} />
+      <CircularProgress size={size} sx={{ ...StyledLoadingStyles, ...sx }} />
     </>
   );
 };
