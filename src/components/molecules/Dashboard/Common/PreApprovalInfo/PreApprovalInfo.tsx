@@ -41,6 +41,7 @@ interface PreApprovalInfoProps {
 export const PreApprovalInfo = forwardRef<
   HTMLInputElement,
   PreApprovalInfoProps
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
 >(({ loading, loanAmount = 0, onClickEdit, processId, loanStage }, ref) => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();

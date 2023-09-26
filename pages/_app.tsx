@@ -140,13 +140,13 @@ export default function MyApp(props: MyAppProps) {
       const saasTheme = createTheme(theme, {
         palette: {
           primary: {
-            main: `hsla(${saasState?.posSettings?.h},42%,55%,1)`,
-            dark: `hsla(${saasState?.posSettings?.h},43%,50%,1)`,
-            darker: `hsla(${saasState?.posSettings?.h},38%,30%,1)`,
-            darkest: `hsla(${saasState?.posSettings?.h},28%,18%,1)`,
-            light: `hsla(${saasState?.posSettings?.h},100%,92%,1)`,
-            lighter: `hsla(${saasState?.posSettings?.h},100%,97%,1)`,
-            lightest: `hsla(${saasState?.posSettings?.h},32%,98%,1)`,
+            main: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+            dark: `hsla(${saasState?.posSettings?.h ?? 222},43%,50%,1)`,
+            darker: `hsla(${saasState?.posSettings?.h ?? 222},38%,30%,1)`,
+            darkest: `hsla(${saasState?.posSettings?.h ?? 222},28%,18%,1)`,
+            light: `hsla(${saasState?.posSettings?.h ?? 222},100%,92%,1)`,
+            lighter: `hsla(${saasState?.posSettings?.h ?? 222},100%,97%,1)`,
+            lightest: `hsla(${saasState?.posSettings?.h ?? 222},32%,98%,1)`,
           },
         },
       });

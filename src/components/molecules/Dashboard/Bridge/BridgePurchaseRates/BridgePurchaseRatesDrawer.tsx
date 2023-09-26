@@ -1,6 +1,5 @@
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 
@@ -18,13 +17,19 @@ interface BridgePurchaseRatesDrawerProps {
     | (BridgePurchaseLoanInfo &
         Pick<
           RatesProductData,
-          'paymentOfMonth' | 'interestRateOfYear' | 'loanTerm' | 'id'
+          | 'paymentOfMonth'
+          | 'interestRateOfYear'
+          | 'loanTerm'
+          | 'id'
+          | 'selected'
         >)
     | undefined;
   visible: boolean;
   nextStep?: (id: string) => void;
   userType: UserType;
   loading?: boolean;
+  isCurrent?: boolean;
+  close: () => void;
 }
 
 export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = ({
@@ -34,10 +39,10 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = ({
   nextStep,
   userType,
   loading = false,
+  isCurrent = false,
+  close,
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
-
-  const router = useRouter();
   const breakpoints = useBreakpoints();
 
   const [line_1, setLine_1] = useState<string>();
@@ -134,12 +139,6 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = ({
       anchor={'right'}
       content={
         <Stack gap={3} px={{ md: 6, xs: 1.5 }} py={3} width={'100%'}>
-          <Typography
-            variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
-          >
-            Get a closer look at all your costs
-          </Typography>
-
           <Stack gap={1.5} width={'100%'}>
             <Typography
               variant={['xs', 'sm'].includes(breakpoints) ? 'subtitle2' : 'h5'}
@@ -327,7 +326,6 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = ({
             <StyledButton
               disabled={loading}
               loading={loading}
-              loadingText={'Checking...'}
               onClick={() => nextStep(selectedItem?.id as string)}
               size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
             >
@@ -335,15 +333,12 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = ({
             </StyledButton>
           ) : (
             <StyledButton
-              onClick={() =>
-                router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { processId: router.query.processId },
-                })
-              }
+              disabled={loading}
+              loading={loading}
+              onClick={onCancel}
               size={['xs', 'sm'].includes(breakpoints) ? 'small' : 'large'}
             >
-              Confirm rate
+              {isCurrent || selectedItem?.selected ? 'Back' : 'Confirm rate'}
             </StyledButton>
           )}
         </Stack>
@@ -358,9 +353,9 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = ({
           <Typography
             variant={['xs', 'sm'].includes(breakpoints) ? 'h4' : 'h5'}
           >
-            Rate summary
+            View loan details
           </Typography>
-          <StyledButton isIconButton onClick={onCancel}>
+          <StyledButton isIconButton onClick={close}>
             <CloseOutlined />
           </StyledButton>
         </Stack>
@@ -373,10 +368,10 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = ({
   );
 };
 
-const BridgePurchaseCardItem: FC<{ label: string; info: ReactNode }> = ({
-  label,
-  info,
-}) => {
+const BridgePurchaseCardItem: FC<{
+  label: string;
+  info: ReactNode;
+}> = ({ label, info }) => {
   const breakpoints = useBreakpoints();
 
   return (

@@ -36,8 +36,8 @@ export const StyledFormItem: FC<StyledFormItemProps> = ({
                 ? 'h5'
                 : 'h4'
               : sub
-              ? 'h4'
-              : 'h3'
+              ? 'h5'
+              : 'h4'
           }
         >
           {label}
