@@ -517,7 +517,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
   return (
     <>
       <StyledFormItem
-        gap={2.5}
+        gap={4}
         label={
           isDashboard
             ? 'View other rates'
@@ -530,7 +530,12 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
             alignItems={'flex-start'}
             gap={3}
             label={
-              <Stack alignItems={'center'} flexDirection={'row'} gap={1} mb={2}>
+              <Stack
+                alignItems={'center'}
+                color={'info.dark'}
+                flexDirection={'row'}
+                gap={1}
+              >
                 Preferred close date
                 <StyledTooltip
                   title={
@@ -542,7 +547,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                       width: 16,
                       height: 16,
                       mb: 0.125,
-                      color: 'info.main',
+                      color: 'info.dark',
                     }}
                   />
                 </StyledTooltip>
@@ -551,7 +556,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
             labelSx={{
               m: 0,
               textAlign: 'left',
-              color: 'info.main',
+              color: 'info.dark',
               fontWeight: 400,
               fontSize: 20,
               pl: '4px',
