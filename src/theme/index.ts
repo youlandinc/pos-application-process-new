@@ -4,6 +4,13 @@ const CONSTANT_COLOR_HUE = 222;
 //const CONSTANT_COLOR_SATURATION = 42;
 //const CONSTANT_COLOR_LIGHTNESS = 55;
 
+declare module 'notistack' {
+  interface OptionsObject {
+    isSimple?: boolean;
+    header?: string;
+  }
+}
+
 declare module '@mui/material/styles' {
   interface BreakpointOverrides {
     xs: true;
