@@ -52,3 +52,5 @@ export * from './StyledStatus';
 
 export * from './StyledUploadBox';
 export * from './StyledUploadButtonBox';
+
+export * from './StyledNotification';
