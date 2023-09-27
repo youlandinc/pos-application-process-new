@@ -8,18 +8,14 @@ import Script from 'next/script';
 import { useAsync } from 'react-use';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import { styled, ThemeProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import en from 'date-fns/locale/en-US';
 
 import NProgress from 'nprogress';
-import {
-  MaterialDesignContent,
-  SnackbarProvider,
-  useSnackbar,
-} from 'notistack';
+import { SnackbarProvider, useSnackbar } from 'notistack';
 
 import 'normalize.css';
 import 'reset.css';
@@ -136,7 +132,7 @@ export default function MyApp(props: MyAppProps) {
         </div>
       );
     }
-  }, [Component, loading, pageProps, saasState, StyledNotification]);
+  }, [Component, loading, pageProps, saasState]);
 
   return (
     <>
