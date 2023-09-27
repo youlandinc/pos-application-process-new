@@ -39,6 +39,8 @@ import { _fetchSaasConfig } from '@/requests/saas';
 import { useSessionStorageState } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
+import { StyledNotification } from '@/components/atoms';
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
@@ -78,63 +80,6 @@ export default function MyApp(props: MyAppProps) {
     };
   }, []);
 
-  const StyledMaterialDesignContent = styled(MaterialDesignContent)(() => ({
-    '&.notistack-MuiContent-success': {
-      color: theme.palette.success.main,
-      '&::before': {
-        backgroundColor: theme.palette.success.darker,
-      },
-    },
-    '&.notistack-MuiContent-error': {
-      color: theme.palette.error.main,
-      '&::before': {
-        backgroundColor: theme.palette.error.darker,
-      },
-    },
-    '&.notistack-MuiContent-info': {
-      color: theme.palette.text.primary,
-      '& svg': {
-        color: theme.palette.primary.main,
-      },
-      '&::before': {
-        backgroundColor: theme.palette.primary.darker,
-      },
-    },
-    '&.notistack-MuiContent-default': {
-      backgroundColor: '#fff',
-      color: theme.palette.text.primary,
-    },
-    '&.notistack-MuiContent': {
-      backgroundColor: '#fff',
-      padding: '12px 22px',
-      boxShadow:
-        ' 0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
-      '& div:nth-of-type(1) svg': {
-        zIndex: 1,
-        marginRight: '22px !important',
-      },
-      '& div:nth-of-type(2) svg': {
-        color: theme.palette.info.main,
-      },
-      '&::before': {
-        position: 'absolute',
-        content: '" "',
-        padding: 8,
-        width: 40,
-        height: 40,
-        left: 12,
-        borderRadius: 12,
-      },
-    },
-    '&.notistack-MuiContent-warning': {
-      color: theme.palette.warning.main,
-
-      '&::before': {
-        backgroundColor: theme.palette.warning.darker,
-      },
-    },
-  }));
-
   const renderComponent = useMemo(() => {
     if (saasState) {
       const saasTheme = createTheme(theme, {
@@ -157,15 +102,16 @@ export default function MyApp(props: MyAppProps) {
             <SnackbarProvider
               anchorOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                horizontal: 'center',
               }}
               Components={{
-                success: StyledMaterialDesignContent,
-                error: StyledMaterialDesignContent,
-                default: StyledMaterialDesignContent,
-                info: StyledMaterialDesignContent,
-                warning: StyledMaterialDesignContent,
+                success: StyledNotification,
+                error: StyledNotification,
+                default: StyledNotification,
+                info: StyledNotification,
+                warning: StyledNotification,
               }}
+              maxSnack={3}
             >
               <Component {...pageProps} />
             </SnackbarProvider>
@@ -190,7 +136,7 @@ export default function MyApp(props: MyAppProps) {
         </div>
       );
     }
-  }, [Component, StyledMaterialDesignContent, loading, pageProps, saasState]);
+  }, [Component, loading, pageProps, saasState, StyledNotification]);
 
   return (
     <>
