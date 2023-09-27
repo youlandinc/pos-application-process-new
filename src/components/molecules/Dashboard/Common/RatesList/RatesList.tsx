@@ -15,6 +15,7 @@ interface RatesProductListProps {
   userType?: UserType;
   loanStage?: LoanStage;
   label?: ReactNode;
+  reasonList: string[];
 }
 
 export const RatesList: FC<RatesProductListProps> = ({
@@ -23,6 +24,7 @@ export const RatesList: FC<RatesProductListProps> = ({
   loading,
   isFirstSearch = false,
   userType,
+  reasonList,
 }) => {
   const breakpoint = useBreakpoints();
   return (
@@ -31,26 +33,30 @@ export const RatesList: FC<RatesProductListProps> = ({
         <></>
       ) : loading ? (
         <StyledLoading sx={{ color: 'text.grey', m: '48px auto 48px auto' }} />
-      ) : productList.length > 0 ? (
-        <Stack
-          flexDirection={{ xs: 'column', xl: 'row' }}
-          flexWrap={'wrap'}
-          gap={3}
-          mt={6}
-          width={'100%'}
-        >
-          {productList.map((product, index) => (
-            <RatesItems
-              breakpoint={breakpoint}
-              key={`${product.id}_${index}`}
-              onClick={onClick}
-              product={product}
-              userType={userType!}
-            />
-          ))}
-        </Stack>
+      ) : reasonList?.length < 1 ? (
+        productList.length > 0 ? (
+          <Stack
+            flexDirection={{ xs: 'column', xl: 'row' }}
+            flexWrap={'wrap'}
+            gap={3}
+            mt={6}
+            width={'100%'}
+          >
+            {productList.map((product, index) => (
+              <RatesItems
+                breakpoint={breakpoint}
+                key={`${product.id}_${index}`}
+                onClick={onClick}
+                product={product}
+                userType={userType!}
+              />
+            ))}
+          </Stack>
+        ) : (
+          <RatesSearchNoResult />
+        )
       ) : (
-        <RatesSearchNoResult />
+        <RatesSearchNoResult reasonList={reasonList} />
       )}
     </Stack>
   );

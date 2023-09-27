@@ -107,6 +107,7 @@ export const GroundPurchaseEstimateRate: FC<{
       : initialize.closeDate,
   });
   const [productList, setProductList] = useState<RatesProductData[]>();
+  const [reasonList, setReasonList] = useState<string[]>([]);
   const [isFirstSearch, setIsFirstSearch] = useState<boolean>(true);
 
   const [productInfo, setProductInfo] = useState<GroundPurchaseLoanInfo>();
@@ -148,6 +149,7 @@ export const GroundPurchaseEstimateRate: FC<{
         });
         if (res.status === 200) {
           setProductList(res.data.products as RatesProductData[]);
+          setReasonList(res.data.reasons);
         }
         const infoRes = await _fetchRatesLoanInfo(processId);
         if (infoRes.status === 200) {
@@ -224,9 +226,11 @@ export const GroundPurchaseEstimateRate: FC<{
         loading={loading}
         onClick={onListItemClick}
         productList={productList as RatesProductData[]}
+        reasonList={reasonList}
         userType={userType}
       />
       <GroundPurchaseRatesDrawer
+        close={close}
         loading={checkLoading}
         nextStep={nextStepWrap}
         onCancel={close}
