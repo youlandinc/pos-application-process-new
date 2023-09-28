@@ -74,6 +74,7 @@ export const StyledNotification = forwardRef<
           <Icon component={computedData.icon} sx={{ flexShrink: 0 }} />
           <Typography
             color={computedData.color}
+            flex={1}
             sx={{ mt: 0.25 }}
             variant={'subtitle2'}
           >
@@ -102,7 +103,11 @@ export const StyledNotification = forwardRef<
         >
           <Stack alignItems={'center'} flexDirection={'row'} gap={1}>
             <Icon component={computedData.icon} />
-            <Typography color={computedData.color} variant={'subtitle2'}>
+            <Typography
+              color={computedData.color}
+              flex={1}
+              variant={'subtitle2'}
+            >
               {props.header}
             </Typography>
             <Close
