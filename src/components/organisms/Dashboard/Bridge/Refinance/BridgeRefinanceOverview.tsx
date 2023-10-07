@@ -8,7 +8,7 @@ import { useMst } from '@/models/Root';
 import { observer } from 'mobx-react-lite';
 
 import { AUTO_HIDE_DURATION, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
-import { BROverviewSummaryData, UserType } from '@/types';
+import { BROverviewSummaryData, HttpError, UserType } from '@/types';
 import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
 import {
   POSFindLabel,
@@ -230,9 +230,12 @@ export const BridgeRefinanceOverview: FC = observer(() => {
         });
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () => router.push('/pipeline'),
         });
       });

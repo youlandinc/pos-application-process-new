@@ -15,7 +15,7 @@ import {
   OPTIONS_COMMON_YES_OR_NO,
   OPTIONS_TASK_MARTIAL_STATUS,
 } from '@/constants';
-import { DashboardTaskMaritalStatus } from '@/types';
+import { DashboardTaskMaritalStatus, HttpError } from '@/types';
 
 import {
   StyledButton,
@@ -103,17 +103,20 @@ export const FixRefinanceTaskPersonalDetails: FC = observer(() => {
           });
         });
       })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () =>
             router.push({
               pathname: '/dashboard/tasks',
               query: { processId: router.query.processId },
             }),
-        }),
-      );
+        });
+      });
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
@@ -190,10 +193,13 @@ export const FixRefinanceTaskPersonalDetails: FC = observer(() => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSaveLoading(false);

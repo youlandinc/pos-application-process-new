@@ -29,6 +29,7 @@ import {
   Encompass,
   GPEstimateRateData,
   GREstimateRateData,
+  HttpError,
   RatesProductData,
 } from '@/types';
 
@@ -73,7 +74,10 @@ export const GroundRefinanceRates: FC = observer(() => {
   );
   const [loanStage, setLoanStage] = useState<LoanStage>(LoanStage.PreApproved);
   const [searchForm, setSearchForm] = useState<GRQueryData>(initialize);
+
   const [productList, setProductList] = useState<RatesProductData[]>();
+  const [reasonList, setReasonList] = useState<string[]>([]);
+
   const [, setEncompassData] = useState<Encompass>();
   const [loanInfo, setLoanInfo] = useState<
     GroundRefinanceLoanInfo & RatesProductData
@@ -140,13 +144,16 @@ export const GroundRefinanceRates: FC = observer(() => {
           agentFee,
         });
       })
-      .catch((err) =>
-        enqueueSnackbar(err, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () => router.push('/pipeline'),
-        }),
-      );
+        });
+      });
   });
 
   const onCheckGetList = async () => {
@@ -156,14 +163,19 @@ export const GroundRefinanceRates: FC = observer(() => {
       searchForm,
     )
       .then((res) => {
-        setProductList(res.data.products);
-        setLoanInfo(res.data.loanInfo);
+        const { products, loanInfo, reasons } = res.data;
+        setProductList(products);
+        setLoanInfo(loanInfo);
         setLoading(false);
+        setReasonList(reasons);
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
         setLoading(false);
       });
@@ -309,6 +321,7 @@ export const GroundRefinanceRates: FC = observer(() => {
                   loanStage={loanStage}
                   onClick={onListItemClick}
                   productList={productList || []}
+                  reasonList={reasonList}
                   userType={userType}
                 />
                 <GroundRefinanceRatesDrawer

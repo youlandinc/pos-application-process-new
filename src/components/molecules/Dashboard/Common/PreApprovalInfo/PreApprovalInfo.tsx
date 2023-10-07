@@ -1,3 +1,4 @@
+import { HttpError } from '@/types';
 import {
   FC,
   FormEventHandler,
@@ -69,8 +70,14 @@ export const PreApprovalInfo = forwardRef<
           variant: 'success',
         });
         setSendLoading(false);
-      } catch (error) {
-        enqueueSnackbar(error as string, { variant: 'error' });
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
         setSendLoading(false);
       }
     },
@@ -118,9 +125,12 @@ export const PreApprovalInfo = forwardRef<
         renderFile(data);
       }, 100);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setViewLoading(false);

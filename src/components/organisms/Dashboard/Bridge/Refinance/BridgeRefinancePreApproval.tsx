@@ -20,6 +20,7 @@ import {
 import {
   BREstimateRateData,
   BRPreApprovalLetterData,
+  HttpError,
   PropertyOpt,
   PropertyUnitOpt,
   RatesProductData,
@@ -170,16 +171,19 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
         });
         setFirstLoading(false);
       })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () => {
             router.push('/pipeline');
             setFirstLoading(false);
           },
-        }),
-      );
+        });
+      });
   }, []);
 
   useAsyncEffect(async () => {
@@ -237,9 +241,12 @@ export const BridgeRefinancePreApproval: FC = observer(() => {
         autoHideDuration: AUTO_HIDE_DURATION,
       });
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setUploadLoading(false);

@@ -138,30 +138,35 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                   Your transaction is still in progress. Don&apos;t worry your
                   money is safe! If money was debited from your account, you can
                   call toll free at{' '}
-                  <span
+                  <Typography
+                    color={'primary.main'}
+                    component={'span'}
+                    fontWeight={600}
                     sx={{
-                      color: 'primary.main',
                       cursor: 'pointer',
-                      fontWeight: 600,
                     }}
+                    variant={'body1'}
                   >
                     {' '}
                     {POSFormatUSPhoneToText(
                       saasState?.extInfo?.posSettings?.phone,
                     ) || '1-833-968-5263'}{' '}
-                  </span>{' '}
+                  </Typography>{' '}
                   or email us at
-                  <span
+                  <Typography
+                    color={'primary.main'}
+                    component={'span'}
+                    fontWeight={600}
                     sx={{
-                      color: 'primary.main',
                       cursor: 'pointer',
-                      fontWeight: 600,
                     }}
+                    variant={'body1'}
                   >
                     {' '}
-                    {saasState?.extInfo?.posSettings?.email ||
-                      'borrow@youland.com'}{' '}
-                  </span>
+                    {POSFormatUSPhoneToText(
+                      saasState?.extInfo?.posSettings?.phone,
+                    ) || '1-833-968-5263'}{' '}
+                  </Typography>{' '}
                   . We can help you with the refund.
                 </Typography>
               }

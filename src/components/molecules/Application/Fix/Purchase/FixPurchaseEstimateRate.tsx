@@ -11,6 +11,7 @@ import { useSwitch } from '@/hooks';
 import { _updateProcessVariables } from '@/requests';
 import {
   FPEstimateRateData,
+  HttpError,
   PropertyOpt,
   RatesProductData,
   VariableName,
@@ -159,9 +160,12 @@ export const FixPurchaseEstimateRate: FC<{
         setLoading(false);
       })
       .catch((err) => {
-        enqueueSnackbar(err, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
         setLoading(false);
       });
@@ -205,9 +209,12 @@ export const FixPurchaseEstimateRate: FC<{
         nextStep(() => setCheckLoading(false));
       }
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
         onClose: () => setCheckLoading(false),
       });
     }

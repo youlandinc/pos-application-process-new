@@ -11,7 +11,7 @@ import {
   OPTIONS_COMMON_YES_OR_NO,
   OPTIONS_TASK_EXIT_STRATEGY,
 } from '@/constants';
-import { DashboardTaskExitStrategy } from '@/types';
+import { DashboardTaskExitStrategy, HttpError } from '@/types';
 import { POSNotUndefined } from '@/utils';
 
 import {
@@ -83,17 +83,20 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
           (exitStrategy as DashboardTaskExitStrategy) || undefined,
         );
       })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () =>
             router.push({
               pathname: '/dashboard/tasks',
               query: { processId: router.query.processId },
             }),
-        }),
-      );
+        });
+      });
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
@@ -149,10 +152,13 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSaveLoading(false);

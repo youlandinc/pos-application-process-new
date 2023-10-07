@@ -1,3 +1,4 @@
+import { HttpError } from '@/types';
 import { FC, useState } from 'react';
 import { Icon, Stack, Typography } from '@mui/material';
 import {
@@ -53,9 +54,12 @@ export const TeamPage: FC = () => {
         setPhone(res?.data?.extInfo?.posSettings?.phone || '');
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
       });
   });

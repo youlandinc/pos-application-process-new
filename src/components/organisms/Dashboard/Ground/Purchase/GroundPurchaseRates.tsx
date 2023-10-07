@@ -29,6 +29,7 @@ import {
   Encompass,
   GPEstimateRateData,
   GREstimateRateData,
+  HttpError,
   RatesProductData,
 } from '@/types';
 
@@ -72,7 +73,10 @@ export const GroundPurchaseRates: FC = observer(() => {
   const [loanStage, setLoanStage] = useState<LoanStage>(LoanStage.PreApproved);
   const [encompassData, setEncompassData] = useState<Encompass>();
   const [searchForm, setSearchForm] = useState<GPQueryData>(initialize);
+
   const [productList, setProductList] = useState<RatesProductData[]>();
+  const [reasonList, setReasonList] = useState<string[]>([]);
+
   const [loanInfo, setLoanInfo] = useState<
     GroundPurchaseLoanInfo & RatesProductData
   >();
@@ -135,13 +139,16 @@ export const GroundPurchaseRates: FC = observer(() => {
           agentFee,
         });
       })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () => router.push('/pipeline'),
-        }),
-      );
+        });
+      });
   });
 
   const onCheckGetList = async () => {
@@ -151,14 +158,19 @@ export const GroundPurchaseRates: FC = observer(() => {
       searchForm,
     )
       .then((res) => {
-        setProductList(res.data.products);
-        setLoanInfo(res.data.loanInfo);
+        const { products, loanInfo, reasons } = res.data;
+        setProductList(products);
+        setLoanInfo(loanInfo);
         setLoading(false);
+        setReasonList(reasons);
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
         setLoading(false);
       });
@@ -312,6 +324,7 @@ export const GroundPurchaseRates: FC = observer(() => {
                   loanStage={loanStage}
                   onClick={onListItemClick}
                   productList={productList || []}
+                  reasonList={reasonList}
                   userType={userType}
                 />
                 <GroundPurchaseRatesDrawer

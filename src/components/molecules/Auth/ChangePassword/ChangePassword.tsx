@@ -1,4 +1,5 @@
 import { useSessionStorageState } from '@/hooks';
+import { HttpError } from '@/types';
 import {
   ChangeEventHandler,
   FC,
@@ -97,10 +98,13 @@ export const ChangePassword: FC = () => {
           autoHideDuration: AUTO_HIDE_DURATION,
         });
         await router.push('./login');
-      } catch (error) {
-        enqueueSnackbar(error as string, {
-          variant: 'error',
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
       }
     },

@@ -23,6 +23,7 @@ import { POSFlex, POSFont } from '@/styles';
 
 import {
   BridgeApplicationProcessSnapshot,
+  HttpError,
   MortgageApplicationProcessSnapshot,
   ProcessData,
   VariableName,
@@ -79,9 +80,12 @@ const useInitProcessData = (
         productName,
         saasState?.tenantId || '1000052022092800000102',
       ).catch((err) => {
-        enqueueSnackbar(err, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
         return;
       });
@@ -92,9 +96,12 @@ const useInitProcessData = (
   const [loadState, fetchProcessData] = useAsyncFn(
     async (processId: string) => {
       return await _fetchProcessData(processId).catch((err) => {
-        enqueueSnackbar(err, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
         return;
       });
@@ -146,9 +153,12 @@ const useInitProcessData = (
   // if it has session & processId (This progress must belong to the current login user)
   const handleLoadProcess = usePersistFn(async (processId: string) => {
     const processData = await fetchProcessData(processId).catch((err) => {
-      enqueueSnackbar(err, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
       return;
     });
