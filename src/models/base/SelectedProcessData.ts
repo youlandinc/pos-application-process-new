@@ -3,7 +3,13 @@ import { flow, Instance, types } from 'mobx-state-tree';
 import { AxiosResponse } from 'axios';
 import { enqueueSnackbar } from 'notistack';
 
-import { LoanStage, ProcessData, SceneType, VariableName } from '@/types';
+import {
+  HttpError,
+  LoanStage,
+  ProcessData,
+  SceneType,
+  VariableName,
+} from '@/types';
 import { _fetchProcessData } from '@/requests';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
@@ -77,10 +83,13 @@ export const SelectedProcessData = types
         self.setScene(`${productCategory} ${applicationType}` as SceneType);
         self.setLoanStage(res.data.stage as string as LoanStage);
         self.processId = res.data.extra.id;
-      } catch (e) {
-        enqueueSnackbar(e as string, {
-          variant: 'error',
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
       } finally {
         self.loading = false;

@@ -13,7 +13,7 @@ import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
 
-import { TaskFiles } from '@/types';
+import { HttpError, TaskFiles } from '@/types';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import {
   _deleteTaskFile,
@@ -159,9 +159,12 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
       temp.splice(index, 1);
       action(temp);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     }
   };
@@ -190,9 +193,12 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
       );
       action([...computedData, ...data]);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setUploadLoading(false);
@@ -292,17 +298,20 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
         setQuestionnaireFiles(questionnaireFiles || []);
         setPolicyFiles(policyFiles || []);
       })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () =>
             router.push({
               pathname: '/dashboard/tasks',
               query: { processId: router.query.processId },
             }),
-        }),
-      );
+        });
+      });
   }, [router.query.taskId]);
 
   const handledSubmit = useCallback(async () => {
@@ -334,10 +343,13 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSaveLoading(false);

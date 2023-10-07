@@ -10,7 +10,7 @@ import { useMst } from '@/models/Root';
 import { useSessionStorageState } from '@/hooks';
 
 import { AUTO_HIDE_DURATION, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
-import { BPOverviewSummaryData, UserType } from '@/types';
+import { BPOverviewSummaryData, HttpError, UserType } from '@/types';
 import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
 import {
   POSFindLabel,
@@ -237,9 +237,12 @@ export const BridgePurchaseOverview: FC = observer(() => {
         });
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () => router.push('/pipeline'),
         });
       });

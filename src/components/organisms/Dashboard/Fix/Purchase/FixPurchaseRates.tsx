@@ -21,7 +21,12 @@ import {
   FPQueryData,
 } from '@/requests/dashboard';
 
-import { Encompass, FPEstimateRateData, RatesProductData } from '@/types';
+import {
+  Encompass,
+  FPEstimateRateData,
+  HttpError,
+  RatesProductData,
+} from '@/types';
 
 import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
 
@@ -66,7 +71,9 @@ export const FixPurchaseRates: FC = observer(() => {
   const [loanStage, setLoanStage] = useState<LoanStage>(LoanStage.PreApproved);
   const [encompassData, setEncompassData] = useState<Encompass>();
   const [searchForm, setSearchForm] = useState<FPQueryData>(initialize);
+
   const [productList, setProductList] = useState<RatesProductData[]>();
+  const [reasonList, setReasonList] = useState<string[]>([]);
 
   const [loanInfo, setLoanInfo] = useState<
     FixPurchaseLoanInfo & RatesProductData
@@ -130,13 +137,16 @@ export const FixPurchaseRates: FC = observer(() => {
           agentFee,
         });
       })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () => router.push('/pipeline'),
-        }),
-      );
+        });
+      });
   });
 
   const onCheckGetList = async () => {
@@ -146,15 +156,19 @@ export const FixPurchaseRates: FC = observer(() => {
       searchForm,
     )
       .then((res) => {
-        const { products, loanInfo } = res.data;
+        const { products, loanInfo, reasons } = res.data;
         setProductList(products);
         setLoanInfo(loanInfo);
         setLoading(false);
+        setReasonList(reasons);
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
         setLoading(false);
       });
@@ -304,6 +318,7 @@ export const FixPurchaseRates: FC = observer(() => {
                   loanStage={loanStage}
                   onClick={onListItemClick}
                   productList={productList || []}
+                  reasonList={reasonList}
                   userType={userType}
                 />
                 <FixPurchaseRatesDrawer

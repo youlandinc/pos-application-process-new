@@ -6,7 +6,7 @@ import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 
-import { TaskFiles } from '@/types';
+import { HttpError, TaskFiles } from '@/types';
 import { Address, IAddress } from '@/models/common/Address';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import {
@@ -66,9 +66,12 @@ export const GroundPurchaseTaskInsuranceInformation: FC = observer(() => {
       temp.splice(index, 1);
       setInsuranceFiles(temp);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     }
   };
@@ -89,9 +92,12 @@ export const GroundPurchaseTaskInsuranceInformation: FC = observer(() => {
       );
       setInsuranceFiles([...insuranceFiles, ...data]);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setUploadLoading(false);
@@ -128,17 +134,20 @@ export const GroundPurchaseTaskInsuranceInformation: FC = observer(() => {
           address.injectServerData(propAddr);
         });
       })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () =>
             router.push({
               pathname: '/dashboard/tasks',
               query: { processId: router.query.processId },
             }),
-        }),
-      );
+        });
+      });
   }, [router.query.taskId]);
 
   const handledSubmit = useCallback(async () => {
@@ -160,10 +169,13 @@ export const GroundPurchaseTaskInsuranceInformation: FC = observer(() => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSaveLoading(false);
@@ -187,10 +199,13 @@ export const GroundPurchaseTaskInsuranceInformation: FC = observer(() => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSkipLoading(false);

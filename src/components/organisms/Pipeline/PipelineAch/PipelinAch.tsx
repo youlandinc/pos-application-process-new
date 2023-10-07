@@ -14,7 +14,7 @@ import {
   useSessionStorageState,
   useSwitch,
 } from '@/hooks';
-import { UserType } from '@/types';
+import { HttpError, UserType } from '@/types';
 
 import {
   StyledButton,
@@ -105,9 +105,12 @@ export const PipelineAch: FC = observer(() => {
       await _completePipelineTask(data);
       await router.push('/pipeline/profile');
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setLoading(false);
@@ -124,9 +127,12 @@ export const PipelineAch: FC = observer(() => {
         renderFile(res.data);
       }, 100);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setGenLoading(false);
@@ -140,9 +146,12 @@ export const PipelineAch: FC = observer(() => {
       const res = await _fetchLegalFile(data.taskId);
       computedAch.ach.changeFieldValue('documentFile', res.data);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       close();

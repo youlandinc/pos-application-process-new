@@ -8,7 +8,11 @@ import { format, isDate, isValid } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 
 import { POSNotUndefined } from '@/utils';
-import { DashboardTaskInstructions, DashboardTaskLoanClosing } from '@/types';
+import {
+  DashboardTaskInstructions,
+  DashboardTaskLoanClosing,
+  HttpError,
+} from '@/types';
 import { Address, IAddress, SAddress } from '@/models/common/Address';
 import {
   AUTO_HIDE_DURATION,
@@ -143,17 +147,20 @@ export const BridgeRefinanceTaskCompanyInformation: FC = observer(() => {
           clientManageAddress.injectServerData(manageAddress ?? resetAddress);
         });
       })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () =>
             router.push({
               pathname: '/dashboard/tasks',
               query: { processId: router.query.processId },
             }),
-        }),
-      );
+        });
+      });
   }, [router.query.taskId]);
 
   const handledSubmit = useCallback(async () => {
@@ -204,10 +211,13 @@ export const BridgeRefinanceTaskCompanyInformation: FC = observer(() => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSaveLoading(false);
@@ -233,10 +243,13 @@ export const BridgeRefinanceTaskCompanyInformation: FC = observer(() => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSkipLoading(false);

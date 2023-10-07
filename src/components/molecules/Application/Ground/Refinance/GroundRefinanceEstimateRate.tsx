@@ -11,6 +11,7 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { _updateProcessVariables } from '@/requests';
 import {
   GREstimateRateData,
+  HttpError,
   PropertyOpt,
   RatesProductData,
   VariableName,
@@ -162,9 +163,12 @@ export const GroundRefinanceEstimateRate: FC<{
         setLoading(false);
       })
       .catch((err) => {
-        enqueueSnackbar(err, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
         setLoading(false);
       });
@@ -208,12 +212,13 @@ export const GroundRefinanceEstimateRate: FC<{
         nextStep(() => setCheckLoading(false));
       }
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
-        onClose: () => {
-          setCheckLoading(false);
-        },
+        isSimple: !header,
+        header,
+        onClose: () => setCheckLoading(false),
       });
     }
   };

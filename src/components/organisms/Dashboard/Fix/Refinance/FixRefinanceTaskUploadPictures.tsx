@@ -14,7 +14,7 @@ import {
   _updateTaskFormInfo,
   _uploadTaskFile,
 } from '@/requests/dashboard';
-import { TaskFiles } from '@/types';
+import { HttpError, TaskFiles } from '@/types';
 
 import {
   StyledButton,
@@ -50,9 +50,12 @@ export const FixRefinanceTaskUploadPictures: FC = observer(() => {
       );
       setPicturesFiles([...picturesFiles, ...data]);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setUploadLoading(false);
@@ -69,9 +72,12 @@ export const FixRefinanceTaskUploadPictures: FC = observer(() => {
       temp.splice(index, 1);
       setPicturesFiles(temp);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
         onClose: () =>
           router.push({
             pathname: '/dashboard/tasks',
@@ -94,12 +100,15 @@ export const FixRefinanceTaskUploadPictures: FC = observer(() => {
         const { picturesFiles } = res.data;
         setPicturesFiles(picturesFiles || []);
       })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
-        }),
-      );
+          isSimple: !header,
+          header,
+        });
+      });
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
@@ -121,10 +130,13 @@ export const FixRefinanceTaskUploadPictures: FC = observer(() => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSaveLoading(false);
@@ -139,10 +151,13 @@ export const FixRefinanceTaskUploadPictures: FC = observer(() => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSkipLoading(false);

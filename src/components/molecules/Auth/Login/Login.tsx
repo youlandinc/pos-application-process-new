@@ -11,7 +11,7 @@ import { LoginProps, LoginStyles } from './index';
 import { POSFlex } from '@/styles';
 import { AUTO_HIDE_DURATION, LOGIN_APP_KEY, userpool } from '@/constants';
 import { DetectActiveService } from '@/services/DetectActive';
-import { LoginType, UserType } from '@/types';
+import { HttpError, LoginType, UserType } from '@/types';
 import { User } from '@/types/user';
 import { _userSingIn } from '@/requests';
 
@@ -90,9 +90,12 @@ export const Login: FC<LoginProps> = observer(
           );
           await handledLoginSuccess(data);
         } catch (err) {
-          enqueueSnackbar(err as string, {
-            variant: 'error',
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
             autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
           });
         } finally {
           setLoading(false);

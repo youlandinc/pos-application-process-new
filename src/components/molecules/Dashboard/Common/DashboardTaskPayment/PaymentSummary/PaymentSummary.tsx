@@ -9,7 +9,7 @@ import {
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
-import { TaskFiles } from '@/types';
+import { HttpError, TaskFiles } from '@/types';
 import { _deleteTaskFile, _uploadTaskFile } from '@/requests/dashboard';
 import { AUTO_HIDE_DURATION, OPTIONS_COMMON_YES_OR_NO } from '@/constants';
 
@@ -63,9 +63,12 @@ export const PaymentSummary: FC<PaymentSummaryProps> = ({
       temp.splice(index, 1);
       onFileListChange(temp);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     }
   };
@@ -86,9 +89,12 @@ export const PaymentSummary: FC<PaymentSummaryProps> = ({
       );
       onFileListChange([...fileList, ...data]);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       onUploadLoadingChange(false);

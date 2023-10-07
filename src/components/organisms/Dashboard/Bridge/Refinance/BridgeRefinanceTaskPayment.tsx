@@ -19,6 +19,7 @@ import {
   BRRatesLoanInfo,
   DashboardTaskPaymentMethodsStatus,
   DashboardTaskPaymentTableStatus,
+  HttpError,
   RatesProductData,
   TaskFiles,
 } from '@/types';
@@ -154,17 +155,20 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
           paymentStatus as string as DashboardTaskPaymentMethodsStatus,
         );
       })
-      .catch((err) =>
-        enqueueSnackbar(err, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () =>
             router.push({
               pathname: '/dashboard/tasks',
               query: { processId: router.query.processId },
             }),
-        }),
-      );
+        });
+      });
   }, [router.query.taskId]);
 
   const resetTable = useCallback(() => {
@@ -245,10 +249,13 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
         procInstId: router.query.processId as string,
       });
       setPaymentDetail(data);
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSaveLoading(false);

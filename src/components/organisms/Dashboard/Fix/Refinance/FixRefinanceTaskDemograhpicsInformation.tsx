@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
-import { DashboardTaskGender } from '@/types';
+import { DashboardTaskGender, HttpError } from '@/types';
 
 import {
   StyledButton,
@@ -151,17 +151,20 @@ export const FixRefinanceTaskDemographicsInformation: FC = observer(() => {
         setFemale(gender === DashboardTaskGender.female);
         setNotProvideGender(gender === DashboardTaskGender.not_provide);
       })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () =>
             router.push({
               pathname: '/dashboard/tasks',
               query: { processId: router.query.processId },
             }),
-        }),
-      );
+        });
+      });
   }, []);
 
   const handledResetEthnicity = useCallback((isAll = false) => {
@@ -305,10 +308,13 @@ export const FixRefinanceTaskDemographicsInformation: FC = observer(() => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSaveLoading(false);

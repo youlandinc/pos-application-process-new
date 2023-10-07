@@ -15,7 +15,7 @@ import {
   OPTIONS_MORTGAGE_UNIT,
 } from '@/constants';
 import { Address, IAddress } from '@/models/common/Address';
-import { PropertyOpt, PropertyUnitOpt } from '@/types';
+import { HttpError, PropertyOpt, PropertyUnitOpt } from '@/types';
 
 import {
   StyledButton,
@@ -78,17 +78,20 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
           });
         });
       })
-      .catch((err) =>
-        enqueueSnackbar(err, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () =>
             router.push({
               pathname: '/dashboard/tasks',
               query: { processId: router.query.processId },
             }),
-        }),
-      );
+        });
+      });
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
@@ -117,10 +120,13 @@ export const BridgeRefinanceTaskPropertyDetails: FC = observer(() => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSaveLoading(false);

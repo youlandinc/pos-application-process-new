@@ -1,3 +1,4 @@
+import { HttpError } from '@/types';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -50,9 +51,12 @@ export const FixPurchaseTaskLoanDetails: FC = () => {
         setArv(arv || undefined);
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () =>
             router.push({
               pathname: '/dashboard/tasks',
@@ -90,10 +94,13 @@ export const FixPurchaseTaskLoanDetails: FC = () => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSaveLoading(false);
