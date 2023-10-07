@@ -9,7 +9,7 @@ import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { _addTaskFile, _completePipelineTask, _deleteUpload } from '@/requests';
-import { TaskFiles, UserType } from '@/types';
+import { HttpError, TaskFiles, UserType } from '@/types';
 
 import {
   StyledButton,
@@ -84,13 +84,16 @@ export const PipelineGovernment: FC = observer(() => {
       data.forEach((item) => {
         computedGovernment.government.addFile(item);
       });
-      setUploadLoading(false);
     } catch (err) {
-      setUploadLoading(false);
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
+    } finally {
+      setUploadLoading(false);
     }
   };
 
@@ -104,9 +107,12 @@ export const PipelineGovernment: FC = observer(() => {
       setFileList(temp);
       computedGovernment.government.removeFile(index);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     }
   };
@@ -116,14 +122,17 @@ export const PipelineGovernment: FC = observer(() => {
     const data = computedGovernment.government.getPostData();
     try {
       await _completePipelineTask(data);
-      setLoading(false);
       await router.push('/pipeline/profile');
     } catch (err) {
-      setLoading(false);
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
+    } finally {
+      setLoading(false);
     }
   };
 

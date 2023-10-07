@@ -3,6 +3,5 @@
 **/.hg
 **/node_modules
 **/.next
-**/locales
 /tsconfig.json
 /package.json

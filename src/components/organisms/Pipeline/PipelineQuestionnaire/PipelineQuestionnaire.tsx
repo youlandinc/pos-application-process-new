@@ -39,6 +39,7 @@ import {
 } from '@/requests';
 
 import {
+  HttpError,
   PipelineLicenseTypeOpt,
   PipelineQuestionnaireOwner,
   UserType,
@@ -128,9 +129,12 @@ export const PipelineQuestionnaire: FC = observer(() => {
       await _completePipelineTask(data);
       await router.push('/pipeline/profile');
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setLoading(false);
@@ -150,9 +154,12 @@ export const PipelineQuestionnaire: FC = observer(() => {
         renderFile(res.data);
       }, 100);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setGenLoading(false);
@@ -170,9 +177,12 @@ export const PipelineQuestionnaire: FC = observer(() => {
         res.data,
       );
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       close();

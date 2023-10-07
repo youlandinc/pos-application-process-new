@@ -1,14 +1,6 @@
-import {
-  cast,
-  getSnapshot,
-  Instance,
-  SnapshotOut,
-  types,
-} from 'mobx-state-tree';
-import { validate } from 'validate.js';
+import { CreditScoreSchema } from '@/constants';
 
 import { UploadData } from '@/models/common/UploadFile';
-import { PQOwnerData, SPQOwnerData } from './PQOwner';
 
 import {
   PipelineQuestionnaire,
@@ -18,9 +10,16 @@ import {
   PipelineTaskKey,
   PipelineTaskName,
 } from '@/types/pipeline';
-
-import { CreditScoreSchema } from '@/constants';
 import { format } from 'date-fns';
+import {
+  cast,
+  getSnapshot,
+  Instance,
+  SnapshotOut,
+  types,
+} from 'mobx-state-tree';
+import { validate } from 'validate.js';
+import { PQOwnerData, SPQOwnerData } from './PQOwner';
 
 export const PTQuestionnaire = types
   .model({
@@ -49,13 +48,13 @@ export const PTQuestionnaire = types
   })
   .views((self) => ({
     get checkTaskFormValid() {
-      return !!self.taskForm.documentFile && !!this.checkLicensesValid;
+      return !!self.taskForm.documentFile && this.checkLicensesValid;
     },
     get checkLicensesValid() {
       const {
         taskForm: { licenses },
       } = self;
-      const flag =
+      return (
         !!licenses.length &&
         licenses.every(
           (item) =>
@@ -65,8 +64,8 @@ export const PTQuestionnaire = types
             !!item.ownerName &&
             !!item.ssn &&
             !!item.state,
-        );
-      return flag;
+        )
+      );
     },
     checkArrayIsValid(item: SPQOwnerData) {
       for (const [, value] of Object.entries(item)) {

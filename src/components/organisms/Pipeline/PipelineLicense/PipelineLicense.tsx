@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { getSnapshot } from 'mobx-state-tree';
 import { useMst } from '@/models/Root';
 
-import { TaskFiles, UserType } from '@/types';
+import { HttpError, TaskFiles, UserType } from '@/types';
 import { _addTaskFile, _completePipelineTask, _deleteUpload } from '@/requests';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
@@ -85,13 +85,16 @@ export const PipelineLicense: FC = observer(() => {
       data.forEach((item) => {
         computedLicense.license.addFile(item);
       });
-      setUploadLoading(false);
     } catch (err) {
-      setUploadLoading(false);
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
+    } finally {
+      setUploadLoading(false);
     }
   };
 
@@ -105,9 +108,12 @@ export const PipelineLicense: FC = observer(() => {
       setFileList(temp);
       computedLicense.license.removeFile(index);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     }
   };
@@ -120,11 +126,14 @@ export const PipelineLicense: FC = observer(() => {
       setLoading(false);
       await router.push('/pipeline/profile');
     } catch (err) {
-      setLoading(false);
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
+      setLoading(false);
     }
   };
 

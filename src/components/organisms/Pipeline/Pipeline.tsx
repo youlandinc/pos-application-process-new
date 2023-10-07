@@ -12,7 +12,7 @@ import { useMst } from '@/models/Root';
 import { POSGetProductTypeByUrl } from '@/utils';
 import { _deleteProcess, _fetchAllProcesses } from '@/requests';
 import { useSessionStorageState, useSwitch } from '@/hooks';
-import { LoanStage, UserType } from '@/types';
+import { HttpError, LoanStage, UserType } from '@/types';
 import { AUTO_HIDE_DURATION, PAGE_SIZE } from '@/constants';
 import { StyledButton, StyledDialog, StyledLoading } from '@/components/atoms';
 
@@ -117,9 +117,12 @@ export const Pipeline: FC = observer(() => {
         setIsLastPage(res.data.last);
       })
       .catch((err) => {
-        enqueueSnackbar(err, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
       })
       .finally(() => {
@@ -199,9 +202,12 @@ export const Pipeline: FC = observer(() => {
         setListData(listData.filter((item) => item.youlandId !== deleteId));
       }
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       if (!isLastPage) {

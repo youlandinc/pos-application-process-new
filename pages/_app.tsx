@@ -1,3 +1,4 @@
+import { HttpError } from '@/types';
 import { createTheme } from '@mui/material/styles';
 import { useEffect, useMemo } from 'react';
 import Head from 'next/head';
@@ -32,7 +33,7 @@ import {
 import { Provider, rootStore } from '@/models/Root';
 
 import { _fetchSaasConfig } from '@/requests/saas';
-import { useSessionStorageState } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { StyledNotification } from '@/components/atoms';
@@ -51,18 +52,22 @@ export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const { enqueueSnackbar } = useSnackbar();
   const { setItem, saasState } = useSessionStorageState('tenantConfig');
+  const breakpoints = useBreakpoints();
 
   const { loading } = useAsync(async () => {
     return await _fetchSaasConfig()
       .then(({ data }) => {
         setItem(data);
       })
-      .catch((err) =>
-        enqueueSnackbar(err, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
-        }),
-      );
+          isSimple: !header,
+          header,
+        });
+      });
   }, []);
 
   useEffect(() => {
@@ -98,7 +103,9 @@ export default function MyApp(props: MyAppProps) {
             <SnackbarProvider
               anchorOrigin={{
                 vertical: 'top',
-                horizontal: 'center',
+                horizontal: ['sm', 'xs'].includes(breakpoints)
+                  ? 'center'
+                  : 'right',
               }}
               Components={{
                 success: StyledNotification,
@@ -132,7 +139,7 @@ export default function MyApp(props: MyAppProps) {
         </div>
       );
     }
-  }, [Component, loading, pageProps, saasState]);
+  }, [Component, breakpoints, loading, pageProps, saasState]);
 
   return (
     <>

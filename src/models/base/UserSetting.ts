@@ -17,11 +17,11 @@ export const UserSetting = types
         self.pipelineStatus = res.data;
         self.loading = false;
         self.pipelineStatusInitialized = true;
-      } catch (e) {
+      } catch (err) {
         self.loading = false;
         self.pipelineStatusInitialized = false;
         //eslint-disable-next-line no-console
-        console.log(e);
+        console.log(err);
         //enqueueSnackbar(e as string, {
         //  variant: 'error',
         //  autoHideDuration: AUTO_HIDE_DURATION,

@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { getSnapshot } from 'mobx-state-tree';
 import { useMst } from '@/models/Root';
 
-import { TaskFiles } from '@/types';
+import { HttpError, TaskFiles } from '@/types';
 import { _addTaskFile, _completePipelineTask, _deleteUpload } from '@/requests';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
@@ -57,11 +57,14 @@ export const PipelineW9: FC = observer(() => {
       });
       setUploadLoading(false);
     } catch (err) {
-      setUploadLoading(false);
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
+      setUploadLoading(false);
     }
   };
 
@@ -73,9 +76,12 @@ export const PipelineW9: FC = observer(() => {
       setFileList(temp);
       W9_FORM.removeFile(index);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     }
   };
@@ -88,11 +94,14 @@ export const PipelineW9: FC = observer(() => {
       setLoading(false);
       await router.push('/pipeline/profile');
     } catch (err) {
-      setLoading(false);
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
+      setLoading(false);
     }
   };
 

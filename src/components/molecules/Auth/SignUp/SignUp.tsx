@@ -26,7 +26,7 @@ import {
   SignUpSchema,
   userpool,
 } from '@/constants';
-import { BizType, LoginType, UserType } from '@/types';
+import { BizType, HttpError, LoginType, UserType } from '@/types';
 import {
   _userSendCode,
   _userSingIn,
@@ -121,9 +121,12 @@ export const SignUp: FC<SignUpProps> = observer(
           await _userSingUp(params);
           open();
         } catch (err) {
-          enqueueSnackbar(err as string, {
-            variant: 'error',
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
             autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
           });
         } finally {
           setLoading(false);
@@ -174,9 +177,12 @@ export const SignUp: FC<SignUpProps> = observer(
         );
         await handledLoginSuccess(data);
       } catch (err) {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
       } finally {
         setLoading(false);
@@ -202,9 +208,12 @@ export const SignUp: FC<SignUpProps> = observer(
         setLoading(true);
         await _userSendCode(data);
       } catch (err) {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
       } finally {
         setLoading(false);
@@ -229,9 +238,12 @@ export const SignUp: FC<SignUpProps> = observer(
         }
         await handledLogin();
       } catch (err) {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
       } finally {
         setLoading(false);

@@ -31,7 +31,7 @@ import {
   userpool,
 } from '@/constants';
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
-import { BizType } from '@/types';
+import { BizType, HttpError } from '@/types';
 import { _userResetPassword, _userSendCode } from '@/requests';
 
 import FORGOT_PASSWORD_SVG from '@/svg/auth/forgot_password.svg';
@@ -106,10 +106,13 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
           clearInterval(timer);
         }
       }, 1000);
-    } catch (error) {
-      enqueueSnackbar(error as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     }
   }, [email, enqueueSnackbar]);
@@ -144,10 +147,13 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
         if (isRedirect) {
           await router.push('./login');
         }
-      } catch (error) {
-        enqueueSnackbar(error as string, {
-          variant: 'error',
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
       }
     },

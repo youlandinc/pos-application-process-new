@@ -1,3 +1,4 @@
+import { HttpError } from '@/types';
 import { useAsyncFn } from 'react-use';
 import { useSnackbar } from 'notistack';
 
@@ -19,9 +20,12 @@ export const useStoreData = () => {
       return await _updateTaskVariables(taskId as string, variables)
         .then((res) => res)
         .catch((err) => {
-          enqueueSnackbar(err as string, {
-            variant: 'error',
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
             autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
           });
         });
     },
@@ -33,9 +37,12 @@ export const useStoreData = () => {
       return await _updateTask(tId || (taskId as string), 'complete')
         .then((res) => res)
         .catch((err) => {
-          enqueueSnackbar(err as string, {
-            variant: 'error',
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
             autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
           });
         });
     },
@@ -47,9 +54,12 @@ export const useStoreData = () => {
       return await _updateTask(taskId, 'change', newActivityKey)
         .then((res) => res)
         .catch((err) => {
-          enqueueSnackbar(err as string, {
-            variant: 'error',
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
             autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
           });
         });
     },
@@ -62,9 +72,12 @@ export const useStoreData = () => {
       successCb?: (TaskData: any) => void,
     ): Promise<void> => {
       const res = await updateTaskVariables(variables).catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
       });
       if (res) {
@@ -111,9 +124,12 @@ export const useStoreData = () => {
         console.log(res, 'bindSuccess');
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
       });
   });

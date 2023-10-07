@@ -8,7 +8,7 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 
 import { AUTO_HIDE_DURATION, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
-import { GPOverviewSummaryData, UserType } from '@/types';
+import { GPOverviewSummaryData, HttpError, UserType } from '@/types';
 import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
 import {
   POSFindLabel,
@@ -249,9 +249,12 @@ export const GroundPurchaseOverview: FC = observer(() => {
         });
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () => router.push('/pipeline'),
         });
       });

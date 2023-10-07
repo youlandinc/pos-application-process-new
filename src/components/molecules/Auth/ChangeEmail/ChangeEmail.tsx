@@ -16,7 +16,7 @@ import {
   LOGIN_APP_KEY,
   userpool,
 } from '@/constants';
-import { BizType } from '@/types';
+import { BizType, HttpError } from '@/types';
 import { _userChangeEmail, _userVerifyCode } from '@/requests';
 
 import {
@@ -67,9 +67,12 @@ export const ChangeEmail: FC = observer(() => {
         await _userChangeEmail({ oldEmail: email, newEmail });
         open();
       } catch (err) {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
       } finally {
         setLoading(false);
@@ -99,9 +102,12 @@ export const ChangeEmail: FC = observer(() => {
       });
       await router.push('./login');
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setLoading(false);

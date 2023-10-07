@@ -24,7 +24,12 @@ import {
   FRQueryData,
 } from '@/requests/dashboard';
 
-import { Encompass, FREstimateRateData, RatesProductData } from '@/types';
+import {
+  Encompass,
+  FREstimateRateData,
+  HttpError,
+  RatesProductData,
+} from '@/types';
 
 import {
   FixRefinanceRatesDrawer,
@@ -65,7 +70,10 @@ export const FixRefinanceRates: FC = observer(() => {
   );
   const [loanStage, setLoanStage] = useState<LoanStage>(LoanStage.PreApproved);
   const [searchForm, setSearchForm] = useState<FRQueryData>(initialize);
+
+  const [reasonList, setReasonList] = useState<string[]>([]);
   const [productList, setProductList] = useState<RatesProductData[]>();
+
   const [, setEncompassData] = useState<Encompass>();
   const [loanInfo, setLoanInfo] = useState<
     FixRefinanceLoanInfo & RatesProductData
@@ -132,13 +140,16 @@ export const FixRefinanceRates: FC = observer(() => {
           agentFee,
         });
       })
-      .catch((err) =>
-        enqueueSnackbar(err, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () => router.push('/pipeline'),
-        }),
-      );
+        });
+      });
   });
 
   const onCheckGetList = async () => {
@@ -148,15 +159,19 @@ export const FixRefinanceRates: FC = observer(() => {
       searchForm,
     )
       .then((res) => {
-        const { products, loanInfo } = res.data;
+        const { products, loanInfo, reasons } = res.data;
         setProductList(products);
         setLoanInfo(loanInfo);
         setLoading(false);
+        setReasonList(reasons);
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
         setLoading(false);
       });
@@ -298,6 +313,7 @@ export const FixRefinanceRates: FC = observer(() => {
                   loanStage={loanStage}
                   onClick={onListItemClick}
                   productList={productList || []}
+                  reasonList={reasonList}
                   userType={userType}
                 />
                 <FixRefinanceRatesDrawer

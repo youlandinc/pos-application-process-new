@@ -8,7 +8,7 @@ import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION, userpool } from '@/constants';
 import { POSFont } from '@/styles';
-import { LoginType, UserType } from '@/types';
+import { HttpError, LoginType, UserType } from '@/types';
 import { DetectActiveService } from '@/services/DetectActive';
 
 import { _fetchUserInfoByToken } from '@/requests';
@@ -75,10 +75,13 @@ export const Entrance: FC = observer(() => {
         autoHideDuration: AUTO_HIDE_DURATION,
         variant: 'success',
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
-        variant: 'error',
+        isSimple: !header,
+        header,
       });
     }
   }, [router.query.token]);

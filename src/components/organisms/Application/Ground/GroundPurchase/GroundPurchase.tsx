@@ -1,3 +1,4 @@
+import { HttpError } from '@/types';
 import { useCallback, useMemo, useRef } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -205,9 +206,12 @@ const useStateMachine = (
             GroundUpConstructionPurchaseState.celebrate,
           );
         } catch (err) {
-          enqueueSnackbar(err as string, {
-            variant: 'error',
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
             autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
           });
         } finally {
           cb?.();

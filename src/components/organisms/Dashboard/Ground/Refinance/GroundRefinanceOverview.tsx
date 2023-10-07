@@ -10,7 +10,7 @@ import { useMst } from '@/models/Root';
 import { AUTO_HIDE_DURATION, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
 import { useSessionStorageState } from '@/hooks';
 import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
-import { GROverviewSummaryData, UserType } from '@/types';
+import { GROverviewSummaryData, HttpError, UserType } from '@/types';
 import {
   POSFindLabel,
   POSFormatDollar,
@@ -247,9 +247,12 @@ export const GroundRefinanceOverview: FC = observer(() => {
         });
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () => router.push('/pipeline'),
         });
       });

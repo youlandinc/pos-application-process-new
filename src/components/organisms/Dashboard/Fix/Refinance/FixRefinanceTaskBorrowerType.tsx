@@ -15,6 +15,7 @@ import {
 import {
   DashboardTaskBorrowerEntityType,
   DashboardTaskBorrowerType,
+  HttpError,
 } from '@/types';
 import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 
@@ -80,17 +81,20 @@ export const FixRefinanceTaskBorrowerType: FC = observer(() => {
         setAuthorizedSignatoryName(authorizedSignatoryName || undefined);
         setTrustName(trustName || undefined);
       })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () =>
             router.push({
               pathname: '/dashboard/tasks',
               query: { processId: router.query.processId },
             }),
-        }),
-      );
+        });
+      });
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
@@ -139,10 +143,13 @@ export const FixRefinanceTaskBorrowerType: FC = observer(() => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSaveLoading(false);

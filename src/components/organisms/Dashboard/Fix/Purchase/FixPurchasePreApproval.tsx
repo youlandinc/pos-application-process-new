@@ -20,6 +20,7 @@ import {
 import {
   FPEstimateRateData,
   FPPreApprovalLetterData,
+  HttpError,
   PropertyOpt,
   PropertyUnitOpt,
   RatesProductData,
@@ -171,9 +172,12 @@ export const FixPurchasePreApproval: FC = observer(() => {
         setFirstLoading(false);
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () => {
             router.push('/pipeline');
             setFirstLoading(false);

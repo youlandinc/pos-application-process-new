@@ -12,7 +12,12 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { useSessionStorageState, useSwitch } from '@/hooks';
 import { LoanStage, UserType } from '@/types/enum';
 import { BridgePurchaseLoanInfo } from '@/components/molecules/Application';
-import { BPEstimateRateData, Encompass, RatesProductData } from '@/types';
+import {
+  BPEstimateRateData,
+  Encompass,
+  HttpError,
+  RatesProductData,
+} from '@/types';
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
 
 import {
@@ -64,7 +69,10 @@ export const BridgePurchaseRates: FC = observer(() => {
   const [loanStage, setLoanStage] = useState<LoanStage>(LoanStage.PreApproved);
   const [encompassData, setEncompassData] = useState<Encompass>();
   const [searchForm, setSearchForm] = useState<BPQueryData>(initialize);
+
   const [productList, setProductList] = useState<RatesProductData[]>();
+  const [reasonList, setReasonList] = useState<string[]>([]);
+
   const [loanInfo, setLoanInfo] = useState<
     BridgePurchaseLoanInfo & RatesProductData
   >();
@@ -127,13 +135,16 @@ export const BridgePurchaseRates: FC = observer(() => {
           agentFee,
         });
       })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () => router.push('/pipeline'),
-        }),
-      );
+        });
+      });
   });
 
   const onCheckGetList = async () => {
@@ -143,15 +154,19 @@ export const BridgePurchaseRates: FC = observer(() => {
       searchForm,
     )
       .then((res) => {
-        const { products, loanInfo } = res.data;
+        const { products, loanInfo, reasons } = res.data;
         setProductList(products);
         setLoanInfo(loanInfo);
         setLoading(false);
+        setReasonList(reasons);
       })
       .catch((err) => {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
         setLoading(false);
       });
@@ -296,6 +311,7 @@ export const BridgePurchaseRates: FC = observer(() => {
                   loanStage={loanStage}
                   onClick={onListItemClick}
                   productList={productList || []}
+                  reasonList={reasonList}
                   userType={userType}
                 />
                 <BridgePurchaseRatesDrawer

@@ -11,6 +11,7 @@ import { useSwitch } from '@/hooks';
 import { _updateProcessVariables } from '@/requests';
 import {
   BREstimateRateData,
+  HttpError,
   PropertyOpt,
   RatesProductData,
   VariableName,
@@ -155,9 +156,12 @@ export const BridgeRefinanceEstimateRate: FC<{
         }
       })
       .catch((err) => {
-        enqueueSnackbar(err, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
         setProductList([]);
       })
@@ -204,12 +208,13 @@ export const BridgeRefinanceEstimateRate: FC<{
         nextStep(() => setCheckLoading(false));
       }
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
-        onClose: () => {
-          setCheckLoading(false);
-        },
+        isSimple: !header,
+        header,
+        onClose: () => setCheckLoading(false),
       });
     }
   };

@@ -1,4 +1,5 @@
 import { AUTO_HIDE_DURATION } from '@/constants';
+import { HttpError } from '@/types';
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { observable } from 'mobx';
 import { enqueueSnackbar, OptionsObject, SnackbarMessage } from 'notistack';
@@ -22,9 +23,12 @@ export const NotificationStation = types
           key: Date.now() + Math.random() + '',
         });
       } catch (err) {
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
         });
       }
     },

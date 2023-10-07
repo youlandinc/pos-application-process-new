@@ -8,7 +8,7 @@ import { useAsync } from 'react-use';
 import { observer } from 'mobx-react-lite';
 
 import { AUTO_HIDE_DURATION, OPTIONS_COMMON_YES_OR_NO } from '@/constants';
-import { TaskFiles } from '@/types';
+import { HttpError, TaskFiles } from '@/types';
 import {
   _deleteTaskFile,
   _fetchTaskFormInfo,
@@ -53,9 +53,12 @@ export const FixPurchaseTaskContract: FC = observer(() => {
       );
       setContractFiles([...contractFiles, ...data]);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setUploadLoading(false);
@@ -72,9 +75,12 @@ export const FixPurchaseTaskContract: FC = observer(() => {
       temp.splice(index, 1);
       setContractFiles(temp);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     }
   };
@@ -93,17 +99,20 @@ export const FixPurchaseTaskContract: FC = observer(() => {
         setContractFiles(contractFiles || []);
         setIsAccepted(isAccepted ?? undefined);
       })
-      .catch((err) =>
-        enqueueSnackbar(err as string, {
-          variant: 'error',
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () =>
             router.push({
               pathname: '/dashboard/tasks',
               query: { processId: router.query.processId },
             }),
-        }),
-      );
+        });
+      });
   }, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
@@ -130,10 +139,13 @@ export const FixPurchaseTaskContract: FC = observer(() => {
         pathname: '/dashboard/tasks',
         query: { processId: router.query.processId },
       });
-    } catch (e) {
-      enqueueSnackbar(e as string, {
-        variant: 'error',
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     } finally {
       setSaveLoading(false);

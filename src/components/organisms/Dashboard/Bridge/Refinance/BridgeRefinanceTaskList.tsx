@@ -17,6 +17,7 @@ import {
   BridgeDashboardLoanTask,
   BridgeDashboardTaskMap,
   DashboardTaskList,
+  HttpError,
   LoanStage,
 } from '@/types';
 
@@ -155,9 +156,12 @@ export const BridgeRefinanceTaskList: FC = observer(() => {
         setCurrent(finishedNum);
       })
       .catch((err) => {
-        enqueueSnackbar(err, {
-          variant: 'error',
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
           onClose: () =>
             router.push({
               pathname: '/dashboard/tasks',
