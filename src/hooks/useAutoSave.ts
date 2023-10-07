@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import {
   BridgeApplicationProcessSnapshot,
+  HttpError,
   MortgageApplicationProcessSnapshot,
 } from '@/types';
 import { VariableName } from '@/types/enum';
@@ -56,9 +57,12 @@ export const useAutoSave = (
         },
       ]);
     } catch (err) {
-      enqueueSnackbar(err as string, {
-        variant: 'error',
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     }
   });

@@ -68,7 +68,7 @@ export class DetectActiveService {
       userpool.setLastAuthUserToken('refreshToken', username, refreshToken);
       userpool.setLastAuthUserToken('idToken', username, accessToken);
       userpool.setLastAuthUserToken('accessToken', username, accessToken);
-    } catch (e) {
+    } catch (err) {
       this._logout();
       return;
     }

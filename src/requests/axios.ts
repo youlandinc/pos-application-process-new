@@ -1,8 +1,8 @@
 import axios from 'axios';
+import { REQUEST_TIMEOUT } from '@/constants';
 
 import { rootStore } from '@/models/Root';
-import { REQUEST_TIMEOUT } from '@/constants';
-import { HttpErrorType } from '@/types/server';
+import { HttpError, HttpErrorType, HttpVariantType } from '@/types/server';
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8';
 
@@ -11,43 +11,65 @@ const service = axios.create({
   timeout: REQUEST_TIMEOUT,
 });
 
-// todo request interceptors & response interceptors
-
-service.interceptors.request.use((config) => {
-  if (rootStore.session) {
-    config.headers.Authorization = `Bearer ${rootStore.session.idToken.jwtToken}`;
-  }
-  return config;
-});
+service.interceptors.request.use(
+  (config) => {
+    if (rootStore.session) {
+      config.headers.Authorization = `Bearer ${rootStore.session.idToken.jwtToken}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject({
+      message: error.message,
+      header: '',
+      variant: HttpVariantType.error,
+    });
+  },
+);
 
 service.interceptors.response.use(
   (res) => {
     return res;
   },
   (error) => {
-    if (!error.response) {
-      rootStore.notificationStation.enqueueSnackbar({
-        message: error.message,
-        options: {
-          variant: 'error',
-        },
-      });
-      return Promise.reject(error.message);
-    }
-    //HTTP STATUS CODE 401 means that landing privileges are invalid, 403 does not have permission access to the current login state
-    const { message, code } = error.response.data;
-    // if token expired
-    if (code === HttpErrorType.tokenExpired) {
-      rootStore.logout();
+    const { code } = error;
+
+    let notificationObj: HttpError = {
+      message: '',
+      header: '',
+      variant: HttpVariantType.error,
+    };
+
+    if (error.response) {
+      const { message, header, variant, code } = error.response.data;
+      notificationObj = {
+        message,
+        header,
+        variant,
+      };
+      if (code === HttpErrorType.tokenExpired) {
+        rootStore.logout();
+      }
     }
 
-    //rootStore.notificationStation.enqueueSnackbar({
-    //  message: message,
-    //  options: {
-    //    variant: 'error',
-    //  },
-    //});
-    return Promise.reject(message);
+    if (code === 'ECONNABORTED') {
+      notificationObj = {
+        message: 'A system error has occurred.',
+        header: '',
+        variant: HttpVariantType.error,
+      };
+    }
+
+    if (code === 'ERR_NETWORK') {
+      notificationObj = {
+        message:
+          'Unable to connect to the server. Please check your network connection and try again.',
+        header: 'Network Error',
+        variant: HttpVariantType.error,
+      };
+    }
+
+    return Promise.reject(notificationObj);
   },
 );
 
