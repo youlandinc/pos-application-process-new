@@ -81,10 +81,15 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
       let flag = true;
       Array.from(files).some((item) => {
         if (item.size / 1024 / 1024 > fileSize) {
-          enqueueSnackbar(`Avatar picture size can not exceed ${fileSize}MB!`, {
-            variant: 'error',
-            autoHideDuration: AUTO_HIDE_DURATION,
-          });
+          enqueueSnackbar(
+            'The uploaded file is too large. Please select a smaller file and try again.',
+            {
+              header: 'Upload Failed',
+              variant: 'error',
+              autoHideDuration: AUTO_HIDE_DURATION,
+              isSimple: false,
+            },
+          );
           flag = false;
           return true;
         }
