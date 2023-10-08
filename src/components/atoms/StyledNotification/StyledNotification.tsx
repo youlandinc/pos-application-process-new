@@ -64,6 +64,7 @@ export const StyledNotification = forwardRef<
         <Stack
           bgcolor={computedData.bgcolor}
           borderRadius={2}
+          boxShadow={'0px 2px 2px 0px #E3E3E3'}
           flexDirection={'row'}
           gap={1}
           maxWidth={528}
@@ -96,6 +97,7 @@ export const StyledNotification = forwardRef<
         <Stack
           bgcolor={computedData.bgcolor}
           borderRadius={2}
+          boxShadow={'0px 2px 2px 0px #E3E3E3'}
           gap={0.25}
           maxWidth={528}
           minWidth={303}
