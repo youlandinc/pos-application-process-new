@@ -159,9 +159,9 @@ export const FixRefinanceRates: FC = observer(() => {
       searchForm,
     )
       .then((res) => {
-        const { products, loanInfo, reasons } = res.data;
+        const { products, loanInfo, reasons, selectedProduct } = res.data;
         setProductList(products);
-        setLoanInfo(loanInfo);
+        setLoanInfo({ ...loanInfo, ...selectedProduct });
         setLoading(false);
         setReasonList(reasons);
       })
