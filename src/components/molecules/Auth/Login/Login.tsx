@@ -96,7 +96,6 @@ export const Login: FC<LoginProps> = observer(
             autoHideDuration: AUTO_HIDE_DURATION,
             isSimple: !header,
             header,
-            persist: true,
           });
         } finally {
           setLoading(false);
