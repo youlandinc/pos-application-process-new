@@ -37,7 +37,7 @@ export const _updateTaskFormInfo = (data: {
   taskId: string;
   taskForm: any;
 }) => {
-  return post('/dashboard/loan/task/', data);
+  return post('/dashboard/loan/task', data);
 };
 
 export const _skipLoanTask = (processId = '') => {
