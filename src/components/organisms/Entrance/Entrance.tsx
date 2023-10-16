@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
@@ -6,8 +6,11 @@ import { enqueueSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { AUTO_HIDE_DURATION, userpool } from '@/constants';
-import { POSFont } from '@/styles';
+import {
+  AUTO_HIDE_DURATION,
+  OPTIONS_COMMON_ENTRANCE,
+  userpool,
+} from '@/constants';
 import { HttpError, LoginType, UserType } from '@/types';
 import { DetectActiveService } from '@/services/DetectActive';
 
@@ -17,38 +20,17 @@ import {
   StyledButton,
   StyledFormItem,
   StyledHeaderLogo,
+  StyledSelectOption,
 } from '@/components/atoms';
 import { useAsync } from 'react-use';
-
-const productList = [
-  // {
-  //   name: 'Mortgage',
-  //   url: '/application/mortgage',
-  // },
-  //{ name: 'Alternative mortgage', url: '/application/alternative_mortgage' },
-  //{ name: 'Rental', url: '/application/rental' },
-  {
-    name: 'Stabilized Bridge',
-    url: '/application/bridge',
-  },
-  {
-    name: 'Fix and Flip',
-    url: '/application/fix_and_flip',
-  },
-  {
-    name: 'Ground-up Construction',
-    url: '/application/ground_up_construction',
-  },
-  //{ name: 'Jumbo', url: '/application/jumbo' },
-  //{ name: 'Crypto mortgage', url: '/application/crypto_mortgage' },
-  //{ name: 'Crypto loan', url: '/application/crypto_loan' },
-];
 
 export const Entrance: FC = observer(() => {
   const router = useRouter();
 
   const store = useMst();
   const { detectUserActiveService } = store;
+
+  const [url, setUrl] = useState<string>('');
 
   const { loading } = useAsync(async () => {
     if (!router.query.token) {
@@ -87,7 +69,7 @@ export const Entrance: FC = observer(() => {
   }, [router.query.token]);
 
   return (
-    <Box sx={{ bgcolor: 'primary.lightest' }}>
+    <Box sx={{ bgcolor: '#FFFFFF' }}>
       <Stack
         alignItems={'center'}
         flexDirection={'row'}
@@ -130,29 +112,26 @@ export const Entrance: FC = observer(() => {
               alignItems={'center'}
               gap={3}
               label={'Which product are you interested in?'}
-              labelSx={{ m: 0 }}
+              labelSx={{ m: 0, fontSize: { md: 36, xs: 24 } }}
             >
-              {productList.map((item, index) => {
-                return (
-                  <StyledButton
-                    color={'info'}
-                    disabled={loading}
-                    key={item.name + index}
-                    onClick={async () => {
-                      store.resetApplicationForm();
-                      await router.push(item.url, item.url, { shallow: true });
-                    }}
-                    sx={{
-                      ...POSFont('20px !important', 600, 1.5, 'text.primary'),
-                      width: { md: 600, xs: '100%' },
-                      height: 64,
-                    }}
-                    variant={'outlined'}
-                  >
-                    {item.name}
-                  </StyledButton>
-                );
-              })}
+              <StyledSelectOption
+                onChange={(value) => setUrl(value as string)}
+                options={OPTIONS_COMMON_ENTRANCE}
+                value={url}
+              />
+              <StyledButton
+                onClick={async () => {
+                  store.resetApplicationForm();
+                  await router.push(url, url, { shallow: true });
+                }}
+                sx={{
+                  width: '100%',
+                  maxWidth: 600,
+                  mt: 7,
+                }}
+              >
+                Next
+              </StyledButton>
             </StyledFormItem>
           </Stack>
         </Stack>
