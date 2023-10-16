@@ -427,14 +427,12 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
                     </Typography>
                   </Stack>
                 }
-                loading={uploadLoading}
                 onDelete={(index) => handledDelete(index, 'form1003')}
                 onSuccess={(files) => handledSuccess(files, 'form1003')}
               />
               <StyledUploadButtonBox
                 fileList={identificationFiles}
                 label={'Personal identification of guarantor and/or borrower'}
-                loading={uploadLoading}
                 onDelete={(index) => handledDelete(index, 'identification')}
                 onSuccess={(files) => handledSuccess(files, 'identification')}
               />
@@ -461,7 +459,6 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
                     </Typography>
                   </Stack>
                 }
-                loading={uploadLoading}
                 onDelete={(index) => handledDelete(index, 'w9')}
                 onSuccess={(files) => handledSuccess(files, 'w9')}
               />
@@ -485,7 +482,6 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
                     </Typography>
                   </Stack>
                 }
-                loading={uploadLoading}
                 onDelete={(index) => handledDelete(index, 'authorization')}
                 onSuccess={(files) => handledSuccess(files, 'authorization')}
               />
@@ -493,7 +489,6 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
               <StyledUploadButtonBox
                 fileList={bankFiles}
                 label={'Proof of Liquidity (Bank Statement)'}
-                loading={uploadLoading}
                 onDelete={(index) => handledDelete(index, 'bank')}
                 onSuccess={(files) => handledSuccess(files, 'bank')}
               />
@@ -501,7 +496,6 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
               <StyledUploadButtonBox
                 fileList={prelimFiles}
                 label={'Prelim or Title Commitment'}
-                loading={uploadLoading}
                 onDelete={(index) => handledDelete(index, 'prelim')}
                 onSuccess={(files) => handledSuccess(files, 'prelim')}
               />
@@ -510,7 +504,6 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
                 <StyledUploadButtonBox
                   fileList={budgetFiles}
                   label={'Rehabilitation Budget'}
-                  loading={uploadLoading}
                   onDelete={(index) => handledDelete(index, 'budget')}
                   onSuccess={(files) => handledSuccess(files, 'budget')}
                 />
@@ -521,7 +514,6 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
                   <StyledUploadButtonBox
                     fileList={questionnaireFiles}
                     label={'Completed Condominium Questionnaire'}
-                    loading={uploadLoading}
                     onDelete={(index) => handledDelete(index, 'questionnaire')}
                     onSuccess={(files) =>
                       handledSuccess(files, 'questionnaire')
@@ -533,7 +525,6 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
                     label={
                       'Copy of Condominium Master Insurance Policy/Certificate'
                     }
-                    loading={uploadLoading}
                     onDelete={(index) => handledDelete(index, 'policy')}
                     onSuccess={(files) => handledSuccess(files, 'policy')}
                   />
@@ -547,7 +538,6 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
                     label={
                       'Certificates of formation/filed articles of organization/incorporation'
                     }
-                    loading={uploadLoading}
                     onDelete={(index) => handledDelete(index, 'articles')}
                     onSuccess={(files) => handledSuccess(files, 'articles')}
                   />
@@ -555,7 +545,6 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
                   <StyledUploadButtonBox
                     fileList={lawsFiles}
                     label={'Operating Agreement, Partnership Agreement, Bylaws'}
-                    loading={uploadLoading}
                     onDelete={(index) => handledDelete(index, 'laws')}
                     onSuccess={(files) => handledSuccess(files, 'laws')}
                   />
@@ -565,7 +554,6 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
                     label={
                       'Certificate of Good Standing from State of Organization'
                     }
-                    loading={uploadLoading}
                     onDelete={(index) => handledDelete(index, 'standing')}
                     onSuccess={(files) => handledSuccess(files, 'standing')}
                   />
@@ -575,7 +563,6 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
               <StyledUploadButtonBox
                 fileList={otherFiles}
                 label={'Other'}
-                loading={uploadLoading}
                 onDelete={(index) => handledDelete(index, 'other')}
                 onSuccess={(files) => handledSuccess(files, 'other')}
               />
@@ -602,7 +589,7 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
                 Back
               </StyledButton>
               <StyledButton
-                disabled={saveLoading}
+                disabled={saveLoading || uploadLoading}
                 loading={saveLoading}
                 loadingText={'Saving...'}
                 onClick={handledSubmit}
