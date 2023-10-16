@@ -236,7 +236,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           header: (
             <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
               <Typography variant={'h6'}>
-                Welcome to {saasState?.organizationName || ' YouLand'} !
+                Welcome to {saasState?.organizationName || 'YouLand'}!
               </Typography>
               <StyledButton color={'info'} isIconButton onClick={close}>
                 <CloseOutlined />

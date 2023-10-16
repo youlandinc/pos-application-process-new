@@ -47,7 +47,7 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
       <StyledFormItem
         label={
           authType === 'login'
-            ? `Welcome to ${' ' + saasState?.organizationName || 'YouLand'} !`
+            ? `Welcome to ${' ' + saasState?.organizationName || 'YouLand'}!`
             : authType === 'sign_up'
             ? 'Sign up'
             : 'Rest password'
