@@ -30,7 +30,7 @@ export const Entrance: FC = observer(() => {
   const store = useMst();
   const { detectUserActiveService } = store;
 
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState<string>('');
 
   const { loading } = useAsync(async () => {
     if (!router.query.token) {
@@ -115,7 +115,7 @@ export const Entrance: FC = observer(() => {
               labelSx={{ m: 0, fontSize: { md: 36, xs: 24 } }}
             >
               <StyledSelectOption
-                onChange={(value) => setUrl(value)}
+                onChange={(value) => setUrl(value as string)}
                 options={OPTIONS_COMMON_ENTRANCE}
                 value={url}
               />
