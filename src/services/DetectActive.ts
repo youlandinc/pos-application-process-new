@@ -4,7 +4,8 @@ import { _userRefreshToken } from '@/requests/user';
 import { LOGIN_APP_KEY, userpool } from '@/constants';
 import { POSCreateDebounceFunction } from '@/utils';
 
-const EXPIRED_TIME = 1000 * 60 * 9;
+// 1000 * seconds * minutes * hours
+const EXPIRED_TIME = 1000 * 60 * 60 * 3;
 
 // const EXPIRED_TIME = 3000;
 
