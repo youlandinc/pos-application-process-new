@@ -500,7 +500,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
                       sx={{ maxWidth: 180 }}
                       variant={'outlined'}
                     >
-                      View other rate
+                      View other rates
                     </StyledButton>
                   </Stack>
                 )}
