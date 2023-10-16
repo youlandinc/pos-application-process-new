@@ -312,3 +312,30 @@ export const OPTIONS_COMMON_STATE: Option[] = [
   },
   { label: 'Wyoming', value: 'WY', key: 'WY' },
 ];
+
+export const OPTIONS_COMMON_ENTRANCE: Option[] = [
+  // {
+  //   name: 'Mortgage',
+  //   url: '/application/mortgage',
+  // },
+  //{ name: 'Alternative mortgage', url: '/application/alternative_mortgage' },
+  //{ name: 'Rental', url: '/application/rental' },
+  {
+    label: 'Stabilized Bridge',
+    key: '/application/bridge',
+    value: '/application/bridge',
+  },
+  {
+    label: 'Fix and Flip',
+    key: '/application/fix_and_flip',
+    value: '/application/fix_and_flip',
+  },
+  {
+    label: 'Ground-up Construction',
+    key: '/application/ground_up_construction',
+    value: '/application/ground_up_construction',
+  },
+  //{ name: 'Jumbo', url: '/application/jumbo' },
+  //{ name: 'Crypto mortgage', url: '/application/crypto_mortgage' },
+  //{ name: 'Crypto loan', url: '/application/crypto_loan' },
+];
