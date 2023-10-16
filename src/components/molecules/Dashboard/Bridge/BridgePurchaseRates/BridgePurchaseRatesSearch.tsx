@@ -18,7 +18,7 @@ import {
 } from '@/utils';
 import { InfoOutlined } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
-import { addDays, compareDesc, isDate, isValid as dateValid } from 'date-fns';
+import { addDays, compareDesc, isValid as dateValid, isDate } from 'date-fns';
 import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 
 interface BridgePurchaseRatesSearchProps {
