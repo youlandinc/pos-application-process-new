@@ -563,7 +563,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
             }}
             maxWidth={900}
             sub
-            sx={{ mb: 3 }}
+            sx={{ mb: userType === UserType.CUSTOMER ? 0 : 3 }}
             width={'100%'}
           >
             <StyledDatePicker

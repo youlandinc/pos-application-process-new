@@ -1,18 +1,3 @@
-import { addDays, compareDesc, isValid as dateValid, isDate } from 'date-fns';
-import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
-import { Stack, Typography } from '@mui/material';
-import { InfoOutlined } from '@mui/icons-material';
-
-import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
-import { LoanStage, UserType } from '@/types/enum';
-import { BPQueryData } from '@/requests/dashboard';
-import {
-  POSFindLabel,
-  POSFormatDollar,
-  POSFormatPercent,
-  POSNotUndefined,
-} from '@/utils';
-
 import {
   StyledButton,
   StyledDatePicker,
@@ -21,6 +6,20 @@ import {
   StyledTooltip,
   Transitions,
 } from '@/components/atoms';
+
+import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
+import { BPQueryData } from '@/requests/dashboard';
+import { LoanStage, UserType } from '@/types/enum';
+import {
+  POSFindLabel,
+  POSFormatDollar,
+  POSFormatPercent,
+  POSNotUndefined,
+} from '@/utils';
+import { InfoOutlined } from '@mui/icons-material';
+import { Stack, Typography } from '@mui/material';
+import { addDays, compareDesc, isDate, isValid as dateValid } from 'date-fns';
+import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 
 interface BridgePurchaseRatesSearchProps {
   loading: boolean;
@@ -554,7 +553,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
           }}
           maxWidth={900}
           sub
-          sx={{ mb: 3 }}
+          sx={{ mb: userType === UserType.CUSTOMER ? 0 : 3 }}
           width={'100%'}
           //mt={3}
         >

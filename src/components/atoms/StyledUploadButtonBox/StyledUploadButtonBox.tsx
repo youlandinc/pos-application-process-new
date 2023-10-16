@@ -36,7 +36,7 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
     fileSize = 5, // MB
     uploadText = 'Select files',
     accept = 'image/*,.pdf',
-    loading,
+    loading = false,
   } = props;
 
   const { enqueueSnackbar } = useSnackbar();
@@ -46,9 +46,12 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
 
   const { open, visible, close } = useSwitch(false);
 
+  const [innerLoading, setInnerLoading] = useState(loading);
+
   const handleUpload = useCallback(
     async (files: FileList) => {
-      onSuccess(files);
+      await onSuccess(files);
+      setTimeout(() => setInnerLoading(false));
     },
     [onSuccess],
   );
@@ -80,6 +83,7 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
     async (event: ChangeEvent<HTMLInputElement>) => {
       event.preventDefault();
       if (event.target.files && validatorFileSize(event.target.files)) {
+        setInnerLoading(true);
         await handleUpload(event.target.files);
         // event.target.value = '';
       }
@@ -132,8 +136,8 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
         <StyledButton
           color={'inherit'}
           component={'label'}
-          disabled={loading}
-          loading={loading}
+          disabled={innerLoading}
+          loading={innerLoading}
           startIcon={<CloudUploadOutlined />}
           sx={{ minWidth: 164 }}
           variant={'outlined'}
