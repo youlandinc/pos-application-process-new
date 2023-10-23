@@ -1,13 +1,19 @@
 import {
-  StyledBoxWrap,
-  StyledButton,
-  StyledDialog,
-  StyledSelect,
-  StyledTextField,
-  StyledTextFieldOtp,
-  StyledTextFieldPassword,
-  Transitions,
-} from '@/components/atoms';
+  ChangeEventHandler,
+  FC,
+  FormEventHandler,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
+import { Box, Icon, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import { validate } from 'validate.js';
+
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
 import {
   AUTO_HIDE_DURATION,
   LOGIN_APP_KEY,
@@ -16,7 +22,7 @@ import {
   userpool,
 } from '@/constants';
 import { useSessionStorageState, useSwitch } from '@/hooks';
-import { useMst } from '@/models/Root';
+
 import {
   _userSendCode,
   _userSingIn,
@@ -27,23 +33,22 @@ import {
 import { DetectActiveService } from '@/services/DetectActive';
 import { POSFlex } from '@/styles';
 
-import SIGN_UP_SVG from '@/svg/auth/sign_up.svg';
 import { BizType, HttpError, LoginType, UserType } from '@/types';
 import { User } from '@/types/user';
-import { Box, Icon, Typography } from '@mui/material';
 
-import { observer } from 'mobx-react-lite';
-import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
 import {
-  ChangeEventHandler,
-  FC,
-  FormEventHandler,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react';
-import { validate } from 'validate.js';
+  StyledBoxWrap,
+  StyledButton,
+  StyledDialog,
+  StyledSelect,
+  StyledTextField,
+  StyledTextFieldOtp,
+  StyledTextFieldPassword,
+  Transitions,
+} from '@/components/atoms';
+
+import SIGN_UP_SVG from '@/svg/auth/sign_up.svg';
+
 import { SignUpProps, SignUpStyles } from './index';
 
 export const SignUp: FC<SignUpProps> = observer(
