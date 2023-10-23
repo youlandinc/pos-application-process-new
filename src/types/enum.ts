@@ -297,3 +297,8 @@ export enum UserType {
   LOAN_OFFICER = 'LOAN_OFFICER',
   LENDER = 'LENDER',
 }
+
+export enum ServiceTypeEnum {
+  WHITE_LABEL = 'WHITE_LABEL',
+  SAAS = 'SAAS',
+}
