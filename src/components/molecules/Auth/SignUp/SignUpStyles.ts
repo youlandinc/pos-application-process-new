@@ -4,9 +4,9 @@ export const SignUpStyles = {
   from: {
     '&.form_body': {
       mt: 3,
-      '&>div:nth-of-type(even)': {
-        my: 3,
-      },
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 3,
       '& button': {
         width: '100%',
       },
@@ -48,9 +48,9 @@ export const SignUpStyles = {
       },
       '& .form_body': {
         mt: 3,
-        '&>div:nth-of-type(even)': {
-          my: 3,
-        },
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 3,
         '& button': {
           width: '100%',
         },
