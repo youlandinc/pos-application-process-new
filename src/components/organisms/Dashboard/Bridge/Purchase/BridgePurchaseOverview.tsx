@@ -10,7 +10,12 @@ import { useMst } from '@/models/Root';
 import { useSessionStorageState } from '@/hooks';
 
 import { AUTO_HIDE_DURATION, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
-import { BPOverviewSummaryData, HttpError, UserType } from '@/types';
+import {
+  BPOverviewSummaryData,
+  HttpError,
+  ServiceTypeEnum,
+  UserType,
+} from '@/types';
 import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
 import {
   POSFindLabel,
@@ -203,6 +208,22 @@ export const BridgePurchaseOverview: FC = observer(() => {
             temp = [];
             break;
           }
+        }
+        if (saasState?.serviceTypeEnum === ServiceTypeEnum.WHITE_LABEL) {
+          temp = [
+            {
+              label: 'Broker origination fee',
+              info: `${POSFormatDollar(
+                thirdParty?.brokerOriginationFee,
+              )}(${POSFormatPercent(
+                (thirdParty?.brokerPoints as number) / 100,
+              )})`,
+            },
+            {
+              label: 'Broker processing fee',
+              info: POSFormatDollar(thirdParty?.brokerProcessingFee),
+            },
+          ];
         }
         setThirdParty({
           title: 'Est. cash required at closing',

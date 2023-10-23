@@ -4,7 +4,7 @@ import { CloseOutlined } from '@mui/icons-material';
 
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { BridgeRefinanceLoanInfo } from '@/components/molecules/Application';
-import { RatesProductData } from '@/types';
+import { RatesProductData, ServiceTypeEnum } from '@/types';
 import { UserType } from '@/types/enum';
 import { POSFindLabel, POSFormatDollar, POSFormatPercent } from '@/utils';
 import { OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
@@ -59,6 +59,24 @@ export const BridgeRefinanceRatesDrawer: FC<
   }, [selectedItem?.address]);
 
   const renderByUserType = useMemo(() => {
+    if (saasState?.serviceTypeEnum === ServiceTypeEnum.WHITE_LABEL) {
+      return (
+        <>
+          <BridgeRefinanceCardItem
+            info={`${POSFormatDollar(
+              selectedItem?.brokerOriginationFee,
+            )}(${POSFormatPercent(
+              (selectedItem?.brokerPoints as number) / 100,
+            )})`}
+            label={'Broker origination fee'}
+          />
+          <BridgeRefinanceCardItem
+            info={POSFormatDollar(selectedItem?.brokerProcessingFee)}
+            label={'Broker processing fee'}
+          />
+        </>
+      );
+    }
     switch (userType) {
       case UserType.BROKER:
         return (
@@ -124,6 +142,7 @@ export const BridgeRefinanceRatesDrawer: FC<
         return null;
     }
   }, [
+    saasState?.serviceTypeEnum,
     selectedItem?.agentFee,
     selectedItem?.brokerOriginationFee,
     selectedItem?.brokerPoints,
@@ -299,7 +318,7 @@ export const BridgeRefinanceRatesDrawer: FC<
                 )}(${POSFormatPercent(
                   selectedItem?.originationFeePer || 0.015,
                 )})`}
-                label={`${saasState?.organizationName} origination fee`}
+                label={'Lender origination fee'}
               />
               <BridgeRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.underwritingFee)}
