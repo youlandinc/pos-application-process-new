@@ -36,7 +36,6 @@ export const BridgeRefinanceOverview: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { saasState } = useSessionStorageState('tenantConfig');
-  // const tenantConfig = utils.getTenantConfig();
 
   const [summary, setSummary] = useState<CommonOverviewInfo>();
   const [product, setProduct] = useState<CommonOverviewInfo>();
@@ -44,7 +43,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
   const [thirdParty, setThirdParty] = useState<CommonOverviewInfo>();
 
   const { loading } = useAsync(async () => {
-    if (!router.query.processId) {
+    if (!router.query.processId || !saasState?.serviceTypeEnum) {
       return;
     }
     return await _fetchOverviewLoanSummary<BROverviewSummaryData>(
@@ -260,7 +259,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
           onClose: () => router.push('/pipeline'),
         });
       });
-  });
+  }, [saasState?.serviceTypeEnum]);
 
   return (
     <Transitions
