@@ -1,16 +1,15 @@
-import { ChangeEvent, DragEvent, useCallback, useState } from 'react';
-import { Box, Icon, Stack, Typography } from '@mui/material';
+import { useBreakpoints, useSessionStorageState, useSwitch } from '@/hooks';
+import { _downloadBrokerFile } from '@/requests';
 import {
   CloseOutlined,
   DeleteForeverOutlined,
   FolderOpen,
   GetAppOutlined,
-  PageviewOutlined,
+  RemoveRedEyeOutlined,
 } from '@mui/icons-material';
+import { Box, Icon, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
-
-import { _downloadBrokerFile } from '@/requests';
-import { useBreakpoints, useSessionStorageState, useSwitch } from '@/hooks';
+import { ChangeEvent, DragEvent, useCallback, useState } from 'react';
 
 import {
   StyledButton,
@@ -22,9 +21,9 @@ import {
 } from '@/components/atoms';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
+import { SUploadData } from '@/models/common/UploadFile';
 import { POSFont } from '@/styles';
 import { POSFormatDate } from '@/utils';
-import { SUploadData } from '@/models/common/UploadFile';
 
 import UPLOAD_SVG from '@/svg/upload/upload.svg';
 
@@ -35,7 +34,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
     fileList,
     onDelete,
     fileSize = 5, // MB
-    uploadText = 'Select files',
+    uploadText = 'Upload file',
     accept = 'image/*,.pdf',
     loading,
   } = props;
@@ -244,7 +243,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
                           'MM-dd-yyyy HH:mm:ss',
                         )}
 
-                      <PageviewOutlined
+                      <RemoveRedEyeOutlined
                         className={'icon'}
                         onClick={() => window.open(item.url)}
                         sx={{
