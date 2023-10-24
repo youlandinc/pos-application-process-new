@@ -44,7 +44,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
   const [thirdParty, setThirdParty] = useState<CommonOverviewInfo>();
 
   const { loading } = useAsync(async () => {
-    if (!router.query.processId) {
+    if (!router.query.processId || !saasState?.serviceTypeEnum) {
       return;
     }
     return await _fetchOverviewLoanSummary<BPOverviewSummaryData>(
@@ -267,7 +267,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
           onClose: () => router.push('/pipeline'),
         });
       });
-  });
+  }, [saasState?.serviceTypeEnum]);
 
   return (
     <>

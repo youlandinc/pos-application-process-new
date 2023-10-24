@@ -50,7 +50,7 @@ export const GroundPurchaseOverview: FC = observer(() => {
   const [thirdParty, setThirdParty] = useState<CommonOverviewInfo>();
 
   const { loading } = useAsync(async () => {
-    if (!router.query.processId) {
+    if (!router.query.processId || !saasState?.serviceTypeEnum) {
       return;
     }
     return await _fetchOverviewLoanSummary<GPOverviewSummaryData>(
@@ -161,7 +161,7 @@ export const GroundPurchaseOverview: FC = observer(() => {
           case UserType.BROKER: {
             temp = [
               {
-                label: <>Broker origination fee</>,
+                label: 'Broker origination fee',
                 info: `${POSFormatDollar(
                   thirdParty?.brokerOriginationFee,
                 )}(${POSFormatPercent(
@@ -306,7 +306,7 @@ export const GroundPurchaseOverview: FC = observer(() => {
           onClose: () => router.push('/pipeline'),
         });
       });
-  });
+  }, [saasState?.serviceTypeEnum]);
 
   return (
     <Transitions

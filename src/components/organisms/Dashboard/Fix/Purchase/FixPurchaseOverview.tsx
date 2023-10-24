@@ -43,7 +43,7 @@ export const FixPurchaseOverview: FC = observer(() => {
   const [thirdParty, setThirdParty] = useState<CommonOverviewInfo>();
 
   const { loading } = useAsync(async () => {
-    if (!router.query.processId) {
+    if (!router.query.processId || !saasState?.serviceTypeEnum) {
       return;
     }
     return await _fetchOverviewLoanSummary<FPOverviewSummaryData>(
@@ -278,7 +278,7 @@ export const FixPurchaseOverview: FC = observer(() => {
           onClose: () => router.push('/pipeline'),
         });
       });
-  });
+  }, [saasState?.serviceTypeEnum]);
 
   return (
     <Transitions
