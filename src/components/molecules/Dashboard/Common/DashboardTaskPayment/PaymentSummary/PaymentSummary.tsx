@@ -139,22 +139,31 @@ export const PaymentSummary: FC<PaymentSummaryProps> = ({
           )}
         </Transitions>
       </StyledFormItem>
-      <StyledFormItem
-        gap={3}
-        label={'Would you like to request expedited processing?'}
-        sub
-        tip={
-          'If you wish to avail expedited processing services, an additional fee of $150 will apply. This means you will receive your report in a shorter timeframe, allowing for more timely handling of your needs.'
-        }
-        tipSx={{ m: 0 }}
+      <Transitions
+        style={{
+          display: haveAppraisal ? 'none' : 'block',
+          width: '100%',
+        }}
       >
-        <StyledButtonGroup
-          onChange={onIsExpeditedChange}
-          options={OPTIONS_COMMON_YES_OR_NO}
-          sx={{ width: '100%', maxWidth: 600 }}
-          value={isExpedited}
-        />
-      </StyledFormItem>
+        {!haveAppraisal && (
+          <StyledFormItem
+            gap={3}
+            label={'Would you like to request expedited processing?'}
+            sub
+            tip={
+              'If you wish to avail expedited processing services, an additional fee of $150 will apply. This means you will receive your report in a shorter timeframe, allowing for more timely handling of your needs.'
+            }
+            tipSx={{ m: 0 }}
+          >
+            <StyledButtonGroup
+              onChange={onIsExpeditedChange}
+              options={OPTIONS_COMMON_YES_OR_NO}
+              sx={{ width: '100%', maxWidth: 600 }}
+              value={isExpedited}
+            />
+          </StyledFormItem>
+        )}
+      </Transitions>
     </StyledFormItem>
   );
 };
