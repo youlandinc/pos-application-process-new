@@ -285,7 +285,7 @@ export const FixRefinanceOverview: FC = observer(() => {
         justifyContent: 'center',
       }}
     >
-      {loading ? (
+      {loading || !saasState?.serviceTypeEnum ? (
         <Stack
           alignItems={'center'}
           justifyContent={'center'}
