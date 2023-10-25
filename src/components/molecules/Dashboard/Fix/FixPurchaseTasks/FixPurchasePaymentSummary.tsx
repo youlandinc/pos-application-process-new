@@ -1,8 +1,12 @@
 import { FC } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Icon, Stack, Typography } from '@mui/material';
+
+import { useSessionStorageState } from '@/hooks';
 
 import { POSFormatDollar, POSFormatLocalPercent } from '@/utils';
 import { FPRatesLoanInfo, RatesProductData } from '@/types';
+
+import RATE_CURRENT from '@/svg/dashboard/rate_current.svg';
 
 interface FixPurchasePaymentSummaryProps {
   productInfo:
@@ -24,29 +28,47 @@ export const FixPurchasePaymentSummary: FC<FixPurchasePaymentSummaryProps> = ({
     paymentOfMonth: undefined,
   },
 }) => {
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   return (
     <Stack
       alignItems={'center'}
-      bgcolor={'info.dark'}
+      bgcolor={'#FFFFFF'}
+      border={'1px solid #D2D6E1'}
       borderRadius={2}
-      color={'text.white'}
+      color={'text.primary'}
       gap={1.5}
       maxWidth={600}
       p={3}
       width={'100%'}
     >
-      <Typography variant={'h4'}>Your rate</Typography>
+      <Typography variant={'h7'} width={'100%'}>
+        Fix and Flip | Purchase
+      </Typography>
+      <Icon
+        component={RATE_CURRENT}
+        sx={{
+          width: 184,
+          height: 146,
+          mt: 1.5,
+          '& .rate_current_svg__pos_svg_theme_color,& .rate_confirmed_svg__pos_svg_theme_color ':
+            {
+              fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+            },
+        }}
+      />
+
       <Stack width={'100%'}>
         <Stack
           alignItems={'center'}
-          borderBottom={'1px solid white'}
+          borderBottom={'1px solid #D2D6E1'}
           flex={1}
           flexDirection={'row'}
           justifyContent={'space-between'}
           py={1.5}
         >
           <Typography variant={'body1'}>Interest rate</Typography>
-          <Typography variant={'subtitle1'}>
+          <Typography variant={'h4'}>
             {POSFormatLocalPercent(productInfo?.interestRateOfYear)}
           </Typography>
         </Stack>
