@@ -80,6 +80,9 @@ export const GroundPurchaseRates: FC = observer(() => {
   const [loanInfo, setLoanInfo] = useState<
     GroundPurchaseLoanInfo & RatesProductData
   >();
+  const [primitiveLoanInfo, setPrimitiveLoanInfo] = useState<
+    GroundPurchaseLoanInfo & RatesProductData
+  >();
   const [selectedItem, setSelectedItem] = useState<
     GroundPurchaseLoanInfo &
       Pick<
@@ -110,6 +113,10 @@ export const GroundPurchaseRates: FC = observer(() => {
         }
         setLoanStage(loanStage);
         setLoanInfo({ ...info, ...selectedProduct });
+        setPrimitiveLoanInfo({
+          ...info,
+          ...selectedProduct,
+        });
 
         const {
           purchaseLoanAmount,
@@ -414,7 +421,7 @@ export const GroundPurchaseRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Interest rate</Typography>
                     <Typography variant={'h4'}>
-                      {POSFormatPercent(loanInfo?.interestRateOfYear)}
+                      {POSFormatPercent(primitiveLoanInfo?.interestRateOfYear)}
                     </Typography>
                   </Stack>
 
@@ -427,7 +434,7 @@ export const GroundPurchaseRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Loan term</Typography>
                     <Typography variant={'subtitle1'}>
-                      {loanInfo?.loanTerm} months
+                      {primitiveLoanInfo?.loanTerm} months
                     </Typography>
                   </Stack>
 
@@ -440,7 +447,7 @@ export const GroundPurchaseRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Purchase price</Typography>
                     <Typography variant={'subtitle1'}>
-                      {POSFormatDollar(loanInfo?.purchasePrice)}
+                      {POSFormatDollar(primitiveLoanInfo?.purchasePrice)}
                     </Typography>
                   </Stack>
 
@@ -455,7 +462,7 @@ export const GroundPurchaseRates: FC = observer(() => {
                       Purchase loan amount
                     </Typography>
                     <Typography variant={'subtitle1'}>
-                      {POSFormatDollar(loanInfo?.purchaseLoanAmount)}
+                      {POSFormatDollar(primitiveLoanInfo?.purchaseLoanAmount)}
                     </Typography>
                   </Stack>
 
@@ -468,7 +475,7 @@ export const GroundPurchaseRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Rehab cost</Typography>
                     <Typography variant={'subtitle1'}>
-                      {POSFormatDollar(loanInfo?.cor)}
+                      {POSFormatDollar(primitiveLoanInfo?.cor)}
                     </Typography>
                   </Stack>
 
@@ -481,7 +488,7 @@ export const GroundPurchaseRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Total loan amount</Typography>
                     <Typography variant={'subtitle1'}>
-                      {POSFormatDollar(loanInfo?.totalLoanAmount)}
+                      {POSFormatDollar(primitiveLoanInfo?.totalLoanAmount)}
                     </Typography>
                   </Stack>
 
@@ -494,7 +501,7 @@ export const GroundPurchaseRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Monthly payment</Typography>
                     <Typography variant={'subtitle1'}>
-                      {POSFormatDollar(loanInfo?.paymentOfMonth)}
+                      {POSFormatDollar(primitiveLoanInfo?.paymentOfMonth)}
                     </Typography>
                   </Stack>
                 </Stack>

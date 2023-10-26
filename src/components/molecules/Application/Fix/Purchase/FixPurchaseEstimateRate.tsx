@@ -17,7 +17,6 @@ import {
   VariableName,
 } from '@/types';
 import {
-  _fetchRatesLoanInfo,
   _fetchRatesProductPreview,
   _updateRatesProductSelected,
   FPQueryData,
@@ -152,10 +151,7 @@ export const FixPurchaseEstimateRate: FC<{
         if (res.status === 200) {
           setProductList(res.data.products as RatesProductData[]);
           setReasonList(res.data.reasons);
-        }
-        const infoRes = await _fetchRatesLoanInfo(processId);
-        if (infoRes.status === 200) {
-          setProductInfo(infoRes.data.info);
+          setProductInfo(res.data.loanInfo);
         }
         setLoading(false);
       })
