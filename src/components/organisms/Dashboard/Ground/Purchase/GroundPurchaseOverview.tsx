@@ -1,5 +1,6 @@
 import { useMst } from '@/models/Root';
-import { FC, useState } from 'react';
+import { InfoOutlined } from '@mui/icons-material';
+import { FC, ReactNode, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
@@ -8,7 +9,12 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 
 import { AUTO_HIDE_DURATION, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
-import { GPOverviewSummaryData, HttpError, UserType } from '@/types';
+import {
+  GPOverviewSummaryData,
+  HttpError,
+  ServiceTypeEnum,
+  UserType,
+} from '@/types';
 import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
 import {
   POSFindLabel,
@@ -18,7 +24,12 @@ import {
 } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
 
-import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
+import {
+  StyledButton,
+  StyledLoading,
+  StyledTooltip,
+  Transitions,
+} from '@/components/atoms';
 import {
   CommonOverviewInfo,
   DashboardCard,
@@ -39,7 +50,7 @@ export const GroundPurchaseOverview: FC = observer(() => {
   const [thirdParty, setThirdParty] = useState<CommonOverviewInfo>();
 
   const { loading } = useAsync(async () => {
-    if (!router.query.processId) {
+    if (!router.query.processId || !saasState?.serviceTypeEnum) {
       return;
     }
     return await _fetchOverviewLoanSummary<GPOverviewSummaryData>(
@@ -143,7 +154,7 @@ export const GroundPurchaseOverview: FC = observer(() => {
           ],
         });
         let temp: {
-          label: string;
+          label: string | ReactNode;
           info: string;
         }[];
         switch (userType) {
@@ -216,6 +227,43 @@ export const GroundPurchaseOverview: FC = observer(() => {
             break;
           }
         }
+        if (saasState?.serviceTypeEnum === ServiceTypeEnum.WHITE_LABEL) {
+          temp = [
+            {
+              label: (
+                <Stack
+                  alignItems={'center'}
+                  flexDirection={'row'}
+                  gap={0.5}
+                  sx={{ fontSize: 'inherit' }}
+                >
+                  Broker origination fee{' '}
+                  <StyledTooltip
+                    title={`This is a charge associated with the professional services rendered by the broker in facilitating your loan application and processing. If you have any questions or concerns, please email us at ${saasState?.posSettings?.email}.`}
+                  >
+                    <InfoOutlined
+                      sx={{
+                        width: 14,
+                        height: 14,
+                        mb: 0.125,
+                        color: 'info.main',
+                      }}
+                    />
+                  </StyledTooltip>
+                </Stack>
+              ),
+              info: `${POSFormatDollar(
+                thirdParty?.brokerOriginationFee,
+              )}(${POSFormatPercent(
+                (thirdParty?.brokerPoints as number) / 100,
+              )})`,
+            },
+            {
+              label: 'Broker processing fee',
+              info: POSFormatDollar(thirdParty?.brokerProcessingFee),
+            },
+          ];
+        }
         setThirdParty({
           title: 'Est. cash required at closing',
           subTitle: 'Total',
@@ -258,7 +306,7 @@ export const GroundPurchaseOverview: FC = observer(() => {
           onClose: () => router.push('/pipeline'),
         });
       });
-  });
+  }, [saasState?.serviceTypeEnum]);
 
   return (
     <Transitions
@@ -268,7 +316,7 @@ export const GroundPurchaseOverview: FC = observer(() => {
         justifyContent: 'center',
       }}
     >
-      {loading ? (
+      {loading || !saasState?.serviceTypeEnum ? (
         <Stack
           alignItems={'center'}
           justifyContent={'center'}

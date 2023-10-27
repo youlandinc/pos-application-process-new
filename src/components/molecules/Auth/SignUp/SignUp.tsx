@@ -14,11 +14,6 @@ import { validate } from 'validate.js';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { DetectActiveService } from '@/services/DetectActive';
-import { useSessionStorageState, useSwitch } from '@/hooks';
-import { User } from '@/types/user';
-import { SignUpProps, SignUpStyles } from './index';
-import { POSFlex } from '@/styles';
 import {
   AUTO_HIDE_DURATION,
   LOGIN_APP_KEY,
@@ -26,13 +21,20 @@ import {
   SignUpSchema,
   userpool,
 } from '@/constants';
-import { BizType, HttpError, LoginType, UserType } from '@/types';
+import { useSessionStorageState, useSwitch } from '@/hooks';
+
 import {
   _userSendCode,
   _userSingIn,
   _userSingUp,
   _userVerifyCode,
 } from '@/requests';
+
+import { DetectActiveService } from '@/services/DetectActive';
+import { POSFlex } from '@/styles';
+
+import { BizType, HttpError, LoginType, UserType } from '@/types';
+import { User } from '@/types/user';
 
 import {
   StyledBoxWrap,
@@ -46,6 +48,8 @@ import {
 } from '@/components/atoms';
 
 import SIGN_UP_SVG from '@/svg/auth/sign_up.svg';
+
+import { SignUpProps, SignUpStyles } from './index';
 
 export const SignUp: FC<SignUpProps> = observer(
   ({ isNestForm = false, isRedirect = true, successCb }) => {
@@ -98,10 +102,17 @@ export const SignUp: FC<SignUpProps> = observer(
     const handledSubmit = useCallback<FormEventHandler>(
       async (e) => {
         e.preventDefault();
-        const errors = validate(
-          { userType, email, password, confirmedPassword },
-          SignUpSchema,
-        );
+        const validateSchema = {
+          userType:
+            saasState?.serviceTypeEnum === 'SAAS'
+              ? userType
+              : UserType.CUSTOMER,
+          email,
+          password,
+          confirmedPassword,
+        };
+
+        const errors = validate(validateSchema, SignUpSchema);
         setFormError(errors);
 
         if (errors) {
@@ -113,7 +124,10 @@ export const SignUp: FC<SignUpProps> = observer(
           emailParam: {
             email,
             password: userpool.encode(password),
-            userType: userType as UserType,
+            userType:
+              saasState?.serviceTypeEnum === 'SAAS'
+                ? (userType as UserType)
+                : UserType.CUSTOMER,
           },
         };
         try {
@@ -132,7 +146,15 @@ export const SignUp: FC<SignUpProps> = observer(
           setLoading(false);
         }
       },
-      [confirmedPassword, email, enqueueSnackbar, open, password, userType],
+      [
+        confirmedPassword,
+        email,
+        enqueueSnackbar,
+        open,
+        password,
+        saasState?.serviceTypeEnum,
+        userType,
+      ],
     );
 
     const handledLoginSuccess = useCallback(
@@ -265,8 +287,18 @@ export const SignUp: FC<SignUpProps> = observer(
           return true;
         }
       }
-      return !email || !password || !confirmedPassword || !userType;
-    }, [confirmedPassword, email, password, passwordError, userType]);
+      if (saasState?.serviceTypeEnum === 'SAAS') {
+        return !email || !password || !confirmedPassword || !userType;
+      }
+      return !email || !password || !confirmedPassword;
+    }, [
+      confirmedPassword,
+      email,
+      password,
+      passwordError,
+      saasState?.serviceTypeEnum,
+      userType,
+    ]);
 
     const FormBody = useMemo(() => {
       return (
@@ -276,17 +308,19 @@ export const SignUp: FC<SignUpProps> = observer(
           onSubmit={handledSubmit}
           sx={isNestForm ? SignUpStyles.from : {}}
         >
-          <StyledSelect
-            disabled={loading}
-            label={'Select role'}
-            onChange={(e) =>
-              setUserType(e.target.value as keyof typeof UserType)
-            }
-            options={OPTIONS_SIGN_UP_ROLE}
-            required
-            validate={formError?.userType}
-            value={userType}
-          />
+          {saasState?.serviceTypeEnum === 'SAAS' && (
+            <StyledSelect
+              disabled={loading}
+              label={'Select role'}
+              onChange={(e) =>
+                setUserType(e.target.value as keyof typeof UserType)
+              }
+              options={OPTIONS_SIGN_UP_ROLE}
+              required
+              validate={formError?.userType}
+              value={userType}
+            />
+          )}
 
           <StyledTextField
             disabled={loading}
@@ -300,6 +334,7 @@ export const SignUp: FC<SignUpProps> = observer(
             validate={formError?.email}
             value={email}
           />
+
           <Box>
             <StyledTextFieldPassword
               disabled={loading}
@@ -351,6 +386,7 @@ export const SignUp: FC<SignUpProps> = observer(
               )}
             </Transitions>
           </Box>
+
           <StyledTextFieldPassword
             disabled={loading}
             inputProps={{
@@ -363,6 +399,7 @@ export const SignUp: FC<SignUpProps> = observer(
             validate={formError?.confirmedPassword}
             value={confirmedPassword}
           />
+
           <StyledButton
             color="primary"
             disabled={isDisabled || loading}
@@ -386,6 +423,7 @@ export const SignUp: FC<SignUpProps> = observer(
       loading,
       password,
       passwordError,
+      saasState?.serviceTypeEnum,
       userType,
     ]);
 

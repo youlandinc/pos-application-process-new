@@ -78,6 +78,9 @@ export const FixRefinanceRates: FC = observer(() => {
   const [loanInfo, setLoanInfo] = useState<
     FixRefinanceLoanInfo & RatesProductData
   >();
+  const [primitiveLoanInfo, setPrimitiveLoanInfo] = useState<
+    FixRefinanceLoanInfo & RatesProductData
+  >();
   const [selectedItem, setSelectedItem] = useState<
     FixRefinanceLoanInfo &
       Pick<
@@ -108,6 +111,10 @@ export const FixRefinanceRates: FC = observer(() => {
         setLoanStage(loanStage);
         setEncompassData(encompass);
         setLoanInfo({ ...info, ...selectedProduct });
+        setPrimitiveLoanInfo({
+          ...info,
+          ...selectedProduct,
+        });
         const {
           homeValue,
           balance,
@@ -403,7 +410,7 @@ export const FixRefinanceRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Interest rate</Typography>
                     <Typography variant={'h4'}>
-                      {POSFormatPercent(loanInfo?.interestRateOfYear)}
+                      {POSFormatPercent(primitiveLoanInfo?.interestRateOfYear)}
                     </Typography>
                   </Stack>
 
@@ -416,7 +423,7 @@ export const FixRefinanceRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Loan term</Typography>
                     <Typography variant={'subtitle1'}>
-                      {loanInfo?.loanTerm} months
+                      {primitiveLoanInfo?.loanTerm} months
                     </Typography>
                   </Stack>
 
@@ -431,7 +438,7 @@ export const FixRefinanceRates: FC = observer(() => {
                       As-is property value
                     </Typography>
                     <Typography variant={'subtitle1'}>
-                      {POSFormatDollar(loanInfo?.homeValue)}
+                      {POSFormatDollar(primitiveLoanInfo?.homeValue)}
                     </Typography>
                   </Stack>
 
@@ -444,11 +451,11 @@ export const FixRefinanceRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Payoff amount</Typography>
                     <Typography variant={'subtitle1'}>
-                      {POSFormatDollar(loanInfo?.balance)}
+                      {POSFormatDollar(primitiveLoanInfo?.balance)}
                     </Typography>
                   </Stack>
 
-                  {loanInfo?.isCashOut && (
+                  {primitiveLoanInfo?.isCashOut && (
                     <Stack
                       alignItems={'center'}
                       flexDirection={'row'}
@@ -458,7 +465,7 @@ export const FixRefinanceRates: FC = observer(() => {
                     >
                       <Typography variant={'body1'}>Cash out amount</Typography>
                       <Typography variant={'subtitle1'}>
-                        {POSFormatDollar(loanInfo?.cashOutAmount)}
+                        {POSFormatDollar(primitiveLoanInfo?.cashOutAmount)}
                       </Typography>
                     </Stack>
                   )}
@@ -472,7 +479,7 @@ export const FixRefinanceRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Total loan amount</Typography>
                     <Typography variant={'subtitle1'}>
-                      {POSFormatDollar(loanInfo?.totalLoanAmount)}
+                      {POSFormatDollar(primitiveLoanInfo?.totalLoanAmount)}
                     </Typography>
                   </Stack>
 
@@ -485,7 +492,7 @@ export const FixRefinanceRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Monthly payment</Typography>
                     <Typography variant={'subtitle1'}>
-                      {POSFormatDollar(loanInfo?.paymentOfMonth)}
+                      {POSFormatDollar(primitiveLoanInfo?.paymentOfMonth)}
                     </Typography>
                   </Stack>
                 </Stack>

@@ -12,7 +12,7 @@ interface DashboardCardProps extends StackProps {
   title?: string;
   subTitle?: string;
   subInfo?: string;
-  dataList?: { label: string; info: string | ReactNode }[];
+  dataList?: { label: string | ReactNode; info: string | ReactNode }[];
 }
 
 export interface CommonOverviewInfo {
@@ -20,7 +20,7 @@ export interface CommonOverviewInfo {
   subTitle?: string;
   subInfo?: string;
   info: {
-    label: string;
+    label: string | ReactNode;
     info: string | ReactNode;
   }[];
 }

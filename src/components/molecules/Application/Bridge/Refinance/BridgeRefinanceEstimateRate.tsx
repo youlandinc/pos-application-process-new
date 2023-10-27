@@ -17,7 +17,6 @@ import {
   VariableName,
 } from '@/types';
 import {
-  _fetchRatesLoanInfo,
   _fetchRatesProductPreview,
   _updateRatesProductSelected,
   BRQueryData,
@@ -149,10 +148,7 @@ export const BridgeRefinanceEstimateRate: FC<{
         if (res.status === 200) {
           setProductList(res.data.products);
           setReasonList(res.data.reasons);
-        }
-        const infoRes = await _fetchRatesLoanInfo(processId);
-        if (infoRes.status === 200) {
-          setProductInfo(infoRes.data.info);
+          setProductInfo(res.data.loanInfo);
         }
       })
       .catch((err) => {

@@ -8,7 +8,12 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 
 import { AUTO_HIDE_DURATION, OPTIONS_MORTGAGE_PROPERTY } from '@/constants';
-import { FPOverviewSummaryData, HttpError, UserType } from '@/types';
+import {
+  FPOverviewSummaryData,
+  HttpError,
+  ServiceTypeEnum,
+  UserType,
+} from '@/types';
 import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
 import {
   POSFindLabel,
@@ -38,7 +43,7 @@ export const FixPurchaseOverview: FC = observer(() => {
   const [thirdParty, setThirdParty] = useState<CommonOverviewInfo>();
 
   const { loading } = useAsync(async () => {
-    if (!router.query.processId) {
+    if (!router.query.processId || !saasState?.serviceTypeEnum) {
       return;
     }
     return await _fetchOverviewLoanSummary<FPOverviewSummaryData>(
@@ -215,6 +220,22 @@ export const FixPurchaseOverview: FC = observer(() => {
             break;
           }
         }
+        if (saasState?.serviceTypeEnum === ServiceTypeEnum.WHITE_LABEL) {
+          temp = [
+            {
+              label: 'Broker origination fee',
+              info: `${POSFormatDollar(
+                thirdParty?.brokerOriginationFee,
+              )}(${POSFormatPercent(
+                (thirdParty?.brokerPoints as number) / 100,
+              )})`,
+            },
+            {
+              label: 'Broker processing fee',
+              info: POSFormatDollar(thirdParty?.brokerProcessingFee),
+            },
+          ];
+        }
         setThirdParty({
           title: 'Est. cash required at closing',
           subTitle: 'Total',
@@ -257,7 +278,7 @@ export const FixPurchaseOverview: FC = observer(() => {
           onClose: () => router.push('/pipeline'),
         });
       });
-  });
+  }, [saasState?.serviceTypeEnum]);
 
   return (
     <Transitions
@@ -267,7 +288,7 @@ export const FixPurchaseOverview: FC = observer(() => {
         justifyContent: 'center',
       }}
     >
-      {loading ? (
+      {loading || !saasState?.serviceTypeEnum ? (
         <Stack
           alignItems={'center'}
           justifyContent={'center'}

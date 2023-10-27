@@ -1,17 +1,17 @@
-import { ChangeEvent, useCallback, useState } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
 import {
   CloseOutlined,
   CloudUploadOutlined,
   DeleteForeverOutlined,
   FolderOpen,
   GetAppOutlined,
-  PageviewOutlined,
+  RemoveRedEyeOutlined,
 } from '@mui/icons-material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
+import { ChangeEvent, useCallback, useState } from 'react';
 
-import { _downloadBrokerFile } from '@/requests';
 import { useBreakpoints, useSwitch } from '@/hooks';
+import { _downloadBrokerFile } from '@/requests';
 
 import {
   StyledButton,
@@ -22,9 +22,9 @@ import {
 } from '@/components/atoms';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
+import { SUploadData } from '@/models/common/UploadFile';
 import { POSFont } from '@/styles';
 import { POSFormatDate } from '@/utils';
-import { SUploadData } from '@/models/common/UploadFile';
 
 export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
   const {
@@ -34,7 +34,7 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
     onDelete,
     label,
     fileSize = 5, // MB
-    uploadText = 'Select files',
+    uploadText = 'Upload file',
     accept = 'image/*,.pdf',
     loading = false,
   } = props;
@@ -184,7 +184,7 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
                           'MM-dd-yyyy HH:mm:ss',
                         )}
 
-                      <PageviewOutlined
+                      <RemoveRedEyeOutlined
                         className={'icon'}
                         onClick={() => window.open(item.url)}
                         sx={{

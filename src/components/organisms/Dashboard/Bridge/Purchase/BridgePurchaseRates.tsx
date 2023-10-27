@@ -76,6 +76,9 @@ export const BridgePurchaseRates: FC = observer(() => {
   const [loanInfo, setLoanInfo] = useState<
     BridgePurchaseLoanInfo & RatesProductData
   >();
+  const [primitiveLoanInfo, setPrimitiveLoanInfo] = useState<
+    BridgePurchaseLoanInfo & RatesProductData
+  >();
   const [selectedItem, setSelectedItem] = useState<
     BridgePurchaseLoanInfo &
       Pick<
@@ -111,6 +114,10 @@ export const BridgePurchaseRates: FC = observer(() => {
           ...selectedProduct,
         });
 
+        setPrimitiveLoanInfo({
+          ...info,
+          ...selectedProduct,
+        });
         const {
           purchaseLoanAmount,
           purchasePrice,
@@ -401,7 +408,7 @@ export const BridgePurchaseRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Interest rate</Typography>
                     <Typography variant={'h4'}>
-                      {POSFormatPercent(loanInfo?.interestRateOfYear)}
+                      {POSFormatPercent(primitiveLoanInfo?.interestRateOfYear)}
                     </Typography>
                   </Stack>
 
@@ -414,7 +421,7 @@ export const BridgePurchaseRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Loan term</Typography>
                     <Typography variant={'subtitle1'}>
-                      {loanInfo?.loanTerm} months
+                      {primitiveLoanInfo?.loanTerm} months
                     </Typography>
                   </Stack>
 
@@ -427,7 +434,7 @@ export const BridgePurchaseRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Purchase price</Typography>
                     <Typography variant={'subtitle1'}>
-                      {POSFormatDollar(loanInfo?.purchasePrice)}
+                      {POSFormatDollar(primitiveLoanInfo?.purchasePrice)}
                     </Typography>
                   </Stack>
 
@@ -442,7 +449,7 @@ export const BridgePurchaseRates: FC = observer(() => {
                       Purchase loan amount
                     </Typography>
                     <Typography variant={'subtitle1'}>
-                      {POSFormatDollar(loanInfo?.purchaseLoanAmount)}
+                      {POSFormatDollar(primitiveLoanInfo?.purchaseLoanAmount)}
                     </Typography>
                   </Stack>
 
@@ -455,7 +462,7 @@ export const BridgePurchaseRates: FC = observer(() => {
                   >
                     <Typography variant={'body1'}>Monthly payment</Typography>
                     <Typography variant={'subtitle1'}>
-                      {POSFormatDollar(loanInfo?.paymentOfMonth)}
+                      {POSFormatDollar(primitiveLoanInfo?.paymentOfMonth)}
                     </Typography>
                   </Stack>
                 </Stack>

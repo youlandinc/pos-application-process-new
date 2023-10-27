@@ -3,7 +3,7 @@ import { Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 
 import { FixPurchaseLoanInfo } from '@/components/molecules/Application';
-import { RatesProductData } from '@/types';
+import { RatesProductData, ServiceTypeEnum } from '@/types';
 import { UserType } from '@/types/enum';
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { POSFindLabel, POSFormatDollar, POSFormatPercent } from '@/utils';
@@ -57,6 +57,24 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = ({
   }, [selectedItem?.address]);
 
   const renderByUserType = useMemo(() => {
+    if (saasState?.serviceTypeEnum === ServiceTypeEnum.WHITE_LABEL) {
+      return (
+        <>
+          <FixPurchaseCardItem
+            info={`${POSFormatDollar(
+              selectedItem?.brokerOriginationFee,
+            )}(${POSFormatPercent(
+              (selectedItem?.brokerPoints as number) / 100,
+            )})`}
+            label={'Broker origination fee'}
+          />
+          <FixPurchaseCardItem
+            info={POSFormatDollar(selectedItem?.brokerProcessingFee)}
+            label={'Broker processing fee'}
+          />
+        </>
+      );
+    }
     switch (userType) {
       case UserType.BROKER:
         return (
@@ -122,6 +140,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = ({
         return null;
     }
   }, [
+    saasState?.serviceTypeEnum,
     selectedItem?.agentFee,
     selectedItem?.brokerOriginationFee,
     selectedItem?.brokerPoints,
@@ -312,7 +331,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = ({
                 )}(${POSFormatPercent(
                   selectedItem?.originationFeePer || 0.015,
                 )})`}
-                label={`${saasState?.organizationName} origination fee`}
+                label={'Lender origination fee'}
               />
               <FixPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.underwritingFee)}
