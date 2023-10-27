@@ -36,16 +36,16 @@ export const OPTIONS_LOAN_STAGE: Option[] = [
     value: LoanStage.PreApproved,
     label: 'Pre-approval',
   },
-  {
-    key: LoanStage.RateLocking,
-    value: LoanStage.RateLocking,
-    label: 'Rate locking',
-  },
-  {
-    key: LoanStage.RateLocked,
-    value: LoanStage.RateLocked,
-    label: 'Rate locked',
-  },
+  //{
+  //  key: LoanStage.RateLocking,
+  //  value: LoanStage.RateLocking,
+  //  label: 'Rate locking',
+  //},
+  //{
+  //  key: LoanStage.RateLocked,
+  //  value: LoanStage.RateLocked,
+  //  label: 'Rate locked',
+  //},
   {
     key: LoanStage.Approved,
     value: LoanStage.Approved,
