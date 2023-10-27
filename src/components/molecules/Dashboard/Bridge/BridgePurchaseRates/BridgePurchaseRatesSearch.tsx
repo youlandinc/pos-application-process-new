@@ -415,7 +415,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               color: 'info.dark',
               fontWeight: 400,
               fontSize: 20,
-
               pl: '4px',
             }}
             sub
@@ -596,7 +595,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               gap={0.5}
               justifyContent={'flex-start'}
               pl={0.5}
-              width={{ md: 'calc(50% - 12px)', xs: '100%' }}
+              width={{ lg: 'calc(50% - 12px)', xs: '100%' }}
             >
               <Typography color={'info.main'} variant={'body2'}>
                 Loan to value
