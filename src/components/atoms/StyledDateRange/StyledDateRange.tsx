@@ -14,7 +14,6 @@ import {
   KeyboardArrowLeft,
   KeyboardArrowRight,
 } from '@mui/icons-material';
-
 import { getMonth, getYear } from 'date-fns';
 import { range } from 'lodash';
 
@@ -99,12 +98,14 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
           <Box>
             <IconButton
               disabled={prevMonthButtonDisabled}
+              disableRipple
               onClick={decreaseMonth}
             >
               <KeyboardArrowLeft />
             </IconButton>
             <IconButton
               disabled={nextMonthButtonDisabled}
+              disableRipple
               onClick={increaseMonth}
               sx={{
                 ml: 3,
@@ -147,11 +148,21 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
             endAdornment: (
               <InputAdornment position="end">
                 {dateRange[1] && (
-                  <IconButton edge="end" size="small" tabIndex={-1}>
+                  <IconButton
+                    disableRipple
+                    edge="end"
+                    size="small"
+                    tabIndex={-1}
+                  >
                     <Close />
                   </IconButton>
                 )}
-                <IconButton edge="end" onClick={props.onClick} tabIndex={-1}>
+                <IconButton
+                  disableRipple
+                  edge="end"
+                  onClick={props.onClick}
+                  tabIndex={-1}
+                >
                   <DateRange />
                 </IconButton>
               </InputAdornment>
