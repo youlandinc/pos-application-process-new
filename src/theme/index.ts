@@ -224,4 +224,16 @@ export const theme = createTheme({
       fontWeight: 400,
     },
   },
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+    MuiIconButton: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+  },
 });
