@@ -36,6 +36,7 @@ export const PaymentMethods = forwardRef<
       alignItems={'center'}
       gap={3}
       label={'You need to make payment of $' + paymentDetail?.amount}
+      px={{ lg: 3, xs: 0 }}
       tip={
         <>
           <Typography color={'info.main'} variant={'body1'}>
