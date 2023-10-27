@@ -16,6 +16,7 @@ export const PaymentNotice: FC<ConfirmTableProps> = (props) => {
       alignItems={'center'}
       gap={6}
       label={'Confirm your interest in this loan'}
+      px={{ lg: 3, xs: 0 }}
       tip={
         <>
           <Typography color={'info.main'} variant={'body1'}>
