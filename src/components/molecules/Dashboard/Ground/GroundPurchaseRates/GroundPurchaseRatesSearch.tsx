@@ -616,7 +616,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
               gap={0.5}
               justifyContent={'flex-start'}
               pl={0.5}
-              width={{ md: 'calc(50% - 12px)', xs: '100%' }}
+              width={{ lg: 'calc(50% - 12px)', xs: '100%' }}
             >
               <Typography color={'info.main'} variant={'body2'}>
                 Loan to value
@@ -682,7 +682,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
               gap={0.5}
               justifyContent={'flex-start'}
               pl={0.5}
-              width={{ md: 'calc(50% - 12px)', xs: '100%' }}
+              width={{ lg: 'calc(50% - 12px)', xs: '100%' }}
             >
               <Typography color={'info.main'} variant={'body2'}>
                 Loan to cost
