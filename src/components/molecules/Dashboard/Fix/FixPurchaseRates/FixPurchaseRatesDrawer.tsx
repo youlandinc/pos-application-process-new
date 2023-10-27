@@ -386,7 +386,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = ({
           width={'100%'}
         >
           <Typography
-            variant={['xs', 'sm'].includes(breakpoints) ? 'h4' : 'h5'}
+            variant={['xs', 'sm'].includes(breakpoints) ? 'h6' : 'h5'}
           >
             View loan details
           </Typography>
