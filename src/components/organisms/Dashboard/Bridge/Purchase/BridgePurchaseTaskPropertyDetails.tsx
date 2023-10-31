@@ -171,6 +171,7 @@ export const BridgePurchaseTaskPropertyDetails: FC = observer(() => {
             <StyledFormItem label={'What is the property type?'} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledSelectOption
+                  disabled
                   onChange={(value) => {
                     setPropertyType(value as PropertyOpt);
                   }}
