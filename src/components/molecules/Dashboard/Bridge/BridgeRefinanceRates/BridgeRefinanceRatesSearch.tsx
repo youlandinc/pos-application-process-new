@@ -1,11 +1,12 @@
-import { addDays, compareDesc, isValid as dateValid, isDate } from 'date-fns';
 import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
+import { addDays, compareDesc, isValid as dateValid, isDate } from 'date-fns';
 
-import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
 import { BRQueryData } from '@/requests/dashboard';
 import { LoanStage, UserType } from '@/types/enum';
+import { POSFormatDollar, POSFormatPercent } from '@/utils';
+
 import {
   StyledButton,
   StyledCheckbox,
@@ -15,13 +16,6 @@ import {
   StyledTooltip,
   Transitions,
 } from '@/components/atoms';
-
-import {
-  POSFindLabel,
-  POSFormatDollar,
-  POSFormatPercent,
-  POSNotUndefined,
-} from '@/utils';
 
 interface BridgeRefinanceRatesSearchProps {
   onCheck: () => void;
@@ -59,10 +53,8 @@ export const BridgeRefinanceRatesSearch: FC<
     closeDate,
   } = searchForm;
 
-  const [LTVError, setLTVError] = useState<string>('');
-
   const [date, setDate] = useState<null | Date | string>(
-    closeDate ? closeDate : addDays(new Date(), 7),
+    isDashboard ? closeDate || addDays(new Date(), 7) : addDays(new Date(), 7),
   );
 
   const closeDateError = useMemo(() => {
@@ -87,172 +79,15 @@ export const BridgeRefinanceRatesSearch: FC<
   }, [balance, cashOutAmount, isCashOut]);
 
   const LTV = useMemo(() => {
-    let radio = 0.7;
     if (!homeValue) {
       return 0;
     }
     let total = balance || 0;
     if (isCashOut) {
       total += cashOutAmount || 0;
-      radio = 0.65;
-    } else {
-      radio = 0.7;
-    }
-    setLTVError(
-      total / homeValue <= radio
-        ? ''
-        : `Your LTV should be no more than ${radio * 100}%`,
-    );
-    if (loanAmount! < 100000) {
-      setLTVError('Total loan amount must be at least $100,000');
     }
     return total / homeValue;
-  }, [homeValue, balance, isCashOut, loanAmount, cashOutAmount]);
-
-  const pointsError = useMemo(() => {
-    let points;
-    switch (userType) {
-      case UserType.BROKER:
-        points = brokerPoints;
-        break;
-      case UserType.LENDER:
-        points = lenderPoints;
-        break;
-      case UserType.LOAN_OFFICER:
-        points = officerPoints;
-        break;
-      default:
-        points = officerPoints;
-        break;
-    }
-    if (!POSNotUndefined(points)) {
-      return [''];
-    }
-    if (points! <= 5) {
-      return undefined;
-    }
-    return [
-      `${POSFindLabel(
-        OPTIONS_COMMON_USER_TYPE,
-        userType as string as UserType,
-      )} origination fee must be lesser than or equal to 5%.`,
-    ];
-  }, [brokerPoints, officerPoints, userType, lenderPoints]);
-
-  const processingFeeError = useMemo(() => {
-    let fee;
-    switch (userType) {
-      case UserType.BROKER:
-        fee = brokerProcessingFee;
-        break;
-      case UserType.LENDER:
-        fee = lenderProcessingFee;
-        break;
-      case UserType.LOAN_OFFICER:
-        fee = officerProcessingFee;
-        break;
-      default:
-        fee = officerProcessingFee;
-        break;
-    }
-
-    if (!POSNotUndefined(fee) || !loanAmount) {
-      return [''];
-    }
-    if (fee! <= loanAmount) {
-      return undefined;
-    }
-    return [
-      `${POSFindLabel(
-        OPTIONS_COMMON_USER_TYPE,
-        userType as string as UserType,
-      )} origination fee must be lesser than or equal to ${POSFormatDollar(
-        loanAmount,
-      )}.`,
-    ];
-  }, [
-    brokerProcessingFee,
-    loanAmount,
-    officerProcessingFee,
-    userType,
-    lenderProcessingFee,
-  ]);
-
-  const agentFeeError = useMemo(() => {
-    if (!POSNotUndefined(agentFee) || !loanAmount) {
-      return [''];
-    }
-    if (agentFee! <= loanAmount) {
-      return undefined;
-    }
-    return [
-      `Real estate agent fee must be lesser than or equal to ${POSFormatDollar(
-        loanAmount,
-      )}.`,
-    ];
-  }, [agentFee, loanAmount]);
-
-  const isValid = useMemo(() => {
-    let flag: boolean;
-
-    switch (userType) {
-      case UserType.REAL_ESTATE_AGENT:
-        flag = POSNotUndefined(agentFee) && !agentFeeError;
-        break;
-      case UserType.LOAN_OFFICER:
-        flag =
-          POSNotUndefined(officerPoints) &&
-          POSNotUndefined(officerProcessingFee) &&
-          !pointsError &&
-          !processingFeeError;
-        break;
-      case UserType.BROKER:
-        flag =
-          POSNotUndefined(brokerPoints) &&
-          POSNotUndefined(brokerProcessingFee) &&
-          !pointsError &&
-          !processingFeeError;
-        break;
-      case UserType.LENDER:
-        flag =
-          POSNotUndefined(lenderPoints) &&
-          POSNotUndefined(lenderProcessingFee) &&
-          !pointsError &&
-          !processingFeeError;
-        break;
-      case UserType.CUSTOMER:
-        flag = true;
-        break;
-      default:
-        flag = true;
-        break;
-    }
-
-    if (LTVError) {
-      return false;
-    }
-    if (!isCashOut) {
-      return homeValue && POSNotUndefined(balance) && flag;
-    }
-    return homeValue && cashOutAmount && flag;
-  }, [
-    userType,
-    LTVError,
-    isCashOut,
-    agentFee,
-    agentFeeError,
-    officerPoints,
-    officerProcessingFee,
-    pointsError,
-    processingFeeError,
-    brokerPoints,
-    brokerProcessingFee,
-    lenderPoints,
-    lenderProcessingFee,
-    homeValue,
-    balance,
-    cashOutAmount,
-  ]);
+  }, [homeValue, balance, isCashOut, cashOutAmount]);
 
   const renderByUserType = useMemo(() => {
     switch (userType) {
@@ -291,7 +126,6 @@ export const BridgeRefinanceRatesSearch: FC<
                   percentage
                   suffix={'%'}
                   thousandSeparator={false}
-                  validate={pointsError}
                   value={brokerPoints}
                 />
               </Stack>
@@ -306,7 +140,6 @@ export const BridgeRefinanceRatesSearch: FC<
                     });
                   }}
                   prefix={'$'}
-                  validate={processingFeeError}
                   value={brokerProcessingFee}
                 />
               </Stack>
@@ -349,7 +182,6 @@ export const BridgeRefinanceRatesSearch: FC<
                   percentage
                   suffix={'%'}
                   thousandSeparator={false}
-                  validate={pointsError}
                   value={lenderPoints}
                 />
               </Stack>
@@ -364,7 +196,6 @@ export const BridgeRefinanceRatesSearch: FC<
                     });
                   }}
                   prefix={'$'}
-                  validate={processingFeeError}
                   value={lenderProcessingFee}
                 />
               </Stack>
@@ -406,7 +237,6 @@ export const BridgeRefinanceRatesSearch: FC<
                   percentage
                   suffix={'%'}
                   thousandSeparator={false}
-                  validate={pointsError}
                   value={officerPoints}
                 />
               </Stack>
@@ -421,7 +251,6 @@ export const BridgeRefinanceRatesSearch: FC<
                     });
                   }}
                   prefix={'$'}
-                  validate={processingFeeError}
                   value={officerProcessingFee}
                 />
               </Stack>
@@ -439,7 +268,6 @@ export const BridgeRefinanceRatesSearch: FC<
               color: 'info.dark',
               fontWeight: 400,
               fontSize: 20,
-
               pl: '4px',
             }}
             sub
@@ -461,7 +289,6 @@ export const BridgeRefinanceRatesSearch: FC<
                     });
                   }}
                   prefix={'$'}
-                  validate={agentFeeError}
                   value={agentFee}
                 />
               </Stack>
@@ -475,7 +302,6 @@ export const BridgeRefinanceRatesSearch: FC<
     }
   }, [
     agentFee,
-    agentFeeError,
     brokerPoints,
     brokerProcessingFee,
     lenderPoints,
@@ -484,8 +310,6 @@ export const BridgeRefinanceRatesSearch: FC<
     loanStage,
     officerPoints,
     officerProcessingFee,
-    pointsError,
-    processingFeeError,
     searchForm,
     setSearchForm,
     userType,
@@ -576,7 +400,6 @@ export const BridgeRefinanceRatesSearch: FC<
           sub
           sx={{ mb: 3 }}
           width={'100%'}
-          //mt={3}
         >
           <Stack gap={0.5} width={'100%'}>
             <Stack
@@ -634,14 +457,6 @@ export const BridgeRefinanceRatesSearch: FC<
                 {POSFormatPercent(LTV)}
               </Typography>
             </Stack>
-
-            <Transitions>
-              {LTVError && (
-                <Typography color={'error'} variant={'body3'}>
-                  {LTVError}
-                </Typography>
-              )}
-            </Transitions>
           </Stack>
 
           <Stack gap={1} width={'100%'}>
@@ -711,7 +526,9 @@ export const BridgeRefinanceRatesSearch: FC<
         </Stack>
 
         <StyledButton
-          disabled={!isValid || loading || loanStage === LoanStage.Approved}
+          disabled={
+            !!closeDateError || loading || loanStage === LoanStage.Approved
+          }
           onClick={onCheck}
           sx={{ width: 200, mt: 3 }}
         >
