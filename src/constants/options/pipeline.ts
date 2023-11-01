@@ -29,7 +29,7 @@ export const OPTIONS_LOAN_STAGE: Option[] = [
   {
     key: LoanStage.Application,
     value: LoanStage.Application,
-    label: 'Manual entry',
+    label: 'Application',
   },
   {
     key: LoanStage.PreApproved,
