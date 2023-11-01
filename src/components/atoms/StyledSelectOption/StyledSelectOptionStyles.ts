@@ -21,18 +21,18 @@ export const StyledSelectOptionStyles = {
     borderColor: 'primary.main',
   },
   '&.disabled': {
-    borderColor: '#929292',
-    color: '#929292',
+    borderColor: '#BABCBE !important',
+    color: '#BABCBE !important',
     bgcolor: 'transparent',
     cursor: 'not-allowed',
   },
   '&.disabled.active': {
     bgcolor: '#EDEDED',
     cursor: 'not-allowed',
-    color: '#929292',
-    borderColor: '#929292',
+    color: '#BABCBE !important',
+    borderColor: '#BABCBE !important',
   },
   '&.disabled:hover': {
-    borderColor: '#929292',
+    borderColor: '#BABCBE !important',
   },
 } as const;

@@ -141,11 +141,11 @@ ul {
 }
 
 .OPT_TextField_inputStyle_container > div > input:disabled {
-  border-bottom: 1px solid #cdcdcd !important;
+  border-bottom: 1px solid #BABCBE !important;
   caret-color: transparent !important;
   background: transparent !important;
   cursor: not-allowed;
-  color: #cdcdcd !important;
+  color: #BABCBE !important;
 }
 
 .OPT_TextField_inputStyle_container input[type='tel'] {
@@ -186,7 +186,7 @@ ul {
     right: 48px !important;
     max-width: calc(100% - 72px);
   }
-
+  
   .notistack-CollapseWrapper {
     padding: 0 0 8px 0;
   }
@@ -197,7 +197,7 @@ ul {
     top: 36px !important;
     max-width: calc(100% - 72px) !important;
   }
-
+  
   .notistack-CollapseWrapper {
     padding: 0 0 8px 0;
   }
