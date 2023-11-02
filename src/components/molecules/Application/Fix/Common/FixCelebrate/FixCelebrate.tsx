@@ -81,12 +81,8 @@ export const FixCelebrate: FC<{ nextStep: () => void }> = observer(
 
           <Typography color={'info.main'} variant={'body1'}>
             The next step is for{' '}
-            {
-              HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER]
-                .the_third_pronoun
-            }{' '}
-            to complete your loan application. Before final approval of your
-            loan,{' '}
+            {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject} to
+            complete your loan application. Before final approval of your loan,{' '}
             {
               //sass
               ' ' + saasState?.organizationName || ' YouLand'
