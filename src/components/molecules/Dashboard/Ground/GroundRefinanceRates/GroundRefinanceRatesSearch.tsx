@@ -25,6 +25,7 @@ interface GroundRefinanceRatesSearchProps {
   userType: UserType;
   loanStage?: LoanStage;
   isDashboard?: boolean;
+  id?: string;
 }
 
 export const GroundRefinanceRatesSearch: FC<
@@ -37,6 +38,7 @@ export const GroundRefinanceRatesSearch: FC<
   userType,
   loanStage = LoanStage.Application,
   isDashboard = false,
+  id,
 }) => {
   const {
     cor,
@@ -327,6 +329,7 @@ export const GroundRefinanceRatesSearch: FC<
     <>
       <StyledFormItem
         gap={4}
+        id={id}
         label={
           isDashboard
             ? 'View other rates'

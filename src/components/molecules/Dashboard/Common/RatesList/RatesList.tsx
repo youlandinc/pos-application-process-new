@@ -16,6 +16,7 @@ interface RatesProductListProps {
   loanStage?: LoanStage;
   label?: ReactNode;
   reasonList: string[];
+  id?: string;
 }
 
 export const RatesList: FC<RatesProductListProps> = ({
@@ -25,10 +26,11 @@ export const RatesList: FC<RatesProductListProps> = ({
   isFirstSearch = false,
   userType,
   reasonList,
+  id,
 }) => {
   const breakpoint = useBreakpoints();
   return (
-    <Stack maxWidth={900} width={'100%'}>
+    <Stack id={id} maxWidth={900} width={'100%'}>
       {isFirstSearch ? (
         <></>
       ) : loading ? (

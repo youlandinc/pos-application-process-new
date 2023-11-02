@@ -25,6 +25,7 @@ interface BridgeRefinanceRatesSearchProps {
   userType: UserType;
   loanStage?: LoanStage;
   isDashboard?: boolean;
+  id?: string;
 }
 
 export const BridgeRefinanceRatesSearch: FC<
@@ -37,6 +38,7 @@ export const BridgeRefinanceRatesSearch: FC<
   userType,
   loanStage = LoanStage.Application,
   isDashboard = false,
+  id,
 }) => {
   const {
     isCashOut,
@@ -319,6 +321,7 @@ export const BridgeRefinanceRatesSearch: FC<
     <>
       <StyledFormItem
         gap={4}
+        id={id}
         label={
           isDashboard
             ? 'View other rates'

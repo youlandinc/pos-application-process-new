@@ -23,6 +23,7 @@ interface FixPurchaseRatesSearchProps {
   userType?: UserType;
   loanStage?: LoanStage;
   isDashboard?: boolean;
+  id?: string;
 }
 
 export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
@@ -33,6 +34,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
   userType,
   loanStage = LoanStage.Application,
   isDashboard = false,
+  id,
 }) => {
   const {
     purchasePrice,
@@ -314,6 +316,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
     <>
       <StyledFormItem
         gap={4}
+        id={id}
         label={
           isDashboard
             ? 'View other rates'

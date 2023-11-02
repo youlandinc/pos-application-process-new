@@ -23,6 +23,7 @@ interface GroundPurchaseRatesSearchProps {
   userType?: UserType;
   loanStage?: LoanStage;
   isDashboard?: boolean;
+  id?: string;
 }
 
 export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
@@ -33,6 +34,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
   userType,
   loanStage = LoanStage.Application,
   isDashboard = false,
+  id,
 }) => {
   const {
     purchasePrice,
@@ -311,6 +313,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
     <>
       <StyledFormItem
         gap={4}
+        id={id}
         label={
           isDashboard
             ? 'View other rates'

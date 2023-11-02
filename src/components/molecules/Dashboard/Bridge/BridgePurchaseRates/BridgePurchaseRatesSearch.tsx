@@ -23,6 +23,7 @@ interface BridgePurchaseRatesSearchProps {
   userType?: UserType;
   loanStage?: LoanStage;
   isDashboard?: boolean;
+  id?: string;
 }
 
 export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
@@ -33,6 +34,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
   userType,
   loanStage = LoanStage.Application,
   isDashboard = false,
+  id,
 }) => {
   const {
     purchasePrice,
@@ -299,6 +301,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
     <>
       <StyledFormItem
         gap={4}
+        id={id}
         label={
           isDashboard
             ? 'View other rates'

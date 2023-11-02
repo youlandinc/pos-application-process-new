@@ -124,6 +124,10 @@ export const FixRefinanceEstimateRate: FC<{
   >();
 
   const onCheckGetList = async () => {
+    const element = document.getElementById(
+      'fix_and_flip_refinance_rate_search',
+    );
+    const { height } = element!.getBoundingClientRect();
     setIsFirstSearch(false);
     setLoading(true);
     const postData: Variable<FREstimateRateData> = {
@@ -157,6 +161,9 @@ export const FixRefinanceEstimateRate: FC<{
           setProductInfo(res.data.loanInfo);
         }
         setLoading(false);
+        setTimeout(() => {
+          window.scrollTo({ top: height + 144, behavior: 'smooth' });
+        }, 300);
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -222,6 +229,7 @@ export const FixRefinanceEstimateRate: FC<{
   return (
     <>
       <FixRefinanceRatesSearch
+        id={'fix_and_flip_refinance_rate_search'}
         loading={loading}
         onCheck={onCheckGetList}
         searchForm={searchForm}
