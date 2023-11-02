@@ -120,6 +120,8 @@ export const GroundPurchaseEstimateRate: FC<{
   >();
 
   const onCheckGetList = async () => {
+    const element = document.getElementById('ground_up_purchase_rate_search');
+    const { height } = element!.getBoundingClientRect();
     setIsFirstSearch(false);
     setLoading(true);
     const postData: Variable<GPEstimateRateData> = {
@@ -152,7 +154,6 @@ export const GroundPurchaseEstimateRate: FC<{
           setReasonList(res.data.reasons);
           setProductInfo(res.data.loanInfo);
         }
-        setLoading(false);
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -162,7 +163,12 @@ export const GroundPurchaseEstimateRate: FC<{
           isSimple: !header,
           header,
         });
+      })
+      .finally(() => {
         setLoading(false);
+        setTimeout(() => {
+          window.scrollTo({ top: height + 144, behavior: 'smooth' });
+        }, 300);
       });
   };
 
@@ -218,6 +224,7 @@ export const GroundPurchaseEstimateRate: FC<{
   return (
     <>
       <GroundPurchaseRatesSearch
+        id={'ground_up_purchase_rate_search'}
         loading={loading}
         onCheck={onCheckGetList}
         searchForm={searchForm}
