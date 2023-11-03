@@ -12,7 +12,7 @@ import {
   BorrowerData,
   CommonBorrowerType,
   FixAndFlipCreditScoreState,
-  FixAndFlipPurchaseState,
+  //FixAndFlipPurchaseState,
   SelfInfoData,
   ServerTaskKey,
   VariableName,
@@ -90,14 +90,14 @@ const useStateMachine = (
                   );
                   return;
                 }
-                if (
-                  _borrower?.value.creditScore &&
-                  _borrower?.value.creditScore <= 640
-                ) {
-                  await changeTask(ServerTaskKey.refuse, bpmn.taskId);
-                  formData.changeState(FixAndFlipPurchaseState.refuse);
-                  return;
-                }
+                //if (
+                //  _borrower?.value.creditScore &&
+                //  _borrower?.value.creditScore <= 640
+                //) {
+                //  await changeTask(ServerTaskKey.refuse, bpmn.taskId);
+                //  formData.changeState(FixAndFlipPurchaseState.refuse);
+                //  return;
+                //}
                 creditScore.changeState(FixAndFlipCreditScoreState.creditScore);
               },
             );
