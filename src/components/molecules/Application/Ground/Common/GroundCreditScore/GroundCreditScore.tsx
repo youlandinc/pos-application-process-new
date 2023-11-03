@@ -12,7 +12,7 @@ import {
   BorrowerData,
   CommonBorrowerType,
   GroundUpConstructionCreditScoreState,
-  GroundUpConstructionPurchaseState,
+  //GroundUpConstructionPurchaseState,
   SelfInfoData,
   ServerTaskKey,
   VariableName,
@@ -92,16 +92,16 @@ const useStateMachine = (
                   );
                   return;
                 }
-                if (
-                  _borrower?.value.creditScore &&
-                  _borrower?.value.creditScore <= 640
-                ) {
-                  await changeTask(ServerTaskKey.refuse, bpmn.taskId);
-                  formData.changeState(
-                    GroundUpConstructionPurchaseState.refuse,
-                  );
-                  return;
-                }
+                //if (
+                //  _borrower?.value.creditScore &&
+                //  _borrower?.value.creditScore <= 640
+                //) {
+                //  await changeTask(ServerTaskKey.refuse, bpmn.taskId);
+                //  formData.changeState(
+                //    GroundUpConstructionPurchaseState.refuse,
+                //  );
+                //  return;
+                //}
                 creditScore.changeState(
                   GroundUpConstructionCreditScoreState.creditScore,
                 );

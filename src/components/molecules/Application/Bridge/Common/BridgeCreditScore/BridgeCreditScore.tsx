@@ -10,7 +10,7 @@ import { IPersonalInfo } from '@/models/application/common/CreditScore';
 import {
   BorrowerData,
   BridgeCreditScoreState,
-  BridgePurchaseState,
+  //BridgePurchaseState,
   CommonBorrowerType,
   SelfInfoData,
   ServerTaskKey,
@@ -90,14 +90,14 @@ const useStateMachine = (
                   );
                   return;
                 }
-                if (
-                  _borrower?.value.creditScore &&
-                  _borrower?.value.creditScore <= 640
-                ) {
-                  await changeTask(ServerTaskKey.refuse, bpmn.taskId);
-                  formData.changeState(BridgePurchaseState.refuse);
-                  return;
-                }
+                //if (
+                //  _borrower?.value.creditScore &&
+                //  _borrower?.value.creditScore <= 640
+                //) {
+                //  await changeTask(ServerTaskKey.refuse, bpmn.taskId);
+                //  formData.changeState(BridgePurchaseState.refuse);
+                //  return;
+                //}
                 creditScore.changeState(BridgeCreditScoreState.creditScore);
               },
             );

@@ -76,10 +76,6 @@ export const GroundScoreResult: FC<{ role: 'self' | 'coBorrower' }> = observer(
               />
             </Stack>
           }
-          tip={
-            'Congratulations! Your credit score indicates that you are qualified to proceed with us and help us determine which rates you qualify for.'
-          }
-          tipSx={{ mb: 0 }}
         >
           <Box
             id={'SCORE_BUOY_DIVIDER'}
@@ -112,7 +108,7 @@ export const GroundScoreResult: FC<{ role: 'self' | 'coBorrower' }> = observer(
             textAlign={'center'}
             variant={'body1'}
           >
-            Just a few more steps until you&apos;re pre-approved.
+            Great! Just a few more steps until you&apos;re pre-approved.
           </Typography>
         </StyledFormItem>
       </>
