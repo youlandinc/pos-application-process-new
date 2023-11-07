@@ -4,8 +4,8 @@ import { SUploadData } from '@/models/common/UploadFile';
 export interface StyledUploadButtonBoxProps {
   fileList: SUploadData[];
   label: string | ReactNode;
-  onSuccess: (files: FileList) => void;
-  onDelete: (index: number) => void;
+  onSuccess: (files: FileList) => Promise<void> | void;
+  onDelete: (index: number) => Promise<void> | void;
   loading?: boolean;
   fileSize?: number;
   style?: CSSProperties;

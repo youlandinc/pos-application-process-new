@@ -17,13 +17,11 @@ import {
   StyledButton,
   StyledDialog,
   StyledUploadButtonBoxProps,
-  StyledUploadButtonBoxStyles,
   Transitions,
 } from '@/components/atoms';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { SUploadData } from '@/models/common/UploadFile';
-import { POSFont } from '@/styles';
 import { POSFormatDate } from '@/utils';
 
 export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
@@ -40,7 +38,7 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
   } = props;
 
   const { enqueueSnackbar } = useSnackbar();
-  const breakpoint = useBreakpoints();
+  const breakpoints = useBreakpoints();
 
   const [deleteIndex, setDeleteIndex] = useState<number>(-1);
 
@@ -125,11 +123,30 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
   };
 
   return (
-    <Box sx={StyledUploadButtonBoxStyles}>
-      <Box className={'uploadBox'}>
+    <Box
+      border={'1px solid'}
+      borderColor={'background.border_default'}
+      borderRadius={3}
+      p={3}
+      width={'100%'}
+    >
+      <Stack
+        alignItems={'center'}
+        flexDirection={{ md: 'row', xs: 'column' }}
+        gap={3}
+        justifyContent={'space-between'}
+        width={'100%'}
+      >
         <Typography
-          sx={{ textAlign: { xs: 'center', md: 'left' } }}
-          variant={'h5'}
+          sx={{
+            flexWrap: 'wrap',
+            fontSize: { xs: 16, md: 20 },
+            fontWeight: 600,
+            lineHeight: 1,
+            textAlign: { xs: 'center', md: 'left' },
+            width: { md: 'calc(100% - 192px)', xs: '100%' },
+            wordBreak: 'break-all',
+          }}
         >
           {label}
         </Typography>
@@ -138,78 +155,135 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
           component={'label'}
           disabled={innerLoading}
           loading={innerLoading}
-          startIcon={<CloudUploadOutlined />}
           sx={{ minWidth: 164 }}
           variant={'outlined'}
         >
+          <CloudUploadOutlined sx={{ mr: 1 }} />
           <input
             accept={accept}
-            className={'input'}
             hidden
-            // id="file-upload"
             multiple
             onChange={handleChange}
+            style={{
+              width: '100%',
+            }}
             type="file"
           />
           {uploadText}
         </StyledButton>
-      </Box>
+      </Stack>
       {fileList.length !== 0 && (
         <Box mt={3}>
           <Transitions>
             {children
               ? children
               : fileList.map((item: SUploadData, index: number) => (
-                  <Box className={'fileItem'} key={index}>
-                    <Box className={'fileName'}>
-                      <FolderOpen
-                        className={'icon'}
-                        style={{ marginRight: 10 }}
-                      />
-                      {item.originalFileName}
-                      {['xs', 'sm', 'md'].includes(breakpoint) && (
-                        <Box sx={{ mt: 1.5 }}>
-                          {POSFormatDate(
-                            new Date(item.uploadTime as string),
-                            'MM-dd-yyyy HH:mm:ss',
-                          )}
-                        </Box>
-                      )}
-                    </Box>
+                  <Stack
+                    alignItems={'center'}
+                    border={'1px solid'}
+                    borderColor={'text.primary'}
+                    borderRadius={3}
+                    className={'fileItem'}
+                    color={'text.primary'}
+                    flexDirection={'row'}
+                    fontSize={14}
+                    fontWeight={600}
+                    gap={3}
+                    justifyContent={'space-between'}
+                    key={index}
+                    lineHeight={1}
+                    mt={3}
+                    px={{ xl: 3, xs: 1.5 }}
+                    py={1.5}
+                    width={'100%'}
+                  >
+                    <Stack
+                      alignItems={{ md: 'center', xs: 'flex-start' }}
+                      flexDirection={{ xs: 'column', md: 'row' }}
+                      justifyContent={'space-between'}
+                      width={'calc(100% - 120px)'}
+                    >
+                      <Stack
+                        alignItems={'center'}
+                        flexDirection={'row'}
+                        gap={1.5}
+                        width={{ md: 'calc(100% - 240px)', xs: '100%' }}
+                      >
+                        <FolderOpen
+                          sx={{
+                            cursor: 'pointer',
+                            '&:hover': {
+                              color: 'primary.main',
+                            },
+                          }}
+                        />
 
-                    <Box>
-                      {['lg', 'xl', 'xxl'].includes(breakpoint) &&
-                        POSFormatDate(
+                        <Typography
+                          sx={{
+                            width: 'calc(100% - 36px)',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            webkitBoxOrient: 'vertical',
+                            webkitLineClamp: 1,
+                            whiteSpace: 'nowrap',
+                          }}
+                          variant={
+                            ['md', 'lg', 'xl', 'xxl'].includes(breakpoints)
+                              ? 'body1'
+                              : 'body2'
+                          }
+                        >
+                          {item.originalFileName}
+                        </Typography>
+                      </Stack>
+
+                      <Typography
+                        flexShrink={0}
+                        variant={'body3'}
+                        width={'fit-content(20em)'}
+                      >
+                        {POSFormatDate(
                           new Date(item.uploadTime as string),
                           'MM-dd-yyyy HH:mm:ss',
                         )}
+                      </Typography>
+                    </Stack>
 
+                    <Stack flexDirection={'row'} gap={1.5}>
                       <RemoveRedEyeOutlined
-                        className={'icon'}
                         onClick={() => window.open(item.url)}
                         sx={{
-                          ml: {
-                            lg: 6,
-                            xs: 0,
+                          cursor: 'pointer',
+                          '&:hover': {
+                            color: 'primary.main',
                           },
                         }}
                       />
 
                       <GetAppOutlined
-                        className={'icon'}
                         onClick={() => onDownload(item)}
-                        style={{ margin: '0 12px' }}
+                        sx={{
+                          cursor: 'pointer',
+                          '&:hover': {
+                            color: 'primary.main',
+                          },
+                        }}
                       />
 
                       <CloseOutlined
-                        className={'icon'}
                         onClick={() => {
                           setDeleteIndex(index);
                           open();
                         }}
+                        sx={{
+                          cursor: 'pointer',
+                          '&:hover': {
+                            color: 'primary.main',
+                          },
+                        }}
                       />
-                    </Box>
-                  </Box>
+                    </Stack>
+                  </Stack>
                 ))}
           </Transitions>
         </Box>
@@ -218,11 +292,14 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
       <StyledDialog
         content={
           <Box
+            color={'#9095A3'}
+            fontSize={14}
+            fontWeight={400}
+            lineHeight={1.5}
+            py={3}
             sx={{
-              ...POSFont(14, 400, 1.5, 'info.main'),
-              wordBreak: 'break-all',
-              py: 3,
               overflow: 'hidden',
+              wordBreak: 'break-all',
             }}
           >
             {`Are you sure you want to delete ${fileList[deleteIndex]?.originalFileName}`}

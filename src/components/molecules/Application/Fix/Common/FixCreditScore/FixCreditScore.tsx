@@ -32,9 +32,9 @@ const useStateMachine = (
   nextStep: FormNodeBaseProps['nextStep'],
   prevStep: FormNodeBaseProps['prevStep'],
 ) => {
-  const {
-    applicationForm: { formData },
-  } = useMst();
+  //const {
+  //  applicationForm: { formData },
+  //} = useMst();
   const { selfInfo, coBorrowerInfo } = creditScore;
   const {
     updateState,
@@ -42,8 +42,8 @@ const useStateMachine = (
     changeTaskState,
     handledNextTask,
     handledPrevTask,
-    bpmn,
-    changeTask,
+    //bpmn,
+    //changeTask,
   } = useStoreData();
 
   const transitions = useMemo<{
@@ -156,9 +156,6 @@ const useStateMachine = (
       prevStep,
       selfInfo,
       handledNextTask,
-      changeTask,
-      bpmn.taskId,
-      formData,
       handledPrevTask,
       coBorrowerInfo,
       nextStep,
