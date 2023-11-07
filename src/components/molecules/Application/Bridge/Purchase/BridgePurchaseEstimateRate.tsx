@@ -115,6 +115,8 @@ export const BridgePurchaseEstimateRate: FC<{
   >();
 
   const onCheckGetList = async () => {
+    const element = document.getElementById('bridge_purchase_rate_search');
+    const { height } = element!.getBoundingClientRect();
     setIsFirstSearch(false);
     setLoading(true);
     const postData: Variable<BPEstimateRateData> = {
@@ -161,6 +163,9 @@ export const BridgePurchaseEstimateRate: FC<{
       })
       .finally(() => {
         setLoading(false);
+        setTimeout(() => {
+          window.scrollTo({ top: height + 144, behavior: 'smooth' });
+        }, 300);
       });
   };
 
@@ -216,6 +221,7 @@ export const BridgePurchaseEstimateRate: FC<{
   return (
     <>
       <BridgePurchaseRatesSearch
+        id={'bridge_purchase_rate_search'}
         loading={loading}
         onCheck={onCheckGetList}
         searchForm={searchForm}

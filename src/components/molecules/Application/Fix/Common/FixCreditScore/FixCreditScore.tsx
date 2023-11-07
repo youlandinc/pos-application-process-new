@@ -12,7 +12,7 @@ import {
   BorrowerData,
   CommonBorrowerType,
   FixAndFlipCreditScoreState,
-  FixAndFlipPurchaseState,
+  //FixAndFlipPurchaseState,
   SelfInfoData,
   ServerTaskKey,
   VariableName,
@@ -32,9 +32,9 @@ const useStateMachine = (
   nextStep: FormNodeBaseProps['nextStep'],
   prevStep: FormNodeBaseProps['prevStep'],
 ) => {
-  const {
-    applicationForm: { formData },
-  } = useMst();
+  //const {
+  //  applicationForm: { formData },
+  //} = useMst();
   const { selfInfo, coBorrowerInfo } = creditScore;
   const {
     updateState,
@@ -42,8 +42,8 @@ const useStateMachine = (
     changeTaskState,
     handledNextTask,
     handledPrevTask,
-    bpmn,
-    changeTask,
+    //bpmn,
+    //changeTask,
   } = useStoreData();
 
   const transitions = useMemo<{
@@ -90,14 +90,14 @@ const useStateMachine = (
                   );
                   return;
                 }
-                if (
-                  _borrower?.value.creditScore &&
-                  _borrower?.value.creditScore <= 640
-                ) {
-                  await changeTask(ServerTaskKey.refuse, bpmn.taskId);
-                  formData.changeState(FixAndFlipPurchaseState.refuse);
-                  return;
-                }
+                //if (
+                //  _borrower?.value.creditScore &&
+                //  _borrower?.value.creditScore <= 640
+                //) {
+                //  await changeTask(ServerTaskKey.refuse, bpmn.taskId);
+                //  formData.changeState(FixAndFlipPurchaseState.refuse);
+                //  return;
+                //}
                 creditScore.changeState(FixAndFlipCreditScoreState.creditScore);
               },
             );
@@ -156,9 +156,6 @@ const useStateMachine = (
       prevStep,
       selfInfo,
       handledNextTask,
-      changeTask,
-      bpmn.taskId,
-      formData,
       handledPrevTask,
       coBorrowerInfo,
       nextStep,

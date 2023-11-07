@@ -103,11 +103,11 @@ export const RatesSearchNoResult: FC<{ reasonList?: string[] }> = ({
           textAlign={'center'}
           variant={'h4'}
         >
-          Can&apos;t find any rates? We can help
+          Based on your information, we couldn&apos;t find any options.
         </Typography>
         <Typography color={'info.main'} textAlign={'center'} variant={'body1'}>
-          Based on your information, we couldn&apos;t find any options. Feel
-          free to contact us and we&apos;ll help you out.
+          We&apos;ll help you out. Feel free to contact us using the methods
+          below.
         </Typography>
         <Stack
           alignItems={'center'}

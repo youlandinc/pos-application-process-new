@@ -118,6 +118,8 @@ export const BridgeRefinanceEstimateRate: FC<{
   >();
 
   const onCheckGetList = async () => {
+    const element = document.getElementById('bridge_refinance_rate_search');
+    const { height } = element!.getBoundingClientRect();
     setIsFirstSearch(false);
     setLoading(true);
     const postData: Variable<BREstimateRateData> = {
@@ -163,6 +165,9 @@ export const BridgeRefinanceEstimateRate: FC<{
       })
       .finally(() => {
         setLoading(false);
+        setTimeout(() => {
+          window.scrollTo({ top: height + 144, behavior: 'smooth' });
+        }, 300);
       });
   };
 
@@ -218,6 +223,7 @@ export const BridgeRefinanceEstimateRate: FC<{
   return (
     <>
       <BridgeRefinanceRatesSearch
+        id={'bridge_refinance_rate_search'}
         loading={loading}
         onCheck={onCheckGetList}
         searchForm={searchForm}

@@ -124,6 +124,8 @@ export const GroundRefinanceEstimateRate: FC<{
   >();
 
   const onCheckGetList = async () => {
+    const element = document.getElementById('ground_up_refinance_rate_search');
+    const { height } = element!.getBoundingClientRect();
     setIsFirstSearch(false);
     setLoading(true);
     const postData: Variable<GREstimateRateData> = {
@@ -156,7 +158,6 @@ export const GroundRefinanceEstimateRate: FC<{
           setReasonList(res.data.reasons);
           setProductInfo(res.data.loanInfo);
         }
-        setLoading(false);
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -166,7 +167,12 @@ export const GroundRefinanceEstimateRate: FC<{
           isSimple: !header,
           header,
         });
+      })
+      .finally(() => {
         setLoading(false);
+        setTimeout(() => {
+          window.scrollTo({ top: height + 144, behavior: 'smooth' });
+        }, 300);
       });
   };
 
@@ -222,6 +228,7 @@ export const GroundRefinanceEstimateRate: FC<{
   return (
     <>
       <GroundRefinanceRatesSearch
+        id={'ground_up_refinance_rate_search'}
         loading={loading}
         onCheck={onCheckGetList}
         searchForm={searchForm}

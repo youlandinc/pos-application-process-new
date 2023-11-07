@@ -10,7 +10,7 @@ import { IPersonalInfo } from '@/models/application/common/CreditScore';
 import {
   BorrowerData,
   BridgeCreditScoreState,
-  BridgePurchaseState,
+  //BridgePurchaseState,
   CommonBorrowerType,
   SelfInfoData,
   ServerTaskKey,
@@ -32,9 +32,9 @@ const useStateMachine = (
   nextStep: FormNodeBaseProps['nextStep'],
   prevStep: FormNodeBaseProps['prevStep'],
 ) => {
-  const {
-    applicationForm: { formData },
-  } = useMst();
+  //const {
+  //  applicationForm: { formData },
+  //} = useMst();
   const { selfInfo, coBorrowerInfo } = creditScore;
   const {
     updateState,
@@ -42,8 +42,8 @@ const useStateMachine = (
     changeTaskState,
     handledNextTask,
     handledPrevTask,
-    bpmn,
-    changeTask,
+    //bpmn,
+    //changeTask,
   } = useStoreData();
 
   const transitions = useMemo<{
@@ -90,14 +90,14 @@ const useStateMachine = (
                   );
                   return;
                 }
-                if (
-                  _borrower?.value.creditScore &&
-                  _borrower?.value.creditScore <= 640
-                ) {
-                  await changeTask(ServerTaskKey.refuse, bpmn.taskId);
-                  formData.changeState(BridgePurchaseState.refuse);
-                  return;
-                }
+                //if (
+                //  _borrower?.value.creditScore &&
+                //  _borrower?.value.creditScore <= 640
+                //) {
+                //  await changeTask(ServerTaskKey.refuse, bpmn.taskId);
+                //  formData.changeState(BridgePurchaseState.refuse);
+                //  return;
+                //}
                 creditScore.changeState(BridgeCreditScoreState.creditScore);
               },
             );
@@ -156,9 +156,6 @@ const useStateMachine = (
       prevStep,
       selfInfo,
       handledNextTask,
-      changeTask,
-      bpmn.taskId,
-      formData,
       handledPrevTask,
       coBorrowerInfo,
       nextStep,

@@ -1,25 +1,19 @@
+import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
+import { Stack, Typography } from '@mui/material';
+import { InfoOutlined } from '@mui/icons-material';
+import { addDays, compareDesc, isValid as dateValid, isDate } from 'date-fns';
+
+import { BPQueryData } from '@/requests/dashboard';
+import { LoanStage, UserType } from '@/types/enum';
+import { POSFormatDollar, POSFormatPercent } from '@/utils';
+
 import {
   StyledButton,
   StyledDatePicker,
   StyledFormItem,
   StyledTextFieldNumber,
   StyledTooltip,
-  Transitions,
 } from '@/components/atoms';
-
-import { OPTIONS_COMMON_USER_TYPE } from '@/constants';
-import { BPQueryData } from '@/requests/dashboard';
-import { LoanStage, UserType } from '@/types/enum';
-import {
-  POSFindLabel,
-  POSFormatDollar,
-  POSFormatPercent,
-  POSNotUndefined,
-} from '@/utils';
-import { InfoOutlined } from '@mui/icons-material';
-import { Stack, Typography } from '@mui/material';
-import { addDays, compareDesc, isValid as dateValid, isDate } from 'date-fns';
-import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react';
 
 interface BridgePurchaseRatesSearchProps {
   loading: boolean;
@@ -29,6 +23,7 @@ interface BridgePurchaseRatesSearchProps {
   userType?: UserType;
   loanStage?: LoanStage;
   isDashboard?: boolean;
+  id?: string;
 }
 
 export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
@@ -39,6 +34,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
   userType,
   loanStage = LoanStage.Application,
   isDashboard = false,
+  id,
 }) => {
   const {
     purchasePrice,
@@ -53,10 +49,8 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
     closeDate,
   } = searchForm;
 
-  const [LTVError, setLTVError] = useState<string>('');
-
   const [date, setDate] = useState<null | Date | string>(
-    closeDate ? closeDate : addDays(new Date(), 7),
+    isDashboard ? closeDate || addDays(new Date(), 7) : addDays(new Date(), 7),
   );
 
   const closeDateError = useMemo(() => {
@@ -73,162 +67,10 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
 
   const LTV = useMemo(() => {
     if (!purchaseLoanAmount || !purchasePrice) {
-      setLTVError('');
       return 0;
-    }
-    setLTVError(
-      purchaseLoanAmount / purchasePrice <= 0.8
-        ? ''
-        : 'Your LTV should be no more than 80%',
-    );
-    if (purchaseLoanAmount < 100000) {
-      setLTVError(
-        'Adjust your down payment. Total loan amount must be at least $100,000',
-      );
     }
     return purchaseLoanAmount ? purchaseLoanAmount / purchasePrice : 0;
   }, [purchaseLoanAmount, purchasePrice]);
-
-  const pointsError = useMemo(() => {
-    let points;
-    switch (userType) {
-      case UserType.BROKER:
-        points = brokerPoints;
-        break;
-      case UserType.LENDER:
-        points = lenderPoints;
-        break;
-      case UserType.LOAN_OFFICER:
-        points = officerPoints;
-        break;
-      default:
-        points = officerPoints;
-        break;
-    }
-
-    if (!POSNotUndefined(points)) {
-      return [''];
-    }
-    if ((points as number) <= 5) {
-      return undefined;
-    }
-    return [
-      `${POSFindLabel(
-        OPTIONS_COMMON_USER_TYPE,
-        userType as string as UserType,
-      )} origination fee must be lesser than or equal to 5%.`,
-    ];
-  }, [brokerPoints, officerPoints, userType, lenderPoints]);
-
-  const processingFeeError = useMemo(() => {
-    let fee;
-    switch (userType) {
-      case UserType.BROKER:
-        fee = brokerProcessingFee;
-        break;
-      case UserType.LENDER:
-        fee = lenderProcessingFee;
-        break;
-      case UserType.LOAN_OFFICER:
-        fee = officerProcessingFee;
-        break;
-      default:
-        fee = officerProcessingFee;
-        break;
-    }
-
-    if (!POSNotUndefined(fee) || !purchaseLoanAmount) {
-      return [''];
-    }
-    if ((fee as number) <= purchaseLoanAmount) {
-      return undefined;
-    }
-    return [
-      `${POSFindLabel(
-        OPTIONS_COMMON_USER_TYPE,
-        userType as string as UserType,
-      )} origination fee must be lesser than or equal to ${POSFormatDollar(
-        purchaseLoanAmount,
-      )}.`,
-    ];
-  }, [
-    brokerProcessingFee,
-    purchaseLoanAmount,
-    officerProcessingFee,
-    lenderProcessingFee,
-    userType,
-  ]);
-
-  const agentFeeError = useMemo(() => {
-    if (!POSNotUndefined(agentFee) || !purchaseLoanAmount) {
-      return [''];
-    }
-    if ((agentFee as number) <= purchaseLoanAmount) {
-      return undefined;
-    }
-    return [
-      `Real estate agent fee must be lesser than or equal to ${POSFormatDollar(
-        purchaseLoanAmount,
-      )}.`,
-    ];
-  }, [agentFee, purchaseLoanAmount]);
-
-  const isValid = useMemo(() => {
-    let flag: boolean;
-
-    switch (userType) {
-      case UserType.REAL_ESTATE_AGENT:
-        flag = POSNotUndefined(agentFee) && !agentFeeError;
-        break;
-      case UserType.LOAN_OFFICER:
-        flag =
-          POSNotUndefined(officerPoints) &&
-          POSNotUndefined(officerProcessingFee) &&
-          !pointsError &&
-          !processingFeeError;
-        break;
-      case UserType.BROKER:
-        flag =
-          POSNotUndefined(brokerPoints) &&
-          POSNotUndefined(brokerProcessingFee) &&
-          !pointsError &&
-          !processingFeeError;
-        break;
-      case UserType.LENDER:
-        flag =
-          POSNotUndefined(lenderPoints) &&
-          POSNotUndefined(lenderProcessingFee) &&
-          !pointsError &&
-          !processingFeeError;
-        break;
-      case UserType.CUSTOMER:
-        flag = true;
-        break;
-      default:
-        flag = true;
-        break;
-    }
-
-    if (LTVError) {
-      return false;
-    }
-    return purchasePrice && purchaseLoanAmount && flag;
-  }, [
-    userType,
-    LTVError,
-    purchasePrice,
-    purchaseLoanAmount,
-    agentFee,
-    agentFeeError,
-    officerPoints,
-    officerProcessingFee,
-    pointsError,
-    processingFeeError,
-    brokerPoints,
-    brokerProcessingFee,
-    lenderPoints,
-    lenderProcessingFee,
-  ]);
 
   const renderByUserType = useMemo(() => {
     switch (userType) {
@@ -267,7 +109,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                   percentage
                   suffix={'%'}
                   thousandSeparator={false}
-                  validate={pointsError}
                   value={brokerPoints}
                 />
               </Stack>
@@ -282,7 +123,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                     });
                   }}
                   prefix={'$'}
-                  validate={processingFeeError}
                   value={brokerProcessingFee}
                 />
               </Stack>
@@ -324,7 +164,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                   percentage
                   suffix={'%'}
                   thousandSeparator={false}
-                  validate={pointsError}
                   value={lenderPoints}
                 />
               </Stack>
@@ -339,7 +178,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                     });
                   }}
                   prefix={'$'}
-                  validate={processingFeeError}
                   value={lenderProcessingFee}
                 />
               </Stack>
@@ -357,7 +195,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               color: 'info.dark',
               fontWeight: 400,
               fontSize: 20,
-
               pl: '4px',
             }}
             sub
@@ -382,7 +219,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                   percentage
                   suffix={'%'}
                   thousandSeparator={false}
-                  validate={pointsError}
                   value={officerPoints}
                 />
               </Stack>
@@ -397,7 +233,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                     });
                   }}
                   prefix={'$'}
-                  validate={processingFeeError}
                   value={officerProcessingFee}
                 />
               </Stack>
@@ -436,7 +271,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                     });
                   }}
                   prefix={'$'}
-                  validate={agentFeeError}
                   value={agentFee}
                 />
               </Stack>
@@ -450,7 +284,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
     }
   }, [
     agentFee,
-    agentFeeError,
     brokerPoints,
     brokerProcessingFee,
     lenderPoints,
@@ -459,8 +292,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
     loanStage,
     officerPoints,
     officerProcessingFee,
-    pointsError,
-    processingFeeError,
     searchForm,
     setSearchForm,
     userType,
@@ -470,6 +301,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
     <>
       <StyledFormItem
         gap={4}
+        id={id}
         label={
           isDashboard
             ? 'View other rates'
@@ -554,7 +386,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
           sub
           sx={{ mb: userType === UserType.CUSTOMER ? 0 : 3 }}
           width={'100%'}
-          //mt={3}
         >
           <Stack gap={0.5} width={'100%'}>
             <Stack
@@ -613,14 +444,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                 {POSFormatPercent(LTV)}
               </Typography>
             </Stack>
-
-            <Transitions>
-              {LTVError && (
-                <Typography color={'error'} variant={'body3'}>
-                  {LTVError}
-                </Typography>
-              )}
-            </Transitions>
           </Stack>
         </StyledFormItem>
 
@@ -654,7 +477,9 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
         </Stack>
 
         <StyledButton
-          disabled={!isValid || loading || loanStage === LoanStage.Approved}
+          disabled={
+            !!closeDateError || loading || loanStage === LoanStage.Approved
+          }
           onClick={onCheck}
           sx={{ width: 200, mt: 3 }}
         >

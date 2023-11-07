@@ -12,7 +12,7 @@ import {
   BorrowerData,
   CommonBorrowerType,
   GroundUpConstructionCreditScoreState,
-  GroundUpConstructionPurchaseState,
+  //GroundUpConstructionPurchaseState,
   SelfInfoData,
   ServerTaskKey,
   VariableName,
@@ -32,9 +32,9 @@ const useStateMachine = (
   nextStep: FormNodeBaseProps['nextStep'],
   prevStep: FormNodeBaseProps['prevStep'],
 ) => {
-  const {
-    applicationForm: { formData },
-  } = useMst();
+  //const {
+  //  applicationForm: { formData },
+  //} = useMst();
   const { selfInfo, coBorrowerInfo } = creditScore;
   const {
     updateState,
@@ -42,8 +42,8 @@ const useStateMachine = (
     changeTaskState,
     handledNextTask,
     handledPrevTask,
-    bpmn,
-    changeTask,
+    //bpmn,
+    //changeTask,
   } = useStoreData();
 
   const transitions = useMemo<{
@@ -92,16 +92,16 @@ const useStateMachine = (
                   );
                   return;
                 }
-                if (
-                  _borrower?.value.creditScore &&
-                  _borrower?.value.creditScore <= 640
-                ) {
-                  await changeTask(ServerTaskKey.refuse, bpmn.taskId);
-                  formData.changeState(
-                    GroundUpConstructionPurchaseState.refuse,
-                  );
-                  return;
-                }
+                //if (
+                //  _borrower?.value.creditScore &&
+                //  _borrower?.value.creditScore <= 640
+                //) {
+                //  await changeTask(ServerTaskKey.refuse, bpmn.taskId);
+                //  formData.changeState(
+                //    GroundUpConstructionPurchaseState.refuse,
+                //  );
+                //  return;
+                //}
                 creditScore.changeState(
                   GroundUpConstructionCreditScoreState.creditScore,
                 );
@@ -170,9 +170,6 @@ const useStateMachine = (
       prevStep,
       selfInfo,
       handledNextTask,
-      changeTask,
-      bpmn.taskId,
-      formData,
       handledPrevTask,
       coBorrowerInfo,
       nextStep,

@@ -121,6 +121,10 @@ export const FixPurchaseEstimateRate: FC<{
   >();
 
   const onCheckGetList = async () => {
+    const element = document.getElementById(
+      'fix_and_flip_purchase_rate_search',
+    );
+    const { height } = element!.getBoundingClientRect();
     setIsFirstSearch(false);
     setLoading(true);
     const postData: Variable<FPEstimateRateData> = {
@@ -153,7 +157,6 @@ export const FixPurchaseEstimateRate: FC<{
           setReasonList(res.data.reasons);
           setProductInfo(res.data.loanInfo);
         }
-        setLoading(false);
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -163,7 +166,12 @@ export const FixPurchaseEstimateRate: FC<{
           isSimple: !header,
           header,
         });
+      })
+      .finally(() => {
         setLoading(false);
+        setTimeout(() => {
+          window.scrollTo({ top: height + 144, behavior: 'smooth' });
+        }, 300);
       });
   };
 
@@ -219,6 +227,7 @@ export const FixPurchaseEstimateRate: FC<{
   return (
     <>
       <FixPurchaseRatesSearch
+        id={'fix_and_flip_purchase_rate_search'}
         loading={loading}
         onCheck={onCheckGetList}
         searchForm={searchForm}

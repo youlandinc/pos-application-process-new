@@ -251,7 +251,11 @@ export const FixPersonInfo: FC = observer(() => {
                 onClick={() =>
                   window.open('https://www.youland.com/legal/e-loan-doc/')
                 }
-                sx={{ color: 'primary.main', cursor: 'pointer' }}
+                sx={{
+                  color: 'primary.main',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                }}
               >
                 Receive Electronic Loan Documents
               </Typography>
