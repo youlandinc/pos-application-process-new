@@ -53,6 +53,16 @@ export const Entrance: FC = observer(() => {
       } = data;
       store.updateUserType(userType as UserType);
       store.updateLoginType(loginType as LoginType);
+      if (router.query.processId && router.query.taskId) {
+        await router.push({
+          pathname: '/dashboard/tasks/documents/',
+          query: {
+            processId: router.query.processId,
+            taskId: router.query.taskId,
+          },
+        });
+        return;
+      }
       enqueueSnackbar('login success!', {
         autoHideDuration: AUTO_HIDE_DURATION,
         variant: 'success',
