@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { FC } from 'react';
 import dynamic from 'next/dynamic';
 
@@ -23,6 +24,9 @@ const DynamicCoBorrowerDetailsPage = dynamic(
 const TaskCoBorrowerDetails: FC = observer(() => {
   return (
     <>
+      <Head>
+        <title>Tasks - Co-borrower Details</title>
+      </Head>
       <DynamicDashboardPage>
         <DynamicCoBorrowerDetailsPage />
       </DynamicDashboardPage>

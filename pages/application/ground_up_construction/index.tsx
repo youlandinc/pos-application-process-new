@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { FC } from 'react';
 import dynamic from 'next/dynamic';
 
@@ -12,7 +13,14 @@ const DynamicGroundPage = dynamic(
 );
 
 const GroundUpConstruction: FC = () => {
-  return <DynamicGroundPage />;
+  return (
+    <>
+      <Head>
+        <title>Apply for a construction loan</title>
+      </Head>
+      <DynamicGroundPage />
+    </>
+  );
 };
 
 export default GroundUpConstruction;

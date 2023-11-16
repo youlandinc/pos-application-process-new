@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { FC } from 'react';
 import dynamic from 'next/dynamic';
 
@@ -23,6 +24,9 @@ const DynamicInvestmentExperiencePage = dynamic(
 const TaskInvestmentExperience: FC = observer(() => {
   return (
     <>
+      <Head>
+        <title>Tasks - Real Estate Investment Experience</title>
+      </Head>
       <DynamicDashboardPage>
         <DynamicInvestmentExperiencePage />
       </DynamicDashboardPage>

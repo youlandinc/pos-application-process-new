@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { FC } from 'react';
 import dynamic from 'next/dynamic';
 
@@ -12,7 +13,14 @@ const DynamicBridgePage = dynamic(
 );
 
 const Bridge: FC = () => {
-  return <DynamicBridgePage />;
+  return (
+    <>
+      <Head>
+        <title>Apply for a bridge loan</title>
+      </Head>
+      <DynamicBridgePage />
+    </>
+  );
 };
 
 export default Bridge;

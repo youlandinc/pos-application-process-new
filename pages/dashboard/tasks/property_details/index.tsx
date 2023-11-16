@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { FC } from 'react';
 import dynamic from 'next/dynamic';
 
@@ -23,6 +24,9 @@ const DynamicPropertyDetailsPage = dynamic(
 const TaskPropertyDetails: FC = observer(() => {
   return (
     <>
+      <Head>
+        <title>Tasks - Property Details</title>
+      </Head>
       <DynamicDashboardPage>
         <DynamicPropertyDetailsPage />
       </DynamicDashboardPage>

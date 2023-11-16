@@ -1,12 +1,18 @@
+import Head from 'next/head';
 import { FC } from 'react';
 
 import { PipelineLicensePage, PipelinePage } from '@/views';
 
 const PipelineLicenseModule: FC = () => {
   return (
-    <PipelinePage>
-      <PipelineLicensePage />
-    </PipelinePage>
+    <>
+      <Head>
+        <title>Tasks - License</title>
+      </Head>
+      <PipelinePage>
+        <PipelineLicensePage />
+      </PipelinePage>
+    </>
   );
 };
 
