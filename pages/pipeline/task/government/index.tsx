@@ -1,12 +1,18 @@
+import Head from 'next/head';
 import { FC } from 'react';
 
 import { PipelineGovernmentPage, PipelinePage } from '@/views';
 
 const PipelineGovernmentModule: FC = () => {
   return (
-    <PipelinePage>
-      <PipelineGovernmentPage />
-    </PipelinePage>
+    <>
+      <Head>
+        <title>Tasks - Government ID</title>
+      </Head>
+      <PipelinePage>
+        <PipelineGovernmentPage />
+      </PipelinePage>
+    </>
   );
 };
 

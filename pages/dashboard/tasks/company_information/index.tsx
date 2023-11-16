@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import dynamic from 'next/dynamic';
@@ -22,6 +23,9 @@ const DynamicCompanyInformationPage = dynamic(
 const TaskCompanyInformation: FC = observer(() => {
   return (
     <>
+      <Head>
+        <title>Tasks - Closing Agent/Title Company Information</title>
+      </Head>
       <DynamicDashboardPage>
         <DynamicCompanyInformationPage />
       </DynamicDashboardPage>

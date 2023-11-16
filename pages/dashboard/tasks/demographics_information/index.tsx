@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { FC } from 'react';
 import dynamic from 'next/dynamic';
 
@@ -23,6 +24,9 @@ const DynamicDemographicsInformationPage = dynamic(
 const TaskPropertyDetails: FC = observer(() => {
   return (
     <>
+      <Head>
+        <title>Tasks - Demographics Information</title>
+      </Head>
       <DynamicDashboardPage>
         <DynamicDemographicsInformationPage />
       </DynamicDashboardPage>

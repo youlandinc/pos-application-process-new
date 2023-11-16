@@ -1,5 +1,5 @@
+import Head from 'next/head';
 import { FC } from 'react';
-import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
@@ -16,9 +16,12 @@ const DynamicForgotPasswordPage = dynamic(
 
 const ForgotPasswordPage: FC = observer((): JSX.Element => {
   return (
-    <Box>
+    <>
+      <Head>
+        <title>Forgot password</title>
+      </Head>
       <DynamicForgotPasswordPage />
-    </Box>
+    </>
   );
 });
 

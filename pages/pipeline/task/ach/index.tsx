@@ -1,12 +1,18 @@
+import Head from 'next/head';
 import { FC } from 'react';
 
 import { PipelineAchPage, PipelinePage } from '@/views';
 
 const PipelineAchModule: FC = () => {
   return (
-    <PipelinePage>
-      <PipelineAchPage />
-    </PipelinePage>
+    <>
+      <Head>
+        <title>Tasks - ACH Information</title>
+      </Head>
+      <PipelinePage>
+        <PipelineAchPage />
+      </PipelinePage>
+    </>
   );
 };
 
