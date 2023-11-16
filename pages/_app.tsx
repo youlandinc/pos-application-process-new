@@ -150,7 +150,7 @@ export default function MyApp(props: MyAppProps) {
           name="viewport"
         />
         <link href="/POS.svg" rel="icon" />
-        <title>Point of Sale</title>
+        <title>Apply for a loan</title>
       </Head>
       <Provider value={rootStore}>
         <ProviderPersistData

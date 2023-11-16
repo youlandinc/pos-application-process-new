@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import dynamic from 'next/dynamic';
@@ -22,6 +23,9 @@ const DynamicPropertyInspectionPage = dynamic(
 const TaskPropertyInspection: FC = observer(() => {
   return (
     <>
+      <Head>
+        <title>Tasks - Property Inspection Details</title>
+      </Head>
       <DynamicDashboardPage>
         <DynamicPropertyInspectionPage />
       </DynamicDashboardPage>

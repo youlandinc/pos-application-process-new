@@ -1,5 +1,5 @@
+import Head from 'next/head';
 import { FC } from 'react';
-import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
@@ -17,9 +17,12 @@ const LoginPage: FC = observer((): JSX.Element => {
   useCheckHasLoggedIn();
 
   return (
-    <Box>
+    <>
+      <Head>
+        <title>Login</title>
+      </Head>
       <DynamicLogin to={'/pipeline'} />
-    </Box>
+    </>
   );
 });
 

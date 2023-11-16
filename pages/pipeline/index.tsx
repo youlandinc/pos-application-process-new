@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import { FC } from 'react';
 import dynamic from 'next/dynamic';
 
@@ -25,9 +26,14 @@ const DynamicPipelineListPage = dynamic(
 
 const PipelineProfileModule: FC = observer(() => {
   return (
-    <DynamicPipelinePage>
-      <DynamicPipelineListPage />
-    </DynamicPipelinePage>
+    <>
+      <Head>
+        <title>Pipeline</title>
+      </Head>
+      <DynamicPipelinePage>
+        <DynamicPipelineListPage />
+      </DynamicPipelinePage>
+    </>
   );
 });
 

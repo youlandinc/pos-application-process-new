@@ -252,7 +252,7 @@ export const GroundPurchaseTaskInsuranceInformation: FC = observer(() => {
         ) : (
           <StyledFormItem
             gap={6}
-            label={'Homeowner Insurance Policy(optional)'}
+            label={'Homeowner insurance policy(optional)'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}

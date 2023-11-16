@@ -1,5 +1,5 @@
+import Head from 'next/head';
 import { FC } from 'react';
-import { Box } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import dynamic from 'next/dynamic';
 
@@ -16,9 +16,12 @@ const SignUpPage: FC = observer((): JSX.Element => {
   useCheckHasLoggedIn();
 
   return (
-    <Box>
+    <>
+      <Head>
+        <title>Sign up</title>
+      </Head>
       <DynamicSignUp isRedirect={false} />
-    </Box>
+    </>
   );
 });
 
