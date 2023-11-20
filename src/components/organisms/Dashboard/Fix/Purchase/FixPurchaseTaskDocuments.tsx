@@ -33,8 +33,12 @@ import {
 
 const hash = {
   common: [
+    // purchase
+    'vesting',
+    // refinance
+    //'lease',
+    // optional
     //'payoff',
-    //'insurance',
     // common
     'form1003',
     'identification',
@@ -42,10 +46,13 @@ const hash = {
     'authorization',
     'bank',
     'prelim',
+    // optional
+    //'replacement',
   ],
   show1: ['budget'],
   show2: ['questionnaire', 'policy'],
-  show3: ['articles', 'laws', 'standing'],
+  show3: ['articles', 'laws', 'standing', 'ss4'],
+  show4: ['trust'],
 };
 
 export const FixPurchaseTaskDocuments: FC = observer(() => {
@@ -60,6 +67,9 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
   const [show1, setShow1] = useState(false);
   const [show2, setShow2] = useState(false);
   const [show3, setShow3] = useState(false);
+  const [show4, setShow4] = useState(false);
+
+  const [vestingFiles, setVestingFiles] = useState<TaskFiles[]>([]);
 
   const [form1003Files, setForm1003Files] = useState<TaskFiles[]>([]);
   const [identificationFiles, setIdentificationFiles] = useState<TaskFiles[]>(
@@ -69,21 +79,25 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
   const [authorizationFiles, setAuthorizationFiles] = useState<TaskFiles[]>([]);
   const [bankFiles, setBankFiles] = useState<TaskFiles[]>([]);
   const [prelimFiles, setPrelimFiles] = useState<TaskFiles[]>([]);
-
-  const [articlesFiles, setArticlesFiles] = useState<TaskFiles[]>([]);
-  const [lawsFiles, setLawsFiles] = useState<TaskFiles[]>([]);
-  const [standingFiles, setStandingFiles] = useState<TaskFiles[]>([]);
+  const [replacementFiles, setReplacementFiles] = useState<TaskFiles[]>([]);
 
   const [budgetFiles, setBudgetFiles] = useState<TaskFiles[]>([]);
 
   const [questionnaireFiles, setQuestionnaireFiles] = useState<TaskFiles[]>([]);
   const [policyFiles, setPolicyFiles] = useState<TaskFiles[]>([]);
 
+  const [articlesFiles, setArticlesFiles] = useState<TaskFiles[]>([]);
+  const [lawsFiles, setLawsFiles] = useState<TaskFiles[]>([]);
+  const [standingFiles, setStandingFiles] = useState<TaskFiles[]>([]);
+  const [ss4Files, setSs4Files] = useState<TaskFiles[]>([]);
+
   const [otherFiles, setOtherFiles] = useState<TaskFiles[]>([]);
 
   const computedObj = useCallback(
     (key: string) => {
       switch (key) {
+        case 'vesting':
+          return { data: vestingFiles, action: setVestingFiles };
         case 'form1003':
           return { data: form1003Files, action: setForm1003Files };
         case 'identification':
@@ -96,18 +110,22 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
           return { data: bankFiles, action: setBankFiles };
         case 'prelim':
           return { data: prelimFiles, action: setPrelimFiles };
-        case 'articles':
-          return { data: articlesFiles, action: setArticlesFiles };
-        case 'laws':
-          return { data: lawsFiles, action: setLawsFiles };
-        case 'standing':
-          return { data: standingFiles, action: setStandingFiles };
+        case 'replacement':
+          return { data: replacementFiles, action: setReplacementFiles };
         case 'budget':
           return { data: budgetFiles, action: setBudgetFiles };
         case 'questionnaire':
           return { data: questionnaireFiles, action: setQuestionnaireFiles };
         case 'policy':
           return { data: policyFiles, action: setPolicyFiles };
+        case 'articles':
+          return { data: articlesFiles, action: setArticlesFiles };
+        case 'laws':
+          return { data: lawsFiles, action: setLawsFiles };
+        case 'standing':
+          return { data: standingFiles, action: setStandingFiles };
+        case 'ss4':
+          return { data: ss4Files, action: setSs4Files };
         case 'other':
           return { data: otherFiles, action: setOtherFiles };
         default:
@@ -126,7 +144,10 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
       policyFiles,
       prelimFiles,
       questionnaireFiles,
+      replacementFiles,
+      ss4Files,
       standingFiles,
+      vestingFiles,
       w9Files,
     ],
   );
@@ -212,19 +233,28 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
           show1,
           show2,
           show3,
+          show4,
+
+          vestingFiles,
           form1003Files,
           identificationFiles,
           w9Files,
           authorizationFiles,
           bankFiles,
           prelimFiles,
+          replacementFiles,
+          otherFiles,
+
+          budgetFiles,
+
+          questionnaireFiles,
+          policyFiles,
+
           articlesFiles,
           lawsFiles,
           standingFiles,
-          budgetFiles,
-          questionnaireFiles,
-          policyFiles,
-          otherFiles,
+          ss4Files,
+
           totalNum,
         } = res.data;
 
@@ -233,6 +263,9 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
         setShow1(show1);
         setShow2(show2);
         setShow3(show3);
+        setShow4(show4);
+
+        setVestingFiles(vestingFiles || []);
 
         setForm1003Files(form1003Files || []);
         setIdentificationFiles(identificationFiles || []);
@@ -240,16 +273,18 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
         setAuthorizationFiles(authorizationFiles || []);
         setBankFiles(bankFiles || []);
         setPrelimFiles(prelimFiles || []);
+        setReplacementFiles(replacementFiles || []);
         setOtherFiles(otherFiles || []);
-
-        setArticlesFiles(articlesFiles || []);
-        setLawsFiles(lawsFiles || []);
-        setStandingFiles(standingFiles || []);
 
         setBudgetFiles(budgetFiles || []);
 
         setQuestionnaireFiles(questionnaireFiles || []);
         setPolicyFiles(policyFiles || []);
+
+        setArticlesFiles(articlesFiles || []);
+        setLawsFiles(lawsFiles || []);
+        setStandingFiles(standingFiles || []);
+        setSs4Files(ss4Files || []);
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -295,8 +330,15 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
         }
       });
     }
+    if (show4) {
+      hash.show4.forEach((item) => {
+        if (computedObj(item)?.data?.length) {
+          count += 1;
+        }
+      });
+    }
     return count;
-  }, [computedObj, show1, show2, show3]);
+  }, [computedObj, show1, show2, show3, show4]);
 
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
@@ -304,19 +346,25 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
     const postData = {
       taskId: router.query.taskId as string,
       taskForm: {
-        articlesFiles,
-        authorizationFiles,
-        bankFiles,
-        budgetFiles,
+        vestingFiles,
         form1003Files,
         identificationFiles,
-        lawsFiles,
-        policyFiles,
-        prelimFiles,
-        questionnaireFiles,
-        standingFiles,
         w9Files,
+        authorizationFiles,
+        bankFiles,
+        prelimFiles,
+        replacementFiles,
         otherFiles,
+
+        budgetFiles,
+
+        questionnaireFiles,
+        policyFiles,
+
+        articlesFiles,
+        lawsFiles,
+        standingFiles,
+        ss4Files,
       },
     };
 
@@ -350,8 +398,11 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
     policyFiles,
     prelimFiles,
     questionnaireFiles,
+    replacementFiles,
     router,
+    ss4Files,
     standingFiles,
+    vestingFiles,
     w9Files,
   ]);
 
@@ -413,7 +464,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
               />
               <StyledUploadButtonBox
                 fileList={identificationFiles}
-                label={'Personal identification of guarantor and/or borrower'}
+                label={'Personal identification of borrower OR guarantor'}
                 onDelete={(index) => handledDelete(index, 'identification')}
                 onSuccess={(files) => handledSuccess(files, 'identification')}
               />
@@ -448,7 +499,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
                 fileList={authorizationFiles}
                 label={
                   <Stack flexDirection={'column'} width={'100%'}>
-                    Borrower Authorization Form{' '}
+                    Credit pull authorization OR Credit report (past 30 days){' '}
                     <Typography
                       color={'primary.main'}
                       onClick={() =>
@@ -469,22 +520,36 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
 
               <StyledUploadButtonBox
                 fileList={bankFiles}
-                label={'Proof of Liquidity (Bank Statement)'}
+                label={'Proof of liquidity (bank statement)'}
                 onDelete={(index) => handledDelete(index, 'bank')}
                 onSuccess={(files) => handledSuccess(files, 'bank')}
               />
 
               <StyledUploadButtonBox
                 fileList={prelimFiles}
-                label={'Prelim or Title Commitment'}
+                label={'Preliminary title report OR Title commitment'}
                 onDelete={(index) => handledDelete(index, 'prelim')}
                 onSuccess={(files) => handledSuccess(files, 'prelim')}
+              />
+
+              <StyledUploadButtonBox
+                fileList={replacementFiles}
+                label={'Replacement cost estimate (optional)'}
+                onDelete={(index) => handledDelete(index, 'replacement')}
+                onSuccess={(files) => handledSuccess(files, 'replacement')}
+              />
+
+              <StyledUploadButtonBox
+                fileList={vestingFiles}
+                label={'Vesting amendment'}
+                onDelete={(index) => handledDelete(index, 'vesting')}
+                onSuccess={(files) => handledSuccess(files, 'vesting')}
               />
 
               {show1 && (
                 <StyledUploadButtonBox
                   fileList={budgetFiles}
-                  label={'Rehabilitation Budget'}
+                  label={'Rehabilitation budget'}
                   onDelete={(index) => handledDelete(index, 'budget')}
                   onSuccess={(files) => handledSuccess(files, 'budget')}
                 />
@@ -494,7 +559,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
                 <>
                   <StyledUploadButtonBox
                     fileList={questionnaireFiles}
-                    label={'Completed Condominium Questionnaire'}
+                    label={'Completed condominium questionnaire'}
                     onDelete={(index) => handledDelete(index, 'questionnaire')}
                     onSuccess={(files) =>
                       handledSuccess(files, 'questionnaire')
@@ -503,9 +568,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
 
                   <StyledUploadButtonBox
                     fileList={policyFiles}
-                    label={
-                      'Copy of Condominium Master Insurance Policy/Certificate'
-                    }
+                    label={'Condominium master insurance policy OR certificate'}
                     onDelete={(index) => handledDelete(index, 'policy')}
                     onSuccess={(files) => handledSuccess(files, 'policy')}
                   />
@@ -517,7 +580,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
                   <StyledUploadButtonBox
                     fileList={articlesFiles}
                     label={
-                      'Certificates of formation/filed articles of organization/incorporation'
+                      'Certificates of formation OR Articles of organization OR Articles of incorporation'
                     }
                     onDelete={(index) => handledDelete(index, 'articles')}
                     onSuccess={(files) => handledSuccess(files, 'articles')}
@@ -525,7 +588,9 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
 
                   <StyledUploadButtonBox
                     fileList={lawsFiles}
-                    label={'Operating Agreement, Partnership Agreement, Bylaws'}
+                    label={
+                      'Operating agreement OR Partnership agreement OR Bylaws'
+                    }
                     onDelete={(index) => handledDelete(index, 'laws')}
                     onSuccess={(files) => handledSuccess(files, 'laws')}
                   />
@@ -533,12 +598,28 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
                   <StyledUploadButtonBox
                     fileList={standingFiles}
                     label={
-                      'Certificate of Good Standing from State of Organization'
+                      'Certificate of good standing from state of organization'
                     }
                     onDelete={(index) => handledDelete(index, 'standing')}
                     onSuccess={(files) => handledSuccess(files, 'standing')}
                   />
+
+                  <StyledUploadButtonBox
+                    fileList={ss4Files}
+                    label={'SS-4 Form'}
+                    onDelete={(index) => handledDelete(index, 'ss4')}
+                    onSuccess={(files) => handledSuccess(files, 'ss4')}
+                  />
                 </>
+              )}
+
+              {show4 && (
+                <StyledUploadButtonBox
+                  fileList={standingFiles}
+                  label={'Original trust document'}
+                  onDelete={(index) => handledDelete(index, 'trust')}
+                  onSuccess={(files) => handledSuccess(files, 'trust')}
+                />
               )}
 
               <StyledUploadButtonBox
