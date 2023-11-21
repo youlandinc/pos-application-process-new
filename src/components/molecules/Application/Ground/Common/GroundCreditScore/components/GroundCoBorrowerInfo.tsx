@@ -98,11 +98,10 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
               {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun}{' '}
               and co-borrower&apos;s assets and income will be counted together.
               You can&apos;t remove co-borrower once you have started your
-              application unless you restart a new one.
+              application unless you restart.
             </Typography>
             <Typography color={'info.main'} mt={1.5} variant={'body1'}>
-              You may skip adding a co-borrower for now and add one later during
-              the task.
+              You may skip adding a co-borrower for now and add one later.
             </Typography>
           </>
         }
