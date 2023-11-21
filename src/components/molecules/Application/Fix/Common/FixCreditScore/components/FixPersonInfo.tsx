@@ -209,7 +209,7 @@ export const FixPersonInfo: FC = observer(() => {
                 : `the ${POSFindLabel(
                     OPTIONS_COMMON_USER_TYPE,
                     userType as UserType,
-                  ).toLowerCase()} , authorize `}
+                  ).toLowerCase()}, authorize `}
               {' ' + saasState?.organizationName || ' YouLand'} to verify{' '}
               {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_oneself}{' '}
               credit. I have also read and agreed to
