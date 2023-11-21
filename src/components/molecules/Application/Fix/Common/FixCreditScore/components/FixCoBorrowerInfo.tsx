@@ -88,7 +88,7 @@ export const FixCoBorrowerInfo: FC = observer(() => {
     <>
       <StyledFormItem
         alignItems={'center'}
-        label={`Would you like to add a Co-borrower to ${
+        label={`Would you like to add a co-borrower to ${
           userType === UserType.CUSTOMER ? 'your' : ''
         } loan?`}
         tip={
@@ -125,7 +125,7 @@ export const FixCoBorrowerInfo: FC = observer(() => {
         {isCoBorrower && (
           <StyledFormItem
             gap={6}
-            label={'Tell us about Co-borrower'}
+            label={'Tell us about co-borrower'}
             labelSx={{ mb: 0 }}
             tip={
               "We are only collecting co-borrower's information for now. Checking credit score will be done in tasks."
