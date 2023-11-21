@@ -246,7 +246,7 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
                     : `the ${POSFindLabel(
                         OPTIONS_COMMON_USER_TYPE,
                         userType as UserType,
-                      ).toLowerCase()} , authorize `}
+                      ).toLowerCase()}, authorize `}
                   {' ' + saasState?.organizationName || ' YouLand'} to verify
                   co-borrower&apos;s credit. I&apos;ve also read and agreed to
                   {' ' + saasState?.organizationName || ' YouLand'} &apos;s{' '}

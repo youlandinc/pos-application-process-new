@@ -211,7 +211,7 @@ export const BridgePersonInfo: FC = observer(() => {
                 : `the ${POSFindLabel(
                     OPTIONS_COMMON_USER_TYPE,
                     userType as UserType,
-                  ).toLowerCase()} , authorize `}
+                  ).toLowerCase()}, authorize `}
               {
                 //sass
                 ' ' + saasState?.organizationName || ' YouLand'

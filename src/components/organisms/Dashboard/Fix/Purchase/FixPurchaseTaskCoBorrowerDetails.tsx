@@ -681,7 +681,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                           ml={2}
                           variant={'body2'}
                         >
-                          I, {firstName || 'borrower'} {lastName || 'name'} ,
+                          I, {firstName || 'borrower'} {lastName || 'name'},
                           authorize{' '}
                           {
                             //sass
