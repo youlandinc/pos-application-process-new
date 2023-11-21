@@ -1,6 +1,9 @@
 import { FC, useState } from 'react';
-import { CallOutlined, MailOutlineOutlined } from '@mui/icons-material';
 import { Grow, Icon, Stack, Typography } from '@mui/material';
+import { CallOutlined, MailOutlineOutlined } from '@mui/icons-material';
+
+import { POSFormatUSPhoneToText } from '@/utils';
+import { useSessionStorageState } from '@/hooks';
 
 import NOTIFICATION_INFO from '@/components/atoms/StyledNotification/notification_info.svg';
 
@@ -8,6 +11,7 @@ export const RatesSearchNoResult: FC<{ reasonList?: string[] }> = ({
   reasonList,
 }) => {
   const [showMore, setShowMore] = useState(false);
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   return (
     <>
@@ -126,7 +130,9 @@ export const RatesSearchNoResult: FC<{ reasonList?: string[] }> = ({
             justifyContent={'center'}
           >
             <CallOutlined />
-            (833) 968-5263
+            {POSFormatUSPhoneToText(
+              saasState?.posSettings?.phone || '(833) 968-5263',
+            )}
           </Stack>
           <Stack
             alignItems={'center'}
@@ -135,7 +141,7 @@ export const RatesSearchNoResult: FC<{ reasonList?: string[] }> = ({
             justifyContent={'center'}
           >
             <MailOutlineOutlined />
-            borrow@youland.com
+            {saasState?.posSetting?.email || 'borrow@youland.com'}
           </Stack>
         </Stack>
       </Stack>
