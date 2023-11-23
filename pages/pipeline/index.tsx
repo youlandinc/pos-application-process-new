@@ -28,9 +28,9 @@ const PipelineProfileModule: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Pipeline</title>
+        <title>My loans</title>
       </Head>
-      <DynamicPipelinePage>
+      <DynamicPipelinePage scene={'pipeline_without_all'}>
         <DynamicPipelineListPage />
       </DynamicPipelinePage>
     </>
