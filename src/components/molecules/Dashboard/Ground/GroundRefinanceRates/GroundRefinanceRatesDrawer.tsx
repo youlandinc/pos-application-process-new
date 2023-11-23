@@ -252,7 +252,7 @@ export const GroundRefinanceRatesDrawer: FC<
               />
               <GroundRefinanceCardItem
                 info={selectedItem?.closeDate}
-                label={'Preferred close date'}
+                label={'Preferred closing date'}
               />
               <GroundRefinanceCardItem
                 info={selectedItem?.lien}

@@ -240,7 +240,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = ({
               />
               <GroundPurchaseCardItem
                 info={selectedItem?.closeDate}
-                label={'Preferred close date'}
+                label={'Preferred closing date'}
               />
               <GroundPurchaseCardItem
                 info={selectedItem?.lien}

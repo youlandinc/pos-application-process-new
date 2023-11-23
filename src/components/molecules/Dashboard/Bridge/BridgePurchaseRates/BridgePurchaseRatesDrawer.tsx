@@ -239,7 +239,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = ({
               />
               <BridgePurchaseCardItem
                 info={selectedItem?.closeDate}
-                label={'Preferred close date'}
+                label={'Preferred closing date'}
               />
               <BridgePurchaseCardItem
                 info={selectedItem?.lien}

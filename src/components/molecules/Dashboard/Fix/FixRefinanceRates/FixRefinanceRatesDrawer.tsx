@@ -249,7 +249,7 @@ export const FixRefinanceRatesDrawer: FC<FixRefinanceRatesDrawerProps> = ({
               />
               <FixRefinanceCardItem
                 info={selectedItem?.closeDate}
-                label={'Preferred close date'}
+                label={'Preferred closing date'}
               />
               <FixRefinanceCardItem info={selectedItem?.lien} label={'Lien'} />
               <FixRefinanceCardItem
