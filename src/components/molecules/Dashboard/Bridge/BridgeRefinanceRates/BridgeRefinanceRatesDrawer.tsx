@@ -245,7 +245,7 @@ export const BridgeRefinanceRatesDrawer: FC<
               />
               <BridgeRefinanceCardItem
                 info={selectedItem?.closeDate}
-                label={'Preferred close date'}
+                label={'Preferred closing date'}
               />
               <BridgeRefinanceCardItem
                 info={selectedItem?.lien}

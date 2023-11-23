@@ -117,7 +117,7 @@ export const GroundRefinanceOverview: FC = observer(() => {
         });
         setLoanDetail({
           title: 'Loan details',
-          subTitle: 'Preferred close date',
+          subTitle: 'Preferred closing date',
           subInfo: loanDetail?.closeDate,
           info: [
             { label: 'Amortization', info: loanDetail?.amortization },

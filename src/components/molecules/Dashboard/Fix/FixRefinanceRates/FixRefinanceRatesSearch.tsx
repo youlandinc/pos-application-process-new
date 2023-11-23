@@ -345,10 +345,10 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                 flexDirection={'row'}
                 gap={1}
               >
-                Preferred close date
+                Preferred closing date
                 <StyledTooltip
                   title={
-                    '"Preferred close date" is the date on which you wish to complete a real estate transaction or loan application. We will stay in touch with you to ensure that the transaction is completed at the most suitable time.'
+                    '"Preferred closing date" is the date on which you wish to complete a real estate transaction or loan application. We will stay in touch with you to ensure that the transaction is completed at the most suitable time.'
                   }
                 >
                   <InfoOutlined
@@ -378,7 +378,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
             <StyledDatePicker
               disableFuture={false}
               disablePast
-              label={'Preferred close date'}
+              label={'Preferred closing date'}
               onChange={(value) => {
                 setSearchForm({
                   ...searchForm,
