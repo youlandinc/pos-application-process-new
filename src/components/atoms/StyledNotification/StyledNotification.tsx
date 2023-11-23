@@ -77,7 +77,7 @@ export const StyledNotification = forwardRef<
           <Typography
             color={computedData.color}
             flex={1}
-            sx={{ mt: 0.25 }}
+            sx={{ mt: 0.25, wordBreak: 'break-all' }}
             variant={'subtitle2'}
           >
             {props.message}
@@ -126,7 +126,13 @@ export const StyledNotification = forwardRef<
               }}
             />
           </Stack>
-          <Typography color={'#636A7C'} variant={'body2'}>
+          <Typography
+            color={'#636A7C'}
+            sx={{
+              wordBreak: 'break-all',
+            }}
+            variant={'body2'}
+          >
             {props.message}
           </Typography>
         </Stack>

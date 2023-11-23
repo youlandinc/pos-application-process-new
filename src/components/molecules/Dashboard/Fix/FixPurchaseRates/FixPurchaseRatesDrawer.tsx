@@ -246,7 +246,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = ({
               />
               <FixPurchaseCardItem
                 info={selectedItem?.closeDate}
-                label={'Preferred close date'}
+                label={'Preferred closing date'}
               />
               <FixPurchaseCardItem info={selectedItem?.lien} label={'Lien'} />
               <FixPurchaseCardItem

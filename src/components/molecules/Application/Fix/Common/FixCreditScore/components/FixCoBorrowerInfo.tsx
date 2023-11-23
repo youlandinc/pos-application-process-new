@@ -88,7 +88,7 @@ export const FixCoBorrowerInfo: FC = observer(() => {
     <>
       <StyledFormItem
         alignItems={'center'}
-        label={`Would you like to add a Co-borrower to ${
+        label={`Would you like to add a co-borrower to ${
           userType === UserType.CUSTOMER ? 'your' : ''
         } loan?`}
         tip={
@@ -98,11 +98,10 @@ export const FixCoBorrowerInfo: FC = observer(() => {
               {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun}{' '}
               and co-borrower&apos;s assets and income will be counted together.
               You can&apos;t remove co-borrower once you have started your
-              application unless you restart a new one.
+              application unless you restart.
             </Typography>
             <Typography color={'info.main'} mt={1.5} variant={'body1'}>
-              You may skip adding a co-borrower for now and add one later during
-              the task.
+              You may skip adding a co-borrower for now and add one later.
             </Typography>
           </>
         }
@@ -125,7 +124,7 @@ export const FixCoBorrowerInfo: FC = observer(() => {
         {isCoBorrower && (
           <StyledFormItem
             gap={6}
-            label={'Tell us about Co-borrower'}
+            label={'Tell us about co-borrower'}
             labelSx={{ mb: 0 }}
             tip={
               "We are only collecting co-borrower's information for now. Checking credit score will be done in tasks."
@@ -247,7 +246,7 @@ export const FixCoBorrowerInfo: FC = observer(() => {
                     : `the ${POSFindLabel(
                         OPTIONS_COMMON_USER_TYPE,
                         userType as UserType,
-                      ).toLowerCase()} , authorize `}
+                      ).toLowerCase()}, authorize `}
                   {
                     //sass
                     ' ' + saasState?.organizationName || ' YouLand'
