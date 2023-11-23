@@ -510,7 +510,7 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
                       sx={{ textDecoration: 'underline', cursor: 'pointer' }}
                       variant={'body1'}
                     >
-                      Borrower Authorization Form.pdf
+                      Credit pull authorization.pdf
                     </Typography>
                   </Stack>
                 }
@@ -546,10 +546,28 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
                 onSuccess={(files) => handledSuccess(files, 'vesting')}
               />
 
+              {/**/}
+
               {show1 && (
                 <StyledUploadButtonBox
                   fileList={budgetFiles}
-                  label={'Rehabilitation budget'}
+                  label={
+                    <Stack flexDirection={'column'} width={'100%'}>
+                      Rehabilitation budget{' '}
+                      <Typography
+                        color={'primary.main'}
+                        onClick={() =>
+                          window.open(
+                            'https://youland-template-file.s3.us-west-1.amazonaws.com/Rehab+budget.xltx',
+                          )
+                        }
+                        sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                        variant={'body1'}
+                      >
+                        Rehabilitation budget.pdf
+                      </Typography>
+                    </Stack>
+                  }
                   onDelete={(index) => handledDelete(index, 'budget')}
                   onSuccess={(files) => handledSuccess(files, 'budget')}
                 />
@@ -559,7 +577,26 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
                 <>
                   <StyledUploadButtonBox
                     fileList={questionnaireFiles}
-                    label={'Completed condominium questionnaire'}
+                    label={
+                      <Stack flexDirection={'column'} width={'100%'}>
+                        Completed condominium questionnaire{' '}
+                        <Typography
+                          color={'primary.main'}
+                          onClick={() =>
+                            window.open(
+                              'https://youland-template-file.s3.us-west-1.amazonaws.com/Questionnaire.pdf',
+                            )
+                          }
+                          sx={{
+                            textDecoration: 'underline',
+                            cursor: 'pointer',
+                          }}
+                          variant={'body1'}
+                        >
+                          Completed condominium questionnaire.pdf
+                        </Typography>
+                      </Stack>
+                    }
                     onDelete={(index) => handledDelete(index, 'questionnaire')}
                     onSuccess={(files) =>
                       handledSuccess(files, 'questionnaire')
