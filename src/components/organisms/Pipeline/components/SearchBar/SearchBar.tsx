@@ -66,7 +66,7 @@ export const SearchBar: FC<SearchBarProps> = ({
       justifyContent={{ xs: 'space-between', xl: 'unset' }}
     >
       <Typography variant={'h4'}>
-        Pipeline{' '}
+        My loans{' '}
         <Typography
           color={'primary.main'}
           component={'span'}
