@@ -231,7 +231,7 @@ export const GroundRefinanceTaskInvestmentExperience: FC = observer(() => {
                   fontWeight={600}
                   onClick={() => {
                     window.open(
-                      'https://youland-template-file.s3.us-west-1.amazonaws.com/Sample-project-experience-template.xlsx',
+                      'https://youland-template-file.s3.us-west-1.amazonaws.com/Track+record.xlsx',
                     );
                   }}
                   sx={{
