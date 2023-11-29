@@ -31,7 +31,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
           return;
         }
         const url = POSFormatUrl(saasState?.website);
-        saasState?.website && window.open(url, '_blank');
+        saasState?.website && (location.href = url);
       }}
       sx={{
         ...StyledHeaderLogoStyles,
