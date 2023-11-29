@@ -1,6 +1,15 @@
 import { AddressData } from '@/types/application';
 import { TaskFiles } from '@/types/pipeline';
-import { BizType, LoginType, UserType } from './enum';
+import {
+  BizType,
+  DomainSource,
+  DomainState,
+  FeeUnitEnum,
+  FreeTrialState,
+  LoginType,
+  ServiceTypeEnum,
+  UserType,
+} from './enum';
 
 declare namespace User {
   interface BaseUserInfo {
@@ -109,15 +118,100 @@ declare namespace User {
   interface TenantConfigRequest {
     id: number;
     tenantId: string;
-    logoUrl: string;
+    logoUrl?: string;
+    faviconUrl?: string;
+    organizationInfo?: {
+      name: string;
+    };
     organizationName: string;
-    organizationInfo: OrganizationInfo;
+    email: string;
     phone: string;
-    signOffEmail: string;
-    replyEmail: string;
-    saasUrl: string;
-    extInfo: ExtInfo$3Type;
+    signOffEmail?: string;
+    replyEmail?: string;
+    saasUrl?: string;
+    extInfo?: {
+      posSettings?: TenantConfigPOSSettings;
+    };
+    posSettings?: TenantConfigPOSSettings;
+    address: AddressData;
+    whiteLabelUrl: string;
+    losSettings: {
+      customFee: FeeSettings | null;
+    };
+    useTimes: number;
+    freeTrialState: FreeTrialState;
+
+    serviceTypeEnum: ServiceTypeEnum;
+    serviceSelected: boolean;
+    website: null | string;
   }
 
+  interface TenantConfigPOSSettings {
+    phone: string;
+    email: string;
+    members: Partial<TenantConfigUserInfo>[];
+    workingDays: string;
+    workingHours: string;
+    h?: number;
+    l?: number;
+    s?: number;
+    domains?: DomainDetails[];
+    customFee?: POSCustomFee;
+    isWarning?: boolean;
+  }
+
+  interface TenantConfigUserInfo {
+    isFinished: boolean;
+    firstName: string;
+    lastName: string;
+    name: string;
+    birthDay: string;
+    gender: string;
+    maritalStatus: string;
+    age: number;
+    email: string;
+    phone: string;
+    ssn: string;
+    companyName: string;
+    title: string;
+    avatar: string;
+    addressInfo: AddressData & {
+      isFinished?: boolean;
+      statename?: string;
+      countyFIPS?: string;
+    };
+    residencyStatus: string;
+  }
+
+  type FeeSettings = {
+    lenderOriginationFee: number;
+    floodCertification: number;
+    underwritingFee: number;
+    documentPreparationFee: number;
+    creditReport: number;
+    projectOversightFee: number;
+    backgroundCheck: number;
+    miscFee: number;
+  };
+
   type UserUploadRequest = TaskFiles;
+
+  type POSCustomFee = {
+    brokerAdditionalFee: IEditFeeItem[];
+    brokerOriginationPoints: number | undefined;
+  };
+
+  type IEditFeeItem = {
+    fieldName: string;
+    unit: FeeUnitEnum;
+    value: number | string | undefined | null;
+    isFixed?: boolean;
+  };
+
+  interface DomainDetails {
+    id: number;
+    domainName: string;
+    state: DomainState;
+    source: DomainSource;
+  }
 }
