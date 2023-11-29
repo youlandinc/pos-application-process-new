@@ -302,3 +302,25 @@ export enum ServiceTypeEnum {
   WHITE_LABEL = 'WHITE_LABEL',
   SAAS = 'SAAS',
 }
+
+export enum FreeTrialState {
+  None = 'None',
+  Activated = 'Activated',
+  Expired = 'Expired',
+}
+
+export enum DomainState {
+  CONNECTED = 'CONNECTED',
+  WAITING_VERIFICATION = 'WAITING_VERIFICATION',
+  NOT_LINKED = 'NOT_LINKED',
+}
+
+export enum DomainSource {
+  DEFAULT = 'DEFAULT',
+  CUSTOM = 'CUSTOM',
+}
+
+export enum FeeUnitEnum {
+  dollar = 'DOLLAR',
+  percent = 'PERCENT',
+}
