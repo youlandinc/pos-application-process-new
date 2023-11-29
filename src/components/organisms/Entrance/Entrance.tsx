@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -19,10 +20,10 @@ import { _fetchUserInfoByToken } from '@/requests';
 import {
   StyledButton,
   StyledFormItem,
-  StyledHeaderLogo,
   StyledSelectOption,
 } from '@/components/atoms';
-import { useAsync } from 'react-use';
+
+import { POSHeader } from '@/components/molecules/POSLayout/components/POSHeader';
 
 export const Entrance: FC = observer(() => {
   const router = useRouter();
@@ -32,7 +33,7 @@ export const Entrance: FC = observer(() => {
 
   const [url, setUrl] = useState<string>('');
 
-  const { loading } = useAsync(async () => {
+  useAsync(async () => {
     if (!router.query.token) {
       return;
     }
@@ -93,7 +94,7 @@ export const Entrance: FC = observer(() => {
           px={{ lg: 0, xs: 'clamp(24px,6.4vw,80px)' }}
           width={{ xxl: 1440, xl: 1240, lg: 938, xs: '100%' }}
         >
-          <StyledHeaderLogo disabled={loading} />
+          <POSHeader scene={'application'} store={store} />
         </Stack>
       </Stack>
 

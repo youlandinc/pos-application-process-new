@@ -1,16 +1,16 @@
 import { FC, useMemo } from 'react';
 import { Box } from '@mui/material';
-import { useRouter } from 'next/router';
 
 import { StyledHeaderLogoProps, StyledHeaderLogoStyles } from './index';
 import { useSessionStorageState } from '@/hooks';
+
+import { POSFormatUrl } from '@/utils';
 
 export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
   sx,
   logoUrl = '/images/logo/logo_blue.svg',
   disabled = false,
 }) => {
-  const router = useRouter();
   const { saasState } = useSessionStorageState('tenantConfig');
 
   const Logo = useMemo(() => {
@@ -27,12 +27,17 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
   return (
     <Box
       onClick={() => {
-        if (disabled) {
+        if (disabled || !saasState?.website) {
           return;
         }
-        router.push('/pipeline');
+        const url = POSFormatUrl(saasState?.website);
+        saasState?.website && window.open(url, '_blank');
       }}
-      sx={{ ...StyledHeaderLogoStyles, ...sx }}
+      sx={{
+        ...StyledHeaderLogoStyles,
+        ...sx,
+        cursor: saasState?.website ? 'pointer' : 'default',
+      }}
     >
       {Logo}
     </Box>

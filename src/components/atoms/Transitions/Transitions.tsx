@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef } from 'react';
-import { makeStyles } from '@mui/styles';
+import { createUseStyles } from 'react-jss';
 
 import { TransitionsProps } from './index';
 
@@ -48,7 +48,7 @@ export const Transitions: FC<TransitionsProps> = ({ ...rest }) => {
   );
 };
 
-const useStyles = makeStyles({
+const useStyles = createUseStyles({
   item: {
     animation: '$in 0.3s',
   },

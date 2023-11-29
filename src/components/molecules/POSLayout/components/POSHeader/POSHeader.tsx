@@ -226,6 +226,31 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <MyAccountButton scene={scene} store={store} />
           </Box>
         );
+
+      case 'pipeline_without_all': {
+        return (
+          <Box>
+            <StyledButton
+              className={'POS_mr_3'}
+              color={'info'}
+              disabled={!pipelineStatus}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+              onClick={() => router.push('/')}
+              variant={'outlined'}
+            >
+              <PostAddOutlined
+                className={
+                  !['xs', 'sm', 'md'].includes(breakpoint)
+                    ? 'POS_icon_left'
+                    : ''
+                }
+              />
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
+            </StyledButton>
+            <MyAccountButton scene={scene} store={store} />
+          </Box>
+        );
+      }
     }
   }, [breakpoint, hasSession, open, pipelineStatus, router, scene, store]);
 
