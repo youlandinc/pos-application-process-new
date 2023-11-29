@@ -1,4 +1,3 @@
-import { UserType } from '@/types';
 import { FC, useMemo } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { Close, FilterAltOutlined, SearchOutlined } from '@mui/icons-material';
@@ -8,6 +7,7 @@ import {
   OPTIONS_LOAN_SPECIES,
   OPTIONS_LOAN_STAGE,
 } from '@/constants';
+import { UserType } from '@/types';
 
 import { useBreakpoints, useSwitch } from '@/hooks';
 import {
@@ -44,18 +44,62 @@ export const SearchBar: FC<SearchBarProps> = ({
 
   const { visible, open, close } = useSwitch(false);
 
-  const role = useMemo(() => {
+  const renderTitleByRole = useMemo(() => {
     switch (userType) {
       case UserType.BROKER:
-        return 'for broker';
+        return (
+          <Typography variant={'h4'}>
+            Pipeline{' '}
+            <Typography
+              color={'primary.main'}
+              component={'span'}
+              variant={'inherit'}
+            >
+              for brokers
+            </Typography>
+          </Typography>
+        );
       case UserType.LENDER:
-        return 'for table funding';
+        return (
+          <Typography variant={'h4'}>
+            Pipeline{' '}
+            <Typography
+              color={'primary.main'}
+              component={'span'}
+              variant={'inherit'}
+            >
+              for lenders
+            </Typography>
+          </Typography>
+        );
       case UserType.LOAN_OFFICER:
-        return 'for loan officer';
+        return (
+          <Typography variant={'h4'}>
+            Pipeline{' '}
+            <Typography
+              color={'primary.main'}
+              component={'span'}
+              variant={'inherit'}
+            >
+              for loan officers
+            </Typography>
+          </Typography>
+        );
       case UserType.REAL_ESTATE_AGENT:
-        return 'for real estate agent';
+        return (
+          <Typography variant={'h4'}>
+            Pipeline{' '}
+            <Typography
+              color={'primary.main'}
+              component={'span'}
+              variant={'inherit'}
+            >
+              for real estate agents
+            </Typography>
+          </Typography>
+        );
       default:
-        return '';
+        return <Typography variant={'h4'}>My loans</Typography>;
     }
   }, [userType]);
 
@@ -65,16 +109,8 @@ export const SearchBar: FC<SearchBarProps> = ({
       flexDirection={{ xs: 'row', xl: 'column' }}
       justifyContent={{ xs: 'space-between', xl: 'unset' }}
     >
-      <Typography variant={'h4'}>
-        My loans{' '}
-        <Typography
-          color={'primary.main'}
-          component={'span'}
-          variant={'inherit'}
-        >
-          {role}
-        </Typography>
-      </Typography>
+      {renderTitleByRole}
+
       {['xs', 'sm', 'md', 'lg'].includes(breakpoint) ? (
         <>
           <StyledButton

@@ -55,7 +55,6 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
             />
           </Box>
         )}
-
         {children}
       </StyledBoxWrap>
     </Box>

@@ -7,7 +7,6 @@ export const StyledHeaderLogoStyles = {
     md: 32,
   },
   maxHeight: 32,
-  cursor: 'pointer',
   '& .logo_name': {
     ...POSFont(24, 600, '32px', 'primary.main'),
   },
