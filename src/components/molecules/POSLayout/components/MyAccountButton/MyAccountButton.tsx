@@ -100,6 +100,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
         );
       case 'dashboard':
       case 'pipeline':
+      case 'pipeline_without_all':
         if (userType === UserType.CUSTOMER) {
           return MENU_LIST_CUSTOMER.map((item, index) => (
             <MenuItem
