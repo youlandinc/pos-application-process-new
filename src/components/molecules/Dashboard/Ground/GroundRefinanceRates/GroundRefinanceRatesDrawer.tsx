@@ -332,9 +332,7 @@ export const GroundRefinanceRatesDrawer: FC<
               <GroundRefinanceCardItem
                 info={`${POSFormatDollar(
                   selectedItem?.originationFee,
-                )}(${POSFormatPercent(
-                  selectedItem?.originationFeePer || 0.015,
-                )})`}
+                )}(${POSFormatPercent(selectedItem?.originationFeePer)})`}
                 label={'Lender origination fee'}
               />
               <GroundRefinanceCardItem
