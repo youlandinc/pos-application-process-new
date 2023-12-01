@@ -1,5 +1,7 @@
+import { useSwitch } from '@/hooks';
+import { CloseOutlined, ContentCopy } from '@mui/icons-material';
 import { FC, useCallback, useMemo, useState } from 'react';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
@@ -19,6 +21,7 @@ import {
 
 import {
   StyledButton,
+  StyledDialog,
   StyledFormItem,
   StyledGoogleAutoComplete,
   StyledLoading,
@@ -31,6 +34,7 @@ import {
 export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+  const { open, visible, close } = useSwitch(false);
 
   const [saveLoading, setSaveLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
@@ -257,7 +261,25 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
-              'Homeowner insurance must comply with our Policy Guidelines and it is required to close your loan. Once you are covered, provide your insurance provider’s contact information. This allows us to speak directly with your provider on the details and get confirmation that your home is insured.'
+              <Stack gap={1.5}>
+                Homeowner insurance must comply with our Policy Guidelines and
+                it is required to close your loan. Once you are covered, provide
+                your insurance provider&apos;s contact information. This allows
+                us to speak directly with your provider on the details and get
+                confirmation that your home is insured.
+                <Typography
+                  color={'primary.main'}
+                  onClick={open}
+                  sx={{
+                    color: 'primary.main',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                  }}
+                  variant={'body1'}
+                >
+                  View requirements
+                </Typography>
+              </Stack>
             }
             tipSx={{ mb: 0 }}
             width={'100%'}
@@ -271,7 +293,6 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
             >
               Skip
             </StyledButton>
-
             <StyledFormItem
               gap={3}
               label={'Insurance provider information'}
@@ -303,7 +324,6 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
 
               <StyledGoogleAutoComplete address={address} />
             </StyledFormItem>
-
             <StyledFormItem
               label={'Upload your evidence of insurance'}
               maxWidth={900}
@@ -316,7 +336,6 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
                 onSuccess={handledSuccess}
               />
             </StyledFormItem>
-
             <Stack
               flexDirection={'row'}
               gap={3}
@@ -350,6 +369,123 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
           </StyledFormItem>
         )}
       </Transitions>
+      <StyledDialog
+        content={
+          <Stack gap={3} my={3}>
+            <Stack gap={1.5}>
+              <Typography variant={'subtitle2'}>Amount of coverage</Typography>
+              <Stack>
+                <Typography>
+                  The borrower shall have insurance policies and coverages as
+                  follows:
+                </Typography>
+                <Stack
+                  component={'ul'}
+                  sx={{
+                    listStyle: 'disc',
+                    listStylePosition: 'inside',
+                    pl: 0,
+                  }}
+                >
+                  <Typography component={'li'} variant={'body3'}>
+                    The loan amount plus any priority lien or one hundred
+                    percent (100%) of replacement cost
+                  </Typography>
+                  <Typography component={'li'} variant={'body3'}>
+                    Minimum one million dollars ($1MM) liability coverage per
+                    occurrence. For smaller loans, liability is case by case.
+                  </Typography>
+                  <Typography component={'li'} variant={'body3'}>
+                    Builder&apos;s Risk policy including coverage for one
+                    hundred percent (100%) of the total cost of construction.
+                  </Typography>
+                </Stack>
+              </Stack>
+            </Stack>
+            <Stack>
+              <Typography variant={'subtitle2'}>Loss payable clause</Typography>
+              <Stack flexDirection={'row'} gap={1} mt={1.5}>
+                <Typography variant={'body3'}>
+                  YouLand Inc. ISAOA/ATIMA
+                </Typography>
+                <ContentCopy
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(
+                      'YouLand Inc. ISAOA/ATIMA 236 Kingfisher Avenue, Alameda, CA 94501',
+                    );
+                    enqueueSnackbar('Copied data to clipboard', {
+                      variant: 'success',
+                    });
+                  }}
+                  sx={{ fontSize: 18, cursor: 'pointer' }}
+                />
+              </Stack>
+              <Typography variant={'body3'}>236 Kingfisher Avenue,</Typography>
+              <Typography variant={'body3'}>Alameda, CA 94501</Typography>
+            </Stack>
+            <Stack gap={1.5}>
+              <Typography variant={'subtitle2'}>Loan number</Typography>
+              <Stack flexDirection={'row'} gap={1}>
+                <Typography variant={'body3'}>
+                  {router.query.processId}
+                </Typography>
+                <ContentCopy
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(
+                      router.query.processId as string,
+                    );
+                    enqueueSnackbar('Copied data to clipboard', {
+                      variant: 'success',
+                    });
+                  }}
+                  sx={{ fontSize: 18, cursor: 'pointer' }}
+                />
+              </Stack>
+            </Stack>
+          </Stack>
+        }
+        footer={
+          <Stack flexDirection={'row'} gap={1}>
+            <StyledButton
+              autoFocus
+              color={'info'}
+              onClick={close}
+              size={'small'}
+              sx={{ width: 80 }}
+              variant={'outlined'}
+            >
+              Close
+            </StyledButton>
+          </Stack>
+        }
+        header={
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+          >
+            Insurance requirements
+            <CloseOutlined
+              onClick={close}
+              sx={{
+                cursor: 'pointer',
+                '&:hover': {
+                  color: 'primary.main',
+                },
+              }}
+            />
+          </Stack>
+        }
+        onClose={(event, reason) => {
+          if (reason !== 'backdropClick') {
+            close();
+          }
+        }}
+        open={visible}
+        PaperProps={{
+          sx: { maxWidth: '900px !important' },
+        }}
+      />
     </>
   );
 });
