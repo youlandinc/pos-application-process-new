@@ -328,9 +328,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = ({
               <FixPurchaseCardItem
                 info={`${POSFormatDollar(
                   selectedItem?.originationFee,
-                )}(${POSFormatPercent(
-                  selectedItem?.originationFeePer || 0.015,
-                )})`}
+                )}(${POSFormatPercent(selectedItem?.originationFeePer)})`}
                 label={'Lender origination fee'}
               />
               <FixPurchaseCardItem

@@ -315,9 +315,7 @@ export const BridgeRefinanceRatesDrawer: FC<
               <BridgeRefinanceCardItem
                 info={`${POSFormatDollar(
                   selectedItem?.originationFee,
-                )}(${POSFormatPercent(
-                  selectedItem?.originationFeePer || 0.015,
-                )})`}
+                )}(${POSFormatPercent(selectedItem?.originationFeePer)})`}
                 label={'Lender origination fee'}
               />
               <BridgeRefinanceCardItem
