@@ -1,3 +1,4 @@
+import { Box, Stack, Typography } from '@mui/material';
 import {
   CloseOutlined,
   CloudUploadOutlined,
@@ -6,7 +7,6 @@ import {
   GetAppOutlined,
   RemoveRedEyeOutlined,
 } from '@mui/icons-material';
-import { Box, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { ChangeEvent, useCallback, useState } from 'react';
 
@@ -31,7 +31,7 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
     fileList,
     onDelete,
     label,
-    fileSize = 5, // MB
+    fileSize = 100, // MB
     uploadText = 'Upload file',
     accept = 'image/*,.pdf',
     loading = false,
@@ -59,15 +59,12 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
       let flag = true;
       Array.from(files).some((item) => {
         if (item.size / 1024 / 1024 > fileSize) {
-          enqueueSnackbar(
-            'The uploaded file is too large. Please select a smaller file and try again.',
-            {
-              header: 'Upload Failed',
-              variant: 'error',
-              autoHideDuration: AUTO_HIDE_DURATION,
-              isSimple: false,
-            },
-          );
+          enqueueSnackbar('File size cannot exceed 100MB.', {
+            header: 'Upload Failed',
+            variant: 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: false,
+          });
           flag = false;
           return true;
         }

@@ -37,6 +37,12 @@ export const GroundPurchaseEstimateRate = types
         },
       };
     },
+    injectModifyData(data: any) {
+      self.purchaseLoanAmount = data.purchaseLoanAmount;
+      self.purchasePrice = data.purchasePrice;
+      self.cor = data.cor;
+      self.arv = data.arv;
+    },
     injectServerData(value: GPEstimateRateData) {
       const { purchasePrice, purchaseLoanAmount, cor, arv, closeDate } = value;
       self.purchaseLoanAmount = purchaseLoanAmount;

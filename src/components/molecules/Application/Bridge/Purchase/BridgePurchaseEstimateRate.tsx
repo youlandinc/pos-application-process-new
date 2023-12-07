@@ -97,6 +97,7 @@ export const BridgePurchaseEstimateRate: FC<{
 
   const [searchForm, setSearchForm] = useState<BPQueryData>({
     ...initialize,
+    ...estimateRate,
     closeDate: estimateRate.closeDate
       ? new Date(estimateRate.closeDate)
       : initialize.closeDate,

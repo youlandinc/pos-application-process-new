@@ -38,6 +38,12 @@ export const BREstimateRate = types
         },
       };
     },
+    injectModifyData(value: any) {
+      self.homeValue = value.homeValue;
+      self.isCashOut = value.isCashOut;
+      self.cashOutAmount = value.cashOutAmount;
+      self.balance = value.balance;
+    },
     injectServerData(value: BREstimateRateData) {
       const { homeValue, balance, isCashOut, cashOutAmount, closeDate } = value;
 

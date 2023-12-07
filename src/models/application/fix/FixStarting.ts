@@ -1,10 +1,10 @@
-import { Instance, SnapshotOut, types } from 'mobx-state-tree';
-
-import { FixPurpose } from './FixPurpose';
-import { FixProperty } from './FixProperty';
+import { FixStartingData } from '@/types/application/fix';
 
 import { StartingState, VariableName } from '@/types/enum';
-import { FixStartingData } from '@/types/application/fix';
+import { Instance, SnapshotOut, types } from 'mobx-state-tree';
+import { FixProperty } from './FixProperty';
+
+import { FixPurpose } from './FixPurpose';
 
 export const FixStarting = types
   .model({
@@ -15,6 +15,13 @@ export const FixStarting = types
   .actions((self) => ({
     changeState(state: typeof self.state) {
       self.state = state;
+    },
+    injectModifyData(data: any) {
+      self.purpose.values.address.state = data.propAddr.state;
+      self.property.values.propertyType =
+        data.propertyType === '2_to_4_units'
+          ? 'two_to_four_family'
+          : data.propertyType;
     },
     injectServerData(value: FixStartingData) {
       const {

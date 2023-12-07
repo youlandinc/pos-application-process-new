@@ -196,7 +196,7 @@ export const BridgeRefinanceTaskInvestmentExperience: FC = observer(() => {
             </StyledFormItem>
 
             <StyledFormItem
-              label={'Upload track record (optional)'}
+              label={'Upload track record (if applicable)'}
               sub
               tip={
                 <Stack color={'info.main'}>

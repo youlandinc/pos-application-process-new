@@ -50,6 +50,14 @@ export const GroundRefinanceEstimateRate = types
         },
       };
     },
+    injectModifyData(data: any) {
+      self.homeValue = data.homeValue;
+      self.balance = data.balance;
+      self.isCashOut = data.isCashOut;
+      self.cashOutAmount = data.cashOutAmount;
+      self.cor = data.cor;
+      self.arv = data.arv;
+    },
     injectServerData(value: GREstimateRateData) {
       const {
         homeValue,

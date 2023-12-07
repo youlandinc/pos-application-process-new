@@ -1,10 +1,10 @@
+import { GroundStartingData } from '@/types';
+
+import { StartingState, VariableName } from '@/types/enum';
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 
 import { GroundProperty } from './GroundProperty';
 import { GroundPurpose } from './GroundPurpose';
-
-import { StartingState, VariableName } from '@/types/enum';
-import { GroundStartingData } from '@/types';
 
 export const GroundStarting = types
   .model({
@@ -15,6 +15,13 @@ export const GroundStarting = types
   .actions((self) => ({
     changeState(state: typeof self.state) {
       self.state = state;
+    },
+    injectModifyData(data: any) {
+      self.purpose.values.address.state = data.propAddr.state;
+      self.property.values.propertyType =
+        data.propertyType === '2_to_4_units'
+          ? 'two_to_four_family'
+          : data.propertyType;
     },
     injectServerData(value: GroundStartingData) {
       const {

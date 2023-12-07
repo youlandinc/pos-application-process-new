@@ -375,38 +375,40 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
       <StyledDialog
         content={
           <Stack gap={3} my={3}>
-            <Stack gap={1.5}>
-              <Typography variant={'subtitle2'}>Amount of coverage</Typography>
-              <Stack>
-                <Typography>
-                  The borrower shall have insurance policies and coverages as
-                  follows:
-                </Typography>
-                <Stack
-                  component={'ul'}
-                  sx={{
-                    listStyle: 'disc',
-                    listStylePosition: 'inside',
-                    pl: 0,
-                  }}
-                >
-                  <Typography component={'li'} variant={'body3'}>
-                    The loan amount plus any priority lien or one hundred
-                    percent (100%) of replacement cost
-                  </Typography>
-                  <Typography component={'li'} variant={'body3'}>
-                    Minimum one million dollars ($1MM) liability coverage per
-                    occurrence. For smaller loans, liability is case by case.
-                  </Typography>
-                  <Typography component={'li'} variant={'body3'}>
-                    Builder&apos;s Risk policy including coverage for one
-                    hundred percent (100%) of the total cost of construction.
-                  </Typography>
-                </Stack>
-              </Stack>
-            </Stack>
+            {/*<Stack gap={1.5}>*/}
+            {/*  <Typography variant={'subtitle2'}>Amount of coverage</Typography>*/}
+            {/*  <Stack>*/}
+            {/*    <Typography>*/}
+            {/*      The borrower shall have insurance policies and coverages as*/}
+            {/*      follows:*/}
+            {/*    </Typography>*/}
+            {/*    <Stack*/}
+            {/*      component={'ul'}*/}
+            {/*      sx={{*/}
+            {/*        listStyle: 'disc',*/}
+            {/*        listStylePosition: 'inside',*/}
+            {/*        pl: 0,*/}
+            {/*      }}*/}
+            {/*    >*/}
+            {/*      <Typography component={'li'} variant={'body3'}>*/}
+            {/*        The loan amount plus any priority lien or one hundred*/}
+            {/*        percent (100%) of replacement cost*/}
+            {/*      </Typography>*/}
+            {/*      <Typography component={'li'} variant={'body3'}>*/}
+            {/*        Minimum one million dollars ($1MM) liability coverage per*/}
+            {/*        occurrence. For smaller loans, liability is case by case.*/}
+            {/*      </Typography>*/}
+            {/*      <Typography component={'li'} variant={'body3'}>*/}
+            {/*        Builder&apos;s Risk policy including coverage for one*/}
+            {/*        hundred percent (100%) of the total cost of construction.*/}
+            {/*      </Typography>*/}
+            {/*    </Stack>*/}
+            {/*  </Stack>*/}
+            {/*</Stack>*/}
             <Stack>
-              <Typography variant={'subtitle2'}>Loss payable clause</Typography>
+              <Typography variant={'subtitle2'}>
+                Mortgagee information
+              </Typography>
               <Stack flexDirection={'row'} gap={1} mt={1.5}>
                 <Typography variant={'body3'}>
                   YouLand Inc. ISAOA/ATIMA

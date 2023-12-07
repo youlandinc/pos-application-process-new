@@ -102,6 +102,7 @@ export const GroundPurchaseEstimateRate: FC<{
 
   const [searchForm, setSearchForm] = useState<GPQueryData>({
     ...initialize,
+    ...estimateRate,
     closeDate: estimateRate.closeDate
       ? new Date(estimateRate.closeDate)
       : initialize.closeDate,

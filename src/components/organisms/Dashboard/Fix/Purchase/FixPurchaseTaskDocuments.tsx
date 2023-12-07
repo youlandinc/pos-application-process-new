@@ -534,7 +534,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
 
               <StyledUploadButtonBox
                 fileList={replacementFiles}
-                label={'Replacement cost estimate (optional)'}
+                label={'Replacement cost estimate (RCE)'}
                 onDelete={(index) => handledDelete(index, 'replacement')}
                 onSuccess={(files) => handledSuccess(files, 'replacement')}
               />
