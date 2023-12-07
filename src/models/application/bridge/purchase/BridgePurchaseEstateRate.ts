@@ -33,6 +33,10 @@ export const BPEstimateRate = types
         },
       };
     },
+    injectModifyData(value: any) {
+      self.purchasePrice = value.purchasePrice;
+      self.purchaseLoanAmount = value.purchaseLoanAmount;
+    },
     injectServerData(value: BPEstimateRateData) {
       const { purchasePrice, purchaseLoanAmount, closeDate } = value;
       self.purchaseLoanAmount = purchaseLoanAmount;

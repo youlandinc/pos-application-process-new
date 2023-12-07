@@ -543,14 +543,14 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
 
               <StyledUploadButtonBox
                 fileList={replacementFiles}
-                label={'Replacement cost estimate (optional)'}
+                label={'Replacement cost estimate (RCE)'}
                 onDelete={(index) => handledDelete(index, 'replacement')}
                 onSuccess={(files) => handledSuccess(files, 'replacement')}
               />
 
               <StyledUploadButtonBox
                 fileList={leaseFiles}
-                label={'Lease agreement'}
+                label={'Lease agreement (if applicable)'}
                 onDelete={(index) => handledDelete(index, 'lease')}
                 onSuccess={(files) => handledSuccess(files, 'lease')}
               />

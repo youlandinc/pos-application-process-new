@@ -141,6 +141,9 @@ export const PersonalInfo = types
           },
         };
       },
+      injectModifyData(value: any) {
+        self.citizenship = value.citizenship;
+      },
       injectServerData(value: SelfInfoData) {
         const {
           firstName,

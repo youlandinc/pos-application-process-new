@@ -37,6 +37,12 @@ export const FixPurchaseEstimateRate = types
         },
       };
     },
+    injectModifyData(data: any) {
+      self.purchaseLoanAmount = data.purchaseLoanAmount;
+      self.purchasePrice = data.purchasePrice;
+      self.cor = data.cor;
+      self.arv = data.arv;
+    },
     injectServerData(value: FPEstimateRateData) {
       const { purchasePrice, purchaseLoanAmount, cor, arv, closeDate } = value;
       self.purchaseLoanAmount = purchaseLoanAmount;

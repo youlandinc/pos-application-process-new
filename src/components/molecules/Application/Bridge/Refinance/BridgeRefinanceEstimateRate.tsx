@@ -100,6 +100,7 @@ export const BridgeRefinanceEstimateRate: FC<{
 
   const [searchForm, setSearchForm] = useState<BRQueryData>({
     ...initialize,
+    ...estimateRate,
     closeDate: estimateRate.closeDate
       ? new Date(estimateRate.closeDate)
       : initialize.closeDate,
