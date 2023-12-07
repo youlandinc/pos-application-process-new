@@ -18,7 +18,6 @@ import { DetectActiveService } from '@/services/DetectActive';
 import { _fetchUserInfoByToken } from '@/requests';
 
 import {
-  StyledBoxWrap,
   StyledButton,
   StyledFormItem,
   StyledSelectOption,
