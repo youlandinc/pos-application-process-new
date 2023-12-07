@@ -80,7 +80,6 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
   const [authorizationFiles, setAuthorizationFiles] = useState<TaskFiles[]>([]);
   const [bankFiles, setBankFiles] = useState<TaskFiles[]>([]);
   const [prelimFiles, setPrelimFiles] = useState<TaskFiles[]>([]);
-  const [replacementFiles, setReplacementFiles] = useState<TaskFiles[]>([]);
 
   const [budgetFiles, setBudgetFiles] = useState<TaskFiles[]>([]);
 
@@ -113,8 +112,6 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
           return { data: bankFiles, action: setBankFiles };
         case 'prelim':
           return { data: prelimFiles, action: setPrelimFiles };
-        case 'replacement':
-          return { data: replacementFiles, action: setReplacementFiles };
         case 'budget':
           return { data: budgetFiles, action: setBudgetFiles };
         case 'questionnaire':
@@ -149,7 +146,6 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
       policyFiles,
       prelimFiles,
       questionnaireFiles,
-      replacementFiles,
       ss4Files,
       standingFiles,
       w9Files,
@@ -273,6 +269,7 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
           show1,
           show2,
           show3,
+          show4,
 
           payoffFiles,
           leaseFiles,
@@ -313,7 +310,6 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
         setAuthorizationFiles(authorizationFiles || []);
         setBankFiles(bankFiles || []);
         setPrelimFiles(prelimFiles || []);
-        setReplacementFiles(replacementFiles || []);
         setOtherFiles(otherFiles || []);
 
         setBudgetFiles(budgetFiles || []);
@@ -539,13 +535,6 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
                 label={'Lender payoff letter (optional)'}
                 onDelete={(index) => handledDelete(index, 'payoff')}
                 onSuccess={(files) => handledSuccess(files, 'payoff')}
-              />
-
-              <StyledUploadButtonBox
-                fileList={replacementFiles}
-                label={'Replacement cost estimate (RCE)'}
-                onDelete={(index) => handledDelete(index, 'replacement')}
-                onSuccess={(files) => handledSuccess(files, 'replacement')}
               />
 
               <StyledUploadButtonBox
