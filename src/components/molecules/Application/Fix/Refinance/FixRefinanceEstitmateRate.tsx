@@ -106,6 +106,7 @@ export const FixRefinanceEstimateRate: FC<{
 
   const [searchForm, setSearchForm] = useState<FRQueryData>({
     ...initialize,
+    ...estimateRate,
     closeDate: estimateRate.closeDate
       ? new Date(estimateRate.closeDate)
       : initialize.closeDate,

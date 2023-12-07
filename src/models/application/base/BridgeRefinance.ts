@@ -117,8 +117,25 @@ export const BridgeRefinance = types
       });
     },
     loadProcessData(processData: ProcessData) {
-      const { extra } = processData;
+      const { extra, modifyVariables } = processData;
       const variables = extra.variables;
+      const value = modifyVariables?.value;
+      // load modify data
+      if (value) {
+        value.forEach((item: any) => {
+          switch (item.name as VariableName) {
+            case VariableName.starting:
+              self.starting.injectModifyData(item.value);
+              break;
+            case VariableName.aboutUSelf:
+              self.creditScore.selfInfo.injectModifyData(item.value);
+              break;
+            case VariableName.estimateRate:
+              self.estimateRate.injectModifyData(item.value);
+              break;
+          }
+        });
+      }
       // load task data
       this.injectClientData(variables);
     },

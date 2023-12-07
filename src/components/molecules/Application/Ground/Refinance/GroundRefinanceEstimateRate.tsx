@@ -106,6 +106,7 @@ export const GroundRefinanceEstimateRate: FC<{
 
   const [searchForm, setSearchForm] = useState<GRQueryData>({
     ...initialize,
+    ...estimateRate,
     closeDate: estimateRate.closeDate
       ? new Date(estimateRate.closeDate)
       : initialize.closeDate,

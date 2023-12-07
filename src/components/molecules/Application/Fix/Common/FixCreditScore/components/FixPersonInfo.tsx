@@ -109,7 +109,7 @@ export const FixPersonInfo: FC = observer(() => {
           } phone number,  you are authorizing ${
             ' ' + saasState?.organizationName || ' YouLand'
           } to use this number to call, text and send ${
-            HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_third_subject
+            HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject
           } messages by any method. We don't charge for contacting you, but ${
             HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].third_pronoun
           } service provider may.`}

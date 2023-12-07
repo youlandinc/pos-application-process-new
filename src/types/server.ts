@@ -24,6 +24,7 @@ export interface ProcessData {
   owners: Array<{ userId: string }>;
   currentTasks: TaskData[];
   stage: LoanStage;
+  modifyVariables: any;
 }
 
 // PreApprovalLetter
