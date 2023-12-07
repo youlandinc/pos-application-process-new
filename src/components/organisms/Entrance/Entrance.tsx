@@ -18,6 +18,7 @@ import { DetectActiveService } from '@/services/DetectActive';
 import { _fetchUserInfoByToken } from '@/requests';
 
 import {
+  StyledBoxWrap,
   StyledButton,
   StyledFormItem,
   StyledSelectOption,
@@ -81,22 +82,7 @@ export const Entrance: FC = observer(() => {
 
   return (
     <Box sx={{ bgcolor: '#FFFFFF' }}>
-      <Stack
-        alignItems={'center'}
-        flexDirection={'row'}
-        justifyContent={'center'}
-      >
-        <Stack
-          alignItems={'center'}
-          flexDirection={'row'}
-          height={92}
-          justifyContent={'flex-start'}
-          px={{ lg: 0, xs: 'clamp(24px,6.4vw,80px)' }}
-          width={{ xxl: 1440, xl: 1240, lg: 938, xs: '100%' }}
-        >
-          <POSHeader scene={'application'} store={store} />
-        </Stack>
-      </Stack>
+      <POSHeader scene={'application'} store={store} />
 
       <Stack
         alignItems={'center'}
