@@ -1,10 +1,10 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { Box } from '@mui/material';
 
-import { StyledHeaderLogoProps, StyledHeaderLogoStyles } from './index';
+import { StyledHeaderLogoProps } from './index';
 import { useSessionStorageState } from '@/hooks';
 
-import { POSFormatUrl } from '@/utils';
+import { POSFormatUrl, POSGetImageSize } from '@/utils';
 
 export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
   sx,
@@ -12,6 +12,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
   disabled = false,
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
+  const [ratio, setRatio] = useState(-1);
 
   const Logo = useMemo(() => {
     if (saasState?.logoUrl) {
@@ -21,8 +22,42 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
         </picture>
       );
     }
-    return <Box className={'logo_name'}>{saasState?.organizationName}</Box>;
+    return (
+      <Box
+        sx={{
+          fontSize: 24,
+          fontWeight: 600,
+          lineHeight: 1.5,
+          color: 'primary.main',
+        }}
+      >
+        {saasState?.organizationName}
+      </Box>
+    );
   }, [logoUrl, saasState?.logoUrl, saasState?.organizationName]);
+
+  useEffect(() => {
+    if (saasState?.logoUrl) {
+      POSGetImageSize(saasState?.logoUrl).then((res) =>
+        setRatio(res as number),
+      );
+    }
+  }, [saasState?.logoUrl]);
+
+  const computedHeight = useMemo(() => {
+    switch (true) {
+      case ratio < 1:
+        return { md: 'calc(100% - 30px)', xs: 'calc(100% - 48px)' };
+      case ratio === 1:
+        return { md: 'calc(100% - 36px)', xs: 'calc(100% - 60px)' };
+      case ratio > 1:
+        return { md: 'calc(100% - 48px)', xs: 'calc(100% - 60px)' };
+      case ratio === -1:
+        return { md: 32, xs: 24 };
+      default:
+        return { md: 32, xs: 24 };
+    }
+  }, [ratio]);
 
   return (
     <Box
@@ -34,7 +69,8 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
         saasState?.website && (location.href = url);
       }}
       sx={{
-        ...StyledHeaderLogoStyles,
+        position: 'relative',
+        height: computedHeight,
         ...sx,
         cursor: saasState?.website ? 'pointer' : 'default',
       }}
