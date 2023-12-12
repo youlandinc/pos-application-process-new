@@ -47,3 +47,16 @@ export const POSSVGAnimation = (
     path.style.animationDelay = `${i * delay}s`;
   }
 };
+
+export const POSGetImageSize = async (src: string) => {
+  if (!src) {
+    return;
+  }
+
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => resolve(img.naturalWidth / img.naturalHeight);
+    img.onerror = reject;
+  });
+};
