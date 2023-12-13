@@ -141,7 +141,7 @@ export const RatesSearchNoResult: FC<{ reasonList?: string[] }> = ({
             justifyContent={'center'}
           >
             <MailOutlineOutlined />
-            {saasState?.posSetting?.email || 'borrow@youland.com'}
+            {saasState?.posSettings?.email || 'borrow@youland.com'}
           </Stack>
         </Stack>
       </Stack>
