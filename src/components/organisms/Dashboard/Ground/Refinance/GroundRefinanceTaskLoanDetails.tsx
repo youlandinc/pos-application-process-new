@@ -367,7 +367,7 @@ export const GroundRefinanceTaskLoanDetails: FC = () => {
                 onClick={handledSubmit}
                 sx={{ flex: 1 }}
               >
-                Save
+                Confirm
               </StyledButton>
             </Stack>
           </StyledFormItem>

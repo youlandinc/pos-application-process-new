@@ -249,7 +249,7 @@ export const GroundRefinanceTaskUploadPictures: FC = observer(() => {
                 onClick={handledSubmit}
                 sx={{ flex: 1 }}
               >
-                Save
+                Confirm
               </StyledButton>
             </Stack>
           </StyledFormItem>
