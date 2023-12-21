@@ -129,7 +129,7 @@ export const StyledNotification = forwardRef<
           <Typography
             color={'#636A7C'}
             sx={{
-              wordBreak: 'break-all',
+              wordBreak: 'break-word',
             }}
             variant={'body2'}
           >
