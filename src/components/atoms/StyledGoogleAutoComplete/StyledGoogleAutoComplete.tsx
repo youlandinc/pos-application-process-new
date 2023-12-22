@@ -177,6 +177,7 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
       autoComplete={false}
       autoSelect={false}
       clearOnBlur={false}
+      filterOptions={(options) => options}
       filterSelectedOptions
       freeSolo
       getOptionLabel={(option) => {
