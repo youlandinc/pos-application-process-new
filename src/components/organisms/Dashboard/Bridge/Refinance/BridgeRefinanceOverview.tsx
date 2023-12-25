@@ -44,7 +44,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
   const [thirdParty, setThirdParty] = useState<CommonOverviewInfo>();
 
   const { loading } = useAsync(async () => {
-    const { processId } = POSGetParamsFromUrl(location.hrf);
+    const { processId } = POSGetParamsFromUrl(location.href);
     if (!processId || !saasState?.serviceTypeEnum) {
       return;
     }
