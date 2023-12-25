@@ -9,7 +9,7 @@ const PipelineGovernmentModule: FC = () => {
       <Head>
         <title>Tasks - Government ID</title>
       </Head>
-      <PipelinePage>
+      <PipelinePage scene={'pipeline'}>
         <PipelineGovernmentPage />
       </PipelinePage>
     </>

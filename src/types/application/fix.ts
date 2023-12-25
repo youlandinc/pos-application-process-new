@@ -48,6 +48,9 @@ export interface FPEstimateRateData {
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
   closeDate?: string | null | Date | undefined;
+  customRate?: boolean | undefined;
+  interestRate?: number | undefined;
+  loanTerm?: number | undefined;
 }
 
 export interface FREstimateRateData {
@@ -65,4 +68,7 @@ export interface FREstimateRateData {
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
   closeDate?: string | null | Date | undefined;
+  customRate?: boolean | undefined;
+  interestRate?: number | undefined;
+  loanTerm?: number | undefined;
 }

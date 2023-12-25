@@ -48,6 +48,9 @@ const initialize: BPQueryData = {
   officerPoints: undefined,
   officerProcessingFee: undefined,
   agentFee: undefined,
+  customRate: undefined,
+  interestRate: undefined,
+  loanTerm: undefined,
 };
 
 export const BridgePurchaseRates: FC = observer(() => {
@@ -313,14 +316,16 @@ export const BridgePurchaseRates: FC = observer(() => {
                   setSearchForm={setSearchForm}
                   userType={userType}
                 />
-                <RatesList
-                  loading={loading || initLoading}
-                  loanStage={loanStage}
-                  onClick={onListItemClick}
-                  productList={productList || []}
-                  reasonList={reasonList}
-                  userType={userType}
-                />
+                {!searchForm.customRate && (
+                  <RatesList
+                    loading={loading || initLoading}
+                    loanStage={loanStage}
+                    onClick={onListItemClick}
+                    productList={productList || []}
+                    reasonList={reasonList}
+                    userType={userType}
+                  />
+                )}
                 <BridgePurchaseRatesDrawer
                   close={close}
                   loading={confirmLoading}

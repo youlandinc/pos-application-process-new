@@ -52,6 +52,9 @@ export interface BPEstimateRateData {
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
   closeDate?: string | null | undefined | Date;
+  customRate?: boolean | undefined;
+  interestRate?: number | undefined;
+  loanTerm?: number | undefined;
 }
 
 export interface BREstimateRateData {
@@ -67,6 +70,9 @@ export interface BREstimateRateData {
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
   closeDate?: string | null | undefined | Date;
+  customRate?: boolean | undefined;
+  interestRate?: number | undefined;
+  loanTerm?: number | undefined;
 }
 
 export type BPDashboardTaskKey =

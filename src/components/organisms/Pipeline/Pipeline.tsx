@@ -36,6 +36,7 @@ export const Pipeline: FC = observer(() => {
     userType,
     session,
     selectedProcessData,
+    applicationForm,
   } = useMst();
 
   const [firstLoading, setFirstLoading] = useState<boolean>(true);
@@ -143,6 +144,7 @@ export const Pipeline: FC = observer(() => {
     }
     switch (row.loanStage) {
       case LoanStage.Application:
+        applicationForm.resetForm();
         await router.push(
           `/application/${POSGetProductTypeByUrl(row.productType)}?processId=${
             row.youlandId

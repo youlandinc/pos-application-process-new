@@ -9,7 +9,7 @@ const PipelineW9Module: FC = () => {
       <Head>
         <title>Tasks - W9 Form</title>
       </Head>
-      <PipelinePage>
+      <PipelinePage scene={'pipeline'}>
         <PipelineW9Page />
       </PipelinePage>
     </>

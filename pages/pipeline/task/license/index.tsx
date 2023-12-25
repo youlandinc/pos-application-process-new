@@ -9,7 +9,7 @@ const PipelineLicenseModule: FC = () => {
       <Head>
         <title>Tasks - License</title>
       </Head>
-      <PipelinePage>
+      <PipelinePage scene={'pipeline'}>
         <PipelineLicensePage />
       </PipelinePage>
     </>
