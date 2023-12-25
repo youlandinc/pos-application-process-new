@@ -20,6 +20,7 @@ import {
   POSFormatDollar,
   POSFormatLocalPercent,
   POSFormatPercent,
+  POSGetParamsFromUrl,
 } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
 
@@ -43,12 +44,11 @@ export const BridgeRefinanceOverview: FC = observer(() => {
   const [thirdParty, setThirdParty] = useState<CommonOverviewInfo>();
 
   const { loading } = useAsync(async () => {
-    if (!router.query.processId || !saasState?.serviceTypeEnum) {
+    const { processId } = POSGetParamsFromUrl(location.hrf);
+    if (!processId || !saasState?.serviceTypeEnum) {
       return;
     }
-    return await _fetchOverviewLoanSummary<BROverviewSummaryData>(
-      router.query.processId as string,
-    )
+    return await _fetchOverviewLoanSummary<BROverviewSummaryData>(processId)
       .then((res) => {
         const {
           data: { summary, product, loanDetail, thirdParty },
