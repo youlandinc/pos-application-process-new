@@ -22,6 +22,7 @@ import {
   POSFormatDollar,
   POSFormatLocalPercent,
   POSFormatPercent,
+  POSGetParamsFromUrl,
 } from '@/utils';
 
 import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
@@ -44,12 +45,11 @@ export const BridgePurchaseOverview: FC = observer(() => {
   const [thirdParty, setThirdParty] = useState<CommonOverviewInfo>();
 
   const { loading } = useAsync(async () => {
-    if (!router.query.processId || !saasState?.serviceTypeEnum) {
+    const { processId } = POSGetParamsFromUrl(location.href);
+    if (!processId || !saasState?.serviceTypeEnum) {
       return;
     }
-    return await _fetchOverviewLoanSummary<BPOverviewSummaryData>(
-      router.query.processId as string,
-    )
+    return await _fetchOverviewLoanSummary<BPOverviewSummaryData>(processId)
       .then((res) => {
         const {
           data: { summary, product, loanDetail, thirdParty },
