@@ -47,9 +47,9 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
   const computedHeight = useMemo(() => {
     switch (true) {
       case ratio < 1:
-        return { md: 'calc(100% - 30px)', xs: 'calc(100% - 48px)' };
+        return { md: '80px', xs: 'calc(100% - 48px)' };
       case ratio === 1:
-        return { md: 'calc(100% - 36px)', xs: 'calc(100% - 60px)' };
+        return { md: '80px', xs: 'calc(100% - 60px)' };
       case ratio > 1:
         return { md: 'calc(100% - 48px)', xs: 'calc(100% - 60px)' };
       case ratio === -1:
@@ -73,6 +73,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
         height: computedHeight,
         ...sx,
         cursor: saasState?.website ? 'pointer' : 'default',
+        mt: { md: ratio <= 1 ? 4 : 0, xs: 0 },
       }}
     >
       {Logo}
