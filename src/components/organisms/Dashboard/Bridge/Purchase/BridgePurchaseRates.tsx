@@ -1,8 +1,8 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/router';
-import { useAsync } from 'react-use';
+import { useAsyncFn } from 'react-use';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
@@ -18,9 +18,14 @@ import {
   HttpError,
   RatesProductData,
 } from '@/types';
-import { POSFormatDollar, POSFormatPercent } from '@/utils';
+import {
+  POSFormatDollar,
+  POSFormatPercent,
+  POSGetParamsFromUrl,
+} from '@/utils';
 
 import {
+  _fetchCustomRates,
   _fetchRatesLoanInfo,
   _fetchRatesProduct,
   _fetchRatesProductPreview,
@@ -62,6 +67,7 @@ export const BridgePurchaseRates: FC = observer(() => {
   const { saasState } = useSessionStorageState('tenantConfig');
   const { open, visible, close } = useSwitch(false);
 
+  const [isFirst, setIsFirst] = useState(true);
   const [loading, setLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -90,13 +96,14 @@ export const BridgePurchaseRates: FC = observer(() => {
       >
   >();
 
-  const { loading: initLoading } = useAsync(async () => {
-    if (!router.query.processId) {
+  const [state, fetchInitData] = useAsyncFn(async () => {
+    const { processId } = POSGetParamsFromUrl(location.href);
+    if (!processId) {
       return;
     }
     return Promise.all([
-      _fetchRatesProduct(router.query.processId as string),
-      _fetchRatesLoanInfo(router.query.processId as string),
+      _fetchRatesProduct(processId),
+      _fetchRatesLoanInfo(processId),
     ])
       .then((res) => {
         const { products, selectedProduct } = res[0].data;
@@ -131,6 +138,9 @@ export const BridgePurchaseRates: FC = observer(() => {
           officerPoints,
           officerProcessingFee,
           agentFee,
+          customRate,
+          interestRate,
+          loanTerm,
         } = info;
         setSearchForm({
           ...searchForm,
@@ -143,6 +153,9 @@ export const BridgePurchaseRates: FC = observer(() => {
           officerPoints,
           officerProcessingFee,
           agentFee,
+          customRate,
+          interestRate,
+          loanTerm,
         });
       })
       .catch((err) => {
@@ -154,23 +167,49 @@ export const BridgePurchaseRates: FC = observer(() => {
           header,
           onClose: () => router.push('/pipeline'),
         });
+      })
+      .finally(() => {
+        isFirst && setIsFirst(false);
       });
   });
 
   const onCheckGetList = async () => {
     setLoading(true);
-    await _fetchRatesProductPreview(
-      router.query.processId as string,
-      searchForm,
-    )
-      .then((res) => {
-        const { products, loanInfo, reasons, selectedProduct } = res.data;
-        setProductList(products);
-        setLoanInfo({ ...loanInfo, ...selectedProduct });
-        setLoading(false);
-        setReasonList(reasons);
-      })
-      .catch((err) => {
+    if (!searchForm.customRate) {
+      await _fetchRatesProductPreview(
+        router.query.processId as string,
+        searchForm,
+      )
+        .then((res) => {
+          const { products, loanInfo, reasons, selectedProduct } = res.data;
+          setProductList(products);
+          setLoanInfo({ ...loanInfo, ...selectedProduct });
+          setLoading(false);
+          setReasonList(reasons);
+        })
+        .catch((err) => {
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      try {
+        const {
+          data: { loanInfo, product },
+        } = await _fetchCustomRates(
+          router.query.processId as string,
+          searchForm,
+        );
+        setSelectedItem({ ...loanInfo, ...product });
+        open();
+      } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
           variant: variant || 'error',
@@ -178,8 +217,10 @@ export const BridgePurchaseRates: FC = observer(() => {
           isSimple: !header,
           header,
         });
+      } finally {
         setLoading(false);
-      });
+      }
+    }
   };
 
   const onListItemClick = async (item: RatesProductData) => {
@@ -241,17 +282,24 @@ export const BridgePurchaseRates: FC = observer(() => {
     };
     try {
       await updateSelectedProduct(postData);
+      await fetchInitData();
     } finally {
       close();
       productList?.forEach(
         (item) => (item.selected = selectedItem!.id === item.id),
       );
       setConfirmLoading(false);
-      setTimeout(async () => {
-        setView('current');
-      }, 1000);
+      setView('current');
     }
   };
+
+  useEffect(
+    () => {
+      fetchInitData();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   return (
     <Transitions
@@ -261,7 +309,7 @@ export const BridgePurchaseRates: FC = observer(() => {
         justifyContent: 'center',
       }}
     >
-      {initLoading ? (
+      {isFirst || state.loading ? (
         <Stack
           alignItems={'center'}
           justifyContent={'center'}
@@ -309,7 +357,7 @@ export const BridgePurchaseRates: FC = observer(() => {
                 </Typography>
                 <BridgePurchaseRatesSearch
                   isDashboard={true}
-                  loading={loading || initLoading}
+                  loading={loading || state.loading}
                   loanStage={loanStage}
                   onCheck={onCheckGetList}
                   searchForm={searchForm}
@@ -318,7 +366,7 @@ export const BridgePurchaseRates: FC = observer(() => {
                 />
                 {!searchForm.customRate && (
                   <RatesList
-                    loading={loading || initLoading}
+                    loading={loading || state.loading}
                     loanStage={loanStage}
                     onClick={onListItemClick}
                     productList={productList || []}

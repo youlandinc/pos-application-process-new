@@ -1,12 +1,16 @@
 import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
 import RATE_CONFIRMED from '@/svg/dashboard/rate_confirmed.svg';
 import RATE_CURRENT from '@/svg/dashboard/rate_current.svg';
-import { POSFormatDollar, POSFormatPercent } from '@/utils';
+import {
+  POSFormatDollar,
+  POSFormatPercent,
+  POSGetParamsFromUrl,
+} from '@/utils';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useAsync } from 'react-use';
+import { useAsyncFn } from 'react-use';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
@@ -24,6 +28,7 @@ import {
 } from '@/types';
 
 import {
+  _fetchCustomRates,
   _fetchRatesLoanInfo,
   _fetchRatesProduct,
   _fetchRatesProductPreview,
@@ -49,6 +54,9 @@ const initialize: BRQueryData = {
   officerPoints: undefined,
   officerProcessingFee: undefined,
   agentFee: undefined,
+  customRate: undefined,
+  interestRate: undefined,
+  loanTerm: undefined,
 };
 
 export const BridgeRefinanceRates: FC = observer(() => {
@@ -60,6 +68,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
   const { saasState } = useSessionStorageState('tenantConfig');
   const { open, visible, close } = useSwitch(false);
 
+  const [isFirst, setIsFirst] = useState(true);
   const [loading, setLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -72,7 +81,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
   const [productList, setProductList] = useState<RatesProductData[]>();
   const [reasonList, setReasonList] = useState<string[]>([]);
 
-  const [, setEncompassData] = useState<Encompass>();
+  const [encompassData, setEncompassData] = useState<Encompass>();
   const [loanInfo, setLoanInfo] = useState<
     BridgeRefinanceLoanInfo & RatesProductData
   >();
@@ -88,18 +97,20 @@ export const BridgeRefinanceRates: FC = observer(() => {
       >
   >();
 
-  const { loading: initLoading } = useAsync(async () => {
-    if (!router.query.processId) {
+  const [state, fetchInitData] = useAsyncFn(async () => {
+    const { processId } = POSGetParamsFromUrl(location.href);
+    if (!processId) {
       return;
     }
     return Promise.all([
-      _fetchRatesProduct(router.query.processId as string),
-      _fetchRatesLoanInfo(router.query.processId as string),
+      _fetchRatesProduct(processId),
+      _fetchRatesLoanInfo(processId),
     ])
       .then((res) => {
         const { products, selectedProduct } = res[0].data;
         setProductList(products);
-        const { info, loanStage, encompass } = res[1].data;
+        const { info, loanStage } = res[1].data;
+        setEncompassData(encompassData);
         switch (loanStage) {
           case LoanStage.Approved:
             setView('confirmed');
@@ -108,12 +119,12 @@ export const BridgeRefinanceRates: FC = observer(() => {
             setView('current');
         }
         setLoanStage(loanStage);
-        setEncompassData(encompass);
 
         setLoanInfo({
           ...info,
           ...selectedProduct,
         });
+
         setPrimitiveLoanInfo({
           ...info,
           ...selectedProduct,
@@ -130,6 +141,9 @@ export const BridgeRefinanceRates: FC = observer(() => {
           officerPoints,
           officerProcessingFee,
           agentFee,
+          customRate,
+          interestRate,
+          loanTerm,
         } = info;
         setSearchForm({
           ...searchForm,
@@ -144,6 +158,9 @@ export const BridgeRefinanceRates: FC = observer(() => {
           officerPoints,
           officerProcessingFee,
           agentFee,
+          customRate,
+          interestRate,
+          loanTerm,
         });
       })
       .catch((err) => {
@@ -155,23 +172,49 @@ export const BridgeRefinanceRates: FC = observer(() => {
           header,
           onClose: () => router.push('/pipeline'),
         });
+      })
+      .finally(() => {
+        isFirst && setIsFirst(false);
       });
   });
 
   const onCheckGetList = async () => {
     setLoading(true);
-    await _fetchRatesProductPreview(
-      router.query.processId as string,
-      searchForm,
-    )
-      .then((res) => {
-        const { products, loanInfo, reasons, selectedProduct } = res.data;
-        setProductList(products);
-        setLoanInfo({ ...loanInfo, ...selectedProduct });
-        setLoading(false);
-        setReasonList(reasons);
-      })
-      .catch((err) => {
+    if (!searchForm.customRate) {
+      await _fetchRatesProductPreview(
+        router.query.processId as string,
+        searchForm,
+      )
+        .then((res) => {
+          const { products, loanInfo, reasons, selectedProduct } = res.data;
+          setProductList(products);
+          setLoanInfo({ ...loanInfo, ...selectedProduct });
+          setLoading(false);
+          setReasonList(reasons);
+        })
+        .catch((err) => {
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      try {
+        const {
+          data: { loanInfo, product },
+        } = await _fetchCustomRates(
+          router.query.processId as string,
+          searchForm,
+        );
+        setSelectedItem({ ...loanInfo, ...product });
+        open();
+      } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
           variant: variant || 'error',
@@ -179,8 +222,10 @@ export const BridgeRefinanceRates: FC = observer(() => {
           isSimple: !header,
           header,
         });
+      } finally {
         setLoading(false);
-      });
+      }
+    }
   };
 
   const onListItemClick = async (item: RatesProductData) => {
@@ -238,17 +283,24 @@ export const BridgeRefinanceRates: FC = observer(() => {
     };
     try {
       await updateSelectedProduct(postData);
+      await fetchInitData();
     } finally {
       close();
       productList?.forEach(
         (item) => (item.selected = selectedItem!.id === item.id),
       );
       setConfirmLoading(false);
-      setTimeout(async () => {
-        setView('current');
-      }, 1000);
+      setView('current');
     }
   };
+
+  useEffect(
+    () => {
+      fetchInitData();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   return (
     <Transitions
@@ -258,7 +310,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
         justifyContent: 'center',
       }}
     >
-      {initLoading ? (
+      {isFirst || state.loading ? (
         <Stack
           alignItems={'center'}
           justifyContent={'center'}
@@ -306,7 +358,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
                 </Typography>
                 <BridgeRefinanceRatesSearch
                   isDashboard={true}
-                  loading={loading || initLoading}
+                  loading={loading || state.loading}
                   loanStage={loanStage}
                   onCheck={onCheckGetList}
                   searchForm={searchForm}
@@ -314,7 +366,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
                   userType={userType as UserType}
                 />
                 <RatesList
-                  loading={loading || initLoading}
+                  loading={loading || state.loading}
                   loanStage={loanStage}
                   onClick={onListItemClick}
                   productList={productList || []}

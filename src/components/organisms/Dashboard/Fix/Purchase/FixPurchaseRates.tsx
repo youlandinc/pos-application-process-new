@@ -1,9 +1,8 @@
-import { POSFormatDollar, POSFormatPercent } from '@/utils';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/router';
-import { useAsync } from 'react-use';
+import { useAsyncFn } from 'react-use';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
@@ -11,9 +10,16 @@ import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { useSessionStorageState, useSwitch } from '@/hooks';
+
+import {
+  POSFormatDollar,
+  POSFormatPercent,
+  POSGetParamsFromUrl,
+} from '@/utils';
 import { LoanStage, UserType } from '@/types/enum';
 import { FixPurchaseLoanInfo } from '@/components/molecules/Application/Fix';
 import {
+  _fetchCustomRates,
   _fetchRatesLoanInfo,
   _fetchRatesProduct,
   _fetchRatesProductPreview,
@@ -29,7 +35,6 @@ import {
 } from '@/types';
 
 import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
-
 import {
   FixPurchaseRatesDrawer,
   FixPurchaseRatesSearch,
@@ -51,6 +56,9 @@ const initialize: FPQueryData = {
   officerPoints: undefined,
   officerProcessingFee: undefined,
   agentFee: undefined,
+  customRate: undefined,
+  interestRate: undefined,
+  loanTerm: undefined,
 };
 
 export const FixPurchaseRates: FC = observer(() => {
@@ -62,6 +70,7 @@ export const FixPurchaseRates: FC = observer(() => {
   const { saasState } = useSessionStorageState('tenantConfig');
   const { open, visible, close } = useSwitch(false);
 
+  const [isFirst, setIsFirst] = useState(true);
   const [loading, setLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -89,13 +98,14 @@ export const FixPurchaseRates: FC = observer(() => {
       >
   >();
 
-  const { loading: initLoading } = useAsync(async () => {
-    if (!router.query.processId) {
+  const [state, fetchInitData] = useAsyncFn(async () => {
+    const { processId } = POSGetParamsFromUrl(location.href);
+    if (!processId) {
       return;
     }
     return Promise.all([
-      _fetchRatesProduct(router.query.processId as string),
-      _fetchRatesLoanInfo(router.query.processId as string),
+      _fetchRatesProduct(processId),
+      _fetchRatesLoanInfo(processId),
     ])
       .then((res) => {
         const { products, selectedProduct } = res[0].data;
@@ -110,17 +120,19 @@ export const FixPurchaseRates: FC = observer(() => {
             setView('current');
         }
         setLoanStage(loanStage);
-        setLoanInfo({ ...info, ...selectedProduct });
-        setPrimitiveLoanInfo({
+
+        setLoanInfo({
           ...info,
           ...selectedProduct,
         });
 
+        setPrimitiveLoanInfo({
+          ...info,
+          ...selectedProduct,
+        });
         const {
           purchaseLoanAmount,
           purchasePrice,
-          cor,
-          arv,
           lenderPoints,
           lenderProcessingFee,
           brokerPoints,
@@ -128,13 +140,14 @@ export const FixPurchaseRates: FC = observer(() => {
           officerPoints,
           officerProcessingFee,
           agentFee,
+          customRate,
+          interestRate,
+          loanTerm,
         } = info;
         setSearchForm({
           ...searchForm,
           purchasePrice,
           purchaseLoanAmount,
-          cor,
-          arv,
           lenderPoints,
           lenderProcessingFee,
           brokerPoints,
@@ -142,6 +155,9 @@ export const FixPurchaseRates: FC = observer(() => {
           officerPoints,
           officerProcessingFee,
           agentFee,
+          customRate,
+          interestRate,
+          loanTerm,
         });
       })
       .catch((err) => {
@@ -153,23 +169,49 @@ export const FixPurchaseRates: FC = observer(() => {
           header,
           onClose: () => router.push('/pipeline'),
         });
+      })
+      .finally(() => {
+        isFirst && setIsFirst(false);
       });
   });
 
   const onCheckGetList = async () => {
     setLoading(true);
-    await _fetchRatesProductPreview(
-      router.query.processId as string,
-      searchForm,
-    )
-      .then((res) => {
-        const { products, loanInfo, reasons, selectedProduct } = res.data;
-        setProductList(products);
-        setLoanInfo({ ...loanInfo, ...selectedProduct });
-        setLoading(false);
-        setReasonList(reasons);
-      })
-      .catch((err) => {
+    if (!searchForm.customRate) {
+      await _fetchRatesProductPreview(
+        router.query.processId as string,
+        searchForm,
+      )
+        .then((res) => {
+          const { products, loanInfo, reasons, selectedProduct } = res.data;
+          setProductList(products);
+          setLoanInfo({ ...loanInfo, ...selectedProduct });
+          setLoading(false);
+          setReasonList(reasons);
+        })
+        .catch((err) => {
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
+          });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      try {
+        const {
+          data: { loanInfo, product },
+        } = await _fetchCustomRates(
+          router.query.processId as string,
+          searchForm,
+        );
+        setSelectedItem({ ...loanInfo, ...product });
+        open();
+      } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
           variant: variant || 'error',
@@ -177,8 +219,10 @@ export const FixPurchaseRates: FC = observer(() => {
           isSimple: !header,
           header,
         });
+      } finally {
         setLoading(false);
-      });
+      }
+    }
   };
 
   const onListItemClick = async (item: RatesProductData) => {
@@ -245,17 +289,24 @@ export const FixPurchaseRates: FC = observer(() => {
     };
     try {
       await updateSelectedProduct(postData);
+      await fetchInitData();
     } finally {
       close();
       productList?.forEach(
         (item) => (item.selected = selectedItem!.id === item.id),
       );
       setConfirmLoading(false);
-      setTimeout(async () => {
-        setView('current');
-      }, 1000);
+      setView('current');
     }
   };
+
+  useEffect(
+    () => {
+      fetchInitData();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   return (
     <Transitions
@@ -265,7 +316,7 @@ export const FixPurchaseRates: FC = observer(() => {
         justifyContent: 'center',
       }}
     >
-      {initLoading ? (
+      {isFirst || state.loading ? (
         <Stack
           alignItems={'center'}
           justifyContent={'center'}
@@ -313,7 +364,7 @@ export const FixPurchaseRates: FC = observer(() => {
                 </Typography>
                 <FixPurchaseRatesSearch
                   isDashboard={true}
-                  loading={loading || initLoading}
+                  loading={loading || state.loading}
                   loanStage={loanStage}
                   onCheck={onCheckGetList}
                   searchForm={searchForm}
@@ -321,7 +372,7 @@ export const FixPurchaseRates: FC = observer(() => {
                   userType={userType}
                 />
                 <RatesList
-                  loading={loading || initLoading}
+                  loading={loading || state.loading}
                   loanStage={loanStage}
                   onClick={onListItemClick}
                   productList={productList || []}
