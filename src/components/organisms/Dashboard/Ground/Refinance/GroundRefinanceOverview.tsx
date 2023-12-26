@@ -21,6 +21,7 @@ import {
   POSFormatDollar,
   POSFormatLocalPercent,
   POSFormatPercent,
+  POSGetParamsFromUrl,
 } from '@/utils';
 
 import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
@@ -46,12 +47,11 @@ export const GroundRefinanceOverview: FC = observer(() => {
   const [thirdParty, setThirdParty] = useState<CommonOverviewInfo>();
 
   const { loading } = useAsync(async () => {
-    if (!router.query.processId || !saasState?.serviceTypeEnum) {
+    const { processId } = POSGetParamsFromUrl(location.href);
+    if (!processId || !saasState?.serviceTypeEnum) {
       return;
     }
-    return await _fetchOverviewLoanSummary<GROverviewSummaryData>(
-      router.query.processId as string,
-    )
+    return await _fetchOverviewLoanSummary<GROverviewSummaryData>(processId)
       .then((res) => {
         const {
           data: { summary, product, loanDetail, thirdParty },

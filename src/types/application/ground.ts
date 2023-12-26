@@ -48,6 +48,9 @@ export interface GPEstimateRateData {
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
   closeDate?: string | undefined | Date | null;
+  customRate?: boolean | undefined;
+  interestRate?: number | undefined;
+  loanTerm?: number | undefined;
 }
 
 export interface GREstimateRateData {
@@ -65,4 +68,7 @@ export interface GREstimateRateData {
   officerProcessingFee?: number | undefined;
   agentFee?: number | undefined;
   closeDate?: string | undefined | Date | null;
+  customRate?: boolean | undefined;
+  interestRate?: number | undefined;
+  loanTerm?: number | undefined;
 }

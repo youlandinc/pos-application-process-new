@@ -17,6 +17,7 @@ import {
   VariableName,
 } from '@/types';
 import {
+  _fetchCustomRates,
   _fetchRatesProductPreview,
   _updateRatesProductSelected,
   FPQueryData,
@@ -41,6 +42,9 @@ const initialize: FPQueryData = {
   officerProcessingFee: undefined,
   agentFee: undefined,
   closeDate: null,
+  customRate: undefined,
+  interestRate: undefined,
+  loanTerm: undefined,
 };
 
 export interface FixPurchaseLoanInfo {
@@ -108,11 +112,14 @@ export const FixPurchaseEstimateRate: FC<{
       ? new Date(estimateRate.closeDate)
       : initialize.closeDate,
   });
-  const [productList, setProductList] = useState<RatesProductData[]>();
+  const [productList, setProductList] = useState<RatesProductData[]>([]);
   const [reasonList, setReasonList] = useState<string[]>([]);
   const [isFirstSearch, setIsFirstSearch] = useState<boolean>(true);
 
-  const [productInfo, setProductInfo] = useState<FixPurchaseLoanInfo>();
+  const [productInfo, setProductInfo] = useState<Partial<FixPurchaseLoanInfo>>(
+    {},
+  );
+
   const [selectedItem, setSelectedItem] = useState<
     FixPurchaseLoanInfo &
       Pick<
@@ -145,18 +152,45 @@ export const FixPurchaseEstimateRate: FC<{
     }
     await _updateProcessVariables(processId as string, [postData])
       .then(async () => {
-        const res = await _fetchRatesProductPreview(processId, {
+        const requestData = {
           ...searchForm,
           closeDate: isDate(searchForm.closeDate)
             ? format(searchForm.closeDate as Date, 'yyyy-MM-dd O')
             : POSTypeOf(searchForm.closeDate) === 'Null'
             ? format(addDays(new Date(), 7), 'yyyy-MM-dd O')
             : searchForm.closeDate,
-        });
-        if (res.status === 200) {
-          setProductList(res.data.products as RatesProductData[]);
-          setReasonList(res.data.reasons);
-          setProductInfo(res.data.loanInfo);
+        };
+        if (!searchForm.customRate) {
+          return await _fetchRatesProductPreview(processId, requestData);
+        }
+        return await _fetchCustomRates(processId, requestData);
+      })
+      .then((res) => {
+        if (searchForm.customRate) {
+          const {
+            paymentOfMonth,
+            interestRateOfYear,
+            loanTerm,
+            id,
+            totalClosingCash,
+            proRatedInterest,
+          } = res!.data.product;
+          setSelectedItem(
+            Object.assign(res!.data.loanInfo as FixPurchaseLoanInfo, {
+              paymentOfMonth,
+              interestRateOfYear,
+              loanTerm,
+              id,
+              totalClosingCash,
+              proRatedInterest,
+            }),
+          );
+          open();
+        } else {
+          setIsFirstSearch(false);
+          setProductInfo(res!.data.loanInfo);
+          setProductList(res!.data.products as RatesProductData[]);
+          setReasonList(res!.data.reasons);
         }
       })
       .catch((err) => {
@@ -167,6 +201,10 @@ export const FixPurchaseEstimateRate: FC<{
           isSimple: !header,
           header,
         });
+        if (!searchForm.customRate) {
+          setProductList([]);
+          setReasonList([]);
+        }
       })
       .finally(() => {
         setLoading(false);
@@ -235,14 +273,16 @@ export const FixPurchaseEstimateRate: FC<{
         setSearchForm={setSearchForm}
         userType={userType}
       />
-      <RatesList
-        isFirstSearch={isFirstSearch}
-        loading={loading}
-        onClick={onListItemClick}
-        productList={productList as RatesProductData[]}
-        reasonList={reasonList}
-        userType={userType}
-      />
+      {!searchForm.customRate && (
+        <RatesList
+          isFirstSearch={isFirstSearch}
+          loading={loading}
+          onClick={onListItemClick}
+          productList={productList as RatesProductData[]}
+          reasonList={reasonList}
+          userType={userType}
+        />
+      )}
       <FixPurchaseRatesDrawer
         close={close}
         loading={checkLoading}

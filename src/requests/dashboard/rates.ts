@@ -72,3 +72,10 @@ export const _updateRatesProductSelected = (
 export const _fetchRatesLoanInfo = (processInsId = '') => {
   return get(`/dashboard/rate/${processInsId}/info`);
 };
+
+export const _fetchCustomRates = (
+  processInsId = '',
+  postData: FetchProductMapPreviewQueryData,
+) => {
+  return post(`/dashboard/rate/${processInsId}/custom`, postData);
+};

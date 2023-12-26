@@ -1,14 +1,13 @@
-import { POSTypeOf } from '@/utils';
-import { addDays, format, isDate } from 'date-fns';
 import { FC, useState } from 'react';
 import { useSnackbar } from 'notistack';
+import { addDays, format, isDate } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { useSwitch } from '@/hooks';
-import { _updateProcessVariables } from '@/requests';
+import { POSTypeOf } from '@/utils';
 import {
   GPEstimateRateData,
   HttpError,
@@ -16,7 +15,10 @@ import {
   RatesProductData,
   VariableName,
 } from '@/types';
+
+import { _updateProcessVariables } from '@/requests';
 import {
+  _fetchCustomRates,
   _fetchRatesProductPreview,
   _updateRatesProductSelected,
   GPQueryData,
@@ -40,6 +42,9 @@ const initialize: GPQueryData = {
   officerProcessingFee: undefined,
   agentFee: undefined,
   closeDate: null,
+  customRate: undefined,
+  interestRate: undefined,
+  loanTerm: undefined,
 };
 
 export interface GroundPurchaseLoanInfo {
@@ -107,11 +112,13 @@ export const GroundPurchaseEstimateRate: FC<{
       ? new Date(estimateRate.closeDate)
       : initialize.closeDate,
   });
-  const [productList, setProductList] = useState<RatesProductData[]>();
+  const [productList, setProductList] = useState<RatesProductData[]>([]);
   const [reasonList, setReasonList] = useState<string[]>([]);
   const [isFirstSearch, setIsFirstSearch] = useState<boolean>(true);
 
-  const [productInfo, setProductInfo] = useState<GroundPurchaseLoanInfo>();
+  const [productInfo, setProductInfo] = useState<
+    Partial<GroundPurchaseLoanInfo>
+  >({});
   const [selectedItem, setSelectedItem] = useState<
     GroundPurchaseLoanInfo &
       Pick<
@@ -123,7 +130,6 @@ export const GroundPurchaseEstimateRate: FC<{
   const onCheckGetList = async () => {
     const element = document.getElementById('ground_up_purchase_rate_search');
     const { height } = element!.getBoundingClientRect();
-    setIsFirstSearch(false);
     setLoading(true);
     const postData: Variable<GPEstimateRateData> = {
       name: VariableName.estimateRate,
@@ -142,18 +148,45 @@ export const GroundPurchaseEstimateRate: FC<{
     }
     await _updateProcessVariables(processId as string, [postData])
       .then(async () => {
-        const res = await _fetchRatesProductPreview(processId, {
+        const requestData = {
           ...searchForm,
           closeDate: isDate(searchForm.closeDate)
             ? format(searchForm.closeDate as Date, 'yyyy-MM-dd O')
             : POSTypeOf(searchForm.closeDate) === 'Null'
             ? format(addDays(new Date(), 7), 'yyyy-MM-dd O')
             : searchForm.closeDate,
-        });
-        if (res.status === 200) {
-          setProductList(res.data.products as RatesProductData[]);
-          setReasonList(res.data.reasons);
-          setProductInfo(res.data.loanInfo);
+        };
+        if (!searchForm.customRate) {
+          return await _fetchRatesProductPreview(processId, requestData);
+        }
+        return await _fetchCustomRates(processId, requestData);
+      })
+      .then((res) => {
+        if (searchForm.customRate) {
+          const {
+            paymentOfMonth,
+            interestRateOfYear,
+            loanTerm,
+            id,
+            totalClosingCash,
+            proRatedInterest,
+          } = res!.data.product;
+          setSelectedItem(
+            Object.assign(res!.data.loanInfo as GroundPurchaseLoanInfo, {
+              paymentOfMonth,
+              interestRateOfYear,
+              loanTerm,
+              id,
+              totalClosingCash,
+              proRatedInterest,
+            }),
+          );
+          open();
+        } else {
+          setIsFirstSearch(false);
+          setProductInfo(res!.data.loanInfo);
+          setProductList(res!.data.products as RatesProductData[]);
+          setReasonList(res!.data.reasons);
         }
       })
       .catch((err) => {
@@ -164,6 +197,10 @@ export const GroundPurchaseEstimateRate: FC<{
           isSimple: !header,
           header,
         });
+        if (!searchForm.customRate) {
+          setProductList([]);
+          setReasonList([]);
+        }
       })
       .finally(() => {
         setLoading(false);
@@ -232,14 +269,16 @@ export const GroundPurchaseEstimateRate: FC<{
         setSearchForm={setSearchForm}
         userType={userType}
       />
-      <RatesList
-        isFirstSearch={isFirstSearch}
-        loading={loading}
-        onClick={onListItemClick}
-        productList={productList as RatesProductData[]}
-        reasonList={reasonList}
-        userType={userType}
-      />
+      {!searchForm.customRate && (
+        <RatesList
+          isFirstSearch={isFirstSearch}
+          loading={loading}
+          onClick={onListItemClick}
+          productList={productList as RatesProductData[]}
+          reasonList={reasonList}
+          userType={userType}
+        />
+      )}
       <GroundPurchaseRatesDrawer
         close={close}
         loading={checkLoading}

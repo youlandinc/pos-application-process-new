@@ -9,7 +9,7 @@ const PipelineAchModule: FC = () => {
       <Head>
         <title>Tasks - ACH Information</title>
       </Head>
-      <PipelinePage>
+      <PipelinePage scene={'pipeline'}>
         <PipelineAchPage />
       </PipelinePage>
     </>
