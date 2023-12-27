@@ -34,8 +34,6 @@ import { DetectActiveService } from '@/services/DetectActive';
 import { POSFlex } from '@/styles';
 
 import { BizType, HttpError, LoginType, UserType } from '@/types';
-import { User } from '@/types/user';
-
 import {
   StyledBoxWrap,
   StyledButton,
@@ -50,6 +48,7 @@ import {
 import SIGN_UP_SVG from '@/svg/auth/sign_up.svg';
 
 import { SignUpProps, SignUpStyles } from './index';
+import { User } from '@/types/user';
 
 export const SignUp: FC<SignUpProps> = observer(
   ({ isNestForm = false, isRedirect = true, successCb }) => {
@@ -300,6 +299,25 @@ export const SignUp: FC<SignUpProps> = observer(
       userType,
     ]);
 
+    const userTypeOption = useMemo(() => {
+      const validRole = saasState?.posSettings?.borrowerTypes?.reduce(
+        (cur: (keyof typeof UserType)[], next: User.POSBorrowerTypes) => {
+          if (next.allowed) {
+            cur.push(next.key);
+          }
+          return cur;
+        },
+        [],
+      );
+      if (!validRole) {
+        return OPTIONS_SIGN_UP_ROLE;
+      }
+      const validRoleSet = new Set(validRole);
+      return OPTIONS_SIGN_UP_ROLE.filter((option) =>
+        validRoleSet.has(option.value),
+      );
+    }, [saasState]);
+
     const FormBody = useMemo(() => {
       return (
         <Box
@@ -315,7 +333,7 @@ export const SignUp: FC<SignUpProps> = observer(
               onChange={(e) =>
                 setUserType(e.target.value as keyof typeof UserType)
               }
-              options={OPTIONS_SIGN_UP_ROLE}
+              options={userTypeOption}
               required
               validate={formError?.userType}
               value={userType}
@@ -425,6 +443,7 @@ export const SignUp: FC<SignUpProps> = observer(
       passwordError,
       saasState?.serviceTypeEnum,
       userType,
+      userTypeOption,
     ]);
 
     return (
