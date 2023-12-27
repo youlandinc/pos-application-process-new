@@ -146,6 +146,12 @@ declare namespace User {
     website: null | string;
   }
 
+  interface POSBorrowerTypes {
+    key: UserType;
+    value: string;
+    allowed: boolean;
+  }
+
   interface TenantConfigPOSSettings {
     phone: string;
     email: string;
@@ -158,6 +164,7 @@ declare namespace User {
     domains?: DomainDetails[];
     customFee?: POSCustomFee;
     isWarning?: boolean;
+    borrowerTypes?: POSBorrowerTypes[];
   }
 
   interface TenantConfigUserInfo {
