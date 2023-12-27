@@ -442,6 +442,7 @@ export const SignUp: FC<SignUpProps> = observer(
       password,
       passwordError,
       saasState?.serviceTypeEnum,
+      saasState?.posSettings?.borrowerTypes,
       userType,
       userTypeOption,
     ]);
