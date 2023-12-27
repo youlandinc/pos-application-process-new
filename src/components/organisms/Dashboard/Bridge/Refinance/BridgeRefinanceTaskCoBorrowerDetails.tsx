@@ -724,7 +724,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                           >
                             Privacy Policy
                           </Typography>{' '}
-                          and consent to{' '}
+                          and{' '}
                           <Typography
                             component={'span'}
                             onClick={() =>
@@ -738,7 +738,7 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                               fontWeight: 600,
                             }}
                           >
-                            Receive Electronic Loan Documents
+                            consent to Receive Electronic Loan Documents
                           </Typography>
                           .
                         </Typography>

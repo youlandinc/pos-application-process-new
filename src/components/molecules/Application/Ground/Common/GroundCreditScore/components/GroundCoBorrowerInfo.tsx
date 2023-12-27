@@ -241,7 +241,7 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
                   I,{' '}
                   {userType === UserType.CUSTOMER
                     ? `${coBorrowerInfo.firstName || 'borrower'}
-              ${coBorrowerInfo.lastName || 'name'} , authorize `
+              ${coBorrowerInfo.lastName || 'name'}, authorize `
                     : `the ${POSFindLabel(
                         OPTIONS_COMMON_USER_TYPE,
                         userType as UserType,
@@ -276,7 +276,7 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
                   >
                     Privacy Policy
                   </Typography>{' '}
-                  and consent to{' '}
+                  and{' '}
                   <Typography
                     component={'span'}
                     onClick={() =>
@@ -288,7 +288,7 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
                       fontWeight: 600,
                     }}
                   >
-                    Receive Electronic Loan Documents
+                    consent to Receive Electronic Loan Documents
                   </Typography>
                   .
                 </Typography>
