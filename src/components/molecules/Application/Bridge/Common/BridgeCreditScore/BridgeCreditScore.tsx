@@ -219,19 +219,19 @@ export const BridgeCreditScore: FC<FormNodeBaseProps> = observer((props) => {
       case BridgeCreditScoreState.creditScore:
         return false;
       case BridgeCreditScoreState.selfInfo:
-        return creditScore.selfInfo.checkValueIsEmpty;
+        return creditScore.selfInfo.checkSelfValueIsEmpty;
       case BridgeCreditScoreState.coBorrowerInfo:
         if (!POSNotUndefined(creditScore.coBorrowerCondition.isCoBorrower)) {
           return true;
         }
         return creditScore.coBorrowerCondition.isCoBorrower
-          ? creditScore.coBorrowerInfo.checkValueIsEmpty
+          ? creditScore.coBorrowerInfo.checkOtherValueIsEmpty
           : false;
     }
   }, [
     creditScore.coBorrowerCondition.isCoBorrower,
-    creditScore.coBorrowerInfo.checkValueIsEmpty,
-    creditScore.selfInfo.checkValueIsEmpty,
+    creditScore.coBorrowerInfo.checkOtherValueIsEmpty,
+    creditScore.selfInfo.checkSelfValueIsEmpty,
     creditScore.state,
   ]);
 
