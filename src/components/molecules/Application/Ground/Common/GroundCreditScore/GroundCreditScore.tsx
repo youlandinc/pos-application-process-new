@@ -234,19 +234,19 @@ export const GroundCreditScore: FC<FormNodeBaseProps> = observer((props) => {
       case GroundUpConstructionCreditScoreState.creditScore:
         return false;
       case GroundUpConstructionCreditScoreState.selfInfo:
-        return creditScore.selfInfo.checkValueIsEmpty;
+        return creditScore.selfInfo.checkSelfValueIsEmpty;
       case GroundUpConstructionCreditScoreState.coBorrowerInfo:
         if (!POSNotUndefined(creditScore.coBorrowerCondition.isCoBorrower)) {
           return true;
         }
         return creditScore.coBorrowerCondition.isCoBorrower
-          ? creditScore.coBorrowerInfo.checkValueIsEmpty
+          ? creditScore.coBorrowerInfo.checkOtherValueIsEmpty
           : false;
     }
   }, [
     creditScore.coBorrowerCondition.isCoBorrower,
-    creditScore.coBorrowerInfo.checkValueIsEmpty,
-    creditScore.selfInfo.checkValueIsEmpty,
+    creditScore.coBorrowerInfo.checkOtherValueIsEmpty,
+    creditScore.selfInfo.checkSelfValueIsEmpty,
     creditScore.state,
   ]);
 

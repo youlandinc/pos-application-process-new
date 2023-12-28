@@ -74,21 +74,30 @@ export const PersonalInfo = types
         'dateOfBirth',
       ].some((item) => !self[item as keyof typeof self]);
     },
-    get checkValueIsEmpty() {
+    get checkSelfValueIsEmpty() {
+      const baseCondition =
+        this.checkPersonalValueIsEmpty || !self.address.isValid;
       if (self.citizenship === CommonBorrowerType.foreign_national) {
-        return this.checkPersonalValueIsEmpty;
+        return baseCondition || !self.authorizedCreditCheck;
       }
-      if (self.isSkipCheck) {
-        return (
-          !this.checkPersonalValueIsEmpty &&
-          ['ssn', 'inputCreditScore'].some(
-            (item) => !self[item as keyof typeof self],
-          )
-        );
+
+      if (!self.isSkipCheck) {
+        return baseCondition || !self.authorizedCreditCheck;
       }
-      return Object.keys(self.errors).some(
-        (item) => !self[item as keyof typeof self],
+      return (
+        baseCondition ||
+        ['ssn', 'inputCreditScore'].some(
+          (item) => !self[item as keyof typeof self],
+        )
       );
+    },
+    get checkOtherValueIsEmpty() {
+      const baseCondition =
+        this.checkPersonalValueIsEmpty || !self.address.isValid;
+      if (self.citizenship === CommonBorrowerType.foreign_national) {
+        return baseCondition;
+      }
+      return baseCondition || !self.ssn;
     },
     get checkInfoValid() {
       if (
