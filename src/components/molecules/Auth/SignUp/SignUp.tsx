@@ -300,7 +300,11 @@ export const SignUp: FC<SignUpProps> = observer(
     ]);
 
     const userTypeOption = useMemo(() => {
-      const validRole = saasState?.posSettings?.borrowerTypes?.reduce(
+      const borrowerTypes = saasState?.posSettings?.borrowerTypes;
+      if (!borrowerTypes) {
+        return OPTIONS_SIGN_UP_ROLE;
+      }
+      const validRole = borrowerTypes.reduce(
         (cur: (keyof typeof UserType)[], next: User.POSBorrowerTypes) => {
           if (next.allowed) {
             cur.push(next.key);
@@ -316,7 +320,7 @@ export const SignUp: FC<SignUpProps> = observer(
       return OPTIONS_SIGN_UP_ROLE.filter((option) =>
         validRoleSet.has(option.value),
       );
-    }, [saasState]);
+    }, [saasState?.posSettings?.borrowerTypes]);
 
     const FormBody = useMemo(() => {
       return (
@@ -442,7 +446,6 @@ export const SignUp: FC<SignUpProps> = observer(
       password,
       passwordError,
       saasState?.serviceTypeEnum,
-      saasState?.posSettings?.borrowerTypes,
       userType,
       userTypeOption,
     ]);

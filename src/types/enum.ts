@@ -303,6 +303,11 @@ export enum ServiceTypeEnum {
   SAAS = 'SAAS',
 }
 
+export enum SoftCreditRequirementEnum {
+  required = 'REQUIRED',
+  optional = 'OPTIONAL',
+}
+
 export enum FreeTrialState {
   None = 'None',
   Activated = 'Activated',

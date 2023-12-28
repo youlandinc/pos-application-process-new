@@ -1,22 +1,27 @@
-import { ChangeEvent, FC, useCallback } from 'react';
+import { ChangeEvent, FC, useCallback, useMemo } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { NumberFormatValues } from 'react-number-format';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { useSessionStorageState } from '@/hooks';
+import { POSFindLabel, POSUpperFirstLetter } from '@/utils';
+import {
+  CommonBorrowerType,
+  SoftCreditRequirementEnum,
+  UserType,
+} from '@/types';
+import {
+  IPersonalInfo,
+  SPersonalInfo,
+} from '@/models/application/common/CreditScore';
+
 import {
   HASH_COMMON_PERSON,
   OPTIONS_COMMON_CITIZEN_TYPE,
   OPTIONS_COMMON_USER_TYPE,
 } from '@/constants';
-import { POSFindLabel, POSUpperFirstLetter } from '@/utils';
-import { useSessionStorageState } from '@/hooks';
-import { CommonBorrowerType, UserType } from '@/types';
-import {
-  IPersonalInfo,
-  SPersonalInfo,
-} from '@/models/application/common/CreditScore';
 
 import {
   StyledCheckbox,
@@ -25,6 +30,7 @@ import {
   StyledGoogleAutoComplete,
   StyledSelectOption,
   StyledTextField,
+  StyledTextFieldNumber,
   StyledTextFieldPhone,
   StyledTextFieldSocialNumber,
   Transitions,
@@ -75,6 +81,156 @@ export const GroundPersonInfo: FC = observer(() => {
       },
     [selfInfo],
   );
+
+  const authorizeContent = useMemo(() => {
+    if (selfInfo.citizenship === CommonBorrowerType.foreign_national) {
+      return (
+        <>
+          I&apos;ve also read and agreed to{' '}
+          {
+            //sass
+            ' ' + saasState?.organizationName || ' YouLand'
+          }
+          &apos;s{' '}
+          <Typography
+            component={'span'}
+            onClick={() =>
+              window.open(
+                saasState?.legalAgreements?.termsUrl ||
+                  'https://www.youland.com/legal/terms/',
+              )
+            }
+            sx={{
+              color: 'primary.main',
+              cursor: 'pointer',
+              fontWeight: 600,
+            }}
+          >
+            Terms of Use
+          </Typography>
+          ,{' '}
+          <Typography
+            component={'span'}
+            onClick={() =>
+              window.open(
+                saasState?.legalAgreements?.privacyPolicyUrl ||
+                  'https://www.youland.com/legal/privacy/',
+              )
+            }
+            sx={{
+              color: 'primary.main',
+              cursor: 'pointer',
+              fontWeight: 600,
+            }}
+          >
+            Privacy Policy
+          </Typography>{' '}
+          and{' '}
+          <Typography
+            component={'span'}
+            onClick={() =>
+              window.open(
+                saasState?.legalAgreements?.signaturesUrl ||
+                  'https://www.youland.com/legal/e-loan-doc/',
+              )
+            }
+            sx={{
+              color: 'primary.main',
+              cursor: 'pointer',
+              fontWeight: 600,
+            }}
+          >
+            consent to Receive Electronic Loan Documents
+          </Typography>
+          .
+        </>
+      );
+    }
+    return (
+      <>
+        I,{' '}
+        {userType === UserType.CUSTOMER
+          ? `${selfInfo.firstName || 'borrower'}
+              ${selfInfo.lastName || 'name'}, authorize `
+          : `the ${POSFindLabel(
+              OPTIONS_COMMON_USER_TYPE,
+              userType as UserType,
+            ).toLowerCase()}, authorize `}
+        {
+          //sass
+          ' ' + saasState?.organizationName || ' YouLand'
+        }{' '}
+        to verify{' '}
+        {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_oneself} credit.
+        I have also read and agreed to
+        {
+          //sass
+          ' ' + saasState?.organizationName || ' YouLand'
+        }
+        &apos;s{' '}
+        <Typography
+          component={'span'}
+          onClick={() =>
+            window.open(
+              saasState?.legalAgreements?.termsUrl ||
+                'https://www.youland.com/legal/terms/',
+            )
+          }
+          sx={{
+            color: 'primary.main',
+            cursor: 'pointer',
+            fontWeight: 600,
+          }}
+        >
+          Terms of Use
+        </Typography>
+        ,{' '}
+        <Typography
+          component={'span'}
+          onClick={() =>
+            window.open(
+              saasState?.legalAgreements?.privacyPolicyUrl ||
+                'https://www.youland.com/legal/privacy/',
+            )
+          }
+          sx={{
+            color: 'primary.main',
+            cursor: 'pointer',
+            fontWeight: 600,
+          }}
+        >
+          Privacy Policy
+        </Typography>{' '}
+        and{' '}
+        <Typography
+          component={'span'}
+          onClick={() =>
+            window.open(
+              saasState?.legalAgreements?.signaturesUrl ||
+                'https://www.youland.com/legal/e-loan-doc/',
+            )
+          }
+          sx={{
+            color: 'primary.main',
+            cursor: 'pointer',
+            fontWeight: 600,
+          }}
+        >
+          consent to Receive Electronic Loan Documents
+        </Typography>
+        .
+      </>
+    );
+  }, [
+    saasState?.legalAgreements?.privacyPolicyUrl,
+    saasState?.legalAgreements?.signaturesUrl,
+    saasState?.legalAgreements?.termsUrl,
+    saasState?.organizationName,
+    selfInfo.citizenship,
+    selfInfo.firstName,
+    selfInfo.lastName,
+    userType,
+  ]);
 
   return (
     <>
@@ -193,77 +349,74 @@ export const GroundPersonInfo: FC = observer(() => {
           )}
         </Transitions>
 
-        <StyledCheckbox
-          checked={selfInfo.authorizedCreditCheck}
-          label={
-            <Typography
-              color={'text.primary'}
-              component={'div'}
-              ml={2}
-              variant={'body2'}
-            >
-              I,{' '}
-              {userType === UserType.CUSTOMER
-                ? `${selfInfo.firstName || 'borrower'}
-              ${selfInfo.lastName || 'name'}, authorize `
-                : `the ${POSFindLabel(
-                    OPTIONS_COMMON_USER_TYPE,
-                    userType as UserType,
-                  ).toLowerCase()}, authorize `}
-              {' ' + saasState?.organizationName || ' YouLand'} to verify{' '}
-              {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_oneself}{' '}
-              credit. I have also read and agreed to
-              {' ' + saasState?.organizationName || ' YouLand'}
-              &apos;s{' '}
-              <Typography
-                component={'span'}
-                onClick={() =>
-                  window.open('https://www.youland.com/legal/terms/')
+        {saasState?.posSettings?.softCreditRequirement ===
+          SoftCreditRequirementEnum.optional &&
+          selfInfo.citizenship !== CommonBorrowerType.foreign_national && (
+            <Stack maxWidth={600} width={'100%'}>
+              <StyledCheckbox
+                checked={selfInfo.isSkipCheck}
+                label={
+                  <Typography
+                    color={'text.primary'}
+                    component={'div'}
+                    ml={2}
+                    variant={'body2'}
+                  >
+                    Skip soft credit check for now
+                  </Typography>
                 }
-                sx={{
-                  color: 'primary.main',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                }}
-              >
-                Terms of Use
-              </Typography>
-              ,{' '}
-              <Typography
-                component={'span'}
-                onClick={() =>
-                  window.open('https://www.youland.com/legal/privacy/')
+                onChange={(e) =>
+                  selfInfo.changeSelfInfo('isSkipCheck', e.target.checked)
                 }
-                sx={{
-                  color: 'primary.main',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                }}
-              >
-                Privacy Policy
-              </Typography>{' '}
-              and{' '}
-              <Typography
-                component={'span'}
-                onClick={() =>
-                  window.open('https://www.youland.com/legal/e-loan-doc/')
+                sx={{ maxWidth: 600, width: '100%' }}
+              />
+            </Stack>
+          )}
+
+        <Transitions
+          style={{
+            width: '100%',
+            maxWidth: 600,
+          }}
+        >
+          {!selfInfo.isSkipCheck ||
+          selfInfo.citizenship === CommonBorrowerType.foreign_national ? (
+            <Stack maxWidth={600} width={'100%'}>
+              <StyledCheckbox
+                checked={selfInfo.authorizedCreditCheck}
+                label={
+                  <Typography
+                    color={'text.primary'}
+                    component={'div'}
+                    ml={2}
+                    variant={'body2'}
+                  >
+                    {authorizeContent}
+                  </Typography>
                 }
-                sx={{
-                  color: 'primary.main',
-                  cursor: 'pointer',
-                  fontWeight: 600,
+                onChange={(e) =>
+                  selfInfo.changeSelfInfo(
+                    'authorizedCreditCheck',
+                    e.target.checked,
+                  )
+                }
+                sx={{ width: '100%', maxWidth: 600 }}
+              />
+            </Stack>
+          ) : (
+            <StyledFormItem label={'Please enter your credit score'} sub>
+              <StyledTextFieldNumber
+                decimalScale={0}
+                label={'Credit score'}
+                onValueChange={({ floatValue }) => {
+                  selfInfo.changeSelfInfo('inputCreditScore', floatValue);
                 }}
-              >
-                consent to Receive Electronic Loan Documents
-              </Typography>
-              .
-            </Typography>
-          }
-          onChange={(e) =>
-            selfInfo.changeSelfInfo('authorizedCreditCheck', e.target.checked)
-          }
-          sx={{ maxWidth: 600 }}
-        />
+                thousandSeparator={false}
+                value={selfInfo.inputCreditScore}
+              />
+            </StyledFormItem>
+          )}
+        </Transitions>
       </StyledFormItem>
     </>
   );
