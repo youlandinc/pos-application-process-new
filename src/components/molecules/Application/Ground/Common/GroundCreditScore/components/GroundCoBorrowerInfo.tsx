@@ -5,23 +5,21 @@ import { NumberFormatValues } from 'react-number-format';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { POSFindLabel } from '@/utils';
-import {
-  HASH_COMMON_PERSON,
-  OPTIONS_COMMON_CITIZEN_TYPE,
-  OPTIONS_COMMON_USER_TYPE,
-  OPTIONS_COMMON_YES_OR_NO,
-} from '@/constants';
+import { useSessionStorageState } from '@/hooks';
+import { CommonBorrowerType, UserType } from '@/types';
 import {
   IPersonalInfo,
   SPersonalInfo,
 } from '@/models/application/common/CreditScore';
-import { CommonBorrowerType, UserType } from '@/types';
-import { useSessionStorageState } from '@/hooks';
+
+import {
+  HASH_COMMON_PERSON,
+  OPTIONS_COMMON_CITIZEN_TYPE,
+  OPTIONS_COMMON_YES_OR_NO,
+} from '@/constants';
 
 import {
   StyledButtonGroup,
-  StyledCheckbox,
   StyledDatePicker,
   StyledFormItem,
   StyledGoogleAutoComplete,
@@ -229,78 +227,6 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
                 </StyledFormItem>
               )}
             </Transitions>
-            <StyledCheckbox
-              checked={coBorrowerInfo.authorizedCreditCheck}
-              label={
-                <Typography
-                  color={'text.primary'}
-                  component={'div'}
-                  ml={2}
-                  variant={'body2'}
-                >
-                  I,{' '}
-                  {userType === UserType.CUSTOMER
-                    ? `${coBorrowerInfo.firstName || 'borrower'}
-              ${coBorrowerInfo.lastName || 'name'}, authorize `
-                    : `the ${POSFindLabel(
-                        OPTIONS_COMMON_USER_TYPE,
-                        userType as UserType,
-                      ).toLowerCase()}, authorize `}
-                  {' ' + saasState?.organizationName || ' YouLand'} to verify
-                  co-borrower&apos;s credit. I&apos;ve also read and agreed to
-                  {' ' + saasState?.organizationName || ' YouLand'} &apos;s{' '}
-                  <Typography
-                    component={'span'}
-                    onClick={() =>
-                      window.open('https://www.youland.com/legal/terms/')
-                    }
-                    sx={{
-                      color: 'primary.main',
-                      cursor: 'pointer',
-                      fontWeight: 600,
-                    }}
-                  >
-                    Terms of Use
-                  </Typography>
-                  ,{' '}
-                  <Typography
-                    component={'span'}
-                    onClick={() =>
-                      window.open('https://www.youland.com/legal/privacy/')
-                    }
-                    sx={{
-                      color: 'primary.main',
-                      cursor: 'pointer',
-                      fontWeight: 600,
-                    }}
-                  >
-                    Privacy Policy
-                  </Typography>{' '}
-                  and{' '}
-                  <Typography
-                    component={'span'}
-                    onClick={() =>
-                      window.open('https://www.youland.com/legal/e-loan-doc/')
-                    }
-                    sx={{
-                      color: 'primary.main',
-                      cursor: 'pointer',
-                      fontWeight: 600,
-                    }}
-                  >
-                    consent to Receive Electronic Loan Documents
-                  </Typography>
-                  .
-                </Typography>
-              }
-              onChange={(e) =>
-                coBorrowerInfo.changeSelfInfo(
-                  'authorizedCreditCheck',
-                  e.target.checked,
-                )
-              }
-              sx={{ maxWidth: 600 }}
-            />
           </StyledFormItem>
         )}
       </Transitions>

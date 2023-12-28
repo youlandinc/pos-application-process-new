@@ -4,16 +4,16 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useStoreData } from '@/hooks';
+import { useSessionStorageState, useStoreData } from '@/hooks';
 import { IBridgeCreditScore } from '@/models/application/bridge';
 import { IPersonalInfo } from '@/models/application/common/CreditScore';
 import {
   BorrowerData,
   BridgeCreditScoreState,
-  //BridgePurchaseState,
   CommonBorrowerType,
   SelfInfoData,
   ServerTaskKey,
+  SoftCreditRequirementEnum,
   VariableName,
 } from '@/types';
 import { POSFindSpecificVariable, POSNotUndefined } from '@/utils';
@@ -32,9 +32,8 @@ const useStateMachine = (
   nextStep: FormNodeBaseProps['nextStep'],
   prevStep: FormNodeBaseProps['prevStep'],
 ) => {
-  //const {
-  //  applicationForm: { formData },
-  //} = useMst();
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   const { selfInfo, coBorrowerInfo } = creditScore;
   const {
     updateState,
@@ -42,8 +41,6 @@ const useStateMachine = (
     changeTaskState,
     handledNextTask,
     handledPrevTask,
-    //bpmn,
-    //changeTask,
   } = useStoreData();
 
   const transitions = useMemo<{
@@ -83,7 +80,11 @@ const useStateMachine = (
                   _borrower?.value.creditScore,
                 );
                 if (
-                  selfInfo.citizenship === CommonBorrowerType.foreign_national
+                  selfInfo.citizenship ===
+                    CommonBorrowerType.foreign_national ||
+                  (saasState?.posSettings?.softCreditRequirement ===
+                    SoftCreditRequirementEnum.optional &&
+                    selfInfo.isSkipCheck)
                 ) {
                   creditScore.changeState(
                     BridgeCreditScoreState.coBorrowerInfo,
@@ -122,15 +123,15 @@ const useStateMachine = (
           const postData = creditScore.getCoborrowerConditionPostData();
           const params: any[] = [postData];
           if (creditScore.coBorrowerCondition.isCoBorrower) {
-            coBorrowerInfo.validateSelfInfo();
+            coBorrowerInfo.validateSelfInfo('coBorrower');
             if (coBorrowerInfo.isValid) {
               params.push({
-                ...coBorrowerInfo.getPostData(),
                 name: VariableName.aboutOtherInfo,
+                ...coBorrowerInfo.getPostData(),
               });
+              await handledNextTask(params, () => nextStep());
             }
           }
-          await handledNextTask(params, () => nextStep());
         },
         back: async () => {
           await handledPrevTask(ServerTaskKey.about_yourself, (prevTask) => {
@@ -142,7 +143,12 @@ const useStateMachine = (
             const {
               value: { citizenship },
             } = aboutUSelf as Variable<SelfInfoData>;
-            if (citizenship === CommonBorrowerType.foreign_national) {
+            if (
+              citizenship === CommonBorrowerType.foreign_national ||
+              (saasState?.posSettings?.softCreditRequirement ===
+                SoftCreditRequirementEnum.optional &&
+                selfInfo.isSkipCheck)
+            ) {
               creditScore.changeState(BridgeCreditScoreState.selfInfo);
               return;
             }
@@ -156,6 +162,7 @@ const useStateMachine = (
       prevStep,
       selfInfo,
       handledNextTask,
+      saasState?.posSettings?.softCreditRequirement,
       handledPrevTask,
       coBorrowerInfo,
       nextStep,

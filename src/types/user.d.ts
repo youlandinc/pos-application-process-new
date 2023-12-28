@@ -144,6 +144,12 @@ declare namespace User {
     serviceTypeEnum: ServiceTypeEnum;
     serviceSelected: boolean;
     website: null | string;
+
+    legalAgreements?: {
+      privacyPolicyUrl: string;
+      signaturesUrl: string;
+      termsUrl: string;
+    };
   }
 
   interface POSBorrowerTypes {
@@ -165,6 +171,7 @@ declare namespace User {
     customFee?: POSCustomFee;
     isWarning?: boolean;
     borrowerTypes?: POSBorrowerTypes[];
+    softCreditRequirement?: POSSoftCreditRequirement;
   }
 
   interface TenantConfigUserInfo {

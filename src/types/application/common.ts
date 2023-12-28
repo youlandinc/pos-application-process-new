@@ -21,6 +21,8 @@ export interface SelfInfoData {
   authorizedCreditCheck: boolean;
   email: string;
   citizenship: CommonBorrowerType | undefined;
+  isSkipCheck: boolean | undefined;
+  inputCreditScore: number | undefined;
 }
 
 export interface SalaryIncomeData {

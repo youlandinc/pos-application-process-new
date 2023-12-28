@@ -55,5 +55,16 @@ export const CreditScoreSchema: Record<any, any> = {
       }
       return undefined;
     },
+    inputCreditScore: (value: any, attributes: any) => {
+      if (attributes.isSkipCheck) {
+        return {
+          presence: {
+            allowEmpty: false,
+            message: 'Must not be empty',
+          },
+        };
+      }
+      return undefined;
+    },
   },
 };
