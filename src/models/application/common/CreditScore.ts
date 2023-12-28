@@ -32,15 +32,6 @@ import { CreditScoreSchema } from '@/constants';
 
 export const PersonalInfo = types
   .model({
-    firstName: types.string,
-    lastName: types.string,
-    phoneNumber: types.string,
-    dateOfBirth: types.maybeNull(types.union(types.Date, types.string)),
-    address: Address,
-    ssn: types.string,
-    email: types.string,
-    authorizedCreditCheck: types.boolean,
-    creditScore: types.maybe(types.number),
     citizenship: types.maybe(
       types.union(
         types.literal(CommonBorrowerType.us_citizen),
@@ -48,31 +39,52 @@ export const PersonalInfo = types
         types.literal(CommonBorrowerType.permanent_resident_alien),
       ),
     ),
+    firstName: types.string,
+    lastName: types.string,
+    dateOfBirth: types.maybeNull(types.union(types.Date, types.string)),
+    phoneNumber: types.string,
+    email: types.string,
+    address: Address,
+    ssn: types.string,
+    isSkipCheck: types.maybe(types.boolean),
+    inputCreditScore: types.maybe(types.number),
+    authorizedCreditCheck: types.boolean,
+    creditScore: types.maybe(types.number),
     errors: types.optional(
       types.model({
         citizenship: types.maybe(types.array(types.string)),
         firstName: types.maybe(types.array(types.string)),
         lastName: types.maybe(types.array(types.string)),
-        phoneNumber: types.maybe(types.array(types.string)),
         dateOfBirth: types.maybe(types.array(types.string)),
-        ssn: types.maybe(types.array(types.string)),
-        authorizedCreditCheck: types.maybe(types.array(types.string)),
+        phoneNumber: types.maybe(types.array(types.string)),
         email: types.maybe(types.array(types.string)),
+        ssn: types.maybe(types.array(types.string)),
       }),
       {},
     ),
     isValid: types.boolean,
   })
   .views((self) => ({
+    get checkPersonalValueIsEmpty() {
+      return [
+        'firstName',
+        'lastName',
+        'phoneNumber',
+        'email',
+        'dateOfBirth',
+      ].some((item) => !self[item as keyof typeof self]);
+    },
     get checkValueIsEmpty() {
       if (self.citizenship === CommonBorrowerType.foreign_national) {
-        return [
-          'firstName',
-          'lastName',
-          'phoneNumber',
-          'email',
-          'dateOfBirth',
-        ].some((item) => !self[item as keyof typeof self]);
+        return this.checkPersonalValueIsEmpty;
+      }
+      if (self.isSkipCheck) {
+        return (
+          !this.checkPersonalValueIsEmpty &&
+          ['ssn', 'inputCreditScore'].some(
+            (item) => !self[item as keyof typeof self],
+          )
+        );
       }
       return Object.keys(self.errors).some(
         (item) => !self[item as keyof typeof self],
@@ -96,16 +108,15 @@ export const PersonalInfo = types
         value: (typeof self)[K],
       ) {
         self[key] = value;
-
         if (key === 'firstName' || key === 'lastName') {
           self[key] = (value as string).replace(/^./, (match) =>
             match.toUpperCase(),
           ) as typeof value;
         }
       },
-      validateSelfInfo() {
+      validateSelfInfo(role: 'self' | 'coBorrower' = 'self') {
         let errors = validate(self, CreditScoreSchema.selfInfo);
-        if (!self.authorizedCreditCheck) {
+        if (!self.authorizedCreditCheck && role === 'self') {
           if (errors === void 0) {
             errors = {};
           }
@@ -124,6 +135,8 @@ export const PersonalInfo = types
           authorizedCreditCheck,
           email,
           citizenship,
+          isSkipCheck,
+          inputCreditScore,
           //address,
         } = self;
         return {
@@ -138,6 +151,8 @@ export const PersonalInfo = types
             authorizedCreditCheck,
             email,
             citizenship,
+            isSkipCheck,
+            inputCreditScore,
           },
         };
       },
