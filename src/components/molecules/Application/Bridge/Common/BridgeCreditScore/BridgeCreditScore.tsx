@@ -11,6 +11,7 @@ import {
   BorrowerData,
   BridgeCreditScoreState,
   CommonBorrowerType,
+  FixAndFlipCreditScoreState,
   SelfInfoData,
   ServerTaskKey,
   SoftCreditRequirementEnum,
@@ -91,6 +92,16 @@ const useStateMachine = (
                   );
                   return;
                 }
+                if (
+                  saasState?.posSettings?.softCreditRequirement ===
+                    SoftCreditRequirementEnum.optional &&
+                  selfInfo.isSkipCheck
+                ) {
+                  creditScore.changeState(
+                    BridgeCreditScoreState.coBorrowerInfo,
+                  );
+                  return;
+                }
                 //if (
                 //  _borrower?.value.creditScore &&
                 //  _borrower?.value.creditScore <= 640
@@ -129,9 +140,9 @@ const useStateMachine = (
                 name: VariableName.aboutOtherInfo,
                 ...coBorrowerInfo.getPostData(),
               });
-              await handledNextTask(params, () => nextStep());
             }
           }
+          await handledNextTask(params, () => nextStep());
         },
         back: async () => {
           await handledPrevTask(ServerTaskKey.about_yourself, (prevTask) => {

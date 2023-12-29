@@ -12,6 +12,7 @@ import {
   BorrowerData,
   CommonBorrowerType,
   FixAndFlipCreditScoreState,
+  GroundUpConstructionCreditScoreState,
   //FixAndFlipPurchaseState,
   SelfInfoData,
   ServerTaskKey,
@@ -81,11 +82,17 @@ const useStateMachine = (
                   _borrower?.value.creditScore,
                 );
                 if (
-                  selfInfo.citizenship ===
-                    CommonBorrowerType.foreign_national ||
-                  (saasState?.posSettings?.softCreditRequirement ===
+                  selfInfo.citizenship === CommonBorrowerType.foreign_national
+                ) {
+                  creditScore.changeState(
+                    FixAndFlipCreditScoreState.coBorrowerInfo,
+                  );
+                  return;
+                }
+                if (
+                  saasState?.posSettings?.softCreditRequirement ===
                     SoftCreditRequirementEnum.optional &&
-                    selfInfo.isSkipCheck)
+                  selfInfo.isSkipCheck
                 ) {
                   creditScore.changeState(
                     FixAndFlipCreditScoreState.coBorrowerInfo,
@@ -130,9 +137,9 @@ const useStateMachine = (
                 name: VariableName.aboutOtherInfo,
                 ...coBorrowerInfo.getPostData(),
               });
-              await handledNextTask(params, () => nextStep());
             }
           }
+          await handledNextTask(params, () => nextStep());
         },
         back: async () => {
           await handledPrevTask(ServerTaskKey.about_yourself, (prevTask) => {

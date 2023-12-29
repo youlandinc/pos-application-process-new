@@ -371,14 +371,16 @@ export const FixPurchaseRates: FC = observer(() => {
                   setSearchForm={setSearchForm}
                   userType={userType}
                 />
-                <RatesList
-                  loading={loading || state.loading}
-                  loanStage={loanStage}
-                  onClick={onListItemClick}
-                  productList={productList || []}
-                  reasonList={reasonList}
-                  userType={userType}
-                />
+                {!searchForm.customRate && (
+                  <RatesList
+                    loading={loading || state.loading}
+                    loanStage={loanStage}
+                    onClick={onListItemClick}
+                    productList={productList || []}
+                    reasonList={reasonList}
+                    userType={userType}
+                  />
+                )}
                 <FixPurchaseRatesDrawer
                   close={close}
                   loading={confirmLoading}
