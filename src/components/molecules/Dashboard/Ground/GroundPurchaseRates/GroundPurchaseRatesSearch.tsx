@@ -622,7 +622,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
         onClick={onCheck}
         sx={{ width: 200, mt: 3 }}
       >
-        {customRate ? 'View details' : 'Check'}
+        {customRate ? 'Next' : 'Check'}
       </StyledButton>
     </StyledFormItem>
   );

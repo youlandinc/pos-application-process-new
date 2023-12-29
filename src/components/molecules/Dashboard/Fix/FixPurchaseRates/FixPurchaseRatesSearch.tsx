@@ -622,7 +622,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
         onClick={onCheck}
         sx={{ width: 200, mt: 3 }}
       >
-        Check
+        {customRate ? 'Next' : 'Check'}
       </StyledButton>
     </StyledFormItem>
   );
