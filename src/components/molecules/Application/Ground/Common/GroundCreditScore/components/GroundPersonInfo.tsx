@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { useSessionStorageState } from '@/hooks';
-import { POSFindLabel, POSUpperFirstLetter } from '@/utils';
+import { POSFindLabel, POSFormatUrl, POSUpperFirstLetter } from '@/utils';
 import {
   CommonBorrowerType,
   SoftCreditRequirementEnum,
@@ -96,7 +96,7 @@ export const GroundPersonInfo: FC = observer(() => {
             component={'span'}
             onClick={() =>
               window.open(
-                saasState?.legalAgreements?.termsUrl ||
+                POSFormatUrl(saasState?.legalAgreements?.termsUrl) ||
                   'https://www.youland.com/legal/terms/',
               )
             }
@@ -113,7 +113,7 @@ export const GroundPersonInfo: FC = observer(() => {
             component={'span'}
             onClick={() =>
               window.open(
-                saasState?.legalAgreements?.privacyPolicyUrl ||
+                POSFormatUrl(saasState?.legalAgreements?.privacyPolicyUrl) ||
                   'https://www.youland.com/legal/privacy/',
               )
             }
@@ -130,7 +130,7 @@ export const GroundPersonInfo: FC = observer(() => {
             component={'span'}
             onClick={() =>
               window.open(
-                saasState?.legalAgreements?.signaturesUrl ||
+                POSFormatUrl(saasState?.legalAgreements?.signaturesUrl) ||
                   'https://www.youland.com/legal/e-loan-doc/',
               )
             }
@@ -172,7 +172,7 @@ export const GroundPersonInfo: FC = observer(() => {
           component={'span'}
           onClick={() =>
             window.open(
-              saasState?.legalAgreements?.termsUrl ||
+              POSFormatUrl(saasState?.legalAgreements?.termsUrl) ||
                 'https://www.youland.com/legal/terms/',
             )
           }
@@ -189,7 +189,7 @@ export const GroundPersonInfo: FC = observer(() => {
           component={'span'}
           onClick={() =>
             window.open(
-              saasState?.legalAgreements?.privacyPolicyUrl ||
+              POSFormatUrl(saasState?.legalAgreements?.privacyPolicyUrl) ||
                 'https://www.youland.com/legal/privacy/',
             )
           }
@@ -206,7 +206,7 @@ export const GroundPersonInfo: FC = observer(() => {
           component={'span'}
           onClick={() =>
             window.open(
-              saasState?.legalAgreements?.signaturesUrl ||
+              POSFormatUrl(saasState?.legalAgreements?.signaturesUrl) ||
                 'https://www.youland.com/legal/e-loan-doc/',
             )
           }
