@@ -339,9 +339,9 @@ export const PipelineAch: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoint) ? 'body3' : 'body1'}
             >
-              &quot;I hereby consent and acknowledge my agreement to the
-              electronic loan agreement and associated terms of{' '}
-              {saasState?.organizationName || 'YouLand'}.&quot;
+              I hereby consent and acknowledge my agreement to the electronic
+              loan agreement and associated terms of{' '}
+              {saasState?.organizationName || 'YouLand'}.
             </Typography>
             <StyledButton
               disabled={agreeLoading}
