@@ -11,7 +11,6 @@ import {
   BorrowerData,
   BridgeCreditScoreState,
   CommonBorrowerType,
-  FixAndFlipCreditScoreState,
   SelfInfoData,
   ServerTaskKey,
   SoftCreditRequirementEnum,

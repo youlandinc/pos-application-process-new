@@ -12,7 +12,6 @@ import {
   BorrowerData,
   CommonBorrowerType,
   FixAndFlipCreditScoreState,
-  GroundUpConstructionCreditScoreState,
   //FixAndFlipPurchaseState,
   SelfInfoData,
   ServerTaskKey,
