@@ -317,9 +317,13 @@ export const SignUp: FC<SignUpProps> = observer(
         return OPTIONS_SIGN_UP_ROLE;
       }
       const validRoleSet = new Set(validRole);
-      return OPTIONS_SIGN_UP_ROLE.filter((option) =>
+      const result = OPTIONS_SIGN_UP_ROLE.filter((option) =>
         validRoleSet.has(option.value),
       );
+      if (result.length === 1) {
+        setUserType(result[0].value);
+      }
+      return result;
     }, [saasState?.posSettings?.borrowerTypes]);
 
     const FormBody = useMemo(() => {
