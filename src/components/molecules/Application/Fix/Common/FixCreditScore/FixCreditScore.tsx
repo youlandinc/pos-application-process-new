@@ -62,6 +62,7 @@ const useStateMachine = (
       selfInfo: {
         next: async () => {
           selfInfo.validateSelfInfo();
+          console.log(selfInfo.isValid);
           if (selfInfo.isValid) {
             await handledNextTask(
               [
