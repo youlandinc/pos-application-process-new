@@ -138,7 +138,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                 checked={customRate}
                 label={
                   <Typography color={'text.primary'} ml={2} variant={'body2'}>
-                    Custom interest rate
+                    Use custom loan terms
                   </Typography>
                 }
                 onChange={(e) =>
