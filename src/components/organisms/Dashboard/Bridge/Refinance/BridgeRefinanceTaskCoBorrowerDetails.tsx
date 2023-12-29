@@ -101,6 +101,11 @@ export const BridgeRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   const [ssn, setSsn] = useState<string>('');
   const [authorizedCreditCheck, setAuthorizedCreditCheck] = useState(false);
 
+  const [isSkipCheck, setIsSkipCheck] = useState<boolean>(false);
+  const [inputCreditScore, setInputCreditScore] = useState<
+    number | undefined
+  >();
+
   const [isConfirm, setIsConfirm] = useState(false);
   const [creditScore, setCreditScore] = useState<number | undefined>();
 

@@ -46,7 +46,6 @@ export const Pipeline: FC = observer(() => {
 
   const [page, setPage] = useState<number>(1);
   const [isLoadMore, setIsLoadMore] = useState<boolean>(false);
-  const [isLastPage, setIsLastPage] = useState(false);
 
   const [listData, setListData] = useState<LoanItemCardProps['formData'][]>([]);
 
@@ -74,8 +73,8 @@ export const Pipeline: FC = observer(() => {
       return;
     }
     const params = {
-      page: page,
-      size: PAGE_SIZE,
+      page: 1,
+      size: PAGE_SIZE * page,
       loanId: '',
       propertyAddress: searchForm.propertyAddress,
       beginTime: searchForm.dateRange[0]
@@ -91,31 +90,17 @@ export const Pipeline: FC = observer(() => {
     setFetchLoading(true);
     return await _fetchAllProcesses(params)
       .then((res) => {
-        const obj: {
-          [key: string]: {
-            [key: string]: unknown;
-          };
-        } = {};
-        const temp = isChange
-          ? res.data.content
-          : [...listData, ...res.data.content].reduce((cur, next) => {
-              if (!obj[next.youlandId]) {
-                obj[next.youlandId] = cur.push(next);
-              }
-              return cur;
-            }, []);
         setIsLoadMore(
-          temp.length !== res.data.totalElements
+          res.data.content.length !== res.data.totalElements
             ? res.data.totalElements - PAGE_SIZE > 0
               ? res.data.totalElements / PAGE_SIZE >= 1
               : false
             : false,
         );
-        setListData(temp);
+        setListData(res.data.content);
         if (firstLoading) {
           setFirstLoading(false);
         }
-        setIsLastPage(res.data.last);
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -200,9 +185,6 @@ export const Pipeline: FC = observer(() => {
     setDeleteLoading(true);
     try {
       await _deleteProcess(deleteId);
-      if (isLastPage) {
-        setListData(listData.filter((item) => item.youlandId !== deleteId));
-      }
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -212,14 +194,12 @@ export const Pipeline: FC = observer(() => {
         header,
       });
     } finally {
-      if (!isLastPage) {
-        await getListData();
-      }
-      close();
+      await getListData();
       setDeleteLoading(false);
       setDeleteId('');
+      close();
     }
-  }, [close, deleteId, enqueueSnackbar, getListData, isLastPage, listData]);
+  }, [close, deleteId, enqueueSnackbar, getListData]);
 
   useEffect(() => {
     if (isChange) {
