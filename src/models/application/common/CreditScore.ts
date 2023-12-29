@@ -125,7 +125,11 @@ export const PersonalInfo = types
       },
       validateSelfInfo(role: 'self' | 'coBorrower' = 'self') {
         let errors = validate(self, CreditScoreSchema.selfInfo);
-        if (!self.authorizedCreditCheck && role === 'self') {
+        if (
+          !self.isSkipCheck &&
+          !self.authorizedCreditCheck &&
+          role === 'self'
+        ) {
           if (errors === void 0) {
             errors = {};
           }

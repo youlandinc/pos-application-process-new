@@ -229,8 +229,8 @@ export const BridgePurchaseTaskPay: FC = observer(() => {
             width={'100%'}
           >
             <Typography variant={'body1'}>
-              &quot;By clicking the button, I hereby agree to the above broker
-              agreement.&quot;
+              By clicking the button, I hereby agree to the above broker
+              agreement.
             </Typography>
             <StyledButton
               disabled={agreeLoading}

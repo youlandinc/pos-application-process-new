@@ -80,11 +80,7 @@ const useStateMachine = (
                   _borrower?.value.creditScore,
                 );
                 if (
-                  selfInfo.citizenship ===
-                    CommonBorrowerType.foreign_national ||
-                  (saasState?.posSettings?.softCreditRequirement ===
-                    SoftCreditRequirementEnum.optional &&
-                    selfInfo.isSkipCheck)
+                  selfInfo.citizenship === CommonBorrowerType.foreign_national
                 ) {
                   creditScore.changeState(
                     BridgeCreditScoreState.coBorrowerInfo,
