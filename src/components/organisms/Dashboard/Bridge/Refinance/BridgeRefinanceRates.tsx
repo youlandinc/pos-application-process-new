@@ -365,14 +365,16 @@ export const BridgeRefinanceRates: FC = observer(() => {
                   setSearchForm={setSearchForm}
                   userType={userType as UserType}
                 />
-                <RatesList
-                  loading={loading || state.loading}
-                  loanStage={loanStage}
-                  onClick={onListItemClick}
-                  productList={productList || []}
-                  reasonList={reasonList}
-                  userType={userType}
-                />
+                {!searchForm.customRate && (
+                  <RatesList
+                    loading={loading || state.loading}
+                    loanStage={loanStage}
+                    onClick={onListItemClick}
+                    productList={productList || []}
+                    reasonList={reasonList}
+                    userType={userType}
+                  />
+                )}
                 <BridgeRefinanceRatesDrawer
                   close={close}
                   loading={confirmLoading}

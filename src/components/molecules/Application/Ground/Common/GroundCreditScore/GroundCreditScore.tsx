@@ -83,11 +83,17 @@ const useStateMachine = (
                   _borrower?.value.creditScore,
                 );
                 if (
-                  selfInfo.citizenship ===
-                    CommonBorrowerType.foreign_national ||
-                  (saasState?.posSettings?.softCreditRequirement ===
+                  selfInfo.citizenship === CommonBorrowerType.foreign_national
+                ) {
+                  creditScore.changeState(
+                    GroundUpConstructionCreditScoreState.coBorrowerInfo,
+                  );
+                  return;
+                }
+                if (
+                  saasState?.posSettings?.softCreditRequirement ===
                     SoftCreditRequirementEnum.optional &&
-                    selfInfo.isSkipCheck)
+                  selfInfo.isSkipCheck
                 ) {
                   creditScore.changeState(
                     GroundUpConstructionCreditScoreState.coBorrowerInfo,
@@ -140,9 +146,9 @@ const useStateMachine = (
                 name: VariableName.aboutOtherInfo,
                 ...coBorrowerInfo.getPostData(),
               });
-              await handledNextTask(params, () => nextStep());
             }
           }
+          await handledNextTask(params, () => nextStep());
         },
         back: async () => {
           await handledPrevTask(ServerTaskKey.about_yourself, (prevTask) => {
