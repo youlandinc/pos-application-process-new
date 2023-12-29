@@ -181,7 +181,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                       <StyledTextFieldNumber
                         decimalScale={0}
                         disabled={loading || loanStage === LoanStage.Approved}
-                        label={'Loan term (months)'}
+                        label={'Custom loan term (months)'}
                         onValueChange={({ floatValue }) => {
                           setSearchForm({
                             ...searchForm,

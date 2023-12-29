@@ -392,8 +392,8 @@ export const PipelineAgreement: FC = observer(() => {
             <Typography
               variant={['xs', 'sm'].includes(breakpoint) ? 'body3' : 'body1'}
             >
-              &quot;By clicking the button, I hereby agree to the above{' '}
-              {computedAgreement.username} agreement.&quot;
+              By clicking the button, I hereby agree to the above{' '}
+              {computedAgreement.username} agreement.
             </Typography>
             <StyledButton
               disabled={agreeLoading}
