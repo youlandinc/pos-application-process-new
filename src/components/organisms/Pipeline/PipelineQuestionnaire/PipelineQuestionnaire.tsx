@@ -232,7 +232,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
                   >
                     <Box
                       sx={{
-                        ...POSFont({ lg: 24, xs: 18 }, 700, 1.5),
+                        ...POSFont({ lg: 24, xs: 18 }, 600, 1.5),
                       }}
                     >
                       {computedQuestionnaire.listTitle + (index + 1)}
@@ -265,7 +265,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
                       >
                         {['xs', 'sm', 'md'].includes(breakpoint)
                           ? '+ Add'
-                          : '+ Add a new owner'}
+                          : '+ Add broker'}
                       </StyledButton>
                     )}
                   </Stack>
@@ -276,7 +276,7 @@ export const PipelineQuestionnaire: FC = observer(() => {
                     width={'100%'}
                   >
                     <StyledTextField
-                      label={computedQuestionnaire.listTitle + (index + 1)}
+                      label={computedQuestionnaire.listTitle}
                       onChange={(e) => {
                         computedQuestionnaire.questionnaire.changeLicensesFieldValue(
                           'ownerName',

@@ -59,6 +59,7 @@ export const PersonalInfo = types
         phoneNumber: types.maybe(types.array(types.string)),
         email: types.maybe(types.array(types.string)),
         ssn: types.maybe(types.array(types.string)),
+        inputCreditScore: types.maybe(types.array(types.string)),
       }),
       {},
     ),
