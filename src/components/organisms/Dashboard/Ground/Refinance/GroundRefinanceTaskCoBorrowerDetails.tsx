@@ -106,6 +106,9 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   const [inputCreditScore, setInputCreditScore] = useState<
     number | undefined
   >();
+  const [inputCreditScoreError, setInputCreditScoreError] = useState<
+    string[] | undefined
+  >(undefined);
 
   const [isConfirm, setIsConfirm] = useState(false);
   const [creditScore, setCreditScore] = useState<number | undefined>();
@@ -369,6 +372,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     const foreclosureDateValid =
       isValid(foreclosureDate) && isDate(foreclosureDate);
     setSaveLoading(true);
+    setInputCreditScoreError(undefined);
     const postData = {
       taskId: router.query.taskId as string,
       taskForm: {
@@ -403,6 +407,18 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
         inputCreditScore,
       },
     };
+
+    if (citizenship !== CommonBorrowerType.foreign_national && isSkipCheck) {
+      if (
+        !inputCreditScore ||
+        inputCreditScore <= 300 ||
+        inputCreditScore >= 850
+      ) {
+        setInputCreditScoreError(['The score must be between 300 and 850.']);
+        setSaveLoading(false);
+        return;
+      }
+    }
 
     try {
       const res = await _updateTaskFormInfo(postData);
@@ -548,7 +564,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
         isSkipCheck &&
         citizenship !== CommonBorrowerType.foreign_national ? (
         <StyledFormItem
-          label={'Please enter your credit score'}
+          label={"Co-borrower's credit score"}
           sub
           sx={{ maxWidth: 600, width: '100%' }}
         >
@@ -561,6 +577,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
             }}
             percentage={false}
             thousandSeparator={false}
+            validate={inputCreditScoreError}
             value={inputCreditScore}
           />
         </StyledFormItem>
@@ -597,7 +614,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     return saasState?.posSettings?.softCreditRequirement ===
       SoftCreditRequirementEnum.optional && isSkipCheck ? (
       <StyledFormItem
-        label={'Please enter your credit score'}
+        label={"Co-borrower's credit score"}
         sub
         sx={{ maxWidth: 600, width: '100%' }}
       >
@@ -627,6 +644,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     creditScore,
     firstName,
     inputCreditScore,
+    inputCreditScoreError,
     isConfirm,
     isSkipCheck,
     lastName,
