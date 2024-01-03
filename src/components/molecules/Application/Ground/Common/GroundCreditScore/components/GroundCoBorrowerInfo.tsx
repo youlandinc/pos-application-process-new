@@ -86,16 +86,14 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
     <>
       <StyledFormItem
         alignItems={'center'}
-        label={`Would you like to add a co-borrower to ${
-          userType === UserType.CUSTOMER ? 'your' : ''
-        } loan?`}
+        label={'Would you like to add a co-borrower?'}
         tip={
           <>
             <Typography color={'info.main'} variant={'body1'}>
               This means{' '}
               {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun}{' '}
               and co-borrower&apos;s assets and income will be counted together.
-              You can&apos;t remove co-borrower once you have started your
+              You can&apos;t remove the co-borrower once you have started your
               application unless you restart.
             </Typography>
             <Typography color={'info.main'} mt={1.5} variant={'body1'}>

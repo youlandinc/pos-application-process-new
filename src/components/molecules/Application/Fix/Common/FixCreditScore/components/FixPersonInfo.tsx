@@ -266,7 +266,9 @@ export const FixPersonInfo: FC = observer(() => {
             ' ' + saasState?.organizationName || ' YouLand'
           } to use this number to call, text and send ${
             HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject
-          } messages by any method. We don't charge for contacting you, but ${
+          } messages by any method. We don't charge for contacting ${
+            userType === UserType.BROKER ? 'them' : 'you'
+          }, but ${
             HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].third_pronoun
           } service provider may.`}
         >
@@ -381,7 +383,7 @@ export const FixPersonInfo: FC = observer(() => {
         >
           {!selfInfo.isSkipCheck ||
           selfInfo.citizenship === CommonBorrowerType.foreign_national ? (
-            <Stack maxWidth={600} width={'100%'}>
+            <StyledFormItem label={'Soft credit check authorization'} sub>
               <StyledCheckbox
                 checked={selfInfo.authorizedCreditCheck}
                 label={
@@ -402,7 +404,7 @@ export const FixPersonInfo: FC = observer(() => {
                 }
                 sx={{ width: '100%', maxWidth: 600 }}
               />
-            </Stack>
+            </StyledFormItem>
           ) : (
             <StyledFormItem label={'Please enter your credit score'} sub>
               <StyledTextFieldNumber
@@ -412,6 +414,7 @@ export const FixPersonInfo: FC = observer(() => {
                   selfInfo.changeSelfInfo('inputCreditScore', floatValue);
                 }}
                 thousandSeparator={false}
+                validate={selfInfo.errors.inputCreditScore}
                 value={selfInfo.inputCreditScore}
               />
             </StyledFormItem>
