@@ -63,9 +63,9 @@ export const CreditScoreSchema: Record<any, any> = {
             message: 'Must not be empty',
           },
           numericality: {
-            lessThanOrEqualTo: 900,
+            lessThanOrEqualTo: 850,
             greaterThanOrEqualTo: 300,
-            message: 'The score must be between 300 and 900.',
+            message: 'The score must be between 300 and 850.',
           },
         };
       }
