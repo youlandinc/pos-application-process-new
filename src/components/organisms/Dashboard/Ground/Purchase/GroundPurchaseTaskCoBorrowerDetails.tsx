@@ -328,7 +328,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
             return conditionForeign || !authorizedCreditCheck;
           }
           if (isSkipCheck) {
-            return conditionLocal || !inputCreditScore;
+            return conditionForeign || !inputCreditScore;
           }
           return conditionLocal;
         }
@@ -594,7 +594,26 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
         </StyledFormItem>
       );
     }
-    return citizenship !== CommonBorrowerType.foreign_national ? (
+    return saasState?.posSettings?.softCreditRequirement ===
+      SoftCreditRequirementEnum.optional && isSkipCheck ? (
+      <StyledFormItem
+        label={'Please enter your credit score'}
+        sub
+        sx={{ maxWidth: 600, width: '100%' }}
+      >
+        <StyledTextFieldNumber
+          decimalScale={0}
+          disabled={isConfirm}
+          label={'Credit score'}
+          onValueChange={({ floatValue }) => {
+            setInputCreditScore(floatValue);
+          }}
+          percentage={false}
+          thousandSeparator={false}
+          value={inputCreditScore}
+        />
+      </StyledFormItem>
+    ) : citizenship !== CommonBorrowerType.foreign_national ? (
       <StyledFormItem
         label={`Credit score is ${creditScore}`}
         labelSx={{ m: 0 }}
@@ -839,7 +858,8 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
 
                   {saasState?.posSettings?.softCreditRequirement ===
                     SoftCreditRequirementEnum.optional &&
-                    citizenship !== CommonBorrowerType.foreign_national && (
+                    citizenship !== CommonBorrowerType.foreign_national &&
+                    !isConfirm && (
                       <StyledFormItem
                         label={''}
                         labelSx={{ display: 'none' }}

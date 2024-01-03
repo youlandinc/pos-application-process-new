@@ -328,7 +328,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
             return conditionForeign || !authorizedCreditCheck;
           }
           if (isSkipCheck) {
-            return conditionLocal || !inputCreditScore;
+            return conditionForeign || !inputCreditScore;
           }
           return conditionLocal;
         }
@@ -594,7 +594,27 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
         </StyledFormItem>
       );
     }
-    return citizenship !== CommonBorrowerType.foreign_national ? (
+    return saasState?.posSettings?.softCreditRequirement ===
+      SoftCreditRequirementEnum.optional && isSkipCheck ? (
+      <StyledFormItem
+        label={`Credit score is ${inputCreditScore}`}
+        labelSx={{ m: 0 }}
+        sub
+        tipSx={{ m: 0 }}
+      >
+        <StyledTextFieldNumber
+          decimalScale={0}
+          disabled={isConfirm}
+          label={'Credit score'}
+          onValueChange={({ floatValue }) => {
+            setInputCreditScore(floatValue);
+          }}
+          percentage={false}
+          thousandSeparator={false}
+          value={inputCreditScore}
+        />
+      </StyledFormItem>
+    ) : citizenship !== CommonBorrowerType.foreign_national ? (
       <StyledFormItem
         label={`Credit score is ${creditScore}`}
         labelSx={{ m: 0 }}
@@ -839,7 +859,8 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
 
                   {saasState?.posSettings?.softCreditRequirement ===
                     SoftCreditRequirementEnum.optional &&
-                    citizenship !== CommonBorrowerType.foreign_national && (
+                    citizenship !== CommonBorrowerType.foreign_national &&
+                    !isConfirm && (
                       <StyledFormItem
                         label={''}
                         labelSx={{ display: 'none' }}

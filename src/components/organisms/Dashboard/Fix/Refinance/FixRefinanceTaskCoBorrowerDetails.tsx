@@ -328,7 +328,7 @@ export const FixRefinanceTaskCoBorrowerDetails: FC = observer(() => {
             return conditionForeign || !authorizedCreditCheck;
           }
           if (isSkipCheck) {
-            return conditionLocal || !inputCreditScore;
+            return conditionForeign || !inputCreditScore;
           }
           return conditionLocal;
         }
@@ -594,7 +594,26 @@ export const FixRefinanceTaskCoBorrowerDetails: FC = observer(() => {
         </StyledFormItem>
       );
     }
-    return citizenship !== CommonBorrowerType.foreign_national ? (
+    return saasState?.posSettings?.softCreditRequirement ===
+      SoftCreditRequirementEnum.optional && isSkipCheck ? (
+      <StyledFormItem
+        label={'Please enter your credit score'}
+        sub
+        sx={{ maxWidth: 600, width: '100%' }}
+      >
+        <StyledTextFieldNumber
+          decimalScale={0}
+          disabled={isConfirm}
+          label={'Credit score'}
+          onValueChange={({ floatValue }) => {
+            setInputCreditScore(floatValue);
+          }}
+          percentage={false}
+          thousandSeparator={false}
+          value={inputCreditScore}
+        />
+      </StyledFormItem>
+    ) : citizenship !== CommonBorrowerType.foreign_national ? (
       <StyledFormItem
         label={`Credit score is ${creditScore}`}
         labelSx={{ m: 0 }}
@@ -821,25 +840,27 @@ export const FixRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                     </Stack>
                   </StyledFormItem>
 
-                  {citizenship !== CommonBorrowerType.foreign_national && (
-                    <StyledFormItem
-                      label={"Your co-borrower's social security number"}
-                      sub
-                    >
-                      <Stack maxWidth={600} width={'100%'}>
-                        <StyledTextFieldSocialNumber
-                          disabled={isConfirm}
-                          label={'Social security number'}
-                          onValueChange={(v) => setSsn(v)}
-                          value={ssn}
-                        />
-                      </Stack>
-                    </StyledFormItem>
-                  )}
+                  {citizenship !== CommonBorrowerType.foreign_national &&
+                    !isConfirm && (
+                      <StyledFormItem
+                        label={"Your co-borrower's social security number"}
+                        sub
+                      >
+                        <Stack maxWidth={600} width={'100%'}>
+                          <StyledTextFieldSocialNumber
+                            disabled={isConfirm}
+                            label={'Social security number'}
+                            onValueChange={(v) => setSsn(v)}
+                            value={ssn}
+                          />
+                        </Stack>
+                      </StyledFormItem>
+                    )}
 
                   {saasState?.posSettings?.softCreditRequirement ===
                     SoftCreditRequirementEnum.optional &&
-                    citizenship !== CommonBorrowerType.foreign_national && (
+                    citizenship !== CommonBorrowerType.foreign_national &&
+                    !isConfirm && (
                       <StyledFormItem
                         label={''}
                         labelSx={{ display: 'none' }}
