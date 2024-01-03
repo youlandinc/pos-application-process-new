@@ -139,7 +139,7 @@ export const BridgePersonInfo: FC = observer(() => {
               fontWeight: 600,
             }}
           >
-            consent to Receive Electronic Loan Documents
+            Consent to Receive Electronic Loan Documents
           </Typography>
           .
         </>
