@@ -270,7 +270,7 @@ export const Pipeline: FC = observer(() => {
               }}
             />
             <Typography mt={6} textAlign={'center'} variant={'body1'}>
-              You don&apos;t have any loan history yet, apply for a new loan.
+              You don&apos;t have any loan yet, apply for a new one above.
             </Typography>
           </Box>
         )}
