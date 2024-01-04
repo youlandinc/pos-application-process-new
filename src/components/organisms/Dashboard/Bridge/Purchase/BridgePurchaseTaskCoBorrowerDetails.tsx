@@ -615,9 +615,8 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
       SoftCreditRequirementEnum.optional && isSkipCheck ? (
       <StyledFormItem
         label={"Co-borrower's credit score"}
-        labelSx={{ m: 0 }}
         sub
-        tipSx={{ m: 0 }}
+        sx={{ width: '100%', maxWidth: 600 }}
       >
         <StyledTextFieldNumber
           decimalScale={0}
