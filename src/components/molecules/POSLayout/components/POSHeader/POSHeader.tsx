@@ -31,6 +31,7 @@ import {
   Login,
   SignUp,
 } from '@/components/molecules';
+import { POSFormatUrl } from '@/utils';
 
 export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const router = useRouter();
@@ -379,7 +380,10 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 <Typography
                   component={'span'}
                   onClick={() =>
-                    window.open('https://www.youland.com/legal/terms/')
+                    window.open(
+                      POSFormatUrl(saasState?.legalAgreements?.termsUrl) ||
+                        'https://www.youland.com/legal/terms/',
+                    )
                   }
                   sx={{
                     color: 'primary.main',
@@ -396,7 +400,11 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 <Typography
                   component={'span'}
                   onClick={() =>
-                    window.open('https://www.youland.com/legal/privacy/')
+                    window.open(
+                      POSFormatUrl(
+                        saasState?.legalAgreements?.privacyPolicyUrl,
+                      ) || 'https://www.youland.com/legal/privacy/',
+                    )
                   }
                   sx={{
                     color: 'primary.main',

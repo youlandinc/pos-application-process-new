@@ -49,6 +49,7 @@ import SIGN_UP_SVG from '@/svg/auth/sign_up.svg';
 
 import { SignUpProps, SignUpStyles } from './index';
 import { User } from '@/types/user';
+import { POSFormatUrl } from '@/utils';
 
 export const SignUp: FC<SignUpProps> = observer(
   ({ isNestForm = false, isRedirect = true, successCb }) => {
@@ -321,7 +322,7 @@ export const SignUp: FC<SignUpProps> = observer(
         validRoleSet.has(option.value),
       );
       if (result.length === 1) {
-        setUserType(result[0].value);
+        setUserType(result[0].value as keyof typeof UserType);
       }
       return result;
     }, [saasState?.posSettings?.borrowerTypes]);
@@ -509,7 +510,10 @@ export const SignUp: FC<SignUpProps> = observer(
                     <Typography
                       component={'span'}
                       onClick={() =>
-                        window.open('https://www.youland.com/legal/terms/')
+                        window.open(
+                          POSFormatUrl(saasState?.legalAgreements?.termsUrl) ||
+                            'https://www.youland.com/legal/terms/',
+                        )
                       }
                       sx={{
                         color: 'primary.main',
@@ -526,7 +530,11 @@ export const SignUp: FC<SignUpProps> = observer(
                     <Typography
                       component={'span'}
                       onClick={() =>
-                        window.open('https://www.youland.com/legal/privacy/')
+                        window.open(
+                          POSFormatUrl(
+                            saasState?.legalAgreements?.privacyPolicyUrl,
+                          ) || 'https://www.youland.com/legal/privacy/',
+                        )
                       }
                       sx={{
                         color: 'primary.main',
