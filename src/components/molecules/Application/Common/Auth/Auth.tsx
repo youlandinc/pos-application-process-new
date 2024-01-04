@@ -9,6 +9,7 @@ import { ForgotPassword, Login, SignUp } from '@/components/molecules';
 import { _bindProcess } from '@/requests';
 
 import { StyledButton, StyledFormItem, Transitions } from '@/components/atoms';
+import { POSFormatUrl } from '@/utils';
 
 export const Auth: FC<FormNodeBaseProps> = observer((props) => {
   const { prevStep, nextStep } = props;
@@ -49,8 +50,8 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
           authType === 'login'
             ? `Welcome to ${' ' + saasState?.organizationName || 'YouLand'}!`
             : authType === 'sign_up'
-            ? 'Sign up'
-            : 'Rest password'
+              ? 'Sign up'
+              : 'Rest password'
         }
         sx={{ maxWidth: 600 }}
       >
@@ -83,7 +84,10 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
                   <Typography
                     component={'span'}
                     onClick={() =>
-                      window.open('https://www.youland.com/legal/terms/')
+                      window.open(
+                        POSFormatUrl(saasState?.legalAgreements?.termsUrl) ||
+                          'https://www.youland.com/legal/terms/',
+                      )
                     }
                     sx={{
                       color: 'primary.main',
@@ -99,7 +103,11 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
                   <Typography
                     component={'span'}
                     onClick={() =>
-                      window.open('https://www.youland.com/legal/privacy/')
+                      window.open(
+                        POSFormatUrl(
+                          saasState?.legalAgreements?.privacyPolicyUrl,
+                        ) || 'https://www.youland.com/legal/privacy/',
+                      )
                     }
                     sx={{
                       color: 'primary.main',

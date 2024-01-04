@@ -26,6 +26,7 @@ import {
   DashboardTaskGender,
   DashboardTaskMaritalStatus,
   HttpError,
+  SoftCreditRequirementEnum,
 } from '@/types';
 import { POSNotUndefined } from '@/utils';
 import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
@@ -105,6 +106,9 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
   const [inputCreditScore, setInputCreditScore] = useState<
     number | undefined
   >();
+  const [inputCreditScoreError, setInputCreditScoreError] = useState<
+    string[] | undefined
+  >(undefined);
 
   const [isConfirm, setIsConfirm] = useState(false);
   const [creditScore, setCreditScore] = useState<number | undefined>();
@@ -143,6 +147,8 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
           foreclosureDate,
           creditScore,
           isConfirm,
+          isSkipCheck,
+          inputCreditScore,
         } = res.data;
         if (dateOfBirth) {
           setDateOfBirth(new Date(dateOfBirth));
@@ -178,6 +184,9 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
         setIsConfirm(isConfirm || false);
         setCreditScore(creditScore || 0);
 
+        setIsSkipCheck(isSkipCheck || false);
+        setInputCreditScore(inputCreditScore || undefined);
+
         setAuthorizedCreditCheck(authorizedCreditCheck || false);
 
         setTimeout(() => {
@@ -202,79 +211,153 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
 
   const isDisabled = useMemo(() => {
     if (!POSNotUndefined(isCoBorrower)) {
-      return false;
-    }
-
-    if (!isCoBorrower) {
       return true;
     }
 
+    if (!isCoBorrower) {
+      return false;
+    }
+
     const dateValid = isValid(dateOfBirth) && isDate(dateOfBirth);
-    const conditionForeign =
-      dateValid &&
-      address.checkAddressValid &&
-      !!firstName &&
-      !!lastName &&
-      !!phoneNumber &&
-      !!email &&
-      !!gender &&
-      !!marital;
+    const baseCondition = [
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      gender,
+      marital,
+      dateValid,
+    ].some((item) => !item);
+
+    const conditionForeign = baseCondition || !address.checkAddressValid;
 
     const conditionLocal =
-      dateValid &&
-      address.checkAddressValid &&
-      authorizedCreditCheck &&
-      !!firstName &&
-      !!lastName &&
-      !!phoneNumber &&
-      !!email &&
-      !!gender &&
-      !!marital &&
-      !!ssn;
+      baseCondition ||
+      !address.checkAddressValid ||
+      !authorizedCreditCheck ||
+      !ssn;
 
     switch (borrowerType) {
-      case DashboardTaskBorrowerType.entity:
+      case DashboardTaskBorrowerType.entity: {
+        if (
+          saasState?.posSettings?.softCreditRequirement ===
+          SoftCreditRequirementEnum.optional
+        ) {
+          if (citizenship === CommonBorrowerType.foreign_national) {
+            return (
+              conditionForeign ||
+              !signatoryTitle ||
+              !entityType ||
+              !stateId ||
+              !entityState ||
+              !authorizedCreditCheck
+            );
+          }
+
+          if (isSkipCheck) {
+            return (
+              conditionForeign ||
+              !signatoryTitle ||
+              !entityType ||
+              !stateId ||
+              !entityState ||
+              !inputCreditScore
+            );
+          }
+
+          return (
+            conditionLocal ||
+            !signatoryTitle ||
+            !entityType ||
+            !stateId ||
+            !entityState
+          );
+        }
         if (citizenship === CommonBorrowerType.foreign_national) {
           return (
-            conditionForeign &&
-            !!signatoryTitle &&
-            !!entityType &&
-            !!stateId &&
-            !!entityState
+            conditionForeign ||
+            !signatoryTitle ||
+            !entityType ||
+            !stateId ||
+            !entityState
           );
         }
         return (
-          conditionLocal &&
-          !!signatoryTitle &&
-          !!entityType &&
-          !!stateId &&
-          !!entityState
+          conditionLocal ||
+          !signatoryTitle ||
+          !entityType ||
+          !stateId ||
+          !entityState
         );
-      case DashboardTaskBorrowerType.trust:
-        if (citizenship === CommonBorrowerType.foreign_national) {
-          return conditionForeign && !!trustName && !!signatoryTitle;
+      }
+
+      case DashboardTaskBorrowerType.trust: {
+        if (
+          saasState?.posSettings?.softCreditRequirement ===
+          SoftCreditRequirementEnum.optional
+        ) {
+          if (citizenship === CommonBorrowerType.foreign_national) {
+            return (
+              conditionForeign ||
+              !trustName ||
+              !signatoryTitle ||
+              !authorizedCreditCheck
+            );
+          }
+
+          if (isSkipCheck) {
+            return (
+              conditionForeign ||
+              !signatoryTitle ||
+              !trustName ||
+              !inputCreditScore
+            );
+          }
+
+          return conditionLocal || !signatoryTitle || !trustName;
         }
-        return conditionLocal && !!trustName && !!signatoryTitle;
-      case DashboardTaskBorrowerType.individual:
+        if (citizenship === CommonBorrowerType.foreign_national) {
+          return conditionForeign || !signatoryTitle || !trustName;
+        }
+        return conditionLocal || !signatoryTitle || !trustName;
+      }
+
+      case DashboardTaskBorrowerType.individual: {
+        if (
+          saasState?.posSettings?.softCreditRequirement ===
+          SoftCreditRequirementEnum.optional
+        ) {
+          if (citizenship === CommonBorrowerType.foreign_national) {
+            return conditionForeign || !authorizedCreditCheck;
+          }
+          if (isSkipCheck) {
+            return conditionForeign || !inputCreditScore;
+          }
+          return conditionLocal;
+        }
         return citizenship === CommonBorrowerType.foreign_national
           ? conditionForeign
           : conditionLocal;
+      }
       default:
-        return false;
+        return true;
     }
   }, [
     isCoBorrower,
+    saasState?.posSettings?.softCreditRequirement,
     dateOfBirth,
-    address.checkAddressValid,
     firstName,
     lastName,
     phoneNumber,
     email,
     gender,
     marital,
+    address.checkAddressValid,
     authorizedCreditCheck,
     ssn,
     borrowerType,
+    isSkipCheck,
+    inputCreditScore,
     citizenship,
     signatoryTitle,
     entityType,
@@ -289,6 +372,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     const foreclosureDateValid =
       isValid(foreclosureDate) && isDate(foreclosureDate);
     setSaveLoading(true);
+    setInputCreditScoreError(undefined);
     const postData = {
       taskId: router.query.taskId as string,
       taskForm: {
@@ -319,13 +403,31 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
           ? format(foreclosureDate as Date, 'yyyy-MM-dd O')
           : undefined,
         propAddr: address.getPostData(),
+        isSkipCheck,
+        inputCreditScore,
       },
     };
+
+    if (citizenship !== CommonBorrowerType.foreign_national && isSkipCheck) {
+      if (
+        !inputCreditScore ||
+        inputCreditScore <= 300 ||
+        inputCreditScore >= 850
+      ) {
+        setInputCreditScoreError(['The score must be between 300 and 850.']);
+        setSaveLoading(false);
+        return;
+      }
+    }
 
     try {
       const res = await _updateTaskFormInfo(postData);
       setCreditScore(res.data);
-      if (isCoBorrower && citizenship !== CommonBorrowerType.foreign_national) {
+      if (
+        isCoBorrower &&
+        citizenship !== CommonBorrowerType.foreign_national &&
+        !isSkipCheck
+      ) {
         setTableView('score');
       } else {
         await router.push({
@@ -359,7 +461,9 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     firstName,
     foreclosureDate,
     gender,
+    inputCreditScore,
     isCoBorrower,
+    isSkipCheck,
     lastName,
     marital,
     phoneNumber,
@@ -451,6 +555,101 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     signatoryTitle,
     stateId,
     trustName,
+  ]);
+
+  const renderViaIsSkip = useMemo(() => {
+    if (!isConfirm) {
+      return saasState?.posSettings?.softCreditRequirement ===
+        SoftCreditRequirementEnum.optional &&
+        isSkipCheck &&
+        citizenship !== CommonBorrowerType.foreign_national ? (
+        <StyledFormItem
+          label={"Co-borrower's credit score"}
+          sub
+          sx={{ maxWidth: 600, width: '100%' }}
+        >
+          <StyledTextFieldNumber
+            decimalScale={0}
+            disabled={isConfirm}
+            label={'Credit score'}
+            onValueChange={({ floatValue }) => {
+              setInputCreditScore(floatValue);
+            }}
+            percentage={false}
+            thousandSeparator={false}
+            validate={inputCreditScoreError}
+            value={inputCreditScore}
+          />
+        </StyledFormItem>
+      ) : (
+        <StyledFormItem
+          label={'Soft credit check authorization'}
+          sub
+          sx={{ width: '100%', maxWidth: 600 }}
+        >
+          <StyledCheckbox
+            checked={authorizedCreditCheck}
+            disabled={isConfirm}
+            label={
+              <Typography
+                color={'text.primary'}
+                component={'div'}
+                ml={2}
+                variant={'body2'}
+              >
+                I, {firstName || 'borrower'} {lastName || 'name'}, authorize{' '}
+                {
+                  //sass
+                  saasState?.organizationName || 'YouLand'
+                }{' '}
+                to verify my credit.
+              </Typography>
+            }
+            onChange={(e) => setAuthorizedCreditCheck(e.target.checked)}
+            sx={{ width: '100%' }}
+          />
+        </StyledFormItem>
+      );
+    }
+    return saasState?.posSettings?.softCreditRequirement ===
+      SoftCreditRequirementEnum.optional && isSkipCheck ? (
+      <StyledFormItem
+        label={"Co-borrower's credit score"}
+        sub
+        sx={{ maxWidth: 600, width: '100%' }}
+      >
+        <StyledTextFieldNumber
+          decimalScale={0}
+          disabled={isConfirm}
+          label={'Credit score'}
+          onValueChange={({ floatValue }) => {
+            setInputCreditScore(floatValue);
+          }}
+          percentage={false}
+          thousandSeparator={false}
+          value={inputCreditScore}
+        />
+      </StyledFormItem>
+    ) : citizenship !== CommonBorrowerType.foreign_national ? (
+      <StyledFormItem
+        label={`Credit score is ${creditScore}`}
+        labelSx={{ m: 0 }}
+        sub
+        tipSx={{ m: 0 }}
+      />
+    ) : null;
+  }, [
+    authorizedCreditCheck,
+    citizenship,
+    creditScore,
+    firstName,
+    inputCreditScore,
+    inputCreditScoreError,
+    isConfirm,
+    isSkipCheck,
+    lastName,
+    saasState?.organizationName,
+    saasState?.posSettings?.softCreditRequirement,
   ]);
 
   return (
@@ -675,92 +874,35 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                     </StyledFormItem>
                   )}
 
-                  {!isConfirm ? (
-                    <StyledCheckbox
-                      checked={authorizedCreditCheck}
-                      disabled={isConfirm}
-                      label={
-                        <Typography
-                          color={'text.primary'}
-                          component={'div'}
-                          ml={2}
-                          variant={'body2'}
-                        >
-                          I, {firstName || 'borrower'} {lastName || 'name'},
-                          authorize{' '}
-                          {
-                            //sass
-                            saasState?.organizationName || 'YouLand'
-                          }{' '}
-                          to verify my credit. I&apos;ve also read and agreed to{' '}
-                          {
-                            //sass
-                            saasState?.organizationName || 'YouLand'
-                          }{' '}
-                          &apos;s{' '}
-                          <Typography
-                            component={'span'}
-                            onClick={() =>
-                              window.open(
-                                'https://www.youland.com/legal/terms/',
-                              )
-                            }
-                            sx={{
-                              color: 'primary.main',
-                              cursor: 'pointer',
-                              fontWeight: 600,
-                            }}
-                          >
-                            Terms of Use
-                          </Typography>
-                          ,{' '}
-                          <Typography
-                            component={'span'}
-                            onClick={() =>
-                              window.open(
-                                'https://www.youland.com/legal/privacy/',
-                              )
-                            }
-                            sx={{
-                              color: 'primary.main',
-                              cursor: 'pointer',
-                              fontWeight: 600,
-                            }}
-                          >
-                            Privacy Policy
-                          </Typography>{' '}
-                          and{' '}
-                          <Typography
-                            component={'span'}
-                            onClick={() =>
-                              window.open(
-                                'https://www.youland.com/legal/e-loan-doc/',
-                              )
-                            }
-                            sx={{
-                              color: 'primary.main',
-                              cursor: 'pointer',
-                              fontWeight: 600,
-                            }}
-                          >
-                            consent to Receive Electronic Loan Documents
-                          </Typography>
-                          .
-                        </Typography>
-                      }
-                      onChange={(e) =>
-                        setAuthorizedCreditCheck(e.target.checked)
-                      }
-                      sx={{ maxWidth: 600 }}
-                    />
-                  ) : citizenship !== CommonBorrowerType.foreign_national ? (
-                    <StyledFormItem
-                      label={`Credit score is ${creditScore}`}
-                      labelSx={{ m: 0 }}
-                      sub
-                      tipSx={{ m: 0 }}
-                    />
-                  ) : null}
+                  {saasState?.posSettings?.softCreditRequirement ===
+                    SoftCreditRequirementEnum.optional &&
+                    citizenship !== CommonBorrowerType.foreign_national &&
+                    !isConfirm && (
+                      <StyledFormItem
+                        label={''}
+                        labelSx={{ display: 'none' }}
+                        sx={{ maxWidth: 600, width: '100%' }}
+                      >
+                        <StyledCheckbox
+                          checked={isSkipCheck}
+                          disabled={isConfirm}
+                          label={
+                            <Typography
+                              color={'text.primary'}
+                              component={'div'}
+                              ml={2}
+                              variant={'body2'}
+                            >
+                              Skip soft credit check for now
+                            </Typography>
+                          }
+                          onChange={(e) => setIsSkipCheck(e.target.checked)}
+                          sx={{ width: '100%' }}
+                        />
+                      </StyledFormItem>
+                    )}
+
+                  {renderViaIsSkip}
                 </>
               )}
             </Transitions>
@@ -787,13 +929,20 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
               </StyledButton>
               {!isConfirm && (
                 <StyledButton
-                  disabled={!isDisabled || saveLoading}
+                  disabled={isDisabled || saveLoading}
                   loading={saveLoading}
                   loadingText={'Saving...'}
                   onClick={handledSubmit}
                   sx={{ flex: 1 }}
                 >
-                  Next
+                  {saasState?.posSettings?.softCreditRequirement ===
+                  SoftCreditRequirementEnum.optional
+                    ? citizenship === CommonBorrowerType.foreign_national
+                      ? 'Save'
+                      : isSkipCheck
+                        ? 'Save'
+                        : 'Next'
+                    : 'Next'}
                 </StyledButton>
               )}
             </Stack>
@@ -809,7 +958,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
           >
             <DashboardScoreResult score={creditScore} />
             <StyledButton
-              disabled={!isDisabled || saveLoading}
+              disabled={isDisabled || saveLoading}
               loading={saveLoading}
               loadingText={'Saving...'}
               onClick={async () => {
