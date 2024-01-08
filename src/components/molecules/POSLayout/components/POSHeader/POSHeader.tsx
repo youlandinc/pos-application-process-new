@@ -426,6 +426,8 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     close,
     handledLoginSuccess,
     handledSignUpAndResetSuccess,
+    saasState?.legalAgreements?.privacyPolicyUrl,
+    saasState?.legalAgreements?.termsUrl,
     saasState?.organizationName,
   ]);
 
