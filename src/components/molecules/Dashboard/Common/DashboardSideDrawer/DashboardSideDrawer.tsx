@@ -1,18 +1,16 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Close } from '@mui/icons-material';
 import { Box } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useBreakpoints } from '@/hooks';
+import { POSFormatUrl } from '@/utils';
+
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { SceneType } from '@/types';
 
-import {
-  StyledButton,
-  StyledDrawer,
-  StyledHeaderLogo,
-} from '@/components/atoms';
+import { StyledButton, StyledDrawer } from '@/components/atoms';
 import { DashboardMenuList } from '@/components/molecules';
 
 interface DashboardSideDrawerProps {
@@ -24,6 +22,34 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
   ({ visible = false, close }) => {
     const breakpoint = useBreakpoints();
     const { selectedProcessData } = useMst();
+    const { saasState } = useSessionStorageState('tenantConfig');
+
+    const Logo = useMemo(() => {
+      if (saasState?.logoUrl) {
+        return (
+          <picture style={{ height: '100%' }}>
+            <img
+              alt=""
+              height={'100%'}
+              src={saasState?.logoUrl || '/images/logo/logo_blue.svg'}
+            />
+          </picture>
+        );
+      }
+      return (
+        <Box
+          sx={{
+            fontSize: 24,
+            fontWeight: 600,
+            lineHeight: 1.5,
+            color: 'primary.main',
+          }}
+        >
+          {saasState?.organizationName}
+        </Box>
+      );
+    }, [saasState?.logoUrl, saasState?.organizationName]);
+
     return (
       <StyledDrawer
         content={
@@ -46,7 +72,22 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
               justifyContent: 'space-between',
             }}
           >
-            <StyledHeaderLogo />
+            <Box
+              onClick={() => {
+                if (!saasState?.website) {
+                  return;
+                }
+                const url = POSFormatUrl(saasState?.website);
+                saasState?.website && (location.href = url);
+              }}
+              sx={{
+                position: 'relative',
+                height: '100%',
+                cursor: saasState?.website ? 'pointer' : 'default',
+              }}
+            >
+              {Logo}
+            </Box>
             <StyledButton
               color="info"
               isIconButton
@@ -61,7 +102,7 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
         sx={{
           '&.MuiDrawer-root ': {
             '& .drawer_header': {
-              py: 0,
+              py: 2.5,
               px: 1.5,
             },
             '& .drawer_content': {
