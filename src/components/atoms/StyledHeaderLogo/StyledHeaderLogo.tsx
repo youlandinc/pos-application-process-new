@@ -38,9 +38,9 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
 
   useEffect(() => {
     if (saasState?.logoUrl) {
-      POSGetImageSize(saasState?.logoUrl).then((res) =>
-        setRatio(res as number),
-      );
+      POSGetImageSize(saasState?.logoUrl).then((res) => {
+        setRatio(res?.ratio as number);
+      });
     }
   }, [saasState?.logoUrl]);
 

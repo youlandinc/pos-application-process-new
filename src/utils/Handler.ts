@@ -48,7 +48,9 @@ export const POSSVGAnimation = (
   }
 };
 
-export const POSGetImageSize = async (src: string) => {
+export const POSGetImageSize = async (
+  src: string,
+): Promise<{ ratio: number; width: number; height: number } | void> => {
   if (!src) {
     return;
   }
@@ -56,7 +58,12 @@ export const POSGetImageSize = async (src: string) => {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.src = src;
-    img.onload = () => resolve(img.naturalWidth / img.naturalHeight);
+    img.onload = () => {
+      const ratio = img.naturalWidth / img.naturalHeight;
+      const width = img.naturalWidth;
+      const height = img.naturalHeight;
+      resolve({ ratio, width, height });
+    };
     img.onerror = reject;
   });
 };

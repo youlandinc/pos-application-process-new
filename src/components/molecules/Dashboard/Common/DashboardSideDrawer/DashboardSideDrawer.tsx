@@ -1,19 +1,16 @@
-import { FC } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { Close } from '@mui/icons-material';
 import { Box } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useBreakpoints } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { SceneType } from '@/types';
 
-import {
-  StyledButton,
-  StyledDrawer,
-  StyledHeaderLogo,
-} from '@/components/atoms';
+import { StyledButton, StyledDrawer } from '@/components/atoms';
 import { DashboardMenuList } from '@/components/molecules';
+import { POSFormatUrl, POSGetImageSize } from '@/utils';
 
 interface DashboardSideDrawerProps {
   visible: boolean;
@@ -24,6 +21,44 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
   ({ visible = false, close }) => {
     const breakpoint = useBreakpoints();
     const { selectedProcessData } = useMst();
+    const { saasState } = useSessionStorageState('tenantConfig');
+
+    const [ratio, setRatio] = useState(-1);
+
+    const Logo = useMemo(() => {
+      if (saasState?.logoUrl) {
+        return (
+          <picture style={{ height: '100%' }}>
+            <img
+              alt=""
+              height={'100%'}
+              src={saasState?.logoUrl || '/images/logo/logo_blue.svg'}
+            />
+          </picture>
+        );
+      }
+      return (
+        <Box
+          sx={{
+            fontSize: 24,
+            fontWeight: 600,
+            lineHeight: 1.5,
+            color: 'primary.main',
+          }}
+        >
+          {saasState?.organizationName}
+        </Box>
+      );
+    }, [ratio, saasState?.logoUrl, saasState?.organizationName]);
+
+    useEffect(() => {
+      if (saasState?.logoUrl) {
+        POSGetImageSize(saasState?.logoUrl).then((res) => {
+          setRatio(res?.ratio as number);
+        });
+      }
+    }, [saasState?.logoUrl]);
+
     return (
       <StyledDrawer
         content={
@@ -46,7 +81,23 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
               justifyContent: 'space-between',
             }}
           >
-            <StyledHeaderLogo />
+            <Box
+              onClick={() => {
+                if (!saasState?.website) {
+                  return;
+                }
+                const url = POSFormatUrl(saasState?.website);
+                saasState?.website && (location.href = url);
+              }}
+              sx={{
+                position: 'relative',
+                height: '100%',
+                cursor: saasState?.website ? 'pointer' : 'default',
+                maxWidth: 200,
+              }}
+            >
+              {Logo}
+            </Box>
             <StyledButton
               color="info"
               isIconButton
@@ -61,7 +112,6 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
         sx={{
           '&.MuiDrawer-root ': {
             '& .drawer_header': {
-              py: 0,
               px: 1.5,
             },
             '& .drawer_content': {
