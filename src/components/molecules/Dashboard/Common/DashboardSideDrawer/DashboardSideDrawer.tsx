@@ -1,11 +1,11 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { Close } from '@mui/icons-material';
 import { Box } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { POSFormatUrl } from '@/utils';
+import { POSFormatUrl, POSGetImageSize } from '@/utils';
 
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { SceneType } from '@/types';
@@ -24,14 +24,18 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
     const { selectedProcessData } = useMst();
     const { saasState } = useSessionStorageState('tenantConfig');
 
+    const [ratio, setRatio] = useState(-1);
+
     const Logo = useMemo(() => {
       if (saasState?.logoUrl) {
+        const width = 51 * ratio;
         return (
           <picture style={{ height: '100%' }}>
             <img
               alt=""
-              height={'100%'}
+              height={width > 240 ? 'auto' : '100%'}
               src={saasState?.logoUrl || '/images/logo/logo_blue.svg'}
+              width={width > 240 ? 240 : 'auto'}
             />
           </picture>
         );
@@ -48,7 +52,15 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
           {saasState?.organizationName}
         </Box>
       );
-    }, [saasState?.logoUrl, saasState?.organizationName]);
+    }, [ratio, saasState?.logoUrl, saasState?.organizationName]);
+
+    useEffect(() => {
+      if (saasState?.logoUrl) {
+        POSGetImageSize(saasState?.logoUrl).then((res) => {
+          setRatio(res?.ratio as number);
+        });
+      }
+    }, [saasState?.logoUrl]);
 
     return (
       <StyledDrawer
