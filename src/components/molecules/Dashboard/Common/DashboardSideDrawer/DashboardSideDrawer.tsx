@@ -36,7 +36,16 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
         }
         disableEscapeKeyDown
         header={
-          <Box className={'POS_flex POS_jc_sb'}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              height: '100%',
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
             <StyledHeaderLogo />
             <StyledButton
               color="info"
@@ -52,7 +61,7 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
         sx={{
           '&.MuiDrawer-root ': {
             '& .drawer_header': {
-              py: 4.25,
+              py: 0,
               px: 1.5,
             },
             '& .drawer_content': {

@@ -16,6 +16,7 @@ export const StyledDrawerStyles = {
         md: 6,
         xs: 1.5,
       },
+      maxHeight: 92,
     },
     '& .drawer_footer': {
       // minHeight: 60,
