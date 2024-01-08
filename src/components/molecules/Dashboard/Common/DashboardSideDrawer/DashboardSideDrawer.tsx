@@ -1,16 +1,17 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
 import { Close } from '@mui/icons-material';
 import { Box } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { POSFormatUrl } from '@/utils';
+
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { SceneType } from '@/types';
 
 import { StyledButton, StyledDrawer } from '@/components/atoms';
 import { DashboardMenuList } from '@/components/molecules';
-import { POSFormatUrl, POSGetImageSize } from '@/utils';
 
 interface DashboardSideDrawerProps {
   visible: boolean;
@@ -22,8 +23,6 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
     const breakpoint = useBreakpoints();
     const { selectedProcessData } = useMst();
     const { saasState } = useSessionStorageState('tenantConfig');
-
-    const [ratio, setRatio] = useState(-1);
 
     const Logo = useMemo(() => {
       if (saasState?.logoUrl) {
@@ -49,15 +48,7 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
           {saasState?.organizationName}
         </Box>
       );
-    }, [ratio, saasState?.logoUrl, saasState?.organizationName]);
-
-    useEffect(() => {
-      if (saasState?.logoUrl) {
-        POSGetImageSize(saasState?.logoUrl).then((res) => {
-          setRatio(res?.ratio as number);
-        });
-      }
-    }, [saasState?.logoUrl]);
+    }, [saasState?.logoUrl, saasState?.organizationName]);
 
     return (
       <StyledDrawer
@@ -93,7 +84,6 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
                 position: 'relative',
                 height: '100%',
                 cursor: saasState?.website ? 'pointer' : 'default',
-                maxWidth: 200,
               }}
             >
               {Logo}
@@ -112,6 +102,7 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
         sx={{
           '&.MuiDrawer-root ': {
             '& .drawer_header': {
+              py: 2.5,
               px: 1.5,
             },
             '& .drawer_content': {
