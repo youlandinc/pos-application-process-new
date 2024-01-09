@@ -141,12 +141,13 @@ const useStateMachine = (
           const params: any[] = [postData];
           if (creditScore.coBorrowerCondition.isCoBorrower) {
             coBorrowerInfo.validateSelfInfo('coBorrower');
-            if (coBorrowerInfo.isValid) {
-              params.push({
-                name: VariableName.aboutOtherInfo,
-                ...coBorrowerInfo.getPostData(),
-              });
+            if (!coBorrowerInfo.isValid) {
+              return;
             }
+            params.push({
+              name: VariableName.aboutOtherInfo,
+              ...coBorrowerInfo.getPostData(),
+            });
           }
           await handledNextTask(params, () => nextStep());
         },
