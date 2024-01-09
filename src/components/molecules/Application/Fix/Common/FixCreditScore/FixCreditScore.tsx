@@ -226,7 +226,7 @@ export const FixCreditScore: FC<FormNodeBaseProps> = observer((props) => {
       case FixAndFlipCreditScoreState.creditScore:
         return false;
       case FixAndFlipCreditScoreState.selfInfo:
-        return creditScore.selfInfo.checkSelfValueIsEmpty;
+        return creditScore.selfInfo.checkSelfValueIsDisabled;
       case FixAndFlipCreditScoreState.coBorrowerInfo:
         if (!POSNotUndefined(creditScore.coBorrowerCondition.isCoBorrower)) {
           return true;
@@ -238,7 +238,7 @@ export const FixCreditScore: FC<FormNodeBaseProps> = observer((props) => {
   }, [
     creditScore.coBorrowerCondition.isCoBorrower,
     creditScore.coBorrowerInfo.checkOtherValueIsEmpty,
-    creditScore.selfInfo.checkSelfValueIsEmpty,
+    creditScore.selfInfo.checkSelfValueIsDisabled,
     creditScore.state,
   ]);
 

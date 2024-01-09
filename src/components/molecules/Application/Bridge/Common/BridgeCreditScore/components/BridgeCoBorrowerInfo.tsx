@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useCallback } from 'react';
+import { ChangeEvent, FC, useCallback, useEffect } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { NumberFormatValues } from 'react-number-format';
 
@@ -6,7 +6,11 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { useSessionStorageState } from '@/hooks';
-import { CommonBorrowerType, UserType } from '@/types';
+import {
+  CommonBorrowerType,
+  DashboardTaskBorrowerType,
+  UserType,
+} from '@/types';
 import {
   IPersonalInfo,
   SPersonalInfo,
@@ -40,6 +44,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
   const { saasState } = useSessionStorageState('tenantConfig');
 
   const coBorrowerInfo: IPersonalInfo = creditScore.coBorrowerInfo;
+  const selfInfo: IPersonalInfo = creditScore.selfInfo;
   const {
     coBorrowerCondition: { isCoBorrower },
   } = creditScore;
@@ -82,6 +87,12 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
     [coBorrowerInfo],
   );
 
+  useEffect(() => {
+    if (selfInfo.borrowerType !== DashboardTaskBorrowerType.individual) {
+      creditScore.changeCoBorrowerCondition('isCoBorrower', false);
+    }
+  }, [creditScore, selfInfo.borrowerType]);
+
   return (
     <>
       <StyledFormItem
@@ -103,6 +114,9 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
         }
       >
         <StyledButtonGroup
+          disabled={
+            selfInfo.borrowerType !== DashboardTaskBorrowerType.individual
+          }
           onChange={(e, value) => {
             if (value !== null) {
               creditScore.changeCoBorrowerCondition(
