@@ -133,12 +133,7 @@ export const PersonalInfo = types
                 !self.authorizedCreditCheck
               );
             }
-            return (
-              conditionLocal ||
-              conditionEntity ||
-              !self.inputCreditScore ||
-              !self.ssn
-            );
+            return conditionLocal || conditionEntity || !self.inputCreditScore;
           }
           return (
             conditionForeign || conditionEntity || !self.authorizedCreditCheck
@@ -153,12 +148,7 @@ export const PersonalInfo = types
                 !self.authorizedCreditCheck
               );
             }
-            return (
-              conditionLocal ||
-              conditionTrust ||
-              !self.inputCreditScore ||
-              !self.ssn
-            );
+            return conditionLocal || conditionTrust || !self.inputCreditScore;
           }
           return (
             conditionForeign || conditionTrust || !self.authorizedCreditCheck
@@ -169,7 +159,7 @@ export const PersonalInfo = types
             if (!self.isSkipCheck) {
               return conditionForeign || !self.authorizedCreditCheck;
             }
-            return conditionLocal || !self.inputCreditScore || !self.ssn;
+            return conditionLocal || !self.inputCreditScore;
           }
           return conditionForeign || !self.authorizedCreditCheck;
         }

@@ -84,6 +84,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
   const [stateId, setStateId] = useState<string | undefined>();
   const [entityState, setEntityState] = useState<string | undefined>();
 
+  const [entityName, setEntityName] = useState<string | undefined>();
   const [trustName, setTrustName] = useState<string | undefined>();
 
   const [firstName, setFirstName] = useState<string | undefined>();
@@ -149,6 +150,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
           isConfirm,
           isSkipCheck,
           inputCreditScore,
+          entityName,
         } = res.data;
         if (dateOfBirth) {
           setDateOfBirth(new Date(dateOfBirth));
@@ -166,6 +168,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
         setEntityState(entityState || undefined);
         setStateId(stateId || '');
         setSignatoryTitle(signatoryTitle || '');
+        setEntityName(entityName || '');
 
         setTrustName(trustName || '');
 
@@ -250,6 +253,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
               !entityType ||
               !stateId ||
               !entityState ||
+              !entityName ||
               !authorizedCreditCheck
             );
           }
@@ -261,6 +265,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
               !entityType ||
               !stateId ||
               !entityState ||
+              !entityName ||
               !inputCreditScore
             );
           }
@@ -270,6 +275,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
             !signatoryTitle ||
             !entityType ||
             !stateId ||
+            !entityName ||
             !entityState
           );
         }
@@ -279,6 +285,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
             !signatoryTitle ||
             !entityType ||
             !stateId ||
+            !entityName ||
             !entityState
           );
         }
@@ -286,6 +293,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
           conditionLocal ||
           !signatoryTitle ||
           !entityType ||
+          !entityName ||
           !stateId ||
           !entityState
         );
@@ -344,7 +352,6 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
     }
   }, [
     isCoBorrower,
-    saasState?.posSettings?.softCreditRequirement,
     dateOfBirth,
     firstName,
     lastName,
@@ -356,13 +363,15 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
     authorizedCreditCheck,
     ssn,
     borrowerType,
-    isSkipCheck,
-    inputCreditScore,
+    saasState?.posSettings?.softCreditRequirement,
     citizenship,
     signatoryTitle,
     entityType,
+    entityName,
     stateId,
     entityState,
+    isSkipCheck,
+    inputCreditScore,
     trustName,
   ]);
 
@@ -384,6 +393,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
         email,
         entityState,
         entityType,
+        entityName,
         trustName,
         firstName,
         gender,
@@ -456,6 +466,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
     delinquentTimes,
     email,
     enqueueSnackbar,
+    entityName,
     entityState,
     entityType,
     firstName,
@@ -485,6 +496,12 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
               maxWidth={600}
               width={'100%'}
             >
+              <StyledTextField
+                disabled={isConfirm}
+                label={'Entity name'}
+                onChange={(e) => setEntityName(e.target.value)}
+                value={entityName}
+              />
               <StyledTextField
                 disabled={isConfirm}
                 label={'Authorized signatory title'}
@@ -549,6 +566,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
     }
   }, [
     borrowerType,
+    entityName,
     entityState,
     entityType,
     isConfirm,
@@ -616,7 +634,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
       <StyledFormItem
         label={"Co-borrower's credit score"}
         sub
-        sx={{ maxWidth: 600, width: '100%' }}
+        sx={{ width: '100%', maxWidth: 600 }}
       >
         <StyledTextFieldNumber
           decimalScale={0}
@@ -733,22 +751,6 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                     </Stack>
                   </StyledFormItem>
 
-                  <StyledFormItem
-                    label={'What is your citizenship status?'}
-                    sub
-                  >
-                    <Stack maxWidth={600} width={'100%'}>
-                      <StyledSelectOption
-                        disabled={isConfirm}
-                        onChange={(value) =>
-                          setCitizenship(value as string as CommonBorrowerType)
-                        }
-                        options={OPTIONS_COMMON_CITIZEN_TYPE}
-                        value={citizenship}
-                      />
-                    </Stack>
-                  </StyledFormItem>
-
                   <Transitions
                     style={{
                       display:
@@ -763,7 +765,13 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                   </Transitions>
 
                   <StyledFormItem
-                    label={'Personal information'}
+                    label={
+                      borrowerType
+                        ? borrowerType !== DashboardTaskBorrowerType.individual
+                          ? 'Signatory personal information'
+                          : 'Personal information'
+                        : 'Personal information'
+                    }
                     sub
                     tip={`By entering your phone number,  you're authorizing ${
                       //sass
@@ -845,6 +853,22 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                         label={'Property foreclosure filing date'}
                         onChange={(value) => setForeclosureDate(value)}
                         value={foreclosureDate}
+                      />
+                    </Stack>
+                  </StyledFormItem>
+
+                  <StyledFormItem
+                    label={'What is your citizenship status?'}
+                    sub
+                  >
+                    <Stack maxWidth={600} width={'100%'}>
+                      <StyledSelectOption
+                        disabled={isConfirm}
+                        onChange={(value) =>
+                          setCitizenship(value as string as CommonBorrowerType)
+                        }
+                        options={OPTIONS_COMMON_CITIZEN_TYPE}
+                        value={citizenship}
                       />
                     </Stack>
                   </StyledFormItem>
