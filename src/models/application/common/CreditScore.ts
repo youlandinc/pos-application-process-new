@@ -167,13 +167,49 @@ export const PersonalInfo = types
           return true;
       }
     },
-    get checkOtherValueIsEmpty() {
-      const baseCondition =
-        this.checkPersonalValueIsEmpty || !self.address.isValid;
-      if (self.citizenship === CommonBorrowerType.foreign_national) {
-        return baseCondition;
+    get checkOtherValueIsDisabled() {
+      if (!self.borrowerType) {
+        return true;
       }
-      return baseCondition || !self.ssn;
+
+      const conditionForeign =
+        this.checkPersonalValueIsEmpty || !self.address.checkAddressValid;
+
+      const conditionLocal =
+        this.checkPersonalValueIsEmpty ||
+        !self.ssn ||
+        !self.address.checkAddressValid;
+
+      const conditionTrust = !self.trustName || !self.signatoryTitle;
+      const conditionEntity =
+        !self.entityName ||
+        !self.entityState ||
+        !self.entityType ||
+        !self.signatoryTitle ||
+        !self.stateId;
+
+      switch (self.borrowerType) {
+        case DashboardTaskBorrowerType.entity: {
+          if (self.citizenship !== CommonBorrowerType.foreign_national) {
+            return conditionEntity || conditionLocal;
+          }
+          return conditionEntity || conditionForeign;
+        }
+        case DashboardTaskBorrowerType.trust: {
+          if (self.citizenship !== CommonBorrowerType.foreign_national) {
+            return conditionTrust || conditionLocal;
+          }
+          return conditionTrust || conditionForeign;
+        }
+        case DashboardTaskBorrowerType.individual: {
+          if (self.citizenship !== CommonBorrowerType.foreign_national) {
+            return conditionLocal;
+          }
+          return conditionForeign;
+        }
+        default:
+          return true;
+      }
     },
     get checkInfoValid() {
       if (
@@ -201,6 +237,7 @@ export const PersonalInfo = types
       },
       validateSelfInfo(role: 'self' | 'coBorrower' = 'self') {
         let errors = validate(self, CreditScoreSchema.selfInfo);
+        console.log(errors);
         if (
           !self.isSkipCheck &&
           !self.authorizedCreditCheck &&

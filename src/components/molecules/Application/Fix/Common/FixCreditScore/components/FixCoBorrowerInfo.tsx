@@ -19,7 +19,10 @@ import {
 import {
   HASH_COMMON_PERSON,
   OPTIONS_COMMON_CITIZEN_TYPE,
+  OPTIONS_COMMON_STATE,
   OPTIONS_COMMON_YES_OR_NO,
+  OPTIONS_TASK_BORROWER_TYPE,
+  OPTIONS_TASK_ENTITY_TYPE,
 } from '@/constants';
 
 import {
@@ -27,6 +30,7 @@ import {
   StyledDatePicker,
   StyledFormItem,
   StyledGoogleAutoComplete,
+  StyledSelect,
   StyledSelectOption,
   StyledTextField,
   StyledTextFieldPhone,
@@ -73,7 +77,8 @@ export const FixCoBorrowerInfo: FC = observer(() => {
             coBorrowerInfo.changeSelfInfo(fieldName, e as unknown as string);
             break;
           }
-          case 'citizenship': {
+          case 'citizenship':
+          case 'borrowerType': {
             coBorrowerInfo.changeSelfInfo(fieldName, e as CommonBorrowerType);
             break;
           }
@@ -131,6 +136,7 @@ export const FixCoBorrowerInfo: FC = observer(() => {
           value={isCoBorrower}
         />
       </StyledFormItem>
+
       <Transitions>
         {isCoBorrower && (
           <StyledFormItem
@@ -142,18 +148,117 @@ export const FixCoBorrowerInfo: FC = observer(() => {
             }
             tipSx={{ mb: 0 }}
           >
-            <StyledFormItem
-              label={"What is co-borrower's citizenship status?"}
-              sub
-            >
+            <StyledFormItem label={'Borrower type'} sub>
               <StyledSelectOption
-                onChange={changeFieldValue('citizenship')}
-                options={OPTIONS_COMMON_CITIZEN_TYPE}
-                value={coBorrowerInfo.citizenship}
+                onChange={changeFieldValue('borrowerType')}
+                options={OPTIONS_TASK_BORROWER_TYPE}
+                value={coBorrowerInfo.borrowerType}
               />
             </StyledFormItem>
+
+            <Transitions
+              style={{
+                width: '100%',
+                display:
+                  coBorrowerInfo.borrowerType &&
+                  coBorrowerInfo.borrowerType !==
+                    DashboardTaskBorrowerType.individual
+                    ? 'block'
+                    : 'none',
+              }}
+            >
+              {(coBorrowerInfo.borrowerType ===
+                DashboardTaskBorrowerType.entity ||
+                coBorrowerInfo.borrowerType ===
+                  DashboardTaskBorrowerType.trust) && (
+                <StyledFormItem
+                  label={
+                    coBorrowerInfo.borrowerType ===
+                    DashboardTaskBorrowerType.entity
+                      ? 'Entity information'
+                      : 'Trust information'
+                  }
+                  sub
+                >
+                  <Stack gap={3} maxWidth={600} width={'100%'}>
+                    {coBorrowerInfo.borrowerType ===
+                    DashboardTaskBorrowerType.entity ? (
+                      <>
+                        <Stack>
+                          <StyledTextField
+                            label={'Entity name'}
+                            onChange={changeFieldValue('entityName')}
+                            placeholder={'Entity name'}
+                            value={coBorrowerInfo.entityName}
+                          />
+                        </Stack>
+                        <Stack>
+                          <StyledTextField
+                            label={'Authorized signatory title'}
+                            onChange={changeFieldValue('signatoryTitle')}
+                            placeholder={'Authorized signatory title'}
+                            value={coBorrowerInfo.signatoryTitle}
+                          />
+                        </Stack>
+                        <Stack>
+                          <StyledSelect
+                            label={'Entity type'}
+                            onChange={changeFieldValue('entityType')}
+                            options={OPTIONS_TASK_ENTITY_TYPE}
+                            value={coBorrowerInfo.entityType}
+                          />
+                        </Stack>
+                        <Stack>
+                          <StyledTextField
+                            label={'Secretary of State ID'}
+                            onChange={changeFieldValue('stateId')}
+                            placeholder={'Secretary of State ID'}
+                            value={coBorrowerInfo.stateId}
+                          />
+                        </Stack>
+                        <Stack>
+                          <StyledSelect
+                            label={'Formation state'}
+                            onChange={changeFieldValue('entityState')}
+                            options={OPTIONS_COMMON_STATE}
+                            value={coBorrowerInfo.entityState}
+                          />
+                        </Stack>
+                      </>
+                    ) : (
+                      <>
+                        <Stack>
+                          <StyledTextField
+                            label={'Trust name'}
+                            onChange={changeFieldValue('trustName')}
+                            placeholder={'Trust name'}
+                            value={coBorrowerInfo.trustName}
+                          />
+                        </Stack>
+                        <Stack>
+                          <StyledTextField
+                            label={'Authorized signatory title'}
+                            onChange={changeFieldValue('signatoryTitle')}
+                            placeholder={'Authorized signatory title'}
+                            value={coBorrowerInfo.signatoryTitle}
+                          />
+                        </Stack>
+                      </>
+                    )}
+                  </Stack>
+                </StyledFormItem>
+              )}
+            </Transitions>
+
             <StyledFormItem
-              label={'Personal information'}
+              label={
+                coBorrowerInfo?.borrowerType
+                  ? coBorrowerInfo?.borrowerType !==
+                    DashboardTaskBorrowerType.individual
+                    ? 'Signatory personal information'
+                    : 'Personal information'
+                  : 'Personal information'
+              }
               sub
               tip={`By entering co-borrower's phone number, you are authorizing ${
                 //sass
@@ -210,11 +315,24 @@ export const FixCoBorrowerInfo: FC = observer(() => {
                 </Stack>
               </Stack>
             </StyledFormItem>
+
+            <StyledFormItem
+              label={"What is co-borrower's citizenship status?"}
+              sub
+            >
+              <StyledSelectOption
+                onChange={changeFieldValue('citizenship')}
+                options={OPTIONS_COMMON_CITIZEN_TYPE}
+                value={coBorrowerInfo.citizenship}
+              />
+            </StyledFormItem>
+
             <StyledFormItem label={'Current address'} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledGoogleAutoComplete address={coBorrowerInfo.address} />
               </Stack>
             </StyledFormItem>
+
             <Transitions
               style={{
                 display:
