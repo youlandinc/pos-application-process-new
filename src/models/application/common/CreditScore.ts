@@ -237,7 +237,6 @@ export const PersonalInfo = types
       },
       validateSelfInfo(role: 'self' | 'coBorrower' = 'self') {
         let errors = validate(self, CreditScoreSchema.selfInfo);
-        console.log(errors);
         if (
           !self.isSkipCheck &&
           !self.authorizedCreditCheck &&
