@@ -1,4 +1,9 @@
-import { AddressData, CommonBorrowerType } from '@/types';
+import {
+  AddressData,
+  CommonBorrowerType,
+  DashboardTaskBorrowerEntityType,
+  DashboardTaskBorrowerType,
+} from '@/types';
 import { DenialReason } from '@/types/options';
 
 export interface BorrowerData {
@@ -23,6 +28,13 @@ export interface SelfInfoData {
   citizenship: CommonBorrowerType | undefined;
   isSkipCheck: boolean | undefined;
   inputCreditScore: number | undefined;
+  borrowerType: DashboardTaskBorrowerType | undefined;
+  signatoryTitle: string | undefined;
+  entityType: DashboardTaskBorrowerEntityType | undefined;
+  stateId: string | undefined | number;
+  entityState: string | undefined;
+  trustName: string | undefined;
+  entityName: string | undefined;
 }
 
 export interface SalaryIncomeData {

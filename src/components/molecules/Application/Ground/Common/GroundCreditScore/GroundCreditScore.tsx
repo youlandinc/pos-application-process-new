@@ -240,7 +240,7 @@ export const GroundCreditScore: FC<FormNodeBaseProps> = observer((props) => {
       case GroundUpConstructionCreditScoreState.creditScore:
         return false;
       case GroundUpConstructionCreditScoreState.selfInfo:
-        return creditScore.selfInfo.checkSelfValueIsEmpty;
+        return creditScore.selfInfo.checkSelfValueIsDisabled;
       case GroundUpConstructionCreditScoreState.coBorrowerInfo:
         if (!POSNotUndefined(creditScore.coBorrowerCondition.isCoBorrower)) {
           return true;
@@ -252,7 +252,7 @@ export const GroundCreditScore: FC<FormNodeBaseProps> = observer((props) => {
   }, [
     creditScore.coBorrowerCondition.isCoBorrower,
     creditScore.coBorrowerInfo.checkOtherValueIsEmpty,
-    creditScore.selfInfo.checkSelfValueIsEmpty,
+    creditScore.selfInfo.checkSelfValueIsDisabled,
     creditScore.state,
   ]);
 

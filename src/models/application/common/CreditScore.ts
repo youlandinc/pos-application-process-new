@@ -29,9 +29,36 @@ import {
 
 import validate from '@/constants/validate';
 import { CreditScoreSchema } from '@/constants';
+import {
+  DashboardTaskBorrowerEntityType,
+  DashboardTaskBorrowerType,
+} from '@/types';
 
 export const PersonalInfo = types
   .model({
+    borrowerType: types.maybe(
+      types.union(
+        types.literal(DashboardTaskBorrowerType.entity),
+        types.literal(DashboardTaskBorrowerType.individual),
+        types.literal(DashboardTaskBorrowerType.trust),
+      ),
+    ),
+    entityType: types.maybe(
+      types.union(
+        types.literal(DashboardTaskBorrowerEntityType.corporation),
+        types.literal(DashboardTaskBorrowerEntityType.individual),
+        types.literal(DashboardTaskBorrowerEntityType.limited_company),
+        types.literal(
+          DashboardTaskBorrowerEntityType.limited_liability_company,
+        ),
+        types.literal(DashboardTaskBorrowerEntityType.limited_partnership),
+      ),
+    ),
+    entityState: types.maybe(types.string),
+    signatoryTitle: types.maybe(types.string),
+    stateId: types.maybe(types.union(types.string, types.number)),
+    trustName: types.maybe(types.string),
+    entityName: types.maybe(types.string),
     citizenship: types.maybe(
       types.union(
         types.literal(CommonBorrowerType.us_citizen),
@@ -75,22 +102,80 @@ export const PersonalInfo = types
         'dateOfBirth',
       ].some((item) => !self[item as keyof typeof self]);
     },
-    get checkSelfValueIsEmpty() {
-      const baseCondition =
-        this.checkPersonalValueIsEmpty || !self.address.isValid;
-      if (self.citizenship === CommonBorrowerType.foreign_national) {
-        return baseCondition || !self.authorizedCreditCheck;
+    get checkSelfValueIsDisabled() {
+      if (!self.borrowerType) {
+        return true;
       }
 
-      if (!self.isSkipCheck) {
-        return baseCondition || !self.authorizedCreditCheck;
+      const conditionForeign =
+        this.checkPersonalValueIsEmpty || !self.address.checkAddressValid;
+
+      const conditionLocal =
+        this.checkPersonalValueIsEmpty ||
+        !self.ssn ||
+        !self.address.checkAddressValid;
+
+      const conditionTrust = !self.trustName || !self.signatoryTitle;
+      const conditionEntity =
+        !self.entityName ||
+        !self.entityState ||
+        !self.entityType ||
+        !self.signatoryTitle ||
+        !self.stateId;
+
+      switch (self.borrowerType) {
+        case DashboardTaskBorrowerType.entity: {
+          if (self.citizenship !== CommonBorrowerType.foreign_national) {
+            if (!self.isSkipCheck) {
+              return (
+                conditionForeign ||
+                conditionEntity ||
+                !self.authorizedCreditCheck
+              );
+            }
+            return (
+              conditionLocal ||
+              conditionEntity ||
+              !self.inputCreditScore ||
+              !self.ssn
+            );
+          }
+          return (
+            conditionForeign || conditionEntity || !self.authorizedCreditCheck
+          );
+        }
+        case DashboardTaskBorrowerType.trust: {
+          if (self.citizenship !== CommonBorrowerType.foreign_national) {
+            if (!self.isSkipCheck) {
+              return (
+                conditionForeign ||
+                conditionTrust ||
+                !self.authorizedCreditCheck
+              );
+            }
+            return (
+              conditionLocal ||
+              conditionTrust ||
+              !self.inputCreditScore ||
+              !self.ssn
+            );
+          }
+          return (
+            conditionForeign || conditionTrust || !self.authorizedCreditCheck
+          );
+        }
+        case DashboardTaskBorrowerType.individual: {
+          if (self.citizenship !== CommonBorrowerType.foreign_national) {
+            if (!self.isSkipCheck) {
+              return conditionForeign || !self.authorizedCreditCheck;
+            }
+            return conditionLocal || !self.inputCreditScore || !self.ssn;
+          }
+          return conditionForeign || !self.authorizedCreditCheck;
+        }
+        default:
+          return true;
       }
-      return (
-        baseCondition ||
-        ['ssn', 'inputCreditScore'].some(
-          (item) => !self[item as keyof typeof self],
-        )
-      );
     },
     get checkOtherValueIsEmpty() {
       const baseCondition =
@@ -151,6 +236,13 @@ export const PersonalInfo = types
           citizenship,
           isSkipCheck,
           inputCreditScore,
+          entityName,
+          entityState,
+          entityType,
+          signatoryTitle,
+          stateId,
+          trustName,
+          borrowerType,
           //address,
         } = self;
         return {
@@ -167,6 +259,13 @@ export const PersonalInfo = types
             citizenship,
             isSkipCheck,
             inputCreditScore,
+            entityName,
+            entityState,
+            entityType,
+            signatoryTitle,
+            stateId,
+            trustName,
+            borrowerType,
           },
         };
       },
@@ -184,6 +283,15 @@ export const PersonalInfo = types
           authorizedCreditCheck,
           email,
           citizenship,
+          isSkipCheck,
+          inputCreditScore,
+          entityName,
+          entityState,
+          entityType,
+          signatoryTitle,
+          stateId,
+          trustName,
+          borrowerType,
         } = value;
         self.firstName = firstName;
         self.lastName = lastName;
@@ -194,6 +302,16 @@ export const PersonalInfo = types
         self.address.injectServerData(propAddr);
         self.authorizedCreditCheck = authorizedCreditCheck;
         self.citizenship = citizenship;
+        self.isSkipCheck = isSkipCheck;
+        self.inputCreditScore = inputCreditScore;
+        self.borrowerType = borrowerType;
+        self.entityState = entityState;
+        self.entityName = entityName;
+        self.entityState = entityState;
+        self.entityType = entityType;
+        self.signatoryTitle = signatoryTitle;
+        self.stateId = stateId;
+        self.trustName = trustName;
       },
       injectAddressData(address: IAddress) {
         const addressSnap: SAddress = getSnapshot(address);
