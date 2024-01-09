@@ -262,6 +262,11 @@ export const FixPersonInfo: FC = observer(() => {
         <Transitions
           style={{
             width: '100%',
+            display:
+              selfInfo.borrowerType &&
+              selfInfo.borrowerType !== DashboardTaskBorrowerType.individual
+                ? 'block'
+                : 'none',
           }}
         >
           {(selfInfo.borrowerType === DashboardTaskBorrowerType.entity ||

@@ -246,12 +246,12 @@ export const GroundCreditScore: FC<FormNodeBaseProps> = observer((props) => {
           return true;
         }
         return creditScore.coBorrowerCondition.isCoBorrower
-          ? creditScore.coBorrowerInfo.checkOtherValueIsEmpty
+          ? creditScore.coBorrowerInfo.checkOtherValueIsDisabled
           : false;
     }
   }, [
     creditScore.coBorrowerCondition.isCoBorrower,
-    creditScore.coBorrowerInfo.checkOtherValueIsEmpty,
+    creditScore.coBorrowerInfo.checkOtherValueIsDisabled,
     creditScore.selfInfo.checkSelfValueIsDisabled,
     creditScore.state,
   ]);
