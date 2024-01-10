@@ -5,6 +5,7 @@ export const ChangeEmailStyles: SxProps = {
   ...POSFlex('center', 'space-between', 'row'),
   width: '100%',
   height: '100%',
+  pb: 11.5,
   '& .change_email_img': {},
   '& .change_email_form': {
     flex: 1,
