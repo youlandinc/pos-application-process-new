@@ -6,8 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Box, Icon, Typography } from '@mui/material';
-
+import { Box, Icon, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -19,6 +18,7 @@ import { POSFlex } from '@/styles';
 import {
   StyledBoxWrap,
   StyledButton,
+  StyledHeaderLogo,
   StyledTextField,
   StyledTextFieldPassword,
   Transitions,
@@ -321,36 +321,61 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
       {isNestForm ? (
         FormBody
       ) : (
-        <StyledBoxWrap sx={{ ...POSFlex('center', 'center', 'column') }}>
-          <Box sx={ForgotPasswordStyles.forgotPassword}>
-            <Icon
-              component={FORGOT_PASSWORD_SVG}
-              sx={{
-                flex: 1,
-                width: '100%',
-                height: 'auto',
-                display: { xs: 'none', lg: 'block' },
-                '& .forgot_password_svg__pos_svg_theme_color': {
-                  fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
-                },
-              }}
-            />
+        <>
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            height={92}
+            m={'0 auto'}
+            px={{
+              lg: 0,
+              xs: 'clamp(24px,6.4vw,80px)',
+            }}
+            width={{
+              xxl: 1440,
+              xl: 1240,
+              lg: 938,
+              xs: '100%',
+            }}
+          >
+            <StyledHeaderLogo />
+          </Stack>
+          <StyledBoxWrap
+            sx={{
+              ...POSFlex('center', 'center', 'column'),
+              minHeight: 'calc(100vh - 92px)',
+            }}
+          >
+            <Box sx={ForgotPasswordStyles.forgotPassword}>
+              <Icon
+                component={FORGOT_PASSWORD_SVG}
+                sx={{
+                  flex: 1,
+                  width: '100%',
+                  height: 'auto',
+                  display: { xs: 'none', lg: 'block' },
+                  '& .forgot_password_svg__pos_svg_theme_color': {
+                    fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+                  },
+                }}
+              />
 
-            <Box className="forgot_password_form">
-              <Typography className="form_title" variant="h3">
-                Reset password
-              </Typography>
+              <Box className="forgot_password_form">
+                <Typography className="form_title" variant="h3">
+                  Reset password
+                </Typography>
 
-              {FormBody}
+                {FormBody}
 
-              <Box className="form_foot">
-                <StyledButton color="info" variant="text">
-                  <Link href={'./login/'}> Back to log in</Link>
-                </StyledButton>
+                <Box className="form_foot">
+                  <StyledButton color="info" variant="text">
+                    <Link href={'./login/'}> Back to log in</Link>
+                  </StyledButton>
+                </Box>
               </Box>
             </Box>
-          </Box>
-        </StyledBoxWrap>
+          </StyledBoxWrap>
+        </>
       )}
     </>
   );

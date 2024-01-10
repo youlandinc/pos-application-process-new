@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Box, Icon, Typography } from '@mui/material';
+import { Box, Icon, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { validate } from 'validate.js';
@@ -38,6 +38,7 @@ import {
   StyledBoxWrap,
   StyledButton,
   StyledDialog,
+  StyledHeaderLogo,
   StyledSelect,
   StyledTextField,
   StyledTextFieldOtp,
@@ -460,97 +461,120 @@ export const SignUp: FC<SignUpProps> = observer(
         {isNestForm ? (
           FormBody
         ) : (
-          <StyledBoxWrap
-            sx={{
-              ...POSFlex('center', 'center', 'column'),
-              minHeight: '100vh',
-            }}
-          >
-            <Box sx={SignUpStyles.singUp}>
-              <Icon
-                component={SIGN_UP_SVG}
-                sx={{
-                  display: { xs: 'none', lg: 'block' },
-                  width: '100%',
-                  height: 'auto',
-                  flex: 1,
-                  '& .sign_up_svg__pos_svg_theme_color': {
-                    fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
-                  },
-                }}
-              />
+          <>
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              height={92}
+              m={'0 auto'}
+              px={{
+                lg: 0,
+                xs: 'clamp(24px,6.4vw,80px)',
+              }}
+              width={{
+                xxl: 1440,
+                xl: 1240,
+                lg: 938,
+                xs: '100%',
+              }}
+            >
+              <StyledHeaderLogo />
+            </Stack>
+            <StyledBoxWrap
+              sx={{
+                ...POSFlex('center', 'center', 'column'),
+                minHeight: 'calc(100vh - 92px)',
+              }}
+            >
+              <Box sx={SignUpStyles.singUp}>
+                <Icon
+                  component={SIGN_UP_SVG}
+                  sx={{
+                    display: { xs: 'none', lg: 'block' },
+                    width: '100%',
+                    height: 'auto',
+                    flex: 1,
+                    '& .sign_up_svg__pos_svg_theme_color': {
+                      fill: `hsla(${
+                        saasState?.posSettings?.h ?? 222
+                      },42%,55%,1)`,
+                    },
+                  }}
+                />
 
-              <Box className="sign_up_form">
-                <Typography className="form_title" variant="h3">
-                  Sign up
-                </Typography>
+                <Box className="sign_up_form">
+                  <Typography className="form_title" variant="h3">
+                    Sign up
+                  </Typography>
 
-                {FormBody}
-                <Box className="form_foot">
-                  <Typography variant="body2">
-                    Already have an account?{' '}
+                  {FormBody}
+                  <Box className="form_foot">
+                    <Typography variant="body2">
+                      Already have an account?{' '}
+                      <Typography
+                        component={'span'}
+                        onClick={() => router.push('/auth/login')}
+                        sx={{
+                          color: 'primary.main',
+                          cursor: 'pointer',
+                          fontWeight: 600,
+                        }}
+                        variant="body2"
+                      >
+                        Log in
+                      </Typography>
+                    </Typography>
                     <Typography
-                      component={'span'}
-                      onClick={() => router.push('/auth/login')}
-                      sx={{
-                        color: 'primary.main',
-                        cursor: 'pointer',
-                        fontWeight: 600,
-                      }}
+                      sx={{ color: 'info.main', mt: 3 }}
                       variant="body2"
                     >
-                      Log in
+                      By signing up, you agree to our{' '}
+                      <Typography
+                        component={'span'}
+                        onClick={() =>
+                          window.open(
+                            POSFormatUrl(
+                              saasState?.legalAgreements?.termsUrl,
+                            ) || 'https://www.youland.com/legal/terms/',
+                          )
+                        }
+                        sx={{
+                          color: 'primary.main',
+                          cursor: 'pointer',
+                          fontWeight: 600,
+                        }}
+                        variant={'body2'}
+                      >
+                        Term of Use{' '}
+                      </Typography>
+                      and to receive
+                      {' ' + saasState?.organizationName || ' YouLand'} emails &
+                      updates and acknowledge that you read our{' '}
+                      <Typography
+                        component={'span'}
+                        onClick={() =>
+                          window.open(
+                            POSFormatUrl(
+                              saasState?.legalAgreements?.privacyPolicyUrl,
+                            ) || 'https://www.youland.com/legal/privacy/',
+                          )
+                        }
+                        sx={{
+                          color: 'primary.main',
+                          cursor: 'pointer',
+                          fontWeight: 600,
+                        }}
+                        variant={'body2'}
+                      >
+                        Privacy Policy
+                      </Typography>
+                      .
                     </Typography>
-                  </Typography>
-                  <Typography
-                    sx={{ color: 'info.main', mt: 3 }}
-                    variant="body2"
-                  >
-                    By signing up, you agree to our{' '}
-                    <Typography
-                      component={'span'}
-                      onClick={() =>
-                        window.open(
-                          POSFormatUrl(saasState?.legalAgreements?.termsUrl) ||
-                            'https://www.youland.com/legal/terms/',
-                        )
-                      }
-                      sx={{
-                        color: 'primary.main',
-                        cursor: 'pointer',
-                        fontWeight: 600,
-                      }}
-                      variant={'body2'}
-                    >
-                      Term of Use{' '}
-                    </Typography>
-                    and to receive
-                    {' ' + saasState?.organizationName || ' YouLand'} emails &
-                    updates and acknowledge that you read our{' '}
-                    <Typography
-                      component={'span'}
-                      onClick={() =>
-                        window.open(
-                          POSFormatUrl(
-                            saasState?.legalAgreements?.privacyPolicyUrl,
-                          ) || 'https://www.youland.com/legal/privacy/',
-                        )
-                      }
-                      sx={{
-                        color: 'primary.main',
-                        cursor: 'pointer',
-                        fontWeight: 600,
-                      }}
-                      variant={'body2'}
-                    >
-                      Privacy Policy
-                    </Typography>
-                    .
-                  </Typography>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-          </StyledBoxWrap>
+            </StyledBoxWrap>
+          </>
         )}
         <StyledDialog
           content={
