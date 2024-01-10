@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import { useBreakpoints } from '@/hooks';
 import { LoanStage, RatesProductData, UserType } from '@/types';
@@ -53,6 +53,20 @@ export const RatesList: FC<RatesProductListProps> = ({
                 userType={userType!}
               />
             ))}
+            <Stack
+              alignItems={'center'}
+              justifyContent={'center'}
+              width={'100%'}
+            >
+              <Typography color={'text.secondary'} variant={'body1'}>
+                <strong style={{ fontWeight: 600 }}>Disclaimer:</strong> The
+                rates above are suggested based on the information provided so
+                far.
+              </Typography>
+              <Typography color={'text.secondary'} variant={'body1'}>
+                The exact loan terms will be confirmed later.
+              </Typography>
+            </Stack>
           </Stack>
         ) : (
           <RatesSearchNoResult />
