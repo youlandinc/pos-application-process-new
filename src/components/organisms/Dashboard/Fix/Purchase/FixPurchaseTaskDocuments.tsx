@@ -641,7 +641,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
 
                   <StyledUploadButtonBox
                     fileList={ss4Files}
-                    label={'SS-4 Form'}
+                    label={'EIN Letter (SS-4 Form)'}
                     onDelete={(index) => handledDelete(index, 'ss4')}
                     onSuccess={(files) => handledSuccess(files, 'ss4')}
                   />
