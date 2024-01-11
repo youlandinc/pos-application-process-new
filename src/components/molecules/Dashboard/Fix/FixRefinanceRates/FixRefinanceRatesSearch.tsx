@@ -16,6 +16,8 @@ import {
   StyledTooltip,
   Transitions,
 } from '@/components/atoms';
+import { useSessionStorageState } from '@/hooks';
+import { User } from '@/types/user';
 
 interface FixRefinanceRatesSearchProps {
   onCheck: () => void;
@@ -57,6 +59,8 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
     interestRate,
     loanTerm,
   } = searchForm;
+
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [date, setDate] = useState<null | Date | string>(
     isDashboard ? closeDate || addDays(new Date(), 7) : addDays(new Date(), 7),
@@ -392,6 +396,99 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
     userType,
   ]);
 
+  const renderCustomRateByConfig = useMemo(() => {
+    const original = saasState?.posSettings?.customLoanTerms?.reduce(
+      (acc: string[], cur: User.POSBorrowerTypes) => {
+        if (cur.allowed) {
+          acc.push(cur.key);
+        }
+        return acc;
+      },
+      [],
+    );
+
+    if (!original?.length || !original.includes(userType)) {
+      return null;
+    }
+
+    return (
+      <Stack gap={3} maxWidth={900} width={'100%'}>
+        <StyledCheckbox
+          checked={customRate}
+          label={
+            <Typography color={'text.primary'} ml={2} variant={'body2'}>
+              Use custom loan terms
+            </Typography>
+          }
+          onChange={(e) =>
+            setSearchForm({
+              ...searchForm,
+              customRate: e.target.checked,
+            })
+          }
+        />
+        <Transitions
+          style={{
+            display: customRate ? 'block' : 'none',
+            width: '100%',
+          }}
+        >
+          {customRate && (
+            <Stack
+              flexDirection={{ lg: 'row', xs: 'column' }}
+              gap={3}
+              width={'100%'}
+            >
+              <Stack flex={1} gap={1}>
+                <StyledTextFieldNumber
+                  decimalScale={3}
+                  disabled={loading || loanStage === LoanStage.Approved}
+                  label={'Interest rate'}
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      interestRate: floatValue,
+                    });
+                  }}
+                  percentage
+                  suffix={'%'}
+                  thousandSeparator={false}
+                  value={interestRate}
+                />
+              </Stack>
+              <Stack flex={1} gap={1}>
+                <StyledTextFieldNumber
+                  decimalScale={0}
+                  disabled={loading || loanStage === LoanStage.Approved}
+                  label={'Custom loan term (months)'}
+                  onValueChange={({ floatValue }) => {
+                    setSearchForm({
+                      ...searchForm,
+                      loanTerm: floatValue,
+                    });
+                  }}
+                  percentage={false}
+                  thousandSeparator={false}
+                  value={loanTerm}
+                />
+              </Stack>
+            </Stack>
+          )}
+        </Transitions>
+      </Stack>
+    );
+  }, [
+    customRate,
+    interestRate,
+    loading,
+    loanStage,
+    loanTerm,
+    saasState?.posSettings?.customLoanTerms,
+    searchForm,
+    setSearchForm,
+    userType,
+  ]);
+
   return (
     <StyledFormItem
       gap={4}
@@ -632,6 +729,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
       </StyledFormItem>
 
       {renderByUserType}
+      {renderCustomRateByConfig}
 
       <Stack
         alignItems={'stretch'}
