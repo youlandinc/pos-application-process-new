@@ -172,6 +172,7 @@ declare namespace User {
     isWarning?: boolean;
     borrowerTypes?: POSBorrowerTypes[];
     softCreditRequirement?: POSSoftCreditRequirement;
+    customLoanTerms?: POSBorrowerTypes[];
   }
 
   interface TenantConfigUserInfo {
