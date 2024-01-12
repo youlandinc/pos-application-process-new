@@ -35,6 +35,7 @@ export const ForgotPasswordStyles = {
     ...POSFlex('center', 'space-between', 'row'),
     width: '100%',
     height: '100%',
+    pb: 11.5,
     '& .forgot_password_img': {},
     '& .forgot_password_form': {
       flex: 1,

@@ -227,36 +227,37 @@ export const FixPurchaseTaskList: FC = observer(() => {
             </Typography>
           </Box>
           {FixPurchaseDashboardTaskMap.BorrowerInformation.children.map(
-            (sonItem) => (
-              <Box
-                key={sonItem.code}
-                onClick={() =>
-                  router.push({
-                    pathname: sonItem.url,
-                    query: {
-                      ...router.query,
-                      taskId: taskDetails[sonItem.code].taskId,
-                    },
-                  })
-                }
-                px={{ md: 3, xs: 0 }}
-              >
-                <Typography
-                  variant={
-                    ['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'
+            (sonItem) =>
+              Object.keys(taskDetails).includes(sonItem.code) && (
+                <Box
+                  key={sonItem.code}
+                  onClick={() =>
+                    router.push({
+                      pathname: sonItem.url,
+                      query: {
+                        ...router.query,
+                        taskId: taskDetails[sonItem.code].taskId,
+                      },
+                    })
                   }
+                  px={{ md: 3, xs: 0 }}
                 >
-                  {taskDetails[sonItem.code]?.taskName}
-                </Typography>
-                {taskDetails[sonItem.code]?.finished && (
-                  <CheckCircle
-                    className={
-                      taskDetails[sonItem.code]?.finished ? 'Finish' : ''
+                  <Typography
+                    variant={
+                      ['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body2'
                     }
-                  />
-                )}
-              </Box>
-            ),
+                  >
+                    {taskDetails[sonItem.code]?.taskName}
+                  </Typography>
+                  {taskDetails[sonItem.code]?.finished && (
+                    <CheckCircle
+                      className={
+                        taskDetails[sonItem.code]?.finished ? 'Finish' : ''
+                      }
+                    />
+                  )}
+                </Box>
+              ),
           )}
         </Box>
 

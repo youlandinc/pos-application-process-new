@@ -9,6 +9,7 @@ import { useSessionStorageState } from '@/hooks';
 import { POSFindLabel, POSFormatUrl, POSUpperFirstLetter } from '@/utils';
 import {
   CommonBorrowerType,
+  DashboardTaskBorrowerType,
   SoftCreditRequirementEnum,
   UserType,
 } from '@/types';
@@ -20,13 +21,18 @@ import {
 import {
   HASH_COMMON_PERSON,
   OPTIONS_COMMON_CITIZEN_TYPE,
+  OPTIONS_COMMON_STATE,
   OPTIONS_COMMON_USER_TYPE,
+  OPTIONS_TASK_BORROWER_TYPE,
+  OPTIONS_TASK_ENTITY_TYPE,
 } from '@/constants';
+
 import {
   StyledCheckbox,
   StyledDatePicker,
   StyledFormItem,
   StyledGoogleAutoComplete,
+  StyledSelect,
   StyledSelectOption,
   StyledTextField,
   StyledTextFieldNumber,
@@ -66,7 +72,8 @@ export const BridgePersonInfo: FC = observer(() => {
             selfInfo.changeSelfInfo(fieldName, e as unknown as string);
             break;
           }
-          case 'citizenship': {
+          case 'citizenship':
+          case 'borrowerType': {
             selfInfo.changeSelfInfo(fieldName, e as CommonBorrowerType);
             break;
           }
@@ -244,22 +251,112 @@ export const BridgePersonInfo: FC = observer(() => {
         } credit score and history so that we can provide you with real, accurate loan options.`}
         tipSx={{ mb: 0 }}
       >
-        <StyledFormItem
-          label={`What is ${
-            HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
-          } citizenship status?`}
-          sub
-        >
+        <StyledFormItem label={'Borrower type'} sub>
           <StyledSelectOption
-            onChange={changeFieldValue('citizenship')}
-            options={OPTIONS_COMMON_CITIZEN_TYPE}
-            value={selfInfo.citizenship}
+            onChange={changeFieldValue('borrowerType')}
+            options={OPTIONS_TASK_BORROWER_TYPE}
+            value={selfInfo.borrowerType}
           />
         </StyledFormItem>
+
+        <Transitions
+          style={{
+            width: '100%',
+            display:
+              selfInfo.borrowerType &&
+              selfInfo.borrowerType !== DashboardTaskBorrowerType.individual
+                ? 'block'
+                : 'none',
+          }}
+        >
+          {(selfInfo.borrowerType === DashboardTaskBorrowerType.entity ||
+            selfInfo.borrowerType === DashboardTaskBorrowerType.trust) && (
+            <StyledFormItem
+              label={
+                selfInfo.borrowerType === DashboardTaskBorrowerType.entity
+                  ? 'Entity information'
+                  : 'Trust information'
+              }
+              sub
+            >
+              <Stack gap={3} maxWidth={600} width={'100%'}>
+                {selfInfo.borrowerType === DashboardTaskBorrowerType.entity ? (
+                  <>
+                    <Stack>
+                      <StyledTextField
+                        label={'Entity name'}
+                        onChange={changeFieldValue('entityName')}
+                        placeholder={'Entity name'}
+                        value={selfInfo.entityName}
+                      />
+                    </Stack>
+                    <Stack>
+                      <StyledTextField
+                        label={'Authorized signatory title'}
+                        onChange={changeFieldValue('signatoryTitle')}
+                        placeholder={'Authorized signatory title'}
+                        value={selfInfo.signatoryTitle}
+                      />
+                    </Stack>
+                    <Stack>
+                      <StyledSelect
+                        label={'Entity type'}
+                        onChange={changeFieldValue('entityType')}
+                        options={OPTIONS_TASK_ENTITY_TYPE}
+                        value={selfInfo.entityType}
+                      />
+                    </Stack>
+                    <Stack>
+                      <StyledTextField
+                        label={'Secretary of State ID'}
+                        onChange={changeFieldValue('stateId')}
+                        placeholder={'Secretary of State ID'}
+                        value={selfInfo.stateId}
+                      />
+                    </Stack>
+                    <Stack>
+                      <StyledSelect
+                        label={'Formation state'}
+                        onChange={changeFieldValue('entityState')}
+                        options={OPTIONS_COMMON_STATE}
+                        value={selfInfo.entityState}
+                      />
+                    </Stack>
+                  </>
+                ) : (
+                  <>
+                    <Stack>
+                      <StyledTextField
+                        label={'Trust name'}
+                        onChange={changeFieldValue('trustName')}
+                        placeholder={'Trust name'}
+                        value={selfInfo.trustName}
+                      />
+                    </Stack>
+                    <Stack>
+                      <StyledTextField
+                        label={'Authorized signatory title'}
+                        onChange={changeFieldValue('signatoryTitle')}
+                        placeholder={'Authorized signatory title'}
+                        value={selfInfo.signatoryTitle}
+                      />
+                    </Stack>
+                  </>
+                )}
+              </Stack>
+            </StyledFormItem>
+          )}
+        </Transitions>
+
         <StyledFormItem
-          label={'Personal information'}
+          label={
+            selfInfo?.borrowerType
+              ? selfInfo?.borrowerType !== DashboardTaskBorrowerType.individual
+                ? 'Signatory personal information'
+                : 'Personal information'
+              : 'Personal information'
+          }
           sub
-          // todo : person
           tip={`By entering ${
             HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
           } phone number,  you are authorizing ${
@@ -319,11 +416,26 @@ export const BridgePersonInfo: FC = observer(() => {
             </Stack>
           </Stack>
         </StyledFormItem>
+
+        <StyledFormItem
+          label={`What is ${
+            HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
+          } citizenship status?`}
+          sub
+        >
+          <StyledSelectOption
+            onChange={changeFieldValue('citizenship')}
+            options={OPTIONS_COMMON_CITIZEN_TYPE}
+            value={selfInfo.citizenship}
+          />
+        </StyledFormItem>
+
         <StyledFormItem label={'Current address'} sub>
           <Stack gap={3} maxWidth={600} width={'100%'}>
             <StyledGoogleAutoComplete address={selfInfo.address} />
           </Stack>
         </StyledFormItem>
+
         <Transitions
           style={{
             display:

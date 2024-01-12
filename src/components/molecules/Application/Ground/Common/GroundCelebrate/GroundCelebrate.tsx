@@ -82,9 +82,8 @@ export const GroundCelebrate: FC<{ nextStep: () => void }> = observer(
           </Typography>
 
           <Typography color={'info.main'} variant={'body1'}>
-            The next step is for{' '}
-            {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject} to
-            complete your loan application. Before final approval of your loan,{' '}
+            The next step is to complete the loan application. Before final
+            approval of your loan,{' '}
             {
               //sass
               ' ' + saasState?.organizationName || ' YouLand'

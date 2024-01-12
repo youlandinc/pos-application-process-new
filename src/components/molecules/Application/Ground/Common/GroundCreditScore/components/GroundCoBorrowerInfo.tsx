@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useCallback } from 'react';
+import { ChangeEvent, FC, useCallback, useEffect } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { NumberFormatValues } from 'react-number-format';
 
@@ -6,7 +6,11 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { useSessionStorageState } from '@/hooks';
-import { CommonBorrowerType, UserType } from '@/types';
+import {
+  CommonBorrowerType,
+  DashboardTaskBorrowerType,
+  UserType,
+} from '@/types';
 import {
   IPersonalInfo,
   SPersonalInfo,
@@ -40,6 +44,8 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
   const { saasState } = useSessionStorageState('tenantConfig');
 
   const coBorrowerInfo: IPersonalInfo = creditScore.coBorrowerInfo;
+  const selfInfo: IPersonalInfo = creditScore.selfInfo;
+
   const {
     coBorrowerCondition: { isCoBorrower },
   } = creditScore;
@@ -67,7 +73,8 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
             coBorrowerInfo.changeSelfInfo(fieldName, e as unknown as string);
             break;
           }
-          case 'citizenship': {
+          case 'citizenship':
+          case 'borrowerType': {
             coBorrowerInfo.changeSelfInfo(fieldName, e as CommonBorrowerType);
             break;
           }
@@ -81,6 +88,12 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
       },
     [coBorrowerInfo],
   );
+
+  useEffect(() => {
+    if (selfInfo.borrowerType !== DashboardTaskBorrowerType.individual) {
+      creditScore.changeCoBorrowerCondition('isCoBorrower', false);
+    }
+  }, [creditScore, selfInfo.borrowerType]);
 
   return (
     <>
@@ -103,6 +116,9 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
         }
       >
         <StyledButtonGroup
+          disabled={
+            selfInfo.borrowerType !== DashboardTaskBorrowerType.individual
+          }
           onChange={(e, value) => {
             if (value !== null) {
               creditScore.changeCoBorrowerCondition(
@@ -116,6 +132,7 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
           value={isCoBorrower}
         />
       </StyledFormItem>
+
       <Transitions>
         {isCoBorrower && (
           <StyledFormItem
@@ -128,19 +145,10 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
             tipSx={{ mb: 0 }}
           >
             <StyledFormItem
-              label={"What is co-borrower's citizenship status?"}
-              sub
-            >
-              <StyledSelectOption
-                onChange={changeFieldValue('citizenship')}
-                options={OPTIONS_COMMON_CITIZEN_TYPE}
-                value={coBorrowerInfo.citizenship}
-              />
-            </StyledFormItem>
-            <StyledFormItem
               label={'Personal information'}
               sub
               tip={`By entering co-borrower's phone number, you are authorizing ${
+                //sass
                 ' ' + saasState?.organizationName || ' YouLand'
               } to use this number to call, text and send ${
                 HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER]
@@ -194,11 +202,24 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
                 </Stack>
               </Stack>
             </StyledFormItem>
+
+            <StyledFormItem
+              label={"What is co-borrower's citizenship status?"}
+              sub
+            >
+              <StyledSelectOption
+                onChange={changeFieldValue('citizenship')}
+                options={OPTIONS_COMMON_CITIZEN_TYPE}
+                value={coBorrowerInfo.citizenship}
+              />
+            </StyledFormItem>
+
             <StyledFormItem label={'Current address'} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledGoogleAutoComplete address={coBorrowerInfo.address} />
               </Stack>
             </StyledFormItem>
+
             <Transitions
               style={{
                 display:

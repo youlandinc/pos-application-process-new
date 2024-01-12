@@ -5,6 +5,7 @@ export const ChangePasswordStyles: SxProps = {
   ...POSFlex('center', 'space-between', 'row'),
   width: '100%',
   height: '100%',
+  pb: 11.5,
   '& .change_password_img': {},
   '& .change_password_form': {
     flex: 1,

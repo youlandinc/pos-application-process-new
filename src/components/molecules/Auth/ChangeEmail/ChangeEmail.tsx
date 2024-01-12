@@ -1,5 +1,5 @@
 import { FC, FormEventHandler, useCallback, useMemo, useState } from 'react';
-import { Box, Icon, Typography } from '@mui/material';
+import { Box, Icon, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { validate } from 'validate.js';
@@ -23,6 +23,7 @@ import {
   StyledBoxWrap,
   StyledButton,
   StyledDialog,
+  StyledHeaderLogo,
   StyledTextField,
   StyledTextFieldOtp,
 } from '@/components/atoms';
@@ -120,10 +121,28 @@ export const ChangeEmail: FC = observer(() => {
 
   return (
     <>
+      <Stack
+        alignItems={'center'}
+        flexDirection={'row'}
+        height={92}
+        m={'0 auto'}
+        px={{
+          lg: 0,
+          xs: 'clamp(24px,6.4vw,80px)',
+        }}
+        width={{
+          xxl: 1440,
+          xl: 1240,
+          lg: 938,
+          xs: '100%',
+        }}
+      >
+        <StyledHeaderLogo />
+      </Stack>
       <StyledBoxWrap
         sx={{
           ...POSFlex('center', 'center', 'column'),
-          minHeight: '100vh',
+          minHeight: 'calc(100vh - 92px)',
         }}
       >
         <Box sx={ChangeEmailStyles}>

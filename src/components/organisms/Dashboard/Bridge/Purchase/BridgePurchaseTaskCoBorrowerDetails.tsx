@@ -11,18 +11,13 @@ import { useSessionStorageState } from '@/hooks';
 import {
   AUTO_HIDE_DURATION,
   OPTIONS_COMMON_CITIZEN_TYPE,
-  OPTIONS_COMMON_STATE,
   OPTIONS_COMMON_YES_OR_NO,
-  OPTIONS_TASK_BORROWER_TYPE,
-  OPTIONS_TASK_ENTITY_TYPE,
   OPTIONS_TASK_GENDER,
   OPTIONS_TASK_MARTIAL_STATUS,
 } from '@/constants';
 import { Address, IAddress } from '@/models/common/Address';
 import {
   CommonBorrowerType,
-  DashboardTaskBorrowerEntityType,
-  DashboardTaskBorrowerType,
   DashboardTaskGender,
   DashboardTaskMaritalStatus,
   HttpError,
@@ -72,19 +67,9 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
   );
 
   const [isCoBorrower, setIsCoBorrower] = useState<boolean>();
-  const [borrowerType, setBorrowerType] = useState<
-    DashboardTaskBorrowerType | undefined
-  >();
   const [citizenship, setCitizenship] = useState<
     CommonBorrowerType | undefined
   >();
-
-  const [signatoryTitle, setSignatoryTitle] = useState<string | undefined>();
-  const [entityType, setEntityType] = useState<string | undefined>();
-  const [stateId, setStateId] = useState<string | undefined>();
-  const [entityState, setEntityState] = useState<string | undefined>();
-
-  const [trustName, setTrustName] = useState<string | undefined>();
 
   const [firstName, setFirstName] = useState<string | undefined>();
   const [lastName, setLastName] = useState<string | undefined>();
@@ -127,21 +112,15 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
           citizenship,
           isCoBorrower,
           authorizedCreditCheck,
-          borrowerType,
           dateOfBirth,
           email,
-          entityState,
-          entityType,
           firstName,
           lastName,
           gender,
           marital,
           phoneNumber,
           propAddr,
-          trustName,
-          signatoryTitle,
           ssn,
-          stateId,
           delinquentTimes,
           bankruptDate,
           foreclosureDate,
@@ -160,14 +139,6 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
           setForeclosureDate(new Date(foreclosureDate));
         }
         setIsCoBorrower(isCoBorrower);
-        setBorrowerType(borrowerType || undefined);
-
-        setEntityType(entityType || undefined);
-        setEntityState(entityState || undefined);
-        setStateId(stateId || '');
-        setSignatoryTitle(signatoryTitle || '');
-
-        setTrustName(trustName || '');
 
         setFirstName(firstName || '');
         setLastName(lastName || '');
@@ -237,114 +208,23 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
       !authorizedCreditCheck ||
       !ssn;
 
-    switch (borrowerType) {
-      case DashboardTaskBorrowerType.entity: {
-        if (
-          saasState?.posSettings?.softCreditRequirement ===
-          SoftCreditRequirementEnum.optional
-        ) {
-          if (citizenship === CommonBorrowerType.foreign_national) {
-            return (
-              conditionForeign ||
-              !signatoryTitle ||
-              !entityType ||
-              !stateId ||
-              !entityState ||
-              !authorizedCreditCheck
-            );
-          }
-
-          if (isSkipCheck) {
-            return (
-              conditionForeign ||
-              !signatoryTitle ||
-              !entityType ||
-              !stateId ||
-              !entityState ||
-              !inputCreditScore
-            );
-          }
-
-          return (
-            conditionLocal ||
-            !signatoryTitle ||
-            !entityType ||
-            !stateId ||
-            !entityState
-          );
-        }
-        if (citizenship === CommonBorrowerType.foreign_national) {
-          return (
-            conditionForeign ||
-            !signatoryTitle ||
-            !entityType ||
-            !stateId ||
-            !entityState
-          );
-        }
-        return (
-          conditionLocal ||
-          !signatoryTitle ||
-          !entityType ||
-          !stateId ||
-          !entityState
-        );
+    if (
+      saasState?.posSettings?.softCreditRequirement ===
+      SoftCreditRequirementEnum.optional
+    ) {
+      if (citizenship === CommonBorrowerType.foreign_national) {
+        return conditionForeign || !authorizedCreditCheck;
       }
-
-      case DashboardTaskBorrowerType.trust: {
-        if (
-          saasState?.posSettings?.softCreditRequirement ===
-          SoftCreditRequirementEnum.optional
-        ) {
-          if (citizenship === CommonBorrowerType.foreign_national) {
-            return (
-              conditionForeign ||
-              !trustName ||
-              !signatoryTitle ||
-              !authorizedCreditCheck
-            );
-          }
-
-          if (isSkipCheck) {
-            return (
-              conditionForeign ||
-              !signatoryTitle ||
-              !trustName ||
-              !inputCreditScore
-            );
-          }
-
-          return conditionLocal || !signatoryTitle || !trustName;
-        }
-        if (citizenship === CommonBorrowerType.foreign_national) {
-          return conditionForeign || !signatoryTitle || !trustName;
-        }
-        return conditionLocal || !signatoryTitle || !trustName;
+      if (isSkipCheck) {
+        return conditionForeign || !inputCreditScore;
       }
-
-      case DashboardTaskBorrowerType.individual: {
-        if (
-          saasState?.posSettings?.softCreditRequirement ===
-          SoftCreditRequirementEnum.optional
-        ) {
-          if (citizenship === CommonBorrowerType.foreign_national) {
-            return conditionForeign || !authorizedCreditCheck;
-          }
-          if (isSkipCheck) {
-            return conditionForeign || !inputCreditScore;
-          }
-          return conditionLocal;
-        }
-        return citizenship === CommonBorrowerType.foreign_national
-          ? conditionForeign
-          : conditionLocal;
-      }
-      default:
-        return true;
+      return conditionLocal;
     }
+    return citizenship === CommonBorrowerType.foreign_national
+      ? conditionForeign
+      : conditionLocal;
   }, [
     isCoBorrower,
-    saasState?.posSettings?.softCreditRequirement,
     dateOfBirth,
     firstName,
     lastName,
@@ -355,15 +235,10 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
     address.checkAddressValid,
     authorizedCreditCheck,
     ssn,
-    borrowerType,
+    saasState?.posSettings?.softCreditRequirement,
+    citizenship,
     isSkipCheck,
     inputCreditScore,
-    citizenship,
-    signatoryTitle,
-    entityType,
-    stateId,
-    entityState,
-    trustName,
   ]);
 
   const handledSubmit = useCallback(async () => {
@@ -377,14 +252,10 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
       taskId: router.query.taskId as string,
       taskForm: {
         authorizedCreditCheck,
-        borrowerType,
         dateOfBirth: dateValid
           ? format(dateOfBirth as Date, 'yyyy-MM-dd O')
           : undefined,
         email,
-        entityState,
-        entityType,
-        trustName,
         firstName,
         gender,
         isCoBorrower,
@@ -392,9 +263,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
         marital,
         phoneNumber,
         citizenship,
-        signatoryTitle,
         ssn,
-        stateId,
         delinquentTimes,
         bankruptDate: bankruptDateValid
           ? format(bankruptDate as Date, 'yyyy-MM-dd O')
@@ -450,14 +319,11 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
     address,
     authorizedCreditCheck,
     bankruptDate,
-    borrowerType,
     citizenship,
     dateOfBirth,
     delinquentTimes,
     email,
     enqueueSnackbar,
-    entityState,
-    entityType,
     firstName,
     foreclosureDate,
     gender,
@@ -468,93 +334,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
     marital,
     phoneNumber,
     router,
-    signatoryTitle,
     ssn,
-    stateId,
-    trustName,
-  ]);
-
-  const renderConditionForm = useMemo(() => {
-    switch (borrowerType) {
-      case DashboardTaskBorrowerType.entity:
-        return (
-          <StyledFormItem label={'Entity information'} sub>
-            <Stack
-              flexDirection={'column'}
-              gap={3}
-              maxWidth={600}
-              width={'100%'}
-            >
-              <StyledTextField
-                disabled={isConfirm}
-                label={'Authorized signatory title'}
-                onChange={(e) => setSignatoryTitle(e.target.value)}
-                value={signatoryTitle}
-              />
-              <StyledSelect
-                disabled={isConfirm}
-                label={'Entity type'}
-                onChange={(e) =>
-                  setEntityType(
-                    e.target.value as DashboardTaskBorrowerEntityType,
-                  )
-                }
-                options={OPTIONS_TASK_ENTITY_TYPE}
-                value={entityType}
-              />
-              <StyledTextField
-                disabled={isConfirm}
-                label={'Secretary of state ID'}
-                onChange={(e) => setStateId(e.target.value)}
-                value={stateId}
-              />
-              <StyledSelect
-                disabled={isConfirm}
-                label={'Formation state'}
-                onChange={(e) => setEntityState(e.target.value as string)}
-                options={OPTIONS_COMMON_STATE}
-                value={entityState}
-              />
-            </Stack>
-          </StyledFormItem>
-        );
-      case DashboardTaskBorrowerType.trust:
-        return (
-          <StyledFormItem label={'Trust information'} sub>
-            <Stack
-              flexDirection={'column'}
-              gap={3}
-              maxWidth={600}
-              width={'100%'}
-            >
-              <StyledTextField
-                disabled={isConfirm}
-                label={'Trust name'}
-                onChange={(e) => setTrustName(e.target.value)}
-                value={trustName}
-              />
-              <StyledTextField
-                disabled={isConfirm}
-                label={'Authorized signatory title'}
-                onChange={(e) => setSignatoryTitle(e.target.value)}
-                value={signatoryTitle}
-              />
-            </Stack>
-          </StyledFormItem>
-        );
-
-      case DashboardTaskBorrowerType.individual:
-      default:
-        return null;
-    }
-  }, [
-    borrowerType,
-    entityState,
-    entityType,
-    isConfirm,
-    signatoryTitle,
-    stateId,
-    trustName,
   ]);
 
   const renderViaIsSkip = useMemo(() => {
@@ -713,56 +493,6 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
               {isCoBorrower && (
                 <>
                   <StyledFormItem
-                    label={'Borrower type'}
-                    sub
-                    tip={
-                      'If you represent an entity, please update the borrower type below, We will convert the co-borrower information into a guarantor for this entity.'
-                    }
-                  >
-                    <Stack maxWidth={600} width={'100%'}>
-                      <StyledSelectOption
-                        disabled={isConfirm}
-                        onChange={(value) =>
-                          setBorrowerType(
-                            value as string as DashboardTaskBorrowerType,
-                          )
-                        }
-                        options={OPTIONS_TASK_BORROWER_TYPE}
-                        value={borrowerType}
-                      />
-                    </Stack>
-                  </StyledFormItem>
-
-                  <StyledFormItem
-                    label={'What is your citizenship status?'}
-                    sub
-                  >
-                    <Stack maxWidth={600} width={'100%'}>
-                      <StyledSelectOption
-                        disabled={isConfirm}
-                        onChange={(value) =>
-                          setCitizenship(value as string as CommonBorrowerType)
-                        }
-                        options={OPTIONS_COMMON_CITIZEN_TYPE}
-                        value={citizenship}
-                      />
-                    </Stack>
-                  </StyledFormItem>
-
-                  <Transitions
-                    style={{
-                      display:
-                        borrowerType === DashboardTaskBorrowerType.entity ||
-                        borrowerType === DashboardTaskBorrowerType.trust
-                          ? 'flex'
-                          : 'none',
-                      width: '100%',
-                    }}
-                  >
-                    {renderConditionForm}
-                  </Transitions>
-
-                  <StyledFormItem
                     label={'Personal information'}
                     sub
                     tip={`By entering your phone number,  you're authorizing ${
@@ -845,6 +575,22 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
                         label={'Property foreclosure filing date'}
                         onChange={(value) => setForeclosureDate(value)}
                         value={foreclosureDate}
+                      />
+                    </Stack>
+                  </StyledFormItem>
+
+                  <StyledFormItem
+                    label={'What is your citizenship status?'}
+                    sub
+                  >
+                    <Stack maxWidth={600} width={'100%'}>
+                      <StyledSelectOption
+                        disabled={isConfirm}
+                        onChange={(value) =>
+                          setCitizenship(value as string as CommonBorrowerType)
+                        }
+                        options={OPTIONS_COMMON_CITIZEN_TYPE}
+                        value={citizenship}
                       />
                     </Stack>
                   </StyledFormItem>

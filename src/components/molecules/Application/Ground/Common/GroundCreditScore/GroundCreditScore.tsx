@@ -141,12 +141,13 @@ const useStateMachine = (
           const params: any[] = [postData];
           if (creditScore.coBorrowerCondition.isCoBorrower) {
             coBorrowerInfo.validateSelfInfo('coBorrower');
-            if (coBorrowerInfo.isValid) {
-              params.push({
-                name: VariableName.aboutOtherInfo,
-                ...coBorrowerInfo.getPostData(),
-              });
+            if (!coBorrowerInfo.isValid) {
+              return;
             }
+            params.push({
+              name: VariableName.aboutOtherInfo,
+              ...coBorrowerInfo.getPostData(),
+            });
           }
           await handledNextTask(params, () => nextStep());
         },
@@ -240,19 +241,19 @@ export const GroundCreditScore: FC<FormNodeBaseProps> = observer((props) => {
       case GroundUpConstructionCreditScoreState.creditScore:
         return false;
       case GroundUpConstructionCreditScoreState.selfInfo:
-        return creditScore.selfInfo.checkSelfValueIsEmpty;
+        return creditScore.selfInfo.checkSelfValueIsDisabled;
       case GroundUpConstructionCreditScoreState.coBorrowerInfo:
         if (!POSNotUndefined(creditScore.coBorrowerCondition.isCoBorrower)) {
           return true;
         }
         return creditScore.coBorrowerCondition.isCoBorrower
-          ? creditScore.coBorrowerInfo.checkOtherValueIsEmpty
+          ? creditScore.coBorrowerInfo.checkOtherValueIsDisabled
           : false;
     }
   }, [
     creditScore.coBorrowerCondition.isCoBorrower,
-    creditScore.coBorrowerInfo.checkOtherValueIsEmpty,
-    creditScore.selfInfo.checkSelfValueIsEmpty,
+    creditScore.coBorrowerInfo.checkOtherValueIsDisabled,
+    creditScore.selfInfo.checkSelfValueIsDisabled,
     creditScore.state,
   ]);
 
