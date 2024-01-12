@@ -168,10 +168,6 @@ export const PersonalInfo = types
       }
     },
     get checkOtherValueIsDisabled() {
-      if (!self.borrowerType) {
-        return true;
-      }
-
       const conditionForeign =
         this.checkPersonalValueIsEmpty || !self.address.checkAddressValid;
 
@@ -180,36 +176,10 @@ export const PersonalInfo = types
         !self.ssn ||
         !self.address.checkAddressValid;
 
-      const conditionTrust = !self.trustName || !self.signatoryTitle;
-      const conditionEntity =
-        !self.entityName ||
-        !self.entityState ||
-        !self.entityType ||
-        !self.signatoryTitle ||
-        !self.stateId;
-
-      switch (self.borrowerType) {
-        case DashboardTaskBorrowerType.entity: {
-          if (self.citizenship !== CommonBorrowerType.foreign_national) {
-            return conditionEntity || conditionLocal;
-          }
-          return conditionEntity || conditionForeign;
-        }
-        case DashboardTaskBorrowerType.trust: {
-          if (self.citizenship !== CommonBorrowerType.foreign_national) {
-            return conditionTrust || conditionLocal;
-          }
-          return conditionTrust || conditionForeign;
-        }
-        case DashboardTaskBorrowerType.individual: {
-          if (self.citizenship !== CommonBorrowerType.foreign_national) {
-            return conditionLocal;
-          }
-          return conditionForeign;
-        }
-        default:
-          return true;
+      if (self.citizenship !== CommonBorrowerType.foreign_national) {
+        return conditionLocal;
       }
+      return conditionForeign;
     },
     get checkInfoValid() {
       if (
