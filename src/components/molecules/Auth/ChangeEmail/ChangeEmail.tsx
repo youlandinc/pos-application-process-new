@@ -17,7 +17,7 @@ import {
   userpool,
 } from '@/constants';
 import { BizType, HttpError } from '@/types';
-import { _userChangeEmail, _userVerifyCode } from '@/requests';
+import { _userChangeEmail, _userVerifyCode, _userCompletedChangeEmail } from '@/requests';
 
 import {
   StyledBoxWrap,
@@ -91,7 +91,7 @@ export const ChangeEmail: FC = observer(() => {
     };
     setLoading(true);
     try {
-      await _userVerifyCode(data);
+      await _userCompletedChangeEmail(data);
       close();
       const { username } = JSON.parse(
         localStorage.getItem('PROFILE_KEY') as string,
