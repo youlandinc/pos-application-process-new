@@ -32,7 +32,7 @@ import {
 } from '@/constants';
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { BizType, HttpError } from '@/types';
-import { _userResetPassword, _userSendCode } from '@/requests';
+import { _userResetPassword, _userSendCode, _userSendCodeForResetPassword } from '@/requests';
 
 import FORGOT_PASSWORD_SVG from '@/svg/auth/forgot_password.svg';
 
@@ -96,7 +96,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
         bizType: BizType.RESET_PASS,
         appkey: LOGIN_APP_KEY,
       };
-      await _userSendCode(data);
+      await _userSendCodeForResetPassword(data);
       let num = 60;
       const timer = setInterval(() => {
         num--;
