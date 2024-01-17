@@ -28,7 +28,7 @@ export const _userVerifyCode = (params: User.UserVerifyCodeParams) => {
 };
 
 export const _userSendCode = (params: User.UserSendCodeParams) => {
-  return post<any>('/usercenter/api/consumer/signUp/user/verifyCode', params);
+  return post<any>('/usercenter/api/consumer/signUp/user/resendCode', params);
 };
 
 export const _userChangeEmail = (params: User.UserChangeEmailParams) => {
