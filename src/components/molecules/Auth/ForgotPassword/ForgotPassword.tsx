@@ -32,7 +32,7 @@ import {
 } from '@/constants';
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { BizType, HttpError } from '@/types';
-import { _userResetPassword, _userSendCode, _userSendCodeForResetPassword } from '@/requests';
+import { _userResetPassword, _userSendCodeForResetPassword } from '@/requests';
 
 import FORGOT_PASSWORD_SVG from '@/svg/auth/forgot_password.svg';
 

@@ -17,7 +17,7 @@ import {
   userpool,
 } from '@/constants';
 import { BizType, HttpError } from '@/types';
-import { _userChangeEmail, _userVerifyCode, _userCompletedChangeEmail } from '@/requests';
+import { _userChangeEmail, _userCompletedChangeEmail } from '@/requests';
 
 import {
   StyledBoxWrap,
