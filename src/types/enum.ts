@@ -329,3 +329,23 @@ export enum FeeUnitEnum {
   dollar = 'DOLLAR',
   percent = 'PERCENT',
 }
+
+export enum PaymentMethodEnum {
+  STRIPE = 'STRIPE',
+  WELLS_FARGO = 'WELLS_FARGO',
+  WELLS_FARGO_RTP = 'WELLS_FARGO_RTP',
+  WELLS_FARGO_WIRE = 'WELLS_FARGO_WIRE',
+}
+
+export enum PaymentLoanSource {
+  POS = 'POS',
+  LOS = 'LOS',
+  DOC_ENGINE = 'DOC_ENGINE',
+}
+
+export enum BizTypeEnum {
+  stripe = 'stripe',
+  WELLS_FARGO_ACH = 'wells_fargo_ach',
+  WELLS_FARGO_RTP = 'wells_fargo_rtp',
+  WELLS_FARGO_WIRE = 'wells_fargo_wire',
+}

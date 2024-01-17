@@ -1,3 +1,5 @@
+import {AchPaymentCard, RealTimePayment} from '@/components/organisms';
+import {StyledTab} from '@/components/atoms';
 import { ChangeEvent, forwardRef, ReactNode } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { format } from 'date-fns';
@@ -31,6 +33,26 @@ export const PaymentMethods = forwardRef<
     // productType,
   } = props;
 
+  const tabs = [
+    {
+      label: 'Pay by credit card',
+      content:    <StyledPaymentCard
+          amount={paymentDetail?.amount}
+          ref={ref}
+          secret={paymentDetail?.clientSecret}
+      />,
+    },
+    {
+      label: 'ACH transfer',
+      content: <AchPaymentCard />,
+    },
+    {
+      label: 'Real-time payment',
+      content: <RealTimePayment />,
+    },
+
+  ];
+
   return (
     <StyledFormItem
       alignItems={'center'}
@@ -58,12 +80,8 @@ export const PaymentMethods = forwardRef<
       }
       tipSx={{ m: 0 }}
     >
-      <Stack maxWidth={600} width={'100%'}>
-        <StyledPaymentCard
-          amount={paymentDetail?.amount}
-          ref={ref}
-          secret={paymentDetail?.clientSecret}
-        />
+      <Stack maxWidth={900} width={'100%'}>
+        <StyledTab sx={{ mb: 1.5 }} tabsData={tabs} />
       </Stack>
 
       <StyledCheckbox

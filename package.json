@@ -45,6 +45,7 @@
     "react-number-format": "^5.1.4",
     "react-use": "^17.4.0",
     "react-verification-code-input": "^1.2.9",
+    "react-signature-pad-wrapper": "^3.3.4",
     "reset.css": "^2.0.2",
     "styled-components": "^5.3.9",
     "validate.js": "^0.13.1"

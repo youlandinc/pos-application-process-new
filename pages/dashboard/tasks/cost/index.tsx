@@ -26,9 +26,9 @@ const TaskPayment: FC = observer(() => {
       <Head>
         <title>Tasks - Pay for Appraisal</title>
       </Head>
-      <DynamicDashboardPage>
+      {/*<DynamicDashboardPage>*/}
         <DynamicPaymentPage />
-      </DynamicDashboardPage>
+      {/*</DynamicDashboardPage>*/}
     </>
   );
 });
