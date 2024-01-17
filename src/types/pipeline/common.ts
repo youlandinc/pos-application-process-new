@@ -152,3 +152,10 @@ export enum PipelineACHAccountType {
   SAVINGS = 'SAVINGS',
   DEFAULT = '',
 }
+
+export enum PipelineAccountStatus {
+  active = 'ACTIVE',
+  suspended = 'SUSPENDED',
+  pending_info = 'PENDING_INFO',
+  ready_for_review = 'READY_FOR_REVIEW',
+}
