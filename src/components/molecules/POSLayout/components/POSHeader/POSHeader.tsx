@@ -32,6 +32,7 @@ import {
   SignUp,
 } from '@/components/molecules';
 import { POSFormatUrl } from '@/utils';
+import { PipelineAccountStatus } from '@/types';
 
 export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const router = useRouter();
@@ -193,7 +194,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
-              disabled={!pipelineStatus}
+              disabled={pipelineStatus !== PipelineAccountStatus.active}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/pipeline')}
               variant={'outlined'}
@@ -210,7 +211,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
-              disabled={!pipelineStatus}
+              disabled={pipelineStatus !== PipelineAccountStatus.active}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/')}
               variant={'outlined'}
@@ -234,7 +235,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
-              disabled={!pipelineStatus}
+              disabled={pipelineStatus !== PipelineAccountStatus.active}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/')}
               variant={'outlined'}

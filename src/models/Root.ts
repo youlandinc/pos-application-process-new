@@ -164,6 +164,7 @@ const initialState = {
 
   pipelineTask: {
     pipelineInitialized: false,
+    allowSubmit: false,
   },
 
   userProfile: void 0,
