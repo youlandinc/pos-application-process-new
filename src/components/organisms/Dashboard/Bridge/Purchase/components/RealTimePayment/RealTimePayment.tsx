@@ -97,7 +97,7 @@ export const RealTimePayment: FC = (props) => {
   };
 
   const [state, createPayment] = useAsyncFn(
-    async (e: FormEvent<HTMLFormElement>) => {
+    async () => {
       e.preventDefault();
       if (validateNoteLength) {
         return;
@@ -133,7 +133,10 @@ export const RealTimePayment: FC = (props) => {
     <Stack
       autoComplete={'off'}
       component={'form'}
-      onSubmit={createPayment}
+      onSubmit={(e)=>{
+        e.preventDefault()
+        createPayment();
+      }}
       spacing={1.5}
     >
       <Stack
