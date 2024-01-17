@@ -72,3 +72,7 @@ export const _restartPaymentPipeline = (taskId: string) => {
 export const _fetchAttachmentFile = () => {
   return get('/dashboard/loan/task/attachment');
 };
+
+export const _createAchPayment = (param: unknown) => {
+  return post('/los/payment/order/create', param);
+};

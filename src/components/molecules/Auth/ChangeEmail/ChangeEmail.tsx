@@ -1,24 +1,3 @@
-import { FC, FormEventHandler, useCallback, useMemo, useState } from 'react';
-import { Box, Icon, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
-import { validate } from 'validate.js';
-
-import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
-
-import { useSessionStorageState, useSwitch } from '@/hooks';
-import { ChangeEmailStyles } from './index';
-import { POSFlex } from '@/styles';
-import {
-  AUTO_HIDE_DURATION,
-  EmailSchema,
-  LOGIN_APP_KEY,
-  userpool,
-} from '@/constants';
-import { BizType, HttpError } from '@/types';
-import { _userChangeEmail, _userVerifyCode, _userCompletedChangeEmail } from '@/requests';
-
 import {
   StyledBoxWrap,
   StyledButton,
@@ -27,8 +6,23 @@ import {
   StyledTextField,
   StyledTextFieldOtp,
 } from '@/components/atoms';
+import {AUTO_HIDE_DURATION, EmailSchema, LOGIN_APP_KEY, userpool,} from '@/constants';
+
+import {useSessionStorageState, useSwitch} from '@/hooks';
+import {useMst} from '@/models/Root';
+import {_userChangeEmail, _userCompletedChangeEmail} from '@/requests';
+import {POSFlex} from '@/styles';
 
 import CHANGE_EMAIL_SVG from '@/svg/auth/change_email.svg';
+import {BizType, HttpError} from '@/types';
+import {Box, Icon, Stack, Typography} from '@mui/material';
+
+import {observer} from 'mobx-react-lite';
+import {useRouter} from 'next/router';
+import {useSnackbar} from 'notistack';
+import {FC, FormEventHandler, useCallback, useMemo, useState} from 'react';
+import {validate} from 'validate.js';
+import {ChangeEmailStyles} from './index';
 
 export const ChangeEmail: FC = observer(() => {
   const router = useRouter();

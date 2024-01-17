@@ -204,3 +204,34 @@ export const OPTIONS_TASK_EXIT_STRATEGY: Option[] = [
     label: 'Obtain long term financing',
   },
 ];
+
+export const ACH_ACCOUNT_TYPE: Option[] = [
+  {
+    key: 'CHECKING',
+    label: 'CHECKING',
+    value: 'CHECKING',
+  },
+  {
+    key: 'SAVINGS',
+    label: 'SAVINGS',
+    value: 'SAVINGS',
+  },
+  {
+    key: 'LOAN',
+    label: 'LOAN',
+    value: 'LOAN',
+  },
+  {
+    key: 'GL',
+    label: 'GL',
+    value: 'GL',
+  },
+];
+
+export const ACH_Routing_Number_Type: Option[] = [
+  {
+    key: 'USABA',
+    label: 'USABA',
+    value: 'USABA',
+  },
+];
