@@ -25,7 +25,7 @@ export const UserSetting = types
         const res = yield _fetchPipelineStatus();
         const { status, additionDetails } = res.data;
         self.pipelineStatus = status;
-        self.pipelineAdditionDetails = additionDetails;
+        self.pipelineAdditionDetails = additionDetails ?? '';
         self.loading = false;
         self.pipelineStatusInitialized = true;
       } catch (err) {
