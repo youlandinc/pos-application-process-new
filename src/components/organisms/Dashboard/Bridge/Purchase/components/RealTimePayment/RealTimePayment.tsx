@@ -4,9 +4,12 @@ import Image from 'next/image';
 import { enqueueSnackbar } from 'notistack';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 
-import { _createAchPayment } from '@/requests/dashboard/task'
+import { _createAchPayment } from '@/requests/dashboard/task';
 
-import { DefaultParamType,SignatureDialog } from '@/components/organisms/Dashboard/Bridge';
+import {
+  DefaultParamType,
+  SignatureDialog,
+} from '@/components/organisms/Dashboard/Bridge';
 
 import { useSwitch } from '@/hooks';
 import {
@@ -96,36 +99,33 @@ export const RealTimePayment: FC = (props) => {
     close();
   };
 
-  const [state, createPayment] = useAsyncFn(
-    async () => {
-      e.preventDefault();
-      if (validateNoteLength) {
-        return;
-      }
-      const defaultValues: RealTimePaymentParam = {
-        feeType: 'Appraisal',
-        loanId: 611,
-        paymentMethod: PaymentMethodEnum.WELLS_FARGO_RTP,
-        source: PaymentLoanSource.LOS,
-        bizRequest: {
-          bizType: BizTypeEnum.WELLS_FARGO_RTP,
-          amount: '100',
-          currency: 'USD',
-          debtor: defaultDebtor,
-          creditor: { ...cardInfo, name: 'John Doe' }, //payee
-          remittance: {
-            remittance_information_unstructured: note,
-          },
+  const [state, createPayment] = useAsyncFn(async () => {
+    e.preventDefault();
+    if (validateNoteLength) {
+      return;
+    }
+    const defaultValues: RealTimePaymentParam = {
+      feeType: 'Appraisal',
+      loanId: 611,
+      paymentMethod: PaymentMethodEnum.WELLS_FARGO_RTP,
+      source: PaymentLoanSource.LOS,
+      bizRequest: {
+        bizType: BizTypeEnum.WELLS_FARGO_RTP,
+        amount: '100',
+        currency: 'USD',
+        debtor: defaultDebtor,
+        creditor: { ...cardInfo, name: 'John Doe' }, //payee
+        remittance: {
+          remittance_information_unstructured: note,
         },
-      };
-      await _createAchPayment(defaultValues).then((res) => {
-        enqueueSnackbar('Paid successfully', {
-          variant: 'success',
-        });
+      },
+    };
+    await _createAchPayment(defaultValues).then((res) => {
+      enqueueSnackbar('Paid successfully', {
+        variant: 'success',
       });
-    },
-    [cardInfo, note],
-  );
+    });
+  }, [cardInfo, note]);
 
   const validateNoteLength = note.trim().length > 100;
 
@@ -133,8 +133,8 @@ export const RealTimePayment: FC = (props) => {
     <Stack
       autoComplete={'off'}
       component={'form'}
-      onSubmit={(e)=>{
-        e.preventDefault()
+      onSubmit={(e) => {
+        e.preventDefault();
         createPayment();
       }}
       spacing={1.5}

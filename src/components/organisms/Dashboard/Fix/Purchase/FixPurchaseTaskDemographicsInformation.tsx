@@ -298,8 +298,8 @@ export const FixPurchaseTaskDemographicsInformation: FC = observer(() => {
         gender: male
           ? DashboardTaskGender.male
           : female
-          ? DashboardTaskGender.female
-          : DashboardTaskGender.not_provide,
+            ? DashboardTaskGender.female
+            : DashboardTaskGender.not_provide,
       },
     };
     try {

@@ -26,4 +26,4 @@ export * from './BridgePurchaseTaskUploadPictures';
 export * from './BridgePurchaseTaskAgreements';
 export * from './BridgePurchaseTaskDocuments';
 
-export * from './components'
+export * from './components';

@@ -96,39 +96,36 @@ export const AchPaymentCard: FC = (props) => {
     close();
   };
 
-  const [state, createPayment] = useAsyncFn(
-    async () => {
-      e.preventDefault();
-      if (validateNoteLength) {
-        return;
-      }
-      const param: AchPaymentParam = {
-        ...defaultParam,
-        bizRequest: {
-          bizType: defaultBizType,
-          direct_debit: {
-            payment: {
-              amount: '155.96', //从接口取
-              currency: defaultCurrency, //固定值
-            },
-            debtor: {
-              name: 'Joe Debtor', //borrower name  接口取
-              bank_account: cardInfo,
-            },
-            remittance_information: {
-              unstructured_addenda: [note], //备注，后端接收是['xxx']的形式
-            },
+  const [state, createPayment] = useAsyncFn(async () => {
+    e.preventDefault();
+    if (validateNoteLength) {
+      return;
+    }
+    const param: AchPaymentParam = {
+      ...defaultParam,
+      bizRequest: {
+        bizType: defaultBizType,
+        direct_debit: {
+          payment: {
+            amount: '155.96', //从接口取
+            currency: defaultCurrency, //固定值
+          },
+          debtor: {
+            name: 'Joe Debtor', //borrower name  接口取
+            bank_account: cardInfo,
+          },
+          remittance_information: {
+            unstructured_addenda: [note], //备注，后端接收是['xxx']的形式
           },
         },
-      };
-      await _createAchPayment(param).then((res) => {
-        enqueueSnackbar('Paid successfully', {
-          variant: 'success',
-        });
+      },
+    };
+    await _createAchPayment(param).then((res) => {
+      enqueueSnackbar('Paid successfully', {
+        variant: 'success',
       });
-    },
-    [cardInfo, note],
-  );
+    });
+  }, [cardInfo, note]);
 
   const validateNoteLength = note.trim().length > 100;
 
@@ -136,8 +133,8 @@ export const AchPaymentCard: FC = (props) => {
     <Stack
       autoComplete={'off'}
       component={'form'}
-      onSubmit={(e)=>{
-      e.preventDefault()
+      onSubmit={(e) => {
+        e.preventDefault();
         createPayment();
       }}
       spacing={1.5}

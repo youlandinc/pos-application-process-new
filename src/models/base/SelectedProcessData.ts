@@ -64,9 +64,8 @@ export const SelectedProcessData = types
       }
       self.loading = true;
       try {
-        const res: AxiosResponse<ProcessData> = yield _fetchProcessData(
-          processId,
-        );
+        const res: AxiosResponse<ProcessData> =
+          yield _fetchProcessData(processId);
 
         self.loading = false;
         self.setProcessData(res.data);
