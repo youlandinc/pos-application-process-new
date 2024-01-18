@@ -101,6 +101,9 @@ dependencies:
   react-number-format:
     specifier: ^5.1.4
     version: 5.1.4(react-dom@18.2.0)(react@18.2.0)
+  react-signature-pad-wrapper:
+    specifier: ^3.3.4
+    version: 3.3.4(react-dom@18.2.0)(react@18.2.0)
   react-use:
     specifier: ^17.4.0
     version: 17.4.0(react-dom@18.2.0)(react@18.2.0)
@@ -5168,6 +5171,17 @@ packages:
       warning: 4.0.3
     dev: false
 
+  /react-signature-pad-wrapper@3.3.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-s9M36CZ8rwn4PezVM6lH3I+QXvfjRhsx6koqkXFzkK8Y+9CPKepwODZApfwtsvS59YHArTtgwEI5oFqAhsDZaA==}
+    peerDependencies:
+      react: 17 - 18
+      react-dom: 17 - 18
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      signature_pad: 4.1.7
+    dev: false
+
   /react-transition-group@4.4.5(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
     peerDependencies:
@@ -5451,6 +5465,10 @@ packages:
   /signal-exit@3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
     dev: true
+
+  /signature_pad@4.1.7:
+    resolution: {integrity: sha512-2Vmybep25VlDnvdgtE3v09KGawS8mL10lRpSq1RmPpLcS4eH8I1YPQUzXsxwnmepcAgDHQ2jyzgS6XhjKsYYAQ==}
+    dev: false
 
   /slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
