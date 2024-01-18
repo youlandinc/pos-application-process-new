@@ -205,9 +205,10 @@ export const ChangeEmail: FC = observer(() => {
           </Box>
         </Box>
       </StyledBoxWrap>
+
       <StyledDialog
         content={
-          <Box>
+          <Box mt={3} overflow={'hidden'}>
             <Typography
               className={'POS_tl POS_fullwidth'}
               color={'text.secondary'}
@@ -216,7 +217,7 @@ export const ChangeEmail: FC = observer(() => {
             >
               An email with a verification code has been sent to{' '}
               <Typography component={'span'} variant={'subtitle2'}>
-                {email}
+                {newEmail}
               </Typography>
             </Typography>
             <Box className={'POS_flex POS_jc_c POS_al_c'} mt={3}>
@@ -231,9 +232,13 @@ export const ChangeEmail: FC = observer(() => {
             >
               Didn&apos;t verification code?{' '}
               <Typography
-                color={'text.primary'}
+                color={loading ? 'action.disabled' : 'text.primary'}
                 component={'span'}
                 onClick={handledVerifyOtp}
+                sx={{
+                  cursor: 'pointer',
+                  textDecorationLine: 'underline',
+                }}
                 variant={'body2'}
               >
                 Request again
@@ -243,7 +248,7 @@ export const ChangeEmail: FC = observer(() => {
         }
         disableEscapeKeyDown
         footer={
-          <>
+          <Box mt={3}>
             <StyledButton
               color={'info'}
               disabled={loading}
@@ -262,7 +267,7 @@ export const ChangeEmail: FC = observer(() => {
             >
               Confirm
             </StyledButton>
-          </>
+          </Box>
         }
         header={
           <>
