@@ -12,7 +12,7 @@ import { useMst } from '@/models/Root';
 import { POSGetProductTypeByUrl } from '@/utils';
 import { _deleteProcess, _fetchAllProcesses } from '@/requests';
 import { useSessionStorageState, useSwitch } from '@/hooks';
-import { HttpError, LoanStage, UserType } from '@/types';
+import { HttpError, LoanStage, PipelineAccountStatus, UserType } from '@/types';
 import { AUTO_HIDE_DURATION, PAGE_SIZE } from '@/constants';
 import { StyledButton, StyledDialog, StyledLoading } from '@/components/atoms';
 
@@ -67,7 +67,9 @@ export const Pipeline: FC = observer(() => {
       return;
     }
     if (
-      (!pipelineInitialized || !pipelineStatusInitialized || !pipelineStatus) &&
+      (!pipelineInitialized ||
+        !pipelineStatusInitialized ||
+        pipelineStatus !== PipelineAccountStatus.active) &&
       userType !== UserType.CUSTOMER
     ) {
       return;
@@ -213,7 +215,7 @@ export const Pipeline: FC = observer(() => {
 
   return (!pipelineInitialized ||
     !pipelineStatusInitialized ||
-    !pipelineStatus) &&
+    pipelineStatus !== PipelineAccountStatus.active) &&
     userType !== UserType.CUSTOMER ? null : (
     <>
       <SearchBar

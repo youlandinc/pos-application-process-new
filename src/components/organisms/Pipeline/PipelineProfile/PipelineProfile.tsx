@@ -1,25 +1,38 @@
-import { FC, useCallback, useMemo } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { Icon, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useBreakpoints } from '@/hooks';
-import { UserType } from '@/types';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
+import { HttpError, PipelineAccountStatus, UserType } from '@/types';
 
 import { StyledButton, StyledFormItem, StyledStatus } from '@/components/atoms';
 
+import READY_FOR_REVIEW from '@/svg/pipeline/readey_for_review.svg';
+import { _submitPipelineTask } from '@/requests';
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { useSnackbar } from 'notistack';
+
 export const PipelineProfile: FC = observer(() => {
   const router = useRouter();
+  const { saasState } = useSessionStorageState('tenantConfig');
+  const { enqueueSnackbar } = useSnackbar();
 
   const {
-    pipelineTask: { formData },
+    pipelineTask: { formData, allowSubmit },
     userType,
-    userSetting: { pipelineStatus },
+    userSetting: {
+      pipelineStatus,
+      pipelineAdditionDetails,
+      fetchPipelineStatus,
+    },
   } = useMst();
 
   const breakpoint = useBreakpoints();
+
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
   const handleEnterSubTask = useCallback(
     async (url: string) => {
@@ -377,6 +390,9 @@ export const PipelineProfile: FC = observer(() => {
   ]);
 
   const userTask = useMemo(() => {
+    if (pipelineStatus === PipelineAccountStatus.pending_info) {
+      return 'Please update the info below';
+    }
     switch (userType) {
       case UserType.BROKER:
         return 'Broker tasks';
@@ -389,14 +405,50 @@ export const PipelineProfile: FC = observer(() => {
       default:
         return 'Broker tasks';
     }
-  }, [userType]);
+  }, [pipelineStatus, userType]);
 
-  return (
+  return pipelineStatus === PipelineAccountStatus.ready_for_review ? (
+    <Stack alignItems={'center'} gap={1.25} justifyContent={'center'} my={7.5}>
+      <Icon component={READY_FOR_REVIEW} sx={{ width: 268, height: '100%' }} />
+      <Typography
+        color={'#69C0A5'}
+        mt={4.5}
+        textAlign={'center'}
+        variant={'h4'}
+      >
+        Your account is waiting for review
+      </Typography>
+      <Typography
+        color={'text.secondary'}
+        textAlign={'center'}
+        variant={'body1'}
+      >
+        We are reviewing the updated information and will get back to you as
+        soon as possible.
+      </Typography>
+      <Typography
+        color={'text.secondary'}
+        textAlign={'center'}
+        variant={'body1'}
+      >
+        If you have any questions, please contact us at{' '}
+        {saasState?.posSettings?.email || saasState?.email}.
+      </Typography>
+    </Stack>
+  ) : (
     <StyledFormItem
       label={userTask}
       sx={{ m: '0 auto' }}
       tip={
-        'Please fill in the information that is needed for payment upon loan close.'
+        <>
+          <Typography>
+            Please fill in the information that is needed for payment upon loan
+            close.
+          </Typography>
+          {pipelineStatus === PipelineAccountStatus.pending_info && (
+            <Typography>{pipelineAdditionDetails}</Typography>
+          )}
+        </>
       }
       width={'100%'}
     >
@@ -428,14 +480,35 @@ export const PipelineProfile: FC = observer(() => {
       >
         {renderTaskList}
         <StyledButton
-          disabled={!pipelineStatus}
-          onClick={() => router.push('/')}
+          disabled={!allowSubmit}
+          loading={submitLoading}
+          onClick={async () => {
+            if (pipelineStatus === PipelineAccountStatus.active) {
+              await router.push('/');
+              return;
+            }
+            setSubmitLoading(true);
+            try {
+              await _submitPipelineTask();
+              await fetchPipelineStatus();
+            } catch (err) {
+              const { header, message, variant } = err as HttpError;
+              enqueueSnackbar(message, {
+                variant: variant || 'error',
+                autoHideDuration: AUTO_HIDE_DURATION,
+                isSimple: !header,
+                header,
+              });
+            } finally {
+              setSubmitLoading(false);
+            }
+          }}
           size={
             ['xs', 'sm', 'md', 'lg'].includes(breakpoint) ? 'small' : 'large'
           }
           sx={{ mt: 2 }}
         >
-          Start new loan
+          Submit
         </StyledButton>
       </Stack>
     </StyledFormItem>

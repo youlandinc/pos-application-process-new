@@ -1,20 +1,31 @@
 import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { _fetchPipelineStatus } from '@/requests';
+import { PipelineAccountStatus } from '@/types';
 //import { AUTO_HIDE_DURATION } from '@/constants';
 //import { enqueueSnackbar } from 'notistack';
 
 export const UserSetting = types
   .model({
     loading: types.boolean,
-    pipelineStatus: types.maybe(types.boolean),
+    pipelineStatus: types.maybe(
+      types.union(
+        types.literal(PipelineAccountStatus.active),
+        types.literal(PipelineAccountStatus.suspended),
+        types.literal(PipelineAccountStatus.pending_info),
+        types.literal(PipelineAccountStatus.ready_for_review),
+      ),
+    ),
     pipelineStatusInitialized: types.boolean,
+    pipelineAdditionDetails: types.maybe(types.string),
   })
   .actions((self) => {
     const fetchPipelineStatus = flow(function* () {
       self.loading = true;
       try {
         const res = yield _fetchPipelineStatus();
-        self.pipelineStatus = res.data;
+        const { status, additionDetails } = res.data;
+        self.pipelineStatus = status;
+        self.pipelineAdditionDetails = additionDetails;
         self.loading = false;
         self.pipelineStatusInitialized = true;
       } catch (err) {

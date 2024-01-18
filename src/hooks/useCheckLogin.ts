@@ -6,7 +6,7 @@ import { useMst } from '@/models/Root';
 
 import { usePersistFn, useSessionStorageState } from './index';
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { UserType } from '@/types';
+import { PipelineAccountStatus, UserType } from '@/types';
 
 export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
   const { session, persistDataLoaded, userType, loginType } = useMst();
@@ -42,7 +42,7 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
     }
     if (
       !persistDataLoaded ||
-      (session && userType && loginType) ||
+      (!session && !userType && !loginType) ||
       router.pathname === jumpPath
     ) {
       return;
@@ -77,12 +77,13 @@ export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
       fetchPipelineStatus,
     },
   } = useMst();
+
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const check = useCallback(async () => {
     if (
       !persistDataLoaded ||
-      (session && userType && loginType && pipelineStatus) ||
+      (!session && !userType && !loginType && !pipelineStatus) ||
       router.pathname.includes('/pipeline/profile') ||
       router.pathname.includes('/pipeline/task') ||
       router.pathname.includes('/change_email') ||
@@ -94,7 +95,7 @@ export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
       await fetchPipelineStatus();
       if (
         pipelineStatusInitialized &&
-        !pipelineStatus &&
+        pipelineStatus !== PipelineAccountStatus.active &&
         userType !== UserType.CUSTOMER
       ) {
         await router.push(jumpPath);

@@ -21,6 +21,7 @@ export const PTaskForm = types
   .model({
     formData: Union,
     pipelineInitialized: types.boolean,
+    allowSubmit: types.boolean,
   })
   .actions((self) => ({
     initPipelineTaskForm() {
@@ -34,7 +35,9 @@ export const PTaskForm = types
     const fetchPipelineTaskData = flow(function* () {
       try {
         const res = yield _fetchPipelineTask();
-        self.formData.injectPipelineTaskData(res.data);
+        const { tasks, allowSubmit } = res.data;
+        self.formData.injectPipelineTaskData(tasks);
+        self.allowSubmit = allowSubmit ?? false;
         self.setInitialized(true);
       } catch (err) {
         //eslint-disable-next-line no-console
