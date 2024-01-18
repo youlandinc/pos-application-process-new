@@ -31,7 +31,7 @@ export const Pipeline: FC = observer(() => {
   const { saasState } = useSessionStorageState('tenantConfig');
 
   const {
-    userSetting: { pipelineStatus, pipelineStatusInitialized },
+    userSetting: { pipelineStatus, pipelineStatusInitialized, applicable },
     pipelineTask: { pipelineInitialized },
     userType,
     session,
@@ -69,7 +69,8 @@ export const Pipeline: FC = observer(() => {
     if (
       (!pipelineInitialized ||
         !pipelineStatusInitialized ||
-        pipelineStatus !== PipelineAccountStatus.active) &&
+        pipelineStatus !== PipelineAccountStatus.active ||
+        !applicable) &&
       userType !== UserType.CUSTOMER
     ) {
       return;
@@ -118,6 +119,7 @@ export const Pipeline: FC = observer(() => {
         setIsChange(false);
       });
   }, [
+    applicable,
     searchForm,
     page,
     pipelineInitialized,
@@ -215,7 +217,8 @@ export const Pipeline: FC = observer(() => {
 
   return (!pipelineInitialized ||
     !pipelineStatusInitialized ||
-    pipelineStatus !== PipelineAccountStatus.active) &&
+    pipelineStatus !== PipelineAccountStatus.active ||
+    !applicable) &&
     userType !== UserType.CUSTOMER ? null : (
     <>
       <SearchBar
