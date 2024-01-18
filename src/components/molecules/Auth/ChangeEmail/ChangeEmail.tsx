@@ -234,7 +234,7 @@ export const ChangeEmail: FC = observer(() => {
               <Typography
                 color={loading ? 'action.disabled' : 'text.primary'}
                 component={'span'}
-                onClick={handledVerifyOtp}
+                onClick={handledSubmit}
                 sx={{
                   cursor: 'pointer',
                   textDecorationLine: 'underline',
