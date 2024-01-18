@@ -100,8 +100,8 @@ export const StyledSelect: FC<StyledSelectProps> = ({
                     </Box>
                   ))
                 : validate
-                ? validate[0]
-                : undefined}
+                  ? validate[0]
+                  : undefined}
             </FormHelperText>
           )}
         </Transitions>

@@ -117,8 +117,8 @@ export const RealEstate = types
               ? notUndefined(expectRentPrice) &&
                   (hasMonthlyPayment ? this.checkLoanListValid : true)
               : hasMonthlyPayment
-              ? this.checkLoanListValid
-              : true;
+                ? this.checkLoanListValid
+                : true;
           }
         }
         return false;
