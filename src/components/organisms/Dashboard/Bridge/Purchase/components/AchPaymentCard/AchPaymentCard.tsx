@@ -1,3 +1,5 @@
+import {AUTO_HIDE_DURATION} from '@/constants';
+import {HttpError} from '@/types';
 import { FC, FormEvent, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import Image from 'next/image';
@@ -60,6 +62,9 @@ type BizRequestInfoType = {
   bizType: BizTypeEnum;
   // requested_execution_date: string; //测试用这个，测试完可以不传
   direct_debit: DirectDebitInfo;
+  creditor:{
+    name:string;
+  },
 };
 
 export type AchPaymentParam = DefaultParamType & {
@@ -69,7 +74,7 @@ export type AchPaymentParam = DefaultParamType & {
 const defaultParam: DefaultParamType = {
   feeType: 'Appraisal',
   paymentMethod: PaymentMethodEnum.WELLS_FARGO,
-  loanId: 600,
+  loanId: 1804,
   source: PaymentLoanSource.LOS,
 };
 
@@ -97,7 +102,7 @@ export const AchPaymentCard: FC = (props) => {
   };
 
   const [state, createPayment] = useAsyncFn(async () => {
-    e.preventDefault();
+    // e.preventDefault();
     if (validateNoteLength) {
       return;
     }
@@ -105,6 +110,9 @@ export const AchPaymentCard: FC = (props) => {
       ...defaultParam,
       bizRequest: {
         bizType: defaultBizType,
+        'creditor':{
+          'name':'Creditor Company'
+        },
         direct_debit: {
           payment: {
             amount: '155.96', //从接口取
@@ -124,6 +132,14 @@ export const AchPaymentCard: FC = (props) => {
       enqueueSnackbar('Paid successfully', {
         variant: 'success',
       });
+    }).catch((err)=>{
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
     });
   }, [cardInfo, note]);
 
@@ -211,15 +227,6 @@ export const AchPaymentCard: FC = (props) => {
             value={cardInfo.routing_number_type}
           />
 
-          <Stack
-            alignItems={'center'}
-            direction={'row'}
-            justifyContent={'space-between'}
-            width={'50% !important'}
-          >
-            <Typography variant={'subtitle1'}>Currency</Typography>
-            <StyledRadioWithLabel checked label={'USD'} />
-          </Stack>
         </Stack>
       </Stack>
       <Stack

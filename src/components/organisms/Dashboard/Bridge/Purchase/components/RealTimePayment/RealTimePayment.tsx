@@ -1,3 +1,5 @@
+import {AUTO_HIDE_DURATION} from '@/constants';
+import {HttpError} from '@/types';
 import { Stack, Typography } from '@mui/material';
 import { FC, FormEvent, useState } from 'react';
 import Image from 'next/image';
@@ -100,13 +102,13 @@ export const RealTimePayment: FC = (props) => {
   };
 
   const [state, createPayment] = useAsyncFn(async () => {
-    e.preventDefault();
+    // e.preventDefault();
     if (validateNoteLength) {
       return;
     }
     const defaultValues: RealTimePaymentParam = {
       feeType: 'Appraisal',
-      loanId: 611,
+      loanId: 1804,
       paymentMethod: PaymentMethodEnum.WELLS_FARGO_RTP,
       source: PaymentLoanSource.LOS,
       bizRequest: {
@@ -123,6 +125,14 @@ export const RealTimePayment: FC = (props) => {
     await _createAchPayment(defaultValues).then((res) => {
       enqueueSnackbar('Paid successfully', {
         variant: 'success',
+      });
+    }).catch((err)=>{
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
     });
   }, [cardInfo, note]);
