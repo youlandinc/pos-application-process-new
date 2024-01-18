@@ -17,15 +17,17 @@ export const UserSetting = types
     ),
     pipelineStatusInitialized: types.boolean,
     pipelineAdditionDetails: types.maybe(types.string),
+    applicable: types.boolean,
   })
   .actions((self) => {
     const fetchPipelineStatus = flow(function* () {
       self.loading = true;
       try {
         const res = yield _fetchPipelineStatus();
-        const { status, additionDetails } = res.data;
+        const { status, additionDetails, applicable } = res.data;
         self.pipelineStatus = status;
         self.pipelineAdditionDetails = additionDetails ?? '';
+        self.applicable = applicable;
         self.loading = false;
         self.pipelineStatusInitialized = true;
       } catch (err) {
