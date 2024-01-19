@@ -50,7 +50,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     session,
     bpmn,
     applicationForm: { initialized },
-    userSetting: { pipelineStatus },
+    userSetting: { applicable },
   } = store;
 
   const [authType, setAuthType] = useState<
@@ -193,7 +193,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
-              disabled={!pipelineStatus}
+              disabled={!applicable}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/pipeline')}
               variant={'outlined'}
@@ -210,7 +210,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
-              disabled={!pipelineStatus}
+              disabled={!applicable}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/')}
               variant={'outlined'}
@@ -234,7 +234,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
-              disabled={!pipelineStatus}
+              disabled={!applicable}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/')}
               variant={'outlined'}
@@ -253,7 +253,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         );
       }
     }
-  }, [breakpoint, hasSession, open, pipelineStatus, router, scene, store]);
+  }, [breakpoint, hasSession, open, applicable, router, scene, store]);
 
   const renderDialog = useMemo(() => {
     switch (authType) {

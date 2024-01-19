@@ -605,7 +605,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
 
                   {citizenship !== CommonBorrowerType.foreign_national && (
                     <StyledFormItem
-                      label={"Your co-borrower's social security number"}
+                      label={"Co-borrower's social security number"}
                       sub
                     >
                       <Stack maxWidth={600} width={'100%'}>

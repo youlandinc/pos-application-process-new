@@ -17,7 +17,7 @@ import {
   userpool,
 } from '@/constants';
 import { BizType, HttpError } from '@/types';
-import { _userChangeEmail, _userVerifyCode } from '@/requests';
+import { _userChangeEmail, _userCompletedChangeEmail } from '@/requests';
 
 import {
   StyledBoxWrap,
@@ -91,7 +91,7 @@ export const ChangeEmail: FC = observer(() => {
     };
     setLoading(true);
     try {
-      await _userVerifyCode(data);
+      await _userCompletedChangeEmail(data);
       close();
       const { username } = JSON.parse(
         localStorage.getItem('PROFILE_KEY') as string,
@@ -205,9 +205,10 @@ export const ChangeEmail: FC = observer(() => {
           </Box>
         </Box>
       </StyledBoxWrap>
+
       <StyledDialog
         content={
-          <Box>
+          <Box mt={3} overflow={'hidden'}>
             <Typography
               className={'POS_tl POS_fullwidth'}
               color={'text.secondary'}
@@ -216,7 +217,7 @@ export const ChangeEmail: FC = observer(() => {
             >
               An email with a verification code has been sent to{' '}
               <Typography component={'span'} variant={'subtitle2'}>
-                {email}
+                {newEmail}
               </Typography>
             </Typography>
             <Box className={'POS_flex POS_jc_c POS_al_c'} mt={3}>
@@ -231,9 +232,13 @@ export const ChangeEmail: FC = observer(() => {
             >
               Didn&apos;t verification code?{' '}
               <Typography
-                color={'text.primary'}
+                color={loading ? 'action.disabled' : 'text.primary'}
                 component={'span'}
-                onClick={handledVerifyOtp}
+                onClick={handledSubmit}
+                sx={{
+                  cursor: 'pointer',
+                  textDecorationLine: 'underline',
+                }}
                 variant={'body2'}
               >
                 Request again
@@ -243,7 +248,7 @@ export const ChangeEmail: FC = observer(() => {
         }
         disableEscapeKeyDown
         footer={
-          <>
+          <Box mt={3}>
             <StyledButton
               color={'info'}
               disabled={loading}
@@ -262,7 +267,7 @@ export const ChangeEmail: FC = observer(() => {
             >
               Confirm
             </StyledButton>
-          </>
+          </Box>
         }
         header={
           <>

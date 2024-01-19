@@ -137,7 +137,7 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
         {isCoBorrower && (
           <StyledFormItem
             gap={6}
-            label={'Tell us about co-borrower'}
+            label={'Tell us about the co-borrower'}
             labelSx={{ mb: 0 }}
             tip={
               "We are only collecting co-borrower's information for now. Checking credit score will be done in tasks."
@@ -233,7 +233,7 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
               {coBorrowerInfo.citizenship !==
                 CommonBorrowerType.foreign_national && (
                 <StyledFormItem
-                  label={"The co-borrower's social security number"}
+                  label={"Co-borrower's social security number"}
                   sub
                 >
                   <Stack gap={3} maxWidth={600} width={'100%'}>

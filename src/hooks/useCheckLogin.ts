@@ -42,7 +42,7 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
     }
     if (
       !persistDataLoaded ||
-      (session && userType && loginType) ||
+      (!session && !userType && !loginType) ||
       router.pathname === jumpPath
     ) {
       return;
@@ -71,18 +71,15 @@ export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
     persistDataLoaded,
     userType,
     loginType,
-    userSetting: {
-      pipelineStatusInitialized,
-      pipelineStatus,
-      fetchPipelineStatus,
-    },
+    userSetting: { pipelineStatusInitialized, fetchPipelineStatus, applicable },
   } = useMst();
+
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const check = useCallback(async () => {
     if (
       !persistDataLoaded ||
-      (session && userType && loginType && pipelineStatus) ||
+      (!session && !userType && !loginType && !applicable) ||
       router.pathname.includes('/pipeline/profile') ||
       router.pathname.includes('/pipeline/task') ||
       router.pathname.includes('/change_email') ||
@@ -94,8 +91,8 @@ export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
       await fetchPipelineStatus();
       if (
         pipelineStatusInitialized &&
-        !pipelineStatus &&
-        userType !== UserType.CUSTOMER
+        userType !== UserType.CUSTOMER &&
+        !applicable
       ) {
         await router.push(jumpPath);
         enqueueSnackbar('Your information is incomplete', {
@@ -105,12 +102,12 @@ export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
       }
     }
   }, [
+    applicable,
     enqueueSnackbar,
     fetchPipelineStatus,
     jumpPath,
     loginType,
     persistDataLoaded,
-    pipelineStatus,
     pipelineStatusInitialized,
     router,
     session,

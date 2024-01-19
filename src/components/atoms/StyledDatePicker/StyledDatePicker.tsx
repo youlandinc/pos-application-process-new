@@ -68,8 +68,8 @@ export const StyledDatePicker: FC<StyledDatePickerProps> = ({
                       </Box>
                     ))
                   : validate
-                  ? validate
-                  : undefined}
+                    ? validate
+                    : undefined}
               </Transitions>
             ),
             error: !!validate?.length,
