@@ -82,7 +82,15 @@ export const PaymentMethods = forwardRef<
       tipSx={{ m: 0 }}
     >
       <Stack maxWidth={900} width={'100%'}>
-        <StyledTab sx={{ mb: 1.5 }} tabsData={tabs} />
+        <StyledTab
+          sx={{
+            mb: 1.5,
+            '& .MuiButtonBase-root': {
+              fontWeight: 600,
+            },
+          }}
+          tabsData={tabs}
+        />
       </Stack>
 
       <StyledCheckbox
@@ -91,7 +99,7 @@ export const PaymentMethods = forwardRef<
           'Important: I understand that if my home does not meet these requirements at the time of inspection, I will be required to pay for a second appraisal inspection.'
         }
         onChange={onCheckValueChange}
-        sx={{ mr: 1, maxWidth: 600, mt: 3 }}
+        sx={{ mr: 1, mt: 3 }}
       />
     </StyledFormItem>
   );

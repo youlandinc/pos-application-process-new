@@ -1,5 +1,5 @@
-import {AUTO_HIDE_DURATION} from '@/constants';
-import {HttpError} from '@/types';
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { HttpError } from '@/types';
 import { FC, FormEvent, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import Image from 'next/image';
@@ -62,9 +62,9 @@ type BizRequestInfoType = {
   bizType: BizTypeEnum;
   // requested_execution_date: string; //测试用这个，测试完可以不传
   direct_debit: DirectDebitInfo;
-  creditor:{
-    name:string;
-  },
+  creditor: {
+    name: string;
+  };
 };
 
 export type AchPaymentParam = DefaultParamType & {
@@ -110,8 +110,8 @@ export const AchPaymentCard: FC = (props) => {
       ...defaultParam,
       bizRequest: {
         bizType: defaultBizType,
-        'creditor':{
-          'name':'Creditor Company'
+        creditor: {
+          name: 'Creditor Company',
         },
         direct_debit: {
           payment: {
@@ -128,11 +128,13 @@ export const AchPaymentCard: FC = (props) => {
         },
       },
     };
-    await _createAchPayment(param).then((res) => {
-      enqueueSnackbar('Paid successfully', {
-        variant: 'success',
-      });
-    }).catch((err)=>{
+    await _createAchPayment(param)
+      .then((res) => {
+        enqueueSnackbar('Paid successfully', {
+          variant: 'success',
+        });
+      })
+      .catch((err) => {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
           variant: variant || 'error',
@@ -140,7 +142,7 @@ export const AchPaymentCard: FC = (props) => {
           isSimple: !header,
           header,
         });
-    });
+      });
   }, [cardInfo, note]);
 
   const validateNoteLength = note.trim().length > 100;
@@ -156,20 +158,19 @@ export const AchPaymentCard: FC = (props) => {
       spacing={1.5}
     >
       <Stack
-        border={'1px solid'}
-        borderColor={'background.border_default'}
+        border={{ md: '1px solid #D2D6E1', xs: 'none' }}
         borderRadius={2}
-        p={3}
+        p={{ md: 3, xs: 0 }}
         spacing={3}
       >
         <Typography variant={'h6'}>Enter bank information</Typography>
         <Stack
-          direction={'row'}
+          flexDirection={{ md: 'row', xs: 'column' }}
           flexWrap={'wrap'}
           gap={3}
           sx={{
             '& .MuiFormControl-root': {
-              width: 'calc(50% - 12px)',
+              width: { md: 'calc(50% - 12px)', xs: '100%' },
             },
           }}
         >
@@ -226,14 +227,13 @@ export const AchPaymentCard: FC = (props) => {
             options={ACH_Routing_Number_Type}
             value={cardInfo.routing_number_type}
           />
-
         </Stack>
       </Stack>
+
       <Stack
-        border={'1px solid'}
-        borderColor={'background.border_default'}
+        border={{ md: '1px solid #D2D6E1', xs: 'none' }}
         borderRadius={2}
-        p={3}
+        p={{ md: 3, xs: 0 }}
         spacing={3}
       >
         <Typography variant={'h6'}>Additional Information</Typography>
@@ -258,31 +258,38 @@ export const AchPaymentCard: FC = (props) => {
           </Typography>
         </Stack>
       </Stack>
+
       <Stack
-        border={'1px solid'}
-        borderColor={'background.border_default'}
+        border={{ md: '1px solid #D2D6E1', xs: 'none' }}
         borderRadius={2}
-        p={3}
+        p={{ md: 3, xs: 0 }}
+        spacing={3}
       >
         <Typography variant={'h6'}>Confirm</Typography>
-        <Stack direction={'row'} spacing={3}>
+        <Stack
+          alignItems={'center'}
+          flexDirection={{ md: 'row', xs: 'column' }}
+          gap={3}
+          justifyContent={'center'}
+        >
           <Stack spacing={1.5}>
             <Typography variant={'body3'}>
               By proceeding with this express payment, you confirm and ensure
               the following:
             </Typography>
             <Stack
-              pl={1}
               sx={{ listStyle: 'decimal', listStylePosition: 'inside' }}
+              component={'ul'}
+              pl={0}
             >
-              <Typography variant={'body3'}>
+              <Typography component={'li'} variant={'body3'}>
                 The Bank Account information provided for this transaction is
                 accurate and truthful.
               </Typography>
-              <Typography variant={'body3'}>
+              <Typography component={'li'} variant={'body3'}>
                 You have authorization as a signatory on the Bank Account.
               </Typography>
-              <Typography variant={'body3'}>
+              <Typography component={'li'} variant={'body3'}>
                 {
                   'You grant authorization to YouLand to initiate a one-time payment, either by check or electronic debit, amounting to {$675.00}.'
                 }
@@ -300,11 +307,13 @@ export const AchPaymentCard: FC = (props) => {
               ACH transfer failures.
             </Typography>
           </Stack>
+
           <Stack
+            alignItems={'center'}
             flexShrink={0}
-            justifyContent={'space-between'}
+            gap={1.5}
             textAlign={'center'}
-            width={240}
+            width={{ md: 240, xs: '100%' }}
           >
             <Typography fontWeight={600} variant={'body3'}>
               Sign below to approve payment
@@ -313,7 +322,7 @@ export const AchPaymentCard: FC = (props) => {
               fullWidth
               onClick={open}
               sx={{
-                height: 120,
+                height: 160,
                 bgcolor: 'rgba(17, 52, 227, 0.10)',
                 fontSize: 12,
                 borderRadius: 2,
@@ -323,6 +332,7 @@ export const AchPaymentCard: FC = (props) => {
                 '&:hover': {
                   bgcolor: 'rgba(75,107,182,0.2) !important',
                 },
+                color: 'primary.main',
               }}
             >
               {previewUrl ? (

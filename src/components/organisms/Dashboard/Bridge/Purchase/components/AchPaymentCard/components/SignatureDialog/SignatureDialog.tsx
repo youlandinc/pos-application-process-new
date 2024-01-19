@@ -42,7 +42,7 @@ export const SignatureDialog: FC<SignatureDialogProps> = ({
   return (
     <StyledDialog
       content={
-        <Stack pt={3} spacing={1.5}>
+        <Stack py={3} spacing={1.5}>
           <Stack
             alignItems={'center'}
             direction={'row'}

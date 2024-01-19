@@ -1,5 +1,5 @@
-import {AUTO_HIDE_DURATION} from '@/constants';
-import {HttpError} from '@/types';
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { HttpError } from '@/types';
 import { Stack, Typography } from '@mui/material';
 import { FC, FormEvent, useState } from 'react';
 import Image from 'next/image';
@@ -122,19 +122,21 @@ export const RealTimePayment: FC = (props) => {
         },
       },
     };
-    await _createAchPayment(defaultValues).then((res) => {
-      enqueueSnackbar('Paid successfully', {
-        variant: 'success',
+    await _createAchPayment(defaultValues)
+      .then((res) => {
+        enqueueSnackbar('Paid successfully', {
+          variant: 'success',
+        });
+      })
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
       });
-    }).catch((err)=>{
-      const { header, message, variant } = err as HttpError;
-      enqueueSnackbar(message, {
-        variant: variant || 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-        isSimple: !header,
-        header,
-      });
-    });
   }, [cardInfo, note]);
 
   const validateNoteLength = note.trim().length > 100;
@@ -150,14 +152,17 @@ export const RealTimePayment: FC = (props) => {
       spacing={1.5}
     >
       <Stack
-        border={'1px solid'}
-        borderColor={'background.border_default'}
+        border={{ md: '1px solid #D2D6E1', xs: 'none' }}
         borderRadius={2}
-        p={3}
+        p={{ md: 3, xs: 0 }}
         spacing={3}
       >
         <Typography variant={'h6'}>Enter bank information</Typography>
-        <Stack direction={'row'} justifyContent={'space-between'} spacing={3}>
+        <Stack
+          direction={{ md: 'row', xs: 'column' }}
+          justifyContent={'space-between'}
+          spacing={3}
+        >
           <StyledTextFieldNumber
             decimalScale={0}
             label={'Routing Number'}
@@ -189,10 +194,9 @@ export const RealTimePayment: FC = (props) => {
         </Stack>
       </Stack>
       <Stack
-        border={'1px solid'}
-        borderColor={'background.border_default'}
+        border={{ md: '1px solid #D2D6E1', xs: 'none' }}
         borderRadius={2}
-        p={3}
+        p={{ md: 3, xs: 0 }}
         spacing={3}
       >
         <Typography variant={'h6'}>Additional Information</Typography>
@@ -218,12 +222,11 @@ export const RealTimePayment: FC = (props) => {
         </Stack>
       </Stack>
       <Stack
-        border={'1px solid'}
-        borderColor={'background.border_default'}
+        border={{ md: '1px solid #D2D6E1', xs: 'none' }}
         borderRadius={2}
-        p={3}
+        p={{ md: 3, xs: 0 }}
       >
-        <Stack direction={'row'} spacing={3}>
+        <Stack direction={{ md: 'row', xs: 'column' }} spacing={3}>
           <Stack spacing={1.5}>
             <Typography variant={'body3'}>
               By proceeding with this express payment, you confirm and ensure
@@ -231,7 +234,7 @@ export const RealTimePayment: FC = (props) => {
             </Typography>
             <Stack
               component={'ul'}
-              pl={1}
+              pl={0}
               sx={{ listStyle: 'decimal', listStylePosition: 'inside' }}
             >
               <Typography component={'li'} variant={'body3'}>
@@ -251,19 +254,13 @@ export const RealTimePayment: FC = (props) => {
               Please be aware that the funds may be debited from your Bank
               Account as early as today.
             </Typography>
-            <Typography variant={'body3'}>
-              In the event of a failed ACH transfer for any reason, you
-              acknowledge your responsibility to ensure timely payment according
-              to the agreement. It is mutually understood and agreed that
-              YouLand holds no liability for any damages or losses arising from
-              ACH transfer failures.
-            </Typography>
           </Stack>
           <Stack
             flexShrink={0}
+            gap={1.5}
             justifyContent={'space-between'}
             textAlign={'center'}
-            width={240}
+            width={{ md: 240, xs: '100%' }}
           >
             <Typography fontWeight={600} variant={'body3'}>
               Sign below to approve payment
@@ -282,6 +279,7 @@ export const RealTimePayment: FC = (props) => {
                 '&:hover': {
                   bgcolor: 'rgba(75,107,182,0.2) !important',
                 },
+                color: 'primary.main',
               }}
             >
               {previewUrl ? (
