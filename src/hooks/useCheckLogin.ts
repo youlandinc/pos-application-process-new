@@ -6,7 +6,7 @@ import { useMst } from '@/models/Root';
 
 import { usePersistFn, useSessionStorageState } from './index';
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { PipelineAccountStatus, UserType } from '@/types';
+import { UserType } from '@/types';
 
 export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
   const { session, persistDataLoaded, userType, loginType } = useMst();
@@ -71,12 +71,7 @@ export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
     persistDataLoaded,
     userType,
     loginType,
-    userSetting: {
-      pipelineStatusInitialized,
-      pipelineStatus,
-      fetchPipelineStatus,
-      applicable,
-    },
+    userSetting: { pipelineStatusInitialized, fetchPipelineStatus, applicable },
   } = useMst();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -96,7 +91,6 @@ export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
       await fetchPipelineStatus();
       if (
         pipelineStatusInitialized &&
-        pipelineStatus !== PipelineAccountStatus.active &&
         userType !== UserType.CUSTOMER &&
         !applicable
       ) {
@@ -114,7 +108,6 @@ export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
     jumpPath,
     loginType,
     persistDataLoaded,
-    pipelineStatus,
     pipelineStatusInitialized,
     router,
     session,

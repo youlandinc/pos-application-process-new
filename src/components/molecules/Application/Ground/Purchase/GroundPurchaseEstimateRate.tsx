@@ -139,8 +139,8 @@ export const GroundPurchaseEstimateRate: FC<{
         closeDate: isDate(searchForm.closeDate)
           ? format(searchForm.closeDate as Date, 'yyyy-MM-dd O')
           : POSTypeOf(searchForm.closeDate) === 'Null'
-          ? format(addDays(new Date(), 7), 'yyyy-MM-dd O')
-          : searchForm.closeDate,
+            ? format(addDays(new Date(), 7), 'yyyy-MM-dd O')
+            : searchForm.closeDate,
       },
     };
     for (const [key, value] of Object.entries(searchForm)) {
@@ -153,8 +153,8 @@ export const GroundPurchaseEstimateRate: FC<{
           closeDate: isDate(searchForm.closeDate)
             ? format(searchForm.closeDate as Date, 'yyyy-MM-dd O')
             : POSTypeOf(searchForm.closeDate) === 'Null'
-            ? format(addDays(new Date(), 7), 'yyyy-MM-dd O')
-            : searchForm.closeDate,
+              ? format(addDays(new Date(), 7), 'yyyy-MM-dd O')
+              : searchForm.closeDate,
         };
         if (!searchForm.customRate) {
           return await _fetchRatesProductPreview(processId, requestData);

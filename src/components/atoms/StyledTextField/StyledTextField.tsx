@@ -42,8 +42,8 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
                     </Box>
                   ))
                 : validate
-                ? validate
-                : undefined}
+                  ? validate
+                  : undefined}
             </Transitions>
           ) : validate?.length ? (
             validate.map((item, index) => (

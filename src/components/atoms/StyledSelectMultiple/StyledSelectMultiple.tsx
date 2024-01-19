@@ -142,8 +142,8 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
                   </Box>
                 ))
               : validate
-              ? validate[0]
-              : undefined}
+                ? validate[0]
+                : undefined}
           </FormHelperText>
         )}
       </FormControl>

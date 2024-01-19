@@ -184,8 +184,8 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
         return typeof option === 'string'
           ? option
           : fullAddress
-          ? option.structured_formatting.main_text
-          : option.description;
+            ? option.structured_formatting.main_text
+            : option.description;
       }}
       includeInputInList
       inputValue={inputValue}
