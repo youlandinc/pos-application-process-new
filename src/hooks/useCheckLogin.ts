@@ -71,12 +71,7 @@ export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
     persistDataLoaded,
     userType,
     loginType,
-    userSetting: {
-      pipelineStatusInitialized,
-      pipelineStatus,
-      fetchPipelineStatus,
-      applicable,
-    },
+    userSetting: { pipelineStatusInitialized, fetchPipelineStatus, applicable },
   } = useMst();
 
   const { enqueueSnackbar } = useSnackbar();
