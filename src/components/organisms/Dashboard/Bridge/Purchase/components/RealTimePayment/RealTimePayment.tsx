@@ -165,7 +165,7 @@ export const RealTimePayment: FC = (props) => {
         >
           <StyledTextFieldNumber
             decimalScale={0}
-            label={'Routing Number'}
+            label={'Routing number'}
             onValueChange={({ value }) => {
               setCardInfo({
                 ...cardInfo,
@@ -179,7 +179,7 @@ export const RealTimePayment: FC = (props) => {
           />
           <StyledTextFieldNumber
             decimalScale={0}
-            label={'Bank Account Number'}
+            label={'Bank account number'}
             onValueChange={({ value }) => {
               setCardInfo({
                 ...cardInfo,

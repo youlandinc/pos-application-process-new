@@ -176,7 +176,7 @@ export const AchPaymentCard: FC = (props) => {
         >
           <StyledTextFieldNumber
             decimalScale={0}
-            label={'Account Number'}
+            label={'Account number'}
             onValueChange={({ value }) => {
               setCardInfo({
                 ...cardInfo,
@@ -203,7 +203,7 @@ export const AchPaymentCard: FC = (props) => {
 
           <StyledTextFieldNumber
             decimalScale={0}
-            label={'Routing Number'}
+            label={'Routing number'}
             onValueChange={({ value }) => {
               setCardInfo({
                 ...cardInfo,
