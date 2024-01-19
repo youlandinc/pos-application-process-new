@@ -278,9 +278,9 @@ export const AchPaymentCard: FC = (props) => {
               the following:
             </Typography>
             <Stack
-              sx={{ listStyle: 'decimal', listStylePosition: 'inside' }}
               component={'ul'}
               pl={0}
+              sx={{ listStyle: 'decimal', listStylePosition: 'inside' }}
             >
               <Typography component={'li'} variant={'body3'}>
                 The Bank Account information provided for this transaction is
