@@ -1,4 +1,4 @@
-import { FC, FormEvent, useState } from 'react';
+import { FC, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import Image from 'next/image';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
@@ -7,7 +7,6 @@ import { enqueueSnackbar } from 'notistack';
 import { SignatureDialog } from '@/components/organisms/Dashboard/Bridge';
 import {
   StyledButton,
-  StyledRadioWithLabel,
   StyledSelect,
   StyledTextField,
   StyledTextFieldNumber,
@@ -77,7 +76,7 @@ const defaultBizType = BizTypeEnum.WELLS_FARGO_ACH;
 const defaultCurrency = 'USD'; //固定值
 const defaultRoutingNumberType = 'USABA'; //固定值
 
-export const AchPaymentCard: FC = (props) => {
+export const AchPaymentCard: FC = () => {
   const { visible, open, close } = useSwitch();
 
   const [cardInfo, setCardInfo] = useState({
@@ -97,7 +96,7 @@ export const AchPaymentCard: FC = (props) => {
   };
 
   const [state, createPayment] = useAsyncFn(
-    async () => {
+    async (e) => {
       e.preventDefault();
       if (validateNoteLength) {
         return;
@@ -136,27 +135,24 @@ export const AchPaymentCard: FC = (props) => {
     <Stack
       autoComplete={'off'}
       component={'form'}
-      onSubmit={(e)=>{
-      e.preventDefault()
-        createPayment();
-      }}
-      spacing={1.5}
+      id={'ach-payment-card'}
+      onSubmit={createPayment}
+      spacing={{ md: 1.5, xs: 7.5 }}
     >
       <Stack
-        border={'1px solid'}
-        borderColor={'background.border_default'}
+        border={{ md: '1px solid #D2D6E1', xs: 'none' }}
         borderRadius={2}
-        p={3}
+        p={{ md: 3, xs: 0 }}
         spacing={3}
       >
         <Typography variant={'h6'}>Enter bank information</Typography>
         <Stack
-          direction={'row'}
+          flexDirection={{ md: 'row', xs: 'column' }}
           flexWrap={'wrap'}
           gap={3}
           sx={{
             '& .MuiFormControl-root': {
-              width: 'calc(50% - 12px)',
+              width: { md: 'calc(50% - 12px)', xs: '100%' },
             },
           }}
         >
@@ -213,23 +209,13 @@ export const AchPaymentCard: FC = (props) => {
             options={ACH_Routing_Number_Type}
             value={cardInfo.routing_number_type}
           />
-
-          <Stack
-            alignItems={'center'}
-            direction={'row'}
-            justifyContent={'space-between'}
-            width={'50% !important'}
-          >
-            <Typography variant={'subtitle1'}>Currency</Typography>
-            <StyledRadioWithLabel checked label={'USD'} />
-          </Stack>
         </Stack>
       </Stack>
+
       <Stack
-        border={'1px solid'}
-        borderColor={'background.border_default'}
+        border={{ md: '1px solid #D2D6E1', xs: 'none' }}
         borderRadius={2}
-        p={3}
+        p={{ md: 3, xs: 0 }}
         spacing={3}
       >
         <Typography variant={'h6'}>Additional Information</Typography>
@@ -254,14 +240,20 @@ export const AchPaymentCard: FC = (props) => {
           </Typography>
         </Stack>
       </Stack>
+
       <Stack
-        border={'1px solid'}
-        borderColor={'background.border_default'}
+        border={{ md: '1px solid #D2D6E1', xs: 'none' }}
         borderRadius={2}
-        p={3}
+        p={{ md: 3, xs: 0 }}
+        spacing={3}
       >
         <Typography variant={'h6'}>Confirm</Typography>
-        <Stack direction={'row'} spacing={3}>
+        <Stack
+          alignItems={'center'}
+          flexDirection={{ md: 'row', xs: 'column' }}
+          gap={3}
+          justifyContent={'center'}
+        >
           <Stack spacing={1.5}>
             <Typography variant={'body3'}>
               By proceeding with this express payment, you confirm and ensure
@@ -271,14 +263,14 @@ export const AchPaymentCard: FC = (props) => {
               pl={1}
               sx={{ listStyle: 'decimal', listStylePosition: 'inside' }}
             >
-              <Typography variant={'body3'}>
+              <Typography component={'li'} variant={'body3'}>
                 The Bank Account information provided for this transaction is
                 accurate and truthful.
               </Typography>
-              <Typography variant={'body3'}>
+              <Typography component={'li'} variant={'body3'}>
                 You have authorization as a signatory on the Bank Account.
               </Typography>
-              <Typography variant={'body3'}>
+              <Typography component={'li'} variant={'body3'}>
                 {
                   'You grant authorization to YouLand to initiate a one-time payment, either by check or electronic debit, amounting to {$675.00}.'
                 }
@@ -296,11 +288,13 @@ export const AchPaymentCard: FC = (props) => {
               ACH transfer failures.
             </Typography>
           </Stack>
+
           <Stack
+            alignItems={'center'}
             flexShrink={0}
-            justifyContent={'space-between'}
+            gap={1.5}
             textAlign={'center'}
-            width={240}
+            width={{ md: 240, xs: '100%' }}
           >
             <Typography fontWeight={600} variant={'body3'}>
               Sign below to approve payment
@@ -309,7 +303,7 @@ export const AchPaymentCard: FC = (props) => {
               fullWidth
               onClick={open}
               sx={{
-                height: 120,
+                height: 160,
                 bgcolor: 'rgba(17, 52, 227, 0.10)',
                 fontSize: 12,
                 borderRadius: 2,
@@ -332,17 +326,18 @@ export const AchPaymentCard: FC = (props) => {
                 'Click to sign'
               )}
             </StyledButton>
-            <StyledButton
-              loading={state.loading}
-              size={'large'}
-              type={'submit'}
-              variant={'contained'}
-            >
-              Make payment
-            </StyledButton>
+            {/*<StyledButton*/}
+            {/*  loading={state.loading}*/}
+            {/*  size={'large'}*/}
+            {/*  type={'submit'}*/}
+            {/*  variant={'contained'}*/}
+            {/*>*/}
+            {/*  Make payment*/}
+            {/*</StyledButton>*/}
           </Stack>
         </Stack>
       </Stack>
+
       <SignatureDialog
         onClose={close}
         onSave={handleSave}

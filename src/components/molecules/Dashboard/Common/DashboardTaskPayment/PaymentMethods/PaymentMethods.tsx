@@ -1,5 +1,5 @@
-import {AchPaymentCard, RealTimePayment} from '@/components/organisms';
-import {StyledTab} from '@/components/atoms';
+import { AchPaymentCard, RealTimePayment } from '@/components/organisms';
+import { StyledTab } from '@/components/atoms';
 import { ChangeEvent, forwardRef, ReactNode } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { format } from 'date-fns';
@@ -36,11 +36,13 @@ export const PaymentMethods = forwardRef<
   const tabs = [
     {
       label: 'Pay by credit card',
-      content:    <StyledPaymentCard
+      content: (
+        <StyledPaymentCard
           amount={paymentDetail?.amount}
           ref={ref}
           secret={paymentDetail?.clientSecret}
-      />,
+        />
+      ),
     },
     {
       label: 'ACH transfer',
@@ -50,7 +52,6 @@ export const PaymentMethods = forwardRef<
       label: 'Real-time payment',
       content: <RealTimePayment />,
     },
-
   ];
 
   return (

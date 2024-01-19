@@ -1,12 +1,15 @@
 import { Stack, Typography } from '@mui/material';
-import { FC, FormEvent, useState } from 'react';
+import { FC, FormEvent, useCallback, useState } from 'react';
 import Image from 'next/image';
 import { enqueueSnackbar } from 'notistack';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 
-import { _createAchPayment } from '@/requests/dashboard/task'
+import { _createAchPayment } from '@/requests/dashboard/task';
 
-import { DefaultParamType,SignatureDialog } from '@/components/organisms/Dashboard/Bridge';
+import {
+  DefaultParamType,
+  SignatureDialog,
+} from '@/components/organisms/Dashboard/Bridge';
 
 import { useSwitch } from '@/hooks';
 import {
@@ -97,7 +100,7 @@ export const RealTimePayment: FC = (props) => {
   };
 
   const [state, createPayment] = useAsyncFn(
-    async () => {
+    async (e) => {
       e.preventDefault();
       if (validateNoteLength) {
         return;
@@ -133,10 +136,7 @@ export const RealTimePayment: FC = (props) => {
     <Stack
       autoComplete={'off'}
       component={'form'}
-      onSubmit={(e)=>{
-        e.preventDefault()
-        createPayment();
-      }}
+      onSubmit={createPayment}
       spacing={1.5}
     >
       <Stack

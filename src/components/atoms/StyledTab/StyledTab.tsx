@@ -38,6 +38,7 @@ export const StyledTab: FC<StyledTabProps> = (props) => {
     <Stack sx={{ height: '100%' }}>
       <Tabs
         onChange={handleChange}
+        scrollButtons={false}
         sx={{
           '& .MuiTab-root': {
             textTransform: 'none',
@@ -55,6 +56,7 @@ export const StyledTab: FC<StyledTabProps> = (props) => {
           ...sx,
         }}
         value={value}
+        variant={'scrollable'}
       >
         {tabsData.map((item, index) => (
           <Tab key={index} label={item.label} />

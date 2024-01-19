@@ -100,7 +100,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
     );
   const [tableStatus, setTableStatus] =
     useState<DashboardTaskPaymentTableStatus>(
-      DashboardTaskPaymentTableStatus.notice,
+      DashboardTaskPaymentTableStatus.payment,
     );
   const [noticeCheck, setNoticeCheck] = useState<boolean>(false);
   const [summaryCheck, setSummaryCheck] = useState<boolean>(false);
@@ -424,11 +424,13 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
             </StyledButton>
             <StyledButton
               color={'primary'}
-              disabled={disabledButton}
+              //disabled={disabledButton}
+              form={'ach-payment-card'}
               onClick={(e) => handledPayment(e)}
               sx={{ flex: 1 }}
+              type={'submit'}
             >
-              Pay now
+              Make payment
             </StyledButton>
           </Stack>
         );
