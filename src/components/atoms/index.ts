@@ -55,4 +55,4 @@ export * from './StyledUploadButtonBox';
 
 export * from './StyledNotification';
 
-export * from './StyledTab'
+export * from './StyledTab';

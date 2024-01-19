@@ -6929,7 +6929,10 @@ packages:
     dev: false
 
   /react-signature-pad-wrapper@3.3.4(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-s9M36CZ8rwn4PezVM6lH3I+QXvfjRhsx6koqkXFzkK8Y+9CPKepwODZApfwtsvS59YHArTtgwEI5oFqAhsDZaA==}
+    resolution:
+      {
+        integrity: sha512-s9M36CZ8rwn4PezVM6lH3I+QXvfjRhsx6koqkXFzkK8Y+9CPKepwODZApfwtsvS59YHArTtgwEI5oFqAhsDZaA==,
+      }
     peerDependencies:
       react: 17 - 18
       react-dom: 17 - 18
@@ -7344,7 +7347,10 @@ packages:
     dev: true
 
   /signature_pad@4.1.7:
-    resolution: {integrity: sha512-2Vmybep25VlDnvdgtE3v09KGawS8mL10lRpSq1RmPpLcS4eH8I1YPQUzXsxwnmepcAgDHQ2jyzgS6XhjKsYYAQ==}
+    resolution:
+      {
+        integrity: sha512-2Vmybep25VlDnvdgtE3v09KGawS8mL10lRpSq1RmPpLcS4eH8I1YPQUzXsxwnmepcAgDHQ2jyzgS6XhjKsYYAQ==,
+      }
     dev: false
 
   /slash@3.0.0:
