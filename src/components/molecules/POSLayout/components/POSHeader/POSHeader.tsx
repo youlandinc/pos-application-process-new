@@ -118,6 +118,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                     fontSize: 14,
                     width: 'fit-content',
                     mr: 1.5,
+                    minWidth: 'auto',
                     '&:hover': {
                       bgcolor: 'transparent',
                     },
@@ -139,6 +140,8 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                     p: 0,
                     fontSize: 14,
                     width: 'fit-content',
+                    minWidth: 'auto',
+
                     '&:hover': {
                       bgcolor: 'transparent',
                     },
