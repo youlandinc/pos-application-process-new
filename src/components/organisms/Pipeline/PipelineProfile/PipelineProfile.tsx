@@ -442,8 +442,7 @@ export const PipelineProfile: FC = observer(() => {
       tip={
         <>
           <Typography>
-            Please fill in the information that is needed for payment upon loan
-            close.
+            Please fill in the following information before continuing.
           </Typography>
           {pipelineStatus === PipelineAccountStatus.pending_info && (
             <Typography>{pipelineAdditionDetails}</Typography>
