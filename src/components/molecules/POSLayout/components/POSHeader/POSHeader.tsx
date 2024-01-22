@@ -106,13 +106,23 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           formData?.state !== 'auth' && (
             <Box>
               <StyledButton
-                className={'POS_mr_3'}
                 color={'info'}
                 onClick={() => {
                   setAuthType('sign_up');
                   open();
                 }}
                 size={'small'}
+                sx={{
+                  '&.MuiButton-sizeSmall': {
+                    p: 0,
+                    fontSize: 14,
+                    width: 'fit-content',
+                    mr: 1.5,
+                    '&:hover': {
+                      bgcolor: 'transparent',
+                    },
+                  },
+                }}
                 variant={'text'}
               >
                 Sign up
@@ -124,6 +134,16 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                   open();
                 }}
                 size={'small'}
+                sx={{
+                  '&.MuiButton-sizeSmall': {
+                    p: 0,
+                    fontSize: 14,
+                    width: 'fit-content',
+                    '&:hover': {
+                      bgcolor: 'transparent',
+                    },
+                  },
+                }}
                 variant={'text'}
               >
                 Log in
