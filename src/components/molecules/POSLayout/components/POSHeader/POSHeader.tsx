@@ -114,10 +114,10 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 size={'small'}
                 sx={{
                   '&.MuiButton-sizeSmall': {
-                    p: 0,
+                    p: { md: '7px 14px', xs: '0' },
                     fontSize: 14,
                     width: 'fit-content',
-                    mr: 1.5,
+                    mr: 3,
                     minWidth: 'auto',
                     '&:hover': {
                       bgcolor: 'transparent',
@@ -137,11 +137,10 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 size={'small'}
                 sx={{
                   '&.MuiButton-sizeSmall': {
-                    p: 0,
+                    p: { md: '7px 14px', xs: '0' },
                     fontSize: 14,
                     width: 'fit-content',
                     minWidth: 'auto',
-
                     '&:hover': {
                       bgcolor: 'transparent',
                     },
