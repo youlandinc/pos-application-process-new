@@ -49,7 +49,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const {
     session,
     bpmn,
-    applicationForm: { initialized },
+    applicationForm: { initialized, formData },
     userSetting: { applicable },
   } = store;
 
@@ -103,31 +103,33 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     switch (scene) {
       case 'application':
         return !hasSession ? (
-          <Box>
-            <StyledButton
-              className={'POS_mr_3'}
-              color={'info'}
-              onClick={() => {
-                setAuthType('sign_up');
-                open();
-              }}
-              size={'small'}
-              variant={'text'}
-            >
-              Sign up
-            </StyledButton>
-            <StyledButton
-              color={'info'}
-              onClick={() => {
-                setAuthType('login');
-                open();
-              }}
-              size={'small'}
-              variant={'text'}
-            >
-              Log in
-            </StyledButton>
-          </Box>
+          formData?.state !== 'auth' && (
+            <Box>
+              <StyledButton
+                className={'POS_mr_3'}
+                color={'info'}
+                onClick={() => {
+                  setAuthType('sign_up');
+                  open();
+                }}
+                size={'small'}
+                variant={'text'}
+              >
+                Sign up
+              </StyledButton>
+              <StyledButton
+                color={'info'}
+                onClick={() => {
+                  setAuthType('login');
+                  open();
+                }}
+                size={'small'}
+                variant={'text'}
+              >
+                Log in
+              </StyledButton>
+            </Box>
+          )
         ) : (
           <Box>
             <StyledButton
@@ -253,7 +255,16 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         );
       }
     }
-  }, [breakpoint, hasSession, open, applicable, router, scene, store]);
+  }, [
+    scene,
+    hasSession,
+    formData?.state,
+    breakpoint,
+    store,
+    applicable,
+    open,
+    router,
+  ]);
 
   const renderDialog = useMemo(() => {
     switch (authType) {

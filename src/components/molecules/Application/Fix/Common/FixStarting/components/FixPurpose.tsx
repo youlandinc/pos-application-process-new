@@ -44,7 +44,9 @@ export const FixPurpose: FC<FixPurposeProps> = observer((props) => {
     >
       {/*todo : saas*/}
       <StyledFormItem
-        label={`How many properties have ${
+        label={`How many properties ${
+          userType === UserType.CUSTOMER ? 'have' : 'has'
+        } ${
           HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject
         } flipped in the last 24 months?`}
       >
