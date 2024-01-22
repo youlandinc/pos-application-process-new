@@ -148,71 +148,6 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
                 />
               </Stack>
             </Stack>
-
-            <Stack gap={3} maxWidth={900} width={'100%'}>
-              <StyledCheckbox
-                checked={customRate}
-                label={
-                  <Typography color={'text.primary'} ml={2} variant={'body2'}>
-                    Use custom loan terms
-                  </Typography>
-                }
-                onChange={(e) =>
-                  setSearchForm({
-                    ...searchForm,
-                    customRate: e.target.checked,
-                  })
-                }
-              />
-              <Transitions
-                style={{
-                  display: customRate ? 'block' : 'none',
-                  width: '100%',
-                }}
-              >
-                {customRate && (
-                  <Stack
-                    flexDirection={{ lg: 'row', xs: 'column' }}
-                    gap={3}
-                    width={'100%'}
-                  >
-                    <Stack flex={1} gap={1}>
-                      <StyledTextFieldNumber
-                        decimalScale={3}
-                        disabled={loading || loanStage === LoanStage.Approved}
-                        label={'Interest rate'}
-                        onValueChange={({ floatValue }) => {
-                          setSearchForm({
-                            ...searchForm,
-                            interestRate: floatValue,
-                          });
-                        }}
-                        percentage
-                        suffix={'%'}
-                        thousandSeparator={false}
-                        value={interestRate}
-                      />
-                    </Stack>
-                    <Stack flex={1} gap={1}>
-                      <StyledTextFieldNumber
-                        decimalScale={0}
-                        disabled={loading || loanStage === LoanStage.Approved}
-                        label={'Loan term (months)'}
-                        onValueChange={({ floatValue }) => {
-                          setSearchForm({
-                            ...searchForm,
-                            loanTerm: floatValue,
-                          });
-                        }}
-                        percentage={false}
-                        thousandSeparator={false}
-                        value={loanTerm}
-                      />
-                    </Stack>
-                  </Stack>
-                )}
-              </Transitions>
-            </Stack>
           </StyledFormItem>
         );
       case UserType.LENDER:
@@ -372,13 +307,10 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
     agentFee,
     brokerPoints,
     brokerProcessingFee,
-    customRate,
-    interestRate,
     lenderPoints,
     lenderProcessingFee,
     loading,
     loanStage,
-    loanTerm,
     officerPoints,
     officerProcessingFee,
     searchForm,
