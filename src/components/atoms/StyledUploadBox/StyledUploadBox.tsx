@@ -194,7 +194,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
                 <Typography variant={'body2'}>
                   {['xs', 'sm', 'md'].includes(breakpoint)
                     ? 'Click '
-                    : 'Drop files here or click '}
+                    : 'Drag and drop files here, or click '}
                   <Box
                     component={'span'}
                     sx={{
@@ -205,7 +205,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
                   >
                     browse
                   </Box>{' '}
-                  thorough your machine.
+                  from your computer.
                 </Typography>
               </Box>
             </label>

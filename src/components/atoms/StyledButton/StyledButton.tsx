@@ -22,10 +22,11 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
       switch (variant) {
         case 'text':
           return rest.color + '.darker';
-
         case 'outlined':
+          if (rest.color === 'primary') {
+            return rest.color + '.lightest';
+          }
           return rest.color + '.darker';
-
         default:
           return rest.color + (isIconButton ? '.darker' : '.dark');
       }

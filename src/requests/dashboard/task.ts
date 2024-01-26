@@ -58,7 +58,7 @@ export const _uploadTaskFile = (params: FormData, taskId: string) => {
 
 export const _deleteTaskFile = (
   taskId: string,
-  params: { fieldName: string; fileUrl: string },
+  params: { fieldName: string; fileUrl: string | undefined },
 ) => {
   return del(`/dashboard/loan/task/${taskId}`, {
     data: params,
