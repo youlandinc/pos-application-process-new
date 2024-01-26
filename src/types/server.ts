@@ -1,5 +1,6 @@
 import { LoanStage, LoanType } from '@/types/enum';
 import { OccupancyOpt } from '@/types/options';
+import { TaskFiles } from '@/types/pipeline';
 
 export enum HttpErrorType {
   tokenExpired = '40001',
@@ -39,4 +40,24 @@ export interface PreApprovalLetterData {
   city: string;
   state: string;
   propertyUsage: OccupancyOpt;
+}
+
+// documents response
+export interface DocumentUploadResponse {
+  totalNum: number;
+  uploadedNum: number;
+  documents: {
+    id: number;
+    categoryDocs: {
+      fileKey: string;
+      fileName: string;
+      files: TaskFiles[];
+      id: number;
+      templateName: string;
+      templateUrl: string;
+    }[];
+    collapse: boolean;
+    categoryKey: string;
+    categoryName: string;
+  }[];
 }
