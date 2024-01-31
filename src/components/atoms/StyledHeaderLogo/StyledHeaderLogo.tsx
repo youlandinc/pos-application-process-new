@@ -13,8 +13,12 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
   const [ratio, setRatio] = useState(-1);
+  const [isFirstLoading, setIsFirstLoading] = useState(true);
 
   const Logo = useMemo(() => {
+    if (isFirstLoading) {
+      return;
+    }
     if (saasState?.logoUrl) {
       return (
         <picture style={{ height: '100%' }}>
@@ -34,12 +38,18 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
         {saasState?.organizationName}
       </Box>
     );
-  }, [logoUrl, saasState?.logoUrl, saasState?.organizationName]);
+  }, [
+    isFirstLoading,
+    logoUrl,
+    saasState?.logoUrl,
+    saasState?.organizationName,
+  ]);
 
   useEffect(() => {
     if (saasState?.logoUrl) {
       POSGetImageSize(saasState?.logoUrl).then((res) => {
         setRatio(res?.ratio as number);
+        setIsFirstLoading(false);
       });
     }
   }, [saasState?.logoUrl]);
@@ -71,9 +81,10 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
       sx={{
         position: 'relative',
         height: computedHeight,
-        ...sx,
+        width: 'auto',
         cursor: saasState?.website ? 'pointer' : 'default',
         mt: { md: ratio <= 1 ? 4 : 0, xs: 0 },
+        ...sx,
       }}
     >
       {Logo}
