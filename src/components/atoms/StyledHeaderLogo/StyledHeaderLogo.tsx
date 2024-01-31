@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
 import { StyledHeaderLogoProps } from './index';
 import { useSessionStorageState } from '@/hooks';
@@ -13,8 +13,12 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
   const [ratio, setRatio] = useState(-1);
+  const [isFirstLoading, setIsFirstLoading] = useState(true);
 
   const Logo = useMemo(() => {
+    if (isFirstLoading) {
+      return;
+    }
     if (saasState?.logoUrl) {
       return (
         <picture style={{ height: '100%' }}>
@@ -23,23 +27,31 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
       );
     }
     return (
-      <Box
+      <Stack
         sx={{
           fontSize: 24,
           fontWeight: 600,
           lineHeight: 1.5,
           color: 'primary.main',
+          height: { md: 56, xs: 40 },
+          justifyContent: 'flex-end',
         }}
       >
         {saasState?.organizationName}
-      </Box>
+      </Stack>
     );
-  }, [logoUrl, saasState?.logoUrl, saasState?.organizationName]);
+  }, [
+    isFirstLoading,
+    logoUrl,
+    saasState?.logoUrl,
+    saasState?.organizationName,
+  ]);
 
   useEffect(() => {
     if (saasState?.logoUrl) {
       POSGetImageSize(saasState?.logoUrl).then((res) => {
         setRatio(res?.ratio as number);
+        setIsFirstLoading(false);
       });
     }
   }, [saasState?.logoUrl]);
@@ -71,9 +83,10 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
       sx={{
         position: 'relative',
         height: computedHeight,
-        ...sx,
+        width: 'auto',
         cursor: saasState?.website ? 'pointer' : 'default',
         mt: { md: ratio <= 1 ? 4 : 0, xs: 0 },
+        ...sx,
       }}
     >
       {Logo}

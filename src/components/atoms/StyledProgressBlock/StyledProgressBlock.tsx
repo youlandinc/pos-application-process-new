@@ -21,7 +21,6 @@ export const StyledProgressBlock: FC<StyledProgressBlockProps> = ({
       flexShrink={0}
       justifyContent={'center'}
       maxHeight={24}
-      minWidth={48}
       p={'4px 12px'}
       sx={{
         '&:hover': {

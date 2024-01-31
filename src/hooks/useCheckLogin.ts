@@ -16,7 +16,7 @@ export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
     if (!persistDataLoaded || session === void 0 || !userType || !loginType) {
       return;
     }
-    enqueueSnackbar('You have logged in and are now ready for you', {
+    enqueueSnackbar('You have successfully logged in', {
       variant: 'success',
       autoHideDuration: AUTO_HIDE_DURATION,
     });

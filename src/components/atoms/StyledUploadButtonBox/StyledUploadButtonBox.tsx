@@ -1,14 +1,13 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { ChangeEvent, FC, ReactNode, useCallback, useState } from 'react';
+import { Box, Icon, Stack, Typography } from '@mui/material';
 import {
   CloseOutlined,
-  CloudUploadOutlined,
   DeleteForeverOutlined,
-  FolderOpen,
   GetAppOutlined,
   RemoveRedEyeOutlined,
 } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
-import { ChangeEvent, useCallback, useState } from 'react';
+import { useRouter } from 'next/router';
 
 import { useBreakpoints, useSwitch } from '@/hooks';
 import { _downloadBrokerFile } from '@/requests';
@@ -16,42 +15,98 @@ import { _downloadBrokerFile } from '@/requests';
 import {
   StyledButton,
   StyledDialog,
-  StyledUploadButtonBoxProps,
+  StyledTooltip,
   Transitions,
 } from '@/components/atoms';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { SUploadData } from '@/models/common/UploadFile';
+import { HttpError } from '@/types';
+import { _deleteTaskFile, _uploadTaskFile } from '@/requests/dashboard';
 import { POSFormatDate } from '@/utils';
 
-export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
+import ICON_IMAGE from './icon_image.svg';
+import ICON_PDF from './icon_pdf.svg';
+
+interface StyledUploadButtonBoxProps {
+  files: SUploadData[];
+  fileName: string;
+  fileKey: string;
+  templateName: string;
+  templateUrl: string;
+  id?: number;
+  // custom
+  accept?: string;
+  fileSize?: number;
+  uploadText?: string;
+  children?: ReactNode;
+  refresh: () => Promise<void>;
+  // los
+  status?: string;
+  required?: boolean;
+  collapse?: boolean;
+}
+
+export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
+  props,
+) => {
   const {
-    onSuccess,
+    //id,
+    files,
+    fileName,
+    fileKey,
+    templateName,
+    templateUrl,
+    accept = 'image/*,.pdf,.doc,.docx',
+    fileSize = 100,
+    uploadText = 'Upload',
     children,
-    fileList,
-    onDelete,
-    label,
-    fileSize = 100, // MB
-    uploadText = 'Upload file',
-    accept = 'image/*,.pdf',
-    loading = false,
+    refresh,
   } = props;
 
+  const { open, visible, close } = useSwitch(false);
   const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
   const breakpoints = useBreakpoints();
 
   const [deleteIndex, setDeleteIndex] = useState<number>(-1);
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
 
-  const { open, visible, close } = useSwitch(false);
+  const [innerLoading, setInnerLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
-  const [innerLoading, setInnerLoading] = useState(loading);
+  const [fileList, setFileList] = useState(files);
 
   const handleUpload = useCallback(
     async (files: FileList) => {
-      await onSuccess(files);
-      setTimeout(() => setInnerLoading(false));
+      setInnerLoading(true);
+
+      const formData = new FormData();
+
+      formData.append('fieldName', fileKey);
+      Array.from(files, (item) => {
+        formData.append('files', item);
+      });
+      try {
+        const { data } = await _uploadTaskFile(
+          formData,
+          router.query.taskId as string,
+        );
+        setFileList([...fileList, ...data]);
+        await refresh();
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      } finally {
+        setInnerLoading(false);
+      }
     },
-    [onSuccess],
+    [enqueueSnackbar, fileKey, fileList, refresh, router.query.taskId],
   );
 
   const validatorFileSize = useCallback(
@@ -114,48 +169,109 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
     [],
   );
 
-  const onDialogConfirmDelete = async () => {
-    onDelete(deleteIndex);
-    close();
-  };
+  const onDialogConfirmDelete = useCallback(async () => {
+    setDeleteLoading(true);
+    try {
+      await _deleteTaskFile(router.query.taskId as string, {
+        fieldName: fileKey,
+        fileUrl: fileList[deleteIndex].url,
+      });
+      await refresh();
+      close();
+      const temp = JSON.parse(JSON.stringify(fileList));
+      temp.splice(deleteIndex, 1);
+      setTimeout(() => {
+        setFileList(temp);
+      }, 100);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setDeleteLoading(false);
+      setActiveIndex(-1);
+      setDeleteIndex(-1);
+    }
+  }, [
+    close,
+    deleteIndex,
+    enqueueSnackbar,
+    fileKey,
+    fileList,
+    refresh,
+    router.query.taskId,
+  ]);
 
   return (
     <Box
-      border={'1px solid'}
-      borderColor={'background.border_default'}
-      borderRadius={3}
+      border={'1px solid #D2D6E1'}
+      borderRadius={2}
+      maxWidth={'100%'}
       p={3}
       width={'100%'}
     >
       <Stack
         alignItems={'center'}
         flexDirection={{ md: 'row', xs: 'column' }}
-        gap={3}
+        gap={1.5}
         justifyContent={'space-between'}
+        maxWidth={'100%'}
         width={'100%'}
       >
-        <Typography
-          sx={{
-            flexWrap: 'wrap',
-            fontSize: { xs: 16, md: 20 },
-            fontWeight: 600,
-            lineHeight: 1,
-            textAlign: { xs: 'center', md: 'left' },
-            width: { md: 'calc(100% - 192px)', xs: '100%' },
-            wordBreak: 'break-all',
-          }}
+        <Stack
+          alignItems={{ md: 'unset', xs: 'center' }}
+          maxWidth={'100%'}
+          px={1.5}
+          width={{ md: 'calc(100% - 76px)', xs: '100%' }}
         >
-          {label}
-        </Typography>
+          <Typography
+            sx={{
+              flexWrap: 'wrap',
+              fontSize: { xs: 16, md: 20 },
+              fontWeight: 600,
+              lineHeight: 1.5,
+              textAlign: { xs: 'center', md: 'left' },
+              wordBreak: 'break-word',
+              color: 'text.primary',
+            }}
+          >
+            {fileName}
+          </Typography>
+
+          {templateName && (
+            <Typography
+              color={'primary.main'}
+              onClick={() => window.open(templateUrl)}
+              sx={{
+                textDecoration: 'underline',
+                cursor: 'pointer',
+                width: 'fit-content',
+              }}
+              variant={'body1'}
+            >
+              {templateName}
+            </Typography>
+          )}
+        </Stack>
+
         <StyledButton
-          color={'inherit'}
+          color={'primary'}
           component={'label'}
           disabled={innerLoading}
           loading={innerLoading}
-          sx={{ minWidth: 164 }}
+          size={'small'}
+          sx={{
+            minWidth: 76,
+            width: 76,
+            height: 36,
+            borderWidth: '2px !important',
+          }}
           variant={'outlined'}
         >
-          <CloudUploadOutlined sx={{ mr: 1 }} />
           <input
             accept={accept}
             hidden
@@ -170,18 +286,16 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
         </StyledButton>
       </Stack>
       {fileList.length !== 0 && (
-        <Box mt={3}>
+        <Box maxWidth={'100%'} mt={1.5} width={'100%'}>
           <Transitions>
             {children
               ? children
               : fileList.map((item: SUploadData, index: number) => (
                   <Stack
                     alignItems={'center'}
-                    border={'1px solid'}
-                    borderColor={'text.primary'}
                     borderRadius={3}
-                    className={'fileItem'}
                     color={'text.primary'}
+                    flex={1}
                     flexDirection={'row'}
                     fontSize={14}
                     fontWeight={600}
@@ -189,96 +303,182 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
                     justifyContent={'space-between'}
                     key={index}
                     lineHeight={1}
-                    mt={3}
-                    px={{ xl: 3, xs: 1.5 }}
-                    py={1.5}
+                    maxWidth={'auto'}
+                    mt={1.5}
+                    onMouseEnter={() => {
+                      if (['xs', 'sm'].includes(breakpoints)) {
+                        return;
+                      }
+                      setActiveIndex(index);
+                    }}
+                    onMouseLeave={() => {
+                      if (['xs', 'sm'].includes(breakpoints)) {
+                        return;
+                      }
+                      setActiveIndex(-1);
+                    }}
+                    px={1.5}
+                    py={1}
+                    sx={{
+                      '&:hover': {
+                        bgcolor: { md: 'primary.lightest', xs: 'transparent' },
+                      },
+                      transition: 'all .3s',
+                    }}
                     width={'100%'}
                   >
                     <Stack
                       alignItems={{ md: 'center', xs: 'flex-start' }}
                       flexDirection={{ xs: 'column', md: 'row' }}
+                      gap={{ md: 0, xs: 1 }}
                       justifyContent={'space-between'}
-                      width={'calc(100% - 120px)'}
+                      width={'100%'}
                     >
                       <Stack
                         alignItems={'center'}
+                        flex={1}
                         flexDirection={'row'}
-                        gap={1.5}
+                        gap={1}
                         width={{ md: 'calc(100% - 240px)', xs: '100%' }}
                       >
-                        <FolderOpen
-                          sx={{
-                            cursor: 'pointer',
-                            '&:hover': {
-                              color: 'primary.main',
-                            },
-                          }}
+                        <Icon
+                          component={
+                            item.originalFileName!.split('.')[1] === 'pdf'
+                              ? ICON_PDF
+                              : ICON_IMAGE
+                          }
                         />
 
-                        <Typography
-                          sx={{
-                            width: 'calc(100% - 36px)',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            webkitBoxOrient: 'vertical',
-                            webkitLineClamp: 1,
-                            whiteSpace: 'nowrap',
-                          }}
-                          variant={
-                            ['md', 'lg', 'xl', 'xxl'].includes(breakpoints)
-                              ? 'body1'
-                              : 'body2'
-                          }
-                        >
-                          {item.originalFileName}
-                        </Typography>
+                        <StyledTooltip title={`${item.originalFileName}`}>
+                          <Typography
+                            sx={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              webkitBoxOrient: 'vertical',
+                              webkitLineClamp: 1,
+                              whiteSpace: 'nowrap',
+                              fontSize: 14,
+                              color: '#9095A3',
+                              wordBreak: 'break-word',
+                              maxWidth: {
+                                xs: '100%',
+                                lg: 340,
+                                xl: '100%',
+                              },
+                              mr: {
+                                xs: 0,
+                                md: 3,
+                                lg: 0,
+                                xl: 3,
+                              },
+                            }}
+                          >
+                            {item.originalFileName}
+                          </Typography>
+                        </StyledTooltip>
                       </Stack>
 
-                      <Typography
-                        flexShrink={0}
-                        variant={'body3'}
-                        width={'fit-content(20em)'}
-                      >
-                        {POSFormatDate(
-                          new Date(item.uploadTime as string),
-                          'MM-dd-yyyy HH:mm:ss',
+                      <Transitions style={{ marginRight: 8 }}>
+                        {activeIndex === index && (
+                          <Stack flexDirection={'row'} gap={1}>
+                            <RemoveRedEyeOutlined
+                              onClick={() => window.open(item.url)}
+                              sx={{
+                                color: '#9095A3',
+                                fontSize: 20,
+                                cursor: 'pointer',
+                                '&:hover': {
+                                  color: 'primary.main',
+                                },
+                              }}
+                            />
+
+                            <GetAppOutlined
+                              onClick={() => onDownload(item)}
+                              sx={{
+                                fontSize: 20,
+                                color: '#9095A3',
+                                cursor: 'pointer',
+                                '&:hover': {
+                                  color: 'primary.main',
+                                },
+                              }}
+                            />
+
+                            <CloseOutlined
+                              onClick={() => {
+                                setDeleteIndex(index);
+                                open();
+                              }}
+                              sx={{
+                                fontSize: 20,
+                                color: '#9095A3',
+                                cursor: 'pointer',
+                                '&:hover': {
+                                  color: 'primary.main',
+                                },
+                              }}
+                            />
+                          </Stack>
                         )}
-                      </Typography>
-                    </Stack>
+                      </Transitions>
 
-                    <Stack flexDirection={'row'} gap={1.5}>
-                      <RemoveRedEyeOutlined
-                        onClick={() => window.open(item.url)}
-                        sx={{
-                          cursor: 'pointer',
-                          '&:hover': {
-                            color: 'primary.main',
-                          },
-                        }}
-                      />
+                      <Stack
+                        alignItems={'center'}
+                        flexDirection={'row'}
+                        justifyContent={'space-between'}
+                        width={{ md: 'fit-content', xs: '100%' }}
+                      >
+                        <Typography color={'#9095A3'} variant={'body3'}>
+                          {POSFormatDate(
+                            new Date(item.uploadTime as string),
+                            'MM-dd-yyyy',
+                          )}
+                        </Typography>
 
-                      <GetAppOutlined
-                        onClick={() => onDownload(item)}
-                        sx={{
-                          cursor: 'pointer',
-                          '&:hover': {
-                            color: 'primary.main',
-                          },
-                        }}
-                      />
+                        {['xs', 'sm'].includes(breakpoints) && (
+                          <Stack flexDirection={'row'} gap={1} pl={3}>
+                            <RemoveRedEyeOutlined
+                              onClick={() => window.open(item.url)}
+                              sx={{
+                                color: '#9095A3',
+                                fontSize: 20,
+                                cursor: 'pointer',
+                                '&:hover': {
+                                  color: 'primary.main',
+                                },
+                              }}
+                            />
 
-                      <CloseOutlined
-                        onClick={() => {
-                          setDeleteIndex(index);
-                          open();
-                        }}
-                        sx={{
-                          cursor: 'pointer',
-                          '&:hover': {
-                            color: 'primary.main',
-                          },
-                        }}
-                      />
+                            <GetAppOutlined
+                              onClick={() => onDownload(item)}
+                              sx={{
+                                fontSize: 20,
+                                color: '#9095A3',
+                                cursor: 'pointer',
+                                '&:hover': {
+                                  color: 'primary.main',
+                                },
+                              }}
+                            />
+
+                            <CloseOutlined
+                              onClick={() => {
+                                setDeleteIndex(index);
+                                open();
+                              }}
+                              sx={{
+                                fontSize: 20,
+                                color: '#9095A3',
+                                cursor: 'pointer',
+                                '&:hover': {
+                                  color: 'primary.main',
+                                },
+                              }}
+                            />
+                          </Stack>
+                        )}
+                      </Stack>
                     </Stack>
                   </Stack>
                 ))}
@@ -309,6 +509,7 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
               color={'info'}
               onClick={close}
               size={'small'}
+              sx={{ width: 88 }}
               variant={'outlined'}
             >
               Cancel
@@ -316,8 +517,11 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
             <StyledButton
               autoFocus
               color={'error'}
+              disabled={deleteLoading}
+              loading={deleteLoading}
               onClick={onDialogConfirmDelete}
               size={'small'}
+              sx={{ width: 88 }}
             >
               Confirm
             </StyledButton>
@@ -338,10 +542,11 @@ export const StyledUploadButtonBox = (props: StyledUploadButtonBoxProps) => {
         onClose={(event, reason) => {
           if (reason !== 'backdropClick') {
             close();
+            setDeleteIndex(-1);
+            setActiveIndex(-1);
           }
         }}
         open={visible}
-        transitionDuration={300}
       />
     </Box>
   );

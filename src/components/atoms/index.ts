@@ -24,6 +24,8 @@ export * from './StyledTooltip';
 export * from './StyledDialog';
 export * from './StyledDrawer';
 
+export * from './StyledTab';
+
 export * from './StyledTextField';
 export * from './StyledTextFieldOtp';
 export * from './StyledTextFieldNumber';
