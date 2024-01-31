@@ -80,7 +80,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
             };
             temp.label = cur.categoryName;
             temp.content = (
-              <Stack gap={3} mb={3} mt={6}>
+              <Stack gap={3} my={3}>
                 {cur.categoryDocs.map((item, index) => (
                   <StyledUploadButtonBox
                     key={`${item.fileKey}_${index}`}
@@ -175,7 +175,7 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
             }
             width={'100%'}
           >
-            <Stack maxWidth={'100%'} width={'100%'}>
+            <Stack className={'xxxxx'} maxWidth={'100%'} width={'100%'}>
               <StyledTab
                 sx={{ m: '0 auto', maxWidth: '100%' }}
                 tabsData={tabData}

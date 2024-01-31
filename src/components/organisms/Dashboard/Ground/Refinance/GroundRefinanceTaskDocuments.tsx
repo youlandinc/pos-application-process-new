@@ -80,7 +80,7 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
             };
             temp.label = cur.categoryName;
             temp.content = (
-              <Stack gap={3} mb={3} mt={6}>
+              <Stack gap={3} my={3}>
                 {cur.categoryDocs.map((item, index) => (
                   <StyledUploadButtonBox
                     key={`${item.fileKey}_${index}`}
