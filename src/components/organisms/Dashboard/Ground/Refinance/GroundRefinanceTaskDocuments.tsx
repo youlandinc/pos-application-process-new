@@ -170,7 +170,7 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
             px={{ lg: 3, xs: 0 }}
             tip={
               <Stack alignItems={'center'}>
-                <StyledProgressLine current={current} total={total} />
+                {/*<StyledProgressLine current={current} total={total} />*/}
               </Stack>
             }
             width={'100%'}

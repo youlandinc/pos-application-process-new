@@ -52,7 +52,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     fileKey,
     templateName,
     templateUrl,
-    accept = 'image/*,.pdf',
+    accept = 'image/*,.pdf,.doc,.docx',
     fileSize = 100,
     uploadText = 'Upload',
     children,
@@ -212,20 +212,23 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
       >
         <Stack
           alignItems={{ md: 'unset', xs: 'center' }}
+          px={1.5}
           width={{ md: 'calc(100% - 76px)', xs: '100%' }}
         >
           <Typography
             sx={{
               flexWrap: 'wrap',
-              fontSize: 16,
+              fontSize: { xs: 16, md: 20 },
               fontWeight: 600,
-              lineHeight: 1,
+              lineHeight: 1.5,
               textAlign: { xs: 'center', md: 'left' },
-              wordBreak: 'break-all',
+              wordBreak: 'break-word',
+              color: 'text.primary',
             }}
           >
             {fileName}
           </Typography>
+
           {templateName && (
             <Typography
               color={'primary.main'}
@@ -248,7 +251,12 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
           disabled={innerLoading}
           loading={innerLoading}
           size={'small'}
-          sx={{ minWidth: 76, width: 76, height: 36 }}
+          sx={{
+            minWidth: 76,
+            width: 76,
+            height: 36,
+            borderWidth: '2px !important',
+          }}
           variant={'outlined'}
         >
           <input

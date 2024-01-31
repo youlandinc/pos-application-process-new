@@ -50,6 +50,7 @@ export const StyledTab: FC<StyledTabProps> = (props) => {
             minHeight: 0,
             mr: 5,
             mb: 1.25,
+            fontWeight: 600,
           },
           mb: 3,
           minHeight: 0,
