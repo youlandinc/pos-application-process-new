@@ -12,7 +12,12 @@ import { useRouter } from 'next/router';
 import { useBreakpoints, useSwitch } from '@/hooks';
 import { _downloadBrokerFile } from '@/requests';
 
-import { StyledButton, StyledDialog, Transitions } from '@/components/atoms';
+import {
+  StyledButton,
+  StyledDialog,
+  StyledTooltip,
+  Transitions,
+} from '@/components/atoms';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { SUploadData } from '@/models/common/UploadFile';
@@ -202,16 +207,24 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
   ]);
 
   return (
-    <Box border={'1px solid #D2D6E1'} borderRadius={2} p={3} width={'100%'}>
+    <Box
+      border={'1px solid #D2D6E1'}
+      borderRadius={2}
+      maxWidth={'100%'}
+      p={3}
+      width={'100%'}
+    >
       <Stack
         alignItems={'center'}
         flexDirection={{ md: 'row', xs: 'column' }}
         gap={1.5}
         justifyContent={'space-between'}
+        maxWidth={'100%'}
         width={'100%'}
       >
         <Stack
           alignItems={{ md: 'unset', xs: 'center' }}
+          maxWidth={'100%'}
           px={1.5}
           width={{ md: 'calc(100% - 76px)', xs: '100%' }}
         >
@@ -273,7 +286,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         </StyledButton>
       </Stack>
       {fileList.length !== 0 && (
-        <Box mt={1.5}>
+        <Box maxWidth={'100%'} mt={1.5} width={'100%'}>
           <Transitions>
             {children
               ? children
@@ -336,22 +349,33 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
                           }
                         />
 
-                        <Typography
-                          sx={{
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            webkitBoxOrient: 'vertical',
-                            webkitLineClamp: 1,
-                            whiteSpace: 'nowrap',
-                            fontSize: 14,
-                            color: '#9095A3',
-                            wordBreak: 'break-all',
-                            flexShrink: 0,
-                            maxWidth: '300px',
-                          }}
-                        >
-                          {item.originalFileName}
-                        </Typography>
+                        <StyledTooltip title={`${item.originalFileName}`}>
+                          <Typography
+                            sx={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              webkitBoxOrient: 'vertical',
+                              webkitLineClamp: 1,
+                              whiteSpace: 'nowrap',
+                              fontSize: 14,
+                              color: '#9095A3',
+                              wordBreak: 'break-word',
+                              maxWidth: {
+                                xs: '100%',
+                                lg: 340,
+                                xl: '100%',
+                              },
+                              mr: {
+                                xs: 0,
+                                md: 3,
+                                lg: 0,
+                                xl: 3,
+                              },
+                            }}
+                          >
+                            {item.originalFileName}
+                          </Typography>
+                        </StyledTooltip>
                       </Stack>
 
                       <Transitions style={{ marginRight: 8 }}>
@@ -413,7 +437,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
                         </Typography>
 
                         {['xs', 'sm'].includes(breakpoints) && (
-                          <Stack flexDirection={'row'} gap={1}>
+                          <Stack flexDirection={'row'} gap={1} pl={3}>
                             <RemoveRedEyeOutlined
                               onClick={() => window.open(item.url)}
                               sx={{

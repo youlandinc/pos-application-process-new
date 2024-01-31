@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
 import { StyledHeaderLogoProps } from './index';
 import { useSessionStorageState } from '@/hooks';
@@ -27,16 +27,18 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
       );
     }
     return (
-      <Box
+      <Stack
         sx={{
           fontSize: 24,
           fontWeight: 600,
           lineHeight: 1.5,
           color: 'primary.main',
+          height: { md: 56, xs: 40 },
+          justifyContent: 'flex-end',
         }}
       >
         {saasState?.organizationName}
-      </Box>
+      </Stack>
     );
   }, [
     isFirstLoading,
