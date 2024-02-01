@@ -170,6 +170,8 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
             px={{ lg: 3, xs: 0 }}
             tip={
               <Stack alignItems={'center'}>
+                Please upload your documents to our secured and encrypted
+                database.
                 {/*<StyledProgressLine current={current} total={total} />*/}
               </Stack>
             }
