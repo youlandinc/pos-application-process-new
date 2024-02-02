@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 
 import { StyledHeaderLogoProps } from './index';
 import { useSessionStorageState } from '@/hooks';

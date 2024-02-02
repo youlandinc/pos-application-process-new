@@ -170,12 +170,14 @@ export const FixPurchaseTaskDocuments: FC = observer(() => {
             px={{ lg: 3, xs: 0 }}
             tip={
               <Stack alignItems={'center'}>
+                Please upload your documents to our secured and encrypted
+                database.
                 {/*<StyledProgressLine current={current} total={total} />*/}
               </Stack>
             }
             width={'100%'}
           >
-            <Stack className={'xxxxx'} maxWidth={'100%'} width={'100%'}>
+            <Stack maxWidth={'100%'} width={'100%'}>
               <StyledTab
                 sx={{ m: '0 auto', maxWidth: '100%' }}
                 tabsData={tabData}

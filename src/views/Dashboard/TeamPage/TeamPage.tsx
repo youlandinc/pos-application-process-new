@@ -50,8 +50,8 @@ export const TeamPage: FC = () => {
         setWorkTime(
           res?.data?.extInfo?.posSettings?.workingHours || '9AM - 6PM PT',
         );
-        setEmail(res?.data?.extInfo?.posSettings?.email || '');
-        setPhone(res?.data?.extInfo?.posSettings?.phone || '');
+        setEmail(res?.data?.email || '');
+        setPhone(res?.data?.phone || '');
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;

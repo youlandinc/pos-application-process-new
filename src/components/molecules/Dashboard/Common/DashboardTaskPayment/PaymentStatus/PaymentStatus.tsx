@@ -47,8 +47,7 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                       }}
                     >
                       {' '}
-                      {saasState?.extInfo?.posSettings?.email ||
-                        'borrow@youland.com'}{' '}
+                      {saasState?.email || 'borrow@youland.com'}{' '}
                     </Typography>
                     or call toll free at{' '}
                     <Typography
@@ -59,9 +58,8 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                         fontWeight: 600,
                       }}
                     >
-                      {POSFormatUSPhoneToText(
-                        saasState?.extInfo?.posSettings?.phone,
-                      ) || '1-833-968-5263'}{' '}
+                      {POSFormatUSPhoneToText(saasState?.phone) ||
+                        '1-833-968-5263'}{' '}
                     </Typography>
                   </Typography>
                 </>
@@ -148,9 +146,8 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                     variant={'body1'}
                   >
                     {' '}
-                    {POSFormatUSPhoneToText(
-                      saasState?.extInfo?.posSettings?.phone,
-                    ) || '1-833-968-5263'}{' '}
+                    {POSFormatUSPhoneToText(saasState?.phone) ||
+                      '1-833-968-5263'}{' '}
                   </Typography>{' '}
                   or email us at
                   <Typography
@@ -163,9 +160,8 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
                     variant={'body1'}
                   >
                     {' '}
-                    {POSFormatUSPhoneToText(
-                      saasState?.extInfo?.posSettings?.phone,
-                    ) || '1-833-968-5263'}{' '}
+                    {POSFormatUSPhoneToText(saasState?.phone) ||
+                      '1-833-968-5263'}{' '}
                   </Typography>{' '}
                   . We can help you with the refund.
                 </Typography>
@@ -186,12 +182,7 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
           </>
         );
     }
-  }, [
-    paymentStatus,
-    router,
-    saasState?.extInfo?.posSettings?.email,
-    saasState?.extInfo?.posSettings?.phone,
-  ]);
+  }, [paymentStatus, router, saasState?.email, saasState?.phone]);
 
   return <>{renderResult}</>;
 };

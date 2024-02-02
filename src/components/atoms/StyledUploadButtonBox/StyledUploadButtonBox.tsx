@@ -26,7 +26,7 @@ import { _deleteTaskFile, _uploadTaskFile } from '@/requests/dashboard';
 import { POSFormatDate } from '@/utils';
 
 import ICON_IMAGE from './icon_image.svg';
-import ICON_PDF from './icon_pdf.svg';
+import ICON_FILE from './icon_file.svg';
 
 interface StyledUploadButtonBoxProps {
   files: SUploadData[];
@@ -343,10 +343,13 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
                       >
                         <Icon
                           component={
-                            item.originalFileName!.split('.')[1] === 'pdf'
-                              ? ICON_PDF
+                            item.originalFileName!.split('.')[1] === 'pdf' ||
+                            item.originalFileName!.split('.')[1] === 'doc' ||
+                            item.originalFileName!.split('.')[1] === 'docx'
+                              ? ICON_FILE
                               : ICON_IMAGE
                           }
+                          sx={{ width: 20, height: 20 }}
                         />
 
                         <StyledTooltip title={`${item.originalFileName}`}>
