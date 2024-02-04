@@ -116,6 +116,7 @@ export const Entrance: FC = observer(() => {
                 value={url}
               />
               <StyledButton
+                disabled={!url}
                 onClick={async () => {
                   store.resetApplicationForm();
                   await router.push(url, url, { shallow: true });
