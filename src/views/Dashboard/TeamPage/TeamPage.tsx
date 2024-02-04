@@ -27,6 +27,7 @@ export interface TeamMemberData {
   avatar: string;
   phone: string;
   email: string;
+  position: string;
 }
 
 export const TeamPage: FC = () => {

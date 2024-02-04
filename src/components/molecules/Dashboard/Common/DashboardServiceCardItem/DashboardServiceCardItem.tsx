@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { MailOutlineOutlined, PhoneEnabledOutlined } from '@mui/icons-material';
 
 import { POSFormatUSPhoneToText } from '@/utils';
@@ -10,17 +10,43 @@ interface DashboardServiceCardItemProps {
 }
 
 export const DashboardServiceCardItem: FC<DashboardServiceCardItemProps> = ({
-  data: { name, avatar, email, phone, title },
+  data: { name, avatar, email, phone, title, position },
 }) => {
   return (
-    <Box
+    <Stack
+      alignItems={{ xs: 'flex-start', md: 'center' }}
       border={'1px solid'}
       borderColor={'background.border_default'}
       borderRadius={2}
+      flexDirection={{ xs: 'column', md: 'row' }}
+      gap={{ xs: 3, md: 6 }}
       p={3}
-      width={{ lg: 'calc(50% - 12px)', xs: '100%' }}
+      width={'100%'}
     >
-      <Stack flex={1.5} gap={1.5}>
+      <Stack
+        flexShrink={0}
+        height={{ xs: 80, md: 160 }}
+        width={{ xs: 80, md: 160 }}
+      >
+        <picture
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          <img
+            alt={'avatar'}
+            src={avatar || '/images/placeholder_avatar.png'}
+            style={{
+              width: '100%',
+              height: '100%',
+              borderRadius: '50%',
+            }}
+          />
+        </picture>
+      </Stack>
+
+      <Stack flex={1}>
         <Typography
           sx={{ wordBreak: 'break-word' }}
           variant={'h5'}
@@ -37,24 +63,21 @@ export const DashboardServiceCardItem: FC<DashboardServiceCardItemProps> = ({
         </Typography>
         <Typography
           color={'text.secondary'}
-          mb={3}
           mt={1.5}
           sx={{ wordBreak: 'break-word' }}
           variant={'body1'}
         >
-          {avatar}
+          {position}
         </Typography>
-      </Stack>
 
-      <Stack gap={1.5}>
         <Typography
           alignItems={'center'}
           display={'flex'}
           flexDirection={'row'}
           justifyContent={'flex-start'}
+          mt={1.5}
           sx={{ wordBreak: 'break-word' }}
           variant={'subtitle1'}
-          width={'100%'}
         >
           <PhoneEnabledOutlined
             style={{
@@ -71,9 +94,9 @@ export const DashboardServiceCardItem: FC<DashboardServiceCardItemProps> = ({
           display={'flex'}
           flexDirection={'row'}
           justifyContent={'flex-start'}
+          mt={1.5}
           sx={{ wordBreak: 'break-word' }}
           variant={'subtitle1'}
-          width={'100%'}
         >
           <MailOutlineOutlined
             style={{
@@ -86,6 +109,6 @@ export const DashboardServiceCardItem: FC<DashboardServiceCardItemProps> = ({
           {email}
         </Typography>
       </Stack>
-    </Box>
+    </Stack>
   );
 };
