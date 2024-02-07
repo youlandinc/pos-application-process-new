@@ -83,7 +83,7 @@ export const GroundCelebrate: FC<{ nextStep: () => void }> = observer(
 
           <Typography color={'info.main'} variant={'body1'}>
             The next step is to complete the loan application. Before final
-            approval of your loan,{' '}
+            approval,{' '}
             {
               //sass
               ' ' + saasState?.organizationName || ' YouLand'
