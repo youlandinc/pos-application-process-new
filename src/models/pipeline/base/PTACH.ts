@@ -28,7 +28,7 @@ export const PTACH = types
       accountName: types.maybeNull(types.string),
       accountNumber: types.maybeNull(types.string),
       accountType: types.maybeNull(types.string),
-      documentFile: types.maybe(UploadData),
+      documentFile: types.maybeNull(UploadData),
     }),
   })
   .views((self) => ({
@@ -68,7 +68,14 @@ export const PTACH = types
           address,
           documentFile,
         } = taskForm;
-        self.taskForm.documentFile = documentFile;
+        self.taskForm.documentFile = documentFile
+          ? documentFile
+          : {
+              originalFileName: '',
+              fileName: '',
+              url: '',
+              uploadTime: '',
+            };
         self.taskForm.accountType = accountType;
         self.taskForm.accountNumber = accountNumber;
         self.taskForm.routingNumber = routingNumber;
