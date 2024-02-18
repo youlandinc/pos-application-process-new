@@ -27,7 +27,7 @@ export const PTAgreement = types
       title: types.maybeNull(types.string),
       fullName: types.maybeNull(types.string),
       company: types.maybeNull(types.string),
-      documentFile: types.maybe(UploadData),
+      documentFile: types.maybeNull(UploadData),
       phoneNumber: types.maybeNull(types.string),
     }),
   })
@@ -68,7 +68,14 @@ export const PTAgreement = types
           documentFile,
           phoneNumber,
         } = taskForm;
-        self.taskForm.documentFile = documentFile;
+        self.taskForm.documentFile = documentFile
+          ? documentFile
+          : {
+              originalFileName: '',
+              fileName: '',
+              url: '',
+              uploadTime: '',
+            };
         self.taskForm.email = email;
         self.taskForm.title = title;
         self.taskForm.fullName = fullName;
