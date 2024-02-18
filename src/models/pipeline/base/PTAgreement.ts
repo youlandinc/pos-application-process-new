@@ -28,7 +28,7 @@ export const PTAgreement = types
       fullName: types.maybeNull(types.string),
       company: types.maybeNull(types.string),
       documentFile: types.maybe(UploadData),
-      phoneNumber: types.maybe(types.string),
+      phoneNumber: types.maybeNull(types.string),
     }),
   })
   .views((self) => ({
