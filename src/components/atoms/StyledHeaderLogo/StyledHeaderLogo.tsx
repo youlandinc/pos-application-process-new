@@ -17,6 +17,22 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
 
   const Logo = useMemo(() => {
     if (isFirstLoading) {
+      if (!saasState?.logoUrl) {
+        return (
+          <Stack
+            sx={{
+              fontSize: 24,
+              fontWeight: 600,
+              lineHeight: 1.5,
+              color: 'primary.main',
+              height: { md: 56, xs: 40 },
+              justifyContent: 'flex-end',
+            }}
+          >
+            {saasState?.organizationName}
+          </Stack>
+        );
+      }
       return;
     }
     if (saasState?.logoUrl) {
