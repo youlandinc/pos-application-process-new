@@ -33,7 +33,7 @@ export const PTQuestionnaire = types
       ),
     ),
     taskForm: types.model({
-      documentFile: types.maybe(UploadData),
+      documentFile: types.maybeNull(UploadData),
       licenses: types.array(PQOwnerData),
     }),
     errors: types.array(
@@ -90,7 +90,14 @@ export const PTQuestionnaire = types
           return;
         }
         const { documentFile } = taskForm;
-        self.taskForm.documentFile = documentFile;
+        self.taskForm.documentFile = documentFile
+          ? documentFile
+          : {
+              originalFileName: '',
+              fileName: '',
+              url: '',
+              uploadTime: '',
+            };
         if (taskForm?.licenses) {
           taskForm?.licenses.forEach((item) => {
             item.birthday = new Date(item.birthday);
