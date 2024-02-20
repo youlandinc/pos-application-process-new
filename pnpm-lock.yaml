@@ -86,6 +86,9 @@ dependencies:
   react-animated-numbers:
     specifier: ^0.16.0
     version: 0.16.0(react-dom@18.2.0)(react@18.2.0)
+  react-cropper:
+    specifier: ^2.3.3
+    version: 2.3.3(react@18.2.0)
   react-datepicker:
     specifier: ^4.11.0
     version: 4.11.0(react-dom@18.2.0)(react@18.2.0)
@@ -3942,6 +3945,13 @@ packages:
       path-type: 4.0.0
     dev: true
 
+  /cropperjs@1.6.1:
+    resolution:
+      {
+        integrity: sha512-F4wsi+XkDHCOMrHMYjrTEE4QBOrsHHN5/2VsVAaRq8P7E5z7xQpT75S+f/9WikmBEailas3+yo+6zPIomW+NOA==,
+      }
+    dev: false
+
   /cross-spawn@7.0.3:
     resolution:
       {
@@ -6787,6 +6797,18 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-intersection-observer: 8.34.0(react@18.2.0)
+    dev: false
+
+  /react-cropper@2.3.3(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-zghiEYkUb41kqtu+2jpX2Ntigf+Jj1dF9ew4lAobPzI2adaPE31z0p+5TcWngK6TvmWQUwK3lj4G+NDh1PDQ1w==,
+      }
+    peerDependencies:
+      react: '>=17.0.2'
+    dependencies:
+      cropperjs: 1.6.1
+      react: 18.2.0
     dev: false
 
   /react-datepicker@4.11.0(react-dom@18.2.0)(react@18.2.0):

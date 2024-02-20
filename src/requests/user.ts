@@ -1,4 +1,4 @@
-import { get, post } from './axios';
+import { get, post, put } from './axios';
 import { User } from '@/types/user';
 
 //export const _fetchUserSetting = () => {
@@ -83,5 +83,15 @@ export const _userResetPassword = (params: User.UserResetPassParams) => {
 export const _fetchUserInfoByToken = (params: { token: string }) => {
   return get('/usercenter/api/user/fetchUserInfo', {
     headers: { Authorization: `Bearer ${params.token}` },
+  });
+};
+
+export const _updateAvatar = (param: { avatar: string }) => {
+  return post('/usercenter/api/user/modifyUserInfo', param);
+};
+
+export const _uploadAvatar = (files: FormData) => {
+  return put('/usercenter/api/common/file/upload', files, {
+    headers: { 'content-type': 'multipart/form-data' },
   });
 };

@@ -262,7 +262,7 @@ export const PipelineAch: FC = observer(() => {
             )}
 
             <Transitions>
-              {computedAch.ach.taskForm.documentFile && (
+              {computedAch.ach.taskForm?.documentFile?.url && (
                 <Typography
                   component={'div'}
                   mt={3}
