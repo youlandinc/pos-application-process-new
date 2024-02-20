@@ -312,7 +312,7 @@ export const PipelineAgreement: FC = observer(() => {
               </StyledButton>
             )}
             <Transitions>
-              {computedAgreement.agreement.taskForm.documentFile && (
+              {computedAgreement.agreement.taskForm?.documentFile?.url && (
                 <Typography
                   component={'div'}
                   mt={3}

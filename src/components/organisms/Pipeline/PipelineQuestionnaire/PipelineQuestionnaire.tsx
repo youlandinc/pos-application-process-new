@@ -392,7 +392,8 @@ export const PipelineQuestionnaire: FC = observer(() => {
               Generate file
             </StyledButton>
             <Transitions>
-              {computedQuestionnaire.questionnaire.taskForm.documentFile && (
+              {computedQuestionnaire.questionnaire.taskForm?.documentFile
+                ?.url && (
                 <Typography
                   component={'div'}
                   mt={3}

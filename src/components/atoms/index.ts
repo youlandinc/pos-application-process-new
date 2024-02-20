@@ -56,3 +56,5 @@ export * from './StyledUploadBox';
 export * from './StyledUploadButtonBox';
 
 export * from './StyledNotification';
+
+export * from './StyledAvatarUpload';

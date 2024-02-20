@@ -1,6 +1,7 @@
 import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { _fetchPipelineStatus } from '@/requests';
 import { PipelineAccountStatus } from '@/types';
+import { userpool } from '@/constants';
 //import { AUTO_HIDE_DURATION } from '@/constants';
 //import { enqueueSnackbar } from 'notistack';
 
@@ -24,12 +25,19 @@ export const UserSetting = types
       self.loading = true;
       try {
         const res = yield _fetchPipelineStatus();
-        const { status, additionDetails, applicable } = res.data;
+        const { status, additionDetails, applicable, userProfile } = res.data;
         self.pipelineStatus = status;
         self.pipelineAdditionDetails = additionDetails ?? '';
         self.applicable = applicable;
         self.loading = false;
         self.pipelineStatusInitialized = true;
+        if (userProfile) {
+          const { userId, account, avatar, loginType, userType } = userProfile;
+          userpool.setLastAuthUserInfo(userId, 'avatar', avatar);
+          userpool.setLastAuthUserInfo(userId, 'login_type', loginType);
+          userpool.setLastAuthUserInfo(userId, 'user_type', userType);
+          userpool.setLastAuthUserInfo(userId, 'email', account);
+        }
       } catch (err) {
         self.loading = false;
         self.pipelineStatusInitialized = false;
