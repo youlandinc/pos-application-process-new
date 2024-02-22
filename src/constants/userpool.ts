@@ -3,7 +3,7 @@ import { User } from '@/types/user';
 import { LoginType, UserType } from '@/types/enum';
 
 type LOGIN_STORAGE = 'idToken' | 'accessToken' | 'refreshToken' | 'clockDrift';
-type LOGIN_PROFILE = 'email' | 'name' | 'user_type' | 'login_type';
+type LOGIN_PROFILE = 'email' | 'name' | 'user_type' | 'login_type' | 'avatar';
 
 export const userpool = {
   encode: (password: string): string => {
@@ -16,7 +16,7 @@ export const userpool = {
   },
   setLastAuthUserBase(info: User.UserSignInRequest): void {
     const {
-      userProfile: { userId, email, userType, loginType },
+      userProfile: { userId, email, userType, loginType, avatar },
       refreshToken,
       accessToken,
       expiredIn,
@@ -47,6 +47,7 @@ export const userpool = {
       `${this._getKeyPrefix()}.lastAuthUser_id`,
       userId as string,
     );
+    localStorage.setItem(`${prefix}.lastAuthUser_avatar`, avatar as string);
   },
   setLastAuthUserToken(
     key: LOGIN_STORAGE,
@@ -88,6 +89,7 @@ export const userpool = {
     localStorage.removeItem(`${prefix}.lastAuthUser_email`);
     localStorage.removeItem(`${prefix}.lastAuthUser_user_type`);
     localStorage.removeItem(`${prefix}.lastAuthUser_login_type`);
+    localStorage.removeItem(`${prefix}.lastAuthUser_avatar`);
   },
   getLastAuthUserId(): string {
     const _key = `${this._getKeyPrefix()}.lastAuthUser_id`;

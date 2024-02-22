@@ -24,6 +24,7 @@ import {
 } from '@/components/atoms';
 
 import { POSHeader } from '@/components/molecules/POSLayout/components/POSHeader';
+import { useCheckInfoIsComplete } from '@/hooks';
 
 export const Entrance: FC = observer(() => {
   const router = useRouter();
@@ -32,6 +33,8 @@ export const Entrance: FC = observer(() => {
   const { detectUserActiveService } = store;
 
   const [url, setUrl] = useState<string>('');
+
+  useCheckInfoIsComplete();
 
   useAsync(async () => {
     if (!router.query.token) {

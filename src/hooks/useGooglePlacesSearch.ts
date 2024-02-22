@@ -1,20 +1,22 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { useEffect, useMemo, useState } from 'react';
 import throttle from 'lodash/throttle';
-import { GooglePlaces } from '@/types/googlePlaces';
 
-import { PlaceType } from '@/components/atoms';
-
-const autocompleteService = { current: null };
-const placesService = { current: null };
+const autocompleteService: {
+  current: null | google.maps.places.AutocompleteService;
+} = {
+  current: null,
+};
+const placesService: { current: null | google.maps.places.PlacesService } = {
+  current: null,
+};
 
 export const useGooglePlacesSearch = (
-  inputValue,
-  autoCompleteValue,
-  fullAddress,
+  inputValue: string,
+  fullAddress?: boolean,
 ) => {
-  const [options, setOptions] = useState<PlaceType[]>([]);
+  const [options, setOptions] = useState<
+    google.maps.places.AutocompletePrediction[]
+  >([]);
   const [loading, setLoading] = useState(false);
   const [serviceLoaded, setServiceLoaded] = useState(false);
 
@@ -22,13 +24,13 @@ export const useGooglePlacesSearch = (
     if (
       !autocompleteService.current &&
       !placesService.current &&
-      (window as any).google
+      (window as Window).google
     ) {
       autocompleteService.current = new (
-        window as any
+        window as Window
       ).google.maps.places.AutocompleteService();
       placesService.current = new (
-        window as any
+        window as Window
       ).google.maps.places.PlacesService(document.createElement('div'));
     }
     setServiceLoaded(!(!autocompleteService.current || !placesService.current));
@@ -38,10 +40,13 @@ export const useGooglePlacesSearch = (
     () =>
       throttle(
         (
-          request: GooglePlaces.AutocompletionRequest,
-          callback: (results?: PlaceType[]) => void,
+          request: google.maps.places.AutocompletionRequest,
+          callback?: (
+            a: google.maps.places.AutocompletePrediction[] | null,
+            b: google.maps.places.PlacesServiceStatus,
+          ) => void,
         ) => {
-          return autocompleteService.current.getPlacePredictions(
+          return autocompleteService.current!.getPlacePredictions(
             request,
             callback,
           );
@@ -55,10 +60,13 @@ export const useGooglePlacesSearch = (
     () =>
       throttle(
         (
-          request: GooglePlaces.PlaceDetailsRequest,
-          callback: (result?: any) => void,
+          request: google.maps.places.PlaceDetailsRequest,
+          callback: (
+            a: google.maps.places.PlaceResult | null,
+            b: google.maps.places.PlacesServiceStatus,
+          ) => void,
         ) => {
-          return placesService.current.getDetails(request, callback);
+          return (placesService.current as any).getDetails(request, callback);
         },
         200,
       ),
@@ -85,10 +93,9 @@ export const useGooglePlacesSearch = (
           componentRestrictions: {
             country: 'us',
           },
-          fields: ['address_components', 'geometry'],
         },
-        (results?: PlaceType[]) => {
-          let newOptions: PlaceType[] = [];
+        (results) => {
+          let newOptions: google.maps.places.AutocompletePrediction[] = [];
 
           // This will push the selected item into options , but autoComplete filterSelectedOptions props will hide the selected options from the list box.
           //if (autoCompleteValue) {
@@ -104,13 +111,7 @@ export const useGooglePlacesSearch = (
         },
       );
     }
-  }, [
-    serviceLoaded,
-    inputValue,
-    getAutocompletionRequest,
-    //autoCompleteValue,
-    fullAddress,
-  ]);
+  }, [serviceLoaded, inputValue, getAutocompletionRequest, fullAddress]);
 
   return {
     serviceLoaded,

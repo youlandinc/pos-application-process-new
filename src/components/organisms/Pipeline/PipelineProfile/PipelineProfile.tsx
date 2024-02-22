@@ -395,15 +395,15 @@ export const PipelineProfile: FC = observer(() => {
     }
     switch (userType) {
       case UserType.BROKER:
-        return 'Broker tasks';
+        return 'Broker info';
       case UserType.LENDER:
-        return 'Lender tasks';
+        return 'Lender info';
       case UserType.LOAN_OFFICER:
-        return 'Loan officer tasks';
+        return 'Loan officer info';
       case UserType.REAL_ESTATE_AGENT:
-        return 'Real estate agent tasks';
+        return 'Real estate agent info';
       default:
-        return 'Broker tasks';
+        return 'Broker info';
     }
   }, [pipelineStatus, userType]);
 

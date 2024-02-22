@@ -166,7 +166,7 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
   const [selfValue, setSelfValue] = useState<PlaceType | null | string>(value);
 
   const { options, loading, getPlaceDetailsRequest, serviceLoaded } =
-    useGooglePlacesSearch(inputValue, value, fullAddress);
+    useGooglePlacesSearch(inputValue, fullAddress);
 
   return (
     <Autocomplete

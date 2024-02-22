@@ -24,9 +24,14 @@ import {
 
 import { MyAccountButtonProps, MyAccountStyles } from './index';
 
-import { StyledButton } from '@/components/atoms';
+import {
+  StyledAvatarUpload,
+  StyledAvatarUploadRef,
+  StyledButton,
+} from '@/components/atoms';
 
 const MENU_LIST_CUSTOMER = [
+  { label: 'Change avatar', url: 'change_avatar' },
   { label: 'Change email', url: '/auth/change_email' },
   {
     label: 'Change password',
@@ -36,7 +41,8 @@ const MENU_LIST_CUSTOMER = [
 ];
 
 const MENU_LIST_NOT_CUSTOMER = [
-  { label: 'My profile', url: '/pipeline/profile' },
+  { label: 'info', url: '/pipeline/profile' },
+  { label: 'Change avatar', url: 'change_avatar' },
   { label: 'Change email', url: '/auth/change_email' },
   {
     label: 'Change password',
@@ -54,6 +60,8 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
   const [popperVisible, setPopperVisible] = useState(false);
 
   const anchorRef = useRef<HTMLButtonElement>(null);
+
+  const avatarRef = useRef<StyledAvatarUploadRef>(null);
 
   const router = useRouter();
 
@@ -75,6 +83,10 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
   const handledMenuItemClick = useCallback(
     async (e: MouseEvent<HTMLElement>, url: string) => {
       e.preventDefault();
+      if (url === 'change_avatar') {
+        avatarRef.current?.open();
+        return;
+      }
       if (url === 'sign_out') {
         handledClose(e);
         store.logout();
@@ -89,15 +101,6 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
   const renderMenuList = useMemo(() => {
     switch (scene) {
       case 'application':
-        return (
-          <MenuItem
-            disableRipple
-            onClick={(e) => handledMenuItemClick(e, 'sign_out')}
-            sx={MyAccountStyles.menu_item}
-          >
-            Sign out
-          </MenuItem>
-        );
       case 'dashboard':
       case 'pipeline':
       case 'pipeline_without_all':
@@ -120,7 +123,12 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
             onClick={(e) => handledMenuItemClick(e, item.url)}
             sx={MyAccountStyles.menu_item}
           >
-            {item.label}
+            {item.label === 'info'
+              ? `${userType.replace(
+                  /^(.)(.*)$/,
+                  (_, first, rest) => first.toUpperCase() + rest.toLowerCase(),
+                )} ${item.label}`
+              : item.label}
           </MenuItem>
         ));
       default:
@@ -184,6 +192,8 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
             <Paper>
               <ClickAwayListener onClickAway={handledClose}>
                 <MenuList sx={{ mt: 2, width: 170, p: 0 }}>
+                  <StyledAvatarUpload ref={avatarRef} />
+
                   {renderMenuList}
                 </MenuList>
               </ClickAwayListener>
