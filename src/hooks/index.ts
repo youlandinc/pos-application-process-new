@@ -18,4 +18,6 @@ export * from './useBreakpoints';
 export * from './useAsyncEffect';
 
 export * from './useSwitch';
+
 export * from './useGooglePlacesSearch';
+export * from './useGoogleStreetViewAndMap';
