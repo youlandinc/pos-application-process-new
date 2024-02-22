@@ -142,3 +142,9 @@ interface ClientUserProfile {
   userType?: import('@/types/enum.ts').UserType | undefined;
   loginType?: import('@/types/enum').LoginType | undefined;
 }
+
+type google = import('@types/google.maps');
+
+interface Window {
+  google: typeof google;
+}
