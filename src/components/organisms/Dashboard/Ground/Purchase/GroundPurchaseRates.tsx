@@ -145,6 +145,8 @@ export const GroundPurchaseRates: FC = observer(() => {
           customRate,
           interestRate,
           loanTerm,
+          cor,
+          arv,
         } = info;
         setSearchForm({
           ...searchForm,
@@ -160,6 +162,8 @@ export const GroundPurchaseRates: FC = observer(() => {
           customRate,
           interestRate,
           loanTerm,
+          cor,
+          arv,
         });
       })
       .catch((err) => {
