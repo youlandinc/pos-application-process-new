@@ -55,13 +55,14 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
   }, [router.query.taskId]);
 
   const { loading } = useAsync(async () => {
-    if (!router.query.taskId) {
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { processId: router.query.processId },
-      });
-      return;
-    }
+    //if (!router.query.taskId) {
+    //  console.log(123123123);
+    //  await router.push({
+    //    pathname: '/dashboard/tasks',
+    //    query: { processId: router.query.processId },
+    //  });
+    //  return;
+    //}
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res: AxiosResponse<DocumentUploadResponse>) => {
         const {

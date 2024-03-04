@@ -1,10 +1,10 @@
 import { ISelectedProcessData } from '@/models/base';
-import { SceneType } from '@/types';
+import { DashboardTaskInfo, SceneType } from '@/types';
 import {
   AccountBalanceOutlined,
+  FolderOpenOutlined,
   GradingOutlined,
   PeopleAltOutlined,
-  TextSnippetOutlined,
   TimelineOutlined,
 } from '@mui/icons-material';
 import { Box } from '@mui/material';
@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { FC, ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { DashboardSideInfoBox } from './component';
+import { _fetchLoanTask } from '@/requests/dashboard';
 
 type POSMenuListProps = {
   info: ISelectedProcessData;
@@ -54,10 +55,10 @@ const list: MenuItems[] = [
     icon: <TimelineOutlined />,
   },
   {
-    label: 'Pre-approval letter',
-    path: 'pre_approval_letter',
-    key: 'pre_approval_letter',
-    icon: <TextSnippetOutlined />,
+    label: 'Documents',
+    path: 'documents',
+    key: 'documents',
+    icon: <FolderOpenOutlined />,
   },
   //{
   //  label: 'Loan Estimate',
@@ -82,11 +83,15 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
   ({ scene, info, loading }) => {
     // const store = useMst();
     const router = useRouter();
-    const [activeKey, setActiveKey] = useState(router.pathname.split('/')[2]);
+    const [activeKey, setActiveKey] = useState(() => {
+      const results = router.pathname.split('/');
+      const result = results[results.length - 1];
+      return result === 'documents' ? 'documents' : results[2];
+    });
 
     const selectMenu = useCallback(
-      (path: string, key: string): (() => void) => {
-        return () => {
+      (path: string, key: string) => {
+        return async () => {
           if (key === 'resources') {
             window.open('https://youland.com/company/newsroom/', '_blank');
           }
@@ -94,7 +99,28 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
             return;
           }
           setActiveKey(key);
-          router.push({
+          if (key === 'documents') {
+            const {
+              data: { tasks },
+            } = await _fetchLoanTask(router.query.processId as string);
+
+            const taskId: string = Object.keys(tasks).reduce((acc, cur) => {
+              if (cur.includes('_DOCUMENTS_DOCUMENTS')) {
+                acc = (tasks as Record<string, DashboardTaskInfo>)[cur].taskId;
+              }
+              return acc;
+            }, '');
+
+            await router.push({
+              pathname: '/dashboard/tasks/documents/',
+              query: {
+                processId: router.query.processId,
+                taskId,
+              },
+            });
+            return;
+          }
+          await router.push({
             pathname: `/dashboard/${path}`,
             query: { processId: router.query.processId },
           });

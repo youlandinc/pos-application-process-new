@@ -39,6 +39,8 @@ export const DashboardCard: FC<DashboardCardProps> = ({
   children,
   ...rest
 }) => {
+  //console.log(loading);
+
   const breakpoint = useBreakpoints();
   return (
     <Stack

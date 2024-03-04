@@ -1,8 +1,10 @@
 import { FC, useMemo } from 'react';
+import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { useSessionStorageState } from '@/hooks';
 import { SceneType } from '@/types';
 import {
   BridgePurchaseOverview,
@@ -12,15 +14,32 @@ import {
   GroundPurchaseOverview,
   GroundRefinanceOverview,
 } from '@/components/organisms';
+import { Stack } from '@mui/material';
+import { StyledLoading } from '@/components/atoms';
 
 export const OverviewPage: FC = observer(() => {
   const {
     selectedProcessData: { scene, loading },
   } = useMst();
 
+  const router = useRouter();
+
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   const renderOverPage = useMemo(() => {
-    if (loading) {
-      return null;
+    const { processId } = router.query;
+    if (!processId || loading || !scene || !saasState?.serviceTypeEnum) {
+      return (
+        <Stack
+          alignItems={'center'}
+          justifyContent={'center'}
+          margin={'auto 0'}
+          minHeight={'calc(667px - 46px)'}
+          width={'100%'}
+        >
+          <StyledLoading sx={{ color: 'text.grey' }} />
+        </Stack>
+      );
     }
     switch (scene) {
       case SceneType.bridge_purchase: {
@@ -45,7 +64,7 @@ export const OverviewPage: FC = observer(() => {
         return <BridgePurchaseOverview />;
       }
     }
-  }, [scene, loading]);
+  }, [loading, router.query, saasState?.serviceTypeEnum, scene]);
 
   return <>{renderOverPage}</>;
 });
