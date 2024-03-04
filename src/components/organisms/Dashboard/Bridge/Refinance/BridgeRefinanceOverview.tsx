@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useRef, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
@@ -14,7 +14,11 @@ import {
   ServiceTypeEnum,
   UserType,
 } from '@/types';
-import { _fetchOverviewLoanSummary } from '@/requests/dashboard';
+import {
+  _fetchOverviewLoanSummary,
+  _previewPreApprovalPDFFile,
+  _sendPreapprovalLetter,
+} from '@/requests/dashboard';
 import {
   POSFindLabel,
   POSFormatDollar,
@@ -22,14 +26,21 @@ import {
   POSFormatPercent,
   POSGetParamsFromUrl,
 } from '@/utils';
-import { useSessionStorageState } from '@/hooks';
+import { useRenderPdf, useSessionStorageState, useSwitch } from '@/hooks';
 
-import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
+import {
+  StyledButton,
+  StyledDialog,
+  StyledLoading,
+  StyledTextField,
+  Transitions,
+} from '@/components/atoms';
 import {
   CommonOverviewInfo,
   DashboardCard,
   DashboardHeader,
 } from '@/components/molecules';
+import { CloseOutlined, ForwardToInboxOutlined } from '@mui/icons-material';
 
 export const BridgeRefinanceOverview: FC = observer(() => {
   const { userType } = useMst();
@@ -43,11 +54,70 @@ export const BridgeRefinanceOverview: FC = observer(() => {
   const [loanDetail, setLoanDetail] = useState<CommonOverviewInfo>();
   const [thirdParty, setThirdParty] = useState<CommonOverviewInfo>();
 
+  const {
+    open: previewOpen,
+    close: previewClose,
+    visible: previewVisible,
+  } = useSwitch(false);
+  const {
+    open: sendOpen,
+    close: sendClose,
+    visible: sendVisible,
+  } = useSwitch(false);
+  const [viewLoading, setViewLoading] = useState<boolean>(false);
+  const [sendLoading, setSendLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>('');
+
+  const pdfFile = useRef(null);
+  const { renderFile } = useRenderPdf(pdfFile);
+
+  const onViewPDF = useCallback(async () => {
+    setViewLoading(true);
+    try {
+      const { data } = await _previewPreApprovalPDFFile(
+        router?.query?.processId as string,
+      );
+      previewOpen();
+      setTimeout(() => {
+        renderFile(data);
+      }, 100);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setViewLoading(false);
+    }
+  }, [router?.query?.processId, previewOpen, renderFile, enqueueSnackbar]);
+
+  const onEmailSubmit = useCallback(async () => {
+    setSendLoading(true);
+    try {
+      await _sendPreapprovalLetter(router.query.processId as string, email);
+      enqueueSnackbar('Email was successfully sent', {
+        variant: 'success',
+      });
+      sendClose();
+      setEmail('');
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setSendLoading(false);
+    }
+  }, [router.query.processId, email, enqueueSnackbar, sendClose]);
+
   const { loading } = useAsync(async () => {
     const { processId } = POSGetParamsFromUrl(location.href);
-    if (!processId || !saasState?.serviceTypeEnum) {
-      return;
-    }
     return await _fetchOverviewLoanSummary<BROverviewSummaryData>(processId)
       .then((res) => {
         const {
@@ -319,20 +389,21 @@ export const BridgeRefinanceOverview: FC = observer(() => {
                 subTitle={summary?.subTitle}
                 title={summary?.title}
               >
-                <StyledButton
-                  className={'cardButton'}
-                  color={'primary'}
-                  onClick={async () =>
-                    await router.push({
-                      pathname: '/dashboard/pre_approval_letter',
-                      query: router.query,
-                    })
-                  }
-                  sx={{ mt: 'auto' }}
-                  variant={'contained'}
-                >
-                  View letter
-                </StyledButton>
+                <Stack flexDirection={'row'} gap={1.5} width={'100%'}>
+                  <StyledButton
+                    color={'primary'}
+                    disabled={viewLoading}
+                    loading={viewLoading}
+                    onClick={onViewPDF}
+                    sx={{ mt: 'auto', flex: 1 }}
+                    variant={'contained'}
+                  >
+                    View letter
+                  </StyledButton>
+                  <StyledButton onClick={sendOpen} variant={'outlined'}>
+                    <ForwardToInboxOutlined />
+                  </StyledButton>
+                </Stack>
               </DashboardCard>
               <DashboardCard
                 dataList={product?.info}
@@ -427,6 +498,74 @@ export const BridgeRefinanceOverview: FC = observer(() => {
           </Box>
         </Box>
       )}
+
+      <StyledDialog
+        content={
+          <Stack py={3}>
+            <StyledTextField
+              label={'Email address'}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={'Email address'}
+              value={email}
+            />
+          </Stack>
+        }
+        disableEscapeKeyDown
+        footer={
+          <Stack flexDirection={'row'} gap={1.5}>
+            <StyledButton
+              onClick={() => {
+                sendClose();
+                setEmail('');
+              }}
+              size={'small'}
+              variant={'outlined'}
+            >
+              Cancel
+            </StyledButton>
+            <StyledButton
+              disabled={!email || sendLoading}
+              loading={sendLoading}
+              onClick={onEmailSubmit}
+              size={'small'}
+              sx={{ width: 128 }}
+            >
+              Send email
+            </StyledButton>
+          </Stack>
+        }
+        header={'Who should we send the pre-approval letter to?'}
+        open={sendVisible}
+      />
+
+      <StyledDialog
+        content={<Box ref={pdfFile} />}
+        disableEscapeKeyDown
+        header={
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+            pb={3}
+          >
+            <Typography variant={'h6'}>Pre-approval Letter</Typography>
+            <StyledButton isIconButton onClick={previewClose}>
+              <CloseOutlined />
+            </StyledButton>
+          </Stack>
+        }
+        open={previewVisible}
+        sx={{
+          '& .MuiPaper-root': {
+            maxWidth: { lg: '900px !important', xs: '100% !important' },
+            width: '100%',
+            '& .MuiDialogTitle-root, & .MuiDialogActions-root': {
+              bgcolor: '#F5F8FA',
+              p: 3,
+            },
+          },
+        }}
+      />
     </Transitions>
   );
 });

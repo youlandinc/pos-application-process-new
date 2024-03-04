@@ -9,9 +9,6 @@ export * from './DashboardHeader';
 export * from './DashboardMenuList';
 export * from './DashboardSideDrawer';
 
-export * from './PreApprovalEdit';
-export * from './PreApprovalInfo';
-
 export * from './DashboardServiceCardItem';
 
 export * from './RatesList';
