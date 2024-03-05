@@ -50,9 +50,9 @@ export const PaymentMethods = forwardRef<
             . We will help you confirm the rate upon receipt of payment.
           </Typography>
           <Typography color={'info.main'} mt={1.5} variant={'body1'}>
-            Federal law requires that all residential properties be equipped
-            with both a mounted carbon monoxide detector and a double-strapped
-            water heater.
+            YouLand requires that all residential properties be equipped with
+            both a mounted carbon monoxide detector and a double-strapped water
+            heater.
           </Typography>
         </>
       }
