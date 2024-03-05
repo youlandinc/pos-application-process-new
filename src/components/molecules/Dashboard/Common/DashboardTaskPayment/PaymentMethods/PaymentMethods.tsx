@@ -50,7 +50,7 @@ export const PaymentMethods = forwardRef<
             . We will help you confirm the rate upon receipt of payment.
           </Typography>
           <Typography color={'info.main'} mt={1.5} variant={'body1'}>
-            California law requires that all residential properties be equipped
+            Federal law requires that all residential properties be equipped
             with both a mounted carbon monoxide detector and a double-strapped
             water heater.
           </Typography>
