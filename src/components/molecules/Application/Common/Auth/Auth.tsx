@@ -51,7 +51,7 @@ export const Auth: FC<FormNodeBaseProps> = observer((props) => {
             ? `Welcome to ${' ' + saasState?.organizationName || 'YouLand'}!`
             : authType === 'sign_up'
               ? 'Sign up'
-              : 'Rest password'
+              : 'Reset password'
         }
         sx={{ maxWidth: 600 }}
       >

@@ -547,7 +547,7 @@ export const BridgeRefinanceRatesSearch: FC<
             </Typography>
             <StyledTooltip
               title={
-                'LTV [Payoff amount + Cash out (if any)] / As-is property value'
+                'LTV = Payoff amount + Cash out (if any) / As-is property value'
               }
             >
               <InfoOutlined

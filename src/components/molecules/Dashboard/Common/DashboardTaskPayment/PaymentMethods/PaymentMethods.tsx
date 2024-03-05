@@ -47,12 +47,12 @@ export const PaymentMethods = forwardRef<
             >
               {format(new Date(), 'MM/dd/yyyy')}
             </Box>
-            , We will help you confirm the rate upon receipt of payment.
+            . We will help you confirm the rate upon receipt of payment.
           </Typography>
           <Typography color={'info.main'} mt={1.5} variant={'body1'}>
-            California law requires that all residential properties be equipped
-            with both a mounted carbon monoxide detector and a double-strapped
-            water heater.
+            YouLand requires that all residential properties be equipped with
+            both a mounted carbon monoxide detector and a double-strapped water
+            heater.
           </Typography>
         </>
       }
