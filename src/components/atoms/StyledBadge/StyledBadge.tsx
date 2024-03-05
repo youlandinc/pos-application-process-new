@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 
 import { StyledBadgeProps } from './index';
 import { POSFlex, POSFont } from '@/styles';
-import { LoanStage } from '@/types';
+import { AppraisalStage, LoanStage } from '@/types';
 
 export const StyledBadge: FC<StyledBadgeProps> = ({ content, status }) => {
   const computedStyles = () => ({
@@ -28,6 +28,10 @@ export const StyledBadge: FC<StyledBadgeProps> = ({ content, status }) => {
           return 'rgba(63, 81, 181, 0.2)';
         case LoanStage.Refusal:
           return 'rgba(255, 109, 77, 0.1)';
+        case LoanStage.DocsOut:
+          return 'rgba(68, 10, 235, 0.15)';
+        case LoanStage.Funded:
+          return 'rgba(68, 235, 10, 0.20)';
       }
     },
     color: () => {
@@ -46,6 +50,10 @@ export const StyledBadge: FC<StyledBadgeProps> = ({ content, status }) => {
           return '#3F51B5';
         case LoanStage.Refusal:
           return '#FF6D4D';
+        case LoanStage.DocsOut:
+          return '#5A00A1';
+        case LoanStage.Funded:
+          return '#00A123';
       }
     },
   });

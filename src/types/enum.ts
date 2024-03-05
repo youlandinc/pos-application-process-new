@@ -150,8 +150,19 @@ export enum LoanStage {
   RateLocking = 'Rate locking',
   RateLocked = 'Rate locked',
   Approved = 'Approved',
+  DocsOut = 'Docs out',
+  Funded = 'Funded',
   FinalClosing = 'Final closing',
   Refusal = 'Rejected',
+}
+
+export enum AppraisalStage {
+  NotStarted = 'Not started',
+  PaidFor = 'Paid for',
+  Ordered = 'Ordered',
+  Scheduled = 'Scheduled',
+  Canceled = 'Canceled',
+  Completed = 'Completed',
 }
 
 export enum LoanSpecies {

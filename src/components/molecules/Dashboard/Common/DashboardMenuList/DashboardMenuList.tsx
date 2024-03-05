@@ -181,6 +181,7 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
     return (
       <>
         <Box
+          pt={{ md: 6, xs: 2 }}
           sx={{
             '& .item': {
               cursor: 'pointer',
