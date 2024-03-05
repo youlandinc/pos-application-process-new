@@ -416,7 +416,7 @@ export const GroundRefinanceOverview: FC = observer(() => {
                     sx={{ mt: 'auto', flex: 1 }}
                     variant={'contained'}
                   >
-                    View letter
+                    View pre-approval letter
                   </StyledButton>
                   <StyledButton onClick={sendOpen} variant={'outlined'}>
                     <ForwardToInboxOutlined />
