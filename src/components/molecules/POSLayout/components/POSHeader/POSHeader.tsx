@@ -369,7 +369,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               sx={{ color: 'primary.main', cursor: 'pointer', fontWeight: 600 }}
               variant={'body2'}
             >
-              Back to log in
+              Back to Log in
             </Typography>
           ),
         };

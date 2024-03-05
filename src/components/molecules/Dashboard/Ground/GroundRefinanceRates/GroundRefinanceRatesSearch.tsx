@@ -556,7 +556,7 @@ export const GroundRefinanceRatesSearch: FC<
             </Typography>
             <StyledTooltip
               title={
-                'LTV [Payoff amount + Cash out (if any)] / As-is property value'
+                'LTV = Payoff amount + Cash out (if any) / As-is property value'
               }
             >
               <InfoOutlined
@@ -614,7 +614,7 @@ export const GroundRefinanceRatesSearch: FC<
             </Typography>
             <StyledTooltip
               title={
-                'Loan to cost (LTC) – Total loan amount/(As is value + Rehab amount)'
+                'LTC = Total loan amount / (As-is property value + Estimated rehab loan amount)'
               }
             >
               <InfoOutlined

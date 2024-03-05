@@ -36,8 +36,8 @@ export const GroundNotice: FC = observer(() => {
           variant={'body1'}
         >
           By clicking Next, you are authorizing
-          {' ' + saasState?.organizationName || ' YouLand'} to do a soft pull on{' '}
-          {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun}{' '}
+          {' ' + saasState?.organizationName || ' YouLand'} to run a soft pull
+          on {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun}{' '}
           credit.
         </Typography>
       </StyledFormItem>

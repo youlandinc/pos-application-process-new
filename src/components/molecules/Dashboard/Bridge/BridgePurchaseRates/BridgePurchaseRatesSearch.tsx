@@ -533,9 +533,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               Loan to value
             </Typography>
             <StyledTooltip
-              title={
-                'LTV [Payoff amount + Cash out (if any)] / As-is property value'
-              }
+              title={'LTV = Purchase loan amount / Purchase price'}
             >
               <InfoOutlined
                 sx={{ width: 14, height: 14, mb: 0.125, color: 'info.main' }}

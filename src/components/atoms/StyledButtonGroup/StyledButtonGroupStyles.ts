@@ -7,6 +7,7 @@ export const StyledButtonGroupStyles = {
     color: 'text.primary',
     padding: '14px 20px',
     borderRadius: 2,
+    borderWidth: '2px',
     boxShadow: 'none',
     py: 2,
     px: 6,

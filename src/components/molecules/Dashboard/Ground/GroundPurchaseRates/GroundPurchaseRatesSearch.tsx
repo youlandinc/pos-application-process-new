@@ -542,9 +542,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
               Loan to value
             </Typography>
             <StyledTooltip
-              title={
-                'LTV [Payoff amount + Cash out (if any)] / As-is property value'
-              }
+              title={'LTV = Purchase loan amount / Purchase price'}
             >
               <InfoOutlined
                 sx={{ width: 14, height: 14, mb: 0.125, color: 'info.main' }}
@@ -601,7 +599,7 @@ export const GroundPurchaseRatesSearch: FC<GroundPurchaseRatesSearchProps> = ({
             </Typography>
             <StyledTooltip
               title={
-                'Loan to cost (LTC) – Total loan amount/(As is value + Rehab amount)'
+                'LTC = Total loan amount / (Purchase price + Rehab loan amount)'
               }
             >
               <InfoOutlined
