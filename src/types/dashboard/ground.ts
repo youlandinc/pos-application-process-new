@@ -4,6 +4,7 @@ import {
   GroundStartingData,
 } from '@/types/application';
 import {
+  AppraisalStage,
   BaseOverviewSummaryData,
   BasePreApprovalLetterData,
   DashboardTaskInfo,
@@ -95,4 +96,5 @@ export interface GroundDashboardLoanTask {
   tasks: GroundDashboardTaskMap<GPDashboardTaskKey & GRDashboardTaskKey>;
   totalNum: number;
   finishedNum: number;
+  appraisalStage: AppraisalStage;
 }

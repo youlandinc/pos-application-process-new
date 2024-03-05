@@ -29,6 +29,7 @@ import {
 import { useRenderPdf, useSessionStorageState, useSwitch } from '@/hooks';
 
 import {
+  StyledBadge,
   StyledButton,
   StyledDialog,
   StyledLoading,
@@ -43,7 +44,10 @@ import {
 import { CloseOutlined, ForwardToInboxOutlined } from '@mui/icons-material';
 
 export const BridgeRefinanceOverview: FC = observer(() => {
-  const { userType } = useMst();
+  const {
+    userType,
+    selectedProcessData: { loanStage },
+  } = useMst();
 
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -363,7 +367,13 @@ export const BridgeRefinanceOverview: FC = observer(() => {
         >
           <DashboardHeader
             subTitle={
-              'Everything about your loan found in one place. Get updates and see what needs to be done before you close.'
+              <>
+                Everything about your loan found in one place. Get updates and
+                see what needs to be done before you close.
+                <Stack alignItems={'center'} justifyContent={'center'} mt={1.5}>
+                  <StyledBadge content={loanStage} status={loanStage} />
+                </Stack>
+              </>
             }
             title={'Your loan overview'}
           />
@@ -425,7 +435,7 @@ export const BridgeRefinanceOverview: FC = observer(() => {
                   sx={{ mt: 'auto' }}
                   variant={'contained'}
                 >
-                  Explore rate
+                  View rate options
                 </StyledButton>
               </DashboardCard>
             </Stack>
