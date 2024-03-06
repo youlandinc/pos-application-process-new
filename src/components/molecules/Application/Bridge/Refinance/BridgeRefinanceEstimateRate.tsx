@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { addDays, format, isDate } from 'date-fns';
 
@@ -28,6 +28,7 @@ import {
   BridgeRefinanceRatesSearch,
   RatesList,
 } from '@/components/molecules';
+import { debounce } from 'lodash';
 
 const initialize: BRQueryData = {
   homeValue: undefined,
@@ -258,14 +259,45 @@ export const BridgeRefinanceEstimateRate: FC<{
     }
   };
 
+  useEffect(
+    () => {
+      if (
+        !searchForm?.closeDate ||
+        !searchForm?.homeValue ||
+        !searchForm?.balance
+      ) {
+        return;
+      }
+      if (searchForm.isCashOut && !searchForm?.cashOutAmount) {
+        return;
+      }
+      onCheckGetList();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      searchForm?.agentFee,
+      searchForm?.brokerPoints,
+      searchForm?.brokerProcessingFee,
+      searchForm?.officerPoints,
+      searchForm?.officerProcessingFee,
+      searchForm?.lenderPoints,
+      searchForm?.lenderProcessingFee,
+      // input query
+      searchForm?.isCashOut,
+      searchForm?.closeDate,
+      searchForm?.homeValue,
+      searchForm?.balance,
+      searchForm?.cashOutAmount,
+    ],
+  );
+
   return (
     <>
       <BridgeRefinanceRatesSearch
         id={'bridge_refinance_rate_search'}
         loading={loading}
-        onCheck={onCheckGetList}
         searchForm={searchForm}
-        setSearchForm={setSearchForm}
+        setSearchForm={debounce(setSearchForm, 500)}
         userType={userType!}
       />
       {!searchForm.customRate && (

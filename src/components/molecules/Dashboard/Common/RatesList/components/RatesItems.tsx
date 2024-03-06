@@ -186,6 +186,7 @@ export const RatesItems: FC<{
             e.currentTarget.innerHTML = 'Current rate';
           }
         }}
+        sx={{ height: 56 }}
         variant={!product.selected ? 'contained' : 'outlined'}
       >
         {product.selected ? 'Current rate' : 'View details'}

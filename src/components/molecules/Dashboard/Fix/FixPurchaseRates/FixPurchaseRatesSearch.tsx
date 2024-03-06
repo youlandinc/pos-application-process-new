@@ -8,20 +8,14 @@ import { LoanStage, UserType } from '@/types/enum';
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
 
 import {
-  StyledButton,
-  StyledCheckbox,
   StyledDatePicker,
   StyledFormItem,
   StyledTextFieldNumber,
   StyledTooltip,
-  Transitions,
 } from '@/components/atoms';
-import { useSessionStorageState } from '@/hooks';
-import { User } from '@/types/user';
 
 interface FixPurchaseRatesSearchProps {
   loading: boolean;
-  onCheck: () => void;
   searchForm: FPQueryData;
   setSearchForm: Dispatch<SetStateAction<FPQueryData>>;
   userType?: UserType;
@@ -31,7 +25,6 @@ interface FixPurchaseRatesSearchProps {
 }
 
 export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
-  onCheck,
   searchForm,
   setSearchForm,
   loading,
@@ -53,12 +46,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
     lenderPoints,
     lenderProcessingFee,
     closeDate,
-    customRate,
-    interestRate,
-    loanTerm,
   } = searchForm;
-
-  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [date, setDate] = useState<null | Date | string>(
     isDashboard ? closeDate || addDays(new Date(), 7) : addDays(new Date(), 7),
@@ -318,99 +306,6 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
     userType,
   ]);
 
-  const renderCustomRateByConfig = useMemo(() => {
-    const original = saasState?.posSettings?.customLoanTerms?.reduce(
-      (acc: string[], cur: User.POSBorrowerTypes) => {
-        if (cur.allowed) {
-          acc.push(cur.key);
-        }
-        return acc;
-      },
-      [],
-    );
-
-    if (!original?.length || !original.includes(userType)) {
-      return null;
-    }
-
-    return (
-      <Stack gap={3} maxWidth={900} width={'100%'}>
-        <StyledCheckbox
-          checked={customRate}
-          label={
-            <Typography color={'text.primary'} ml={2} variant={'body2'}>
-              Use custom loan terms
-            </Typography>
-          }
-          onChange={(e) =>
-            setSearchForm({
-              ...searchForm,
-              customRate: e.target.checked,
-            })
-          }
-        />
-        <Transitions
-          style={{
-            display: customRate ? 'block' : 'none',
-            width: '100%',
-          }}
-        >
-          {customRate && (
-            <Stack
-              flexDirection={{ lg: 'row', xs: 'column' }}
-              gap={3}
-              width={'100%'}
-            >
-              <Stack flex={1} gap={1}>
-                <StyledTextFieldNumber
-                  decimalScale={3}
-                  disabled={loading || loanStage === LoanStage.Approved}
-                  label={'Interest rate'}
-                  onValueChange={({ floatValue }) => {
-                    setSearchForm({
-                      ...searchForm,
-                      interestRate: floatValue,
-                    });
-                  }}
-                  percentage
-                  suffix={'%'}
-                  thousandSeparator={false}
-                  value={interestRate}
-                />
-              </Stack>
-              <Stack flex={1} gap={1}>
-                <StyledTextFieldNumber
-                  decimalScale={0}
-                  disabled={loading || loanStage === LoanStage.Approved}
-                  label={'Loan term (months)'}
-                  onValueChange={({ floatValue }) => {
-                    setSearchForm({
-                      ...searchForm,
-                      loanTerm: floatValue,
-                    });
-                  }}
-                  percentage={false}
-                  thousandSeparator={false}
-                  value={loanTerm}
-                />
-              </Stack>
-            </Stack>
-          )}
-        </Transitions>
-      </Stack>
-    );
-  }, [
-    customRate,
-    interestRate,
-    loading,
-    loanStage,
-    loanTerm,
-    saasState?.posSettings?.customLoanTerms,
-    searchForm,
-    setSearchForm,
-    userType,
-  ]);
-
   return (
     <StyledFormItem
       gap={4}
@@ -614,7 +509,6 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
       </StyledFormItem>
 
       {renderByUserType}
-      {renderCustomRateByConfig}
 
       <Stack
         alignItems={'stretch'}
@@ -642,16 +536,6 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
           {POSFormatDollar(loanAmount)}
         </Typography>
       </Stack>
-
-      <StyledButton
-        disabled={
-          !!closeDateError || loading || loanStage === LoanStage.Approved
-        }
-        onClick={onCheck}
-        sx={{ width: 200, mt: 3 }}
-      >
-        {customRate ? 'Next' : 'Check'}
-      </StyledButton>
     </StyledFormItem>
   );
 };

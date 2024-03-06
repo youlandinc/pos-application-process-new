@@ -30,29 +30,34 @@ export const RatesList: FC<RatesProductListProps> = ({
 }) => {
   const breakpoint = useBreakpoints();
   return (
-    <Stack id={id} maxWidth={900} width={'100%'}>
+    <Stack id={id} maxWidth={900} mt={2} width={'100%'}>
       {isFirstSearch ? (
         <></>
       ) : loading ? (
         <StyledLoading sx={{ color: 'text.grey', m: '48px auto 48px auto' }} />
       ) : reasonList?.length < 1 ? (
         productList.length > 0 ? (
-          <Stack
-            flexDirection={{ xs: 'column', xl: 'row' }}
-            flexWrap={'wrap'}
-            gap={3}
-            mt={6}
-            width={'100%'}
-          >
-            {productList.map((product, index) => (
-              <RatesItems
-                breakpoint={breakpoint}
-                key={`${product.id}_${index}`}
-                onClick={onClick}
-                product={product}
-                userType={userType!}
-              />
-            ))}
+          <Stack alignItems={'center'} gap={3}>
+            <Typography color={'text.secondary'} variant={'body1'}>
+              The following loan programs are available for you.
+            </Typography>
+            <Stack
+              flexDirection={{ xs: 'column', xl: 'row' }}
+              flexWrap={'wrap'}
+              gap={3}
+              width={'100%'}
+            >
+              {productList.map((product, index) => (
+                <RatesItems
+                  breakpoint={breakpoint}
+                  key={`${product.id}_${index}`}
+                  onClick={onClick}
+                  product={product}
+                  userType={userType!}
+                />
+              ))}
+            </Stack>
+
             <Stack
               alignItems={'center'}
               justifyContent={'center'}
