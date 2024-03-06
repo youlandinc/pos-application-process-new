@@ -1,6 +1,7 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { addDays, format, isDate } from 'date-fns';
+import { debounce } from 'lodash';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -263,14 +264,49 @@ export const GroundRefinanceEstimateRate: FC<{
     }
   };
 
+  useEffect(
+    () => {
+      if (
+        !searchForm?.closeDate ||
+        !searchForm?.homeValue ||
+        !searchForm?.balance ||
+        !searchForm?.cor ||
+        !searchForm?.arv
+      ) {
+        return;
+      }
+      if (searchForm.isCashOut && !searchForm?.cashOutAmount) {
+        return;
+      }
+      onCheckGetList();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      searchForm?.agentFee,
+      searchForm?.brokerPoints,
+      searchForm?.brokerProcessingFee,
+      searchForm?.officerPoints,
+      searchForm?.officerProcessingFee,
+      searchForm?.lenderPoints,
+      searchForm?.lenderProcessingFee,
+      // input query
+      searchForm?.closeDate,
+      searchForm?.homeValue,
+      searchForm?.balance,
+      searchForm?.cor,
+      searchForm?.arv,
+      searchForm?.isCashOut,
+      searchForm?.cashOutAmount,
+    ],
+  );
+
   return (
     <>
       <GroundRefinanceRatesSearch
         id={'ground_up_refinance_rate_search'}
         loading={loading}
-        onCheck={onCheckGetList}
         searchForm={searchForm}
-        setSearchForm={setSearchForm}
+        setSearchForm={debounce(setSearchForm, 500)}
         userType={userType!}
       />
       {!searchForm.customRate && (

@@ -7,6 +7,7 @@ export const StyledButtonStyles = {
     padding: '15px 20px',
     borderRadius: 3,
     boxShadow: 'none',
+    boxSizing: 'border-box',
   },
   '&.MuiButton-contained:disabled': {
     bgcolor: '#D4D7DA',

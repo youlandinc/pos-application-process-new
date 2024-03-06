@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { addDays, format, isDate } from 'date-fns';
 
@@ -28,6 +28,7 @@ import {
   GroundPurchaseRatesSearch,
   RatesList,
 } from '@/components/molecules';
+import { debounce } from 'lodash';
 
 const initialize: GPQueryData = {
   purchasePrice: undefined,
@@ -259,14 +260,44 @@ export const GroundPurchaseEstimateRate: FC<{
     }
   };
 
+  useEffect(
+    () => {
+      if (
+        !searchForm?.closeDate ||
+        !searchForm?.purchasePrice ||
+        !searchForm?.purchaseLoanAmount ||
+        !searchForm?.cor ||
+        !searchForm?.arv
+      ) {
+        return;
+      }
+      onCheckGetList();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      searchForm?.agentFee,
+      searchForm?.brokerPoints,
+      searchForm?.brokerProcessingFee,
+      searchForm?.officerPoints,
+      searchForm?.officerProcessingFee,
+      searchForm?.lenderPoints,
+      searchForm?.lenderProcessingFee,
+      // input query
+      searchForm?.closeDate,
+      searchForm?.purchasePrice,
+      searchForm?.purchaseLoanAmount,
+      searchForm?.cor,
+      searchForm?.arv,
+    ],
+  );
+
   return (
     <>
       <GroundPurchaseRatesSearch
         id={'ground_up_purchase_rate_search'}
         loading={loading}
-        onCheck={onCheckGetList}
         searchForm={searchForm}
-        setSearchForm={setSearchForm}
+        setSearchForm={debounce(setSearchForm, 500)}
         userType={userType}
       />
       {!searchForm.customRate && (
