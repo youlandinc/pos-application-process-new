@@ -19,7 +19,6 @@ import {
 interface GroundRefinanceRatesSearchProps {
   searchForm: GRQueryData;
   setSearchForm: Dispatch<SetStateAction<GRQueryData>>;
-  debounceSet: Dispatch<SetStateAction<GRQueryData>>;
   loading: boolean;
   userType: UserType;
   loanStage?: LoanStage;
@@ -36,7 +35,6 @@ export const GroundRefinanceRatesSearch: FC<
   //loading,
   //loanStage = LoanStage.Application,
   isDashboard = false,
-  debounceSet,
   id,
 }) => {
   const {
@@ -126,7 +124,7 @@ export const GroundRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker origination fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       brokerPoints: floatValue,
                     });
@@ -142,7 +140,7 @@ export const GroundRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker processing fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       brokerProcessingFee: floatValue,
                     });
@@ -181,7 +179,7 @@ export const GroundRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender origination fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       lenderPoints: floatValue,
                     });
@@ -197,7 +195,7 @@ export const GroundRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender processing fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       lenderProcessingFee: floatValue,
                     });
@@ -236,7 +234,7 @@ export const GroundRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer origination fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       officerPoints: floatValue,
                     });
@@ -252,7 +250,7 @@ export const GroundRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer processing fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       officerProcessingFee: floatValue,
                     });
@@ -291,7 +289,7 @@ export const GroundRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Real estate agent fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       agentFee: floatValue,
                     });
@@ -319,7 +317,7 @@ export const GroundRefinanceRatesSearch: FC<
     officerPoints,
     officerProcessingFee,
     searchForm,
-    debounceSet,
+    setSearchForm,
     userType,
   ]);
 
@@ -380,7 +378,7 @@ export const GroundRefinanceRatesSearch: FC<
             disablePast
             label={'Preferred closing date'}
             onChange={(value) => {
-              debounceSet({
+              setSearchForm({
                 ...searchForm,
                 closeDate: value as Date,
               });
@@ -419,7 +417,7 @@ export const GroundRefinanceRatesSearch: FC<
               //disabled={loading || loanStage === LoanStage.Approved}
               label={'As-is property value'}
               onValueChange={({ floatValue }) => {
-                debounceSet({
+                setSearchForm({
                   ...searchForm,
                   homeValue: floatValue,
                 });
@@ -432,7 +430,7 @@ export const GroundRefinanceRatesSearch: FC<
               //disabled={loading || loanStage === LoanStage.Approved}
               label={'Payoff amount'}
               onValueChange={({ floatValue }) => {
-                debounceSet({
+                setSearchForm({
                   ...searchForm,
                   balance: floatValue,
                 });
@@ -477,7 +475,7 @@ export const GroundRefinanceRatesSearch: FC<
               //disabled={loading || loanStage === LoanStage.Approved}
               label={'Estimated rehab loan amount'}
               onValueChange={({ floatValue }) => {
-                debounceSet({
+                setSearchForm({
                   ...searchForm,
                   cor: floatValue,
                 });
@@ -490,7 +488,7 @@ export const GroundRefinanceRatesSearch: FC<
               //disabled={loading || loanStage === LoanStage.Approved}
               label={'After repair value (ARV)'}
               onValueChange={({ floatValue }) => {
-                debounceSet({
+                setSearchForm({
                   ...searchForm,
                   arv: floatValue,
                 });
@@ -549,7 +547,7 @@ export const GroundRefinanceRatesSearch: FC<
                 //disabled={loading || loanStage === LoanStage.Approved}
                 label={'Cash out amount'}
                 onValueChange={({ floatValue }) => {
-                  debounceSet({
+                  setSearchForm({
                     ...searchForm,
                     cashOutAmount: floatValue,
                   });

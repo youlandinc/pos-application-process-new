@@ -19,7 +19,6 @@ import {
 interface BridgeRefinanceRatesSearchProps {
   searchForm: BRQueryData;
   setSearchForm: Dispatch<SetStateAction<BRQueryData>>;
-  debounceSet: Dispatch<SetStateAction<BRQueryData>>;
   loading: boolean;
   userType: UserType;
   loanStage?: LoanStage;
@@ -30,14 +29,13 @@ interface BridgeRefinanceRatesSearchProps {
 export const BridgeRefinanceRatesSearch: FC<
   BridgeRefinanceRatesSearchProps
 > = ({
-  searchForm,
-  setSearchForm,
-  userType,
   //loading,
   //loanStage = LoanStage.Application,
+  userType,
+  searchForm,
+  setSearchForm,
   isDashboard = false,
   id,
-  debounceSet,
 }) => {
   const {
     isCashOut,
@@ -119,7 +117,7 @@ export const BridgeRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker origination fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       brokerPoints: floatValue,
                     });
@@ -135,7 +133,7 @@ export const BridgeRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker processing fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       brokerProcessingFee: floatValue,
                     });
@@ -174,7 +172,7 @@ export const BridgeRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender origination fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       lenderPoints: floatValue,
                     });
@@ -190,7 +188,7 @@ export const BridgeRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender processing fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       lenderProcessingFee: floatValue,
                     });
@@ -229,7 +227,7 @@ export const BridgeRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer origination fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       officerPoints: floatValue,
                     });
@@ -245,7 +243,7 @@ export const BridgeRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer processing fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       officerProcessingFee: floatValue,
                     });
@@ -283,7 +281,7 @@ export const BridgeRefinanceRatesSearch: FC<
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Real estate agent fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       agentFee: floatValue,
                     });
@@ -311,7 +309,7 @@ export const BridgeRefinanceRatesSearch: FC<
     officerPoints,
     officerProcessingFee,
     searchForm,
-    debounceSet,
+    setSearchForm,
     userType,
   ]);
 
@@ -372,7 +370,7 @@ export const BridgeRefinanceRatesSearch: FC<
             disablePast
             label={'Preferred closing date'}
             onChange={(value) => {
-              debounceSet({
+              setSearchForm({
                 ...searchForm,
                 closeDate: value as Date,
               });
@@ -411,7 +409,7 @@ export const BridgeRefinanceRatesSearch: FC<
               //disabled={loading || loanStage === LoanStage.Approved}
               label={'As-is property value'}
               onValueChange={({ floatValue }) => {
-                debounceSet({
+                setSearchForm({
                   ...searchForm,
                   homeValue: floatValue,
                 });
@@ -423,7 +421,7 @@ export const BridgeRefinanceRatesSearch: FC<
               //disabled={loading || loanStage === LoanStage.Approved}
               label={'Payoff amount'}
               onValueChange={({ floatValue }) => {
-                debounceSet({
+                setSearchForm({
                   ...searchForm,
                   balance: floatValue,
                 });
@@ -483,7 +481,7 @@ export const BridgeRefinanceRatesSearch: FC<
                 //disabled={loading || loanStage === LoanStage.Approved}
                 label={'Cash out amount'}
                 onValueChange={({ floatValue }) => {
-                  debounceSet({
+                  setSearchForm({
                     ...searchForm,
                     cashOutAmount: floatValue,
                   });

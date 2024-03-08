@@ -18,7 +18,6 @@ interface BridgePurchaseRatesSearchProps {
   loading: boolean;
   searchForm: BPQueryData;
   setSearchForm: Dispatch<SetStateAction<BPQueryData>>;
-  debounceSet: Dispatch<SetStateAction<BPQueryData>>;
   userType?: UserType;
   loanStage?: LoanStage;
   isDashboard?: boolean;
@@ -26,14 +25,13 @@ interface BridgePurchaseRatesSearchProps {
 }
 
 export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
-  searchForm,
-  userType,
-  //setSearchForm,
   //loading,
   //loanStage = LoanStage.Application,
+  userType,
+  searchForm,
+  setSearchForm,
   isDashboard = false,
   id,
-  debounceSet,
 }) => {
   const {
     purchasePrice,
@@ -100,7 +98,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker origination fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       brokerPoints: floatValue,
                     });
@@ -116,7 +114,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker processing fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       brokerProcessingFee: floatValue,
                     });
@@ -155,7 +153,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender origination fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       lenderPoints: floatValue,
                     });
@@ -171,7 +169,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender processing fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       lenderProcessingFee: floatValue,
                     });
@@ -210,7 +208,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer origination fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       officerPoints: floatValue,
                     });
@@ -226,7 +224,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer processing fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       officerProcessingFee: floatValue,
                     });
@@ -264,7 +262,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
                   //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Real estate agent fee'}
                   onValueChange={({ floatValue }) => {
-                    debounceSet({
+                    setSearchForm({
                       ...searchForm,
                       agentFee: floatValue,
                     });
@@ -292,7 +290,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
     officerPoints,
     officerProcessingFee,
     searchForm,
-    debounceSet,
+    setSearchForm,
     userType,
   ]);
 
@@ -356,7 +354,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
             disablePast
             label={'Preferred closing date'}
             onChange={(value) => {
-              debounceSet({
+              setSearchForm({
                 ...searchForm,
                 closeDate: value as Date,
               });
@@ -395,7 +393,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               //disabled={loading || loanStage === LoanStage.Approved}
               label={'Purchase price'}
               onValueChange={({ floatValue }) => {
-                debounceSet({
+                setSearchForm({
                   ...searchForm,
                   purchasePrice: floatValue,
                 });
@@ -408,7 +406,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               //disabled={loading || loanStage === LoanStage.Approved}
               label={'Purchase loan amount'}
               onValueChange={({ floatValue }) => {
-                debounceSet({
+                setSearchForm({
                   ...searchForm,
                   purchaseLoanAmount: floatValue,
                 });

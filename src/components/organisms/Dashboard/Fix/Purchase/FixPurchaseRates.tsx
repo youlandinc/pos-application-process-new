@@ -368,7 +368,6 @@ export const FixPurchaseRates: FC = observer(() => {
                   Back to current rate
                 </Typography>
                 <FixPurchaseRatesSearch
-                  debounceSet={debounce(setSearchForm, 500)}
                   isDashboard={true}
                   loading={loading || state.loading}
                   loanStage={loanStage}

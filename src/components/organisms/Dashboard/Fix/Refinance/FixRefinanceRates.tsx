@@ -360,7 +360,6 @@ export const FixRefinanceRates: FC = observer(() => {
                   Back to current rate
                 </Typography>
                 <FixRefinanceRatesSearch
-                  debounceSet={debounce(setSearchForm, 500)}
                   isDashboard={true}
                   loading={loading || state.loading}
                   loanStage={loanStage}
