@@ -2,7 +2,6 @@ import { POSNotUndefined, POSTypeOf } from '@/utils';
 import { addDays, format, isDate } from 'date-fns';
 import { FC, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
-import { debounce } from 'lodash';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -121,6 +120,7 @@ export const FixRefinanceEstimateRate: FC<{
       ? new Date(estimateRate.closeDate)
       : initialize.closeDate,
   });
+
   const [customLoan, setCustomLoan] = useState<CustomRateData>({
     customRate: estimateRate.loanTerm || undefined,
     interestRate: estimateRate.interestRate || undefined,
