@@ -8,7 +8,7 @@ import { useMst } from '@/models/Root';
 
 import { POSNotUndefined, POSTypeOf } from '@/utils';
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { useBreakpoints, useSwitch } from '@/hooks';
+import { useBreakpoints, useDebounceFn, useSwitch } from '@/hooks';
 import { _updateProcessVariables } from '@/requests';
 import {
   CustomRateData,
@@ -325,6 +325,8 @@ export const FixPurchaseEstimateRate: FC<{
     }
   };
 
+  const { run } = useDebounceFn(() => onCheckGetList(), 1000);
+
   useEffect(
     () => {
       if (
@@ -335,7 +337,7 @@ export const FixPurchaseEstimateRate: FC<{
       ) {
         return;
       }
-      debounce(() => onCheckGetList(), 1000);
+      run();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [

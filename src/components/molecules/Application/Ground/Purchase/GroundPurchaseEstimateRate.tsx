@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { useBreakpoints, useSwitch } from '@/hooks';
+import { useBreakpoints, useDebounceFn, useSwitch } from '@/hooks';
 import { POSNotUndefined, POSTypeOf } from '@/utils';
 import {
   CustomRateData,
@@ -321,6 +321,8 @@ export const GroundPurchaseEstimateRate: FC<{
     }
   };
 
+  const { run } = useDebounceFn(() => onCheckGetList(), 1000);
+
   useEffect(
     () => {
       if (
@@ -331,7 +333,7 @@ export const GroundPurchaseEstimateRate: FC<{
       ) {
         return;
       }
-      debounce(() => onCheckGetList(), 1000);
+      run();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [

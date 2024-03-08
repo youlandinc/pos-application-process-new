@@ -7,7 +7,7 @@ import { debounce } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useBreakpoints, useSwitch } from '@/hooks';
+import { useBreakpoints, useDebounceFn, useSwitch } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { _updateProcessVariables } from '@/requests';
 import {
@@ -326,6 +326,8 @@ export const FixRefinanceEstimateRate: FC<{
     }
   };
 
+  const { run } = useDebounceFn(() => onCheckGetList(), 1000);
+
   useEffect(
     () => {
       if (
@@ -339,7 +341,7 @@ export const FixRefinanceEstimateRate: FC<{
       if (searchForm.isCashOut && !POSNotUndefined(searchForm?.cashOutAmount)) {
         return;
       }
-      debounce(() => onCheckGetList(), 1000);
+      run();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
