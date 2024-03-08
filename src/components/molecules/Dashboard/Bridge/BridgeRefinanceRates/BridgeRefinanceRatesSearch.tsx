@@ -32,9 +32,9 @@ export const BridgeRefinanceRatesSearch: FC<
 > = ({
   searchForm,
   setSearchForm,
-  loading,
   userType,
-  loanStage = LoanStage.Application,
+  //loading,
+  //loanStage = LoanStage.Application,
   isDashboard = false,
   id,
   debounceSet,
@@ -116,7 +116,7 @@ export const BridgeRefinanceRatesSearch: FC<
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
                   decimalScale={3}
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker origination fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -132,7 +132,7 @@ export const BridgeRefinanceRatesSearch: FC<
               </Stack>
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker processing fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -171,7 +171,7 @@ export const BridgeRefinanceRatesSearch: FC<
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
                   decimalScale={3}
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender origination fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -187,7 +187,7 @@ export const BridgeRefinanceRatesSearch: FC<
               </Stack>
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender processing fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -226,7 +226,7 @@ export const BridgeRefinanceRatesSearch: FC<
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
                   decimalScale={3}
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer origination fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -242,7 +242,7 @@ export const BridgeRefinanceRatesSearch: FC<
               </Stack>
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer processing fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -280,7 +280,7 @@ export const BridgeRefinanceRatesSearch: FC<
             >
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Real estate agent fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -306,8 +306,8 @@ export const BridgeRefinanceRatesSearch: FC<
     brokerProcessingFee,
     lenderPoints,
     lenderProcessingFee,
-    loading,
-    loanStage,
+    //loading,
+    //loanStage,
     officerPoints,
     officerProcessingFee,
     searchForm,
@@ -408,7 +408,7 @@ export const BridgeRefinanceRatesSearch: FC<
             width={'100%'}
           >
             <StyledTextFieldNumber
-              disabled={loading || loanStage === LoanStage.Approved}
+              //disabled={loading || loanStage === LoanStage.Approved}
               label={'As-is property value'}
               onValueChange={({ floatValue }) => {
                 debounceSet({
@@ -420,7 +420,7 @@ export const BridgeRefinanceRatesSearch: FC<
               value={homeValue}
             />
             <StyledTextFieldNumber
-              disabled={loading || loanStage === LoanStage.Approved}
+              //disabled={loading || loanStage === LoanStage.Approved}
               label={'Payoff amount'}
               onValueChange={({ floatValue }) => {
                 debounceSet({
@@ -462,7 +462,7 @@ export const BridgeRefinanceRatesSearch: FC<
         <Stack gap={1} width={'100%'}>
           <StyledCheckbox
             checked={isCashOut}
-            disabled={loading || loanStage === LoanStage.Approved}
+            //disabled={loading || loanStage === LoanStage.Approved}
             label={'Cash out amount'}
             onChange={(e) => {
               setSearchForm({
@@ -480,7 +480,7 @@ export const BridgeRefinanceRatesSearch: FC<
           >
             {isCashOut && (
               <StyledTextFieldNumber
-                disabled={loading || loanStage === LoanStage.Approved}
+                //disabled={loading || loanStage === LoanStage.Approved}
                 label={'Cash out amount'}
                 onValueChange={({ floatValue }) => {
                   debounceSet({

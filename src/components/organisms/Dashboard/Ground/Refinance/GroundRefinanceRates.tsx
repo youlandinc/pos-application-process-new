@@ -31,6 +31,7 @@ import {
 } from '@/requests/dashboard';
 
 import {
+  CustomRateData,
   Encompass,
   GPEstimateRateData,
   GREstimateRateData,
@@ -83,7 +84,13 @@ export const GroundRefinanceRates: FC = observer(() => {
     'current',
   );
   const [loanStage, setLoanStage] = useState<LoanStage>(LoanStage.PreApproved);
+
   const [searchForm, setSearchForm] = useState<GRQueryData>(initialize);
+  const [customLoan, setCustomLoan] = useState<CustomRateData>({
+    customRate: undefined,
+    interestRate: undefined,
+    loanTerm: undefined,
+  });
 
   const [productList, setProductList] = useState<RatesProductData[]>();
   const [reasonList, setReasonList] = useState<string[]>([]);
@@ -168,6 +175,8 @@ export const GroundRefinanceRates: FC = observer(() => {
           officerPoints,
           officerProcessingFee,
           agentFee,
+        });
+        setCustomLoan({
           customRate,
           interestRate,
           loanTerm,
@@ -190,41 +199,18 @@ export const GroundRefinanceRates: FC = observer(() => {
 
   const onCheckGetList = async () => {
     setLoading(true);
-    if (!searchForm.customRate) {
-      await _fetchRatesProductPreview(
-        router.query.processId as string,
-        searchForm,
-      )
-        .then((res) => {
-          const { products, loanInfo, reasons, selectedProduct } = res.data;
-          setProductList(products);
-          setLoanInfo({ ...loanInfo, ...selectedProduct });
-          setLoading(false);
-          setReasonList(reasons);
-        })
-        .catch((err) => {
-          const { header, message, variant } = err as HttpError;
-          enqueueSnackbar(message, {
-            variant: variant || 'error',
-            autoHideDuration: AUTO_HIDE_DURATION,
-            isSimple: !header,
-            header,
-          });
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      try {
-        const {
-          data: { loanInfo, product },
-        } = await _fetchCustomRates(
-          router.query.processId as string,
-          searchForm,
-        );
-        setSelectedItem({ ...loanInfo, ...product });
-        open();
-      } catch (err) {
+    await _fetchRatesProductPreview(
+      router.query.processId as string,
+      searchForm,
+    )
+      .then((res) => {
+        const { products, loanInfo, reasons, selectedProduct } = res.data;
+        setProductList(products);
+        setLoanInfo({ ...loanInfo, ...selectedProduct });
+        setLoading(false);
+        setReasonList(reasons);
+      })
+      .catch((err) => {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
           variant: variant || 'error',
@@ -232,10 +218,30 @@ export const GroundRefinanceRates: FC = observer(() => {
           isSimple: !header,
           header,
         });
-      } finally {
+      })
+      .finally(() => {
         setLoading(false);
-      }
-    }
+      });
+    //try {
+    //  const {
+    //    data: { loanInfo, product },
+    //  } = await _fetchCustomRates(
+    //    router.query.processId as string,
+    //    searchForm,
+    //  );
+    //  setSelectedItem({ ...loanInfo, ...product });
+    //  open();
+    //} catch (err) {
+    //  const { header, message, variant } = err as HttpError;
+    //  enqueueSnackbar(message, {
+    //    variant: variant || 'error',
+    //    autoHideDuration: AUTO_HIDE_DURATION,
+    //    isSimple: !header,
+    //    header,
+    //  });
+    //} finally {
+    //  setLoading(false);
+    //}
   };
 
   const onListItemClick = async (item: RatesProductData) => {
@@ -380,16 +386,17 @@ export const GroundRefinanceRates: FC = observer(() => {
                   setSearchForm={setSearchForm}
                   userType={userType as UserType}
                 />
-                {/*{!searchForm.customRate && (*/}
-                {/*  <RatesList*/}
-                {/*    loading={loading || state.loading}*/}
-                {/*    loanStage={loanStage}*/}
-                {/*    onClick={onListItemClick}*/}
-                {/*    productList={productList || []}*/}
-                {/*    reasonList={reasonList}*/}
-                {/*    userType={userType}*/}
-                {/*  />*/}
-                {/*)}*/}
+                {/*<RatesList*/}
+                {/*  customLoan={customLoan}*/}
+                {/*  isFirstSearch={false}*/}
+                {/*  loading={loading || state.loading}*/}
+                {/*  loanStage={loanStage}*/}
+                {/*  onClick={onListItemClick}*/}
+                {/*  productList={productList || []}*/}
+                {/*  reasonList={reasonList}*/}
+                {/*  setCustomLoan={setCustomLoan}*/}
+                {/*  userType={userType}*/}
+                {/*/>*/}
                 <GroundRefinanceRatesDrawer
                   close={close}
                   loading={confirmLoading}

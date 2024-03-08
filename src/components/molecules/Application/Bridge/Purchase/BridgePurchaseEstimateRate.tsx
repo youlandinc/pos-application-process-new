@@ -186,9 +186,9 @@ export const BridgePurchaseEstimateRate: FC<{
       .finally(() => {
         setIsFirstSearch(false);
         setLoading(false);
-        setTimeout(() => {
-          window.scrollTo({ top: height + 144, behavior: 'smooth' });
-        }, 300);
+        //setTimeout(() => {
+        //  window.scrollTo({ top: height + 144, behavior: 'smooth' });
+        //}, 300);
       });
   };
 
