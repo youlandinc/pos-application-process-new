@@ -8,6 +8,9 @@ export const BPEstimateRate = types
     closeDate: types.maybeNull(types.union(types.Date, types.string)),
     purchasePrice: types.maybe(types.number),
     purchaseLoanAmount: types.maybe(types.number),
+    customRate: types.maybe(types.boolean),
+    loanTerm: types.maybe(types.number),
+    interestRate: types.maybe(types.number),
   })
   .views(() => ({
     get checkIsValid() {
@@ -22,7 +25,14 @@ export const BPEstimateRate = types
       self[key] = value;
     },
     getPostData(): Variable<BPEstimateRateData> {
-      const { purchasePrice, purchaseLoanAmount, closeDate } = self;
+      const {
+        purchasePrice,
+        purchaseLoanAmount,
+        closeDate,
+        customRate,
+        loanTerm,
+        interestRate,
+      } = self;
       return {
         name: VariableName.estimateRate,
         type: 'json',
@@ -30,6 +40,9 @@ export const BPEstimateRate = types
           purchasePrice,
           purchaseLoanAmount,
           closeDate,
+          customRate,
+          loanTerm,
+          interestRate,
         },
       };
     },
@@ -38,10 +51,20 @@ export const BPEstimateRate = types
       self.purchaseLoanAmount = value.purchaseLoanAmount;
     },
     injectServerData(value: BPEstimateRateData) {
-      const { purchasePrice, purchaseLoanAmount, closeDate } = value;
+      const {
+        purchasePrice,
+        purchaseLoanAmount,
+        closeDate,
+        customRate,
+        loanTerm,
+        interestRate,
+      } = value;
       self.purchaseLoanAmount = purchaseLoanAmount;
       self.purchasePrice = purchasePrice;
       self.closeDate = closeDate as unknown as null;
+      self.customRate = customRate;
+      self.loanTerm = loanTerm;
+      self.interestRate = interestRate;
     },
   }));
 
