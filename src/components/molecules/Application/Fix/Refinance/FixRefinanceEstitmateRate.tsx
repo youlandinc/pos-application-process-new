@@ -1,7 +1,8 @@
-import { POSTypeOf } from '@/utils';
+import { POSNotUndefined, POSTypeOf } from '@/utils';
 import { addDays, format, isDate } from 'date-fns';
 import { FC, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
+import { debounce } from 'lodash';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -10,7 +11,9 @@ import { useSwitch } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { _updateProcessVariables } from '@/requests';
 import {
+  CustomRateData,
   FREstimateRateData,
+  GREstimateRateData,
   HttpError,
   PropertyOpt,
   RatesProductData,
@@ -28,7 +31,6 @@ import {
   FixRefinanceRatesSearch,
   RatesList,
 } from '@/components/molecules';
-import { debounce } from 'lodash';
 
 const initialize: FRQueryData = {
   homeValue: undefined,
@@ -108,6 +110,8 @@ export const FixRefinanceEstimateRate: FC<{
 
   const [loading, setLoading] = useState(false);
   const [checkLoading, setCheckLoading] = useState(false);
+  const [customLoading, setCustomLoading] = useState(false);
+  const [isFirstSearch, setIsFirstSearch] = useState(true);
 
   const [searchForm, setSearchForm] = useState<FRQueryData>({
     ...initialize,
@@ -116,9 +120,14 @@ export const FixRefinanceEstimateRate: FC<{
       ? new Date(estimateRate.closeDate)
       : initialize.closeDate,
   });
+  const [customLoan, setCustomLoan] = useState<CustomRateData>({
+    customRate: estimateRate.loanTerm || undefined,
+    interestRate: estimateRate.interestRate || undefined,
+    loanTerm: estimateRate.interestRate || undefined,
+  });
+
   const [productList, setProductList] = useState<RatesProductData[]>([]);
   const [reasonList, setReasonList] = useState<string[]>([]);
-  const [isFirstSearch, setIsFirstSearch] = useState<boolean>(true);
 
   const [productInfo, setProductInfo] = useState<Partial<FixRefinanceLoanInfo>>(
     {},
@@ -162,39 +171,14 @@ export const FixRefinanceEstimateRate: FC<{
             : POSTypeOf(searchForm.closeDate) === 'Null'
               ? format(addDays(new Date(), 7), 'yyyy-MM-dd O')
               : searchForm.closeDate,
+          customRate: false,
         };
-        if (!searchForm.customRate) {
-          return await _fetchRatesProductPreview(processId, requestData);
-        }
-        return await _fetchCustomRates(processId, requestData);
+        return await _fetchRatesProductPreview(processId, requestData);
       })
       .then((res) => {
-        if (searchForm.customRate) {
-          const {
-            paymentOfMonth,
-            interestRateOfYear,
-            loanTerm,
-            id,
-            totalClosingCash,
-            proRatedInterest,
-          } = res!.data.product;
-          setSelectedItem(
-            Object.assign(res!.data.loanInfo as FixRefinanceLoanInfo, {
-              paymentOfMonth,
-              interestRateOfYear,
-              loanTerm,
-              id,
-              totalClosingCash,
-              proRatedInterest,
-            }),
-          );
-          open();
-        } else {
-          setIsFirstSearch(false);
-          setProductInfo(res!.data.loanInfo);
-          setProductList(res!.data.products as RatesProductData[]);
-          setReasonList(res!.data.reasons);
-        }
+        setProductInfo(res!.data.loanInfo);
+        setProductList(res!.data.products as RatesProductData[]);
+        setReasonList(res!.data.reasons);
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -210,10 +194,83 @@ export const FixRefinanceEstimateRate: FC<{
         }
       })
       .finally(() => {
+        setIsFirstSearch(false);
         setLoading(false);
         setTimeout(() => {
           window.scrollTo({ top: height + 144, behavior: 'smooth' });
         }, 300);
+      });
+  };
+
+  const onCustomLoanClick = async () => {
+    setCustomLoading(true);
+
+    const postData: Variable<GREstimateRateData> = {
+      name: VariableName.estimateRate,
+      type: 'json',
+      value: {
+        ...searchForm,
+        closeDate: isDate(searchForm.closeDate)
+          ? format(searchForm.closeDate as Date, 'yyyy-MM-dd O')
+          : POSTypeOf(searchForm.closeDate) === 'Null'
+            ? format(addDays(new Date(), 7), 'yyyy-MM-dd O')
+            : searchForm.closeDate,
+        customRate: true,
+        interestRate: customLoan.interestRate,
+        loanTerm: customLoan.loanTerm,
+      },
+    };
+    const requestData = {
+      customRate: true,
+      interestRate: customLoan.interestRate,
+      loanTerm: customLoan.loanTerm,
+    };
+    await _updateProcessVariables(processId as string, [postData])
+      .then(async () => {
+        return await _fetchCustomRates(processId, requestData);
+      })
+      .then((res) => {
+        const {
+          loanInfo,
+          product: {
+            paymentOfMonth,
+            interestRateOfYear,
+            loanTerm,
+            id,
+            totalClosingCash,
+            proRatedInterest,
+          },
+        } = res!.data;
+        if (nextStep) {
+          const temp = productList!.map((item) => {
+            item.selected = false;
+            return item;
+          });
+          setProductList(temp);
+        }
+        setSelectedItem(
+          Object.assign(loanInfo as FixRefinanceLoanInfo, {
+            paymentOfMonth,
+            interestRateOfYear,
+            loanTerm,
+            id,
+            totalClosingCash,
+            proRatedInterest,
+          }),
+        );
+        open();
+      })
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      })
+      .finally(() => {
+        setCustomLoading(false);
       });
   };
 
@@ -269,15 +326,14 @@ export const FixRefinanceEstimateRate: FC<{
   useEffect(
     () => {
       if (
-        !searchForm?.closeDate ||
-        !searchForm?.homeValue ||
-        !searchForm?.balance ||
-        !searchForm?.cor ||
-        !searchForm?.arv
+        !POSNotUndefined(searchForm?.homeValue) ||
+        !POSNotUndefined(searchForm?.balance) ||
+        !POSNotUndefined(searchForm?.cor) ||
+        !POSNotUndefined(searchForm?.arv)
       ) {
         return;
       }
-      if (searchForm.isCashOut && !searchForm?.cashOutAmount) {
+      if (searchForm.isCashOut && !POSNotUndefined(searchForm?.cashOutAmount)) {
         return;
       }
       onCheckGetList();
@@ -305,22 +361,25 @@ export const FixRefinanceEstimateRate: FC<{
   return (
     <>
       <FixRefinanceRatesSearch
+        debounceSet={debounce(setSearchForm, 500)}
         id={'fix_and_flip_refinance_rate_search'}
         loading={loading}
         searchForm={searchForm}
-        setSearchForm={debounce(setSearchForm, 500)}
+        setSearchForm={setSearchForm}
         userType={userType!}
       />
-      {!searchForm.customRate && (
-        <RatesList
-          isFirstSearch={isFirstSearch}
-          loading={loading}
-          onClick={onListItemClick}
-          productList={productList as RatesProductData[]}
-          reasonList={reasonList}
-          userType={userType}
-        />
-      )}
+      <RatesList
+        customLoading={customLoading}
+        customLoan={customLoan}
+        isFirstSearch={isFirstSearch}
+        loading={loading}
+        onClick={onListItemClick}
+        onCustomLoanClick={onCustomLoanClick}
+        productList={productList as RatesProductData[]}
+        reasonList={reasonList}
+        setCustomLoan={setCustomLoan}
+        userType={userType}
+      />
       <FixRefinanceRatesDrawer
         close={close}
         loading={checkLoading}

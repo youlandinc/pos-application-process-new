@@ -42,6 +42,7 @@ import {
 
 import RATE_CURRENT from '@/svg/dashboard/rate_current.svg';
 import RATE_CONFIRMED from '@/svg/dashboard/rate_confirmed.svg';
+import { debounce } from 'lodash';
 
 const initialize: BPQueryData = {
   purchasePrice: undefined,
@@ -356,6 +357,7 @@ export const BridgePurchaseRates: FC = observer(() => {
                   Back to current rate
                 </Typography>
                 <BridgePurchaseRatesSearch
+                  debounceSet={debounce(setSearchForm, 500)}
                   isDashboard={true}
                   loading={loading || state.loading}
                   loanStage={loanStage}
@@ -363,16 +365,16 @@ export const BridgePurchaseRates: FC = observer(() => {
                   setSearchForm={setSearchForm}
                   userType={userType}
                 />
-                {!searchForm.customRate && (
-                  <RatesList
-                    loading={loading || state.loading}
-                    loanStage={loanStage}
-                    onClick={onListItemClick}
-                    productList={productList || []}
-                    reasonList={reasonList}
-                    userType={userType}
-                  />
-                )}
+                {/*{!searchForm.customRate && (*/}
+                {/*  <RatesList*/}
+                {/*    loading={loading || state.loading}*/}
+                {/*    loanStage={loanStage}*/}
+                {/*    onClick={onListItemClick}*/}
+                {/*    productList={productList || []}*/}
+                {/*    reasonList={reasonList}*/}
+                {/*    userType={userType}*/}
+                {/*  />*/}
+                {/*)}*/}
                 <BridgePurchaseRatesDrawer
                   close={close}
                   loading={confirmLoading}

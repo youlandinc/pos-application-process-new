@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 
 import { StyledBadgeProps } from './index';
 import { POSFlex, POSFont } from '@/styles';
-import { AppraisalStage, LoanStage } from '@/types';
+import { LoanStage } from '@/types';
 
 export const StyledBadge: FC<StyledBadgeProps> = ({ content, status }) => {
   const computedStyles = () => ({

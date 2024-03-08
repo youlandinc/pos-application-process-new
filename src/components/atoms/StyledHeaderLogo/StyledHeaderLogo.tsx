@@ -104,6 +104,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
     breakpoints,
     isFirstLoading,
     logoUrl,
+    ratio,
     saasState?.logoUrl,
     saasState?.organizationName,
   ]);

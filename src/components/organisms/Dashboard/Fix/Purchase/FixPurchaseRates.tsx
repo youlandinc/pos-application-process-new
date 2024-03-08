@@ -43,6 +43,7 @@ import {
 
 import RATE_CONFIRMED from '@/svg/dashboard/rate_confirmed.svg';
 import RATE_CURRENT from '@/svg/dashboard/rate_current.svg';
+import { debounce } from 'lodash';
 
 const initialize: FPQueryData = {
   purchasePrice: undefined,
@@ -367,6 +368,7 @@ export const FixPurchaseRates: FC = observer(() => {
                   Back to current rate
                 </Typography>
                 <FixPurchaseRatesSearch
+                  debounceSet={debounce(setSearchForm, 500)}
                   isDashboard={true}
                   loading={loading || state.loading}
                   loanStage={loanStage}
@@ -374,16 +376,16 @@ export const FixPurchaseRates: FC = observer(() => {
                   setSearchForm={setSearchForm}
                   userType={userType}
                 />
-                {!searchForm.customRate && (
-                  <RatesList
-                    loading={loading || state.loading}
-                    loanStage={loanStage}
-                    onClick={onListItemClick}
-                    productList={productList || []}
-                    reasonList={reasonList}
-                    userType={userType}
-                  />
-                )}
+                {/*{!searchForm.customRate && (*/}
+                {/*  <RatesList*/}
+                {/*    loading={loading || state.loading}*/}
+                {/*    loanStage={loanStage}*/}
+                {/*    onClick={onListItemClick}*/}
+                {/*    productList={productList || []}*/}
+                {/*    reasonList={reasonList}*/}
+                {/*    userType={userType}*/}
+                {/*  />*/}
+                {/*)}*/}
                 <FixPurchaseRatesDrawer
                   close={close}
                   loading={confirmLoading}
