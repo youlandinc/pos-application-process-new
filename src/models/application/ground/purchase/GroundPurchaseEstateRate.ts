@@ -10,6 +10,9 @@ export const GroundPurchaseEstimateRate = types
     purchaseLoanAmount: types.maybe(types.number),
     cor: types.maybe(types.number),
     arv: types.maybe(types.number),
+    customRate: types.maybe(types.boolean),
+    loanTerm: types.maybe(types.number),
+    interestRate: types.maybe(types.number),
   })
   .views(() => ({
     get checkIsValid() {
@@ -24,7 +27,16 @@ export const GroundPurchaseEstimateRate = types
       self[key] = value;
     },
     getPostData(): Variable<GPEstimateRateData> {
-      const { purchasePrice, purchaseLoanAmount, cor, arv, closeDate } = self;
+      const {
+        purchasePrice,
+        purchaseLoanAmount,
+        cor,
+        arv,
+        closeDate,
+        customRate,
+        loanTerm,
+        interestRate,
+      } = self;
       return {
         name: VariableName.estimateRate,
         type: 'json',
@@ -34,6 +46,9 @@ export const GroundPurchaseEstimateRate = types
           purchaseLoanAmount,
           cor,
           arv,
+          customRate,
+          loanTerm,
+          interestRate,
         },
       };
     },
@@ -44,12 +59,24 @@ export const GroundPurchaseEstimateRate = types
       self.arv = data.arv;
     },
     injectServerData(value: GPEstimateRateData) {
-      const { purchasePrice, purchaseLoanAmount, cor, arv, closeDate } = value;
+      const {
+        purchasePrice,
+        purchaseLoanAmount,
+        cor,
+        arv,
+        closeDate,
+        customRate,
+        loanTerm,
+        interestRate,
+      } = value;
       self.purchaseLoanAmount = purchaseLoanAmount;
       self.purchasePrice = purchasePrice;
       self.cor = cor;
       self.arv = arv;
       self.closeDate = closeDate as unknown as null;
+      self.customRate = customRate;
+      self.loanTerm = loanTerm;
+      self.interestRate = interestRate;
     },
   }));
 

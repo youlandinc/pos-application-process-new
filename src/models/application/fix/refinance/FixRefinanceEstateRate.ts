@@ -12,6 +12,9 @@ export const FixRefinanceEstimateRate = types
     cashOutAmount: types.maybe(types.number),
     cor: types.maybe(types.number),
     arv: types.maybe(types.number),
+    customRate: types.maybe(types.boolean),
+    loanTerm: types.maybe(types.number),
+    interestRate: types.maybe(types.number),
   })
   .views(() => ({
     get checkIsValid() {
@@ -34,6 +37,9 @@ export const FixRefinanceEstimateRate = types
         cor,
         arv,
         closeDate,
+        customRate,
+        loanTerm,
+        interestRate,
       } = self;
 
       return {
@@ -47,6 +53,9 @@ export const FixRefinanceEstimateRate = types
           cor,
           arv,
           closeDate,
+          customRate,
+          loanTerm,
+          interestRate,
         },
       };
     },
@@ -67,6 +76,9 @@ export const FixRefinanceEstimateRate = types
         cor,
         arv,
         closeDate,
+        customRate,
+        loanTerm,
+        interestRate,
       } = value;
 
       self.homeValue = homeValue;
@@ -76,6 +88,9 @@ export const FixRefinanceEstimateRate = types
       self.cor = cor;
       self.arv = arv;
       self.closeDate = closeDate as unknown as null;
+      self.customRate = customRate;
+      self.loanTerm = loanTerm;
+      self.interestRate = interestRate;
     },
   }));
 

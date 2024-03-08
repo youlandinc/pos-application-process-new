@@ -10,6 +10,9 @@ export const BREstimateRate = types
     balance: types.maybe(types.number),
     isCashOut: types.maybe(types.boolean),
     cashOutAmount: types.maybe(types.number),
+    customRate: types.maybe(types.boolean),
+    loanTerm: types.maybe(types.number),
+    interestRate: types.maybe(types.number),
   })
   .views(() => ({
     get checkIsValid() {
@@ -24,7 +27,16 @@ export const BREstimateRate = types
       self[key] = value;
     },
     getPostData(): Variable<BREstimateRateData> {
-      const { homeValue, balance, isCashOut, cashOutAmount, closeDate } = self;
+      const {
+        homeValue,
+        balance,
+        isCashOut,
+        cashOutAmount,
+        closeDate,
+        customRate,
+        loanTerm,
+        interestRate,
+      } = self;
 
       return {
         name: VariableName.estimateRate,
@@ -35,6 +47,9 @@ export const BREstimateRate = types
           isCashOut: isCashOut as boolean,
           cashOutAmount,
           closeDate,
+          customRate,
+          loanTerm,
+          interestRate,
         },
       };
     },
@@ -45,13 +60,25 @@ export const BREstimateRate = types
       self.balance = value.balance;
     },
     injectServerData(value: BREstimateRateData) {
-      const { homeValue, balance, isCashOut, cashOutAmount, closeDate } = value;
+      const {
+        homeValue,
+        balance,
+        isCashOut,
+        cashOutAmount,
+        closeDate,
+        customRate,
+        loanTerm,
+        interestRate,
+      } = value;
 
       self.homeValue = homeValue;
       self.balance = balance;
       self.isCashOut = isCashOut;
       self.cashOutAmount = cashOutAmount;
       self.closeDate = closeDate as unknown as null;
+      self.customRate = customRate;
+      self.loanTerm = loanTerm;
+      self.interestRate = interestRate;
     },
   }));
 
