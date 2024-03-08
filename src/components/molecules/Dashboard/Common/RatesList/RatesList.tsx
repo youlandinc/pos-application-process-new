@@ -1,13 +1,14 @@
-import { Dispatch, FC, ReactNode, SetStateAction } from 'react';
+import { Dispatch, FC, ReactNode, SetStateAction, useMemo } from 'react';
 import { Stack, Typography } from '@mui/material';
 
-import { useBreakpoints } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { LoanStage, RatesProductData, UserType } from '@/types';
 
 import { StyledLoading } from '@/components/atoms';
 import { RatesCustomLoan, RatesItems, RatesSearchNoResult } from './components';
 import { observer } from 'mobx-react-lite';
 import { CustomRateData } from '@/types/dashboard';
+import { User } from '@/types/user';
 
 interface RatesProductListProps {
   productList: RatesProductData[];
@@ -40,6 +41,20 @@ export const RatesList: FC<RatesProductListProps> = observer(
     isFirstSearch,
   }) => {
     const breakpoint = useBreakpoints();
+    const { saasState } = useSessionStorageState('tenantConfig');
+
+    const condition = useMemo(() => {
+      const original = saasState?.posSettings?.customLoanTerms?.reduce(
+        (acc: string[], cur: User.POSBorrowerTypes) => {
+          if (cur.allowed) {
+            acc.push(cur.key);
+          }
+          return acc;
+        },
+        [],
+      );
+      return !(!original?.length || !original.includes(userType));
+    }, [saasState?.posSettings?.customLoanTerms, userType]);
 
     return (
       <Stack id={id} maxWidth={900} mt={2} width={'100%'}>
@@ -72,13 +87,15 @@ export const RatesList: FC<RatesProductListProps> = observer(
                     />
                   );
                 })}
-                <RatesCustomLoan
-                  customLoading={customLoading}
-                  customLoan={customLoan}
-                  onCustomLoanClick={onCustomLoanClick}
-                  setCustomLoan={setCustomLoan}
-                  userType={userType!}
-                />
+                {condition && (
+                  <RatesCustomLoan
+                    customLoading={customLoading}
+                    customLoan={customLoan}
+                    onCustomLoanClick={onCustomLoanClick}
+                    setCustomLoan={setCustomLoan}
+                    userType={userType!}
+                  />
+                )}
               </Stack>
 
               <Stack
@@ -98,6 +115,7 @@ export const RatesList: FC<RatesProductListProps> = observer(
             </Stack>
           ) : (
             <RatesSearchNoResult
+              condition={condition}
               customLoading={customLoading}
               customLoan={customLoan}
               onCustomLoanClick={onCustomLoanClick}
@@ -107,6 +125,7 @@ export const RatesList: FC<RatesProductListProps> = observer(
           )
         ) : (
           <RatesSearchNoResult
+            condition={condition}
             customLoading={customLoading}
             customLoan={customLoan}
             onCustomLoanClick={onCustomLoanClick}

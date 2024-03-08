@@ -17,6 +17,7 @@ interface RatesSearchNoResultProps {
   setCustomLoan: Dispatch<SetStateAction<CustomRateData>>;
   onCustomLoanClick?: () => void;
   customLoading?: boolean;
+  condition: boolean;
 }
 
 export const RatesSearchNoResult: FC<RatesSearchNoResultProps> = ({
@@ -26,6 +27,7 @@ export const RatesSearchNoResult: FC<RatesSearchNoResultProps> = ({
   setCustomLoan,
   onCustomLoanClick,
   customLoading,
+  condition,
 }) => {
   const [showMore, setShowMore] = useState(false);
   const { saasState } = useSessionStorageState('tenantConfig');
@@ -63,8 +65,9 @@ export const RatesSearchNoResult: FC<RatesSearchNoResultProps> = ({
                   mt={0.375}
                   variant={'subtitle2'}
                 >
-                  No standard loan products match your criteria. Proceed by
-                  using custom loan terms below.
+                  {condition
+                    ? 'No standard loan products match your criteria. Proceed by using custom loan terms below.'
+                    : 'Unfortunately, we couldn’t find any eligible loan products.'}
                 </Typography>
               </Stack>
 
@@ -116,17 +119,25 @@ export const RatesSearchNoResult: FC<RatesSearchNoResultProps> = ({
           </Stack>
         )}
 
-        <Stack alignItems={'center'} my={2} width={'100%'}>
-          <RatesCustomLoan
-            customLoading={customLoading!}
-            customLoan={customLoan!}
-            onCustomLoanClick={onCustomLoanClick}
-            setCustomLoan={setCustomLoan!}
-            userType={userType!}
-          />
-        </Stack>
+        {condition && (
+          <Stack alignItems={'center'} my={2} width={'100%'}>
+            <RatesCustomLoan
+              customLoading={customLoading!}
+              customLoan={customLoan!}
+              onCustomLoanClick={onCustomLoanClick}
+              setCustomLoan={setCustomLoan!}
+              userType={userType!}
+            />
+          </Stack>
+        )}
 
         <Stack gap={1.5}>
+          {!condition && (
+            <Typography mt={3} textAlign={'center'} variant={'h5'}>
+              Can&apos;t find any rates? We can help
+            </Typography>
+          )}
+
           <Typography
             color={'info.main'}
             textAlign={'center'}
