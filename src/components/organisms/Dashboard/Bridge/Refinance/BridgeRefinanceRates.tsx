@@ -41,6 +41,7 @@ import {
   BridgeRefinanceRatesSearch,
   RatesList,
 } from '@/components/molecules';
+import { debounce } from 'lodash';
 
 const initialize: BRQueryData = {
   homeValue: undefined,
@@ -357,6 +358,7 @@ export const BridgeRefinanceRates: FC = observer(() => {
                   Back to current rate
                 </Typography>
                 <BridgeRefinanceRatesSearch
+                  debounceSet={debounce(setSearchForm, 500)}
                   isDashboard={true}
                   loading={loading || state.loading}
                   loanStage={loanStage}
@@ -364,16 +366,16 @@ export const BridgeRefinanceRates: FC = observer(() => {
                   setSearchForm={setSearchForm}
                   userType={userType as UserType}
                 />
-                {!searchForm.customRate && (
-                  <RatesList
-                    loading={loading || state.loading}
-                    loanStage={loanStage}
-                    onClick={onListItemClick}
-                    productList={productList || []}
-                    reasonList={reasonList}
-                    userType={userType}
-                  />
-                )}
+                {/*{!searchForm.customRate && (*/}
+                {/*  <RatesList*/}
+                {/*    loading={loading || state.loading}*/}
+                {/*    loanStage={loanStage}*/}
+                {/*    onClick={onListItemClick}*/}
+                {/*    productList={productList || []}*/}
+                {/*    reasonList={reasonList}*/}
+                {/*    userType={userType}*/}
+                {/*  />*/}
+                {/*)}*/}
                 <BridgeRefinanceRatesDrawer
                   close={close}
                   loading={confirmLoading}

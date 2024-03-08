@@ -44,6 +44,7 @@ import {
   GroundPurchaseRatesSearch,
   RatesList,
 } from '@/components/molecules';
+import { debounce } from 'lodash';
 
 const initialize: GPQueryData = {
   purchasePrice: undefined,
@@ -373,6 +374,7 @@ export const GroundPurchaseRates: FC = observer(() => {
                   Back to current rate
                 </Typography>
                 <GroundPurchaseRatesSearch
+                  debounceSet={debounce(setSearchForm, 500)}
                   isDashboard={true}
                   loading={loading || state.loading}
                   loanStage={loanStage}
@@ -380,16 +382,16 @@ export const GroundPurchaseRates: FC = observer(() => {
                   setSearchForm={setSearchForm}
                   userType={userType}
                 />
-                {!searchForm.customRate && (
-                  <RatesList
-                    loading={loading || state.loading}
-                    loanStage={loanStage}
-                    onClick={onListItemClick}
-                    productList={productList || []}
-                    reasonList={reasonList}
-                    userType={userType}
-                  />
-                )}
+                {/*{!searchForm.customRate && (*/}
+                {/*  <RatesList*/}
+                {/*    loading={loading || state.loading}*/}
+                {/*    loanStage={loanStage}*/}
+                {/*    onClick={onListItemClick}*/}
+                {/*    productList={productList || []}*/}
+                {/*    reasonList={reasonList}*/}
+                {/*    userType={userType}*/}
+                {/*  />*/}
+                {/*)}*/}
                 <GroundPurchaseRatesDrawer
                   close={close}
                   loading={confirmLoading}

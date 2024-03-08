@@ -54,12 +54,12 @@ export interface GPEstimateRateData {
 }
 
 export interface GREstimateRateData {
-  homeValue: number | undefined;
-  balance: number | undefined;
-  isCashOut: boolean;
-  cashOutAmount: number | undefined;
-  cor: number | undefined;
-  arv: number | undefined;
+  homeValue?: number | undefined;
+  balance?: number | undefined;
+  isCashOut?: boolean;
+  cashOutAmount?: number | undefined;
+  cor?: number | undefined;
+  arv?: number | undefined;
   brokerPoints?: number | undefined;
   brokerProcessingFee?: number | undefined;
   lenderPoints?: number | undefined;

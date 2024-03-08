@@ -1,5 +1,5 @@
 import { get, post, put } from '../axios';
-import { RatesProductData } from '@/types/dashboard';
+import { CustomRateData, RatesProductData } from '@/types/dashboard';
 import {
   BPEstimateRateData,
   BREstimateRateData,
@@ -75,7 +75,7 @@ export const _fetchRatesLoanInfo = (processInsId = '') => {
 
 export const _fetchCustomRates = (
   processInsId = '',
-  postData: FetchProductMapPreviewQueryData,
+  postData: CustomRateData,
 ) => {
   return post(`/dashboard/rate/${processInsId}/custom`, postData);
 };

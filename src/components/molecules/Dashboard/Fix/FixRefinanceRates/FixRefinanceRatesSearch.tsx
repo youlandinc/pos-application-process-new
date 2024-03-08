@@ -19,6 +19,7 @@ import {
 interface FixRefinanceRatesSearchProps {
   searchForm: FRQueryData;
   setSearchForm: Dispatch<SetStateAction<FRQueryData>>;
+  debounceSet: Dispatch<SetStateAction<FRQueryData>>;
   loading: boolean;
   userType: UserType;
   loanStage?: LoanStage;
@@ -34,6 +35,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
   loanStage = LoanStage.Application,
   isDashboard = false,
   id,
+  debounceSet,
 }) => {
   const {
     cor,
@@ -122,7 +124,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                   disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker origination fee'}
                   onValueChange={({ floatValue }) => {
-                    setSearchForm({
+                    debounceSet({
                       ...searchForm,
                       brokerPoints: floatValue,
                     });
@@ -138,7 +140,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                   disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker processing fee'}
                   onValueChange={({ floatValue }) => {
-                    setSearchForm({
+                    debounceSet({
                       ...searchForm,
                       brokerProcessingFee: floatValue,
                     });
@@ -177,7 +179,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                   disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender origination fee'}
                   onValueChange={({ floatValue }) => {
-                    setSearchForm({
+                    debounceSet({
                       ...searchForm,
                       lenderPoints: floatValue,
                     });
@@ -193,7 +195,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                   disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender processing fee'}
                   onValueChange={({ floatValue }) => {
-                    setSearchForm({
+                    debounceSet({
                       ...searchForm,
                       lenderProcessingFee: floatValue,
                     });
@@ -232,7 +234,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                   disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer origination fee'}
                   onValueChange={({ floatValue }) => {
-                    setSearchForm({
+                    debounceSet({
                       ...searchForm,
                       officerPoints: floatValue,
                     });
@@ -248,7 +250,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                   disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer processing fee'}
                   onValueChange={({ floatValue }) => {
-                    setSearchForm({
+                    debounceSet({
                       ...searchForm,
                       officerProcessingFee: floatValue,
                     });
@@ -286,7 +288,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                   disabled={loading || loanStage === LoanStage.Approved}
                   label={'Real estate agent fee'}
                   onValueChange={({ floatValue }) => {
-                    setSearchForm({
+                    debounceSet({
                       ...searchForm,
                       agentFee: floatValue,
                     });
@@ -314,7 +316,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
     officerPoints,
     officerProcessingFee,
     searchForm,
-    setSearchForm,
+    debounceSet,
     userType,
   ]);
 
@@ -375,7 +377,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
             disablePast
             label={'Preferred closing date'}
             onChange={(value) => {
-              setSearchForm({
+              debounceSet({
                 ...searchForm,
                 closeDate: value as Date,
               });
@@ -414,7 +416,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
               disabled={loading || loanStage === LoanStage.Approved}
               label={'As-is property value'}
               onValueChange={({ floatValue }) => {
-                setSearchForm({
+                debounceSet({
                   ...searchForm,
                   homeValue: floatValue,
                 });
@@ -427,7 +429,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
               disabled={loading || loanStage === LoanStage.Approved}
               label={'Payoff amount'}
               onValueChange={({ floatValue }) => {
-                setSearchForm({
+                debounceSet({
                   ...searchForm,
                   balance: floatValue,
                 });
@@ -472,20 +474,20 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
               disabled={loading || loanStage === LoanStage.Approved}
               label={'Estimated rehab loan amount'}
               onValueChange={({ floatValue }) => {
-                setSearchForm({
+                debounceSet({
                   ...searchForm,
                   cor: floatValue,
                 });
               }}
               prefix={'$'}
-              value={cor || undefined}
+              value={cor}
             />
 
             <StyledTextFieldNumber
               disabled={loading || loanStage === LoanStage.Approved}
               label={'After repair value (ARV)'}
               onValueChange={({ floatValue }) => {
-                setSearchForm({
+                debounceSet({
                   ...searchForm,
                   arv: floatValue,
                 });
@@ -544,13 +546,13 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
                 disabled={loading || loanStage === LoanStage.Approved}
                 label={'Cash out amount'}
                 onValueChange={({ floatValue }) => {
-                  setSearchForm({
+                  debounceSet({
                     ...searchForm,
                     cashOutAmount: floatValue,
                   });
                 }}
                 prefix={'$'}
-                value={cashOutAmount || undefined}
+                value={cashOutAmount}
               />
             )}
           </Transitions>
