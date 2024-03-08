@@ -322,7 +322,12 @@ export const GroundRefinanceEstimateRate: FC<{
     }
   };
 
-  const { run } = useDebounceFn(() => onCheckGetList(), 1000);
+  const { run } = useDebounceFn(() => {
+    if (searchForm.isCashOut && !POSNotUndefined(searchForm?.cashOutAmount)) {
+      return;
+    }
+    onCheckGetList();
+  }, 1000);
 
   useEffect(
     () => {
