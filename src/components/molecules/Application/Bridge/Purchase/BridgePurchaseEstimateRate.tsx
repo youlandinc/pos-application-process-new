@@ -8,7 +8,7 @@ import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSNotUndefined, POSTypeOf } from '@/utils';
-import { useSwitch } from '@/hooks';
+import { useDebounceFn, useSwitch } from '@/hooks';
 import {
   BPEstimateRateData,
   CustomRateData,
@@ -313,6 +313,8 @@ export const BridgePurchaseEstimateRate: FC<{
     }
   };
 
+  const { run } = useDebounceFn(() => onCheckGetList(), 1000);
+
   useEffect(
     () => {
       if (
@@ -321,7 +323,7 @@ export const BridgePurchaseEstimateRate: FC<{
       ) {
         return;
       }
-      debounce(() => onCheckGetList(), 1000);
+      run();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [

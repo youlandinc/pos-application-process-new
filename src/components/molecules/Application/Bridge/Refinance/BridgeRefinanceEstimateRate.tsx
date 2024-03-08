@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { POSNotUndefined, POSTypeOf } from '@/utils';
-import { useBreakpoints, useSwitch } from '@/hooks';
+import { useBreakpoints, useDebounceFn, useSwitch } from '@/hooks';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import {
@@ -319,6 +319,8 @@ export const BridgeRefinanceEstimateRate: FC<{
     }
   };
 
+  const { run } = useDebounceFn(() => onCheckGetList(), 1000);
+
   useEffect(
     () => {
       if (
@@ -330,7 +332,7 @@ export const BridgeRefinanceEstimateRate: FC<{
       if (searchForm.isCashOut && !POSNotUndefined(searchForm?.cashOutAmount)) {
         return;
       }
-      debounce(() => onCheckGetList(), 1000);
+      run();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [

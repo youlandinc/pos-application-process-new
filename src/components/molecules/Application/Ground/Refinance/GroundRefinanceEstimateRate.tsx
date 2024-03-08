@@ -1,13 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { addDays, format, isDate } from 'date-fns';
-import { debounce } from 'lodash';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { useBreakpoints, useSwitch } from '@/hooks';
+import { useBreakpoints, useDebounceFn, useSwitch } from '@/hooks';
 import { POSNotUndefined, POSTypeOf } from '@/utils';
 import {
   CustomRateData,
@@ -323,6 +322,8 @@ export const GroundRefinanceEstimateRate: FC<{
     }
   };
 
+  const { run } = useDebounceFn(() => onCheckGetList(), 1000);
+
   useEffect(
     () => {
       if (
@@ -336,7 +337,7 @@ export const GroundRefinanceEstimateRate: FC<{
       if (searchForm.isCashOut && !POSNotUndefined(searchForm?.cashOutAmount)) {
         return;
       }
-      debounce(() => onCheckGetList(), 1000);
+      run();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
