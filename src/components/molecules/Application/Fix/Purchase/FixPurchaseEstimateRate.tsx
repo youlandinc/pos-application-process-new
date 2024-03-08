@@ -335,7 +335,7 @@ export const FixPurchaseEstimateRate: FC<{
       ) {
         return;
       }
-      onCheckGetList();
+      debounce(() => onCheckGetList(), 1000);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -358,7 +358,6 @@ export const FixPurchaseEstimateRate: FC<{
   return (
     <>
       <FixPurchaseRatesSearch
-        debounceSet={debounce(setSearchForm, 500)}
         id={'fix_and_flip_purchase_rate_search'}
         loading={loading}
         searchForm={searchForm}

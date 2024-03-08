@@ -358,7 +358,6 @@ export const BridgeRefinanceRates: FC = observer(() => {
                   Back to current rate
                 </Typography>
                 <BridgeRefinanceRatesSearch
-                  debounceSet={debounce(setSearchForm, 500)}
                   isDashboard={true}
                   loading={loading || state.loading}
                   loanStage={loanStage}

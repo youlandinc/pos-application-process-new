@@ -331,7 +331,7 @@ export const GroundPurchaseEstimateRate: FC<{
       ) {
         return;
       }
-      onCheckGetList();
+      debounce(() => onCheckGetList(), 1000);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -354,7 +354,6 @@ export const GroundPurchaseEstimateRate: FC<{
   return (
     <>
       <GroundPurchaseRatesSearch
-        debounceSet={debounce(setSearchForm, 500)}
         id={'ground_up_purchase_rate_search'}
         loading={loading}
         searchForm={searchForm}

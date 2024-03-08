@@ -339,7 +339,7 @@ export const FixRefinanceEstimateRate: FC<{
       if (searchForm.isCashOut && !POSNotUndefined(searchForm?.cashOutAmount)) {
         return;
       }
-      onCheckGetList();
+      debounce(() => onCheckGetList(), 1000);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -364,7 +364,6 @@ export const FixRefinanceEstimateRate: FC<{
   return (
     <>
       <FixRefinanceRatesSearch
-        debounceSet={debounce(setSearchForm, 500)}
         id={'fix_and_flip_refinance_rate_search'}
         loading={loading}
         searchForm={searchForm}

@@ -374,7 +374,6 @@ export const GroundPurchaseRates: FC = observer(() => {
                   Back to current rate
                 </Typography>
                 <GroundPurchaseRatesSearch
-                  debounceSet={debounce(setSearchForm, 500)}
                   isDashboard={true}
                   loading={loading || state.loading}
                   loanStage={loanStage}

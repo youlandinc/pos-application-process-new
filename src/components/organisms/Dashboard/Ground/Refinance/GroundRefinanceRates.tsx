@@ -79,6 +79,7 @@ export const GroundRefinanceRates: FC = observer(() => {
   const [isFirst, setIsFirst] = useState(true);
   const [loading, setLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [customLoading, setCustomLoading] = useState(false);
 
   const [view, setView] = useState<'current' | 'confirmed' | 'other'>(
     'current',
@@ -244,6 +245,54 @@ export const GroundRefinanceRates: FC = observer(() => {
     //}
   };
 
+  const onCustomLoanClick = async () => {
+    setCustomLoading(true);
+    const requestData = {
+      customRate: true,
+      interestRate: customLoan.interestRate,
+      loanTerm: customLoan.loanTerm,
+    };
+    try {
+      const {
+        data: {
+          loanInfo,
+          product: {
+            paymentOfMonth,
+            interestRateOfYear,
+            loanTerm,
+            id,
+            totalClosingCash,
+            proRatedInterest,
+          },
+        },
+      } = await _fetchCustomRates(
+        router.query.processId as string,
+        requestData,
+      );
+      setSelectedItem(
+        Object.assign(loanInfo as GroundRefinanceLoanInfo, {
+          paymentOfMonth,
+          interestRateOfYear,
+          loanTerm,
+          id,
+          totalClosingCash,
+          proRatedInterest,
+        }),
+      );
+      open();
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setCustomLoading(false);
+    }
+  };
+
   const onListItemClick = async (item: RatesProductData) => {
     const {
       paymentOfMonth,
@@ -378,7 +427,6 @@ export const GroundRefinanceRates: FC = observer(() => {
                   Back to current rate
                 </Typography>
                 <GroundRefinanceRatesSearch
-                  debounceSet={debounce(setSearchForm, 500)}
                   isDashboard={true}
                   loading={loading || state.loading}
                   loanStage={loanStage}
@@ -386,17 +434,19 @@ export const GroundRefinanceRates: FC = observer(() => {
                   setSearchForm={setSearchForm}
                   userType={userType as UserType}
                 />
-                {/*<RatesList*/}
-                {/*  customLoan={customLoan}*/}
-                {/*  isFirstSearch={false}*/}
-                {/*  loading={loading || state.loading}*/}
-                {/*  loanStage={loanStage}*/}
-                {/*  onClick={onListItemClick}*/}
-                {/*  productList={productList || []}*/}
-                {/*  reasonList={reasonList}*/}
-                {/*  setCustomLoan={setCustomLoan}*/}
-                {/*  userType={userType}*/}
-                {/*/>*/}
+                <RatesList
+                  customLoading={customLoading}
+                  customLoan={customLoan}
+                  isFirstSearch={false}
+                  loading={loading || state.loading}
+                  loanStage={loanStage}
+                  onClick={onListItemClick}
+                  onCustomLoanClick={onCustomLoanClick}
+                  productList={productList || []}
+                  reasonList={reasonList}
+                  setCustomLoan={setCustomLoan}
+                  userType={userType}
+                />
                 <GroundRefinanceRatesDrawer
                   close={close}
                   loading={confirmLoading}

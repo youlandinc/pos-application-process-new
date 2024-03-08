@@ -330,7 +330,7 @@ export const BridgeRefinanceEstimateRate: FC<{
       if (searchForm.isCashOut && !POSNotUndefined(searchForm?.cashOutAmount)) {
         return;
       }
-      onCheckGetList();
+      debounce(() => onCheckGetList(), 1000);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -353,7 +353,6 @@ export const BridgeRefinanceEstimateRate: FC<{
   return (
     <>
       <BridgeRefinanceRatesSearch
-        debounceSet={debounce(setSearchForm, 500)}
         id={'bridge_refinance_rate_search'}
         loading={loading}
         searchForm={searchForm}

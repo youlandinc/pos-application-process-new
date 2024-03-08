@@ -321,7 +321,7 @@ export const BridgePurchaseEstimateRate: FC<{
       ) {
         return;
       }
-      onCheckGetList();
+      debounce(() => onCheckGetList(), 1000);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -342,7 +342,6 @@ export const BridgePurchaseEstimateRate: FC<{
   return (
     <>
       <BridgePurchaseRatesSearch
-        debounceSet={debounce(setSearchForm, 300)}
         id={'bridge_purchase_rate_search'}
         loading={loading}
         searchForm={searchForm}
