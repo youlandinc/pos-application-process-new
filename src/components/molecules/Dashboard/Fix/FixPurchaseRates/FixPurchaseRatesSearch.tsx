@@ -27,10 +27,10 @@ interface FixPurchaseRatesSearchProps {
 
 export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
   searchForm,
-  setSearchForm,
-  loading,
   userType,
-  loanStage = LoanStage.Application,
+  //setSearchForm,
+  //loading,
+  //loanStage = LoanStage.Application,
   isDashboard = false,
   id,
   debounceSet,
@@ -109,7 +109,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
                   decimalScale={3}
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker origination fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -125,7 +125,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
               </Stack>
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker processing fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -164,7 +164,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
                   decimalScale={3}
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender origination fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -180,7 +180,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
               </Stack>
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender processing fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -219,7 +219,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
                   decimalScale={3}
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer origination fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -235,7 +235,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
               </Stack>
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer processing fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -273,7 +273,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
             >
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Real estate agent fee'}
                   onValueChange={({ floatValue }) => {
                     debounceSet({
@@ -299,8 +299,8 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
     brokerProcessingFee,
     lenderPoints,
     lenderProcessingFee,
-    loading,
-    loanStage,
+    //loading,
+    //loanStage,
     officerPoints,
     officerProcessingFee,
     searchForm,
@@ -401,7 +401,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
             width={'100%'}
           >
             <StyledTextFieldNumber
-              disabled={loading || loanStage === LoanStage.Approved}
+              //disabled={loading || loanStage === LoanStage.Approved}
               label={'Purchase price'}
               onValueChange={({ floatValue }) => {
                 debounceSet({
@@ -414,7 +414,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
             />
 
             <StyledTextFieldNumber
-              disabled={loading || loanStage === LoanStage.Approved}
+              //disabled={loading || loanStage === LoanStage.Approved}
               label={'Purchase loan amount'}
               onValueChange={({ floatValue }) => {
                 debounceSet({
@@ -458,7 +458,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
             width={'100%'}
           >
             <StyledTextFieldNumber
-              disabled={loading || loanStage === LoanStage.Approved}
+              //disabled={loading || loanStage === LoanStage.Approved}
               label={'Estimated rehab loan amount'}
               onValueChange={({ floatValue }) => {
                 debounceSet({
@@ -471,7 +471,7 @@ export const FixPurchaseRatesSearch: FC<FixPurchaseRatesSearchProps> = ({
             />
 
             <StyledTextFieldNumber
-              disabled={loading || loanStage === LoanStage.Approved}
+              //disabled={loading || loanStage === LoanStage.Approved}
               label={'After repair value (ARV)'}
               onValueChange={({ floatValue }) => {
                 debounceSet({

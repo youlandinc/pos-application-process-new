@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { useSwitch } from '@/hooks';
+import { useBreakpoints, useSwitch } from '@/hooks';
 import { POSNotUndefined, POSTypeOf } from '@/utils';
 import {
   CustomRateData,
@@ -107,6 +107,7 @@ export const GroundRefinanceEstimateRate: FC<{
   } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
+  const breakpoints = useBreakpoints();
 
   const [loading, setLoading] = useState(false);
   const [checkLoading, setCheckLoading] = useState(false);
@@ -193,9 +194,11 @@ export const GroundRefinanceEstimateRate: FC<{
       .finally(() => {
         setIsFirstSearch(false);
         setLoading(false);
-        setTimeout(() => {
-          window.scrollTo({ top: height + 144, behavior: 'smooth' });
-        }, 300);
+        if (['sx', 'sm', 'md'].includes(breakpoints)) {
+          setTimeout(() => {
+            window.scrollTo({ top: height + 144, behavior: 'smooth' });
+          }, 300);
+        }
       });
   };
 

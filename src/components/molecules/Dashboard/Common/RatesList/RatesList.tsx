@@ -40,6 +40,8 @@ export const RatesList: FC<RatesProductListProps> = observer(
     isFirstSearch,
   }) => {
     const breakpoint = useBreakpoints();
+    console.log(setCustomLoan);
+
     return (
       <Stack id={id} maxWidth={900} mt={2} width={'100%'}>
         {isFirstSearch ? (
@@ -105,7 +107,14 @@ export const RatesList: FC<RatesProductListProps> = observer(
             />
           )
         ) : (
-          <RatesSearchNoResult reasonList={reasonList} />
+          <RatesSearchNoResult
+            customLoading={customLoading}
+            customLoan={customLoan}
+            onCustomLoanClick={onCustomLoanClick}
+            reasonList={reasonList}
+            setCustomLoan={setCustomLoan}
+            userType={userType!}
+          />
         )}
       </Stack>
     );

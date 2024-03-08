@@ -8,7 +8,7 @@ import { useMst } from '@/models/Root';
 
 import { POSNotUndefined, POSTypeOf } from '@/utils';
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { useSwitch } from '@/hooks';
+import { useBreakpoints, useSwitch } from '@/hooks';
 import { _updateProcessVariables } from '@/requests';
 import {
   CustomRateData,
@@ -103,6 +103,7 @@ export const FixPurchaseEstimateRate: FC<{
     userType,
   } = useMst();
 
+  const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
 
@@ -195,9 +196,11 @@ export const FixPurchaseEstimateRate: FC<{
       .finally(() => {
         setIsFirstSearch(false);
         setLoading(false);
-        setTimeout(() => {
-          window.scrollTo({ top: height + 144, behavior: 'smooth' });
-        }, 300);
+        if (['sx', 'sm', 'md'].includes(breakpoints)) {
+          setTimeout(() => {
+            window.scrollTo({ top: height + 144, behavior: 'smooth' });
+          }, 300);
+        }
       });
   };
 

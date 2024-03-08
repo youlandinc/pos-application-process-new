@@ -14,7 +14,7 @@ interface RatesSearchNoResultProps {
   reasonList?: string[];
   userType?: UserType;
   customLoan?: CustomRateData;
-  setCustomLoan?: Dispatch<SetStateAction<CustomRateData>>;
+  setCustomLoan: Dispatch<SetStateAction<CustomRateData>>;
   onCustomLoanClick?: () => void;
   customLoading?: boolean;
 }
