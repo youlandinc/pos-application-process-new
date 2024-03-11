@@ -6,8 +6,9 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
+import { useBreakpoints, useDebounceFn, useSwitch } from '@/hooks';
 import { POSNotUndefined, POSTypeOf } from '@/utils';
-import { useDebounceFn, useSwitch } from '@/hooks';
+
 import {
   BPEstimateRateData,
   CustomRateData,
@@ -18,6 +19,12 @@ import {
   VariableName,
 } from '@/types';
 
+import {
+  BridgePurchaseRatesDrawer,
+  BridgePurchaseRatesSearch,
+  RatesList,
+} from '@/components/molecules';
+
 import { _updateProcessVariables } from '@/requests';
 import {
   _fetchCustomRates,
@@ -25,11 +32,6 @@ import {
   _updateRatesProductSelected,
   BPQueryData,
 } from '@/requests/dashboard';
-import {
-  BridgePurchaseRatesDrawer,
-  BridgePurchaseRatesSearch,
-  RatesList,
-} from '@/components/molecules';
 
 const initialize: BPQueryData = {
   purchasePrice: undefined,
@@ -97,6 +99,7 @@ export const BridgePurchaseEstimateRate: FC<{
     userType,
   } = useMst();
 
+  const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
 
@@ -185,9 +188,11 @@ export const BridgePurchaseEstimateRate: FC<{
       .finally(() => {
         setIsFirstSearch(false);
         setLoading(false);
-        //setTimeout(() => {
-        //  window.scrollTo({ top: height + 144, behavior: 'smooth' });
-        //}, 300);
+        if (['sx', 'sm', 'md'].includes(breakpoints)) {
+          setTimeout(() => {
+            window.scrollTo({ top: height + 144, behavior: 'smooth' });
+          }, 300);
+        }
       });
   };
 

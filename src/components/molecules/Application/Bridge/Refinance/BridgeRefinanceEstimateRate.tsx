@@ -5,10 +5,10 @@ import { addDays, format, isDate } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { POSNotUndefined, POSTypeOf } from '@/utils';
-import { useBreakpoints, useDebounceFn, useSwitch } from '@/hooks';
-
 import { AUTO_HIDE_DURATION } from '@/constants';
+import { useBreakpoints, useDebounceFn, useSwitch } from '@/hooks';
+import { POSNotUndefined, POSTypeOf } from '@/utils';
+
 import {
   BREstimateRateData,
   CustomRateData,
@@ -18,6 +18,13 @@ import {
   RatesProductData,
   VariableName,
 } from '@/types';
+
+import {
+  BridgeRefinanceRatesDrawer,
+  BridgeRefinanceRatesSearch,
+  RatesList,
+} from '@/components/molecules';
+
 import { _updateProcessVariables } from '@/requests';
 import {
   _fetchCustomRates,
@@ -25,11 +32,6 @@ import {
   _updateRatesProductSelected,
   BRQueryData,
 } from '@/requests/dashboard';
-import {
-  BridgeRefinanceRatesDrawer,
-  BridgeRefinanceRatesSearch,
-  RatesList,
-} from '@/components/molecules';
 
 const initialize: BRQueryData = {
   homeValue: undefined,
@@ -99,9 +101,10 @@ export const BridgeRefinanceEstimateRate: FC<{
     },
     userType,
   } = useMst();
+
+  const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
-  const breakpoints = useBreakpoints();
 
   const [loading, setLoading] = useState(false);
   const [checkLoading, setCheckLoading] = useState(false);
