@@ -110,6 +110,7 @@ export const BridgeRefinanceEstimateRate: FC<{
   const [checkLoading, setCheckLoading] = useState(false);
   const [customLoading, setCustomLoading] = useState(false);
   const [isFirstSearch, setIsFirstSearch] = useState(true);
+  const [productType, setProductType] = useState('');
 
   const [searchForm, setSearchForm] = useState<BRQueryData>({
     ...initialize,
@@ -237,6 +238,7 @@ export const BridgeRefinanceEstimateRate: FC<{
             id,
             totalClosingCash,
             proRatedInterest,
+            category,
           },
         } = res!.data;
         if (nextStep) {
@@ -245,6 +247,7 @@ export const BridgeRefinanceEstimateRate: FC<{
             return item;
           });
           setProductList(temp);
+          setProductType(category);
         }
         setSelectedItem(
           Object.assign(loanInfo as BridgeRefinanceLoanInfo, {
@@ -376,12 +379,21 @@ export const BridgeRefinanceEstimateRate: FC<{
         onClick={onListItemClick}
         onCustomLoanClick={onCustomLoanClick}
         productList={productList as RatesProductData[]}
+        productType={productType}
         reasonList={reasonList}
         setCustomLoan={setCustomLoan}
         userType={userType}
       />
       <BridgeRefinanceRatesDrawer
-        close={close}
+        close={() => {
+          const temp = productList!.map((item) => {
+            item.selected = false;
+            return item;
+          });
+          setProductList(temp);
+          setProductType('');
+          close();
+        }}
         loading={checkLoading}
         nextStep={nextStepWrap}
         onCancel={close}

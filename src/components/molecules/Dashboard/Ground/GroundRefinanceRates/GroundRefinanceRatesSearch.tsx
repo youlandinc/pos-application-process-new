@@ -273,7 +273,6 @@ export const GroundRefinanceRatesSearch: FC<
               color: 'info.dark',
               fontWeight: 400,
               fontSize: 20,
-
               pl: '4px',
             }}
             sub

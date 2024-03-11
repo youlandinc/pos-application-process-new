@@ -18,6 +18,7 @@ interface RatesSearchNoResultProps {
   onCustomLoanClick?: () => void;
   customLoading?: boolean;
   condition: boolean;
+  productType?: string | 'CUSTOM_LOAN';
 }
 
 export const RatesSearchNoResult: FC<RatesSearchNoResultProps> = ({
@@ -28,6 +29,7 @@ export const RatesSearchNoResult: FC<RatesSearchNoResultProps> = ({
   onCustomLoanClick,
   customLoading,
   condition,
+  productType,
 }) => {
   const [showMore, setShowMore] = useState(false);
   const { saasState } = useSessionStorageState('tenantConfig');
@@ -125,6 +127,7 @@ export const RatesSearchNoResult: FC<RatesSearchNoResultProps> = ({
               customLoading={customLoading!}
               customLoan={customLoan!}
               onCustomLoanClick={onCustomLoanClick}
+              productType={productType}
               setCustomLoan={setCustomLoan!}
               userType={userType!}
             />

@@ -115,6 +115,7 @@ export const FixRefinanceEstimateRate: FC<{
   const [checkLoading, setCheckLoading] = useState(false);
   const [customLoading, setCustomLoading] = useState(false);
   const [isFirstSearch, setIsFirstSearch] = useState(true);
+  const [productType, setProductType] = useState('');
 
   const [searchForm, setSearchForm] = useState<FRQueryData>({
     ...initialize,
@@ -245,6 +246,7 @@ export const FixRefinanceEstimateRate: FC<{
             id,
             totalClosingCash,
             proRatedInterest,
+            category,
           },
         } = res!.data;
         if (nextStep) {
@@ -253,6 +255,7 @@ export const FixRefinanceEstimateRate: FC<{
             return item;
           });
           setProductList(temp);
+          setProductType(category);
         }
         setSelectedItem(
           Object.assign(loanInfo as FixRefinanceLoanInfo, {
@@ -388,12 +391,21 @@ export const FixRefinanceEstimateRate: FC<{
         onClick={onListItemClick}
         onCustomLoanClick={onCustomLoanClick}
         productList={productList as RatesProductData[]}
+        productType={productType}
         reasonList={reasonList}
         setCustomLoan={setCustomLoan}
         userType={userType}
       />
       <FixRefinanceRatesDrawer
-        close={close}
+        close={() => {
+          const temp = productList!.map((item) => {
+            item.selected = false;
+            return item;
+          });
+          setProductList(temp);
+          setProductType('');
+          close();
+        }}
         loading={checkLoading}
         nextStep={nextStepWrap}
         onCancel={close}

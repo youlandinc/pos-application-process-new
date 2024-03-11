@@ -24,6 +24,7 @@ interface RatesProductListProps {
   onCustomLoanClick: () => void;
   customLoading: boolean;
   isFirstSearch: boolean;
+  productType?: string | 'CUSTOM_LOAN';
 }
 
 export const RatesList: FC<RatesProductListProps> = observer(
@@ -39,6 +40,7 @@ export const RatesList: FC<RatesProductListProps> = observer(
     onCustomLoanClick,
     customLoading,
     isFirstSearch,
+    productType,
   }) => {
     const breakpoint = useBreakpoints();
     const { saasState } = useSessionStorageState('tenantConfig');
@@ -92,6 +94,7 @@ export const RatesList: FC<RatesProductListProps> = observer(
                     customLoading={customLoading}
                     customLoan={customLoan}
                     onCustomLoanClick={onCustomLoanClick}
+                    productType={productType}
                     setCustomLoan={setCustomLoan}
                     userType={userType!}
                   />
@@ -119,6 +122,7 @@ export const RatesList: FC<RatesProductListProps> = observer(
               customLoading={customLoading}
               customLoan={customLoan}
               onCustomLoanClick={onCustomLoanClick}
+              productType={productType}
               setCustomLoan={setCustomLoan}
               userType={userType!}
             />
@@ -129,6 +133,7 @@ export const RatesList: FC<RatesProductListProps> = observer(
             customLoading={customLoading}
             customLoan={customLoan}
             onCustomLoanClick={onCustomLoanClick}
+            productType={productType}
             reasonList={reasonList}
             setCustomLoan={setCustomLoan}
             userType={userType!}
