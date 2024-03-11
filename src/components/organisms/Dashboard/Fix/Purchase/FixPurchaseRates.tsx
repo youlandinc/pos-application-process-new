@@ -2,32 +2,25 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useRouter } from 'next/router';
-import { useAsyncFn } from 'react-use';
+import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { useSessionStorageState, useSwitch } from '@/hooks';
-
+import { useDebounceFn, useSessionStorageState, useSwitch } from '@/hooks';
 import {
   POSFormatDollar,
   POSFormatPercent,
   POSGetParamsFromUrl,
+  POSNotUndefined,
 } from '@/utils';
+
 import { LoanStage, UserType } from '@/types/enum';
 import { FixPurchaseLoanInfo } from '@/components/molecules/Application/Fix';
 import {
-  _fetchCustomRates,
-  _fetchRatesLoanInfo,
-  _fetchRatesProduct,
-  _fetchRatesProductPreview,
-  _updateRatesProductSelected,
-  FPQueryData,
-} from '@/requests/dashboard';
-
-import {
+  CustomRateData,
   Encompass,
   FPEstimateRateData,
   HttpError,
@@ -40,6 +33,15 @@ import {
   FixPurchaseRatesSearch,
   RatesList,
 } from '@/components/molecules';
+
+import {
+  _fetchCustomRates,
+  _fetchRatesLoanInfo,
+  _fetchRatesProduct,
+  _fetchRatesProductPreview,
+  _updateRatesProductSelected,
+  FPQueryData,
+} from '@/requests/dashboard';
 
 import RATE_CONFIRMED from '@/svg/dashboard/rate_confirmed.svg';
 import RATE_CURRENT from '@/svg/dashboard/rate_current.svg';
@@ -73,13 +75,21 @@ export const FixPurchaseRates: FC = observer(() => {
   const [isFirst, setIsFirst] = useState(true);
   const [loading, setLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [customLoading, setCustomLoading] = useState(false);
+  const [productType, setProductType] = useState<string>('');
 
   const [view, setView] = useState<'current' | 'confirmed' | 'other'>(
     'current',
   );
+
   const [loanStage, setLoanStage] = useState<LoanStage>(LoanStage.PreApproved);
   const [encompassData, setEncompassData] = useState<Encompass>();
   const [searchForm, setSearchForm] = useState<FPQueryData>(initialize);
+  const [customLoan, setCustomLoan] = useState<CustomRateData>({
+    customRate: undefined,
+    interestRate: undefined,
+    loanTerm: undefined,
+  });
 
   const [productList, setProductList] = useState<RatesProductData[]>();
   const [reasonList, setReasonList] = useState<string[]>([]);
@@ -98,7 +108,7 @@ export const FixPurchaseRates: FC = observer(() => {
       >
   >();
 
-  const [state, fetchInitData] = useAsyncFn(async () => {
+  const fetchInitData = async () => {
     const { processId } = POSGetParamsFromUrl(location.href);
     if (!processId) {
       return;
@@ -163,6 +173,12 @@ export const FixPurchaseRates: FC = observer(() => {
           cor,
           arv,
         });
+        setCustomLoan({
+          customRate,
+          interestRate,
+          loanTerm,
+        });
+        setProductType(selectedProduct?.category || '');
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -175,47 +191,77 @@ export const FixPurchaseRates: FC = observer(() => {
         });
       })
       .finally(() => {
-        isFirst && setIsFirst(false);
+        setTimeout(() => {
+          isFirst && setIsFirst(false);
+        });
       });
-  });
+  };
+
+  const { loading: initLoading } = useAsync(fetchInitData);
+
+  const onCustomLoanClick = async () => {
+    setCustomLoading(true);
+    const requestData = {
+      customRate: true,
+      interestRate: customLoan.interestRate,
+      loanTerm: customLoan.loanTerm,
+    };
+    try {
+      const {
+        data: {
+          loanInfo,
+          product: {
+            paymentOfMonth,
+            interestRateOfYear,
+            loanTerm,
+            id,
+            totalClosingCash,
+            proRatedInterest,
+          },
+        },
+      } = await _fetchCustomRates(
+        router.query.processId as string,
+        requestData,
+      );
+      setSelectedItem(
+        Object.assign(loanInfo as FixPurchaseLoanInfo, {
+          paymentOfMonth,
+          interestRateOfYear,
+          loanTerm,
+          id,
+          totalClosingCash,
+          proRatedInterest,
+        }),
+      );
+      open();
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setCustomLoading(false);
+    }
+  };
 
   const onCheckGetList = async () => {
     setLoading(true);
-    if (!searchForm.customRate) {
-      await _fetchRatesProductPreview(
-        router.query.processId as string,
-        searchForm,
-      )
-        .then((res) => {
-          const { products, loanInfo, reasons, selectedProduct } = res.data;
-          setProductList(products);
-          setLoanInfo({ ...loanInfo, ...selectedProduct });
-          setLoading(false);
-          setReasonList(reasons);
-        })
-        .catch((err) => {
-          const { header, message, variant } = err as HttpError;
-          enqueueSnackbar(message, {
-            variant: variant || 'error',
-            autoHideDuration: AUTO_HIDE_DURATION,
-            isSimple: !header,
-            header,
-          });
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      try {
-        const {
-          data: { loanInfo, product },
-        } = await _fetchCustomRates(
-          router.query.processId as string,
-          searchForm,
-        );
-        setSelectedItem({ ...loanInfo, ...product });
-        open();
-      } catch (err) {
+    await _fetchRatesProductPreview(
+      router.query.processId as string,
+      searchForm,
+    )
+      .then((res) => {
+        const { products, loanInfo, reasons, selectedProduct } = res.data;
+        setProductList(products);
+        setLoanInfo({ ...loanInfo, ...selectedProduct });
+        setLoading(false);
+        setReasonList(reasons);
+        setProductType('');
+      })
+      .catch((err) => {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
           variant: variant || 'error',
@@ -223,10 +269,10 @@ export const FixPurchaseRates: FC = observer(() => {
           isSimple: !header,
           header,
         });
-      } finally {
+      })
+      .finally(() => {
         setLoading(false);
-      }
-    }
+      });
   };
 
   const onListItemClick = async (item: RatesProductData) => {
@@ -304,12 +350,41 @@ export const FixPurchaseRates: FC = observer(() => {
     }
   };
 
+  const { run } = useDebounceFn(() => {
+    onCheckGetList();
+  }, 1000);
+
   useEffect(
     () => {
-      fetchInitData();
+      if (isFirst) {
+        return;
+      }
+      if (
+        !POSNotUndefined(searchForm?.purchaseLoanAmount) ||
+        !POSNotUndefined(searchForm?.purchasePrice) ||
+        !POSNotUndefined(searchForm?.cor) ||
+        !POSNotUndefined(searchForm?.arv)
+      ) {
+        return;
+      }
+      run();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [
+      searchForm?.agentFee,
+      searchForm?.brokerPoints,
+      searchForm?.brokerProcessingFee,
+      searchForm?.officerPoints,
+      searchForm?.officerProcessingFee,
+      searchForm?.lenderPoints,
+      searchForm?.lenderProcessingFee,
+      // input query
+      searchForm?.closeDate,
+      searchForm?.purchasePrice,
+      searchForm?.purchaseLoanAmount,
+      searchForm?.cor,
+      searchForm?.arv,
+    ],
   );
 
   return (
@@ -320,7 +395,7 @@ export const FixPurchaseRates: FC = observer(() => {
         justifyContent: 'center',
       }}
     >
-      {isFirst || state.loading ? (
+      {isFirst || initLoading ? (
         <Stack
           alignItems={'center'}
           justifyContent={'center'}
@@ -368,23 +443,26 @@ export const FixPurchaseRates: FC = observer(() => {
                 </Typography>
                 <FixPurchaseRatesSearch
                   isDashboard={true}
-                  loading={loading || state.loading}
+                  loading={loading}
                   loanStage={loanStage}
-                  onCheck={onCheckGetList}
                   searchForm={searchForm}
                   setSearchForm={setSearchForm}
                   userType={userType}
                 />
-                {!searchForm.customRate && (
-                  <RatesList
-                    loading={loading || state.loading}
-                    loanStage={loanStage}
-                    onClick={onListItemClick}
-                    productList={productList || []}
-                    reasonList={reasonList}
-                    userType={userType}
-                  />
-                )}
+                <RatesList
+                  customLoading={customLoading}
+                  customLoan={customLoan}
+                  isFirstSearch={false}
+                  loading={loading}
+                  loanStage={loanStage}
+                  onClick={onListItemClick}
+                  onCustomLoanClick={onCustomLoanClick}
+                  productList={productList || []}
+                  productType={productType}
+                  reasonList={reasonList}
+                  setCustomLoan={setCustomLoan}
+                  userType={userType}
+                />
                 <FixPurchaseRatesDrawer
                   close={close}
                   loading={confirmLoading}

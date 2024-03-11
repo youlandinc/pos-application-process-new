@@ -8,20 +8,14 @@ import { LoanStage, UserType } from '@/types/enum';
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
 
 import {
-  StyledButton,
-  StyledCheckbox,
   StyledDatePicker,
   StyledFormItem,
   StyledTextFieldNumber,
   StyledTooltip,
-  Transitions,
 } from '@/components/atoms';
-import { useSessionStorageState } from '@/hooks';
-import { User } from '@/types/user';
 
 interface BridgePurchaseRatesSearchProps {
   loading: boolean;
-  onCheck: () => void;
   searchForm: BPQueryData;
   setSearchForm: Dispatch<SetStateAction<BPQueryData>>;
   userType?: UserType;
@@ -31,12 +25,11 @@ interface BridgePurchaseRatesSearchProps {
 }
 
 export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
-  onCheck,
+  //loading,
+  //loanStage = LoanStage.Application,
+  userType,
   searchForm,
   setSearchForm,
-  loading,
-  userType,
-  loanStage = LoanStage.Application,
   isDashboard = false,
   id,
 }) => {
@@ -51,12 +44,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
     lenderPoints,
     lenderProcessingFee,
     closeDate,
-    customRate,
-    interestRate,
-    loanTerm,
   } = searchForm;
-
-  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [date, setDate] = useState<null | Date | string>(
     isDashboard ? closeDate || addDays(new Date(), 7) : addDays(new Date(), 7),
@@ -107,7 +95,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
                   decimalScale={3}
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker origination fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
@@ -123,7 +111,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               </Stack>
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Broker processing fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
@@ -162,7 +150,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
                   decimalScale={3}
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender origination fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
@@ -178,7 +166,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               </Stack>
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Lender processing fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
@@ -217,7 +205,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
                   decimalScale={3}
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer origination fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
@@ -233,7 +221,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               </Stack>
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Loan officer processing fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
@@ -271,7 +259,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
             >
               <Stack flex={1} gap={1}>
                 <StyledTextFieldNumber
-                  disabled={loading || loanStage === LoanStage.Approved}
+                  //disabled={loading || loanStage === LoanStage.Approved}
                   label={'Real estate agent fee'}
                   onValueChange={({ floatValue }) => {
                     setSearchForm({
@@ -297,103 +285,10 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
     brokerProcessingFee,
     lenderPoints,
     lenderProcessingFee,
-    loading,
-    loanStage,
+    //loading,
+    //loanStage,
     officerPoints,
     officerProcessingFee,
-    searchForm,
-    setSearchForm,
-    userType,
-  ]);
-
-  const renderCustomRateByConfig = useMemo(() => {
-    const original = saasState?.posSettings?.customLoanTerms?.reduce(
-      (acc: string[], cur: User.POSBorrowerTypes) => {
-        if (cur.allowed) {
-          acc.push(cur.key);
-        }
-        return acc;
-      },
-      [],
-    );
-
-    if (!original?.length || !original.includes(userType)) {
-      return null;
-    }
-
-    return (
-      <Stack gap={3} maxWidth={900} width={'100%'}>
-        <StyledCheckbox
-          checked={customRate}
-          label={
-            <Typography color={'text.primary'} ml={2} variant={'body2'}>
-              Use custom loan terms
-            </Typography>
-          }
-          onChange={(e) =>
-            setSearchForm({
-              ...searchForm,
-              customRate: e.target.checked,
-            })
-          }
-        />
-        <Transitions
-          style={{
-            display: customRate ? 'block' : 'none',
-            width: '100%',
-          }}
-        >
-          {customRate && (
-            <Stack
-              flexDirection={{ lg: 'row', xs: 'column' }}
-              gap={3}
-              width={'100%'}
-            >
-              <Stack flex={1} gap={1}>
-                <StyledTextFieldNumber
-                  decimalScale={3}
-                  disabled={loading || loanStage === LoanStage.Approved}
-                  label={'Interest rate'}
-                  onValueChange={({ floatValue }) => {
-                    setSearchForm({
-                      ...searchForm,
-                      interestRate: floatValue,
-                    });
-                  }}
-                  percentage
-                  suffix={'%'}
-                  thousandSeparator={false}
-                  value={interestRate}
-                />
-              </Stack>
-              <Stack flex={1} gap={1}>
-                <StyledTextFieldNumber
-                  decimalScale={0}
-                  disabled={loading || loanStage === LoanStage.Approved}
-                  label={'Loan term (months)'}
-                  onValueChange={({ floatValue }) => {
-                    setSearchForm({
-                      ...searchForm,
-                      loanTerm: floatValue,
-                    });
-                  }}
-                  percentage={false}
-                  thousandSeparator={false}
-                  value={loanTerm}
-                />
-              </Stack>
-            </Stack>
-          )}
-        </Transitions>
-      </Stack>
-    );
-  }, [
-    customRate,
-    interestRate,
-    loading,
-    loanStage,
-    loanTerm,
-    saasState?.posSettings?.customLoanTerms,
     searchForm,
     setSearchForm,
     userType,
@@ -495,7 +390,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
             width={'100%'}
           >
             <StyledTextFieldNumber
-              disabled={loading || loanStage === LoanStage.Approved}
+              //disabled={loading || loanStage === LoanStage.Approved}
               label={'Purchase price'}
               onValueChange={({ floatValue }) => {
                 setSearchForm({
@@ -508,7 +403,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
             />
 
             <StyledTextFieldNumber
-              disabled={loading || loanStage === LoanStage.Approved}
+              //disabled={loading || loanStage === LoanStage.Approved}
               label={'Purchase loan amount'}
               onValueChange={({ floatValue }) => {
                 setSearchForm({
@@ -533,9 +428,7 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
               Loan to value
             </Typography>
             <StyledTooltip
-              title={
-                'LTV [Payoff amount + Cash out (if any)] / As-is property value'
-              }
+              title={'LTV = Purchase loan amount / Purchase price'}
             >
               <InfoOutlined
                 sx={{ width: 14, height: 14, mb: 0.125, color: 'info.main' }}
@@ -549,7 +442,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
       </StyledFormItem>
 
       {renderByUserType}
-      {renderCustomRateByConfig}
 
       <Stack
         alignItems={'stretch'}
@@ -577,16 +469,6 @@ export const BridgePurchaseRatesSearch: FC<BridgePurchaseRatesSearchProps> = ({
           {POSFormatDollar(purchaseLoanAmount)}
         </Typography>
       </Stack>
-
-      <StyledButton
-        disabled={
-          !!closeDateError || loading || loanStage === LoanStage.Approved
-        }
-        onClick={onCheck}
-        sx={{ width: 200, mt: 3 }}
-      >
-        {customRate ? 'Next' : 'Check'}
-      </StyledButton>
     </StyledFormItem>
   );
 };

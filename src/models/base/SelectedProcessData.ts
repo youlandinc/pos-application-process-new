@@ -38,6 +38,8 @@ export const SelectedProcessData = types
       types.literal(LoanStage.Approved),
       types.literal(LoanStage.FinalClosing),
       types.literal(LoanStage.Refusal),
+      types.literal(LoanStage.DocsOut),
+      types.literal(LoanStage.Funded),
     ),
   })
   .actions((self) => ({

@@ -4,6 +4,7 @@ import {
   FREstimateRateData,
 } from '@/types/application';
 import {
+  AppraisalStage,
   BaseOverviewSummaryData,
   BasePreApprovalLetterData,
   DashboardTaskInfo,
@@ -95,4 +96,5 @@ export interface FixDashboardLoanTask {
   tasks: FixDashboardTaskMap<FPDashboardTaskKey & FRDashboardTaskKey>;
   totalNum: number;
   finishedNum: number;
+  appraisalStage: AppraisalStage;
 }

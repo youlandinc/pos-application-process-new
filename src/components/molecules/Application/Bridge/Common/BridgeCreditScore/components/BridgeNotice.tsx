@@ -40,7 +40,7 @@ export const BridgeNotice: FC = observer(() => {
             //sass
             ' ' + saasState?.organizationName || ' YouLand'
           }{' '}
-          to do a soft pull on{' '}
+          to run a soft pull on{' '}
           {HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun}{' '}
           credit.
         </Typography>

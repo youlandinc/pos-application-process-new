@@ -30,6 +30,14 @@ import {
   StyledButton,
 } from '@/components/atoms';
 
+const hash = {
+  [UserType.LOAN_OFFICER]: 'Loan officer',
+  [UserType.BROKER]: 'Broker',
+  [UserType.LENDER]: 'Lender',
+  [UserType.REAL_ESTATE_AGENT]: 'Agent',
+  [UserType.CUSTOMER]: 'Customer',
+};
+
 const MENU_LIST_CUSTOMER = [
   { label: 'Change avatar', url: 'change_avatar' },
   { label: 'Change email', url: '/auth/change_email' },
@@ -124,10 +132,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
             sx={MyAccountStyles.menu_item}
           >
             {item.label === 'info'
-              ? `${userType.replace(
-                  /^(.)(.*)$/,
-                  (_, first, rest) => first.toUpperCase() + rest.toLowerCase(),
-                )} ${item.label}`
+              ? `${hash[userType as keyof typeof UserType]} ${item.label}`
               : item.label}
           </MenuItem>
         ));

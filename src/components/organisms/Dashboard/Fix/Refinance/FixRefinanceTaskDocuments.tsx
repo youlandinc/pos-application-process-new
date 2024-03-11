@@ -55,13 +55,14 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
   }, [router.query.taskId]);
 
   const { loading } = useAsync(async () => {
-    if (!router.query.taskId) {
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { processId: router.query.processId },
-      });
-      return;
-    }
+    //if (!router.query.taskId) {
+    //  console.log(123123123);
+    //  await router.push({
+    //    pathname: '/dashboard/tasks',
+    //    query: { processId: router.query.processId },
+    //  });
+    //  return;
+    //}
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res: AxiosResponse<DocumentUploadResponse>) => {
         const {
@@ -170,8 +171,9 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
             px={{ lg: 3, xs: 0 }}
             tip={
               <Stack alignItems={'center'}>
-                Please upload your documents to our secured and encrypted
-                database.
+                We&apos;ve implemented robust security measures to ensure your
+                data&apos;s privacy and protection, including advanced
+                encryption, privacy compliance, and regular security audits.
                 {/*<StyledProgressLine current={current} total={total} />*/}
               </Stack>
             }

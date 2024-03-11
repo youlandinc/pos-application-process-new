@@ -170,8 +170,9 @@ export const BridgeRefinanceTaskDocuments: FC = observer(() => {
             px={{ lg: 3, xs: 0 }}
             tip={
               <Stack alignItems={'center'}>
-                Please upload your documents to our secured and encrypted
-                database.
+                We&apos;ve implemented robust security measures to ensure your
+                data&apos;s privacy and protection, including advanced
+                encryption, privacy compliance, and regular security audits.
                 {/*<StyledProgressLine current={current} total={total} />*/}
               </Stack>
             }

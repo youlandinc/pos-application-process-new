@@ -6,19 +6,18 @@ import { useAsync, useSetState } from 'react-use';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
 
 import { useBreakpoints } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFlex } from '@/styles';
 import { _fetchLoanTask } from '@/requests/dashboard';
 import {
+  AppraisalStage,
   BPDashboardTaskKey,
   BridgeDashboardLoanTask,
   BridgeDashboardTaskMap,
   DashboardTaskList,
   HttpError,
-  LoanStage,
 } from '@/types';
 
 import {
@@ -128,10 +127,6 @@ const BridgePurchaseDashboardTaskMap: DashboardTaskList<BPDashboardTaskKey> = {
 };
 
 export const BridgePurchaseTaskList: FC = observer(() => {
-  const {
-    selectedProcessData: { loanStage },
-  } = useMst();
-
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -142,6 +137,9 @@ export const BridgePurchaseTaskList: FC = observer(() => {
 
   const [total, setTotal] = useState(9);
   const [current, setCurrent] = useState(0);
+  const [appraisalStage, setAppraisalStage] = useState(
+    AppraisalStage.NotStarted,
+  );
 
   const { loading } = useAsync(async () => {
     if (!router.query.processId) {
@@ -155,6 +153,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         setTaskDetails(res?.data?.tasks);
         setTotal(totalNum);
         setCurrent(finishedNum);
+        setAppraisalStage(appraisalStage || AppraisalStage.NotStarted);
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -171,6 +170,42 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         });
       });
   }, [router.query.processId]);
+
+  const renderStage = useMemo(() => {
+    let bgcolor = '';
+    switch (appraisalStage) {
+      case AppraisalStage.NotStarted:
+        bgcolor = '#D2D6E1';
+        break;
+      case AppraisalStage.PaidFor:
+      case AppraisalStage.Ordered:
+      case AppraisalStage.Scheduled:
+        bgcolor = '#95A8D7';
+        break;
+      case AppraisalStage.Canceled:
+        bgcolor = '#E39482';
+        break;
+      case AppraisalStage.Completed:
+        bgcolor = '#85CCB6';
+        break;
+    }
+    return (
+      <Typography
+        alignItems={'center'}
+        bgcolor={bgcolor}
+        borderRadius={1}
+        color={'#FFFFFF'}
+        display={'flex'}
+        fontSize={12}
+        height={24}
+        justifyContent={'center'}
+        variant={'subtitle3'}
+        width={96}
+      >
+        {appraisalStage || AppraisalStage.NotStarted}
+      </Typography>
+    );
+  }, [appraisalStage]);
 
   const renderTaskList = useMemo(() => {
     return (
@@ -268,6 +303,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             >
               {BridgePurchaseDashboardTaskMap.PropertyAppraisal.title}
             </Typography>
+            {renderStage}
           </Box>
           {BridgePurchaseDashboardTaskMap.PropertyAppraisal.children.map(
             (sonItem) => (
@@ -401,30 +437,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         </Box>
       </>
     );
-  }, [breakpoints, router, taskDetails]);
-
-  const renderStage = useMemo(() => {
-    return (
-      <Typography
-        alignItems={'center'}
-        bgcolor={
-          loanStage === LoanStage.Approved ? '#E1EFE4' : 'primary.lighter'
-        }
-        borderRadius={2}
-        color={
-          loanStage === LoanStage.Approved ? 'success.main' : 'primary.main'
-        }
-        display={'flex'}
-        height={32}
-        justifyContent={'center'}
-        m={'0 auto 48px auto'}
-        variant={'subtitle3'}
-        width={120}
-      >
-        {loanStage === LoanStage.Approved ? 'Approved' : 'In progress'}
-      </Typography>
-    );
-  }, [loanStage]);
+  }, [breakpoints, renderStage, router, taskDetails]);
 
   return (
     <Transitions
@@ -458,12 +471,12 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             subTitle={
               'You can make updates to the task before the loan is approved.'
             }
+            subTitleSx={{ mb: 2 }}
             title={'Your tasks checklist'}
           />
           <Stack alignItems={'center'} mb={3}>
             <StyledProgressLine current={current} total={total} />
           </Stack>
-          {renderStage}
           {renderTaskList}
         </Box>
       )}

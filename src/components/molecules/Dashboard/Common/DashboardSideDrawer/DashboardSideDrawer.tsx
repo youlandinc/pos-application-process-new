@@ -26,16 +26,34 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
 
     const [ratio, setRatio] = useState(-1);
 
+    const breakpoints = useBreakpoints();
+
     const Logo = useMemo(() => {
       if (saasState?.logoUrl) {
-        const width = 51 * ratio;
         return (
-          <picture style={{ height: '100%' }}>
+          <picture
+            style={{
+              display: 'block',
+              height: '100%',
+              position: 'relative',
+              width: 0,
+            }}
+          >
             <img
               alt=""
-              height={width > 240 ? 'auto' : '100%'}
+              height={'auto'}
               src={saasState?.logoUrl || '/images/logo/logo_blue.svg'}
-              width={width > 240 ? 240 : 'auto'}
+              style={{
+                position: 'absolute',
+                top: ['sm', 'xs', 'md'].includes(breakpoints) ? '50%' : 46,
+                transform: ['sm', 'xs', 'md'].includes(breakpoints)
+                  ? 'translateY(-50%)'
+                  : 'none',
+                left: ratio === 1 ? 24 : 0,
+                zIndex: 1,
+                maxHeight: 68,
+                maxWidth: 200,
+              }}
             />
           </picture>
         );
@@ -52,7 +70,7 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
           {saasState?.organizationName}
         </Box>
       );
-    }, [ratio, saasState?.logoUrl, saasState?.organizationName]);
+    }, [breakpoints, ratio, saasState?.logoUrl, saasState?.organizationName]);
 
     useEffect(() => {
       if (saasState?.logoUrl) {
@@ -78,10 +96,10 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
             sx={{
               display: 'flex',
               flexDirection: 'row',
-              height: '100%',
               width: '100%',
               alignItems: 'center',
               justifyContent: 'space-between',
+              height: 92,
             }}
           >
             <Box
@@ -114,7 +132,7 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
         sx={{
           '&.MuiDrawer-root ': {
             '& .drawer_header': {
-              py: 2.5,
+              py: 0,
               px: 1.5,
             },
             '& .drawer_content': {

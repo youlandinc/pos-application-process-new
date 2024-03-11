@@ -94,6 +94,8 @@ export const RatesItems: FC<{
       border={'2px solid #D2D6E1'}
       borderRadius={2}
       gap={3}
+      justifyContent={'space-between'}
+      minHeight={274}
       p={3}
       sx={{
         transition: 'all .3s',
@@ -176,16 +178,13 @@ export const RatesItems: FC<{
 
       <StyledButton
         onClick={() => onClick(product)}
-        onMouseEnter={(e) => {
-          if (product.selected) {
-            e.currentTarget.innerHTML = 'View details';
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (product.selected) {
-            e.currentTarget.innerHTML = 'Current rate';
-          }
-        }}
+        //onMouseEnter={(e) => {
+        //  e.currentTarget.innerHTML = 'View details';
+        //}}
+        //onMouseLeave={(e) => {
+        //  e.currentTarget.innerHTML = 'Current rate';
+        //}}
+        sx={{ height: 56 }}
         variant={!product.selected ? 'contained' : 'outlined'}
       >
         {product.selected ? 'Current rate' : 'View details'}

@@ -21,7 +21,7 @@ export const PaymentNotice: FC<ConfirmTableProps> = (props) => {
         <>
           <Typography color={'info.main'} variant={'body1'}>
             We&apos;re just about ready to move to the next step in the
-            application process but first we need to take care of one legal
+            application process, but first we need to take care of one small
             detail.
           </Typography>
           <Typography color={'info.main'} mt={1.5} variant={'body1'}>

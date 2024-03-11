@@ -254,3 +254,9 @@ export enum DashboardTaskPaymentMethodsStatus {
   complete = 'COMPLETE',
   fail = 'FAIL',
 }
+
+export interface CustomRateData {
+  customRate?: boolean | undefined;
+  interestRate?: number | undefined;
+  loanTerm?: number | undefined;
+}

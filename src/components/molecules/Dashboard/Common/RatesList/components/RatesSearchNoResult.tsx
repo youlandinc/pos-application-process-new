@@ -1,14 +1,35 @@
-import { FC, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { Grow, Icon, Stack, Typography } from '@mui/material';
 import { CallOutlined, MailOutlineOutlined } from '@mui/icons-material';
 
 import { POSFormatUSPhoneToText } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
 
-import NOTIFICATION_INFO from '@/components/atoms/StyledNotification/notification_info.svg';
+import { RatesCustomLoan } from './RatesCustomLoan';
 
-export const RatesSearchNoResult: FC<{ reasonList?: string[] }> = ({
+import NOTIFICATION_INFO from '@/components/atoms/StyledNotification/notification_info.svg';
+import { CustomRateData, UserType } from '@/types';
+
+interface RatesSearchNoResultProps {
+  reasonList?: string[];
+  userType?: UserType;
+  customLoan?: CustomRateData;
+  setCustomLoan: Dispatch<SetStateAction<CustomRateData>>;
+  onCustomLoanClick?: () => void;
+  customLoading?: boolean;
+  condition: boolean;
+  productType?: string | 'CUSTOM_LOAN';
+}
+
+export const RatesSearchNoResult: FC<RatesSearchNoResultProps> = ({
   reasonList,
+  userType,
+  customLoan,
+  setCustomLoan,
+  onCustomLoanClick,
+  customLoading,
+  condition,
+  productType,
 }) => {
   const [showMore, setShowMore] = useState(false);
   const { saasState } = useSessionStorageState('tenantConfig');
@@ -17,11 +38,10 @@ export const RatesSearchNoResult: FC<{ reasonList?: string[] }> = ({
     <>
       <Stack
         alignItems={'center'}
-        gap={3}
+        gap={6}
         justifyContent={'center'}
         maxWidth={900}
         mb={3}
-        mt={3}
         width={'100%'}
       >
         {reasonList && reasonList.length > 0 && (
@@ -47,8 +67,9 @@ export const RatesSearchNoResult: FC<{ reasonList?: string[] }> = ({
                   mt={0.375}
                   variant={'subtitle2'}
                 >
-                  Unfortunately, we couldn&apos;t find any eligible loan
-                  products.
+                  {condition
+                    ? 'No standard loan products match your criteria. Proceed by using custom loan terms below.'
+                    : 'Unfortunately, we couldn’t find any eligible loan products.'}
                 </Typography>
               </Stack>
 
@@ -100,48 +121,64 @@ export const RatesSearchNoResult: FC<{ reasonList?: string[] }> = ({
           </Stack>
         )}
 
-        {/*<Icon component={RATE_NO_RESULT} sx={{ width: 260, height: 220 }} />*/}
-        <Typography
-          color={'text.primary'}
-          mt={reasonList ? { md: 6, xs: 4 } : 0}
-          textAlign={'center'}
-          variant={'h4'}
-        >
-          Based on your information, we couldn&apos;t find any options.
-        </Typography>
-        <Typography color={'info.main'} textAlign={'center'} variant={'body1'}>
-          We&apos;ll help you out. Feel free to contact us using the methods
-          below.
-        </Typography>
-        <Stack
-          alignItems={'center'}
-          color={'info.main'}
-          flexDirection={{ md: 'row', xs: 'column' }}
-          fontWeight={600}
-          gap={3}
-          justifyContent={'center'}
-          maxWidth={900}
-          width={'100%'}
-        >
-          <Stack
-            alignItems={'center'}
-            flexDirection={'row'}
-            gap={1.5}
-            justifyContent={'center'}
-          >
-            <CallOutlined />
-            {POSFormatUSPhoneToText(
-              saasState?.posSettings?.phone || '(833) 968-5263',
-            )}
+        {condition && (
+          <Stack alignItems={'center'} my={2} width={'100%'}>
+            <RatesCustomLoan
+              customLoading={customLoading!}
+              customLoan={customLoan!}
+              onCustomLoanClick={onCustomLoanClick}
+              productType={productType}
+              setCustomLoan={setCustomLoan!}
+              userType={userType!}
+            />
           </Stack>
+        )}
+
+        <Stack gap={1.5}>
+          {!condition && (
+            <Typography mt={3} textAlign={'center'} variant={'h5'}>
+              Can&apos;t find any rates? We can help
+            </Typography>
+          )}
+
+          <Typography
+            color={'info.main'}
+            textAlign={'center'}
+            variant={'body1'}
+          >
+            If you have any questions, feel free to contact us and we&apos;ll
+            help you out.
+          </Typography>
           <Stack
             alignItems={'center'}
-            flexDirection={'row'}
-            gap={1.5}
+            color={'info.main'}
+            flexDirection={{ md: 'row', xs: 'column' }}
+            fontWeight={600}
+            gap={3}
             justifyContent={'center'}
+            maxWidth={900}
+            width={'100%'}
           >
-            <MailOutlineOutlined />
-            {saasState?.posSettings?.email || 'borrow@youland.com'}
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              gap={1.5}
+              justifyContent={'center'}
+            >
+              <CallOutlined />
+              {POSFormatUSPhoneToText(
+                saasState?.posSettings?.phone || '(833) 968-5263',
+              )}
+            </Stack>
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              gap={1.5}
+              justifyContent={'center'}
+            >
+              <MailOutlineOutlined />
+              {saasState?.posSettings?.email || 'borrow@youland.com'}
+            </Stack>
           </Stack>
         </Stack>
       </Stack>
