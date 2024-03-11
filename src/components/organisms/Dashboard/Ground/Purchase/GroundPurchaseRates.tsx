@@ -171,9 +171,6 @@ export const GroundPurchaseRates: FC = observer(() => {
           officerPoints,
           officerProcessingFee,
           agentFee,
-          customRate,
-          interestRate,
-          loanTerm,
           cor,
           arv,
         });

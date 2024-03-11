@@ -167,9 +167,6 @@ export const FixPurchaseRates: FC = observer(() => {
           officerPoints,
           officerProcessingFee,
           agentFee,
-          customRate,
-          interestRate,
-          loanTerm,
           cor,
           arv,
         });
