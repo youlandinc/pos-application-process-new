@@ -201,42 +201,19 @@ export const BridgeRefinanceRates: FC = observer(() => {
 
   const onCheckGetList = async () => {
     setLoading(true);
-    if (!searchForm.customRate) {
-      await _fetchRatesProductPreview(
-        router.query.processId as string,
-        searchForm,
-      )
-        .then((res) => {
-          const { products, loanInfo, reasons, selectedProduct } = res.data;
-          setProductList(products);
-          setLoanInfo({ ...loanInfo, ...selectedProduct });
-          setLoading(false);
-          setReasonList(reasons);
-          setProductType('');
-        })
-        .catch((err) => {
-          const { header, message, variant } = err as HttpError;
-          enqueueSnackbar(message, {
-            variant: variant || 'error',
-            autoHideDuration: AUTO_HIDE_DURATION,
-            isSimple: !header,
-            header,
-          });
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      try {
-        const {
-          data: { loanInfo, product },
-        } = await _fetchCustomRates(
-          router.query.processId as string,
-          searchForm,
-        );
-        setSelectedItem({ ...loanInfo, ...product });
-        open();
-      } catch (err) {
+    await _fetchRatesProductPreview(
+      router.query.processId as string,
+      searchForm,
+    )
+      .then((res) => {
+        const { products, loanInfo, reasons, selectedProduct } = res.data;
+        setProductList(products);
+        setLoanInfo({ ...loanInfo, ...selectedProduct });
+        setLoading(false);
+        setReasonList(reasons);
+        setProductType('');
+      })
+      .catch((err) => {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
           variant: variant || 'error',
@@ -244,10 +221,10 @@ export const BridgeRefinanceRates: FC = observer(() => {
           isSimple: !header,
           header,
         });
-      } finally {
+      })
+      .finally(() => {
         setLoading(false);
-      }
-    }
+      });
   };
 
   const onCustomLoanClick = async () => {
