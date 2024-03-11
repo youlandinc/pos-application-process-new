@@ -233,6 +233,7 @@ export const FixRefinanceRates: FC = observer(() => {
   const onCustomLoanClick = async () => {
     setCustomLoading(true);
     const requestData = {
+      ...searchForm,
       customRate: true,
       interestRate: customLoan.interestRate,
       loanTerm: customLoan.loanTerm,
