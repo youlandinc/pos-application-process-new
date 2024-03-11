@@ -8,6 +8,7 @@ import { useMst } from '@/models/Root';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { useBreakpoints, useDebounceFn, useSwitch } from '@/hooks';
 import { POSNotUndefined, POSTypeOf } from '@/utils';
+
 import {
   CustomRateData,
   GREstimateRateData,
@@ -17,6 +18,12 @@ import {
   VariableName,
 } from '@/types';
 
+import {
+  GroundRefinanceRatesDrawer,
+  GroundRefinanceRatesSearch,
+  RatesList,
+} from '@/components/molecules';
+
 import { _updateProcessVariables } from '@/requests';
 import {
   _fetchCustomRates,
@@ -24,12 +31,6 @@ import {
   _updateRatesProductSelected,
   GRQueryData,
 } from '@/requests/dashboard';
-
-import {
-  GroundRefinanceRatesDrawer,
-  GroundRefinanceRatesSearch,
-  RatesList,
-} from '@/components/molecules';
 
 const initialize: GRQueryData = {
   homeValue: undefined,
@@ -104,14 +105,16 @@ export const GroundRefinanceEstimateRate: FC<{
     },
     userType,
   } = useMst();
+
+  const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
-  const breakpoints = useBreakpoints();
 
   const [loading, setLoading] = useState(false);
   const [checkLoading, setCheckLoading] = useState(false);
   const [customLoading, setCustomLoading] = useState(false);
   const [isFirstSearch, setIsFirstSearch] = useState(true);
+  const [selectedType, setSelectedType] = useState('');
 
   const [searchForm, setSearchForm] = useState<GRQueryData>({
     ...initialize,

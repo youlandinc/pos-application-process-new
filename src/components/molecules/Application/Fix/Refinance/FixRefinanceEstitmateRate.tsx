@@ -1,4 +1,3 @@
-import { POSNotUndefined, POSTypeOf } from '@/utils';
 import { addDays, format, isDate } from 'date-fns';
 import { FC, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
@@ -6,9 +5,10 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useBreakpoints, useDebounceFn, useSwitch } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { _updateProcessVariables } from '@/requests';
+import { useBreakpoints, useDebounceFn, useSwitch } from '@/hooks';
+import { POSNotUndefined, POSTypeOf } from '@/utils';
+
 import {
   CustomRateData,
   FREstimateRateData,
@@ -18,18 +18,20 @@ import {
   RatesProductData,
   VariableName,
 } from '@/types';
-import {
-  _fetchCustomRates,
-  _fetchRatesProductPreview,
-  _updateRatesProductSelected,
-  FRQueryData,
-} from '@/requests/dashboard';
 
 import {
   FixRefinanceRatesDrawer,
   FixRefinanceRatesSearch,
   RatesList,
 } from '@/components/molecules';
+
+import { _updateProcessVariables } from '@/requests';
+import {
+  _fetchCustomRates,
+  _fetchRatesProductPreview,
+  _updateRatesProductSelected,
+  FRQueryData,
+} from '@/requests/dashboard';
 
 const initialize: FRQueryData = {
   homeValue: undefined,
@@ -104,9 +106,10 @@ export const FixRefinanceEstimateRate: FC<{
     },
     userType,
   } = useMst();
+
+  const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
-  const breakpoints = useBreakpoints();
 
   const [loading, setLoading] = useState(false);
   const [checkLoading, setCheckLoading] = useState(false);

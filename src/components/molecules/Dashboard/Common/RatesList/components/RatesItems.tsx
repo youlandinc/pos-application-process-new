@@ -179,10 +179,10 @@ export const RatesItems: FC<{
       <StyledButton
         onClick={() => onClick(product)}
         //onMouseEnter={(e) => {
-        //    e.currentTarget.innerHTML = 'View details';
+        //  e.currentTarget.innerHTML = 'View details';
         //}}
         //onMouseLeave={(e) => {
-        //    e.currentTarget.innerHTML = 'Current rate';
+        //  e.currentTarget.innerHTML = 'Current rate';
         //}}
         sx={{ height: 56 }}
         variant={!product.selected ? 'contained' : 'outlined'}

@@ -1,15 +1,14 @@
 import { FC, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { addDays, format, isDate } from 'date-fns';
-import { debounce } from 'lodash';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { POSNotUndefined, POSTypeOf } from '@/utils';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { useBreakpoints, useDebounceFn, useSwitch } from '@/hooks';
-import { _updateProcessVariables } from '@/requests';
+import { POSNotUndefined, POSTypeOf } from '@/utils';
+
 import {
   CustomRateData,
   FPEstimateRateData,
@@ -19,18 +18,20 @@ import {
   RatesProductData,
   VariableName,
 } from '@/types';
-import {
-  _fetchCustomRates,
-  _fetchRatesProductPreview,
-  _updateRatesProductSelected,
-  FPQueryData,
-} from '@/requests/dashboard';
 
 import {
   FixPurchaseRatesDrawer,
   FixPurchaseRatesSearch,
   RatesList,
 } from '@/components/molecules';
+
+import { _updateProcessVariables } from '@/requests';
+import {
+  _fetchCustomRates,
+  _fetchRatesProductPreview,
+  _updateRatesProductSelected,
+  FPQueryData,
+} from '@/requests/dashboard';
 
 const initialize: FPQueryData = {
   purchasePrice: undefined,

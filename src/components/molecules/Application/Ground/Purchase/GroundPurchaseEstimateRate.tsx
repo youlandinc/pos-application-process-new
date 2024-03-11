@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { addDays, format, isDate } from 'date-fns';
-import { debounce } from 'lodash';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -9,6 +8,7 @@ import { useMst } from '@/models/Root';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { useBreakpoints, useDebounceFn, useSwitch } from '@/hooks';
 import { POSNotUndefined, POSTypeOf } from '@/utils';
+
 import {
   CustomRateData,
   GPEstimateRateData,
@@ -19,6 +19,12 @@ import {
   VariableName,
 } from '@/types';
 
+import {
+  GroundPurchaseRatesDrawer,
+  GroundPurchaseRatesSearch,
+  RatesList,
+} from '@/components/molecules';
+
 import { _updateProcessVariables } from '@/requests';
 import {
   _fetchCustomRates,
@@ -26,11 +32,6 @@ import {
   _updateRatesProductSelected,
   GPQueryData,
 } from '@/requests/dashboard';
-import {
-  GroundPurchaseRatesDrawer,
-  GroundPurchaseRatesSearch,
-  RatesList,
-} from '@/components/molecules';
 
 const initialize: GPQueryData = {
   purchasePrice: undefined,
@@ -103,9 +104,9 @@ export const GroundPurchaseEstimateRate: FC<{
     userType,
   } = useMst();
 
+  const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
-  const breakpoints = useBreakpoints();
 
   const [loading, setLoading] = useState(false);
   const [checkLoading, setCheckLoading] = useState(false);
