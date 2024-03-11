@@ -169,9 +169,6 @@ export const BridgeRefinanceRates: FC = observer(() => {
           officerPoints,
           officerProcessingFee,
           agentFee,
-          customRate,
-          interestRate,
-          loanTerm,
         });
         setCustomLoan({
           customRate,

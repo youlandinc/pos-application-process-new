@@ -163,9 +163,6 @@ export const BridgePurchaseRates: FC = observer(() => {
           officerPoints,
           officerProcessingFee,
           agentFee,
-          customRate,
-          interestRate,
-          loanTerm,
         });
         setCustomLoan({
           customRate,
@@ -191,82 +188,7 @@ export const BridgePurchaseRates: FC = observer(() => {
       });
   };
 
-  const { loading: initLoading } = useAsync(async () => {
-    const { processId } = POSGetParamsFromUrl(location.href);
-    if (!processId) {
-      return;
-    }
-    return Promise.all([
-      _fetchRatesProduct(processId),
-      _fetchRatesLoanInfo(processId),
-    ])
-      .then((res) => {
-        const { products, selectedProduct } = res[0].data;
-        setProductList(products);
-        const { info, loanStage } = res[1].data;
-        setEncompassData(encompassData);
-        switch (loanStage) {
-          case LoanStage.Approved:
-            setView('confirmed');
-            break;
-          default:
-            setView('current');
-        }
-        setLoanStage(loanStage);
-
-        setLoanInfo({
-          ...info,
-          ...selectedProduct,
-        });
-
-        setPrimitiveLoanInfo({
-          ...info,
-          ...selectedProduct,
-        });
-        const {
-          purchaseLoanAmount,
-          purchasePrice,
-          lenderPoints,
-          lenderProcessingFee,
-          brokerPoints,
-          brokerProcessingFee,
-          officerPoints,
-          officerProcessingFee,
-          agentFee,
-          customRate,
-          interestRate,
-          loanTerm,
-        } = info;
-        setSearchForm({
-          ...searchForm,
-          purchasePrice,
-          purchaseLoanAmount,
-          lenderPoints,
-          lenderProcessingFee,
-          brokerPoints,
-          brokerProcessingFee,
-          officerPoints,
-          officerProcessingFee,
-          agentFee,
-          customRate,
-          interestRate,
-          loanTerm,
-        });
-      })
-      .catch((err) => {
-        const { header, message, variant } = err as HttpError;
-        enqueueSnackbar(message, {
-          variant: variant || 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-          isSimple: !header,
-          header,
-          onClose: () => router.push('/pipeline'),
-        });
-      })
-      .finally(() => {
-        isFirst && setIsFirst(false);
-      });
-  });
+  const { loading: initLoading } = useAsync(fetchInitData);
 
   const onCheckGetList = async () => {
     setLoading(true);
