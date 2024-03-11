@@ -10,9 +10,18 @@ export const BREstimateRate = types
     balance: types.maybe(types.number),
     isCashOut: types.maybe(types.boolean),
     cashOutAmount: types.maybe(types.number),
+
     customRate: types.maybe(types.boolean),
     loanTerm: types.maybe(types.number),
     interestRate: types.maybe(types.number),
+
+    lenderPoints: types.maybe(types.number),
+    lenderProcessingFee: types.maybe(types.number),
+    brokerPoints: types.maybe(types.number),
+    brokerProcessingFee: types.maybe(types.number),
+    officerPoints: types.maybe(types.number),
+    officerProcessingFee: types.maybe(types.number),
+    agentFee: types.maybe(types.number),
   })
   .views(() => ({
     get checkIsValid() {
@@ -33,9 +42,18 @@ export const BREstimateRate = types
         isCashOut,
         cashOutAmount,
         closeDate,
+
         customRate,
         loanTerm,
         interestRate,
+
+        lenderPoints,
+        lenderProcessingFee,
+        brokerPoints,
+        brokerProcessingFee,
+        officerPoints,
+        officerProcessingFee,
+        agentFee,
       } = self;
 
       return {
@@ -47,9 +65,18 @@ export const BREstimateRate = types
           isCashOut: isCashOut as boolean,
           cashOutAmount,
           closeDate,
+
           customRate,
           loanTerm,
           interestRate,
+
+          lenderPoints,
+          lenderProcessingFee,
+          brokerPoints,
+          brokerProcessingFee,
+          officerPoints,
+          officerProcessingFee,
+          agentFee,
         },
       };
     },
@@ -66,9 +93,18 @@ export const BREstimateRate = types
         isCashOut,
         cashOutAmount,
         closeDate,
+
         customRate,
         loanTerm,
         interestRate,
+
+        lenderPoints,
+        lenderProcessingFee,
+        brokerPoints,
+        brokerProcessingFee,
+        officerPoints,
+        officerProcessingFee,
+        agentFee,
       } = value;
 
       self.homeValue = homeValue;
@@ -76,9 +112,18 @@ export const BREstimateRate = types
       self.isCashOut = isCashOut;
       self.cashOutAmount = cashOutAmount;
       self.closeDate = closeDate as unknown as null;
+
       self.customRate = customRate;
       self.loanTerm = loanTerm;
       self.interestRate = interestRate;
+
+      self.agentFee = agentFee;
+      self.lenderPoints = lenderPoints;
+      self.lenderProcessingFee = lenderProcessingFee;
+      self.brokerPoints = brokerPoints;
+      self.brokerProcessingFee = brokerProcessingFee;
+      self.officerPoints = officerPoints;
+      self.officerProcessingFee = officerProcessingFee;
     },
   }));
 

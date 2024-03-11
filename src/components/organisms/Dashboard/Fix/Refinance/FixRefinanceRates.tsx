@@ -78,6 +78,7 @@ export const FixRefinanceRates: FC = observer(() => {
   const [loading, setLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [customLoading, setCustomLoading] = useState(false);
+  const [productType, setProductType] = useState<string>('');
 
   const [view, setView] = useState<'current' | 'confirmed' | 'other'>(
     'current',
@@ -180,6 +181,7 @@ export const FixRefinanceRates: FC = observer(() => {
           interestRate,
           loanTerm,
         });
+        setProductType(selectedProduct?.category || '');
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -212,6 +214,7 @@ export const FixRefinanceRates: FC = observer(() => {
         setLoanInfo({ ...loanInfo, ...selectedProduct });
         setLoading(false);
         setReasonList(reasons);
+        setProductType('');
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -458,6 +461,7 @@ export const FixRefinanceRates: FC = observer(() => {
                   onClick={onListItemClick}
                   onCustomLoanClick={onCustomLoanClick}
                   productList={productList || []}
+                  productType={productType}
                   reasonList={reasonList}
                   setCustomLoan={setCustomLoan}
                   userType={userType}

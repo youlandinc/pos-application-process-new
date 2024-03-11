@@ -114,7 +114,7 @@ export const GroundRefinanceEstimateRate: FC<{
   const [checkLoading, setCheckLoading] = useState(false);
   const [customLoading, setCustomLoading] = useState(false);
   const [isFirstSearch, setIsFirstSearch] = useState(true);
-  const [selectedType, setSelectedType] = useState('');
+  const [productType, setProductType] = useState('');
 
   const [searchForm, setSearchForm] = useState<GRQueryData>({
     ...initialize,
@@ -206,7 +206,6 @@ export const GroundRefinanceEstimateRate: FC<{
 
   const onCustomLoanClick = async () => {
     setCustomLoading(true);
-
     const postData: Variable<GREstimateRateData> = {
       name: VariableName.estimateRate,
       type: 'json',
@@ -241,6 +240,7 @@ export const GroundRefinanceEstimateRate: FC<{
             id,
             totalClosingCash,
             proRatedInterest,
+            category,
           },
         } = res!.data;
         if (nextStep) {
@@ -249,6 +249,7 @@ export const GroundRefinanceEstimateRate: FC<{
             return item;
           });
           setProductList(temp);
+          setProductType(category);
         }
         setSelectedItem(
           Object.assign(loanInfo as GroundRefinanceLoanInfo, {
@@ -384,6 +385,7 @@ export const GroundRefinanceEstimateRate: FC<{
         onClick={onListItemClick}
         onCustomLoanClick={onCustomLoanClick}
         productList={productList as RatesProductData[]}
+        productType={productType}
         reasonList={reasonList}
         setCustomLoan={setCustomLoan}
         userType={userType}
@@ -395,6 +397,7 @@ export const GroundRefinanceEstimateRate: FC<{
             return item;
           });
           setProductList(temp);
+          setProductType('');
           close();
         }}
         loading={checkLoading}

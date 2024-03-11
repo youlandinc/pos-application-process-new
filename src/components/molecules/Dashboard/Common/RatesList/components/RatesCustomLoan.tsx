@@ -12,6 +12,7 @@ interface RatesCustomLoanProps {
   setCustomLoan: Dispatch<SetStateAction<CustomRateData>>;
   onCustomLoanClick?: () => void;
   customLoading: boolean;
+  productType?: string | 'CUSTOM_LOAN';
 }
 
 export const RatesCustomLoan: FC<RatesCustomLoanProps> = ({
@@ -20,6 +21,7 @@ export const RatesCustomLoan: FC<RatesCustomLoanProps> = ({
   setCustomLoan,
   onCustomLoanClick,
   customLoading,
+  productType,
 }) => {
   const [mode, setMode] = useState<'edit' | 'default'>(
     customLoan?.customRate ? 'edit' : 'default',
@@ -106,8 +108,9 @@ export const RatesCustomLoan: FC<RatesCustomLoanProps> = ({
             loading={customLoading}
             onClick={onCustomLoanClick}
             sx={{ height: 56 }}
+            variant={productType === 'CUSTOM_LOAN' ? 'outlined' : 'contained'}
           >
-            View details
+            {productType === 'CUSTOM_LOAN' ? 'Current rate' : 'View details'}
           </StyledButton>
         </Stack>
       )}

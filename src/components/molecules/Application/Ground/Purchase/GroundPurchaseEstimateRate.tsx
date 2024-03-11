@@ -112,6 +112,7 @@ export const GroundPurchaseEstimateRate: FC<{
   const [checkLoading, setCheckLoading] = useState(false);
   const [customLoading, setCustomLoading] = useState(false);
   const [isFirstSearch, setIsFirstSearch] = useState(true);
+  const [productType, setProductType] = useState('');
 
   const [searchForm, setSearchForm] = useState<GPQueryData>({
     ...initialize,
@@ -238,6 +239,7 @@ export const GroundPurchaseEstimateRate: FC<{
             id,
             totalClosingCash,
             proRatedInterest,
+            category,
           },
         } = res!.data;
         if (nextStep) {
@@ -246,6 +248,7 @@ export const GroundPurchaseEstimateRate: FC<{
             return item;
           });
           setProductList(temp);
+          setProductType(category);
         }
         setSelectedItem(
           Object.assign(loanInfo as GroundPurchaseLoanInfo, {
@@ -371,12 +374,21 @@ export const GroundPurchaseEstimateRate: FC<{
         onClick={onListItemClick}
         onCustomLoanClick={onCustomLoanClick}
         productList={productList as RatesProductData[]}
+        productType={productType}
         reasonList={reasonList}
         setCustomLoan={setCustomLoan}
         userType={userType}
       />
       <GroundPurchaseRatesDrawer
-        close={close}
+        close={() => {
+          const temp = productList!.map((item) => {
+            item.selected = false;
+            return item;
+          });
+          setProductList(temp);
+          setProductType('');
+          close();
+        }}
         loading={checkLoading}
         nextStep={nextStepWrap}
         onCancel={close}
