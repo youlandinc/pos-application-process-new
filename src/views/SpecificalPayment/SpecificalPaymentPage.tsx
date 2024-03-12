@@ -1,19 +1,23 @@
+import { useCallback, useState } from 'react';
+import { Stack, Typography } from '@mui/material';
+import { useSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
+import { addDays, format } from 'date-fns';
+
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { POSFormatDollar, POSGetParamsFromUrl } from '@/utils';
+
+import { HttpError } from '@/types';
+
 import {
   StyledHeaderLogo,
   StyledLoading,
   StyledPaymentCard,
 } from '@/components/atoms';
-import { useAsync } from 'react-use';
-import { POSFormatDollar, POSGetParamsFromUrl } from '@/utils';
-import { _creatSpecifyPayment } from '@/requests';
-import { useCallback, useState } from 'react';
-import { HttpError } from '@/types';
-import { useSnackbar } from 'notistack';
-import { AUTO_HIDE_DURATION } from '@/constants';
-import { Stack, Typography } from '@mui/material';
-import { addDays, format } from 'date-fns';
 
 import { SpecificalPaymentInfo, SpecificalPaymentStatus } from './components';
+
+import { _creatSpecifyPayment } from '@/requests';
 
 export const SpecificalPaymentPage = () => {
   const { enqueueSnackbar } = useSnackbar();
