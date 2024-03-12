@@ -45,8 +45,8 @@ export const RatesCustomLoan: FC<RatesCustomLoanProps> = ({
       width={{ xl: 'calc(50% - 12px)', xs: '100%' }}
     >
       {mode === 'default' ? (
-        <Stack alignItems={'center'} mb={7}>
-          <Typography color={'text.primary'} pb={4} variant={'h5'}>
+        <Stack alignItems={'center'} mb={6}>
+          <Typography color={'text.primary'} pb={3} variant={'h5'}>
             Use custom loan terms
           </Typography>
           <AddCircleTwoTone
