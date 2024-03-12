@@ -429,3 +429,9 @@ ul {
   height: 24px;
   margin-left: 8px;
 }
+
+.STRIPE_PAYMENT_ELEMENT,
+.STRIPE_ADDRESS_ELEMENT {
+  border: none !important;
+  padding: 0 !important;
+}
