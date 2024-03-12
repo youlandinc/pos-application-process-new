@@ -1,6 +1,7 @@
-import { Stack, Typography } from '@mui/material';
-import { POSFormatDollar } from '@/utils';
 import { FC } from 'react';
+import { Stack, Typography } from '@mui/material';
+
+import { POSFormatDollar } from '@/utils';
 
 export const SpecificalPaymentInfo: FC<{
   propertyAddress: string | undefined;
