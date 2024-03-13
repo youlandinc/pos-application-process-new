@@ -464,6 +464,7 @@ export const GroundRefinanceRates: FC = observer(() => {
                 <RatesList
                   customLoading={customLoading}
                   customLoan={customLoan}
+                  isDashboard={true}
                   isFirstSearch={false}
                   loading={loading}
                   loanStage={loanStage}

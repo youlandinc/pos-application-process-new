@@ -65,6 +65,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
             sx,
             decimalScale,
             thousandSeparator,
+            fixedDecimalScale: percentage,
           },
         }}
         name="numberformat"
@@ -95,7 +96,6 @@ const NumericFormatCustom = forwardRef<NumericFormatProps, CustomProps>(
 
     return (
       <NumericFormat
-        fixedDecimalScale
         getInputRef={ref}
         onValueChange={(values) => {
           onChange({
