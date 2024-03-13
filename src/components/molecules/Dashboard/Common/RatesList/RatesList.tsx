@@ -61,7 +61,7 @@ export const RatesList: FC<RatesProductListProps> = observer(
     }, [saasState?.posSettings?.customLoanTerms, userType]);
 
     return (
-      <Stack id={id} maxWidth={900} mt={!isDashboard ? 2 : 6} width={'100%'}>
+      <Stack id={id} maxWidth={900} mt={!isDashboard ? 0 : 6} width={'100%'}>
         {isFirstSearch ? (
           <></>
         ) : loading ? (
