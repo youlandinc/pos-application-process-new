@@ -3,10 +3,10 @@ import { format } from 'date-fns';
 
 export const POSFormatDollar = (
   amount: number | undefined | string,
-  radix = 2,
+  radix = 0,
 ): string => {
   if (!amount) {
-    return '$0.00';
+    return '$0';
   }
   let target = amount;
   if (POSTypeOf(target) === 'String') {
@@ -15,7 +15,7 @@ export const POSFormatDollar = (
   return target.toLocaleString('en-US', {
     style: 'currency',
     currency: 'USD',
-    minimumFractionDigits: radix,
+    minimumFractionDigits: Number.isInteger(target) ? radix : 2,
   });
 };
 
