@@ -25,6 +25,7 @@ interface RatesProductListProps {
   customLoading: boolean;
   isFirstSearch: boolean;
   productType?: string | 'CUSTOM_LOAN';
+  isDashboard?: boolean;
 }
 
 export const RatesList: FC<RatesProductListProps> = observer(
@@ -41,6 +42,7 @@ export const RatesList: FC<RatesProductListProps> = observer(
     customLoading,
     isFirstSearch,
     productType,
+    isDashboard = false,
   }) => {
     const breakpoint = useBreakpoints();
     const { saasState } = useSessionStorageState('tenantConfig');
@@ -59,7 +61,7 @@ export const RatesList: FC<RatesProductListProps> = observer(
     }, [saasState?.posSettings?.customLoanTerms, userType]);
 
     return (
-      <Stack id={id} maxWidth={900} mt={2} width={'100%'}>
+      <Stack id={id} maxWidth={900} mt={!isDashboard ? 2 : 6} width={'100%'}>
         {isFirstSearch ? (
           <></>
         ) : loading ? (
@@ -104,6 +106,7 @@ export const RatesList: FC<RatesProductListProps> = observer(
               <Stack
                 alignItems={'center'}
                 justifyContent={'center'}
+                mt={3}
                 width={'100%'}
               >
                 <Typography color={'text.secondary'} variant={'body1'}>

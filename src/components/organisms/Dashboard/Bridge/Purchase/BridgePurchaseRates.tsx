@@ -435,6 +435,7 @@ export const BridgePurchaseRates: FC = observer(() => {
                 <RatesList
                   customLoading={customLoading}
                   customLoan={customLoan}
+                  isDashboard={true}
                   isFirstSearch={false}
                   loading={loading}
                   loanStage={loanStage}
