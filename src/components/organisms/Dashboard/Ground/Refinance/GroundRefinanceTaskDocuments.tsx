@@ -14,10 +14,10 @@ import {
   StyledButton,
   StyledFormItem,
   StyledLoading,
-  //StyledProgressLine,
   StyledTab,
   StyledUploadButtonBox,
   Transitions,
+  //StyledProgressLine,
 } from '@/components/atoms';
 import { AxiosResponse } from 'axios';
 

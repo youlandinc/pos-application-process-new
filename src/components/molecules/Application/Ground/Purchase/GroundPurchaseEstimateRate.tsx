@@ -143,7 +143,7 @@ export const GroundPurchaseEstimateRate: FC<{
 
   const onCheckGetList = async () => {
     const element = document.getElementById('ground_up_purchase_rate_search');
-    const { height } = element!.getBoundingClientRect();
+    const { height = 0 } = element!.getBoundingClientRect();
     setLoading(true);
     const postData: Variable<GPEstimateRateData> = {
       name: VariableName.estimateRate,
@@ -204,6 +204,7 @@ export const GroundPurchaseEstimateRate: FC<{
 
   const onCustomLoanClick = async () => {
     setCustomLoading(true);
+    setProductType('CUSTOM_LOAN');
 
     const postData: Variable<GREstimateRateData> = {
       name: VariableName.estimateRate,
@@ -239,16 +240,17 @@ export const GroundPurchaseEstimateRate: FC<{
             id,
             totalClosingCash,
             proRatedInterest,
-            category,
           },
         } = res!.data;
         if (nextStep) {
-          const temp = productList!.map((item) => {
-            item.selected = false;
-            return item;
+          const temp: RatesProductData[] = JSON.parse(
+            JSON.stringify(productList),
+          );
+          temp.map((child) => {
+            child.selected = false;
+            return child;
           });
           setProductList(temp);
-          setProductType(category);
         }
         setSelectedItem(
           Object.assign(loanInfo as GroundPurchaseLoanInfo, {
@@ -286,12 +288,13 @@ export const GroundPurchaseEstimateRate: FC<{
       proRatedInterest,
     } = item;
     if (nextStep) {
-      const temp = productList!.map((item) => {
-        item.selected = false;
-        return item;
+      const temp: RatesProductData[] = JSON.parse(JSON.stringify(productList));
+      temp.map((child) => {
+        child.selected = child.id === item.id;
+        return child;
       });
       setProductList(temp);
-      item.selected = true;
+      setProductType('');
     }
     setSelectedItem(
       Object.assign(productInfo as GroundPurchaseLoanInfo, {
@@ -380,15 +383,7 @@ export const GroundPurchaseEstimateRate: FC<{
         userType={userType}
       />
       <GroundPurchaseRatesDrawer
-        close={() => {
-          const temp = productList!.map((item) => {
-            item.selected = false;
-            return item;
-          });
-          setProductList(temp);
-          setProductType('');
-          close();
-        }}
+        close={close}
         loading={checkLoading}
         nextStep={nextStepWrap}
         onCancel={close}

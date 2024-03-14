@@ -138,7 +138,7 @@ export const BridgePurchaseEstimateRate: FC<{
 
   const onCheckGetList = async () => {
     const element = document.getElementById('bridge_purchase_rate_search');
-    const { height } = element!.getBoundingClientRect();
+    const { height = 0 } = element!.getBoundingClientRect();
     setLoading(true);
     const postData: Variable<BPEstimateRateData> = {
       name: VariableName.estimateRate,
@@ -197,38 +197,9 @@ export const BridgePurchaseEstimateRate: FC<{
       });
   };
 
-  const onListItemClick = async (item: RatesProductData) => {
-    const {
-      paymentOfMonth,
-      interestRateOfYear,
-      loanTerm,
-      id,
-      totalClosingCash,
-      proRatedInterest,
-    } = item;
-    if (nextStep) {
-      const temp = productList!.map((item) => {
-        item.selected = false;
-        return item;
-      });
-      setProductList(temp);
-      item.selected = true;
-    }
-    setSelectedItem(
-      Object.assign(productInfo as BridgePurchaseLoanInfo, {
-        paymentOfMonth,
-        interestRateOfYear,
-        loanTerm,
-        id,
-        totalClosingCash,
-        proRatedInterest,
-      }),
-    );
-    open();
-  };
-
   const onCustomLoanClick = async () => {
     setCustomLoading(true);
+    setProductType('CUSTOM_LOAN');
 
     const postData: Variable<GREstimateRateData> = {
       name: VariableName.estimateRate,
@@ -264,16 +235,17 @@ export const BridgePurchaseEstimateRate: FC<{
             id,
             totalClosingCash,
             proRatedInterest,
-            category,
           },
         } = res!.data;
         if (nextStep) {
-          const temp = productList!.map((item) => {
-            item.selected = false;
-            return item;
+          const temp: RatesProductData[] = JSON.parse(
+            JSON.stringify(productList),
+          );
+          temp.map((child) => {
+            child.selected = false;
+            return child;
           });
           setProductList(temp);
-          setProductType(category);
         }
         setSelectedItem(
           Object.assign(loanInfo as BridgePurchaseLoanInfo, {
@@ -299,6 +271,37 @@ export const BridgePurchaseEstimateRate: FC<{
       .finally(() => {
         setCustomLoading(false);
       });
+  };
+
+  const onListItemClick = async (item: RatesProductData) => {
+    const {
+      paymentOfMonth,
+      interestRateOfYear,
+      loanTerm,
+      id,
+      totalClosingCash,
+      proRatedInterest,
+    } = item;
+    if (nextStep) {
+      const temp: RatesProductData[] = JSON.parse(JSON.stringify(productList));
+      temp.map((child) => {
+        child.selected = child.id === item.id;
+        return child;
+      });
+      setProductList(temp);
+      setProductType('');
+    }
+    setSelectedItem(
+      Object.assign(productInfo as BridgePurchaseLoanInfo, {
+        paymentOfMonth,
+        interestRateOfYear,
+        loanTerm,
+        id,
+        totalClosingCash,
+        proRatedInterest,
+      }),
+    );
+    open();
   };
 
   const nextStepWrap = async (id: string) => {
@@ -371,15 +374,7 @@ export const BridgePurchaseEstimateRate: FC<{
         userType={userType}
       />
       <BridgePurchaseRatesDrawer
-        close={() => {
-          const temp = productList!.map((item) => {
-            item.selected = false;
-            return item;
-          });
-          setProductList(temp);
-          setProductType('');
-          close();
-        }}
+        close={close}
         loading={checkLoading}
         nextStep={nextStepWrap}
         onCancel={close}

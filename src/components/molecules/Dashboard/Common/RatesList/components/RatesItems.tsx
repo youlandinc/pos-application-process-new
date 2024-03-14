@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
 
@@ -89,6 +89,8 @@ export const RatesItems: FC<{
     product.agentFee,
   ]);
 
+  const [isHovering, setIsHovering] = useState(false);
+
   return (
     <Stack
       border={'2px solid #D2D6E1'}
@@ -178,16 +180,26 @@ export const RatesItems: FC<{
 
       <StyledButton
         onClick={() => onClick(product)}
-        //onMouseEnter={(e) => {
-        //  e.currentTarget.innerHTML = 'View details';
-        //}}
-        //onMouseLeave={(e) => {
-        //  e.currentTarget.innerHTML = 'Current rate';
-        //}}
+        onMouseEnter={(e) => {
+          e.preventDefault();
+          setIsHovering(true);
+        }}
+        onMouseLeave={(e) => {
+          e.preventDefault();
+          setIsHovering(false);
+        }}
+        onMouseOver={(e) => {
+          e.preventDefault();
+          setIsHovering(true);
+        }}
         sx={{ height: 56 }}
         variant={!product.selected ? 'contained' : 'outlined'}
       >
-        {product.selected ? 'Current rate' : 'View details'}
+        {product.selected
+          ? isHovering
+            ? 'View details'
+            : 'Current rate'
+          : 'View details'}
       </StyledButton>
     </Stack>
   );
