@@ -71,7 +71,14 @@ export const PipelineProfile: FC = observer(() => {
               onClick={() => handleEnterSubTask('/pipeline/task/license')}
             >
               <Typography className={'task_label'} variant={'h6'}>
-                {BROKER_LICENSE.taskName}
+                {BROKER_LICENSE.taskName}{' '}
+                <Typography
+                  component={'span'}
+                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
+                  variant={'h6'}
+                >
+                  (optional)
+                </Typography>
               </Typography>
               <StyledStatus status={BROKER_LICENSE.taskStatus} />
             </Stack>
@@ -163,7 +170,14 @@ export const PipelineProfile: FC = observer(() => {
               onClick={() => handleEnterSubTask('/pipeline/task/license')}
             >
               <Typography className={'task_label'} variant={'h6'}>
-                {LENDER_LICENSE.taskName}
+                {LENDER_LICENSE.taskName}{' '}
+                <Typography
+                  component={'span'}
+                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
+                  variant={'h6'}
+                >
+                  (optional)
+                </Typography>
               </Typography>
               <StyledStatus status={LENDER_LICENSE.taskStatus} />
             </Stack>

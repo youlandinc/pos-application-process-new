@@ -36,14 +36,14 @@ export const PipelineLicense: FC = observer(() => {
     switch (userType) {
       case UserType.BROKER: {
         return {
-          label: "Broker's license",
+          label: "Broker's license (optional)",
           license: BROKER_LICENSE,
           name: 'broker',
         };
       }
       case UserType.LENDER: {
         return {
-          label: "Lender's license",
+          label: "Lender's license (optional)",
           license: LENDER_LICENSE,
           name: 'lender',
         };
@@ -145,6 +145,22 @@ export const PipelineLicense: FC = observer(() => {
         tip={`If you're looking to broker bridge loans, please upload your ${computedLicense.name} license for each respective state here.`}
       >
         <Stack alignItems={'center'} gap={3} width={'100%'}>
+          <Stack
+            alignItems={'center'}
+            justifyContent={'center'}
+            mb={3}
+            width={'100%'}
+          >
+            <StyledButton
+              color={'info'}
+              onClick={() => router.back()}
+              sx={{ flex: 1, width: '30%' }}
+              variant={'outlined'}
+            >
+              Skip
+            </StyledButton>
+          </Stack>
+
           <Stack width={'100%'}>
             <StyledUploadBox
               fileList={fileList || []}
