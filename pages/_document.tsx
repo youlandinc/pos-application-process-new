@@ -8,7 +8,7 @@ export default function Document() {
         <link
           as="font"
           crossOrigin="anonymous"
-          href="/fonts/Poppins-Bold.woff2"
+          href="/fonts/Poppins-Medium.woff2"
           rel="preload"
           type="font/woff2"
         />
@@ -23,6 +23,13 @@ export default function Document() {
           as="font"
           crossOrigin="anonymous"
           href="/fonts/Poppins-SemiBold.woff2"
+          rel="preload"
+          type="font/woff2"
+        />
+        <link
+          as="font"
+          crossOrigin="anonymous"
+          href="/fonts/Poppins-Bold.woff2"
           rel="preload"
           type="font/woff2"
         />

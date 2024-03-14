@@ -2,16 +2,25 @@
   font-family: Poppins;
   src: url('../../public/fonts/Poppins-Regular.woff2');
   font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: Poppins;
+  src: url('../../public/fonts/Poppins-Medium.woff2');
+  font-weight: 500;
+  font-display: swap;
 }
 @font-face {
   font-family: Poppins;
   src: url('../../public/fonts/Poppins-SemiBold.woff2');
   font-weight: 600;
+  font-display: swap;
 }
 @font-face {
   font-family: Poppins;
   src: url('../../public/fonts/Poppins-Bold.woff2');
   font-weight: 700;
+  font-display: swap;
 }
 
 html,
@@ -187,7 +196,7 @@ ul {
     right: 48px !important;
     max-width: calc(100% - 72px);
   }
-
+  
   .notistack-CollapseWrapper {
     padding: 0 0 8px 0;
   }
@@ -198,7 +207,7 @@ ul {
     top: 36px !important;
     max-width: calc(100% - 72px) !important;
   }
-
+  
   .notistack-CollapseWrapper {
     padding: 0 0 8px 0;
   }
