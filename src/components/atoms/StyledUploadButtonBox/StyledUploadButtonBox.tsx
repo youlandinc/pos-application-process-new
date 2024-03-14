@@ -115,6 +115,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
   const validatorFileSize = useCallback(
     (files: FileList) => {
       let flag = true;
+
       Array.from(files).some((item) => {
         if (item.size / 1024 / 1024 > fileSize) {
           enqueueSnackbar('File size cannot exceed 100MB.', {
@@ -231,7 +232,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
       onDrop={async (e) => {
         e.preventDefault();
         const files = e.dataTransfer.files;
-        await handleUpload(files);
+        validatorFileSize(files) && (await handleUpload(files));
       }}
       p={3}
       sx={{
