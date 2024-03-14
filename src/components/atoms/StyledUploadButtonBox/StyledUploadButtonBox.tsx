@@ -215,12 +215,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
   return (
     <Box
       borderRadius={2}
-      draggable={true}
       maxWidth={'100%'}
-      onDragEnter={(e) => {
-        e.preventDefault();
-        setIsDragging(true);
-      }}
       onDragLeave={(e) => {
         e.preventDefault();
         setIsDragging(false);
