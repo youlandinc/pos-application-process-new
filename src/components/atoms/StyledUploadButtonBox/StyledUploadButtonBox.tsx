@@ -9,7 +9,7 @@ import {
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 
-import { useBreakpoints, useSwitch } from '@/hooks';
+import { useBreakpoints, useSessionStorageState, useSwitch } from '@/hooks';
 import { _downloadBrokerFile } from '@/requests';
 
 import {
@@ -77,8 +77,11 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
 
   const [fileList, setFileList] = useState(files);
 
+  const [isDragging, setIsDragging] = useState(false);
+
   const handleUpload = useCallback(
     async (files: FileList) => {
+      setIsDragging(false);
       setInnerLoading(true);
 
       const formData = new FormData();
@@ -206,12 +209,36 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     router.query.taskId,
   ]);
 
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   return (
     <Box
-      border={'1px solid #D2D6E1'}
       borderRadius={2}
+      draggable={true}
       maxWidth={'100%'}
+      onDragEnter={(e) => {
+        e.preventDefault();
+        setIsDragging(true);
+      }}
+      onDragLeave={(e) => {
+        e.preventDefault();
+        setIsDragging(false);
+      }}
+      onDragOver={(e) => {
+        e.preventDefault();
+        setIsDragging(true);
+      }}
+      onDrop={async (e) => {
+        e.preventDefault();
+        const files = e.dataTransfer.files;
+        await handleUpload(files);
+      }}
       p={3}
+      sx={{
+        outline: isDragging
+          ? `2px solid hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`
+          : '1px solid #D2D6E1',
+      }}
       width={'100%'}
     >
       <Stack

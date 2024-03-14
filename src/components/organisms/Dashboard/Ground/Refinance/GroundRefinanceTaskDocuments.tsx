@@ -14,7 +14,7 @@ import {
   StyledButton,
   StyledFormItem,
   StyledLoading,
-  StyledProgressLine,
+  //StyledProgressLine,
   StyledTab,
   StyledUploadButtonBox,
   Transitions,
@@ -28,15 +28,15 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
   const [saveLoading, setSaveLoading] = useState(false);
   const [isFirst, setIsFirst] = useState<boolean>(true);
 
-  const [total, setTotal] = useState(9);
-  const [current, setCurrent] = useState(0);
+  //const [total, setTotal] = useState(9);
+  //const [current, setCurrent] = useState(0);
 
   const [tabData, setTabData] = useState<
     { label: string; content: ReactNode }[]
   >([]);
 
   const refreshData = useCallback(async () => {
-    let count = 0;
+    //let count = 0;
     const {
       data: { documents },
     }: AxiosResponse<DocumentUploadResponse> = await _fetchTaskFormInfo(
@@ -46,12 +46,12 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
       if (item.categoryDocs) {
         item.categoryDocs.forEach((child) => {
           if (child.files.length > 0) {
-            count++;
+            //count++;
           }
         });
       }
     });
-    setCurrent(count);
+    //setCurrent(count);
   }, [router.query.taskId]);
 
   const { loading } = useAsync(async () => {
@@ -65,10 +65,13 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res: AxiosResponse<DocumentUploadResponse>) => {
         const {
-          data: { documents, totalNum, uploadedNum },
+          data: {
+            documents,
+            //totalNum, uploadedNum
+          },
         } = res;
-        setTotal(totalNum);
-        setCurrent(uploadedNum);
+        //setTotal(totalNum);
+        //setCurrent(uploadedNum);
         const tabData = documents.reduce(
           (acc, cur) => {
             if (!cur?.categoryName) {
