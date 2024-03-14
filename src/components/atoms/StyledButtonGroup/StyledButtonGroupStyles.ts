@@ -11,7 +11,11 @@ export const StyledButtonGroupStyles = {
     boxShadow: 'none',
     py: 2,
     px: 6,
-    '&.Mui-selected': {
+    '&.MuiToggleButtonGroup-grouped:not(:first-of-type)': {
+      ml: '-2px',
+      borderLeft: '2px solid transparent',
+    },
+    '&.MuiToggleButtonGroup-grouped.Mui-selected': {
       bgcolor: 'primary.lighter',
       borderColor: 'primary.main',
       color: 'primary.darker',
