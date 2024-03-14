@@ -204,6 +204,14 @@ export const BridgeRefinanceEstimateRate: FC<{
   const onCustomLoanClick = async () => {
     setCustomLoading(true);
     setProductType('CUSTOM_LOAN');
+    if (nextStep) {
+      const temp: RatesProductData[] = JSON.parse(JSON.stringify(productList));
+      temp.map((child) => {
+        child.selected = false;
+        return child;
+      });
+      setProductList(temp);
+    }
 
     const postData: Variable<GREstimateRateData> = {
       name: VariableName.estimateRate,
@@ -241,16 +249,6 @@ export const BridgeRefinanceEstimateRate: FC<{
             proRatedInterest,
           },
         } = res!.data;
-        if (nextStep) {
-          const temp: RatesProductData[] = JSON.parse(
-            JSON.stringify(productList),
-          );
-          temp.map((child) => {
-            child.selected = false;
-            return child;
-          });
-          setProductList(temp);
-        }
         setSelectedItem(
           Object.assign(loanInfo as BridgeRefinanceLoanInfo, {
             paymentOfMonth,
