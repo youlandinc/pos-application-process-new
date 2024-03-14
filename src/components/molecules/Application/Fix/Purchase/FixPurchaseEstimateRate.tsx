@@ -146,7 +146,7 @@ export const FixPurchaseEstimateRate: FC<{
     const element = document.getElementById(
       'fix_and_flip_purchase_rate_search',
     );
-    const { height } = element!.getBoundingClientRect();
+    const { height = 0 } = element!.getBoundingClientRect();
     setIsFirstSearch(false);
     setLoading(true);
     const postData: Variable<FPEstimateRateData> = {
@@ -208,6 +208,7 @@ export const FixPurchaseEstimateRate: FC<{
 
   const onCustomLoanClick = async () => {
     setCustomLoading(true);
+    setProductType('CUSTOM_LOAN');
 
     const postData: Variable<GREstimateRateData> = {
       name: VariableName.estimateRate,
@@ -243,16 +244,17 @@ export const FixPurchaseEstimateRate: FC<{
             id,
             totalClosingCash,
             proRatedInterest,
-            category,
           },
         } = res!.data;
         if (nextStep) {
-          const temp = productList!.map((item) => {
-            item.selected = false;
-            return item;
+          const temp: RatesProductData[] = JSON.parse(
+            JSON.stringify(productList),
+          );
+          temp.map((child) => {
+            child.selected = false;
+            return child;
           });
           setProductList(temp);
-          setProductType(category);
         }
         setSelectedItem(
           Object.assign(loanInfo as FixPurchaseLoanInfo, {
@@ -290,12 +292,13 @@ export const FixPurchaseEstimateRate: FC<{
       proRatedInterest,
     } = item;
     if (nextStep) {
-      const temp = productList!.map((item) => {
-        item.selected = false;
-        return item;
+      const temp: RatesProductData[] = JSON.parse(JSON.stringify(productList));
+      temp.map((child) => {
+        child.selected = child.id === item.id;
+        return child;
       });
       setProductList(temp);
-      item.selected = true;
+      setProductType('');
     }
     setSelectedItem(
       Object.assign(productInfo as FixPurchaseLoanInfo, {
@@ -384,15 +387,7 @@ export const FixPurchaseEstimateRate: FC<{
         userType={userType}
       />
       <FixPurchaseRatesDrawer
-        close={() => {
-          const temp = productList!.map((item) => {
-            item.selected = false;
-            return item;
-          });
-          setProductList(temp);
-          setProductType('');
-          close();
-        }}
+        close={close}
         loading={checkLoading}
         nextStep={nextStepWrap}
         onCancel={close}

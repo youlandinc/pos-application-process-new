@@ -82,7 +82,7 @@ export const StyledAvatarUpload = forwardRef<
     uploadTrigger.current!.click();
   }, []);
 
-  const [state, uploadAvatar] = useAsyncFn(
+  const [, uploadAvatar] = useAsyncFn(
     async (formData) => {
       setLoading(true);
       return await _uploadAvatar(formData)
