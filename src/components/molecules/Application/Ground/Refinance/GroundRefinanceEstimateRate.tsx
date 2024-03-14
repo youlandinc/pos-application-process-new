@@ -145,7 +145,7 @@ export const GroundRefinanceEstimateRate: FC<{
 
   const onCheckGetList = async () => {
     const element = document.getElementById('ground_up_refinance_rate_search');
-    const { height } = element!.getBoundingClientRect();
+    const { height = 0 } = element!.getBoundingClientRect();
     setLoading(true);
     const postData: Variable<GREstimateRateData> = {
       name: VariableName.estimateRate,
@@ -206,6 +206,8 @@ export const GroundRefinanceEstimateRate: FC<{
 
   const onCustomLoanClick = async () => {
     setCustomLoading(true);
+    setProductType('CUSTOM_LOAN');
+
     const postData: Variable<GREstimateRateData> = {
       name: VariableName.estimateRate,
       type: 'json',
@@ -240,16 +242,17 @@ export const GroundRefinanceEstimateRate: FC<{
             id,
             totalClosingCash,
             proRatedInterest,
-            category,
           },
         } = res!.data;
         if (nextStep) {
-          const temp = productList!.map((item) => {
-            item.selected = false;
-            return item;
+          const temp: RatesProductData[] = JSON.parse(
+            JSON.stringify(productList),
+          );
+          temp.map((child) => {
+            child.selected = false;
+            return child;
           });
           setProductList(temp);
-          setProductType(category);
         }
         setSelectedItem(
           Object.assign(loanInfo as GroundRefinanceLoanInfo, {
@@ -287,12 +290,13 @@ export const GroundRefinanceEstimateRate: FC<{
       proRatedInterest,
     } = item;
     if (nextStep) {
-      const temp = productList!.map((item) => {
-        item.selected = false;
-        return item;
+      const temp: RatesProductData[] = JSON.parse(JSON.stringify(productList));
+      temp.map((child) => {
+        child.selected = child.id === item.id;
+        return child;
       });
       setProductList(temp);
-      item.selected = true;
+      setProductType('');
     }
     setSelectedItem(
       Object.assign(productInfo as GroundRefinanceLoanInfo, {
@@ -391,15 +395,7 @@ export const GroundRefinanceEstimateRate: FC<{
         userType={userType}
       />
       <GroundRefinanceRatesDrawer
-        close={() => {
-          const temp = productList!.map((item) => {
-            item.selected = false;
-            return item;
-          });
-          setProductList(temp);
-          setProductType('');
-          close();
-        }}
+        close={close}
         loading={checkLoading}
         nextStep={nextStepWrap}
         onCancel={close}
