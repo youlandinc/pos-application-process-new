@@ -163,11 +163,27 @@ export const PipelineAch: FC = observer(() => {
     <>
       <Stack alignItems={'center'} justifyContent={'center'}>
         <StyledFormItem
-          label={'ACH Information'}
+          label={'ACH Information (optional)'}
           sx={{ width: '100%' }}
           tip={computedAch.tip}
         >
           <Stack alignItems={'center'} gap={3} width={'100%'}>
+            <Stack
+              alignItems={'center'}
+              justifyContent={'center'}
+              mb={3}
+              width={'100%'}
+            >
+              <StyledButton
+                color={'info'}
+                onClick={() => router.back()}
+                sx={{ flex: 1, width: '30%' }}
+                variant={'outlined'}
+              >
+                Skip
+              </StyledButton>
+            </Stack>
+
             <Stack width={'100%'}>
               <StyledTextField
                 label={'Bank name'}

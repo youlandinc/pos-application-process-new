@@ -153,7 +153,14 @@ export const PipelineProfile: FC = observer(() => {
               onClick={() => handleEnterSubTask('/pipeline/task/ach')}
             >
               <Typography className={'task_label'} variant={'h6'}>
-                {ACH_INFORMATION.taskName}
+                {ACH_INFORMATION.taskName}{' '}
+                <Typography
+                  component={'span'}
+                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
+                  variant={'h6'}
+                >
+                  (optional)
+                </Typography>
               </Typography>
               <StyledStatus status={ACH_INFORMATION.taskStatus} />
             </Stack>
@@ -321,7 +328,14 @@ export const PipelineProfile: FC = observer(() => {
               onClick={() => handleEnterSubTask('/pipeline/task/ach')}
             >
               <Typography className={'task_label'} variant={'h6'}>
-                {LOAN_OFFICER_ACH_INFORMATION.taskName}
+                {LOAN_OFFICER_ACH_INFORMATION.taskName}{' '}
+                <Typography
+                  component={'span'}
+                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
+                  variant={'h6'}
+                >
+                  (optional)
+                </Typography>
               </Typography>
               <StyledStatus status={LOAN_OFFICER_ACH_INFORMATION.taskStatus} />
             </Stack>
@@ -362,7 +376,14 @@ export const PipelineProfile: FC = observer(() => {
               onClick={() => handleEnterSubTask('/pipeline/task/ach')}
             >
               <Typography className={'task_label'} variant={'h6'}>
-                {REAL_ESTATE_AGENT_ACH_INFORMATION.taskName}
+                {REAL_ESTATE_AGENT_ACH_INFORMATION.taskName}{' '}
+                <Typography
+                  component={'span'}
+                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
+                  variant={'h6'}
+                >
+                  (optional)
+                </Typography>
               </Typography>
               <StyledStatus
                 status={REAL_ESTATE_AGENT_ACH_INFORMATION.taskStatus}
