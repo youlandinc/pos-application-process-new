@@ -525,7 +525,7 @@ export const GroundRefinanceRatesSearch: FC<
         <Stack gap={1} width={'100%'}>
           <StyledCheckbox
             checked={isCashOut}
-            disabled={loading}
+            //disabled={loading}
             label={'Cash out amount'}
             onChange={(e) => {
               setSearchForm({
