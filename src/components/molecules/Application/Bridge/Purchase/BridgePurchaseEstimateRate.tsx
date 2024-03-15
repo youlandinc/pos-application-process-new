@@ -12,7 +12,6 @@ import { POSNotUndefined, POSTypeOf } from '@/utils';
 import {
   BPEstimateRateData,
   CustomRateData,
-  GREstimateRateData,
   HttpError,
   PropertyOpt,
   RatesProductData,
@@ -103,11 +102,11 @@ export const BridgePurchaseEstimateRate: FC<{
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
 
-  const [loading, setLoading] = useState(false);
-  const [checkLoading, setCheckLoading] = useState(false);
-  const [customLoading, setCustomLoading] = useState(false);
-  const [isFirstSearch, setIsFirstSearch] = useState(true);
-  const [productType, setProductType] = useState('');
+  const [customLoan, setCustomLoan] = useState<CustomRateData>({
+    customRate: estimateRate.loanTerm || undefined,
+    interestRate: estimateRate.interestRate || undefined,
+    loanTerm: estimateRate.interestRate || undefined,
+  });
 
   const [searchForm, setSearchForm] = useState<BPQueryData>({
     ...initialize,
@@ -116,11 +115,23 @@ export const BridgePurchaseEstimateRate: FC<{
       ? new Date(estimateRate.closeDate)
       : initialize.closeDate,
   });
-  const [customLoan, setCustomLoan] = useState<CustomRateData>({
-    customRate: estimateRate.loanTerm || undefined,
-    interestRate: estimateRate.interestRate || undefined,
-    loanTerm: estimateRate.interestRate || undefined,
+  const [isFirstSearch, setIsFirstSearch] = useState(() => {
+    return (
+      !POSNotUndefined(searchForm?.purchasePrice) ||
+      !POSNotUndefined(searchForm?.purchaseLoanAmount)
+    );
   });
+  const [loading, setLoading] = useState(() => {
+    return !(
+      !POSNotUndefined(searchForm?.purchasePrice) ||
+      !POSNotUndefined(searchForm?.purchaseLoanAmount)
+    );
+  });
+
+  const [checkLoading, setCheckLoading] = useState(false);
+  const [customLoading, setCustomLoading] = useState(false);
+
+  const [productType, setProductType] = useState('');
 
   const [productList, setProductList] = useState<RatesProductData[]>([]);
   const [reasonList, setReasonList] = useState<string[]>([]);
@@ -209,7 +220,7 @@ export const BridgePurchaseEstimateRate: FC<{
       setProductList(temp);
     }
 
-    const postData: Variable<GREstimateRateData> = {
+    const postData: Variable<BPEstimateRateData> = {
       name: VariableName.estimateRate,
       type: 'json',
       value: {
