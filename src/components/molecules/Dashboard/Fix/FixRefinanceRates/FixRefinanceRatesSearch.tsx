@@ -27,7 +27,7 @@ interface FixRefinanceRatesSearchProps {
 }
 
 export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
-  //loading,
+  loading,
   //loanStage = LoanStage.Application,
   searchForm,
   setSearchForm,
@@ -523,7 +523,7 @@ export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
         <Stack gap={1} width={'100%'}>
           <StyledCheckbox
             checked={isCashOut}
-            //disabled={loading || loanStage === LoanStage.Approved}
+            disabled={loading}
             label={'Cash out amount'}
             onChange={(e) => {
               setSearchForm({
