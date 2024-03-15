@@ -305,7 +305,11 @@ const _StyledSpecialPaymentCard: FC<
         className={'STRIPE_ADDRESS_ELEMENT'}
         options={{ mode: 'billing' }}
       />
-      <Stack direction={'row'} gap={6} justifyContent={'space-between'}>
+      <Stack
+        direction={{ xl: 'row', xs: 'column' }}
+        gap={6}
+        justifyContent={'space-between'}
+      >
         <StyledCheckbox
           checked={!visible}
           label={
@@ -356,7 +360,7 @@ const _StyledSpecialPaymentCard: FC<
           disabled={visible}
           loading={isLoading}
           size={'large'}
-          sx={{ flexShrink: 0, width: 120 }}
+          sx={{ flexShrink: 0, width: { xl: 120, xs: '100%' } }}
           type="submit"
           variant="contained"
         >
