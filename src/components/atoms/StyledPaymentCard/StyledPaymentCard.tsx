@@ -40,6 +40,8 @@ import {
 } from './index';
 
 import { StyledButton, StyledCheckbox, Transitions } from '@/components/atoms';
+import { POSFont } from '@/styles';
+import { theme } from '@/theme';
 
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISH_KEY as string)
   .then((res) => res)
@@ -237,9 +239,6 @@ const _StyledPaymentCard = forwardRef<
               </Box>
             </Box>
           </Box>
-          {/* <Box className={'payment_summary'}>
-               Total payment:{POSFormatDollar(amount)}
-               </Box> */}
         </Box>
       </>
     );
@@ -311,18 +310,44 @@ const _StyledSpecialPaymentCard: FC<
           checked={!visible}
           label={
             <>
-              <strong>Important: </strong> I understand that if my home does not
-              meet these requirements at the time of inspection, I will be
-              required to pay for a second appraisal inspection.
+              <strong>Important: </strong> By proceeding, you acknowledge that
+              the payment amount is subject to change if there are extenuated
+              circumstances about the property like large property, location,
+              etc. Furthermore, if your property doesn&apos;t meet the required
+              standards at the time of the inspection, you&apos;ll be
+              responsible for the cost of a second appraisal.
             </>
           }
           onChange={(e) => {
             e.target.checked ? close() : open();
           }}
           sx={{
+            alignItems: 'flex-start',
+            // width: '100%',
             '& .MuiFormControlLabel-label': {
-              fontSize: 12,
-              pl: 1.5,
+              width: '100%',
+              ml: 1.5,
+              wordBreak: 'break-word',
+              whiteSpace: 'normal',
+              ...POSFont(14, 400, 1.5, 'text.primary'),
+            },
+            '& .Mui-checked': {
+              '& svg > path': {
+                fill: `hsla( 222
+                ,42%,55%,1) !important`,
+              },
+            },
+            '& .MuiCheckbox-root': {
+              mt: '-9px',
+              mr: '-11px',
+              '& svg > path': {
+                fill: '#929292',
+              },
+            },
+            '& .Mui-disabled': {
+              '& svg > path': {
+                fill: `${theme.palette.action.disabled} !important`,
+              },
             },
           }}
         />
