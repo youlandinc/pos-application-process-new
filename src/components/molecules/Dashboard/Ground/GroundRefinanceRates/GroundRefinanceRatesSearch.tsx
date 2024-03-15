@@ -29,11 +29,11 @@ interface GroundRefinanceRatesSearchProps {
 export const GroundRefinanceRatesSearch: FC<
   GroundRefinanceRatesSearchProps
 > = ({
+  //loanStage = LoanStage.Application,
+  loading,
   searchForm,
   setSearchForm,
   userType,
-  //loading,
-  //loanStage = LoanStage.Application,
   isDashboard = false,
   id,
 }) => {
@@ -525,7 +525,7 @@ export const GroundRefinanceRatesSearch: FC<
         <Stack gap={1} width={'100%'}>
           <StyledCheckbox
             checked={isCashOut}
-            //disabled={loading || loanStage === LoanStage.Approved}
+            disabled={loading}
             label={'Cash out amount'}
             onChange={(e) => {
               setSearchForm({

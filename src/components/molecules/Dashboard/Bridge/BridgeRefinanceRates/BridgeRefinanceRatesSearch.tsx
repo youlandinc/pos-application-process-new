@@ -29,7 +29,7 @@ interface BridgeRefinanceRatesSearchProps {
 export const BridgeRefinanceRatesSearch: FC<
   BridgeRefinanceRatesSearchProps
 > = ({
-  //loading,
+  loading,
   //loanStage = LoanStage.Application,
   userType,
   searchForm,
@@ -460,7 +460,7 @@ export const BridgeRefinanceRatesSearch: FC<
         <Stack gap={1} width={'100%'}>
           <StyledCheckbox
             checked={isCashOut}
-            //disabled={loading || loanStage === LoanStage.Approved}
+            disabled={loading}
             label={'Cash out amount'}
             onChange={(e) => {
               setSearchForm({
