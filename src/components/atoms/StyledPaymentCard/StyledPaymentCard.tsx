@@ -307,7 +307,7 @@ const _StyledSpecialPaymentCard: FC<
       />
       <Stack
         direction={{ xl: 'row', xs: 'column' }}
-        gap={6}
+        gap={{ xl: 6, xs: 3 }}
         justifyContent={'space-between'}
       >
         <StyledCheckbox
