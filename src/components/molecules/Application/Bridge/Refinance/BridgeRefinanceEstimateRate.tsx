@@ -12,7 +12,6 @@ import { POSNotUndefined, POSTypeOf } from '@/utils';
 import {
   BREstimateRateData,
   CustomRateData,
-  GREstimateRateData,
   HttpError,
   PropertyOpt,
   RatesProductData,
@@ -233,7 +232,7 @@ export const BridgeRefinanceEstimateRate: FC<{
       setProductList(temp);
     }
 
-    const postData: Variable<GREstimateRateData> = {
+    const postData: Variable<BREstimateRateData> = {
       name: VariableName.estimateRate,
       type: 'json',
       value: {
