@@ -12,7 +12,6 @@ import { POSNotUndefined, POSTypeOf } from '@/utils';
 import {
   CustomRateData,
   FREstimateRateData,
-  GREstimateRateData,
   HttpError,
   PropertyOpt,
   RatesProductData,
@@ -111,12 +110,11 @@ export const FixRefinanceEstimateRate: FC<{
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
 
-  const [loading, setLoading] = useState(false);
-  const [checkLoading, setCheckLoading] = useState(false);
-  const [customLoading, setCustomLoading] = useState(false);
-  const [isFirstSearch, setIsFirstSearch] = useState(true);
-  const [productType, setProductType] = useState('');
-
+  const [customLoan, setCustomLoan] = useState<CustomRateData>({
+    customRate: estimateRate.loanTerm || undefined,
+    interestRate: estimateRate.interestRate || undefined,
+    loanTerm: estimateRate.interestRate || undefined,
+  });
   const [searchForm, setSearchForm] = useState<FRQueryData>({
     ...initialize,
     ...estimateRate,
@@ -125,11 +123,35 @@ export const FixRefinanceEstimateRate: FC<{
       : initialize.closeDate,
   });
 
-  const [customLoan, setCustomLoan] = useState<CustomRateData>({
-    customRate: estimateRate.loanTerm || undefined,
-    interestRate: estimateRate.interestRate || undefined,
-    loanTerm: estimateRate.interestRate || undefined,
+  const [checkLoading, setCheckLoading] = useState(false);
+  const [customLoading, setCustomLoading] = useState(false);
+
+  const [isFirstSearch, setIsFirstSearch] = useState(() => {
+    if (
+      !POSNotUndefined(searchForm?.homeValue) ||
+      !POSNotUndefined(searchForm?.balance) ||
+      !POSNotUndefined(searchForm?.cor) ||
+      !POSNotUndefined(searchForm?.arv)
+    ) {
+      return true;
+    }
+    return searchForm.isCashOut && !POSNotUndefined(searchForm?.cashOutAmount);
   });
+  const [loading, setLoading] = useState(() => {
+    if (
+      !POSNotUndefined(searchForm?.homeValue) ||
+      !POSNotUndefined(searchForm?.balance) ||
+      !POSNotUndefined(searchForm?.cor) ||
+      !POSNotUndefined(searchForm?.arv)
+    ) {
+      return false;
+    }
+    return !(
+      searchForm.isCashOut && !POSNotUndefined(searchForm?.cashOutAmount)
+    );
+  });
+
+  const [productType, setProductType] = useState('');
 
   const [productList, setProductList] = useState<RatesProductData[]>([]);
   const [reasonList, setReasonList] = useState<string[]>([]);
@@ -221,7 +243,7 @@ export const FixRefinanceEstimateRate: FC<{
       setProductList(temp);
     }
 
-    const postData: Variable<GREstimateRateData> = {
+    const postData: Variable<FREstimateRateData> = {
       name: VariableName.estimateRate,
       type: 'json',
       value: {
