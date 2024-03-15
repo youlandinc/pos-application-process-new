@@ -26,12 +26,10 @@ export const SpecificalPaymentAdditional: FC<{ sx?: SxProps }> = ({
       </Stack>
 
       <Stack gap={1}>
+        <Typography variant={'body3'}>Heads up:</Typography>
         <Typography variant={'body3'}>
-          Heads up for California homes:
-        </Typography>
-        <Typography variant={'body3'}>
-          State law says you need a carbon monoxide detector and a secure water
-          heater. Make sure these are in place to avoid issues.
+          Federal law says you need a carbon monoxide detector and a secure
+          water heater. Make sure these are in place to avoid issues.
         </Typography>
       </Stack>
     </Stack>
