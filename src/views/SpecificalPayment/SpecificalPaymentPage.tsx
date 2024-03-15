@@ -15,12 +15,19 @@ import {
   StyledPaymentCard,
 } from '@/components/atoms';
 
-import { SpecificalPaymentInfo, SpecificalPaymentStatus } from './components';
+import {
+  SpecificalPaymentAdditional,
+  SpecificalPaymentInfo,
+  SpecificalPaymentStatus,
+} from './components';
 
 import { _creatSpecifyPayment } from '@/requests';
+import { useBreakpoints } from '@/hooks';
 
 export const SpecificalPaymentPage = () => {
   const { enqueueSnackbar } = useSnackbar();
+
+  const breakpoints = useBreakpoints();
 
   const [clientSecret, setClientSecret] = useState('');
   const [propertyAddress, setPropertyAddress] = useState('');
@@ -145,6 +152,7 @@ export const SpecificalPaymentPage = () => {
                 flex={1}
                 gap={3}
                 minWidth={{ xl: 500, xs: 'auto' }}
+                order={{ xs: 2, xl: 1 }}
                 p={3}
               >
                 <Typography variant={'h4'}>
@@ -164,8 +172,18 @@ export const SpecificalPaymentPage = () => {
                 />
               </Stack>
 
-              <Stack flexShrink={0} gap={6} width={{ xs: '100%', xl: 530 }}>
+              <Stack
+                flexShrink={0}
+                gap={6}
+                order={{ xs: 1, xl: 2 }}
+                width={{ xs: '100%', xl: 530 }}
+              >
                 <SpecificalPaymentInfo
+                  additional={
+                    ['xl', 'xxl'].includes(breakpoints) ? (
+                      <SpecificalPaymentAdditional />
+                    ) : null
+                  }
                   appraisalFees={appraisalFees}
                   expeditedFees={expeditedFees}
                   isExpedited={isExpedited}
@@ -174,6 +192,10 @@ export const SpecificalPaymentPage = () => {
                   propertyAddress={propertyAddress}
                 />
               </Stack>
+
+              {!['xl', 'xxl'].includes(breakpoints) && (
+                <SpecificalPaymentAdditional sx={{ order: 3 }} />
+              )}
             </Stack>
           )}
         </Stack>
