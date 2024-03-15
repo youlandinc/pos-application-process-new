@@ -240,6 +240,7 @@ const LoanApplicationButtonStyles = {
 export const LoanApplication = observer<LoanApplicationProps>((props) => {
   const { productCategory, applicationType: productType } = props;
   const store = useMst();
+  const router = useRouter();
   const {
     notificationStation,
     applicationForm: { initialized },
@@ -354,14 +355,31 @@ export const LoanApplication = observer<LoanApplicationProps>((props) => {
                 >
                   Refinance
                 </Box>
-                <StyledButton
-                  disabled={!applicationType || initState.loading}
-                  loading={initState.loading}
-                  onClick={handleInitForm}
-                  sx={{ width: '100%', maxWidth: 600, mt: 3 }}
+                <Stack
+                  alignItems={'center'}
+                  flexDirection={'row'}
+                  gap={3}
+                  maxWidth={600}
+                  mt={3}
+                  width={'100%'}
                 >
-                  Next
-                </StyledButton>
+                  <StyledButton
+                    color={'info'}
+                    onClick={() => router.push('/')}
+                    sx={{ width: 'calc(50% - 12px)' }}
+                    variant={'text'}
+                  >
+                    Back
+                  </StyledButton>
+                  <StyledButton
+                    disabled={!applicationType || initState.loading}
+                    loading={initState.loading}
+                    onClick={handleInitForm}
+                    sx={{ width: 'calc(50% - 12px)' }}
+                  >
+                    Next
+                  </StyledButton>
+                </Stack>
               </Stack>
             </StyledFormItem>
           </Stack>

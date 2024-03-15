@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { POSFormatDollar } from '@/utils';
@@ -10,6 +10,7 @@ export const SpecificalPaymentInfo: FC<{
   isExpedited: boolean | undefined;
   expeditedFees: number | string | undefined;
   paymentAmount: number | string | undefined;
+  additional?: ReactNode;
 }> = ({
   propertyAddress,
   productName,
@@ -17,6 +18,7 @@ export const SpecificalPaymentInfo: FC<{
   isExpedited,
   expeditedFees,
   paymentAmount,
+  additional,
 }) => {
   return (
     <>
@@ -68,37 +70,7 @@ export const SpecificalPaymentInfo: FC<{
           Total: {POSFormatDollar(paymentAmount)}
         </Typography>
       </Stack>
-
-      <Stack color={'#636A7C'} gap={3}>
-        <Typography color={'#9095A3'} variant={'subtitle1'}>
-          What happens next
-        </Typography>
-        <Stack gap={1}>
-          <Typography variant={'body3'}>Once you pay:</Typography>
-          <Typography variant={'body3'}>
-            After you pay, we&apos;ll contact you to set a date for your
-            property&apos;s appraisal.
-          </Typography>
-        </Stack>
-
-        <Stack gap={1}>
-          <Typography variant={'body3'}>Appraisal visit:</Typography>
-          <Typography variant={'body3'}>
-            An expert will come by to check your property&apos;s value, which
-            may include looking inside your home.
-          </Typography>
-        </Stack>
-
-        <Stack gap={1}>
-          <Typography variant={'body3'}>
-            Heads up for California homes:
-          </Typography>
-          <Typography variant={'body3'}>
-            State law says you need a carbon monoxide detector and a secure
-            water heater. Make sure these are in place to avoid issues.
-          </Typography>
-        </Stack>
-      </Stack>
+      {additional && additional}
     </>
   );
 };
