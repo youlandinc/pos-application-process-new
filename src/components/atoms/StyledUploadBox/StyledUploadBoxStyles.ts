@@ -49,8 +49,6 @@ export const StyledUploadBoxStyles: SxProps = {
   },
   '& .uploadBox': {
     width: '100%',
-    border: '1px dashed',
-    borderColor: 'background.border_default',
     overflow: 'hidden',
     display: 'block',
     textAlign: 'center',

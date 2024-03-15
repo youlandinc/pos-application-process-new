@@ -131,7 +131,7 @@ export const SpecificalPaymentPage = () => {
             />
           ) : (
             <Stack
-              flexDirection={'row'}
+              flexDirection={{ xs: 'column', xl: 'row' }}
               gap={6}
               px={{
                 lg: 0,
@@ -144,7 +144,7 @@ export const SpecificalPaymentPage = () => {
                 borderRadius={2}
                 flex={1}
                 gap={3}
-                minWidth={500}
+                minWidth={{ xl: 500, xs: 'auto' }}
                 p={3}
               >
                 <Typography variant={'h4'}>
@@ -164,7 +164,7 @@ export const SpecificalPaymentPage = () => {
                 />
               </Stack>
 
-              <Stack flexShrink={0} gap={6} width={530}>
+              <Stack flexShrink={0} gap={6} width={{ xs: '100%', xl: 530 }}>
                 <SpecificalPaymentInfo
                   appraisalFees={appraisalFees}
                   expeditedFees={expeditedFees}

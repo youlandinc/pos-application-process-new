@@ -9,6 +9,8 @@ import { RatesCustomLoan, RatesItems, RatesSearchNoResult } from './components';
 import { observer } from 'mobx-react-lite';
 import { CustomRateData } from '@/types/dashboard';
 import { User } from '@/types/user';
+import { CallOutlined, MailOutlineOutlined } from '@mui/icons-material';
+import { POSFormatUSPhoneToText } from '@/utils';
 
 interface RatesProductListProps {
   productList: RatesProductData[];
@@ -63,7 +65,51 @@ export const RatesList: FC<RatesProductListProps> = observer(
     return (
       <Stack id={id} maxWidth={900} mt={!isDashboard ? 0 : 6} width={'100%'}>
         {isFirstSearch ? (
-          <></>
+          <Stack alignItems={'center'} gap={1.5}>
+            <Typography textAlign={'center'} variant={'h5'}>
+              Enter details above to view eligible loans
+            </Typography>
+            <Typography
+              color={'info.main'}
+              mt={1.5}
+              textAlign={'center'}
+              variant={'body1'}
+            >
+              If you have any questions, feel free to contact us and we&apos;ll
+              help you out.
+            </Typography>
+            <Stack
+              alignItems={'center'}
+              color={'info.main'}
+              flexDirection={{ md: 'row', xs: 'column' }}
+              fontWeight={600}
+              gap={3}
+              justifyContent={'center'}
+              maxWidth={900}
+              width={'100%'}
+            >
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                gap={1.5}
+                justifyContent={'center'}
+              >
+                <CallOutlined />
+                {POSFormatUSPhoneToText(
+                  saasState?.posSettings?.phone || '(833) 968-5263',
+                )}
+              </Stack>
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                gap={1.5}
+                justifyContent={'center'}
+              >
+                <MailOutlineOutlined />
+                {saasState?.posSettings?.email || 'borrow@youland.com'}
+              </Stack>
+            </Stack>
+          </Stack>
         ) : loading ? (
           <StyledLoading
             sx={{ color: 'text.grey', m: '48px auto 48px auto' }}

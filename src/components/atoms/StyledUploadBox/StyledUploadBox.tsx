@@ -48,6 +48,8 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
   const [deleteIndex, setDeleteIndex] = useState<number>(-1);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
 
+  const [isDragging, setIsDragging] = useState(false);
+
   const { open, visible, close } = useSwitch(false);
   const stopDefaults = (e: DragEvent) => {
     e.stopPropagation();
@@ -57,11 +59,16 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
   const dragEvents = {
     onDragEnter: (e: DragEvent) => {
       stopDefaults(e);
+      setIsDragging(true);
     },
     onDragLeave: (e: DragEvent) => {
       stopDefaults(e);
+      setIsDragging(false);
     },
-    onDragOver: stopDefaults,
+    onDragOver: (e: DragEvent) => {
+      stopDefaults(e);
+      setIsDragging(true);
+    },
     onDrop: async (e: DragEvent<HTMLElement>) => {
       stopDefaults(e);
       if (e.dataTransfer.files && validatorFileSize(e.dataTransfer.files)) {
@@ -159,7 +166,16 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
         onChange={handleChange}
         type="file"
       />
-      <Box className={'uploadBox'}>
+      <Box
+        className={'uploadBox'}
+        sx={{
+          outline: isDragging
+            ? `2px dashed hsla(${
+                saasState?.posSettings?.h ?? 222
+              },42%,55%,1) !important`
+            : '1px dashed #D2D6E1 !important',
+        }}
+      >
         <StyledButton
           color={'inherit'}
           disabled={loading}
