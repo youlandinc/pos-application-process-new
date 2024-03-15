@@ -256,6 +256,12 @@ export const GroundRefinanceEstimateRate: FC<{
       },
     };
     const requestData = {
+      ...searchForm,
+      closeDate: isDate(searchForm.closeDate)
+        ? format(searchForm.closeDate as Date, 'yyyy-MM-dd O')
+        : POSTypeOf(searchForm.closeDate) === 'Null'
+          ? format(addDays(new Date(), 7), 'yyyy-MM-dd O')
+          : searchForm.closeDate,
       customRate: true,
       interestRate: customLoan.interestRate,
       loanTerm: customLoan.loanTerm,
