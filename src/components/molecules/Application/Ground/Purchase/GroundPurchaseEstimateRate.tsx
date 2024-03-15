@@ -12,7 +12,6 @@ import { POSNotUndefined, POSTypeOf } from '@/utils';
 import {
   CustomRateData,
   GPEstimateRateData,
-  GREstimateRateData,
   HttpError,
   PropertyOpt,
   RatesProductData,
@@ -108,12 +107,11 @@ export const GroundPurchaseEstimateRate: FC<{
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
 
-  const [loading, setLoading] = useState(false);
-  const [checkLoading, setCheckLoading] = useState(false);
-  const [customLoading, setCustomLoading] = useState(false);
-  const [isFirstSearch, setIsFirstSearch] = useState(true);
-  const [productType, setProductType] = useState('');
-
+  const [customLoan, setCustomLoan] = useState<CustomRateData>({
+    customRate: estimateRate.loanTerm || undefined,
+    interestRate: estimateRate.interestRate || undefined,
+    loanTerm: estimateRate.interestRate || undefined,
+  });
   const [searchForm, setSearchForm] = useState<GPQueryData>({
     ...initialize,
     ...estimateRate,
@@ -121,11 +119,28 @@ export const GroundPurchaseEstimateRate: FC<{
       ? new Date(estimateRate.closeDate)
       : initialize.closeDate,
   });
-  const [customLoan, setCustomLoan] = useState<CustomRateData>({
-    customRate: estimateRate.loanTerm || undefined,
-    interestRate: estimateRate.interestRate || undefined,
-    loanTerm: estimateRate.interestRate || undefined,
+
+  const [checkLoading, setCheckLoading] = useState(false);
+  const [customLoading, setCustomLoading] = useState(false);
+
+  const [isFirstSearch, setIsFirstSearch] = useState(() => {
+    return (
+      !POSNotUndefined(searchForm?.purchaseLoanAmount) ||
+      !POSNotUndefined(searchForm?.purchasePrice) ||
+      !POSNotUndefined(searchForm?.cor) ||
+      !POSNotUndefined(searchForm?.arv)
+    );
   });
+  const [loading, setLoading] = useState(() => {
+    return !(
+      !POSNotUndefined(searchForm?.purchaseLoanAmount) ||
+      !POSNotUndefined(searchForm?.purchasePrice) ||
+      !POSNotUndefined(searchForm?.cor) ||
+      !POSNotUndefined(searchForm?.arv)
+    );
+  });
+
+  const [productType, setProductType] = useState('');
 
   const [productList, setProductList] = useState<RatesProductData[]>([]);
   const [reasonList, setReasonList] = useState<string[]>([]);
@@ -214,7 +229,7 @@ export const GroundPurchaseEstimateRate: FC<{
       setProductList(temp);
     }
 
-    const postData: Variable<GREstimateRateData> = {
+    const postData: Variable<GPEstimateRateData> = {
       name: VariableName.estimateRate,
       type: 'json',
       value: {
