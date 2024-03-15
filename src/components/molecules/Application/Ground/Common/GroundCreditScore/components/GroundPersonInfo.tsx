@@ -465,7 +465,7 @@ export const GroundPersonInfo: FC = observer(() => {
         {saasState?.posSettings?.softCreditRequirement ===
           SoftCreditRequirementEnum.optional &&
           selfInfo.citizenship !== CommonBorrowerType.foreign_national && (
-            <Stack maxWidth={600} width={'100%'}>
+            <Stack maxWidth={600} mt={-3} width={'100%'}>
               <StyledCheckbox
                 checked={selfInfo.isSkipCheck}
                 label={

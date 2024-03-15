@@ -28,11 +28,11 @@ export const SpecificalPaymentInfo: FC<{
         width={'100%'}
       >
         <Typography fontSize={24} pb={1.25} variant="h4">
-          Order Summary
+          Order summary
         </Typography>
         <Stack gap={1.25}>
           <Typography variant={'body2'}>
-            Property address:{propertyAddress}
+            Property address: {propertyAddress}
           </Typography>
           <Typography variant={'body2'}>Type: {productName}</Typography>
         </Stack>

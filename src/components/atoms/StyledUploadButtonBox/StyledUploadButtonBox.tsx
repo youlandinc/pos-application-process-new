@@ -63,11 +63,12 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     children,
     refresh,
   } = props;
-
-  const { open, visible, close } = useSwitch(false);
-  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
   const breakpoints = useBreakpoints();
+  const { saasState } = useSessionStorageState('tenantConfig');
+  const { open, visible, close } = useSwitch(false);
 
   const [deleteIndex, setDeleteIndex] = useState<number>(-1);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
@@ -209,8 +210,6 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     refresh,
     router.query.taskId,
   ]);
-
-  const { saasState } = useSessionStorageState('tenantConfig');
 
   return (
     <Box
