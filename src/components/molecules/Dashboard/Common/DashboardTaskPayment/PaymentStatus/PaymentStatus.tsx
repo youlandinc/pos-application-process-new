@@ -26,7 +26,7 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
           <>
             <StyledFormItem
               gap={3}
-              label={'SpecificalPayment successful!'}
+              label={'Payment successful!'}
               labelSx={{ color: 'success.main' }}
               tip={
                 <>
@@ -84,7 +84,7 @@ export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
           <>
             <StyledFormItem
               gap={3}
-              label={'SpecificalPayment failed!'}
+              label={'Payment failed!'}
               labelSx={{ color: 'error.main' }}
               tip={
                 'It seems we have not received money. You may contact your payment provider for further details.'
