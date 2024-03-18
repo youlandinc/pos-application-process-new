@@ -27,7 +27,7 @@ interface FixRefinanceRatesSearchProps {
 }
 
 export const FixRefinanceRatesSearch: FC<FixRefinanceRatesSearchProps> = ({
-  loading,
+  //loading,
   //loanStage = LoanStage.Application,
   searchForm,
   setSearchForm,
