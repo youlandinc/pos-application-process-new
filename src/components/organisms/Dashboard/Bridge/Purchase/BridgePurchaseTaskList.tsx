@@ -469,7 +469,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         >
           <DashboardHeader
             subTitle={
-              'You can make updates to the task before the loan is approved.'
+              'The sooner you complete the tasks below, the faster we can fund the loan.'
             }
             subTitleSx={{ mb: 2 }}
             title={'Your tasks checklist'}
