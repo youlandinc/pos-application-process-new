@@ -1,6 +1,9 @@
 import CryptoJS from 'crypto-js';
 import { User } from '@/types/user';
 import { LoginType, UserType } from '@/types/enum';
+import { _userRefreshToken } from '@/requests';
+import { LOGIN_APP_KEY } from '@/constants/default';
+import { rootStore } from '@/models/Root';
 
 type LOGIN_STORAGE = 'idToken' | 'accessToken' | 'refreshToken' | 'clockDrift';
 type LOGIN_PROFILE = 'email' | 'name' | 'user_type' | 'login_type' | 'avatar';
@@ -101,5 +104,27 @@ export const userpool = {
   },
   _getKeyPrefix(): string {
     return this.encode('USER_POOL_IDENTITY_SERVICE_PROVIDE');
+  },
+  async refreshToken(userId: string) {
+    const prefix = `${this._getKeyPrefix()}.${userId}`;
+    if (!localStorage.getItem(`${prefix}.refreshToken`)) {
+      return;
+    }
+    const {
+      data: { refreshToken, accessToken, expiredIn },
+    } = await _userRefreshToken({
+      refreshToken: localStorage.getItem(`${prefix}.refreshToken`)!,
+      appkey: LOGIN_APP_KEY,
+    });
+
+    localStorage.setItem(`${prefix}.refreshToken`, refreshToken);
+    localStorage.setItem(`${prefix}.idToken`, accessToken);
+    localStorage.setItem(`${prefix}.accessToken`, accessToken);
+
+    rootStore.injectCognitoUserSession({
+      refreshToken,
+      accessToken,
+      expiredIn,
+    });
   },
 };

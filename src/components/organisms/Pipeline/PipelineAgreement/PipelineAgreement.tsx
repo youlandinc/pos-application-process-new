@@ -12,7 +12,11 @@ import {
   _fetchLegalFile,
   _previewDocument,
 } from '@/requests';
-import { AUTO_HIDE_DURATION, OPTIONS_LICENSE_TYPE } from '@/constants';
+import {
+  AUTO_HIDE_DURATION,
+  OPTIONS_LICENSE_TYPE,
+  userpool,
+} from '@/constants';
 import { useBreakpoints, useRenderPdf, useSwitch } from '@/hooks';
 import { HttpError, UserType } from '@/types';
 
@@ -120,6 +124,10 @@ export const PipelineAgreement: FC = observer(() => {
     const data = computedAgreement.agreement.getPostData();
     try {
       await _completePipelineTask(data);
+      const lastAuthId = userpool.getLastAuthUserId();
+      if (lastAuthId) {
+        await userpool.refreshToken(lastAuthId);
+      }
       await router.push('/pipeline/profile');
     } catch (err) {
       const { header, message, variant } = err as HttpError;

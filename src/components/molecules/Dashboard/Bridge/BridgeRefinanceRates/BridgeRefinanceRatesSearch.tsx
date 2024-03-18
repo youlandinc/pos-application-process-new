@@ -29,7 +29,7 @@ interface BridgeRefinanceRatesSearchProps {
 export const BridgeRefinanceRatesSearch: FC<
   BridgeRefinanceRatesSearchProps
 > = ({
-  loading,
+  //loading,
   //loanStage = LoanStage.Application,
   userType,
   searchForm,

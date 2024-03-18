@@ -99,6 +99,10 @@ export const StyledAvatarUpload = forwardRef<
           setLoading(false);
           close();
           clipClose();
+          const lastAuthId = userpool.getLastAuthUserId();
+          if (lastAuthId) {
+            await userpool.refreshToken(lastAuthId);
+          }
         })
         .catch(({ message }) => {
           enqueueSnackbar(message ?? 'Upload error', {
@@ -257,6 +261,10 @@ export const StyledAvatarUpload = forwardRef<
                     '',
                   );
                   setAvatarUrl('');
+                  const lastAuthId = userpool.getLastAuthUserId();
+                  if (lastAuthId) {
+                    await userpool.refreshToken(lastAuthId);
+                  }
                 }}
                 sx={{ cursor: 'pointer' }}
               >

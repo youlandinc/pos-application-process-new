@@ -30,7 +30,7 @@ export const GroundRefinanceRatesSearch: FC<
   GroundRefinanceRatesSearchProps
 > = ({
   //loanStage = LoanStage.Application,
-  loading,
+  //loading,
   searchForm,
   setSearchForm,
   userType,
