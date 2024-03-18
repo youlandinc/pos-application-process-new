@@ -97,10 +97,7 @@ const RootStore = types.model(RootModel).actions((self) => {
     updateProfile(profile?: ClientUserProfile) {
       self.userProfile = profile;
     },
-    updateProfileAttribute(
-      name: keyof (typeof self)['userProfile'],
-      value: unknown,
-    ) {
+    updateProfileAttribute(name: keyof ClientUserProfile, value: unknown) {
       self.userProfile = { ...self.userProfile, [name]: value };
     },
     updateUserType(value: UserType) {

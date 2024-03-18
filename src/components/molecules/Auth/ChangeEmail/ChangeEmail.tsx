@@ -97,6 +97,10 @@ export const ChangeEmail: FC = observer(() => {
         localStorage.getItem('PROFILE_KEY') as string,
       );
       userpool.setLastAuthUserInfo(username, 'email', email);
+      const lastAuthId = userpool.getLastAuthUserId();
+      if (lastAuthId) {
+        await userpool.refreshToken(lastAuthId);
+      }
       enqueueSnackbar('Email changed successfully!', {
         variant: 'success',
         autoHideDuration: AUTO_HIDE_DURATION,
