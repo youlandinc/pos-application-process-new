@@ -110,10 +110,10 @@ const FixPurchaseDashboardTaskMap: DashboardTaskList<FPDashboardTaskKey> = {
         code: 'FP_DOCUMENTS_CONTRACT',
         url: '/dashboard/tasks/contract',
       },
-      {
-        code: 'FP_DOCUMENTS_PICTURES',
-        url: '/dashboard/tasks/upload_pictures',
-      },
+      //{
+      //  code: 'FP_DOCUMENTS_PICTURES',
+      //  url: '/dashboard/tasks/upload_pictures',
+      //},
       {
         code: 'FP_DOCUMENTS_REVIEW',
         url: '/dashboard/tasks/agreements',
