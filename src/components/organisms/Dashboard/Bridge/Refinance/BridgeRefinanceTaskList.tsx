@@ -109,10 +109,10 @@ const BridgeRefinanceDashboardTaskMap: DashboardTaskList<BRDashboardTaskKey> = {
       //   code: 'BR_DOCUMENTS_CONTRACT',
       //   url: '/dashboard/tasks/contract',
       // },
-      {
-        code: 'BR_DOCUMENTS_PICTURES',
-        url: '/dashboard/tasks/upload_pictures',
-      },
+      //{
+      //  code: 'BR_DOCUMENTS_PICTURES',
+      //  url: '/dashboard/tasks/upload_pictures',
+      //},
       {
         code: 'BR_DOCUMENTS_REVIEW',
         url: '/dashboard/tasks/agreements',

@@ -109,10 +109,10 @@ const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
       //   code: 'FR_DOCUMENTS_CONTRACT',
       //   url: '/dashboard/tasks/contract',
       // },
-      {
-        code: 'FR_DOCUMENTS_PICTURES',
-        url: '/dashboard/tasks/upload_pictures',
-      },
+      //{
+      //  code: 'FR_DOCUMENTS_PICTURES',
+      //  url: '/dashboard/tasks/upload_pictures',
+      //},
       {
         code: 'FR_DOCUMENTS_REVIEW',
         url: '/dashboard/tasks/agreements',

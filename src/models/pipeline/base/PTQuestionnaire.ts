@@ -145,6 +145,16 @@ export const PTQuestionnaire = types
         value: SPQOwnerData[K],
         index: number,
       ) {
+        if (key === 'birthday') {
+          self.errors[index] &&
+            self.errors[index].dateOfBirth &&
+            (self.errors[index].dateOfBirth = undefined);
+        }
+        if (key === 'ssn') {
+          self.errors[index] &&
+            self.errors[index].ssn &&
+            (self.errors[index].ssn = undefined);
+        }
         self.taskForm.licenses[index][key] = value;
       },
       addLicenses(owner: SPQOwnerData) {
