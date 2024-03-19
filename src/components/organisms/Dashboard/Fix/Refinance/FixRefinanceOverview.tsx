@@ -175,11 +175,14 @@ export const FixRefinanceOverview: FC = observer(() => {
           ],
         });
         setProduct({
-          title: 'Rate',
+          title: 'Loan terms',
           subTitle: 'Interest rate',
           subInfo: POSFormatLocalPercent(product.interestRateOfYear),
           info: [
-            { label: 'Loan term', info: `${product.loanTerm} months` },
+            {
+              label: 'Loan duration',
+              info: `${product.loanTerm} months`,
+            },
             {
               label: 'Monthly payment',
               info: POSFormatDollar(product.paymentOfMonth),

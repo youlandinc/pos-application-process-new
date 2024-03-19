@@ -173,7 +173,7 @@ export const GroundPurchaseTaskInvestmentExperience: FC = observer(() => {
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
-              'Please list your past experience with investment properties. These should be properties where you appear on title. These may be properties that you have exited or sold. Please keep in mind we will verify this experience during underwriting.'
+              'List your previous real estate investments (rentals, fix-and-flips).'
             }
             tipSx={{ mb: 0 }}
             width={'100%'}
@@ -200,19 +200,14 @@ export const GroundPurchaseTaskInvestmentExperience: FC = observer(() => {
               sub
               tip={
                 <Stack color={'info.main'}>
-                  <Typography variant={'body1'}>
-                    Next, fill out your Experience Verification Sheet
-                  </Typography>
                   <Typography mt={1.5} variant={'body1'}>
-                    Please complete the experience sheet and tell us about the
-                    investment property flips you have completed in the past 24
-                    months. For our purposes, a completed flip meets the
-                    following criteria:
+                    Valid investment experience must meet the following
+                    criteria:
                   </Typography>
                   <Typography mt={1.5} textAlign={'left'} variant={'body1'}>
                     1. The property must have been owned at least 30 days, owned
                     for fewer than 36 months, and sold or converted into a
-                    rental property in the last 24 months.
+                    rental property in the last 36 months.
                   </Typography>
                   <Typography mt={1} textAlign={'left'} variant={'body1'}>
                     2. The sale price of the property must have been greater or
@@ -223,7 +218,7 @@ export const GroundPurchaseTaskInvestmentExperience: FC = observer(() => {
             >
               <Stack alignItems={'center'}>
                 <Typography color={'text.primary'} variant={'body1'}>
-                  Example documents:
+                  Template Document:
                 </Typography>
 
                 <Typography
@@ -240,7 +235,7 @@ export const GroundPurchaseTaskInvestmentExperience: FC = observer(() => {
                     fontWeight: 600,
                   }}
                 >
-                  Sample project experience template
+                  Real Estate Investment Track Record
                 </Typography>
 
                 <Typography
@@ -249,18 +244,12 @@ export const GroundPurchaseTaskInvestmentExperience: FC = observer(() => {
                   textAlign={'center'}
                   variant={'body3'}
                 >
-                  Include the person/Entity on the title for each property you
-                  include. It is important that the person/Entity on title is
-                  affiliated to the Borrower and Guarantor on your loan
-                  application. Additional documentation may be required if{' '}
-                  {saasState?.organizationName || 'YouLand'} can&apos;t validate
-                  property ownership or title affiliation. Include the complete
-                  property address. When filling out the Experience Verification
-                  Sheet, please be sure to fill out the complete property
-                  address. Leave out vacant land and home address.{' '}
+                  Include the person/entity on the title for each property you
+                  include. The person/entity on title must be affiliated to the
+                  borrower and guarantor on your loan application.{' '}
                   {saasState?.organizationName || 'YouLand'} will not count
-                  vacant land or your current home towards your experience
-                  verification.
+                  vacant land or your current home towards your experience track
+                  record.
                 </Typography>
 
                 <Box mt={3} width={'100%'}>

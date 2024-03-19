@@ -203,7 +203,7 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
-              'Below are all of the details we have about your deal. If you have to change these details you may do so below, please note that changes may affect your Loan-to-value or your rate.'
+              'Below are all of the details we have about your deal. If you have to change these details, you may do so below. Please note that changes may affect your LTV (loan to value) or your rate.'
             }
             tipSx={{ mb: 0 }}
             width={'100%'}

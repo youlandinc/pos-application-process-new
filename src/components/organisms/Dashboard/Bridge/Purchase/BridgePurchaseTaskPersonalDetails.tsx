@@ -6,16 +6,18 @@ import { useSnackbar } from 'notistack';
 import { format, isDate, isValid } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
 import { POSNotUndefined } from '@/utils';
 import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 import { Address, IAddress } from '@/models/common/Address';
 import {
   AUTO_HIDE_DURATION,
+  HASH_COMMON_PERSON,
   OPTIONS_COMMON_YES_OR_NO,
   OPTIONS_TASK_MARTIAL_STATUS,
 } from '@/constants';
-import { DashboardTaskMaritalStatus, HttpError } from '@/types';
+import { DashboardTaskMaritalStatus, HttpError, UserType } from '@/types';
 
 import {
   StyledButton,
@@ -25,11 +27,12 @@ import {
   StyledGoogleAutoComplete,
   StyledLoading,
   StyledSelectOption,
-  StyledTextFieldNumber,
+  //StyledTextFieldNumber,
   Transitions,
 } from '@/components/atoms';
 
 export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
+  const { userType } = useMst();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -238,13 +241,20 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
-            tip={
-              'Please enter and confirm all of your personally identifiable information so we may begin processing your application.'
-            }
+            tip={`Please enter and confirm all of ${
+              HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
+            } personally identifiable information so we may begin processing  ${
+              HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
+            }  application.`}
             tipSx={{ mb: 0 }}
             width={'100%'}
           >
-            <StyledFormItem label={'What is your marital status?'} sub>
+            <StyledFormItem
+              label={`What is ${
+                HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
+              } marital status?`}
+              sub
+            >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledSelectOption
                   onChange={(value) =>
@@ -262,27 +272,30 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
               </Stack>
             </StyledFormItem>
 
-            <StyledFormItem
-              label={
-                'In the past 3 years, how many times have you had a credit account with 60 or more days delinquent?'
-              }
-              sub
-            >
-              <Stack maxWidth={600} width={'100%'}>
-                <StyledTextFieldNumber
-                  decimalScale={0}
-                  label={'Delinquent times'}
-                  onValueChange={({ formattedValue }) => {
-                    setDelinquentTimes(formattedValue);
-                  }}
-                  thousandSeparator={false}
-                  value={delinquentTimes}
-                />
-              </Stack>
-            </StyledFormItem>
+            {/*<StyledFormItem*/}
+            {/*  label={*/}
+            {/*    'In the past 3 years, how many times have you had a credit account with 60 or more days delinquent?'*/}
+            {/*  }*/}
+            {/*  sub*/}
+            {/*>*/}
+            {/*  <Stack maxWidth={600} width={'100%'}>*/}
+            {/*    <StyledTextFieldNumber*/}
+            {/*      decimalScale={0}*/}
+            {/*      label={'Delinquent times'}*/}
+            {/*      onValueChange={({ formattedValue }) => {*/}
+            {/*        setDelinquentTimes(formattedValue);*/}
+            {/*      }}*/}
+            {/*      thousandSeparator={false}*/}
+            {/*      value={delinquentTimes}*/}
+            {/*    />*/}
+            {/*  </Stack>*/}
+            {/*</StyledFormItem>*/}
 
             <StyledFormItem
-              label={'Have you declared bankruptcy within the past 7 years?'}
+              label={`Have ${
+                HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER]
+                  .the_third_subject
+              } declared bankruptcy within the past 7 years?`}
               sub
             >
               <StyledButtonGroup
@@ -317,9 +330,10 @@ export const BridgePurchaseTaskPersonalDetails: FC = observer(() => {
             </StyledFormItem>
 
             <StyledFormItem
-              label={
-                'Have you had property foreclosure upon in the past 7 years?'
-              }
+              label={`Have ${
+                HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER]
+                  .the_third_subject
+              } had property foreclosure upon in the past 7 years?`}
               sub
             >
               <StyledButtonGroup
