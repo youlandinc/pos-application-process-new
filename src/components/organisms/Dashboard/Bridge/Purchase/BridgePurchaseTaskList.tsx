@@ -110,10 +110,10 @@ const BridgePurchaseDashboardTaskMap: DashboardTaskList<BPDashboardTaskKey> = {
         code: 'BP_DOCUMENTS_CONTRACT',
         url: '/dashboard/tasks/contract',
       },
-      {
-        code: 'BP_DOCUMENTS_PICTURES',
-        url: '/dashboard/tasks/upload_pictures',
-      },
+      //{
+      //  code: 'BP_DOCUMENTS_PICTURES',
+      //  url: '/dashboard/tasks/upload_pictures',
+      //},
       {
         code: 'BP_DOCUMENTS_REVIEW',
         url: '/dashboard/tasks/agreements',

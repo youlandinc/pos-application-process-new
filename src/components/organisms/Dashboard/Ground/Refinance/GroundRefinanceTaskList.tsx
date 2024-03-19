@@ -109,10 +109,10 @@ const GroundRefinanceDashboardTaskMap: DashboardTaskList<GRDashboardTaskKey> = {
       //   code: 'GR_DOCUMENTS_CONTRACT',
       //   url: '/dashboard/tasks/contract',
       // },
-      {
-        code: 'GR_DOCUMENTS_PICTURES',
-        url: '/dashboard/tasks/upload_pictures',
-      },
+      //{
+      //  code: 'GR_DOCUMENTS_PICTURES',
+      //  url: '/dashboard/tasks/upload_pictures',
+      //},
       {
         code: 'GR_DOCUMENTS_REVIEW',
         url: '/dashboard/tasks/agreements',
