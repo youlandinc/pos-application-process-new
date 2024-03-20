@@ -20,11 +20,6 @@ export const PaymentNotice: FC<ConfirmTableProps> = (props) => {
       tip={
         <>
           <Typography color={'info.main'} variant={'body1'}>
-            We&apos;re just about ready to move to the next step in the
-            application process, but first we need to take care of one small
-            detail.
-          </Typography>
-          <Typography color={'info.main'} mt={1.5} variant={'body1'}>
             According to federal regulations, all lenders are required to go
             through a step called Intent to Proceed. It can sound like a big
             commitment but don&apos;t worry - this isn&apos;t legally-binding

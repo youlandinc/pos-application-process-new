@@ -2,7 +2,7 @@ import { POSTypeOf } from './TypeOf';
 import { format } from 'date-fns';
 
 export const POSFormatDollar = (
-  amount: number | undefined | string,
+  amount: number | undefined | string | null,
   radix = 0,
 ): string => {
   if (!amount) {

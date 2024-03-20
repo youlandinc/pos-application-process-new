@@ -74,10 +74,10 @@ const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
         code: 'FR_APPRAISAL_COST',
         url: '/dashboard/tasks/cost',
       },
-      {
-        code: 'FR_APPRAISAL_PROPERTY_DETAILS',
-        url: '/dashboard/tasks/property_inspection',
-      },
+      //{
+      //  code: 'FR_APPRAISAL_PROPERTY_DETAILS',
+      //  url: '/dashboard/tasks/property_inspection',
+      //},
     ],
   },
   ThirdPartyInformation: {
