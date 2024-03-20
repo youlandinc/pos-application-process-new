@@ -2,16 +2,13 @@ import { FC, ReactNode } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { POSFormatDollar } from '@/utils';
+import { SPaymentDetails } from '@/requests/dashboard';
 
-export const SpecificalPaymentInfo: FC<{
-  propertyAddress: string | undefined;
-  productName: string | undefined;
-  appraisalFees: number | string | undefined;
-  isExpedited: boolean | undefined;
-  expeditedFees: number | string | undefined;
-  paymentAmount: number | string | undefined;
-  additional?: ReactNode;
-}> = ({
+export const SpecificalPaymentInfo: FC<
+  Partial<SPaymentDetails> & {
+    additional?: ReactNode;
+  }
+> = ({
   propertyAddress,
   productName,
   appraisalFees,

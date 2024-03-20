@@ -74,10 +74,10 @@ const BridgeRefinanceDashboardTaskMap: DashboardTaskList<BRDashboardTaskKey> = {
         code: 'BR_APPRAISAL_COST',
         url: '/dashboard/tasks/cost',
       },
-      {
-        code: 'BR_APPRAISAL_PROPERTY_DETAILS',
-        url: '/dashboard/tasks/property_inspection',
-      },
+      //{
+      //  code: 'BR_APPRAISAL_PROPERTY_DETAILS',
+      //  url: '/dashboard/tasks/property_inspection',
+      //},
     ],
   },
   ThirdPartyInformation: {

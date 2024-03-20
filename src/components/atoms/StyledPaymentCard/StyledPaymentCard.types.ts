@@ -7,6 +7,7 @@ export interface StyledPaymentCardProps {
   subtitle?: string;
   mode?: 'check' | 'uncheck';
   cb?: (status: PaymentIntent.Status) => void;
+  hideFooter?: boolean;
 }
 
 export interface StyledPaymentCardRef {

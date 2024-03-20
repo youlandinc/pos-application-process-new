@@ -74,10 +74,10 @@ const GroundRefinanceDashboardTaskMap: DashboardTaskList<GRDashboardTaskKey> = {
         code: 'GR_APPRAISAL_COST',
         url: '/dashboard/tasks/cost',
       },
-      {
-        code: 'GR_APPRAISAL_PROPERTY_DETAILS',
-        url: '/dashboard/tasks/property_inspection',
-      },
+      //{
+      //  code: 'GR_APPRAISAL_PROPERTY_DETAILS',
+      //  url: '/dashboard/tasks/property_inspection',
+      //},
     ],
   },
   ThirdPartyInformation: {

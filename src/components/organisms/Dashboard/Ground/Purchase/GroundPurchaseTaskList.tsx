@@ -74,10 +74,10 @@ const GroundPurchaseDashboardTaskMap: DashboardTaskList<GPDashboardTaskKey> = {
         code: 'GP_APPRAISAL_COST',
         url: '/dashboard/tasks/cost',
       },
-      {
-        code: 'GP_APPRAISAL_PROPERTY_DETAILS',
-        url: '/dashboard/tasks/property_inspection',
-      },
+      //{
+      //  code: 'GP_APPRAISAL_PROPERTY_DETAILS',
+      //  url: '/dashboard/tasks/property_inspection',
+      //},
     ],
   },
   ThirdPartyInformation: {

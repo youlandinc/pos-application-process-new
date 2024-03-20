@@ -32,6 +32,7 @@ import {
   PaymentStatus,
   PaymentSummary,
 } from '@/components/molecules';
+import { TaskContractInformation } from '@/components/organisms';
 
 const useStateMachine = (
   state:
@@ -94,6 +95,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
 
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
+  const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
 
   const [paymentStatus, setPaymentStatus] =
     useState<DashboardTaskPaymentMethodsStatus>(
@@ -122,6 +124,14 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
   const [paymentDetail, setPaymentDetail] = useState<
     SPaymentDetails | undefined
   >();
+  const [contactInformation, setContactInformation] =
+    useState<TaskContractInformation>({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      instructions: '',
+    });
 
   const { loading } = useAsync(async () => {
     if (!router.query.taskId) {
@@ -141,6 +151,12 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
           isConfirm,
           isNotice,
           isExpedited,
+
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          instructions,
         } = res.data;
         setProductInfo(productInfo);
         setHaveAppraisal(haveAppraisal ?? false);
@@ -148,6 +164,15 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
         setIsExpedited(isExpedited ?? false);
         setNoticeCheck(isNotice ?? undefined);
         setSummaryCheck(isConfirm ?? undefined);
+
+        setContactInformation({
+          firstName: firstName ?? '',
+          lastName: lastName ?? '',
+          email: email ?? '',
+          phoneNumber: phoneNumber ?? '',
+          instructions: instructions ?? '',
+        });
+
         if (appraisalFiles?.length > 0) {
           setTableStatus(DashboardTaskPaymentTableStatus.summary);
         }
@@ -180,22 +205,35 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
 
   const handledPayment = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      setPaymentLoading(true);
       setClickable(false);
 
       const paymentRes = await (
         paymentCardFormRef.current as unknown as any
       ).onSubmit(e);
-      setClickable(true);
+
       if (paymentRes) {
         const { status } = paymentRes;
-        setPaymentStatus(status as string as DashboardTaskPaymentMethodsStatus);
-        resetTable();
+        if (status === DashboardTaskPaymentMethodsStatus.complete) {
+          resetTable();
+          setPaymentStatus(
+            status as string as DashboardTaskPaymentMethodsStatus,
+          );
+        }
       }
+
+      setClickable(true);
+      setPaymentLoading(false);
     },
     [resetTable],
   );
 
   const disabledButton = useMemo(() => {
+    const condition =
+      contactInformation.firstName &&
+      contactInformation.lastName &&
+      contactInformation.email &&
+      contactInformation.phoneNumber;
     switch (tableStatus) {
       case DashboardTaskPaymentTableStatus.notice:
         return !noticeCheck;
@@ -205,11 +243,15 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
         }
         return haveAppraisal
           ? !appraisalFiles.length || saveLoading
-          : saveLoading;
+          : saveLoading || !condition;
       case DashboardTaskPaymentTableStatus.payment:
-        return !paymentCheck || !clickable || loading;
+        return !paymentCheck || !clickable || loading || paymentLoading;
     }
   }, [
+    contactInformation.firstName,
+    contactInformation.lastName,
+    contactInformation.email,
+    contactInformation.phoneNumber,
     tableStatus,
     noticeCheck,
     haveAppraisal,
@@ -219,6 +261,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
     paymentCheck,
     clickable,
     loading,
+    paymentLoading,
   ]);
 
   const backToList = useCallback(async () => {
@@ -240,6 +283,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
         isNotice: noticeCheck,
         isConfirm: summaryCheck,
         isExpedited,
+        ...contactInformation,
       },
     };
 
@@ -262,6 +306,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
     }
   }, [
     appraisalFiles,
+    contactInformation,
     enqueueSnackbar,
     haveAppraisal,
     isExpedited,
@@ -287,6 +332,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
         return (
           <PaymentSummary
             check={summaryCheck}
+            contactInformation={contactInformation}
             fileList={appraisalFiles}
             haveAppraisal={haveAppraisal}
             isExpedited={isExpedited}
@@ -294,6 +340,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
               <BridgeRefinancePaymentSummary productInfo={productInfo} />
             }
             onCheckValueChange={(e) => setSummaryCheck(e.target.checked)}
+            onContactInformationChange={setContactInformation}
             onFileListChange={setAppraisalFiles}
             onHaveAppraisalChange={(e, value) => {
               if (value !== null) {
@@ -321,6 +368,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
     }
   }, [
     appraisalFiles,
+    contactInformation,
     haveAppraisal,
     isExpedited,
     noticeCheck,
@@ -426,6 +474,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
             <StyledButton
               color={'primary'}
               disabled={disabledButton}
+              loading={paymentLoading}
               onClick={(e) => handledPayment(e)}
               sx={{ flex: 1 }}
             >
@@ -442,6 +491,7 @@ export const BridgeRefinanceTaskPayment: FC = observer(() => {
     handledSaveFormAndGetPaymentDetail,
     haveAppraisal,
     next,
+    paymentLoading,
     saveLoading,
     tableStatus,
   ]);
