@@ -75,7 +75,7 @@ export const GroundProperty: FC<GroundPropertyProps> = observer((props) => {
       </Transitions>
       <StyledCheckbox
         checked={isConfirm}
-        label="Please confirm that this property will be used for non-owner occupancy purposes only."
+        label="Please confirm that this property is non-owner occupied and for investment purposes only."
         onChange={(e) =>
           property.changeFieldValue(
             'isConfirm',
