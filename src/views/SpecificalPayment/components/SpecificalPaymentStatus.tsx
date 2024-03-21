@@ -23,9 +23,9 @@ export const SpecificalPaymentStatus: FC<{
         return {
           icon: PAYMENT_SUCCESS,
           color: '#69C0A5',
-          status: 'successful!',
+          status: 'successful',
           content: (
-            <Typography color={'#787878'}>
+            <Typography color={'text.secondary'}>
               We have received your payment for the property appraisal and will
               contact you soon to set a date for the appraisal. During the
               visit, an expert will come by to check your property&apos;s value,
@@ -33,21 +33,26 @@ export const SpecificalPaymentStatus: FC<{
             </Typography>
           ),
           contact: (
-            <Typography color={'#787878'}>
+            <Typography color={'text.secondary'}>
               If you have any questions or concerns, email us at{' '}
               <a
                 href={`mailto:${saasState?.email || 'borrow@youland.com'}`}
-                style={{ color: '#3F81E9' }}
+                style={{
+                  color: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+                }}
               >
                 {saasState?.email || 'borrow@youland.com'}
               </a>{' '}
               or call toll free at{' '}
               <a
                 href={`tel:${saasState?.phone || '1-833-968-5263'}`}
-                style={{ color: '#3F81E9' }}
+                style={{
+                  color: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+                }}
               >
                 {POSFormatUSPhoneToText(saasState?.phone || '1-833-968-5263')}
               </a>
+              .
             </Typography>
           ),
         };
@@ -58,29 +63,33 @@ export const SpecificalPaymentStatus: FC<{
           color: '#EEB94D',
           status: 'pending',
           content: (
-            <Typography color={'#787878'}>
+            <Typography color={'text.secondary'}>
               Your transaction is still pending. Please wait a little bit and
-              check again. Don’t worry, this is usually just an issue with the
-              transaction process taking longer than expected.
+              check again. Don&apos;t worry, this is usually just an issue with
+              the transaction process taking longer than expected.
             </Typography>
           ),
           contact: (
-            <Typography color={'#787878'}>
+            <Typography color={'text.secondary'}>
               If money was debited from your account and the transaction is
-              still pending after a hour, you can call us toll free at{' '}
+              still pending after a hour, you can call us toll-free at{' '}
               <a
                 href={`tel:${saasState?.phone || '1-833-968-5263'}`}
-                style={{ color: '#3F81E9' }}
+                style={{
+                  color: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+                }}
               >
                 {POSFormatUSPhoneToText(saasState?.phone || '1-833-968-5263')}
               </a>{' '}
               or email us at{' '}
               <a
                 href={`mailto:${saasState?.email || 'borrow@youland.com'}`}
-                style={{ color: '#3F81E9' }}
+                style={{
+                  color: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+                }}
               >
                 {saasState?.email || 'borrow@youland.com'}
-              </a>{' '}
+              </a>
               . We can help you with the refund.
             </Typography>
           ),
@@ -90,10 +99,18 @@ export const SpecificalPaymentStatus: FC<{
         return {
           icon: PAYMENT_FAIL,
           color: '#DE6449',
-          status: 'failed!',
+          status: 'failed',
           content: (
             <Stack>
-              <Typography color={'#787878'} variant={'subtitle1'}>
+              <Typography color={'text.secondary'} variant={'body1'}>
+                Your payment couldn&apos;t be processed. Don&apos;t worry,
+                we&apos;re here to help.
+              </Typography>
+              <Typography
+                color={'text.secondary'}
+                mt={1.5}
+                variant={'subtitle1'}
+              >
                 Quick fixes:
               </Typography>
               <Stack
@@ -104,40 +121,50 @@ export const SpecificalPaymentStatus: FC<{
                   p: 0,
                 }}
               >
-                <Typography color={'#787878'} component={'li'}>
+                <Typography color={'text.secondary'} component={'li'}>
                   Verify your card information.
                 </Typography>
-                <Typography color={'#787878'} component={'li'}>
+                <Typography color={'text.secondary'} component={'li'}>
                   Ensure you have sufficient funds.
                 </Typography>
-                <Typography color={'#787878'} component={'li'}>
+                <Typography color={'text.secondary'} component={'li'}>
                   Retry the payment.
                 </Typography>
               </Stack>
             </Stack>
           ),
           contact: (
-            <Typography color={'#787878'}>
+            <Typography color={'text.secondary'}>
               Should you require additional assistance, email us at{' '}
               <a
                 href={`mailto:${saasState?.email || 'borrow@youland.com'}`}
-                style={{ color: '#3F81E9' }}
+                style={{
+                  color: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+                }}
               >
                 {saasState?.email || 'borrow@youland.com'}
               </a>{' '}
               or call toll free at{' '}
               <a
                 href={`tel:${saasState?.phone || '1-833-968-5263'}`}
-                style={{ color: '#3F81E9' }}
+                style={{
+                  color: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+                }}
               >
                 {POSFormatUSPhoneToText(saasState?.phone || '1-833-968-5263')}
               </a>
+              .
             </Typography>
           ),
         };
       }
     }
-  }, [paymentStatus, saasState?.email, saasState?.phone]);
+  }, [
+    paymentStatus,
+    saasState?.email,
+    saasState?.phone,
+    saasState?.posSettings?.h,
+  ]);
 
   return (
     <Stack gap={3} margin={'0 auto'} maxWidth={900} p={3}>
