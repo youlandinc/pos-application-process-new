@@ -106,10 +106,10 @@ const GroundPurchaseDashboardTaskMap: DashboardTaskList<GPDashboardTaskKey> = {
   DocumentsMaterials: {
     title: 'Documents & Materials',
     children: [
-      {
-        code: 'GP_DOCUMENTS_CONTRACT',
-        url: '/dashboard/tasks/contract',
-      },
+      //{
+      //  code: 'GP_DOCUMENTS_CONTRACT',
+      //  url: '/dashboard/tasks/contract',
+      //},
       //{
       //  code: 'GP_DOCUMENTS_PICTURES',
       //  url: '/dashboard/tasks/upload_pictures',
@@ -480,9 +480,9 @@ export const GroundPurchaseTaskList: FC = observer(() => {
             subTitleSx={{ mb: 2 }}
             title={'Your tasks checklist'}
           />
-          <Stack alignItems={'center'} mb={3}>
-            <StyledProgressLine current={current} total={total} />
-          </Stack>
+          {/*<Stack alignItems={'center'} mb={3}>*/}
+          {/*  <StyledProgressLine current={current} total={total} />*/}
+          {/*</Stack>*/}
           {renderTaskList}
         </Box>
       )}

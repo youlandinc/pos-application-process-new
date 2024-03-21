@@ -106,10 +106,10 @@ const BridgePurchaseDashboardTaskMap: DashboardTaskList<BPDashboardTaskKey> = {
   DocumentsMaterials: {
     title: 'Documents & Materials',
     children: [
-      {
-        code: 'BP_DOCUMENTS_CONTRACT',
-        url: '/dashboard/tasks/contract',
-      },
+      //{
+      //  code: 'BP_DOCUMENTS_CONTRACT',
+      //  url: '/dashboard/tasks/contract',
+      //},
       //{
       //  code: 'BP_DOCUMENTS_PICTURES',
       //  url: '/dashboard/tasks/upload_pictures',
@@ -480,9 +480,9 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             subTitleSx={{ mb: 2 }}
             title={'Your tasks checklist'}
           />
-          <Stack alignItems={'center'} mb={3}>
-            <StyledProgressLine current={current} total={total} />
-          </Stack>
+          {/*<Stack alignItems={'center'} mb={3}>*/}
+          {/*  <StyledProgressLine current={current} total={total} />*/}
+          {/*</Stack>*/}
           {renderTaskList}
         </Box>
       )}

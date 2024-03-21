@@ -106,10 +106,10 @@ const FixPurchaseDashboardTaskMap: DashboardTaskList<FPDashboardTaskKey> = {
   DocumentsMaterials: {
     title: 'Documents & Materials',
     children: [
-      {
-        code: 'FP_DOCUMENTS_CONTRACT',
-        url: '/dashboard/tasks/contract',
-      },
+      //{
+      //  code: 'FP_DOCUMENTS_CONTRACT',
+      //  url: '/dashboard/tasks/contract',
+      //},
       //{
       //  code: 'FP_DOCUMENTS_PICTURES',
       //  url: '/dashboard/tasks/upload_pictures',
@@ -485,9 +485,9 @@ export const FixPurchaseTaskList: FC = observer(() => {
             <StyledLoading sx={{ color: 'text.grey' }} />
           ) : (
             <>
-              <Stack alignItems={'center'} mb={3}>
-                <StyledProgressLine current={current} total={total} />
-              </Stack>
+              {/*<Stack alignItems={'center'} mb={3}>*/}
+              {/*  <StyledProgressLine current={current} total={total} />*/}
+              {/*</Stack>*/}
               {renderTaskList}
             </>
           )}
