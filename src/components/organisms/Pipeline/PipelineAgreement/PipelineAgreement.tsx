@@ -64,7 +64,7 @@ export const PipelineAgreement: FC = observer(() => {
         return {
           isRenderLicense: false,
           isGenerateFile: true,
-          label: 'Broker agreement',
+          label: 'Broker agreement (optional)',
           tip: "Please fill in the fields below and we'll generate a broker agreement for you.",
           username: 'broker',
           upperName: 'Broker',
@@ -74,7 +74,7 @@ export const PipelineAgreement: FC = observer(() => {
         return {
           isRenderLicense: false,
           isGenerateFile: true,
-          label: 'Lender agreement',
+          label: 'Lender agreement (optional)',
           tip: "Please fill in the fields below and we'll generate a lender agreement for you.",
           username: 'lender',
           upperName: 'Lender',
@@ -84,7 +84,7 @@ export const PipelineAgreement: FC = observer(() => {
         return {
           isRenderLicense: true,
           isGenerateFile: false,
-          label: 'Loan officer information',
+          label: 'Loan officer information (optional)',
           tip: "Please fill in the fields below and we'll generate a loan officer agreement for you.",
           username: 'loan officer',
           upperName: 'Loan officer',
@@ -94,7 +94,7 @@ export const PipelineAgreement: FC = observer(() => {
         return {
           isRenderLicense: true,
           isGenerateFile: false,
-          label: 'Real estate agent information',
+          label: 'Real estate agent information (optional)',
           tip: "Please fill in the fields below and we'll generate a real estate agent agreement for you.",
           username: 'real estate agent',
           upperName: 'Real estate agent',
