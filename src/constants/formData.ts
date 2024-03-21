@@ -428,7 +428,7 @@ export const FormData = {
       starting: {
         purpose: {
           values: {
-            propertyNumber: PropertyNumberOpt.default,
+            propertyNumber: PropertyNumberOpt.zero,
             address: {
               formatAddress: '',
               aptNumber: '',
@@ -546,7 +546,7 @@ export const FormData = {
       starting: {
         purpose: {
           values: {
-            propertyNumber: PropertyNumberOpt.default,
+            propertyNumber: PropertyNumberOpt.zero,
             address: {
               formatAddress: '',
               aptNumber: '',
@@ -667,7 +667,7 @@ export const FormData = {
       starting: {
         purpose: {
           values: {
-            propertyNumber: PropertyNumberOpt.default,
+            propertyNumber: PropertyNumberOpt.zero,
             address: {
               formatAddress: '',
               aptNumber: '',
@@ -785,7 +785,7 @@ export const FormData = {
       starting: {
         purpose: {
           values: {
-            propertyNumber: PropertyNumberOpt.default,
+            propertyNumber: PropertyNumberOpt.zero,
             address: {
               formatAddress: '',
               aptNumber: '',
@@ -906,7 +906,7 @@ export const FormData = {
       starting: {
         purpose: {
           values: {
-            propertyNumber: PropertyNumberOpt.default,
+            propertyNumber: PropertyNumberOpt.zero,
             address: {
               formatAddress: '',
               aptNumber: '',
@@ -1024,7 +1024,7 @@ export const FormData = {
       starting: {
         purpose: {
           values: {
-            propertyNumber: PropertyNumberOpt.default,
+            propertyNumber: PropertyNumberOpt.zero,
             address: {
               formatAddress: '',
               aptNumber: '',

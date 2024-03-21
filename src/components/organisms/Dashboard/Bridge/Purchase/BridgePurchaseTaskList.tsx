@@ -36,10 +36,10 @@ const BridgePurchaseDashboardTaskMap: DashboardTaskList<BPDashboardTaskKey> = {
         code: 'BP_APPLICATION_LOAN',
         url: '/dashboard/tasks/loan_details',
       },
-      {
-        code: 'BP_APPLICATION_PROPERTY',
-        url: '/dashboard/tasks/property_details',
-      },
+      //{
+      //  code: 'BP_APPLICATION_PROPERTY',
+      //  url: '/dashboard/tasks/property_details',
+      //},
       {
         code: 'BP_APPLICATION_INVESTMENT',
         url: '/dashboard/tasks/investment_experience',
@@ -57,10 +57,10 @@ const BridgePurchaseDashboardTaskMap: DashboardTaskList<BPDashboardTaskKey> = {
         code: 'BP_BORROWER_DEMOGRAPHICS',
         url: '/dashboard/tasks/demographics_information',
       },
-      {
-        code: 'BP_BORROWER_GUARANTOR',
-        url: '/dashboard/tasks/borrower_type',
-      },
+      //{
+      //  code: 'BP_BORROWER_GUARANTOR',
+      //  url: '/dashboard/tasks/borrower_type',
+      //},
       {
         code: 'BP_BORROWER_CO_BORROWER',
         url: '/dashboard/tasks/co_borrower_details',
@@ -149,7 +149,7 @@ export const BridgePurchaseTaskList: FC = observer(() => {
       router.query.processId as string,
     )
       .then((res) => {
-        const { totalNum, finishedNum } = res.data;
+        const { totalNum, finishedNum, appraisalStage } = res.data;
         setTaskDetails(res?.data?.tasks);
         setTotal(totalNum);
         setCurrent(finishedNum);
@@ -171,41 +171,41 @@ export const BridgePurchaseTaskList: FC = observer(() => {
       });
   }, [router.query.processId]);
 
-  const renderStage = useMemo(() => {
-    let bgcolor = '';
-    switch (appraisalStage) {
-      case AppraisalStage.NotStarted:
-        bgcolor = '#D2D6E1';
-        break;
-      case AppraisalStage.PaidFor:
-      case AppraisalStage.Ordered:
-      case AppraisalStage.Scheduled:
-        bgcolor = '#95A8D7';
-        break;
-      case AppraisalStage.Canceled:
-        bgcolor = '#E39482';
-        break;
-      case AppraisalStage.Completed:
-        bgcolor = '#85CCB6';
-        break;
-    }
-    return (
-      <Typography
-        alignItems={'center'}
-        bgcolor={bgcolor}
-        borderRadius={1}
-        color={'#FFFFFF'}
-        display={'flex'}
-        fontSize={12}
-        height={24}
-        justifyContent={'center'}
-        variant={'subtitle3'}
-        width={96}
-      >
-        {appraisalStage || AppraisalStage.NotStarted}
-      </Typography>
-    );
-  }, [appraisalStage]);
+  //const renderStage = useMemo(() => {
+  //  let bgcolor = '';
+  //  switch (appraisalStage) {
+  //    case AppraisalStage.NotStarted:
+  //      bgcolor = '#D2D6E1';
+  //      break;
+  //    case AppraisalStage.PaidFor:
+  //    case AppraisalStage.Ordered:
+  //    case AppraisalStage.Scheduled:
+  //      bgcolor = '#95A8D7';
+  //      break;
+  //    case AppraisalStage.Canceled:
+  //      bgcolor = '#E39482';
+  //      break;
+  //    case AppraisalStage.Completed:
+  //      bgcolor = '#85CCB6';
+  //      break;
+  //  }
+  //  return (
+  //    <Typography
+  //      alignItems={'center'}
+  //      bgcolor={bgcolor}
+  //      borderRadius={1}
+  //      color={'#FFFFFF'}
+  //      display={'flex'}
+  //      fontSize={12}
+  //      height={24}
+  //      justifyContent={'center'}
+  //      variant={'subtitle3'}
+  //      width={96}
+  //    >
+  //      {appraisalStage || AppraisalStage.NotStarted}
+  //    </Typography>
+  //  );
+  //}, [appraisalStage]);
 
   const renderTaskList = useMemo(() => {
     return (
@@ -303,7 +303,8 @@ export const BridgePurchaseTaskList: FC = observer(() => {
             >
               {BridgePurchaseDashboardTaskMap.PropertyAppraisal.title}
             </Typography>
-            {renderStage}
+            {/*todo:appraisal*/}
+            {/*{renderStage}*/}
           </Box>
           {BridgePurchaseDashboardTaskMap.PropertyAppraisal.children.map(
             (sonItem) => (
@@ -437,7 +438,12 @@ export const BridgePurchaseTaskList: FC = observer(() => {
         </Box>
       </>
     );
-  }, [breakpoints, renderStage, router, taskDetails]);
+  }, [
+    //renderStage,
+    breakpoints,
+    router,
+    taskDetails,
+  ]);
 
   return (
     <Transitions

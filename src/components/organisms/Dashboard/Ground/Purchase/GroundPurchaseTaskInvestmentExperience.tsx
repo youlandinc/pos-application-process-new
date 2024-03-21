@@ -173,7 +173,15 @@ export const GroundPurchaseTaskInvestmentExperience: FC = observer(() => {
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
-              'List your previous real estate investments (rentals, fix-and-flips).'
+              <>
+                <Typography>
+                  List your previous real estate investments, including rentals
+                  and fix-and-flips.
+                </Typography>
+                <Typography>
+                  These will be verified through a title search.
+                </Typography>
+              </>
             }
             tipSx={{ mb: 0 }}
             width={'100%'}
@@ -185,10 +193,11 @@ export const GroundPurchaseTaskInvestmentExperience: FC = observer(() => {
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldNumber
                   decimalScale={0}
-                  label={'Track record'}
+                  label={'Number of properties exited'}
                   onValueChange={({ formattedValue }) =>
                     setPropertiesNum(formattedValue)
                   }
+                  placeholder={'Number of properties exited'}
                   thousandSeparator={false}
                   value={propertiesNum}
                 />
