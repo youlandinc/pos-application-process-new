@@ -5,6 +5,7 @@ import { Instance, SnapshotOut, types } from 'mobx-state-tree';
 import { FixProperty } from './FixProperty';
 
 import { FixPurpose } from './FixPurpose';
+import { PropertyNumberOpt } from '@/types';
 
 export const FixStarting = types
   .model({
@@ -24,14 +25,8 @@ export const FixStarting = types
           : data.propertyType;
     },
     injectServerData(value: FixStartingData) {
-      const {
-        propertyNumber,
-        propAddr,
-        propertyType,
-        propertyUnit,
-        isConfirm,
-      } = value;
-      self.purpose.values.propertyNumber = propertyNumber;
+      const { propAddr, propertyType, propertyUnit, isConfirm } = value;
+      self.purpose.values.propertyNumber = PropertyNumberOpt.zero;
       self.purpose.values.address.injectServerData(propAddr);
 
       self.property.values.propertyType = propertyType;
@@ -42,7 +37,6 @@ export const FixStarting = types
       const {
         purpose: {
           values: {
-            propertyNumber,
             address: { formatAddress, state, aptNumber, city, postcode },
           },
         },
@@ -54,7 +48,7 @@ export const FixStarting = types
         name: VariableName.starting,
         type: 'json',
         value: {
-          propertyNumber,
+          propertyNumber: PropertyNumberOpt.zero,
           propertyType,
           propertyUnit,
           isConfirm,

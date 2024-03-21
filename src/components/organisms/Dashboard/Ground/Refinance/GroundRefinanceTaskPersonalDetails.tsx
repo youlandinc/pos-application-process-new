@@ -138,14 +138,15 @@ export const GroundRefinanceTaskPersonalDetails: FC = observer(() => {
         dateValid &&
         foreclosureDateValid &&
         address.checkAddressValid &&
-        !!marital &&
-        !!delinquentTimes
+        //!!delinquentTimes &&
+        !!marital
       );
     }
 
     if (isBankruptcy) {
       return (
-        dateValid && address.checkAddressValid && !!marital && !!delinquentTimes
+        dateValid && address.checkAddressValid && !!marital
+        //&& !!delinquentTimes
       );
     }
 
@@ -153,15 +154,16 @@ export const GroundRefinanceTaskPersonalDetails: FC = observer(() => {
       return (
         address.checkAddressValid &&
         !!marital &&
-        !!delinquentTimes &&
+        //!!delinquentTimes &&
         foreclosureDateValid
       );
     }
 
-    return address.checkAddressValid && !!marital && !!delinquentTimes;
+    return address.checkAddressValid && !!marital;
+    //&& !!delinquentTimes;
   }, [
     address.checkAddressValid,
-    delinquentTimes,
+    //delinquentTimes,
     bankruptDate,
     foreclosureDate,
     isBankruptcy,

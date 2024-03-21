@@ -41,41 +41,37 @@ export const GroundPurpose: FC<GroundPurposeProps> = observer((props) => {
       justifyContent={'center'}
       width={'100%'}
     >
+      {/*<StyledFormItem*/}
+      {/*  label={`How many properties ${*/}
+      {/*    userType === UserType.CUSTOMER ? 'have' : 'has'*/}
+      {/*  } ${*/}
+      {/*    HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject*/}
+      {/*  } flipped in the last 24 months?`}*/}
+      {/*>*/}
+      {/*  <Stack maxWidth={600} width={'100%'}>*/}
+      {/*    <StyledSelectOption*/}
+      {/*      onChange={(value) => {*/}
+      {/*        purpose.changeFieldValue(*/}
+      {/*          'propertyNumber',*/}
+      {/*          value as PropertyNumberOpt,*/}
+      {/*        );*/}
+      {/*      }}*/}
+      {/*      options={OPTIONS_BRIDGE_PROPERTY_NUMBER}*/}
+      {/*      value={propertyNumber}*/}
+      {/*    />*/}
+      {/*  </Stack>*/}
+      {/*</StyledFormItem>*/}
       <StyledFormItem
-        label={`How many properties ${
-          userType === UserType.CUSTOMER ? 'have' : 'has'
-        } ${
+        alignItems={'center'}
+        label={`What's the address of the property ${
           HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject
-        } flipped in the last 24 months?`}
+        } would like to ${applicationType}?`}
+        width={'100%'}
       >
         <Stack maxWidth={600} width={'100%'}>
-          <StyledSelectOption
-            onChange={(value) => {
-              purpose.changeFieldValue(
-                'propertyNumber',
-                value as PropertyNumberOpt,
-              );
-            }}
-            options={OPTIONS_BRIDGE_PROPERTY_NUMBER}
-            value={propertyNumber}
-          />
+          <StyledGoogleAutoComplete address={address} fullAddress />
         </Stack>
       </StyledFormItem>
-      <Transitions>
-        {propertyNumber && (
-          <StyledFormItem
-            alignItems={'center'}
-            label={`What's the address of the property ${
-              HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject
-            } would like to ${applicationType}?`}
-            width={'100%'}
-          >
-            <Stack maxWidth={600} width={'100%'}>
-              <StyledGoogleAutoComplete address={address} fullAddress />
-            </Stack>
-          </StyledFormItem>
-        )}
-      </Transitions>
     </Stack>
   );
 });

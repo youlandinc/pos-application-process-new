@@ -1,4 +1,4 @@
-import { GroundStartingData } from '@/types';
+import { GroundStartingData, PropertyNumberOpt } from '@/types';
 
 import { StartingState, VariableName } from '@/types/enum';
 import { Instance, SnapshotOut, types } from 'mobx-state-tree';
@@ -24,14 +24,8 @@ export const GroundStarting = types
           : data.propertyType;
     },
     injectServerData(value: GroundStartingData) {
-      const {
-        propertyNumber,
-        propAddr,
-        propertyType,
-        propertyUnit,
-        isConfirm,
-      } = value;
-      self.purpose.values.propertyNumber = propertyNumber;
+      const { propAddr, propertyType, propertyUnit, isConfirm } = value;
+      self.purpose.values.propertyNumber = PropertyNumberOpt.zero;
       self.purpose.values.address.injectServerData(propAddr);
 
       self.property.values.propertyType = propertyType;
@@ -42,7 +36,6 @@ export const GroundStarting = types
       const {
         purpose: {
           values: {
-            propertyNumber,
             address: { formatAddress, state, aptNumber, city, postcode },
           },
         },
@@ -54,7 +47,7 @@ export const GroundStarting = types
         name: VariableName.starting,
         type: 'json',
         value: {
-          propertyNumber,
+          propertyNumber: PropertyNumberOpt.zero,
           propertyType,
           propertyUnit,
           isConfirm,
