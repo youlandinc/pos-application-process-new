@@ -48,21 +48,21 @@ export const SpecificalPaymentInfo: FC<
             {POSFormatDollar(appraisalFees)}
           </Typography>
         </Stack>
-        {isExpedited && (
-          <Stack
-            alignItems={'center'}
-            borderBottom={'1px solid #E4E7EF'}
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            mt={3}
-            pb={1}
-          >
-            <Typography variant={'subtitle2'}>Expedited</Typography>
-            <Typography variant={'body2'}>
-              {POSFormatDollar(expeditedFees)}
-            </Typography>
-          </Stack>
-        )}
+        {/*{isExpedited && (*/}
+        {/*  <Stack*/}
+        {/*    alignItems={'center'}*/}
+        {/*    borderBottom={'1px solid #E4E7EF'}*/}
+        {/*    flexDirection={'row'}*/}
+        {/*    justifyContent={'space-between'}*/}
+        {/*    mt={3}*/}
+        {/*    pb={1}*/}
+        {/*  >*/}
+        {/*    <Typography variant={'subtitle2'}>Expedited</Typography>*/}
+        {/*    <Typography variant={'body2'}>*/}
+        {/*      {POSFormatDollar(expeditedFees)}*/}
+        {/*    </Typography>*/}
+        {/*  </Stack>*/}
+        {/*)}*/}
         <Typography color={'#365EC6'} textAlign={'right'} variant={'h6'}>
           Total: {POSFormatDollar(paymentAmount)}
         </Typography>
