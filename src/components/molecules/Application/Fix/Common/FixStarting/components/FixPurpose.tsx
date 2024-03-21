@@ -4,19 +4,11 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import {
-  HASH_COMMON_PERSON,
-  OPTIONS_BRIDGE_PROPERTY_NUMBER,
-} from '@/constants';
-import { PropertyNumberOpt, UserType } from '@/types';
+import { HASH_COMMON_PERSON } from '@/constants';
+import { UserType } from '@/types';
 import { IFixPurpose } from '@/models/application/fix';
 
-import {
-  StyledFormItem,
-  StyledGoogleAutoComplete,
-  StyledSelectOption,
-  Transitions,
-} from '@/components/atoms';
+import { StyledFormItem, StyledGoogleAutoComplete } from '@/components/atoms';
 
 interface FixPurposeProps {
   purpose: IFixPurpose;
@@ -25,7 +17,7 @@ interface FixPurposeProps {
 export const FixPurpose: FC<FixPurposeProps> = observer((props) => {
   const { purpose } = props;
   const {
-    values: { address, propertyNumber },
+    values: { address },
   } = purpose;
 
   const {

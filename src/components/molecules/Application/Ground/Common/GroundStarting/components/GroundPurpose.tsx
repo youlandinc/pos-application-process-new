@@ -4,18 +4,10 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { PropertyNumberOpt, UserType } from '@/types';
+import { UserType } from '@/types';
 import { IGroundPurpose } from '@/models/application/ground';
-import {
-  StyledFormItem,
-  StyledGoogleAutoComplete,
-  StyledSelectOption,
-  Transitions,
-} from '@/components/atoms';
-import {
-  HASH_COMMON_PERSON,
-  OPTIONS_BRIDGE_PROPERTY_NUMBER,
-} from '@/constants';
+import { StyledFormItem, StyledGoogleAutoComplete } from '@/components/atoms';
+import { HASH_COMMON_PERSON } from '@/constants';
 
 interface GroundPurposeProps {
   purpose: IGroundPurpose;
@@ -24,7 +16,7 @@ interface GroundPurposeProps {
 export const GroundPurpose: FC<GroundPurposeProps> = observer((props) => {
   const { purpose } = props;
   const {
-    values: { address, propertyNumber },
+    values: { address },
   } = purpose;
 
   const {

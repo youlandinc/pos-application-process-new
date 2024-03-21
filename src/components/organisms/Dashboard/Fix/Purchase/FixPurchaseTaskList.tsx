@@ -149,7 +149,7 @@ export const FixPurchaseTaskList: FC = observer(() => {
       router.query.processId as string,
     )
       .then((res) => {
-        const { totalNum, finishedNum } = res.data;
+        const { totalNum, finishedNum, appraisalStage } = res.data;
         setTaskDetails(res?.data?.tasks);
         setTotal(totalNum);
         setCurrent(finishedNum);
@@ -171,41 +171,41 @@ export const FixPurchaseTaskList: FC = observer(() => {
       });
   }, [router.query.processId]);
 
-  const renderStage = useMemo(() => {
-    let bgcolor = '';
-    switch (appraisalStage) {
-      case AppraisalStage.NotStarted:
-        bgcolor = '#D2D6E1';
-        break;
-      case AppraisalStage.PaidFor:
-      case AppraisalStage.Ordered:
-      case AppraisalStage.Scheduled:
-        bgcolor = '#95A8D7';
-        break;
-      case AppraisalStage.Canceled:
-        bgcolor = '#E39482';
-        break;
-      case AppraisalStage.Completed:
-        bgcolor = '#85CCB6';
-        break;
-    }
-    return (
-      <Typography
-        alignItems={'center'}
-        bgcolor={bgcolor}
-        borderRadius={1}
-        color={'#FFFFFF'}
-        display={'flex'}
-        fontSize={12}
-        height={24}
-        justifyContent={'center'}
-        variant={'subtitle3'}
-        width={96}
-      >
-        {appraisalStage || AppraisalStage.NotStarted}
-      </Typography>
-    );
-  }, [appraisalStage]);
+  //const renderStage = useMemo(() => {
+  //  let bgcolor = '';
+  //  switch (appraisalStage) {
+  //    case AppraisalStage.NotStarted:
+  //      bgcolor = '#D2D6E1';
+  //      break;
+  //    case AppraisalStage.PaidFor:
+  //    case AppraisalStage.Ordered:
+  //    case AppraisalStage.Scheduled:
+  //      bgcolor = '#95A8D7';
+  //      break;
+  //    case AppraisalStage.Canceled:
+  //      bgcolor = '#E39482';
+  //      break;
+  //    case AppraisalStage.Completed:
+  //      bgcolor = '#85CCB6';
+  //      break;
+  //  }
+  //  return (
+  //    <Typography
+  //      alignItems={'center'}
+  //      bgcolor={bgcolor}
+  //      borderRadius={1}
+  //      color={'#FFFFFF'}
+  //      display={'flex'}
+  //      fontSize={12}
+  //      height={24}
+  //      justifyContent={'center'}
+  //      variant={'subtitle3'}
+  //      width={96}
+  //    >
+  //      {appraisalStage || AppraisalStage.NotStarted}
+  //    </Typography>
+  //  );
+  //}, [appraisalStage]);
 
   const renderTaskList = useMemo(() => {
     return (
@@ -438,7 +438,12 @@ export const FixPurchaseTaskList: FC = observer(() => {
         </Box>
       </>
     );
-  }, [breakpoints, renderStage, router, taskDetails]);
+  }, [
+    //renderStage,
+    breakpoints,
+    router,
+    taskDetails,
+  ]);
 
   return (
     <Transitions

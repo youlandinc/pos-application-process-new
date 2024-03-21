@@ -4,6 +4,7 @@ import {
   BridgeStartingData,
 } from '@/types/application';
 import {
+  AppraisalStage,
   BaseOverviewSummaryData,
   BasePreApprovalLetterData,
   DashboardTaskInfo,
@@ -93,4 +94,5 @@ export interface BridgeDashboardLoanTask {
   tasks: BridgeDashboardTaskMap<BPDashboardTaskKey & BRDashboardTaskKey>;
   totalNum: number;
   finishedNum: number;
+  appraisalStage: AppraisalStage;
 }

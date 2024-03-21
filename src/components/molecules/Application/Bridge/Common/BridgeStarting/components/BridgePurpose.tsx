@@ -4,18 +4,10 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { PropertyNumberOpt, UserType } from '@/types';
+import { UserType } from '@/types';
 import { IBridgePurpose } from '@/models/application/bridge';
-import {
-  StyledFormItem,
-  StyledGoogleAutoComplete,
-  StyledSelectOption,
-  Transitions,
-} from '@/components/atoms';
-import {
-  HASH_COMMON_PERSON,
-  OPTIONS_BRIDGE_PROPERTY_NUMBER,
-} from '@/constants';
+import { StyledFormItem, StyledGoogleAutoComplete } from '@/components/atoms';
+import { HASH_COMMON_PERSON } from '@/constants';
 
 interface BridgePurposeProps {
   purpose: IBridgePurpose;
@@ -24,7 +16,7 @@ interface BridgePurposeProps {
 export const BridgePurpose: FC<BridgePurposeProps> = observer((props) => {
   const { purpose } = props;
   const {
-    values: { address, propertyNumber },
+    values: { address },
   } = purpose;
 
   const {
