@@ -189,7 +189,7 @@ export const SpecificalPaymentStatus: FC<{
       {computedObj?.contact}
       <StyledButton
         onClick={onButtonClick}
-        sx={{ width: 'fit-content', m: '0 auto' }}
+        sx={{ width: 'fit-content', m: '36px auto' }}
         variant={'contained'}
       >
         {paymentStatus === 'requires_payment_method'
