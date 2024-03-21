@@ -36,10 +36,10 @@ const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
         code: 'FR_APPLICATION_LOAN',
         url: '/dashboard/tasks/loan_details',
       },
-      {
-        code: 'FR_APPLICATION_PROPERTY',
-        url: '/dashboard/tasks/property_details',
-      },
+      //{
+      //  code: 'FR_APPLICATION_PROPERTY',
+      //  url: '/dashboard/tasks/property_details',
+      //},
       {
         code: 'FR_APPLICATION_INVESTMENT',
         url: '/dashboard/tasks/investment_experience',
@@ -57,10 +57,10 @@ const FixRefinanceDashboardTaskMap: DashboardTaskList<FRDashboardTaskKey> = {
         code: 'FR_BORROWER_DEMOGRAPHICS',
         url: '/dashboard/tasks/demographics_information',
       },
-      {
-        code: 'FR_BORROWER_GUARANTOR',
-        url: '/dashboard/tasks/borrower_type',
-      },
+      //{
+      //  code: 'FR_BORROWER_GUARANTOR',
+      //  url: '/dashboard/tasks/borrower_type',
+      //},
       {
         code: 'FR_BORROWER_CO_BORROWER',
         url: '/dashboard/tasks/co_borrower_details',
@@ -302,7 +302,8 @@ export const FixRefinanceTaskList: FC = observer(() => {
             >
               {FixRefinanceDashboardTaskMap.PropertyAppraisal.title}
             </Typography>
-            {renderStage}
+            {/*todo:appraisal*/}
+            {/*{renderStage}*/}
           </Box>
           {FixRefinanceDashboardTaskMap.PropertyAppraisal.children.map(
             (sonItem) => (

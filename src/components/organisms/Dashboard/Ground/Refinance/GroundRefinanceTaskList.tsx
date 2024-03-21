@@ -36,10 +36,10 @@ const GroundRefinanceDashboardTaskMap: DashboardTaskList<GRDashboardTaskKey> = {
         code: 'GR_APPLICATION_LOAN',
         url: '/dashboard/tasks/loan_details',
       },
-      {
-        code: 'GR_APPLICATION_PROPERTY',
-        url: '/dashboard/tasks/property_details',
-      },
+      //{
+      //  code: 'GR_APPLICATION_PROPERTY',
+      //  url: '/dashboard/tasks/property_details',
+      //},
       {
         code: 'GR_APPLICATION_INVESTMENT',
         url: '/dashboard/tasks/investment_experience',
@@ -57,10 +57,10 @@ const GroundRefinanceDashboardTaskMap: DashboardTaskList<GRDashboardTaskKey> = {
         code: 'GR_BORROWER_DEMOGRAPHICS',
         url: '/dashboard/tasks/demographics_information',
       },
-      {
-        code: 'GR_BORROWER_GUARANTOR',
-        url: '/dashboard/tasks/borrower_type',
-      },
+      //{
+      //  code: 'GR_BORROWER_GUARANTOR',
+      //  url: '/dashboard/tasks/borrower_type',
+      //},
       {
         code: 'GR_BORROWER_CO_BORROWER',
         url: '/dashboard/tasks/co_borrower_details',
@@ -302,7 +302,8 @@ export const GroundRefinanceTaskList: FC = observer(() => {
             >
               {GroundRefinanceDashboardTaskMap.PropertyAppraisal.title}
             </Typography>
-            {renderStage}
+            {/*todo:appraisal*/}
+            {/*{renderStage}*/}
           </Box>
           {GroundRefinanceDashboardTaskMap.PropertyAppraisal.children.map(
             (sonItem) => (

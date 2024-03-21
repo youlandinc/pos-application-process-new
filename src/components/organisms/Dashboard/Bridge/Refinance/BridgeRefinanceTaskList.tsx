@@ -36,10 +36,10 @@ const BridgeRefinanceDashboardTaskMap: DashboardTaskList<BRDashboardTaskKey> = {
         code: 'BR_APPLICATION_LOAN',
         url: '/dashboard/tasks/loan_details',
       },
-      {
-        code: 'BR_APPLICATION_PROPERTY',
-        url: '/dashboard/tasks/property_details',
-      },
+      //{
+      //  code: 'BR_APPLICATION_PROPERTY',
+      //  url: '/dashboard/tasks/property_details',
+      //},
       {
         code: 'BR_APPLICATION_INVESTMENT',
         url: '/dashboard/tasks/investment_experience',
@@ -57,10 +57,10 @@ const BridgeRefinanceDashboardTaskMap: DashboardTaskList<BRDashboardTaskKey> = {
         code: 'BR_BORROWER_DEMOGRAPHICS',
         url: '/dashboard/tasks/demographics_information',
       },
-      {
-        code: 'BR_BORROWER_GUARANTOR',
-        url: '/dashboard/tasks/borrower_type',
-      },
+      //{
+      //  code: 'BR_BORROWER_GUARANTOR',
+      //  url: '/dashboard/tasks/borrower_type',
+      //},
       {
         code: 'BR_BORROWER_CO_BORROWER',
         url: '/dashboard/tasks/co_borrower_details',
@@ -302,7 +302,8 @@ export const BridgeRefinanceTaskList: FC = observer(() => {
             >
               {BridgeRefinanceDashboardTaskMap.PropertyAppraisal.title}
             </Typography>
-            {renderStage}
+            {/*todo:appraisal*/}
+            {/*{renderStage}*/}
           </Box>
           {BridgeRefinanceDashboardTaskMap.PropertyAppraisal.children.map(
             (sonItem) => (

@@ -36,10 +36,10 @@ const GroundPurchaseDashboardTaskMap: DashboardTaskList<GPDashboardTaskKey> = {
         code: 'GP_APPLICATION_LOAN',
         url: '/dashboard/tasks/loan_details',
       },
-      {
-        code: 'GP_APPLICATION_PROPERTY',
-        url: '/dashboard/tasks/property_details',
-      },
+      //{
+      //  code: 'GP_APPLICATION_PROPERTY',
+      //  url: '/dashboard/tasks/property_details',
+      //},
       {
         code: 'GP_APPLICATION_INVESTMENT',
         url: '/dashboard/tasks/investment_experience',
@@ -57,10 +57,10 @@ const GroundPurchaseDashboardTaskMap: DashboardTaskList<GPDashboardTaskKey> = {
         code: 'GP_BORROWER_DEMOGRAPHICS',
         url: '/dashboard/tasks/demographics_information',
       },
-      {
-        code: 'GP_BORROWER_GUARANTOR',
-        url: '/dashboard/tasks/borrower_type',
-      },
+      //{
+      //  code: 'GP_BORROWER_GUARANTOR',
+      //  url: '/dashboard/tasks/borrower_type',
+      //},
       {
         code: 'GP_BORROWER_CO_BORROWER',
         url: '/dashboard/tasks/co_borrower_details',
@@ -303,7 +303,8 @@ export const GroundPurchaseTaskList: FC = observer(() => {
             >
               {GroundPurchaseDashboardTaskMap.PropertyAppraisal.title}
             </Typography>
-            {renderStage}
+            {/*todo:appraisal*/}
+            {/*{renderStage}*/}
           </Box>
           {GroundPurchaseDashboardTaskMap.PropertyAppraisal.children.map(
             (sonItem) => (

@@ -36,10 +36,10 @@ const FixPurchaseDashboardTaskMap: DashboardTaskList<FPDashboardTaskKey> = {
         code: 'FP_APPLICATION_LOAN',
         url: '/dashboard/tasks/loan_details',
       },
-      {
-        code: 'FP_APPLICATION_PROPERTY',
-        url: '/dashboard/tasks/property_details',
-      },
+      //{
+      //  code: 'FP_APPLICATION_PROPERTY',
+      //  url: '/dashboard/tasks/property_details',
+      //},
       {
         code: 'FP_APPLICATION_INVESTMENT',
         url: '/dashboard/tasks/investment_experience',
@@ -57,10 +57,10 @@ const FixPurchaseDashboardTaskMap: DashboardTaskList<FPDashboardTaskKey> = {
         code: 'FP_BORROWER_DEMOGRAPHICS',
         url: '/dashboard/tasks/demographics_information',
       },
-      {
-        code: 'FP_BORROWER_GUARANTOR',
-        url: '/dashboard/tasks/borrower_type',
-      },
+      //{
+      //  code: 'FP_BORROWER_GUARANTOR',
+      //  url: '/dashboard/tasks/borrower_type',
+      //},
       {
         code: 'FP_BORROWER_CO_BORROWER',
         url: '/dashboard/tasks/co_borrower_details',
@@ -303,7 +303,8 @@ export const FixPurchaseTaskList: FC = observer(() => {
             >
               {FixPurchaseDashboardTaskMap.PropertyAppraisal.title}
             </Typography>
-            {renderStage}
+            {/*todo:appraisal*/}
+            {/*{renderStage}*/}
           </Box>
           {FixPurchaseDashboardTaskMap.PropertyAppraisal.children.map(
             (sonItem) => (
