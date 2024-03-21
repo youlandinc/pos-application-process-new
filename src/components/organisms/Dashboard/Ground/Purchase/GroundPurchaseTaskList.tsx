@@ -106,10 +106,10 @@ const GroundPurchaseDashboardTaskMap: DashboardTaskList<GPDashboardTaskKey> = {
   DocumentsMaterials: {
     title: 'Documents & Materials',
     children: [
-      {
-        code: 'GP_DOCUMENTS_CONTRACT',
-        url: '/dashboard/tasks/contract',
-      },
+      //{
+      //  code: 'GP_DOCUMENTS_CONTRACT',
+      //  url: '/dashboard/tasks/contract',
+      //},
       //{
       //  code: 'GP_DOCUMENTS_PICTURES',
       //  url: '/dashboard/tasks/upload_pictures',

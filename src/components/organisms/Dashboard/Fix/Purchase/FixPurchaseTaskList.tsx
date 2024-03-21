@@ -106,10 +106,10 @@ const FixPurchaseDashboardTaskMap: DashboardTaskList<FPDashboardTaskKey> = {
   DocumentsMaterials: {
     title: 'Documents & Materials',
     children: [
-      {
-        code: 'FP_DOCUMENTS_CONTRACT',
-        url: '/dashboard/tasks/contract',
-      },
+      //{
+      //  code: 'FP_DOCUMENTS_CONTRACT',
+      //  url: '/dashboard/tasks/contract',
+      //},
       //{
       //  code: 'FP_DOCUMENTS_PICTURES',
       //  url: '/dashboard/tasks/upload_pictures',

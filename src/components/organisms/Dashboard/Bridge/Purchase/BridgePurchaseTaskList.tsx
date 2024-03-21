@@ -106,10 +106,10 @@ const BridgePurchaseDashboardTaskMap: DashboardTaskList<BPDashboardTaskKey> = {
   DocumentsMaterials: {
     title: 'Documents & Materials',
     children: [
-      {
-        code: 'BP_DOCUMENTS_CONTRACT',
-        url: '/dashboard/tasks/contract',
-      },
+      //{
+      //  code: 'BP_DOCUMENTS_CONTRACT',
+      //  url: '/dashboard/tasks/contract',
+      //},
       //{
       //  code: 'BP_DOCUMENTS_PICTURES',
       //  url: '/dashboard/tasks/upload_pictures',
