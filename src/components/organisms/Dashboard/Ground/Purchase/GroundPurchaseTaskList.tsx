@@ -480,9 +480,9 @@ export const GroundPurchaseTaskList: FC = observer(() => {
             subTitleSx={{ mb: 2 }}
             title={'Your tasks checklist'}
           />
-          <Stack alignItems={'center'} mb={3}>
-            <StyledProgressLine current={current} total={total} />
-          </Stack>
+          {/*<Stack alignItems={'center'} mb={3}>*/}
+          {/*  <StyledProgressLine current={current} total={total} />*/}
+          {/*</Stack>*/}
           {renderTaskList}
         </Box>
       )}

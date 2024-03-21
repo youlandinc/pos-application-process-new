@@ -485,9 +485,9 @@ export const FixPurchaseTaskList: FC = observer(() => {
             <StyledLoading sx={{ color: 'text.grey' }} />
           ) : (
             <>
-              <Stack alignItems={'center'} mb={3}>
-                <StyledProgressLine current={current} total={total} />
-              </Stack>
+              {/*<Stack alignItems={'center'} mb={3}>*/}
+              {/*  <StyledProgressLine current={current} total={total} />*/}
+              {/*</Stack>*/}
               {renderTaskList}
             </>
           )}
