@@ -1,4 +1,5 @@
 import { CommonBorrowerType, UserType } from '@/types';
+import { ReactNode } from 'react';
 
 export const HASH_COMMON_PERSON = {
   [UserType.CUSTOMER]: {
@@ -338,4 +339,31 @@ export const OPTIONS_COMMON_ENTRANCE: Option[] = [
   //{ name: 'Jumbo', url: '/application/jumbo' },
   //{ name: 'Crypto mortgage', url: '/application/crypto_mortgage' },
   //{ name: 'Crypto loan', url: '/application/crypto_loan' },
+];
+
+export const OPTIONS_COMMON_MARKS: {
+  value: number;
+  label?: ReactNode;
+}[] = [
+  { label: '0', value: 0 },
+  { label: '', value: 1 },
+  { label: '', value: 2 },
+  { label: '', value: 3 },
+  { label: '', value: 4 },
+  { label: '5', value: 5 },
+  { label: '', value: 6 },
+  { label: '', value: 7 },
+  { label: '', value: 8 },
+  { label: '', value: 9 },
+  { label: '10', value: 10 },
+  { label: '', value: 11 },
+  { label: '', value: 12 },
+  { label: '', value: 13 },
+  { label: '', value: 14 },
+  { label: '15', value: 15 },
+  { label: '', value: 16 },
+  { label: '', value: 17 },
+  { label: '', value: 18 },
+  { label: '', value: 19 },
+  { label: '20+', value: 20 },
 ];

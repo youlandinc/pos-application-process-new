@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo, useState } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Slider, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
@@ -7,83 +7,27 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 
 import { HttpError, TaskFiles } from '@/types';
-import {
-  _deleteTaskFile,
-  _fetchTaskFormInfo,
-  _updateTaskFormInfo,
-  _uploadTaskFile,
-} from '@/requests/dashboard';
-import { AUTO_HIDE_DURATION } from '@/constants';
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
+import { AUTO_HIDE_DURATION, OPTIONS_COMMON_MARKS } from '@/constants';
 
 import {
   StyledButton,
   StyledFormItem,
   StyledLoading,
-  StyledTextFieldNumber,
-  StyledUploadBox,
+  StyledUploadButtonBox,
   Transitions,
 } from '@/components/atoms';
-import { useSessionStorageState } from '@/hooks';
 
 export const FixRefinanceTaskInvestmentExperience: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const { saasState } = useSessionStorageState('tenantConfig');
-  const [saveLoading, setSaveLoading] = useState<boolean>(false);
-  const [uploadLoading, setUploadLoading] = useState(false);
 
-  const [propertiesNum, setPropertiesNum] = useState('');
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
+
+  const [propertiesNum, setPropertiesNum] = useState(0);
   const [investmentFiles, setInvestmentFiles] = useState<TaskFiles[]>([]);
 
-  const handledDelete = async (index: number) => {
-    try {
-      await _deleteTaskFile(router.query.taskId as string, {
-        fieldName: 'investmentFiles',
-        fileUrl: investmentFiles[index]?.url,
-      });
-      const temp = JSON.parse(JSON.stringify(investmentFiles));
-      temp.splice(index, 1);
-      setInvestmentFiles(temp);
-    } catch (err) {
-      const { header, message, variant } = err as HttpError;
-      enqueueSnackbar(message, {
-        variant: variant || 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-        isSimple: !header,
-        header,
-      });
-    }
-  };
-
-  const handledSuccess = async (files: FileList) => {
-    setUploadLoading(true);
-
-    const formData = new FormData();
-
-    formData.append('fieldName', 'investmentFiles');
-    Array.from(files, (item) => {
-      formData.append('files', item);
-    });
-    try {
-      const { data } = await _uploadTaskFile(
-        formData,
-        router.query.taskId as string,
-      );
-      setInvestmentFiles([...investmentFiles, ...data]);
-    } catch (err) {
-      const { header, message, variant } = err as HttpError;
-      enqueueSnackbar(message, {
-        variant: variant || 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-        isSimple: !header,
-        header,
-      });
-    } finally {
-      setUploadLoading(false);
-    }
-  };
-
-  const { loading } = useAsync(async () => {
+  const fetchInitData = async () => {
     if (!router.query.taskId) {
       await router.push({
         pathname: '/dashboard/tasks',
@@ -95,7 +39,7 @@ export const FixRefinanceTaskInvestmentExperience: FC = observer(() => {
       .then((res) => {
         const { investmentFiles, propertiesNum } = res.data;
         setInvestmentFiles(investmentFiles ?? []);
-        setPropertiesNum(propertiesNum ?? '');
+        setPropertiesNum(propertiesNum ?? 0);
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -111,11 +55,13 @@ export const FixRefinanceTaskInvestmentExperience: FC = observer(() => {
             }),
         });
       });
-  }, [router.query.taskId]);
+  };
+
+  const { loading } = useAsync(fetchInitData, [router.query.taskId]);
 
   const isDisabled = useMemo(() => {
-    return !!propertiesNum;
-  }, [propertiesNum]);
+    return !propertiesNum ? false : !(investmentFiles.length > 0);
+  }, [investmentFiles.length, propertiesNum]);
 
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
@@ -191,89 +137,89 @@ export const FixRefinanceTaskInvestmentExperience: FC = observer(() => {
               sub
             >
               <Stack maxWidth={600} width={'100%'}>
-                <StyledTextFieldNumber
-                  decimalScale={0}
-                  label={'Number of properties exited'}
-                  onValueChange={({ formattedValue }) =>
-                    setPropertiesNum(formattedValue)
-                  }
-                  placeholder={'Number of properties exited'}
-                  thousandSeparator={false}
+                <Slider
+                  defaultValue={0}
+                  marks={OPTIONS_COMMON_MARKS}
+                  max={20}
+                  onChange={(e, v) => setPropertiesNum(v as number)}
+                  step={1}
+                  sx={{
+                    height: 8,
+                    '.MuiSlider-mark': {
+                      width: 4,
+                      height: 4,
+                      transform: 'translate(-4px, -50%)',
+                      borderRadius: '50%',
+                    },
+                  }}
                   value={propertiesNum}
+                  valueLabelDisplay={'auto'}
+                  valueLabelFormat={(value) => {
+                    return value === 20 ? '20+' : value;
+                  }}
                 />
               </Stack>
             </StyledFormItem>
-
-            <StyledFormItem
-              label={'Upload track record (if applicable)'}
-              sub
-              tip={
-                <Stack color={'info.main'}>
-                  <Typography mt={1.5} variant={'body1'}>
-                    Valid investment experience must meet the following
-                    criteria:
-                  </Typography>
-                  <Typography mt={1.5} textAlign={'left'} variant={'body1'}>
-                    1. The property must have been owned at least 30 days, owned
-                    for fewer than 36 months, and sold or converted into a
-                    rental property in the last 36 months.
-                  </Typography>
-                  <Typography mt={1} textAlign={'left'} variant={'body1'}>
-                    2. The sale price of the property must have been greater or
-                    equal to $50,000.
-                  </Typography>
-                </Stack>
-              }
+            <Transitions
+              style={{
+                width: '100%',
+                display: propertiesNum ? 'block' : 'none',
+              }}
             >
-              <Stack alignItems={'center'}>
-                <Typography color={'text.primary'} variant={'body1'}>
-                  Template Document:
-                </Typography>
-
-                <Typography
-                  component={'span'}
-                  fontWeight={600}
-                  onClick={() => {
-                    window.open(
-                      'https://youland-template-file.s3.us-west-1.amazonaws.com/Track+record.xlsx',
-                    );
-                  }}
-                  sx={{
-                    color: 'primary.main',
-                    cursor: 'pointer',
-                    fontWeight: 600,
-                  }}
-                >
-                  Real Estate Investment Track Record
-                </Typography>
-
-                <Typography
-                  color={'info.main'}
-                  mt={1.5}
-                  textAlign={'center'}
-                  variant={'body3'}
-                >
-                  Include the person/entity on the title for each property you
-                  include. The person/entity on title must be affiliated to the
-                  borrower and guarantor on your loan application.{' '}
-                  {saasState?.organizationName || 'YouLand'} will not count
-                  vacant land or your current home towards your experience track
-                  record.
-                </Typography>
-
-                <Box mt={3} width={'100%'}>
-                  <StyledUploadBox
+              {propertiesNum && (
+                <StyledFormItem label={'Upload track record'} sub>
+                  <StyledUploadButtonBox
                     accept={
                       'image/*,.pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                     }
-                    fileList={investmentFiles}
-                    loading={uploadLoading || loading}
-                    onDelete={handledDelete}
-                    onSuccess={handledSuccess}
+                    fileKey={'investmentFiles'}
+                    fileName={'Track record'}
+                    files={investmentFiles}
+                    refresh={fetchInitData}
+                    templateName={'Track Record Template.xlsx'}
+                    templateUrl={
+                      'https://youland-template-file.s3.us-west-1.amazonaws.com/Track+record.xlsx'
+                    }
                   />
-                </Box>
-              </Stack>
-            </StyledFormItem>
+
+                  <Typography
+                    color={'text.secondary'}
+                    mt={3}
+                    variant={'subtitle1'}
+                    width={'100%'}
+                  >
+                    Each property listed must meet the following criteria:
+                  </Typography>
+                  <Stack
+                    component={'ul'}
+                    sx={{
+                      pl: 3,
+                      listStyleType: 'decimal',
+                      listStylePosition: 'outside',
+                      color: 'text.secondary',
+                    }}
+                  >
+                    <Typography component={'li'} variant={'body1'}>
+                      Property should be owned for at least 30 days but no more
+                      than 36 months and either sold or turned into a rental
+                      within the last 36 months.
+                    </Typography>
+                    <Typography component={'li'} variant={'body1'}>
+                      Sale price should be at least $50,000.
+                    </Typography>
+                    <Typography component={'li'} variant={'body1'}>
+                      Property can&apos;t be vacant land or your current
+                      residence.
+                    </Typography>
+                    <Typography component={'li'} variant={'body1'}>
+                      Title holder must be linked to the loan application&apos;s
+                      borrower or guarantor. For each property listed, please
+                      write the person/entity on the title next to the address.
+                    </Typography>
+                  </Stack>
+                </StyledFormItem>
+              )}
+            </Transitions>
 
             <Stack
               flexDirection={'row'}
@@ -296,7 +242,7 @@ export const FixRefinanceTaskInvestmentExperience: FC = observer(() => {
                 Back
               </StyledButton>
               <StyledButton
-                disabled={!isDisabled || saveLoading}
+                disabled={isDisabled || saveLoading}
                 loading={saveLoading}
                 loadingText={'Saving...'}
                 onClick={handledSubmit}
