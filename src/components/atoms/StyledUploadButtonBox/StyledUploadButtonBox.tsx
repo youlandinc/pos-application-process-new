@@ -9,6 +9,7 @@ import {
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import {
   CloseOutlined,
+  ContentCopy,
   DeleteForeverOutlined,
   GetAppOutlined,
   RemoveRedEyeOutlined,
@@ -30,7 +31,7 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { SUploadData } from '@/models/common/UploadFile';
 import { HttpError } from '@/types';
 import { _deleteTaskFile, _uploadTaskFile } from '@/requests/dashboard';
-import { POSFormatDate } from '@/utils';
+import { POSFormatDate, POSGetParamsFromUrl } from '@/utils';
 
 import ICON_IMAGE from './icon_image.svg';
 import ICON_FILE from './icon_file.svg';
@@ -41,7 +42,7 @@ interface StyledUploadButtonBoxProps {
   fileKey: string;
   templateName: string;
   templateUrl: string;
-  id?: number;
+  loanId?: number | string | undefined;
   // custom
   accept?: string;
   fileSize?: number;
@@ -57,7 +58,8 @@ interface StyledUploadButtonBoxProps {
   onDelete?: (index: number) => Promise<void>;
   onUpload?: (file: FileList) => Promise<void>;
   // popup insurance
-  popup?: ReactNode;
+  popup?: string;
+  isFromLOS?: boolean;
 }
 
 export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
@@ -76,6 +78,8 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     children,
     popup,
     deleteOnly = false,
+    loanId,
+    isFromLOS = false,
     refresh,
     onDelete,
     onUpload,
@@ -86,6 +90,11 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
   const breakpoints = useBreakpoints();
   const { saasState } = useSessionStorageState('tenantConfig');
   const { open, visible, close } = useSwitch(false);
+  const {
+    open: popupOpen,
+    visible: popUpVisible,
+    close: popupClose,
+  } = useSwitch(false);
 
   const [deleteIndex, setDeleteIndex] = useState<number>(-1);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
@@ -96,6 +105,8 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
   const [fileList, setFileList] = useState(files);
 
   const [isDragging, setIsDragging] = useState(false);
+
+  const { processId } = POSGetParamsFromUrl(location.href);
 
   const handleUpload = useCallback(
     async (files: FileList) => {
@@ -305,9 +316,36 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
             {fileName}
           </Typography>
 
-          {popup ? (
-            popup
-          ) : templateName ? (
+          {isFromLOS
+            ? popup === 'COLLATERAL_DOCS_Evidence_of_insurance' && (
+                <Typography
+                  color={'primary.main'}
+                  onClick={popupOpen}
+                  sx={{
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    width: 'fit-content',
+                  }}
+                  variant={'body1'}
+                >
+                  View requirements
+                </Typography>
+              )
+            : fileKey === 'COLLATERAL_DOCS_Evidence_of_insurance' && (
+                <Typography
+                  color={'primary.main'}
+                  onClick={popupOpen}
+                  sx={{
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    width: 'fit-content',
+                  }}
+                  variant={'body1'}
+                >
+                  View requirements
+                </Typography>
+              )}
+          {templateName && (
             <Typography
               color={'primary.main'}
               onClick={() => window.open(templateUrl)}
@@ -320,7 +358,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
             >
               {templateName}
             </Typography>
-          ) : null}
+          )}
         </Stack>
 
         <StyledButton
@@ -623,6 +661,108 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
           }
         }}
         open={visible}
+      />
+
+      <StyledDialog
+        content={
+          <Stack gap={3} my={3}>
+            <Stack>
+              <Typography variant={'subtitle2'}>
+                Mortgagee information
+              </Typography>
+              <Stack flexDirection={'row'} gap={1} mt={1.5}>
+                <Typography variant={'body3'}>
+                  {saasState?.organizationName || 'YouLand Inc'}. ISAOA/ATIMA
+                </Typography>
+                <ContentCopy
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(
+                      `${
+                        saasState?.organizationName || 'YouLand Inc'
+                      }. ISAOA/ATIMA ${
+                        saasState?.address?.address || '236 Kingfisher Avenue'
+                      }, ${saasState?.address?.city || 'Alameda'}, ${
+                        saasState?.address?.state || 'CA'
+                      } ${saasState?.address?.postcode || '94501'}`,
+                    );
+                    enqueueSnackbar('Copied data to clipboard', {
+                      variant: 'success',
+                    });
+                  }}
+                  sx={{ fontSize: 18, cursor: 'pointer' }}
+                />
+              </Stack>
+              <Typography variant={'body3'}>
+                {saasState?.address?.address || '236 Kingfisher Avenue'},
+              </Typography>
+              <Typography variant={'body3'}>
+                {saasState?.address?.city || 'Alameda'},{' '}
+                {saasState?.address?.state || 'CA'}{' '}
+                {saasState?.address?.postcode || '94501'}
+              </Typography>
+            </Stack>
+            <Stack gap={1.5}>
+              <Typography variant={'subtitle2'}>Loan number</Typography>
+              <Stack flexDirection={'row'} gap={1}>
+                <Typography variant={'body3'}>
+                  {isFromLOS ? loanId : processId}
+                </Typography>
+                <ContentCopy
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(
+                      isFromLOS ? (loanId as string) : (processId as string),
+                    );
+                    enqueueSnackbar('Copied data to clipboard', {
+                      variant: 'success',
+                    });
+                  }}
+                  sx={{ fontSize: 18, cursor: 'pointer' }}
+                />
+              </Stack>
+            </Stack>
+          </Stack>
+        }
+        footer={
+          <Stack flexDirection={'row'} gap={1}>
+            <StyledButton
+              autoFocus
+              color={'info'}
+              onClick={popupClose}
+              size={'small'}
+              sx={{ width: 80 }}
+              variant={'outlined'}
+            >
+              Close
+            </StyledButton>
+          </Stack>
+        }
+        header={
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+          >
+            Insurance requirements
+            <CloseOutlined
+              onClick={popupClose}
+              sx={{
+                cursor: 'pointer',
+                '&:hover': {
+                  color: 'primary.main',
+                },
+              }}
+            />
+          </Stack>
+        }
+        onClose={(event, reason) => {
+          if (reason !== 'backdropClick') {
+            popupClose();
+          }
+        }}
+        open={popUpVisible}
+        PaperProps={{
+          sx: { maxWidth: '900px !important' },
+        }}
       />
     </Box>
   );
