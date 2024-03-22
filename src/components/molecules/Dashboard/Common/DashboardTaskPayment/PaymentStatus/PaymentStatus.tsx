@@ -14,9 +14,9 @@ interface PaymentStatusProps {
   paymentStatus: DashboardTaskPaymentMethodsStatus;
 }
 
-import PAYMENT_SUCCESS from '@/views/SpecificalPayment/components/payment_success.svg';
-import PAYMENT_PENDING from '@/views/SpecificalPayment/components/payment_pending.svg';
-import PAYMENT_FAIL from '@/views/SpecificalPayment/components/payment_failed.svg';
+import PAYMENT_SUCCESS from '@/views/Saas/SpecificalPayment/components/payment_success.svg';
+import PAYMENT_PENDING from '@/views/Saas/SpecificalPayment/components/payment_pending.svg';
+import PAYMENT_FAIL from '@/views/Saas/SpecificalPayment/components/payment_failed.svg';
 
 export const PaymentStatus: FC<PaymentStatusProps> = ({ paymentStatus }) => {
   const router = useRouter();

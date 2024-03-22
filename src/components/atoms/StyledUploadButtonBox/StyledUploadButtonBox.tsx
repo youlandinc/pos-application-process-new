@@ -1,4 +1,11 @@
-import { ChangeEvent, FC, ReactNode, useCallback, useState } from 'react';
+import {
+  ChangeEvent,
+  FC,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import {
   CloseOutlined,
@@ -40,11 +47,17 @@ interface StyledUploadButtonBoxProps {
   fileSize?: number;
   uploadText?: string;
   children?: ReactNode;
-  refresh: () => Promise<void>;
+  refresh?: () => Promise<void>;
   // los
   status?: string;
   required?: boolean;
   collapse?: boolean;
+  // only can delete
+  deleteOnly?: boolean;
+  onDelete?: (index: number) => Promise<void>;
+  onUpload?: (file: FileList) => Promise<void>;
+  // popup insurance
+  popup?: ReactNode;
 }
 
 export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
@@ -61,7 +74,11 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     fileSize = 100,
     uploadText = 'Upload',
     children,
+    popup,
+    deleteOnly = false,
     refresh,
+    onDelete,
+    onUpload,
   } = props;
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -85,19 +102,22 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
       setIsDragging(false);
       setInnerLoading(true);
 
-      const formData = new FormData();
-
-      formData.append('fieldName', fileKey);
-      Array.from(files, (item) => {
-        formData.append('files', item);
-      });
       try {
+        if (onUpload) {
+          await onUpload(files);
+          return;
+        }
+        const formData = new FormData();
+        formData.append('fieldName', fileKey);
+        Array.from(files, (item) => {
+          formData.append('files', item);
+        });
         const { data } = await _uploadTaskFile(
           formData,
           router.query.taskId as string,
         );
         setFileList([...fileList, ...data]);
-        await refresh();
+        await refresh?.();
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
@@ -110,7 +130,14 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         setInnerLoading(false);
       }
     },
-    [enqueueSnackbar, fileKey, fileList, refresh, router.query.taskId],
+    [
+      enqueueSnackbar,
+      fileKey,
+      fileList,
+      onUpload,
+      refresh,
+      router.query.taskId,
+    ],
   );
 
   const validatorFileSize = useCallback(
@@ -177,11 +204,16 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
   const onDialogConfirmDelete = useCallback(async () => {
     setDeleteLoading(true);
     try {
+      if (onDelete) {
+        await onDelete(deleteIndex);
+        close();
+        return;
+      }
       await _deleteTaskFile(router.query.taskId as string, {
         fieldName: fileKey,
         fileUrl: fileList[deleteIndex].url,
       });
-      await refresh();
+      await refresh?.();
       close();
       const temp = JSON.parse(JSON.stringify(fileList));
       temp.splice(deleteIndex, 1);
@@ -207,9 +239,14 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     enqueueSnackbar,
     fileKey,
     fileList,
+    onDelete,
     refresh,
     router.query.taskId,
   ]);
+
+  useEffect(() => {
+    setFileList(files);
+  }, [files]);
 
   return (
     <Box
@@ -268,7 +305,9 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
             {fileName}
           </Typography>
 
-          {templateName && (
+          {popup ? (
+            popup
+          ) : templateName ? (
             <Typography
               color={'primary.main'}
               onClick={() => window.open(templateUrl)}
@@ -281,7 +320,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
             >
               {templateName}
             </Typography>
-          )}
+          ) : null}
         </Stack>
 
         <StyledButton
@@ -410,29 +449,33 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
                       <Transitions style={{ marginRight: 8 }}>
                         {activeIndex === index && (
                           <Stack flexDirection={'row'} gap={1}>
-                            <RemoveRedEyeOutlined
-                              onClick={() => window.open(item.url)}
-                              sx={{
-                                color: '#9095A3',
-                                fontSize: 20,
-                                cursor: 'pointer',
-                                '&:hover': {
-                                  color: 'primary.main',
-                                },
-                              }}
-                            />
+                            {!deleteOnly && (
+                              <>
+                                <RemoveRedEyeOutlined
+                                  onClick={() => window.open(item.url)}
+                                  sx={{
+                                    color: '#9095A3',
+                                    fontSize: 20,
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                      color: 'primary.main',
+                                    },
+                                  }}
+                                />
 
-                            <GetAppOutlined
-                              onClick={() => onDownload(item)}
-                              sx={{
-                                fontSize: 20,
-                                color: '#9095A3',
-                                cursor: 'pointer',
-                                '&:hover': {
-                                  color: 'primary.main',
-                                },
-                              }}
-                            />
+                                <GetAppOutlined
+                                  onClick={() => onDownload(item)}
+                                  sx={{
+                                    fontSize: 20,
+                                    color: '#9095A3',
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                      color: 'primary.main',
+                                    },
+                                  }}
+                                />
+                              </>
+                            )}
 
                             <CloseOutlined
                               onClick={() => {
@@ -467,29 +510,33 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
 
                         {['xs', 'sm'].includes(breakpoints) && (
                           <Stack flexDirection={'row'} gap={1} pl={3}>
-                            <RemoveRedEyeOutlined
-                              onClick={() => window.open(item.url)}
-                              sx={{
-                                color: '#9095A3',
-                                fontSize: 20,
-                                cursor: 'pointer',
-                                '&:hover': {
-                                  color: 'primary.main',
-                                },
-                              }}
-                            />
+                            {!deleteOnly && (
+                              <>
+                                <RemoveRedEyeOutlined
+                                  onClick={() => window.open(item.url)}
+                                  sx={{
+                                    color: '#9095A3',
+                                    fontSize: 20,
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                      color: 'primary.main',
+                                    },
+                                  }}
+                                />
 
-                            <GetAppOutlined
-                              onClick={() => onDownload(item)}
-                              sx={{
-                                fontSize: 20,
-                                color: '#9095A3',
-                                cursor: 'pointer',
-                                '&:hover': {
-                                  color: 'primary.main',
-                                },
-                              }}
-                            />
+                                <GetAppOutlined
+                                  onClick={() => onDownload(item)}
+                                  sx={{
+                                    fontSize: 20,
+                                    color: '#9095A3',
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                      color: 'primary.main',
+                                    },
+                                  }}
+                                />
+                              </>
+                            )}
 
                             <CloseOutlined
                               onClick={() => {

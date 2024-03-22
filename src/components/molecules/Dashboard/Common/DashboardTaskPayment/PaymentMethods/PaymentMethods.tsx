@@ -9,7 +9,7 @@ import {
   StyledPaymentCard,
   StyledPaymentCardRef,
 } from '@/components/atoms';
-import { SpecificalPaymentInfo } from '@/views/SpecificalPayment/components';
+import { SpecificalPaymentInfo } from '@/views/Saas/SpecificalPayment/components';
 
 interface PaymentTableProps {
   paymentDetail: SPaymentDetails | undefined;

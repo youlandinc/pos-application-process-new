@@ -21,8 +21,9 @@ import {
   SpecificalPaymentStatus,
 } from './components';
 
-import { _creatSpecifyPayment } from '@/requests';
 import { useBreakpoints } from '@/hooks';
+
+import { _creatSpecifyPayment } from '@/requests';
 
 export const SpecificalPaymentPage = () => {
   const { enqueueSnackbar } = useSnackbar();

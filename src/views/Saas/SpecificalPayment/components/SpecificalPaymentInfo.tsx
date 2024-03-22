@@ -12,8 +12,8 @@ export const SpecificalPaymentInfo: FC<
   propertyAddress,
   productName,
   appraisalFees,
-  isExpedited,
-  expeditedFees,
+  //isExpedited,
+  //expeditedFees,
   paymentAmount,
   additional,
 }) => {
