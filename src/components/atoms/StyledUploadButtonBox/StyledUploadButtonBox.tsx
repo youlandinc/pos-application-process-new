@@ -280,7 +280,8 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         const files = e.dataTransfer.files;
         validatorFileSize(files) && (await handleUpload(files));
       }}
-      p={3}
+      px={3}
+      py={2}
       sx={{
         outline: isDragging
           ? `2px solid hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`
@@ -291,7 +292,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
       <Stack
         alignItems={'center'}
         flexDirection={{ md: 'row', xs: 'column' }}
-        gap={1.5}
+        gap={1}
         justifyContent={'space-between'}
         maxWidth={'100%'}
         width={'100%'}
@@ -305,7 +306,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
           <Typography
             sx={{
               flexWrap: 'wrap',
-              fontSize: { xs: 16, md: 20 },
+              fontSize: { xs: 16, md: 18 },
               fontWeight: 600,
               lineHeight: 1.5,
               textAlign: { xs: 'center', md: 'left' },
@@ -389,7 +390,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         </StyledButton>
       </Stack>
       {fileList.length !== 0 && (
-        <Box maxWidth={'100%'} mt={1.5} width={'100%'}>
+        <Box maxWidth={'100%'} mt={0.5} width={'100%'}>
           <Transitions>
             {children
               ? children
@@ -407,7 +408,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
                     key={index}
                     lineHeight={1}
                     maxWidth={'auto'}
-                    mt={1.5}
+                    mt={0.5}
                     onMouseEnter={() => {
                       if (['xs', 'sm'].includes(breakpoints)) {
                         return;
@@ -761,7 +762,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         }}
         open={popUpVisible}
         PaperProps={{
-          sx: { maxWidth: '900px !important' },
+          sx: { maxWidth: '600px !important' },
         }}
       />
     </Box>

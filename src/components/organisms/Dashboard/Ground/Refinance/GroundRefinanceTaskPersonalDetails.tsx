@@ -27,7 +27,6 @@ import {
   StyledGoogleAutoComplete,
   StyledLoading,
   StyledSelectOption,
-  //StyledTextFieldNumber,
   Transitions,
 } from '@/components/atoms';
 
@@ -138,32 +137,21 @@ export const GroundRefinanceTaskPersonalDetails: FC = observer(() => {
         dateValid &&
         foreclosureDateValid &&
         address.checkAddressValid &&
-        //!!delinquentTimes &&
         !!marital
       );
     }
 
     if (isBankruptcy) {
-      return (
-        dateValid && address.checkAddressValid && !!marital
-        //&& !!delinquentTimes
-      );
+      return dateValid && address.checkAddressValid && !!marital;
     }
 
     if (isForeclosure) {
-      return (
-        address.checkAddressValid &&
-        !!marital &&
-        //!!delinquentTimes &&
-        foreclosureDateValid
-      );
+      return address.checkAddressValid && !!marital && foreclosureDateValid;
     }
 
     return address.checkAddressValid && !!marital;
-    //&& !!delinquentTimes;
   }, [
     address.checkAddressValid,
-    //delinquentTimes,
     bankruptDate,
     foreclosureDate,
     isBankruptcy,
@@ -244,7 +232,6 @@ export const GroundRefinanceTaskPersonalDetails: FC = observer(() => {
           <StyledFormItem
             gap={6}
             label={'Personal details'}
-            maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={`Please enter and confirm all of ${
@@ -272,36 +259,18 @@ export const GroundRefinanceTaskPersonalDetails: FC = observer(() => {
               </Stack>
             </StyledFormItem>
 
-            <StyledFormItem label={'Current address'} sub>
+            <StyledFormItem label={'Current address'} mt={2} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledGoogleAutoComplete address={address} disabled />
               </Stack>
             </StyledFormItem>
-
-            {/*<StyledFormItem*/}
-            {/*  label={*/}
-            {/*    'In the past 3 years, how many times have you had a credit account with 60 or more days delinquent?'*/}
-            {/*  }*/}
-            {/*  sub*/}
-            {/*>*/}
-            {/*  <Stack maxWidth={600} width={'100%'}>*/}
-            {/*    <StyledTextFieldNumber*/}
-            {/*      decimalScale={0}*/}
-            {/*      label={'Delinquent times'}*/}
-            {/*      onValueChange={({ formattedValue }) => {*/}
-            {/*        setDelinquentTimes(formattedValue);*/}
-            {/*      }}*/}
-            {/*      thousandSeparator={false}*/}
-            {/*      value={delinquentTimes}*/}
-            {/*    />*/}
-            {/*  </Stack>*/}
-            {/*</StyledFormItem>*/}
 
             <StyledFormItem
               label={`Have ${
                 HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER]
                   .the_third_subject
               } declared bankruptcy within the past 7 years?`}
+              mt={2}
               sub
             >
               <StyledButtonGroup
@@ -340,6 +309,7 @@ export const GroundRefinanceTaskPersonalDetails: FC = observer(() => {
                 HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER]
                   .the_third_subject
               } had property foreclosure upon in the past 7 years?`}
+              mt={2}
               sub
             >
               <StyledButtonGroup
@@ -378,6 +348,7 @@ export const GroundRefinanceTaskPersonalDetails: FC = observer(() => {
               gap={3}
               justifyContent={'space-between'}
               maxWidth={600}
+              mt={4}
               width={'100%'}
             >
               <StyledButton

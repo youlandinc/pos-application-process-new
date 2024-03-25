@@ -78,7 +78,7 @@ export const FixRefuse: FC<{ nextStep: () => void }> = observer(
             </Stack>
           }
           tip={
-            "We're sorry but there is no fix and flip loan product available for you for the time being based on your credit score. Should you require additional assistance, email us at borrow@youland.com or call toll free at 1-833-968-5263."
+            "We're sorry but there is no fix and flip loan product available for you for the time being based on your credit score. Should you require additional assistance, email us at borrow@youland.com or call toll-free at 1-833-968-5263."
           }
           tipSx={{ mb: 0 }}
         >

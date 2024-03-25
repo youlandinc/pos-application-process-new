@@ -345,6 +345,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
         citizenship !== CommonBorrowerType.foreign_national ? (
         <StyledFormItem
           label={"Co-borrower's credit score"}
+          mt={4}
           sub
           sx={{ maxWidth: 600, width: '100%' }}
         >
@@ -364,6 +365,8 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
       ) : (
         <StyledFormItem
           label={'Soft credit check authorization'}
+          labelSx={{ mb: 2 }}
+          mt={4}
           sub
           sx={{ width: '100%', maxWidth: 600 }}
         >
@@ -414,6 +417,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
       <StyledFormItem
         label={`Credit score is ${creditScore}`}
         labelSx={{ m: 0 }}
+        mt={4}
         sub
         tipSx={{ m: 0 }}
       />
@@ -431,6 +435,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
     saasState?.organizationName,
     saasState?.posSettings?.softCreditRequirement,
   ]);
+
   return (
     <>
       <Transitions
@@ -454,7 +459,6 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
           <StyledFormItem
             gap={6}
             label={'Co-borrower details'}
-            maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
@@ -485,8 +489,9 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
               style={{
                 display: isCoBorrower ? 'flex' : 'none',
                 flexDirection: 'column',
-                gap: 48,
+                gap: 24,
                 alignItems: 'center',
+                marginTop: 16,
               }}
             >
               {isCoBorrower && (
@@ -580,6 +585,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
 
                   <StyledFormItem
                     label={'What is your citizenship status?'}
+                    mt={5}
                     sub
                   >
                     <Stack maxWidth={600} width={'100%'}>
@@ -594,7 +600,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                     </Stack>
                   </StyledFormItem>
 
-                  <StyledFormItem label={'Current address'} sub>
+                  <StyledFormItem label={'Current address'} mt={5} sub>
                     <Stack maxWidth={600} width={'100%'}>
                       <StyledGoogleAutoComplete
                         address={address}
@@ -606,6 +612,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                   {citizenship !== CommonBorrowerType.foreign_national && (
                     <StyledFormItem
                       label={"Co-borrower's social security number"}
+                      mt={5}
                       sub
                     >
                       <Stack maxWidth={600} width={'100%'}>
@@ -646,7 +653,6 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                         />
                       </StyledFormItem>
                     )}
-
                   {renderViaIsSkip}
                 </>
               )}
@@ -657,6 +663,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
               gap={3}
               justifyContent={'space-between'}
               maxWidth={600}
+              mt={4}
               width={'100%'}
             >
               <StyledButton
@@ -695,7 +702,7 @@ export const GroundPurchaseTaskCoBorrowerDetails: FC = observer(() => {
         ) : (
           <Stack
             alignItems={'center'}
-            gap={3}
+            gap={8}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}

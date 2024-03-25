@@ -39,7 +39,7 @@ export const FixRefinanceTaskInvestmentExperience: FC = observer(() => {
       .then((res) => {
         const { investmentFiles, propertiesNum } = res.data;
         setInvestmentFiles(investmentFiles ?? []);
-        setPropertiesNum(propertiesNum ?? 0);
+        setPropertiesNum(res.data.propertiesNum ?? propertiesNum);
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -115,7 +115,6 @@ export const FixRefinanceTaskInvestmentExperience: FC = observer(() => {
           <StyledFormItem
             gap={6}
             label={'Real estate investment experience'}
-            maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
@@ -148,8 +147,11 @@ export const FixRefinanceTaskInvestmentExperience: FC = observer(() => {
                     '.MuiSlider-mark': {
                       width: 4,
                       height: 4,
-                      transform: 'translate(-4px, -50%)',
                       borderRadius: '50%',
+                      transform: 'translateY(-50%)',
+                      '&[data-index="20"],&[data-index="0"]': {
+                        display: 'none !important',
+                      },
                     },
                   }}
                   value={propertiesNum}
@@ -162,6 +164,7 @@ export const FixRefinanceTaskInvestmentExperience: FC = observer(() => {
             </StyledFormItem>
             <Transitions
               style={{
+                marginTop: 16,
                 width: '100%',
                 display: propertiesNum ? 'block' : 'none',
               }}
@@ -226,6 +229,7 @@ export const FixRefinanceTaskInvestmentExperience: FC = observer(() => {
               gap={3}
               justifyContent={'space-between'}
               maxWidth={600}
+              mt={4}
               width={'100%'}
             >
               <StyledButton

@@ -333,9 +333,8 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
           </Stack>
         ) : (
           <StyledFormItem
-            gap={6}
+            gap={3}
             label={'Closing agent / Title company information(optional)'}
-            maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={`A closing agent assists with closing and verifies there are no outstanding title issues. ${
@@ -359,6 +358,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
               label={'Provide contact details'}
               labelSx={{ mb: 0 }}
               maxWidth={600}
+              mt={5}
               sub
             >
               <StyledTextField
@@ -423,6 +423,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
               label={
                 'Who is signing the closing instructions on behalf of the title company?'
               }
+              mt={5}
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledSelectOption
@@ -440,6 +441,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
             <StyledFormItem
               label={'Is the title company also managing loan closing?'}
               maxWidth={600}
+              mt={5}
               sub
             >
               <StyledButtonGroup
@@ -469,6 +471,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
                     gap={3}
                     label={'Who is managing loan closing?'}
                     labelSx={{ mb: 0 }}
+                    mt={5}
                     sub
                     width={'100%'}
                   >
@@ -544,7 +547,6 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
                       }
                       value={manageForm.titleOrderNumber}
                     />
-
                     <StyledGoogleAutoComplete address={clientManageAddress} />
                   </StyledFormItem>
                 ) : (
@@ -566,6 +568,7 @@ export const BridgePurchaseTaskCompanyInformation: FC = observer(() => {
               gap={3}
               justifyContent={'space-between'}
               maxWidth={600}
+              mt={7}
               width={'100%'}
             >
               <StyledButton

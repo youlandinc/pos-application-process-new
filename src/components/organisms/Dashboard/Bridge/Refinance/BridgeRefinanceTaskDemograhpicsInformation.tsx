@@ -376,21 +376,16 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
           <StyledFormItem
             gap={6}
             label={'Government requested information for you'}
-            maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
-              "The following information is requested by the Federal Government for certain types of loans related to a dwelling in order to monitor the lender's compliance with equal credit opportunity, fair housing, and home mortgage disclosure laws. The law provides that a lender may not discriminate either on the basis of this information, or whether you choose to disclose it. You may select one or more designations for Ethnicity and one or more designations for Race. You are not required to provide this information, but are encouraged to do so."
+              'The law requires us to ask for this information in order to monitor our compliance with equal credit opportunity. The law provides that we may not discriminate based on the basis of this information.'
             }
             tipSx={{ mb: 0 }}
             width={'100%'}
           >
-            <StyledFormItem
-              label={'What is your ethnicity?'}
-              sub
-              tip={'You can choose one or more.'}
-            >
-              <Stack gap={3} maxWidth={600} width={'100%'}>
+            <StyledFormItem label={'What is your ethnicity?'} sub>
+              <Stack gap={1.5} maxWidth={500} width={'100%'}>
                 <StyledCheckbox
                   checked={latino}
                   label={'Hispanic or Latino'}
@@ -408,7 +403,7 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
                 >
                   {latino && (
                     <>
-                      <Stack flexDirection={'row'} width={'100%'}>
+                      <Stack flexDirection={'row'} flexWrap={'wrap'} gap={1}>
                         <StyledCheckbox
                           checked={mexican}
                           label={'Mexican'}
@@ -457,6 +452,7 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
                                 onChange={(e) =>
                                   setOtherLatinoText(e.target.value)
                                 }
+                                size={'small'}
                                 value={otherLatinoText}
                               />
                               <Typography
@@ -496,12 +492,8 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
               </Stack>
             </StyledFormItem>
 
-            <StyledFormItem
-              label={'What is your race?'}
-              sub
-              tip={'You can choose one or more.'}
-            >
-              <Stack gap={3} maxWidth={600} width={'100%'}>
+            <StyledFormItem label={'What is your race?'} mt={2} sub>
+              <Stack gap={1.5} maxWidth={500} width={'100%'}>
                 <Box>
                   <StyledCheckbox
                     checked={american}
@@ -521,6 +513,7 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
                       <StyledTextField
                         label={'Name of enrolled or principal tribe'}
                         onChange={(e) => setTribeText(e.target.value)}
+                        size={'small'}
                         value={tribeText}
                       />
                     )}
@@ -612,6 +605,7 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
                                 onChange={(e) => {
                                   setOtherAsianText(e.target.value);
                                 }}
+                                size={'small'}
                                 value={otherAsianText}
                               />
                               <Typography
@@ -658,7 +652,7 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
                 >
                   {islander && (
                     <>
-                      <Stack flexDirection={'row'} gap={3}>
+                      <Stack flexDirection={'row'} flexWrap={'wrap'} gap={1}>
                         <StyledCheckbox
                           checked={hawaiian}
                           label={'Native Hawaiian'}
@@ -708,6 +702,7 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
                                 onChange={(e) => {
                                   setOtherIslanderText(e.target.value);
                                 }}
+                                size={'small'}
                                 value={otherIslanderText}
                               />
                               <Typography
@@ -747,8 +742,8 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
               </Stack>
             </StyledFormItem>
 
-            <StyledFormItem label={'What is your sex?'} sub>
-              <Stack gap={3} maxWidth={600} width={'100%'}>
+            <StyledFormItem label={'What is your sex?'} mt={2} sub>
+              <Stack gap={1.5} maxWidth={500} width={'100%'}>
                 <StyledCheckbox
                   checked={male}
                   label={'Male'}
@@ -784,6 +779,7 @@ export const BridgeRefinanceTaskDemographicsInformation: FC = observer(() => {
               gap={3}
               justifyContent={'space-between'}
               maxWidth={600}
+              mt={4}
               width={'100%'}
             >
               <StyledButton

@@ -394,7 +394,7 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
             gap={3}
             justifyContent={'center'}
             maxWidth={600}
-            mt={6}
+            mt={10}
             mx={'auto'}
             width={'100%'}
           >
@@ -426,7 +426,7 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
             gap={3}
             justifyContent={'center'}
             maxWidth={600}
-            mt={6}
+            mt={10}
             mx={'auto'}
             width={'100%'}
           >
@@ -464,7 +464,7 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
             gap={3}
             justifyContent={'center'}
             maxWidth={600}
-            mt={6}
+            mt={10}
             mx={'auto'}
             width={'100%'}
           >
@@ -524,7 +524,8 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
           <Transitions
             style={{
               width: '100%',
-              maxWidth: 900,
+              maxWidth: 800,
+              margin: '0 auto',
             }}
           >
             {renderNode}

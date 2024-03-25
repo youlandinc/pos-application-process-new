@@ -1,4 +1,8 @@
-import { FC, useMemo, useState } from 'react';
+import {
+  FC,
+  useMemo,
+  //useState
+} from 'react';
 import { Box, Stack, SxProps, Typography } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
 import { useRouter } from 'next/router';
@@ -12,7 +16,7 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFlex } from '@/styles';
 import { _fetchLoanTask } from '@/requests/dashboard';
 import {
-  AppraisalStage,
+  //AppraisalStage,
   DashboardTaskList,
   GRDashboardTaskKey,
   GroundDashboardLoanTask,
@@ -23,7 +27,6 @@ import {
 import {
   StyledLoading,
   StyledProgressBlock,
-  StyledProgressLine,
   Transitions,
 } from '@/components/atoms';
 import { DashboardHeader } from '@/components/molecules';
@@ -134,11 +137,9 @@ export const GroundRefinanceTaskList: FC = observer(() => {
   const [taskDetails, setTaskDetails] =
     useSetState<GroundDashboardTaskMap<GRDashboardTaskKey>>();
 
-  const [total, setTotal] = useState(9);
-  const [current, setCurrent] = useState(0);
-  const [appraisalStage, setAppraisalStage] = useState(
-    AppraisalStage.NotStarted,
-  );
+  //const [appraisalStage, setAppraisalStage] = useState(
+  //  AppraisalStage.NotStarted,
+  //);
 
   const { loading } = useAsync(async () => {
     if (!router.query.processId) {
@@ -148,11 +149,9 @@ export const GroundRefinanceTaskList: FC = observer(() => {
       router.query.processId as string,
     )
       .then((res) => {
-        const { totalNum, finishedNum, appraisalStage } = res.data;
         setTaskDetails(res?.data?.tasks);
-        setTotal(totalNum);
-        setCurrent(finishedNum);
-        setAppraisalStage(appraisalStage || AppraisalStage.NotStarted);
+        //const { appraisalStage } = res.data;
+        //setAppraisalStage(appraisalStage || AppraisalStage.NotStarted);
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -466,30 +465,17 @@ export const GroundRefinanceTaskList: FC = observer(() => {
           display={'flex'}
           flexDirection={'column'}
           justifyContent={'center'}
-          maxWidth={900}
+          maxWidth={800}
           mx={{ lg: 'auto', xs: 0 }}
           px={{ lg: 3, xs: 0 }}
           sx={TaskListStyles}
           width={'100%'}
         >
           <DashboardHeader
-            subTitle={
-              'The sooner you complete the tasks below, the faster we can fund the loan.'
-            }
             subTitleSx={{ mb: 2 }}
             title={'Your tasks checklist'}
           />
-
-          {loading ? (
-            <StyledLoading sx={{ color: 'text.grey' }} />
-          ) : (
-            <>
-              {/*<Stack alignItems={'center'} mb={3}>*/}
-              {/*  <StyledProgressLine current={current} total={total} />*/}
-              {/*</Stack>*/}
-              {renderTaskList}
-            </>
-          )}
+          {renderTaskList}
         </Box>
       )}
     </Transitions>
@@ -499,6 +485,7 @@ export const GroundRefinanceTaskList: FC = observer(() => {
 const TaskListStyles: SxProps = {
   '& .card_box': {
     p: 3,
+    py: 1.5,
     border: '1px solid',
     borderColor: 'background.border_default',
     mb: 3,

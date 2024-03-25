@@ -1,4 +1,3 @@
-import { useSwitch } from '@/hooks';
 import { CloseOutlined, ContentCopy } from '@mui/icons-material';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
@@ -8,16 +7,11 @@ import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { useSessionStorageState, useSwitch } from '@/hooks';
+
 import { HttpError, TaskFiles } from '@/types';
 import { Address, IAddress } from '@/models/common/Address';
-import { AUTO_HIDE_DURATION } from '@/constants';
-import {
-  _deleteTaskFile,
-  _fetchTaskFormInfo,
-  _skipLoanTask,
-  _updateTaskFormInfo,
-  _uploadTaskFile,
-} from '@/requests/dashboard';
 
 import {
   StyledButton,
@@ -31,9 +25,18 @@ import {
   Transitions,
 } from '@/components/atoms';
 
+import {
+  _deleteTaskFile,
+  _fetchTaskFormInfo,
+  _skipLoanTask,
+  _updateTaskFormInfo,
+  _uploadTaskFile,
+} from '@/requests/dashboard';
+
 export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+  const { saasState } = useSessionStorageState('tenantConfig');
   const { open, visible, close } = useSwitch(false);
 
   const [saveLoading, setSaveLoading] = useState(false);
@@ -255,8 +258,8 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
           </Stack>
         ) : (
           <StyledFormItem
-            gap={6}
-            label={'Homeowner insurance policy(optional)'}
+            gap={3}
+            label={'Homeowner insurance policy (optional)'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
@@ -267,18 +270,6 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
                 your insurance provider&apos;s contact information. This allows
                 us to speak directly with your provider on the details and get
                 confirmation that your home is insured.
-                <Typography
-                  color={'primary.main'}
-                  onClick={open}
-                  sx={{
-                    color: 'primary.main',
-                    cursor: 'pointer',
-                    fontWeight: 600,
-                  }}
-                  variant={'body1'}
-                >
-                  View requirements
-                </Typography>
               </Stack>
             }
             tipSx={{ mb: 0 }}
@@ -293,11 +284,13 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
             >
               Skip
             </StyledButton>
+
             <StyledFormItem
               gap={3}
               label={'Insurance provider information'}
               labelSx={{ mb: 0 }}
               maxWidth={600}
+              mt={5}
               sub
             >
               <StyledTextField
@@ -324,10 +317,28 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
 
               <StyledGoogleAutoComplete address={address} />
             </StyledFormItem>
+
             <StyledFormItem
-              label={'Upload your evidence of insurance'}
-              maxWidth={900}
+              label={
+                <Stack gap={1}>
+                  Upload your evidence of insurance
+                  <Typography
+                    color={'primary.main'}
+                    onClick={open}
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
+                    variant={'body1'}
+                  >
+                    View requirements
+                  </Typography>
+                </Stack>
+              }
+              mt={5}
               sub
+              tipSx={{ m: 0 }}
             >
               <StyledUploadBox
                 fileList={insuranceFiles}
@@ -336,11 +347,13 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
                 onSuccess={handledSuccess}
               />
             </StyledFormItem>
+
             <Stack
               flexDirection={'row'}
               gap={3}
               justifyContent={'space-between'}
               maxWidth={600}
+              mt={7}
               width={'100%'}
             >
               <StyledButton
@@ -369,51 +382,28 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
           </StyledFormItem>
         )}
       </Transitions>
+
       <StyledDialog
         content={
           <Stack gap={3} my={3}>
-            {/*<Stack gap={1.5}>*/}
-            {/*  <Typography variant={'subtitle2'}>Amount of coverage</Typography>*/}
-            {/*  <Stack>*/}
-            {/*    <Typography>*/}
-            {/*      The borrower shall have insurance policies and coverages as*/}
-            {/*      follows:*/}
-            {/*    </Typography>*/}
-            {/*    <Stack*/}
-            {/*      component={'ul'}*/}
-            {/*      sx={{*/}
-            {/*        listStyle: 'disc',*/}
-            {/*        listStylePosition: 'inside',*/}
-            {/*        pl: 0,*/}
-            {/*      }}*/}
-            {/*    >*/}
-            {/*      <Typography component={'li'} variant={'body3'}>*/}
-            {/*        The loan amount plus any priority lien or one hundred*/}
-            {/*        percent (100%) of replacement cost*/}
-            {/*      </Typography>*/}
-            {/*      <Typography component={'li'} variant={'body3'}>*/}
-            {/*        Minimum one million dollars ($1MM) liability coverage per*/}
-            {/*        occurrence. For smaller loans, liability is case by case.*/}
-            {/*      </Typography>*/}
-            {/*      <Typography component={'li'} variant={'body3'}>*/}
-            {/*        Builder&apos;s Risk policy including coverage for one*/}
-            {/*        hundred percent (100%) of the total cost of construction.*/}
-            {/*      </Typography>*/}
-            {/*    </Stack>*/}
-            {/*  </Stack>*/}
-            {/*</Stack>*/}
             <Stack>
               <Typography variant={'subtitle2'}>
                 Mortgagee information
               </Typography>
               <Stack flexDirection={'row'} gap={1} mt={1.5}>
                 <Typography variant={'body3'}>
-                  YouLand Inc. ISAOA/ATIMA
+                  {saasState?.organizationName || 'YouLand Inc'}. ISAOA/ATIMA
                 </Typography>
                 <ContentCopy
                   onClick={async () => {
                     await navigator.clipboard.writeText(
-                      'YouLand Inc. ISAOA/ATIMA 236 Kingfisher Avenue, Alameda, CA 94501',
+                      `${
+                        saasState?.organizationName || 'YouLand Inc'
+                      }. ISAOA/ATIMA ${
+                        saasState?.address?.address || '236 Kingfisher Avenue'
+                      }, ${saasState?.address?.city || 'Alameda'}, ${
+                        saasState?.address?.state || 'CA'
+                      } ${saasState?.address?.postcode || '94501'}`,
                     );
                     enqueueSnackbar('Copied data to clipboard', {
                       variant: 'success',
@@ -422,14 +412,20 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
                   sx={{ fontSize: 18, cursor: 'pointer' }}
                 />
               </Stack>
-              <Typography variant={'body3'}>236 Kingfisher Avenue,</Typography>
-              <Typography variant={'body3'}>Alameda, CA 94501</Typography>
+              <Typography variant={'body3'}>
+                {saasState?.address?.address || '236 Kingfisher Avenue'},
+              </Typography>
+              <Typography variant={'body3'}>
+                {saasState?.address?.city || 'Alameda'},{' '}
+                {saasState?.address?.state || 'CA'}{' '}
+                {saasState?.address?.postcode || '94501'}
+              </Typography>
             </Stack>
             <Stack gap={1.5}>
               <Typography variant={'subtitle2'}>Loan number</Typography>
               <Stack flexDirection={'row'} gap={1}>
                 <Typography variant={'body3'}>
-                  {router.query.processId}
+                  {router.query?.processId}
                 </Typography>
                 <ContentCopy
                   onClick={async () => {
@@ -485,7 +481,7 @@ export const BridgePurchaseTaskInsuranceInformation: FC = observer(() => {
         }}
         open={visible}
         PaperProps={{
-          sx: { maxWidth: '900px !important' },
+          sx: { maxWidth: '600px !important' },
         }}
       />
     </>

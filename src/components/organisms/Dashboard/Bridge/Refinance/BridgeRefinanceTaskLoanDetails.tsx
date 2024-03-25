@@ -155,7 +155,6 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
           <StyledFormItem
             gap={6}
             label={'Loan details'}
-            maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
@@ -177,7 +176,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
               </Stack>
             </StyledFormItem>
 
-            <StyledFormItem label={'Payoff amount'} sub>
+            <StyledFormItem label={'Payoff amount'} mt={2} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldNumber
                   label={'Payoff amount'}
@@ -190,7 +189,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
               </Stack>
             </StyledFormItem>
 
-            <StyledFormItem label={'Will you request cash out?'} sub>
+            <StyledFormItem label={'Will you request cash out?'} mt={2} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledButtonGroup
                   onChange={(e, value) => {
@@ -209,7 +208,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
               style={{
                 display: isCashOut ? 'flex' : 'none',
                 flexDirection: 'column',
-                gap: 48,
+                gap: 64,
                 width: '100%',
               }}
             >
@@ -229,7 +228,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
               )}
             </Transitions>
 
-            <StyledFormItem label={'Exit strategy'} sub>
+            <StyledFormItem label={'Exit strategy'} mt={2} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledSelectOption
                   onChange={(value) => {
@@ -246,6 +245,7 @@ export const BridgeRefinanceTaskLoanDetails: FC = () => {
               gap={3}
               justifyContent={'space-between'}
               maxWidth={600}
+              mt={4}
               width={'100%'}
             >
               <StyledButton
