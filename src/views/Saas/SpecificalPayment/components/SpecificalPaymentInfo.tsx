@@ -22,14 +22,14 @@ export const SpecificalPaymentInfo: FC<
       <Stack
         border={'1px solid #E4E7EF'}
         borderRadius={2}
-        gap={3}
+        //gap={3}
         p={3}
         width={'100%'}
       >
-        <Typography fontSize={24} pb={1.25} variant="h4">
+        <Typography fontSize={24} variant="h4">
           Order summary
         </Typography>
-        <Stack gap={1.25}>
+        <Stack gap={1} mt={1}>
           <Typography variant={'body2'}>
             Property address: {propertyAddress}
           </Typography>
@@ -40,7 +40,7 @@ export const SpecificalPaymentInfo: FC<
           borderBottom={'1px solid #E4E7EF'}
           flexDirection={'row'}
           justifyContent={'space-between'}
-          mt={5}
+          mt={3}
           pb={1}
         >
           <Typography variant={'subtitle2'}>Appraisal fee</Typography>
@@ -63,8 +63,16 @@ export const SpecificalPaymentInfo: FC<
         {/*    </Typography>*/}
         {/*  </Stack>*/}
         {/*)}*/}
-        <Typography color={'#365EC6'} textAlign={'right'} variant={'h6'}>
-          Total: {POSFormatDollar(paymentAmount)}
+        <Typography color={'#365EC6'} mt={1} textAlign={'right'} variant={'h5'}>
+          Total:{' '}
+          <Typography
+            color={'#365EC6'}
+            component={'span'}
+            textAlign={'right'}
+            variant={'h4'}
+          >
+            {POSFormatDollar(paymentAmount)}
+          </Typography>
         </Typography>
       </Stack>
       {additional && additional}

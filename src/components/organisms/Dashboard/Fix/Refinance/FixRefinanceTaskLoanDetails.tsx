@@ -199,7 +199,6 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
           <StyledFormItem
             gap={6}
             label={'Loan details'}
-            maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
@@ -221,7 +220,7 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
               </Stack>
             </StyledFormItem>
 
-            <StyledFormItem label={'Payoff amount'} sub>
+            <StyledFormItem label={'Payoff amount'} mt={2} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldNumber
                   label={'Payoff amount'}
@@ -234,7 +233,7 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
               </Stack>
             </StyledFormItem>
 
-            <StyledFormItem label={'Will you request cash out?'} sub>
+            <StyledFormItem label={'Will you request cash out?'} mt={2} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledButtonGroup
                   onChange={(e, value) => {
@@ -253,7 +252,7 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
               style={{
                 display: isCashOut ? 'flex' : 'none',
                 flexDirection: 'column',
-                gap: 48,
+                gap: 64,
                 width: '100%',
               }}
             >
@@ -275,6 +274,7 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
 
             <StyledFormItem
               label={'Estimated rehab loan amount'}
+              mt={2}
               sub
               tip={`Total cost that you would like ${
                 //sass
@@ -294,6 +294,7 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
             </StyledFormItem>
             <StyledFormItem
               label={'Estimated date to finish your rehab project'}
+              mt={2}
               sub
             >
               <Stack maxWidth={600} width={'100%'}>
@@ -311,6 +312,7 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
             </StyledFormItem>
             <StyledFormItem
               label={'After repair value'}
+              mt={2}
               sub
               tip={
                 'Once all improvements to the property have been made, how much will the property be worth?'
@@ -328,7 +330,7 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
               </Stack>
             </StyledFormItem>
 
-            <StyledFormItem label={'Exit strategy'} sub>
+            <StyledFormItem label={'Exit strategy'} mt={2} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledSelectOption
                   onChange={(value) => {
@@ -345,6 +347,7 @@ export const FixRefinanceTaskLoanDetails: FC = () => {
               gap={3}
               justifyContent={'space-between'}
               maxWidth={600}
+              mt={4}
               width={'100%'}
             >
               <StyledButton

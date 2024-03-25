@@ -109,7 +109,6 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
           <StyledFormItem
             gap={6}
             label={'Loan details'}
-            maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
@@ -137,6 +136,7 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
 
             <StyledFormItem
               label={'As-is property value'}
+              mt={2}
               sub
               tip={
                 'Your estimate of the current value of the property (before any rehabilitation).'
@@ -159,6 +159,7 @@ export const BridgePurchaseTaskLoanDetails: FC = () => {
               gap={3}
               justifyContent={'space-between'}
               maxWidth={600}
+              mt={4}
               width={'100%'}
             >
               <StyledButton

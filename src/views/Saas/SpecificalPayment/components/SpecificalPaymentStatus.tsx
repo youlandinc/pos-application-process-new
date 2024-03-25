@@ -43,7 +43,7 @@ export const SpecificalPaymentStatus: FC<{
               >
                 {saasState?.email || 'borrow@youland.com'}
               </a>{' '}
-              or call toll free at{' '}
+              or call toll-free at{' '}
               <a
                 href={`tel:${saasState?.phone || '1-833-968-5263'}`}
                 style={{
@@ -144,7 +144,7 @@ export const SpecificalPaymentStatus: FC<{
               >
                 {saasState?.email || 'borrow@youland.com'}
               </a>{' '}
-              or call toll free at{' '}
+              or call toll-free at{' '}
               <a
                 href={`tel:${saasState?.phone || '1-833-968-5263'}`}
                 style={{

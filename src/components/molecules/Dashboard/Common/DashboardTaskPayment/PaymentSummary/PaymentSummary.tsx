@@ -110,18 +110,23 @@ export const PaymentSummary: FC<PaymentSummaryProps> = ({
   };
 
   return (
-    <StyledFormItem gap={6} label={'Confirm your rate'} labelSx={{ m: 0 }}>
+    <StyledFormItem gap={3} label={'Confirm your rate'} labelSx={{ m: 0 }}>
       {loanSummary}
-      <StyledCheckbox
-        checked={check}
-        label={
-          'I agree to the terms above and would like to confirm this rate.'
-        }
-        onChange={onCheckValueChange}
-      />
+      <Stack alignItems={'center'} mt={3} width={'100%'}>
+        <StyledCheckbox
+          checked={check}
+          label={
+            'I agree to the terms above and would like to confirm this rate.'
+          }
+          onChange={onCheckValueChange}
+        />
+      </Stack>
+
       <StyledFormItem
         gap={3}
         label={'Do you have a recent property appraisal？'}
+        labelSx={{ m: 0 }}
+        mt={3}
         sub
         tipSx={{ m: 0 }}
       >
@@ -158,6 +163,7 @@ export const PaymentSummary: FC<PaymentSummaryProps> = ({
             <StyledFormItem
               gap={3}
               label={'Would you like to request expedited processing?'}
+              mt={5}
               sub
               tip={
                 'If you wish to avail expedited processing services, an additional fee of $150 will apply. This means you will receive your report in a shorter timeframe, allowing for more timely handling of your needs.'
@@ -175,7 +181,7 @@ export const PaymentSummary: FC<PaymentSummaryProps> = ({
               gap={3}
               label={'Property inspection contact information'}
               labelSx={{ m: 0 }}
-              mt={6}
+              mt={8}
               sub
             >
               <Stack

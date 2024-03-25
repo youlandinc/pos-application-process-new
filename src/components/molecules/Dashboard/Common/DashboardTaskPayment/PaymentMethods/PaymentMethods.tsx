@@ -33,7 +33,12 @@ export const PaymentMethods = forwardRef<
     >
       <SpecificalPaymentInfo {...paymentDetail} />
 
-      <Stack border={'1px solid #E4E7EF'} borderRadius={2} p={3} width={'100%'}>
+      <Stack
+        border={'1px solid #E4E7EF'}
+        borderRadius={2}
+        p={'12px 24px 24px 24px'}
+        width={'100%'}
+      >
         <StyledPaymentCard
           hideFooter={true}
           ref={ref}
@@ -52,10 +57,10 @@ export const PaymentMethods = forwardRef<
           </>
         }
         onChange={onCheckValueChange}
-        sx={{ mr: 1, mt: 3 }}
+        sx={{ mr: 1, mt: 2 }}
       />
 
-      <Stack gap={1} width={'100%'}>
+      <Stack mt={3} width={'100%'}>
         <Typography color={'info.dark'} fontWeight={500} variant={'body3'}>
           Appraisal visit:
         </Typography>
@@ -65,7 +70,7 @@ export const PaymentMethods = forwardRef<
         </Typography>
       </Stack>
 
-      <Stack gap={1} width={'100%'}>
+      <Stack width={'100%'}>
         <Typography color={'info.dark'} fontWeight={500} variant={'body3'}>
           Heads up:
         </Typography>
