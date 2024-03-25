@@ -84,6 +84,9 @@ export const POSFormatUSPhoneToText = (entry = '') => {
 };
 
 export const POSFormatUrl = (url: string): string => {
+  if (!url) {
+    return '';
+  }
   if (/^https?:\/\//.test(url)) {
     return url;
   } else if (url.startsWith('https')) {

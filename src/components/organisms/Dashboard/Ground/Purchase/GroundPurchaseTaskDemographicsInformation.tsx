@@ -379,7 +379,7 @@ export const GroundPurchaseTaskDemographicsInformation: FC = observer(() => {
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
-              'The law requires us to ask for this information in order to monitor our compliance with equal credit opportunity. The law provides that we may not discriminate based on the basis of this information.'
+              'The law mandates that we collect this information to ensure compliance with equal credit opportunity regulations, which prohibit discrimination based on this information.'
             }
             tipSx={{ mb: 0 }}
             width={'100%'}

@@ -8,7 +8,6 @@ import { AxiosResponse } from 'axios';
 import { observer } from 'mobx-react-lite';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { POSGetParamsFromUrl } from '@/utils';
 
 import { DocumentUploadResponse, HttpError } from '@/types';
 
