@@ -94,6 +94,7 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
           p: 3,
           bgcolor: 'primary.lightest',
           minHeight: 100,
+          width: !loading ? 'fit-content' : 'auto',
         }}
       >
         {loading ? (
