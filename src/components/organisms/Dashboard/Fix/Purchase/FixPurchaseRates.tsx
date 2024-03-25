@@ -560,7 +560,7 @@ export const FixPurchaseRates: FC = observer(() => {
                     py={1.5}
                     width={'100%'}
                   >
-                    <Typography variant={'body1'}>Loan term</Typography>
+                    <Typography variant={'body1'}>Loan duration</Typography>
                     <Typography variant={'subtitle1'}>
                       {primitiveLoanInfo?.loanTerm} months
                     </Typography>

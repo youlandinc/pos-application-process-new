@@ -136,7 +136,7 @@ export const RatesItems: FC<{
               ['xs', 'sm', 'md'].includes(breakpoint) ? 'body3' : 'body1'
             }
           >
-            Loan term
+            Loan duration
           </Typography>
           <Typography
             variant={

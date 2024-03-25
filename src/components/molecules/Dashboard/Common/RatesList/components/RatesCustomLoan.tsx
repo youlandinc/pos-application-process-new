@@ -86,7 +86,7 @@ export const RatesCustomLoan: FC<RatesCustomLoanProps> = ({
             <StyledTextFieldNumber
               decimalScale={0}
               disabled={customLoading}
-              label={'Loan term (months)'}
+              label={'Loan duration'}
               onValueChange={({ floatValue }) => {
                 setCustomLoan({
                   ...customLoan,
