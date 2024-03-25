@@ -52,7 +52,6 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
 
   const { open, visible, close } = useSwitch(false);
   const stopDefaults = (e: DragEvent) => {
-    e.stopPropagation();
     e.preventDefault();
   };
 
@@ -80,6 +79,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
   const handleUpload = useCallback(
     async (files: FileList) => {
       onSuccess(files);
+      setIsDragging(false);
     },
     [onSuccess],
   );

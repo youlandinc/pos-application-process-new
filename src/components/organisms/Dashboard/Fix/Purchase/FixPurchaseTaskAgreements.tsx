@@ -82,7 +82,7 @@ export const FixPurchaseTaskAgreements: FC = observer(() => {
       setPdfString(data);
       setTimeout(() => {
         renderFile(data);
-      }, 100);
+      }, 50);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {

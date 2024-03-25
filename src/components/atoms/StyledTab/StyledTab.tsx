@@ -49,7 +49,7 @@ export const StyledTab: FC<StyledTabProps> = (props) => {
             p: 0,
             minWidth: 0,
             minHeight: 0,
-            mr: 8,
+            mx: 4,
             mb: 1.25,
             fontWeight: 600,
           },

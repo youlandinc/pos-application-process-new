@@ -8,9 +8,9 @@ import { AxiosResponse } from 'axios';
 import { observer } from 'mobx-react-lite';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { DocumentUploadResponse, HttpError } from '@/types';
+import { POSGetParamsFromUrl } from '@/utils';
 
-import { _fetchTaskFormInfo } from '@/requests/dashboard';
+import { DocumentUploadResponse, HttpError } from '@/types';
 
 import {
   StyledButton,
@@ -20,6 +20,8 @@ import {
   StyledUploadButtonBox,
   Transitions,
 } from '@/components/atoms';
+
+import { _fetchTaskFormInfo } from '@/requests/dashboard';
 
 export const FixRefinanceTaskDocuments: FC = observer(() => {
   const router = useRouter();
@@ -122,9 +124,11 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
             <Stack alignItems={'center'}>
               <StyledButton
                 color={'info'}
-                onClick={() => {
-                  console.log(router);
-                  //router.back();
+                onClick={async () => {
+                  await router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  });
                 }}
                 sx={{ width: 276 }}
                 variant={'text'}

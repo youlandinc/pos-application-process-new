@@ -129,9 +129,11 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
             <Stack alignItems={'center'}>
               <StyledButton
                 color={'info'}
-                onClick={() => {
-                  console.log(router);
-                  //router.back();
+                onClick={async () => {
+                  await router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  });
                 }}
                 sx={{ width: 276 }}
                 variant={'text'}
