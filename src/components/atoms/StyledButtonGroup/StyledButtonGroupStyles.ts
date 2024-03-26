@@ -26,6 +26,7 @@ export const StyledButtonGroupStyles = {
       '&.Mui-selected': {
         color: 'text.secondary',
         bgcolor: 'text.disabled',
+        borderColor: 'text.secondary',
       },
     },
     '&.MuiToggleButton--sizeSmall': {

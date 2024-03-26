@@ -36,13 +36,13 @@ export const PipelineGovernment: FC = observer(() => {
     switch (userType) {
       case UserType.BROKER: {
         return {
-          label: "Broker's government ID",
+          label: "Broker's government ID (optional)",
           government: BROKER_GOVERNMENT_ID,
         };
       }
       case UserType.LENDER: {
         return {
-          label: "Lender's government ID",
+          label: "Lender's government ID (optional)",
           government: LENDER_GOVERNMENT_ID,
         };
       }

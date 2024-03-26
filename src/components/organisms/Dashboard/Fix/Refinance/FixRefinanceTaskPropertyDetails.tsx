@@ -156,13 +156,7 @@ export const FixRefinanceTaskPropertyDetails: FC = observer(() => {
             tipSx={{ mb: 0 }}
             width={'100%'}
           >
-            <StyledFormItem
-              label={'Property address'}
-              sub
-              tip={
-                'The price you paid or are paying for the property that the loan is for.'
-              }
-            >
+            <StyledFormItem label={'Property address'} sub>
               <Stack maxWidth={600} width={'100%'}>
                 <StyledGoogleAutoComplete address={address} disabled />
               </Stack>

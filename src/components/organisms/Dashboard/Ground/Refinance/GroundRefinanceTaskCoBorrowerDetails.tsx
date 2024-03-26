@@ -23,7 +23,7 @@ import {
   HttpError,
   SoftCreditRequirementEnum,
 } from '@/types';
-import { POSNotUndefined } from '@/utils';
+import { POSFormatUrl, POSNotUndefined } from '@/utils';
 import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 
 import {
@@ -345,6 +345,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
         citizenship !== CommonBorrowerType.foreign_national ? (
         <StyledFormItem
           label={"Co-borrower's credit score"}
+          mt={4}
           sub
           sx={{ maxWidth: 600, width: '100%' }}
         >
@@ -364,6 +365,8 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
       ) : (
         <StyledFormItem
           label={'Soft credit check authorization'}
+          labelSx={{ mb: 2 }}
+          mt={4}
           sub
           sx={{ width: '100%', maxWidth: 600 }}
         >
@@ -377,12 +380,75 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                 ml={2}
                 variant={'body2'}
               >
-                I, {firstName || 'the'} {lastName || 'borrower'}, authorize{' '}
-                {
-                  //sass
-                  saasState?.organizationName || 'YouLand'
-                }{' '}
-                to verify my credit.
+                I authorize {saasState?.organizationName || 'YouLand'} to verify{' '}
+                {firstName
+                  ? lastName
+                    ? `${firstName?.replace(/\b\w/g, (char) =>
+                        char.toUpperCase(),
+                      )} `
+                    : firstName?.replace(/\b\w/g, (char) => char.toUpperCase())
+                  : 'the '}
+                {firstName
+                  ? lastName
+                    ? `${lastName?.replace(/\b\w/g, (char) =>
+                        char.toUpperCase(),
+                      )}`
+                    : ''
+                  : 'co-borrower'}
+                &apos;s credit. I&apos;ve also read and agreed to{' '}
+                {saasState?.organizationName || 'YouLand'}&apos;s{' '}
+                <Typography
+                  component={'span'}
+                  onClick={() =>
+                    window.open(
+                      POSFormatUrl(saasState?.legalAgreements?.termsUrl) ||
+                        'https://www.youland.com/legal/terms/',
+                    )
+                  }
+                  sx={{
+                    color: 'primary.main',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                  }}
+                >
+                  Terms of Use
+                </Typography>
+                ,{' '}
+                <Typography
+                  component={'span'}
+                  onClick={() =>
+                    window.open(
+                      POSFormatUrl(
+                        saasState?.legalAgreements?.privacyPolicyUrl,
+                      ) || 'https://www.youland.com/legal/privacy/',
+                    )
+                  }
+                  sx={{
+                    color: 'primary.main',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                  }}
+                >
+                  Privacy Policy
+                </Typography>{' '}
+                and{' '}
+                <Typography
+                  component={'span'}
+                  onClick={() =>
+                    window.open(
+                      POSFormatUrl(saasState?.legalAgreements?.signaturesUrl) ||
+                        'https://www.youland.com/legal/e-loan-doc/',
+                    )
+                  }
+                  sx={{
+                    color: 'primary.main',
+                    cursor: 'pointer',
+                    fontWeight: 600,
+                  }}
+                >
+                  Consent to Receive Electronic Loan Documents
+                </Typography>
+                .
               </Typography>
             }
             onChange={(e) => setAuthorizedCreditCheck(e.target.checked)}
@@ -414,6 +480,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
       <StyledFormItem
         label={`Credit score is ${creditScore}`}
         labelSx={{ m: 0 }}
+        mt={4}
         sub
         tipSx={{ m: 0 }}
       />
@@ -428,6 +495,9 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
     isConfirm,
     isSkipCheck,
     lastName,
+    saasState?.legalAgreements?.privacyPolicyUrl,
+    saasState?.legalAgreements?.signaturesUrl,
+    saasState?.legalAgreements?.termsUrl,
     saasState?.organizationName,
     saasState?.posSettings?.softCreditRequirement,
   ]);
@@ -455,11 +525,10 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
           <StyledFormItem
             gap={6}
             label={'Co-borrower details'}
-            maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
-              "This means your assets and income will be counted together. You can't remove your co-borrower once you have started your application unless you restart a new one.If there is a co-borrower, credit report and background check fees need to be charged for both individuals."
+              "If added, the co-borrower can't be removed without starting a new application. Credit and background checks would apply to the co-borrower as well."
             }
             tipSx={{ mb: 0 }}
             width={'100%'}
@@ -486,8 +555,9 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
               style={{
                 display: isCoBorrower ? 'flex' : 'none',
                 flexDirection: 'column',
-                gap: 48,
+                gap: 24,
                 alignItems: 'center',
+                marginTop: 16,
               }}
             >
               {isCoBorrower && (
@@ -495,10 +565,9 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                   <StyledFormItem
                     label={'Personal information'}
                     sub
-                    tip={`By entering your phone number,  you're authorizing ${
-                      //sass
+                    tip={`By entering their phone number and email address below, you're authorizing ${
                       saasState?.organizationName || 'YouLand'
-                    } to use this number to call, text and send you messages by any method. We don't charge for contacting you, but your service provider may.`}
+                    } to contact them using those methods. Carrier fees may apply.`}
                   >
                     <Stack gap={3} maxWidth={600} width={'100%'}>
                       <StyledTextField
@@ -581,6 +650,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
 
                   <StyledFormItem
                     label={'What is your citizenship status?'}
+                    mt={5}
                     sub
                   >
                     <Stack maxWidth={600} width={'100%'}>
@@ -595,7 +665,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                     </Stack>
                   </StyledFormItem>
 
-                  <StyledFormItem label={'Current address'} sub>
+                  <StyledFormItem label={'Current address'} mt={5} sub>
                     <Stack maxWidth={600} width={'100%'}>
                       <StyledGoogleAutoComplete
                         address={address}
@@ -607,6 +677,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                   {citizenship !== CommonBorrowerType.foreign_national && (
                     <StyledFormItem
                       label={"Co-borrower's social security number"}
+                      mt={5}
                       sub
                     >
                       <Stack maxWidth={600} width={'100%'}>
@@ -647,7 +718,6 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
                         />
                       </StyledFormItem>
                     )}
-
                   {renderViaIsSkip}
                 </>
               )}
@@ -658,6 +728,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
               gap={3}
               justifyContent={'space-between'}
               maxWidth={600}
+              mt={4}
               width={'100%'}
             >
               <StyledButton
@@ -696,7 +767,7 @@ export const GroundRefinanceTaskCoBorrowerDetails: FC = observer(() => {
         ) : (
           <Stack
             alignItems={'center'}
-            gap={3}
+            gap={8}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}

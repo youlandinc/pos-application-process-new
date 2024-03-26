@@ -15,8 +15,6 @@ export * from './BridgeRefinanceTaskCoBorrowerDetails';
 export * from './BridgeRefinanceTaskPayment';
 export * from './BridgeRefinanceTaskPropertyInspection';
 
-export * from './BridgeRefinanceTaskPay';
-
 export * from './BridgeRefinanceTaskCompanyInformation';
 export * from './BridgeRefinanceTaskInsuranceInformation';
 

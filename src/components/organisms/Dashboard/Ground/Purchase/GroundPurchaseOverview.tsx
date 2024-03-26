@@ -180,11 +180,14 @@ export const GroundPurchaseOverview: FC = observer(() => {
           ],
         });
         setProduct({
-          title: 'Rate',
+          title: 'Loan terms',
           subTitle: 'Interest rate',
           subInfo: POSFormatLocalPercent(product.interestRateOfYear),
           info: [
-            { label: 'Loan term', info: `${product.loanTerm} months` },
+            {
+              label: 'Loan duration',
+              info: `${product.loanTerm} months`,
+            },
             {
               label: 'Monthly payment',
               info: POSFormatDollar(product.paymentOfMonth),
@@ -531,7 +534,7 @@ export const GroundPurchaseOverview: FC = observer(() => {
               >
                 Tasks
               </Box>{' '}
-              to see what you need to take care of to secure your loan.
+              to see what you need to provide before closing.
             </Typography>
             <Typography component={'div'} mt={3} variant={'body3'}>
               <Box>Disclaimer</Box>
@@ -542,13 +545,9 @@ export const GroundPurchaseOverview: FC = observer(() => {
                 on those potential costs, please contact your settlement agent.
               </Box>
               <Box mt={1.25}>
-                Rates displayed are subject to rate lock and are not to be
+                Rates displayed are subject to change and are not to be
                 considered an extension or offer of credit by
-                {
-                  // todo: sass
-                  ' ' + saasState?.organizationName || ' YouLand'
-                }
-                .
+                {' ' + saasState?.organizationName || ' YouLand'}.
               </Box>
             </Typography>
           </Box>

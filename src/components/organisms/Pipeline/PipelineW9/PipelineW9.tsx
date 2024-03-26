@@ -108,7 +108,7 @@ export const PipelineW9: FC = observer(() => {
   return (
     <Stack alignItems={'center'} justifyContent={'center'}>
       <StyledFormItem
-        label={'W9 Form'}
+        label={'W9 Form (optional)'}
         sx={{ width: '100%' }}
         tip={'Please upload your W9 form.'}
       >

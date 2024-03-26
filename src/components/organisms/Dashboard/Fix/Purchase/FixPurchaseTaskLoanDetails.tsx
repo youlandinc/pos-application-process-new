@@ -138,11 +138,10 @@ export const FixPurchaseTaskLoanDetails: FC = () => {
           <StyledFormItem
             gap={6}
             label={'Loan details'}
-            maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
-              'Below are all of the details we have about your deal. If you have to change these details you may do so below, please note that changes may affect your Loan-to-value or your rate.'
+              'Below are all of the details we have about your deal. If you have to change these details, you may do so below. Please note that changes may affect your LTV (loan to value) or your rate.'
             }
             tipSx={{ mb: 0 }}
             width={'100%'}
@@ -150,9 +149,7 @@ export const FixPurchaseTaskLoanDetails: FC = () => {
             <StyledFormItem
               label={'Purchase price'}
               sub
-              tip={
-                'The price you paid or are paying for the property that the loan is for.'
-              }
+              tip={'The price you paid or are paying for the subject property.'}
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledTextFieldNumber
@@ -168,6 +165,7 @@ export const FixPurchaseTaskLoanDetails: FC = () => {
 
             <StyledFormItem
               label={'As-is property value'}
+              mt={2}
               sub
               tip={
                 'Your estimate of the current value of the property (before any rehabilitation).'
@@ -187,6 +185,7 @@ export const FixPurchaseTaskLoanDetails: FC = () => {
 
             <StyledFormItem
               label={'Estimated rehab loan amount'}
+              mt={2}
               sub
               tip={`Total cost that you would like ${
                 //sass
@@ -204,8 +203,10 @@ export const FixPurchaseTaskLoanDetails: FC = () => {
                 />
               </Stack>
             </StyledFormItem>
+
             <StyledFormItem
               label={'Estimated date to finish your rehab project'}
+              mt={2}
               sub
             >
               <Stack maxWidth={600} width={'100%'}>
@@ -221,8 +222,10 @@ export const FixPurchaseTaskLoanDetails: FC = () => {
                 />
               </Stack>
             </StyledFormItem>
+
             <StyledFormItem
               label={'After repair value'}
+              mt={2}
               sub
               tip={
                 'Once all improvements to the property have been made, how much will the property be worth?'
@@ -245,6 +248,7 @@ export const FixPurchaseTaskLoanDetails: FC = () => {
               gap={3}
               justifyContent={'space-between'}
               maxWidth={600}
+              mt={4}
               width={'100%'}
             >
               <StyledButton

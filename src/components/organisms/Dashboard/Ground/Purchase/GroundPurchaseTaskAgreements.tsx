@@ -1,20 +1,27 @@
-import { HttpError } from '@/types';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
-import { CloseOutlined } from '@mui/icons-material';
+import { Stack } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
+import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
+import { useRenderPdf, useSessionStorageState } from '@/hooks';
+
+import { HttpError } from '@/types';
+
+import {
+  StyledButton,
+  StyledFormItem,
+  StyledLoading,
+  Transitions,
+} from '@/components/atoms';
+
 import {
   _fetchAttachmentFile,
   _updateTaskFormInfo,
 } from '@/requests/dashboard';
-import { useRenderPdf, useSessionStorageState, useSwitch } from '@/hooks';
-
-import { StyledButton, StyledDialog, StyledFormItem } from '@/components/atoms';
 
 export const GroundPurchaseTaskAgreements: FC = observer(() => {
   const router = useRouter();
@@ -22,14 +29,11 @@ export const GroundPurchaseTaskAgreements: FC = observer(() => {
 
   const { saasState } = useSessionStorageState('tenantConfig');
 
-  const { visible, open, close } = useSwitch(false);
-
   const pdfFile = useRef(null);
 
   const { renderFile } = useRenderPdf(pdfFile);
 
   const [saveLoading, setSaveLoading] = useState(false);
-  const [viewLoading, setViewLoading] = useState<boolean>(false);
 
   const [pdfString, setPdfString] = useState<string>('');
 
@@ -69,22 +73,16 @@ export const GroundPurchaseTaskAgreements: FC = observer(() => {
     }
   }, [enqueueSnackbar, router]);
 
-  const handledViewPDF = useCallback(async () => {
+  const { loading } = useAsync(async () => {
     if (pdfString) {
-      open();
-      setTimeout(() => {
-        renderFile(pdfString);
-      }, 100);
       return;
     }
-    setViewLoading(true);
     try {
       const { data } = await _fetchAttachmentFile();
       setPdfString(data);
-      open();
       setTimeout(() => {
         renderFile(data);
-      }, 100);
+      }, 50);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -93,92 +91,78 @@ export const GroundPurchaseTaskAgreements: FC = observer(() => {
         isSimple: !header,
         header,
       });
-    } finally {
-      setViewLoading(false);
     }
-  }, [enqueueSnackbar, open, pdfString, renderFile]);
+  }, []);
 
   return (
     <>
-      <StyledFormItem
-        gap={3}
-        label={`Review and accept ${
-          //sass
-          saasState?.organizationName || ' YouLand'
-        }'s construction holdback process`}
-        maxWidth={900}
+      <Transitions
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center',
+        }}
       >
-        <Typography
-          component={'span'}
-          fontWeight={600}
-          onClick={handledViewPDF}
-          sx={{ color: 'primary.main', cursor: 'pointer', fontWeight: 600 }}
-        >
-          View construction holdback process
-        </Typography>
-
-        <Stack
-          flexDirection={'row'}
-          gap={3}
-          justifyContent={'space-between'}
-          maxWidth={600}
-          width={'100%'}
-        >
-          <StyledButton
-            color={'info'}
-            onClick={() =>
-              router.push({
-                pathname: '/dashboard/tasks',
-                query: { processId: router.query.processId },
-              })
-            }
-            sx={{ flex: 1 }}
-            variant={'text'}
-          >
-            Back
-          </StyledButton>
-          <StyledButton
-            disabled={saveLoading || viewLoading}
-            loading={saveLoading}
-            loadingText={'Saving...'}
-            onClick={handledSubmit}
-            sx={{ flex: 1 }}
-          >
-            Confirm
-          </StyledButton>
-        </Stack>
-      </StyledFormItem>
-
-      <StyledDialog
-        content={<Box ref={pdfFile} />}
-        disableEscapeKeyDown
-        header={
+        {loading ? (
           <Stack
             alignItems={'center'}
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            pb={3}
+            justifyContent={'center'}
+            margin={'auto 0'}
+            minHeight={'calc(667px - 46px)'}
+            width={'100%'}
           >
-            <Typography variant={'h6'}>
-              Construction Holdback Process
-            </Typography>
-            <StyledButton isIconButton onClick={close}>
-              <CloseOutlined />
-            </StyledButton>
+            <StyledLoading sx={{ color: 'text.grey' }} />
           </Stack>
-        }
-        open={visible}
-        sx={{
-          '& .MuiPaper-root': {
-            maxWidth: { lg: '900px !important', xs: '100% !important' },
-            width: '100%',
-            '& .MuiDialogTitle-root, & .MuiDialogActions-root': {
-              bgcolor: '#F5F8FA',
-              p: 3,
-            },
-          },
-        }}
-      />
+        ) : (
+          <StyledFormItem
+            gap={3}
+            label={`Review and accept ${
+              //sass
+              saasState?.organizationName || ' YouLand'
+            }'s construction holdback process`}
+          >
+            <Stack
+              border={'1px solid #DEDEDE'}
+              borderRadius={2}
+              boxShadow={'0px 3px 10px 0px #DEDEDE'}
+              p={3}
+              ref={pdfFile}
+            />
+
+            <Stack
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              maxWidth={600}
+              mt={10}
+              width={'100%'}
+            >
+              <StyledButton
+                color={'info'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks',
+                    query: { processId: router.query.processId },
+                  })
+                }
+                sx={{ flex: 1 }}
+                variant={'text'}
+              >
+                Back
+              </StyledButton>
+              <StyledButton
+                disabled={saveLoading}
+                loading={saveLoading}
+                loadingText={'Saving...'}
+                onClick={handledSubmit}
+                sx={{ flex: 1 }}
+              >
+                Confirm
+              </StyledButton>
+            </Stack>
+          </StyledFormItem>
+        )}
+      </Transitions>
     </>
   );
 });

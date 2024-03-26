@@ -6,4 +6,4 @@ export * from './Dashboard';
 
 export * from './Pipeline';
 
-export * from './SpecificalPayment';
+export * from './Saas';

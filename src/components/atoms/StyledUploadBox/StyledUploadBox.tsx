@@ -52,7 +52,6 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
 
   const { open, visible, close } = useSwitch(false);
   const stopDefaults = (e: DragEvent) => {
-    e.stopPropagation();
     e.preventDefault();
   };
 
@@ -80,6 +79,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
   const handleUpload = useCallback(
     async (files: FileList) => {
       onSuccess(files);
+      setIsDragging(false);
     },
     [onSuccess],
   );
@@ -207,10 +207,10 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
               />
               <Box className="upload_text">
                 <Typography variant={'h5'}>{uploadText}</Typography>
-                <Typography variant={'body2'}>
+                <Typography mt={1} variant={'body2'}>
                   {['xs', 'sm', 'md'].includes(breakpoint)
-                    ? 'Click '
-                    : 'Drag and drop files here, or click '}
+                    ? ''
+                    : 'Drag and drop your file here, or  '}
                   <Box
                     component={'span'}
                     sx={{
@@ -219,9 +219,11 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
                       fontWeight: 600,
                     }}
                   >
-                    browse
+                    {['xs', 'sm', 'md'].includes(breakpoint)
+                      ? 'Click'
+                      : 'click'}
                   </Box>{' '}
-                  from your computer.
+                  to browse your device.
                 </Typography>
               </Box>
             </label>

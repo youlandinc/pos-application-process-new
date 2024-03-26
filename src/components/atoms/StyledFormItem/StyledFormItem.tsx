@@ -19,15 +19,15 @@ export const StyledFormItem: FC<StyledFormItemProps> = ({
   return (
     <Stack
       alignItems={'center'}
-      maxWidth={900}
+      maxWidth={800}
       sx={{ ...sx }}
       width={'100%'}
       {...rest}
     >
-      <Stack maxWidth={900} width={'100%'}>
+      <Stack maxWidth={800} width={'100%'}>
         <Typography
           component={'div'}
-          mb={tip ? 1.5 : 3}
+          mb={tip ? 1 : 3}
           sx={labelSx}
           textAlign={'center'}
           variant={

@@ -202,17 +202,6 @@ export const PipelineQuestionnaire: FC = observer(() => {
           sx={{ width: '100%' }}
           tip={computedQuestionnaire.tip}
         >
-          <Stack alignItems={'center'} justifyContent={'center'} width={'100%'}>
-            <StyledButton
-              color={'info'}
-              onClick={() => router.back()}
-              sx={{ flex: 1, width: '30%' }}
-              variant={'outlined'}
-            >
-              Skip
-            </StyledButton>
-          </Stack>
-
           <Transitions style={{ width: '100%' }}>
             {computedQuestionnaire.questionnaire.taskForm?.licenses?.map(
               (item: PipelineQuestionnaireOwner, index: number) => (

@@ -39,6 +39,7 @@ import {
   PaymentStatus,
   PaymentSummary,
 } from '@/components/molecules';
+import { TaskContractInformation } from '@/components/organisms';
 
 const useStateMachine = (
   state:
@@ -99,6 +100,7 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
 
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [uploadLoading, setUploadLoading] = useState<boolean>(false);
+  const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
 
   const [paymentStatus, setPaymentStatus] =
     useState<DashboardTaskPaymentMethodsStatus>(
@@ -127,6 +129,14 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
   const [paymentDetail, setPaymentDetail] = useState<
     SPaymentDetails | undefined
   >();
+  const [contactInformation, setContactInformation] =
+    useState<TaskContractInformation>({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      instructions: '',
+    });
 
   const { loading } = useAsync(async () => {
     if (!router.query.taskId) {
@@ -146,6 +156,12 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
           isConfirm,
           isNotice,
           isExpedited,
+
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          instructions,
         } = res.data;
         setProductInfo(productInfo);
         setHaveAppraisal(haveAppraisal ?? false);
@@ -153,6 +169,15 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
         setIsExpedited(isExpedited ?? false);
         setNoticeCheck(isNotice ?? undefined);
         setSummaryCheck(isConfirm ?? undefined);
+
+        setContactInformation({
+          firstName: firstName ?? '',
+          lastName: lastName ?? '',
+          email: email ?? '',
+          phoneNumber: phoneNumber ?? '',
+          instructions: instructions ?? '',
+        });
+
         if (appraisalFiles?.length > 0) {
           setTableStatus(DashboardTaskPaymentTableStatus.summary);
         }
@@ -185,22 +210,35 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
 
   const handledPayment = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      setPaymentLoading(true);
       setClickable(false);
 
       const paymentRes = await (
         paymentCardFormRef.current as unknown as any
       ).onSubmit(e);
-      setClickable(true);
+
       if (paymentRes) {
         const { status } = paymentRes;
-        resetTable();
-        setPaymentStatus(status as string as DashboardTaskPaymentMethodsStatus);
+        if (status === DashboardTaskPaymentMethodsStatus.complete) {
+          resetTable();
+          setPaymentStatus(
+            status as string as DashboardTaskPaymentMethodsStatus,
+          );
+        }
       }
+
+      setClickable(true);
+      setPaymentLoading(false);
     },
     [resetTable],
   );
 
   const disabledButton = useMemo(() => {
+    const condition =
+      contactInformation.firstName &&
+      contactInformation.lastName &&
+      contactInformation.email &&
+      contactInformation.phoneNumber;
     switch (tableStatus) {
       case DashboardTaskPaymentTableStatus.notice:
         return !noticeCheck;
@@ -210,11 +248,15 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
         }
         return haveAppraisal
           ? !appraisalFiles.length || saveLoading
-          : saveLoading;
+          : saveLoading || !condition;
       case DashboardTaskPaymentTableStatus.payment:
-        return !paymentCheck || !clickable || loading;
+        return !paymentCheck || !clickable || loading || paymentLoading;
     }
   }, [
+    contactInformation.firstName,
+    contactInformation.lastName,
+    contactInformation.email,
+    contactInformation.phoneNumber,
     tableStatus,
     noticeCheck,
     haveAppraisal,
@@ -224,6 +266,7 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
     paymentCheck,
     clickable,
     loading,
+    paymentLoading,
   ]);
 
   const backToList = useCallback(async () => {
@@ -245,6 +288,7 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
         isNotice: noticeCheck,
         isConfirm: summaryCheck,
         isExpedited,
+        ...contactInformation,
       },
     };
 
@@ -267,6 +311,7 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
     }
   }, [
     appraisalFiles,
+    contactInformation,
     enqueueSnackbar,
     haveAppraisal,
     isExpedited,
@@ -292,6 +337,7 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
         return (
           <PaymentSummary
             check={summaryCheck}
+            contactInformation={contactInformation}
             fileList={appraisalFiles}
             haveAppraisal={haveAppraisal}
             isExpedited={isExpedited}
@@ -299,6 +345,7 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
               <GroundPurchasePaymentSummary productInfo={productInfo} />
             }
             onCheckValueChange={(e) => setSummaryCheck(e.target.checked)}
+            onContactInformationChange={setContactInformation}
             onFileListChange={setAppraisalFiles}
             onHaveAppraisalChange={(e, value) => {
               if (value !== null) {
@@ -326,6 +373,7 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
     }
   }, [
     appraisalFiles,
+    contactInformation,
     haveAppraisal,
     isExpedited,
     noticeCheck,
@@ -346,7 +394,7 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
             gap={3}
             justifyContent={'center'}
             maxWidth={600}
-            mt={6}
+            mt={10}
             mx={'auto'}
             width={'100%'}
           >
@@ -378,7 +426,7 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
             gap={3}
             justifyContent={'center'}
             maxWidth={600}
-            mt={6}
+            mt={10}
             mx={'auto'}
             width={'100%'}
           >
@@ -416,7 +464,7 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
             gap={3}
             justifyContent={'center'}
             maxWidth={600}
-            mt={6}
+            mt={10}
             mx={'auto'}
             width={'100%'}
           >
@@ -431,6 +479,7 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
             <StyledButton
               color={'primary'}
               disabled={disabledButton}
+              loading={paymentLoading}
               onClick={(e) => handledPayment(e)}
               sx={{ flex: 1 }}
             >
@@ -447,6 +496,7 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
     handledSaveFormAndGetPaymentDetail,
     haveAppraisal,
     next,
+    paymentLoading,
     saveLoading,
     tableStatus,
   ]);
@@ -474,7 +524,8 @@ export const GroundPurchaseTaskPayment: FC = observer(() => {
           <Transitions
             style={{
               width: '100%',
-              maxWidth: 900,
+              maxWidth: 800,
+              margin: '0 auto',
             }}
           >
             {renderNode}

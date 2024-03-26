@@ -248,7 +248,7 @@ export const FixPersonInfo: FC = observer(() => {
         labelSx={{ mb: 0 }}
         tip={`We will use this information to review ${
           HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
-        } credit score and history so that we can provide you with real, accurate loan options.`}
+        } credit score and provide you with accurate loan options.`}
         tipSx={{ mb: 0 }}
       >
         <StyledFormItem label={'Borrower type'} sub>
@@ -359,15 +359,9 @@ export const FixPersonInfo: FC = observer(() => {
           sub
           tip={`By entering ${
             HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
-          } phone number,  you are authorizing ${
+          } phone number and email address below, you're authorizing ${
             ' ' + saasState?.organizationName || ' YouLand'
-          } to use this number to call, text and send ${
-            HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject
-          } messages by any method. We don't charge for contacting ${
-            userType === UserType.BROKER ? 'them' : 'you'
-          }, but ${
-            HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].third_pronoun
-          } service provider may.`}
+          } to contact you using those methods. Carrier fees may apply.`}
         >
           <Stack gap={3} maxWidth={600} width={'100%'}>
             <Stack>

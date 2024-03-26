@@ -333,9 +333,8 @@ export const GroundPurchaseTaskCompanyInformation: FC = observer(() => {
           </Stack>
         ) : (
           <StyledFormItem
-            gap={6}
-            label={'Closing agent / Title company information(optional)'}
-            maxWidth={900}
+            gap={3}
+            label={'Title company (optional)'}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={`A closing agent assists with closing and verifies there are no outstanding title issues. ${
@@ -356,39 +355,12 @@ export const GroundPurchaseTaskCompanyInformation: FC = observer(() => {
 
             <StyledFormItem
               gap={3}
-              label={'Provide contact details'}
+              label={'Provide contact details for the title company'}
               labelSx={{ mb: 0 }}
               maxWidth={600}
+              mt={5}
               sub
             >
-              <StyledTextField
-                label={'Contact first name'}
-                onChange={(e) =>
-                  setContactForm({ ...contactForm, firstName: e.target.value })
-                }
-                value={contactForm.firstName}
-              />
-              <StyledTextField
-                label={'Contact last name'}
-                onChange={(e) =>
-                  setContactForm({ ...contactForm, lastName: e.target.value })
-                }
-                value={contactForm.lastName}
-              />
-              <StyledTextFieldPhone
-                label={'Phone number'}
-                onValueChange={({ value }) => {
-                  setContactForm({ ...contactForm, phoneNumber: value });
-                }}
-                value={contactForm.phoneNumber}
-              />
-              <StyledTextField
-                label={'Email'}
-                onChange={(e) =>
-                  setContactForm({ ...contactForm, email: e.target.value })
-                }
-                value={contactForm.email}
-              />
               <StyledTextField
                 label={'Company name'}
                 onChange={(e) =>
@@ -416,13 +388,18 @@ export const GroundPurchaseTaskCompanyInformation: FC = observer(() => {
                 }
                 value={contactForm.contractDate}
               />
-              <StyledGoogleAutoComplete address={clientContactAddress} />
+              <StyledGoogleAutoComplete
+                address={clientContactAddress}
+                label={'Company address'}
+              />
             </StyledFormItem>
 
             <StyledFormItem
+              gap={3}
               label={
                 'Who is signing the closing instructions on behalf of the title company?'
               }
+              mt={5}
             >
               <Stack maxWidth={600} width={'100%'}>
                 <StyledSelectOption
@@ -435,11 +412,84 @@ export const GroundPurchaseTaskCompanyInformation: FC = observer(() => {
                   value={instructions}
                 />
               </Stack>
+
+              <Transitions
+                style={{
+                  maxWidth: 600,
+                  width: '100%',
+                  display:
+                    POSNotUndefined(instructions) && instructions
+                      ? 'flex'
+                      : 'none',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                {POSNotUndefined(instructions) && instructions && (
+                  <>
+                    <Stack
+                      flexDirection={{ lg: 'row', xs: 'column' }}
+                      gap={3}
+                      width={'100%'}
+                    >
+                      <StyledTextField
+                        label={"Signee's first name"}
+                        onChange={(e) =>
+                          setContactForm({
+                            ...contactForm,
+                            firstName: e.target.value,
+                          })
+                        }
+                        value={contactForm.firstName}
+                      />
+                      <StyledTextField
+                        label={"Signee's last name"}
+                        onChange={(e) =>
+                          setContactForm({
+                            ...contactForm,
+                            lastName: e.target.value,
+                          })
+                        }
+                        value={contactForm.lastName}
+                      />
+                    </Stack>
+
+                    <Stack
+                      flexDirection={{ lg: 'row', xs: 'column' }}
+                      gap={3}
+                      mt={3}
+                      width={'100%'}
+                    >
+                      <StyledTextFieldPhone
+                        label={"Signee's phone number"}
+                        onValueChange={({ value }) => {
+                          setContactForm({
+                            ...contactForm,
+                            phoneNumber: value,
+                          });
+                        }}
+                        value={contactForm.phoneNumber}
+                      />
+                      <StyledTextField
+                        label={"Signee's email address"}
+                        onChange={(e) =>
+                          setContactForm({
+                            ...contactForm,
+                            email: e.target.value,
+                          })
+                        }
+                        value={contactForm.email}
+                      />
+                    </Stack>
+                  </>
+                )}
+              </Transitions>
             </StyledFormItem>
 
             <StyledFormItem
               label={'Is the title company also managing loan closing?'}
               maxWidth={600}
+              mt={5}
               sub
             >
               <StyledButtonGroup
@@ -469,6 +519,7 @@ export const GroundPurchaseTaskCompanyInformation: FC = observer(() => {
                     gap={3}
                     label={'Who is managing loan closing?'}
                     labelSx={{ mb: 0 }}
+                    mt={5}
                     sub
                     width={'100%'}
                   >
@@ -482,70 +533,93 @@ export const GroundPurchaseTaskCompanyInformation: FC = observer(() => {
                       value={whoIsManaging}
                     />
 
-                    <StyledTextField
-                      label={'First name'}
-                      onChange={(e) =>
-                        setManageForm({
-                          ...manageForm,
-                          firstName: e.target.value,
-                        })
-                      }
-                      value={manageForm.firstName}
-                    />
-                    <StyledTextField
-                      label={'Last name'}
-                      onChange={(e) =>
-                        setManageForm({
-                          ...manageForm,
-                          lastName: e.target.value,
-                        })
-                      }
-                      value={manageForm.lastName}
-                    />
-                    <StyledTextFieldPhone
-                      label={'Phone number'}
-                      onValueChange={({ value }) => {
-                        setManageForm({ ...manageForm, phoneNumber: value });
-                      }}
-                      value={manageForm.phoneNumber}
-                    />
-                    <StyledTextField
-                      label={'Email'}
-                      onChange={(e) =>
-                        setManageForm({
-                          ...manageForm,
-                          email: e.target.value,
-                        })
-                      }
-                      value={manageForm.email}
-                    />
-                    <StyledTextField
-                      label={'Company name'}
-                      onChange={(e) =>
-                        setManageForm({
-                          ...manageForm,
-                          companyName: e.target.value,
-                        })
-                      }
-                      value={manageForm.companyName}
-                    />
-                    <StyledTextField
-                      label={
-                        whoIsManaging ===
-                        DashboardTaskLoanClosing.escrow_company
-                          ? 'Escrow number'
-                          : 'Closing attorney file No.'
-                      }
-                      onChange={(e) =>
-                        setManageForm({
-                          ...manageForm,
-                          titleOrderNumber: e.target.value,
-                        })
-                      }
-                      value={manageForm.titleOrderNumber}
-                    />
+                    <Stack
+                      flexDirection={{ lg: 'row', xs: 'column' }}
+                      gap={3}
+                      width={'100%'}
+                    >
+                      <StyledTextField
+                        label={'Contact first name'}
+                        onChange={(e) =>
+                          setManageForm({
+                            ...manageForm,
+                            firstName: e.target.value,
+                          })
+                        }
+                        value={manageForm.firstName}
+                      />
+                      <StyledTextField
+                        label={'Contact last name'}
+                        onChange={(e) =>
+                          setManageForm({
+                            ...manageForm,
+                            lastName: e.target.value,
+                          })
+                        }
+                        value={manageForm.lastName}
+                      />
+                    </Stack>
 
-                    <StyledGoogleAutoComplete address={clientManageAddress} />
+                    <Stack
+                      flexDirection={{ lg: 'row', xs: 'column' }}
+                      gap={3}
+                      width={'100%'}
+                    >
+                      <StyledTextFieldPhone
+                        label={'Phone number'}
+                        onValueChange={({ value }) => {
+                          setManageForm({ ...manageForm, phoneNumber: value });
+                        }}
+                        value={manageForm.phoneNumber}
+                      />
+                      <StyledTextField
+                        label={'Email'}
+                        onChange={(e) =>
+                          setManageForm({
+                            ...manageForm,
+                            email: e.target.value,
+                          })
+                        }
+                        value={manageForm.email}
+                      />
+                    </Stack>
+
+                    <Stack
+                      flexDirection={{ lg: 'row', xs: 'column' }}
+                      gap={3}
+                      width={'100%'}
+                    >
+                      <StyledTextField
+                        label={'Company name'}
+                        onChange={(e) =>
+                          setManageForm({
+                            ...manageForm,
+                            companyName: e.target.value,
+                          })
+                        }
+                        value={manageForm.companyName}
+                      />
+                      <StyledTextField
+                        label={
+                          whoIsManaging ===
+                          DashboardTaskLoanClosing.escrow_company
+                            ? 'Escrow number'
+                            : 'Closing attorney file No.'
+                        }
+                        onChange={(e) =>
+                          setManageForm({
+                            ...manageForm,
+                            titleOrderNumber: e.target.value,
+                          })
+                        }
+                        value={manageForm.titleOrderNumber}
+                      />
+                    </Stack>
+
+                    <StyledGoogleAutoComplete
+                      address={clientManageAddress}
+                      label={'Company address'}
+                    />
                   </StyledFormItem>
                 ) : (
                   <StyledTextFieldNumber
@@ -566,6 +640,7 @@ export const GroundPurchaseTaskCompanyInformation: FC = observer(() => {
               gap={3}
               justifyContent={'space-between'}
               maxWidth={600}
+              mt={7}
               width={'100%'}
             >
               <StyledButton

@@ -13,8 +13,14 @@ type PostPayment = {
 };
 
 export interface SPaymentDetails {
+  borrowerName?: string;
   clientSecret: string;
-  amount: number;
+  paymentAmount: number;
+  appraisalFees: null | number;
+  expeditedFees: null | number;
+  isExpedited: boolean;
+  propertyAddress: string;
+  productName: string;
 }
 
 export const _fetchPaymentDetails = (paymentData: PostPayment) => {

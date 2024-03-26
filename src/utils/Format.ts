@@ -2,7 +2,7 @@ import { POSTypeOf } from './TypeOf';
 import { format } from 'date-fns';
 
 export const POSFormatDollar = (
-  amount: number | undefined | string,
+  amount: number | undefined | string | null,
   radix = 0,
 ): string => {
   if (!amount) {
@@ -84,6 +84,9 @@ export const POSFormatUSPhoneToText = (entry = '') => {
 };
 
 export const POSFormatUrl = (url: string): string => {
+  if (!url) {
+    return '';
+  }
   if (/^https?:\/\//.test(url)) {
     return url;
   } else if (url.startsWith('https')) {

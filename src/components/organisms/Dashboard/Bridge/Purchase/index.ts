@@ -15,8 +15,6 @@ export * from './BridgePurchaseTaskCoBorrowerDetails';
 export * from './BridgePurchaseTaskPayment';
 export * from './BridgePurchaseTaskPropertyInspection';
 
-export * from './BridgePurchaseTaskPay';
-
 export * from './BridgePurchaseTaskCompanyInformation';
 export * from './BridgePurchaseTaskInsuranceInformation';
 

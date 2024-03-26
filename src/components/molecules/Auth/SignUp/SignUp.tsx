@@ -339,7 +339,7 @@ export const SignUp: FC<SignUpProps> = observer(
           {saasState?.serviceTypeEnum === 'SAAS' && (
             <StyledSelect
               disabled={loading}
-              label={'Select role'}
+              label={'Change account type'}
               onChange={(e) =>
                 setUserType(e.target.value as keyof typeof UserType)
               }
@@ -600,7 +600,7 @@ export const SignUp: FC<SignUpProps> = observer(
                 mt={3}
                 variant={'body2'}
               >
-                Didn&apos;t verification code?{' '}
+                Didn&apos;t receive verification code?{' '}
                 <Typography
                   color={loading ? 'action.disabled' : 'text.primary'}
                   component={'span'}

@@ -234,7 +234,7 @@ export const ChangeEmail: FC = observer(() => {
               mt={3}
               variant={'body2'}
             >
-              Didn&apos;t verification code?{' '}
+              Didn&apos;t receive verification code?{' '}
               <Typography
                 color={loading ? 'action.disabled' : 'text.primary'}
                 component={'span'}

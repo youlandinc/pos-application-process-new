@@ -71,14 +71,7 @@ export const PipelineProfile: FC = observer(() => {
               onClick={() => handleEnterSubTask('/pipeline/task/license')}
             >
               <Typography className={'task_label'} variant={'h6'}>
-                {BROKER_LICENSE.taskName}{' '}
-                <Typography
-                  component={'span'}
-                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
-                  variant={'h6'}
-                >
-                  (optional)
-                </Typography>
+                {BROKER_LICENSE.taskName}
               </Typography>
               <StyledStatus status={BROKER_LICENSE.taskStatus} />
             </Stack>
@@ -134,14 +127,7 @@ export const PipelineProfile: FC = observer(() => {
                 component={'div'}
                 variant={'h6'}
               >
-                {BROKER_QUESTIONNAIRE.taskName}{' '}
-                <Typography
-                  component={'span'}
-                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
-                  variant={'h6'}
-                >
-                  (optional)
-                </Typography>
+                {BROKER_QUESTIONNAIRE.taskName}
               </Typography>
               <StyledStatus status={BROKER_QUESTIONNAIRE.taskStatus} />
             </Stack>
@@ -153,14 +139,7 @@ export const PipelineProfile: FC = observer(() => {
               onClick={() => handleEnterSubTask('/pipeline/task/ach')}
             >
               <Typography className={'task_label'} variant={'h6'}>
-                {ACH_INFORMATION.taskName}{' '}
-                <Typography
-                  component={'span'}
-                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
-                  variant={'h6'}
-                >
-                  (optional)
-                </Typography>
+                {ACH_INFORMATION.taskName}
               </Typography>
               <StyledStatus status={ACH_INFORMATION.taskStatus} />
             </Stack>
@@ -177,14 +156,7 @@ export const PipelineProfile: FC = observer(() => {
               onClick={() => handleEnterSubTask('/pipeline/task/license')}
             >
               <Typography className={'task_label'} variant={'h6'}>
-                {LENDER_LICENSE.taskName}{' '}
-                <Typography
-                  component={'span'}
-                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
-                  variant={'h6'}
-                >
-                  (optional)
-                </Typography>
+                {LENDER_LICENSE.taskName}
               </Typography>
               <StyledStatus status={LENDER_LICENSE.taskStatus} />
             </Stack>
@@ -197,14 +169,7 @@ export const PipelineProfile: FC = observer(() => {
               onClick={() => handleEnterSubTask('/pipeline/task/agreement')}
             >
               <Typography className={'task_label'} variant={'h6'}>
-                {LENDER_AGREEMENT.taskName}{' '}
-                <Typography
-                  component={'span'}
-                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
-                  variant={'h6'}
-                >
-                  (optional)
-                </Typography>
+                {LENDER_AGREEMENT.taskName}
               </Typography>
               <StyledStatus status={LENDER_AGREEMENT.taskStatus} />
             </Stack>
@@ -217,16 +182,8 @@ export const PipelineProfile: FC = observer(() => {
             {/*  onClick={() => handleEnterSubTask('/pipeline/task/government')}*/}
             {/*>*/}
             {/*  <Typography className={'task_label'} variant={'h6'}>*/}
-            {/*    {LENDER_GOVERNMENT_ID.taskName}{' '}*/}
-            {/*    <Typography*/}
-            {/*      component={'span'}*/}
-            {/*      sx={{ color: 'info.dark', fontSize: 'inherit' }}*/}
-            {/*      variant={'h6'}*/}
-            {/*    >*/}
-            {/*      (optional)*/}
-            {/*    </Typography>*/}
-            {/*  </Typography>*/}
-            {/*  <StyledStatus status={LENDER_GOVERNMENT_ID.taskStatus} />*/}
+            {/*    {LENDER_GOVERNMENT_ID.taskName}
+               {/*  <StyledStatus status={LENDER_GOVERNMENT_ID.taskStatus} />*/}
             {/*</Stack>*/}
 
             <Stack
@@ -237,14 +194,7 @@ export const PipelineProfile: FC = observer(() => {
               onClick={() => handleEnterSubTask('/pipeline/task/w9')}
             >
               <Typography className={'task_label'} variant={'h6'}>
-                {W9_FORM.taskName}{' '}
-                <Typography
-                  component={'span'}
-                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
-                  variant={'h6'}
-                >
-                  (optional)
-                </Typography>
+                {W9_FORM.taskName}
               </Typography>
               <StyledStatus status={W9_FORM.taskStatus} />
             </Stack>
@@ -261,14 +211,7 @@ export const PipelineProfile: FC = observer(() => {
                 component={'div'}
                 variant={'h6'}
               >
-                {LENDER_QUESTIONNAIRE.taskName}{' '}
-                <Typography
-                  component={'span'}
-                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
-                  variant={'h6'}
-                >
-                  (optional)
-                </Typography>
+                {LENDER_QUESTIONNAIRE.taskName}
               </Typography>
               <StyledStatus status={LENDER_QUESTIONNAIRE.taskStatus} />
             </Stack>
@@ -280,14 +223,7 @@ export const PipelineProfile: FC = observer(() => {
               onClick={() => handleEnterSubTask('/pipeline/task/ach')}
             >
               <Typography className={'task_label'} variant={'h6'}>
-                {ACH_INFORMATION.taskName}{' '}
-                <Typography
-                  component={'span'}
-                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
-                  variant={'h6'}
-                >
-                  (optional)
-                </Typography>
+                {ACH_INFORMATION.taskName}
               </Typography>
               <StyledStatus status={ACH_INFORMATION.taskStatus} />
             </Stack>
@@ -328,14 +264,7 @@ export const PipelineProfile: FC = observer(() => {
               onClick={() => handleEnterSubTask('/pipeline/task/ach')}
             >
               <Typography className={'task_label'} variant={'h6'}>
-                {LOAN_OFFICER_ACH_INFORMATION.taskName}{' '}
-                <Typography
-                  component={'span'}
-                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
-                  variant={'h6'}
-                >
-                  (optional)
-                </Typography>
+                {LOAN_OFFICER_ACH_INFORMATION.taskName}
               </Typography>
               <StyledStatus status={LOAN_OFFICER_ACH_INFORMATION.taskStatus} />
             </Stack>
@@ -376,14 +305,7 @@ export const PipelineProfile: FC = observer(() => {
               onClick={() => handleEnterSubTask('/pipeline/task/ach')}
             >
               <Typography className={'task_label'} variant={'h6'}>
-                {REAL_ESTATE_AGENT_ACH_INFORMATION.taskName}{' '}
-                <Typography
-                  component={'span'}
-                  sx={{ color: 'info.dark', fontSize: 'inherit' }}
-                  variant={'h6'}
-                >
-                  (optional)
-                </Typography>
+                {REAL_ESTATE_AGENT_ACH_INFORMATION.taskName}
               </Typography>
               <StyledStatus
                 status={REAL_ESTATE_AGENT_ACH_INFORMATION.taskStatus}
@@ -430,15 +352,15 @@ export const PipelineProfile: FC = observer(() => {
     }
     switch (userType) {
       case UserType.BROKER:
-        return 'Broker info';
+        return 'Broker info (optional)';
       case UserType.LENDER:
-        return 'Lender info';
+        return 'Lender info (optional)';
       case UserType.LOAN_OFFICER:
-        return 'Loan officer info';
+        return 'Loan officer info (optional)';
       case UserType.REAL_ESTATE_AGENT:
-        return 'Real estate agent info';
+        return 'Real estate agent info (optional)';
       default:
-        return 'Broker info';
+        return 'Broker info (optional)';
     }
   }, [pipelineStatus, userType]);
 
@@ -476,9 +398,9 @@ export const PipelineProfile: FC = observer(() => {
       sx={{ m: '0 auto' }}
       tip={
         <>
-          <Typography>
-            Please fill in the following information before continuing.
-          </Typography>
+          {/*<Typography>*/}
+          {/*  Please fill in the following information before continuing.*/}
+          {/*</Typography>*/}
           {pipelineStatus === PipelineAccountStatus.pending_info && (
             <Typography>{pipelineAdditionDetails}</Typography>
           )}

@@ -1,4 +1,3 @@
-import { useSwitch } from '@/hooks';
 import { CloseOutlined, ContentCopy } from '@mui/icons-material';
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
@@ -8,16 +7,11 @@ import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 
+import { useSessionStorageState, useSwitch } from '@/hooks';
+import { AUTO_HIDE_DURATION } from '@/constants';
+
 import { HttpError, TaskFiles } from '@/types';
 import { Address, IAddress } from '@/models/common/Address';
-import { AUTO_HIDE_DURATION } from '@/constants';
-import {
-  _deleteTaskFile,
-  _fetchTaskFormInfo,
-  _skipLoanTask,
-  _updateTaskFormInfo,
-  _uploadTaskFile,
-} from '@/requests/dashboard';
 
 import {
   StyledButton,
@@ -31,10 +25,19 @@ import {
   Transitions,
 } from '@/components/atoms';
 
+import {
+  _deleteTaskFile,
+  _fetchTaskFormInfo,
+  _skipLoanTask,
+  _updateTaskFormInfo,
+  _uploadTaskFile,
+} from '@/requests/dashboard';
+
 export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { open, visible, close } = useSwitch(false);
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [saveLoading, setSaveLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
@@ -255,8 +258,8 @@ export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
           </Stack>
         ) : (
           <StyledFormItem
-            gap={6}
-            label={'Homeowner insurance policy(optional)'}
+            gap={3}
+            label={'Homeowner insurance policy (optional)'}
             maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
@@ -264,21 +267,7 @@ export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
               <Stack gap={1.5}>
                 Homeowner insurance must comply with our Policy Guidelines and
                 it is required to close your loan. Once you are covered, provide
-                your insurance provider&apos;s contact information. This allows
-                us to speak directly with your provider on the details and get
-                confirmation that your home is insured.
-                <Typography
-                  color={'primary.main'}
-                  onClick={open}
-                  sx={{
-                    color: 'primary.main',
-                    cursor: 'pointer',
-                    fontWeight: 600,
-                  }}
-                  variant={'body1'}
-                >
-                  View requirements
-                </Typography>
+                your insurance provider&apos;s contact information.
               </Stack>
             }
             tipSx={{ mb: 0 }}
@@ -299,37 +288,71 @@ export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
               label={'Insurance provider information'}
               labelSx={{ mb: 0 }}
               maxWidth={600}
+              mt={5}
               sub
             >
-              <StyledTextField
-                label={'Company name'}
-                onChange={(e) => setCompanyName(e.target.value)}
-                value={companyName}
-              />
-              <StyledTextField
-                label={'Agent name'}
-                onChange={(e) => setAgentName(e.target.value)}
-                value={agentName}
-              />
+              <Stack
+                flexDirection={{ lg: 'row', xs: 'column' }}
+                gap={3}
+                width={'100%'}
+              >
+                {' '}
+                <StyledTextField
+                  label={'Company name'}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  value={companyName}
+                />
+                <StyledTextField
+                  label={'Agent name'}
+                  onChange={(e) => setAgentName(e.target.value)}
+                  value={agentName}
+                />
+              </Stack>
 
-              <StyledTextFieldPhone
-                label={'Phone number'}
-                onValueChange={({ value }) => setPhoneNumber(value)}
-                value={phoneNumber}
-              />
-              <StyledTextField
-                label={'Email'}
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-              />
+              <Stack
+                flexDirection={{ lg: 'row', xs: 'column' }}
+                gap={3}
+                width={'100%'}
+              >
+                <StyledTextFieldPhone
+                  label={'Phone number'}
+                  onValueChange={({ value }) => setPhoneNumber(value)}
+                  value={phoneNumber}
+                />
+                <StyledTextField
+                  label={'Email'}
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                />
+              </Stack>
 
-              <StyledGoogleAutoComplete address={address} />
+              <StyledGoogleAutoComplete
+                address={address}
+                label={'Business address'}
+              />
             </StyledFormItem>
 
             <StyledFormItem
-              label={'Upload your evidence of insurance'}
-              maxWidth={900}
+              label={
+                <Stack gap={1}>
+                  Upload evidence of insurance
+                  <Typography
+                    color={'primary.main'}
+                    onClick={open}
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
+                    variant={'body1'}
+                  >
+                    View document requirements
+                  </Typography>
+                </Stack>
+              }
+              mt={5}
               sub
+              tipSx={{ m: 0 }}
             >
               <StyledUploadBox
                 fileList={insuranceFiles}
@@ -344,6 +367,7 @@ export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
               gap={3}
               justifyContent={'space-between'}
               maxWidth={600}
+              mt={7}
               width={'100%'}
             >
               <StyledButton
@@ -372,51 +396,28 @@ export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
           </StyledFormItem>
         )}
       </Transitions>
+
       <StyledDialog
         content={
           <Stack gap={3} my={3}>
-            {/*<Stack gap={1.5}>*/}
-            {/*  <Typography variant={'subtitle2'}>Amount of coverage</Typography>*/}
-            {/*  <Stack>*/}
-            {/*    <Typography>*/}
-            {/*      The borrower shall have insurance policies and coverages as*/}
-            {/*      follows:*/}
-            {/*    </Typography>*/}
-            {/*    <Stack*/}
-            {/*      component={'ul'}*/}
-            {/*      sx={{*/}
-            {/*        listStyle: 'disc',*/}
-            {/*        listStylePosition: 'inside',*/}
-            {/*        pl: 0,*/}
-            {/*      }}*/}
-            {/*    >*/}
-            {/*      <Typography component={'li'} variant={'body3'}>*/}
-            {/*        The loan amount plus any priority lien or one hundred*/}
-            {/*        percent (100%) of replacement cost*/}
-            {/*      </Typography>*/}
-            {/*      <Typography component={'li'} variant={'body3'}>*/}
-            {/*        Minimum one million dollars ($1MM) liability coverage per*/}
-            {/*        occurrence. For smaller loans, liability is case by case.*/}
-            {/*      </Typography>*/}
-            {/*      <Typography component={'li'} variant={'body3'}>*/}
-            {/*        Builder&apos;s Risk policy including coverage for one*/}
-            {/*        hundred percent (100%) of the total cost of construction.*/}
-            {/*      </Typography>*/}
-            {/*    </Stack>*/}
-            {/*  </Stack>*/}
-            {/*</Stack>*/}
             <Stack>
               <Typography variant={'subtitle2'}>
                 Mortgagee information
               </Typography>
               <Stack flexDirection={'row'} gap={1} mt={1.5}>
                 <Typography variant={'body3'}>
-                  YouLand Inc. ISAOA/ATIMA
+                  {saasState?.organizationName || 'YouLand Inc'}. ISAOA/ATIMA
                 </Typography>
                 <ContentCopy
                   onClick={async () => {
                     await navigator.clipboard.writeText(
-                      'YouLand Inc. ISAOA/ATIMA 236 Kingfisher Avenue, Alameda, CA 94501',
+                      `${
+                        saasState?.organizationName || 'YouLand Inc'
+                      }. ISAOA/ATIMA ${
+                        saasState?.address?.address || '236 Kingfisher Avenue'
+                      }, ${saasState?.address?.city || 'Alameda'}, ${
+                        saasState?.address?.state || 'CA'
+                      } ${saasState?.address?.postcode || '94501'}`,
                     );
                     enqueueSnackbar('Copied data to clipboard', {
                       variant: 'success',
@@ -425,14 +426,20 @@ export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
                   sx={{ fontSize: 18, cursor: 'pointer' }}
                 />
               </Stack>
-              <Typography variant={'body3'}>236 Kingfisher Avenue,</Typography>
-              <Typography variant={'body3'}>Alameda, CA 94501</Typography>
+              <Typography variant={'body3'}>
+                {saasState?.address?.address || '236 Kingfisher Avenue'},
+              </Typography>
+              <Typography variant={'body3'}>
+                {saasState?.address?.city || 'Alameda'},{' '}
+                {saasState?.address?.state || 'CA'}{' '}
+                {saasState?.address?.postcode || '94501'}
+              </Typography>
             </Stack>
             <Stack gap={1.5}>
               <Typography variant={'subtitle2'}>Loan number</Typography>
               <Stack flexDirection={'row'} gap={1}>
                 <Typography variant={'body3'}>
-                  {router.query.processId}
+                  {router.query?.processId as string}
                 </Typography>
                 <ContentCopy
                   onClick={async () => {
@@ -488,7 +495,7 @@ export const FixPurchaseTaskInsuranceInformation: FC = observer(() => {
         }}
         open={visible}
         PaperProps={{
-          sx: { maxWidth: '900px !important' },
+          sx: { maxWidth: '600px !important' },
         }}
       />
     </>

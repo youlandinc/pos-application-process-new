@@ -1,14 +1,16 @@
-import { FC, ReactNode, useCallback, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
+import { AxiosResponse } from 'axios';
 
 import { observer } from 'mobx-react-lite';
 
-import { DocumentUploadResponse, HttpError } from '@/types';
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
+import { DocumentUploadResponse, HttpError } from '@/types';
+
+import { _fetchTaskFormInfo } from '@/requests/dashboard';
 
 import {
   StyledButton,
@@ -17,42 +19,15 @@ import {
   StyledTab,
   StyledUploadButtonBox,
   Transitions,
-  //StyledProgressLine,
 } from '@/components/atoms';
-import { AxiosResponse } from 'axios';
 
 export const GroundRefinanceTaskDocuments: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [saveLoading, setSaveLoading] = useState(false);
-  const [isFirst, setIsFirst] = useState<boolean>(true);
-
-  //const [total, setTotal] = useState(9);
-  //const [current, setCurrent] = useState(0);
-
   const [tabData, setTabData] = useState<
     { label: string; content: ReactNode }[]
   >([]);
-
-  const refreshData = useCallback(async () => {
-    //let count = 0;
-    const {
-      data: { documents },
-    }: AxiosResponse<DocumentUploadResponse> = await _fetchTaskFormInfo(
-      router.query.taskId as string,
-    );
-    documents.forEach((item) => {
-      if (item.categoryDocs) {
-        item.categoryDocs.forEach((child) => {
-          if (child.files.length > 0) {
-            //count++;
-          }
-        });
-      }
-    });
-    //setCurrent(count);
-  }, [router.query.taskId]);
 
   const { loading } = useAsync(async () => {
     if (!router.query.taskId) {
@@ -65,13 +40,8 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res: AxiosResponse<DocumentUploadResponse>) => {
         const {
-          data: {
-            documents,
-            //totalNum, uploadedNum
-          },
+          data: { documents },
         } = res;
-        //setTotal(totalNum);
-        //setCurrent(uploadedNum);
         const tabData = documents.reduce(
           (acc, cur) => {
             if (!cur?.categoryName) {
@@ -87,7 +57,6 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
                 {cur.categoryDocs.map((item, index) => (
                   <StyledUploadButtonBox
                     key={`${item.fileKey}_${index}`}
-                    refresh={refreshData}
                     {...item}
                   />
                 ))}
@@ -99,9 +68,6 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
           [] as { label: string; content: ReactNode }[],
         );
         setTabData(tabData);
-        if (isFirst) {
-          setIsFirst(false);
-        }
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -118,32 +84,6 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
         });
       });
   }, [router.query.taskId]);
-
-  const handledSubmit = useCallback(async () => {
-    setSaveLoading(true);
-    try {
-      await _updateTaskFormInfo({
-        taskId: router.query.taskId as string,
-        taskForm: {
-          documents: [],
-        },
-      });
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { processId: router.query.processId },
-      });
-    } catch (err) {
-      const { header, message, variant } = err as HttpError;
-      enqueueSnackbar(message, {
-        variant: variant || 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-        isSimple: !header,
-        header,
-      });
-    } finally {
-      setSaveLoading(false);
-    }
-  }, [enqueueSnackbar, router]);
 
   return (
     <>
@@ -168,7 +108,6 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
           <StyledFormItem
             gap={3}
             label={'Documents'}
-            maxWidth={900}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={
@@ -176,7 +115,6 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
                 We&apos;ve implemented robust security measures to ensure your
                 data&apos;s privacy and protection, including advanced
                 encryption, privacy compliance, and regular security audits.
-                {/*<StyledProgressLine current={current} total={total} />*/}
               </Stack>
             }
             width={'100%'}
@@ -188,34 +126,19 @@ export const GroundRefinanceTaskDocuments: FC = observer(() => {
               />
             </Stack>
 
-            <Stack
-              flexDirection={'row'}
-              gap={3}
-              justifyContent={'space-between'}
-              maxWidth={600}
-              width={'100%'}
-            >
+            <Stack alignItems={'center'}>
               <StyledButton
                 color={'info'}
-                onClick={() =>
-                  router.push({
+                onClick={async () => {
+                  await router.push({
                     pathname: '/dashboard/tasks',
                     query: { processId: router.query.processId },
-                  })
-                }
-                sx={{ flex: 1 }}
+                  });
+                }}
+                sx={{ width: 276 }}
                 variant={'text'}
               >
                 Back
-              </StyledButton>
-              <StyledButton
-                disabled={saveLoading}
-                loading={saveLoading}
-                loadingText={'Saving...'}
-                onClick={handledSubmit}
-                sx={{ flex: 1 }}
-              >
-                Confirm
               </StyledButton>
             </Stack>
           </StyledFormItem>

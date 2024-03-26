@@ -1,7 +1,15 @@
-import { ChangeEvent, FC, ReactNode, useCallback, useState } from 'react';
+import {
+  ChangeEvent,
+  FC,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import {
   CloseOutlined,
+  ContentCopy,
   DeleteForeverOutlined,
   GetAppOutlined,
   RemoveRedEyeOutlined,
@@ -23,7 +31,7 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { SUploadData } from '@/models/common/UploadFile';
 import { HttpError } from '@/types';
 import { _deleteTaskFile, _uploadTaskFile } from '@/requests/dashboard';
-import { POSFormatDate } from '@/utils';
+import { POSFormatDate, POSGetParamsFromUrl } from '@/utils';
 
 import ICON_IMAGE from './icon_image.svg';
 import ICON_FILE from './icon_file.svg';
@@ -34,17 +42,24 @@ interface StyledUploadButtonBoxProps {
   fileKey: string;
   templateName: string;
   templateUrl: string;
-  id?: number;
+  loanId?: number | string | undefined;
   // custom
   accept?: string;
   fileSize?: number;
   uploadText?: string;
   children?: ReactNode;
-  refresh: () => Promise<void>;
+  refresh?: () => Promise<void>;
   // los
   status?: string;
   required?: boolean;
   collapse?: boolean;
+  // only can delete
+  deleteOnly?: boolean;
+  onDelete?: (index: number) => Promise<void>;
+  onUpload?: (file: FileList) => Promise<void>;
+  // popup insurance
+  popup?: string;
+  isFromLOS?: boolean;
 }
 
 export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
@@ -61,7 +76,13 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     fileSize = 100,
     uploadText = 'Upload',
     children,
+    popup,
+    deleteOnly = false,
+    loanId,
+    isFromLOS = false,
     refresh,
+    onDelete,
+    onUpload,
   } = props;
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -69,6 +90,11 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
   const breakpoints = useBreakpoints();
   const { saasState } = useSessionStorageState('tenantConfig');
   const { open, visible, close } = useSwitch(false);
+  const {
+    open: popupOpen,
+    visible: popUpVisible,
+    close: popupClose,
+  } = useSwitch(false);
 
   const [deleteIndex, setDeleteIndex] = useState<number>(-1);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
@@ -80,24 +106,29 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
 
   const [isDragging, setIsDragging] = useState(false);
 
+  const { processId } = POSGetParamsFromUrl(location.href);
+
   const handleUpload = useCallback(
     async (files: FileList) => {
       setIsDragging(false);
       setInnerLoading(true);
 
-      const formData = new FormData();
-
-      formData.append('fieldName', fileKey);
-      Array.from(files, (item) => {
-        formData.append('files', item);
-      });
       try {
+        if (onUpload) {
+          await onUpload(files);
+          return;
+        }
+        const formData = new FormData();
+        formData.append('fieldName', fileKey);
+        Array.from(files, (item) => {
+          formData.append('files', item);
+        });
         const { data } = await _uploadTaskFile(
           formData,
           router.query.taskId as string,
         );
         setFileList([...fileList, ...data]);
-        await refresh();
+        await refresh?.();
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
@@ -110,7 +141,14 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         setInnerLoading(false);
       }
     },
-    [enqueueSnackbar, fileKey, fileList, refresh, router.query.taskId],
+    [
+      enqueueSnackbar,
+      fileKey,
+      fileList,
+      onUpload,
+      refresh,
+      router.query.taskId,
+    ],
   );
 
   const validatorFileSize = useCallback(
@@ -177,11 +215,16 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
   const onDialogConfirmDelete = useCallback(async () => {
     setDeleteLoading(true);
     try {
+      if (onDelete) {
+        await onDelete(deleteIndex);
+        close();
+        return;
+      }
       await _deleteTaskFile(router.query.taskId as string, {
         fieldName: fileKey,
         fileUrl: fileList[deleteIndex].url,
       });
-      await refresh();
+      await refresh?.();
       close();
       const temp = JSON.parse(JSON.stringify(fileList));
       temp.splice(deleteIndex, 1);
@@ -207,9 +250,14 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     enqueueSnackbar,
     fileKey,
     fileList,
+    onDelete,
     refresh,
     router.query.taskId,
   ]);
+
+  useEffect(() => {
+    setFileList(files);
+  }, [files]);
 
   return (
     <Box
@@ -232,7 +280,8 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         const files = e.dataTransfer.files;
         validatorFileSize(files) && (await handleUpload(files));
       }}
-      p={3}
+      px={3}
+      py={2}
       sx={{
         outline: isDragging
           ? `2px solid hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`
@@ -243,7 +292,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
       <Stack
         alignItems={'center'}
         flexDirection={{ md: 'row', xs: 'column' }}
-        gap={1.5}
+        gap={1}
         justifyContent={'space-between'}
         maxWidth={'100%'}
         width={'100%'}
@@ -257,7 +306,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
           <Typography
             sx={{
               flexWrap: 'wrap',
-              fontSize: { xs: 16, md: 20 },
+              fontSize: { xs: 16, md: 18 },
               fontWeight: 600,
               lineHeight: 1.5,
               textAlign: { xs: 'center', md: 'left' },
@@ -268,6 +317,35 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
             {fileName}
           </Typography>
 
+          {isFromLOS
+            ? popup === 'COLLATERAL_DOCS_Evidence_of_insurance' && (
+                <Typography
+                  color={'primary.main'}
+                  onClick={popupOpen}
+                  sx={{
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    width: 'fit-content',
+                  }}
+                  variant={'body1'}
+                >
+                  View requirements
+                </Typography>
+              )
+            : fileKey === 'COLLATERAL_DOCS_Evidence_of_insurance' && (
+                <Typography
+                  color={'primary.main'}
+                  onClick={popupOpen}
+                  sx={{
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    width: 'fit-content',
+                  }}
+                  variant={'body1'}
+                >
+                  View requirements
+                </Typography>
+              )}
           {templateName && (
             <Typography
               color={'primary.main'}
@@ -312,7 +390,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         </StyledButton>
       </Stack>
       {fileList.length !== 0 && (
-        <Box maxWidth={'100%'} mt={1.5} width={'100%'}>
+        <Box maxWidth={'100%'} mt={0.5} width={'100%'}>
           <Transitions>
             {children
               ? children
@@ -330,7 +408,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
                     key={index}
                     lineHeight={1}
                     maxWidth={'auto'}
-                    mt={1.5}
+                    mt={0.5}
                     onMouseEnter={() => {
                       if (['xs', 'sm'].includes(breakpoints)) {
                         return;
@@ -410,29 +488,33 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
                       <Transitions style={{ marginRight: 8 }}>
                         {activeIndex === index && (
                           <Stack flexDirection={'row'} gap={1}>
-                            <RemoveRedEyeOutlined
-                              onClick={() => window.open(item.url)}
-                              sx={{
-                                color: '#9095A3',
-                                fontSize: 20,
-                                cursor: 'pointer',
-                                '&:hover': {
-                                  color: 'primary.main',
-                                },
-                              }}
-                            />
+                            {!deleteOnly && (
+                              <>
+                                <RemoveRedEyeOutlined
+                                  onClick={() => window.open(item.url)}
+                                  sx={{
+                                    color: '#9095A3',
+                                    fontSize: 20,
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                      color: 'primary.main',
+                                    },
+                                  }}
+                                />
 
-                            <GetAppOutlined
-                              onClick={() => onDownload(item)}
-                              sx={{
-                                fontSize: 20,
-                                color: '#9095A3',
-                                cursor: 'pointer',
-                                '&:hover': {
-                                  color: 'primary.main',
-                                },
-                              }}
-                            />
+                                <GetAppOutlined
+                                  onClick={() => onDownload(item)}
+                                  sx={{
+                                    fontSize: 20,
+                                    color: '#9095A3',
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                      color: 'primary.main',
+                                    },
+                                  }}
+                                />
+                              </>
+                            )}
 
                             <CloseOutlined
                               onClick={() => {
@@ -467,29 +549,33 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
 
                         {['xs', 'sm'].includes(breakpoints) && (
                           <Stack flexDirection={'row'} gap={1} pl={3}>
-                            <RemoveRedEyeOutlined
-                              onClick={() => window.open(item.url)}
-                              sx={{
-                                color: '#9095A3',
-                                fontSize: 20,
-                                cursor: 'pointer',
-                                '&:hover': {
-                                  color: 'primary.main',
-                                },
-                              }}
-                            />
+                            {!deleteOnly && (
+                              <>
+                                <RemoveRedEyeOutlined
+                                  onClick={() => window.open(item.url)}
+                                  sx={{
+                                    color: '#9095A3',
+                                    fontSize: 20,
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                      color: 'primary.main',
+                                    },
+                                  }}
+                                />
 
-                            <GetAppOutlined
-                              onClick={() => onDownload(item)}
-                              sx={{
-                                fontSize: 20,
-                                color: '#9095A3',
-                                cursor: 'pointer',
-                                '&:hover': {
-                                  color: 'primary.main',
-                                },
-                              }}
-                            />
+                                <GetAppOutlined
+                                  onClick={() => onDownload(item)}
+                                  sx={{
+                                    fontSize: 20,
+                                    color: '#9095A3',
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                      color: 'primary.main',
+                                    },
+                                  }}
+                                />
+                              </>
+                            )}
 
                             <CloseOutlined
                               onClick={() => {
@@ -576,6 +662,108 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
           }
         }}
         open={visible}
+      />
+
+      <StyledDialog
+        content={
+          <Stack gap={3} my={3}>
+            <Stack>
+              <Typography variant={'subtitle2'}>
+                Mortgagee information
+              </Typography>
+              <Stack flexDirection={'row'} gap={1} mt={1.5}>
+                <Typography variant={'body3'}>
+                  {saasState?.organizationName || 'YouLand Inc'}. ISAOA/ATIMA
+                </Typography>
+                <ContentCopy
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(
+                      `${
+                        saasState?.organizationName || 'YouLand Inc'
+                      }. ISAOA/ATIMA ${
+                        saasState?.address?.address || '236 Kingfisher Avenue'
+                      }, ${saasState?.address?.city || 'Alameda'}, ${
+                        saasState?.address?.state || 'CA'
+                      } ${saasState?.address?.postcode || '94501'}`,
+                    );
+                    enqueueSnackbar('Copied data to clipboard', {
+                      variant: 'success',
+                    });
+                  }}
+                  sx={{ fontSize: 18, cursor: 'pointer' }}
+                />
+              </Stack>
+              <Typography variant={'body3'}>
+                {saasState?.address?.address || '236 Kingfisher Avenue'},
+              </Typography>
+              <Typography variant={'body3'}>
+                {saasState?.address?.city || 'Alameda'},{' '}
+                {saasState?.address?.state || 'CA'}{' '}
+                {saasState?.address?.postcode || '94501'}
+              </Typography>
+            </Stack>
+            <Stack gap={1.5}>
+              <Typography variant={'subtitle2'}>Loan number</Typography>
+              <Stack flexDirection={'row'} gap={1}>
+                <Typography variant={'body3'}>
+                  {isFromLOS ? loanId : processId}
+                </Typography>
+                <ContentCopy
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(
+                      isFromLOS ? (loanId as string) : (processId as string),
+                    );
+                    enqueueSnackbar('Copied data to clipboard', {
+                      variant: 'success',
+                    });
+                  }}
+                  sx={{ fontSize: 18, cursor: 'pointer' }}
+                />
+              </Stack>
+            </Stack>
+          </Stack>
+        }
+        footer={
+          <Stack flexDirection={'row'} gap={1}>
+            <StyledButton
+              autoFocus
+              color={'info'}
+              onClick={popupClose}
+              size={'small'}
+              sx={{ width: 80 }}
+              variant={'outlined'}
+            >
+              Close
+            </StyledButton>
+          </Stack>
+        }
+        header={
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+          >
+            Insurance requirements
+            <CloseOutlined
+              onClick={popupClose}
+              sx={{
+                cursor: 'pointer',
+                '&:hover': {
+                  color: 'primary.main',
+                },
+              }}
+            />
+          </Stack>
+        }
+        onClose={(event, reason) => {
+          if (reason !== 'backdropClick') {
+            popupClose();
+          }
+        }}
+        open={popUpVisible}
+        PaperProps={{
+          sx: { maxWidth: '600px !important' },
+        }}
       />
     </Box>
   );
