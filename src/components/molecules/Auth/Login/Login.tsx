@@ -201,7 +201,7 @@ export const Login: FC<LoginProps> = observer(
 
                 <Box className="sign_in_form">
                   <Typography className="form_title" variant="h3">
-                    Welcome to {saasState?.organizationName || 'YouLand'}!
+                    Log in to {saasState?.organizationName || 'YouLand'}
                   </Typography>
                   {FormBody}
                   <Box className="form_foot">

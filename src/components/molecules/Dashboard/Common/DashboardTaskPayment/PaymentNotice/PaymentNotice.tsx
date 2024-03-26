@@ -20,11 +20,11 @@ export const PaymentNotice: FC<ConfirmTableProps> = (props) => {
       tip={
         <>
           <Typography color={'info.main'} variant={'body1'}>
-            According to federal regulations, all lenders are required to go
-            through a step called Intent to Proceed. It can sound like a big
-            commitment but don&apos;t worry - this isn&apos;t legally-binding
-            and if something comes up, you can still back out down the road.
-            This just lets us know that you understand your loan terms.
+            Before making your appraisal payment, please confirm your intention
+            to proceed. This step does not bind you legally to accept the loan
+            offer—it just lets us know that you understand your loan terms. You
+            can still add a co-borrower or adjust your application details later
+            if needed.
           </Typography>
         </>
       }
