@@ -295,7 +295,7 @@ export const GroundRefinanceRatesDrawer: FC<
               />
               <GroundRefinanceCardItem
                 info={`${selectedItem?.loanTerm} months`}
-                label={'Loan term'}
+                label={'Loan duration'}
               />
               <GroundRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}

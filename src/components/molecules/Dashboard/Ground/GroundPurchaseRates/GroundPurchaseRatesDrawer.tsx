@@ -277,7 +277,7 @@ export const GroundPurchaseRatesDrawer: FC<GroundPurchaseRatesDrawerProps> = ({
               />
               <GroundPurchaseCardItem
                 info={`${selectedItem?.loanTerm} months`}
-                label={'Loan term'}
+                label={'Loan duration'}
               />
               <GroundPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}

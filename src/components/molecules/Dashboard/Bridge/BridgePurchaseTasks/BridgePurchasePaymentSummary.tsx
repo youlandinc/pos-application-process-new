@@ -80,7 +80,7 @@ export const BridgePurchasePaymentSummary: FC<
           justifyContent={'space-between'}
           py={1.5}
         >
-          <Typography variant={'body1'}>Loan term</Typography>
+          <Typography variant={'body1'}>Loan duration</Typography>
           <Typography variant={'subtitle1'}>
             {productInfo?.loanTerm} months
           </Typography>

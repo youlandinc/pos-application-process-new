@@ -289,7 +289,7 @@ export const FixRefinanceRatesDrawer: FC<FixRefinanceRatesDrawerProps> = ({
               />
               <FixRefinanceCardItem
                 info={`${selectedItem?.loanTerm} months`}
-                label={'Loan term'}
+                label={'Loan duration'}
               />
               <FixRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}
