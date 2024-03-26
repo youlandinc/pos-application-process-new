@@ -278,7 +278,7 @@ export const BridgeRefinanceRatesDrawer: FC<
               />
               <BridgeRefinanceCardItem
                 info={`${selectedItem?.loanTerm} months`}
-                label={'Loan term'}
+                label={'Loan duration'}
               />
               <BridgeRefinanceCardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}

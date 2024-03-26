@@ -272,7 +272,7 @@ export const BridgePurchaseRatesDrawer: FC<BridgePurchaseRatesDrawerProps> = ({
               />
               <BridgePurchaseCardItem
                 info={`${selectedItem?.loanTerm} months`}
-                label={'Loan term'}
+                label={'Loan duration'}
               />
               <BridgePurchaseCardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}
