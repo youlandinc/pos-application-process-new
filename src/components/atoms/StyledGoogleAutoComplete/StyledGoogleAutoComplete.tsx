@@ -215,7 +215,7 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
         <StyledTextField
           {...params}
           fullWidth
-          label={label || 'Add a location'}
+          label={label || 'Street address'}
           placeholder="Address"
           variant="outlined"
         />
