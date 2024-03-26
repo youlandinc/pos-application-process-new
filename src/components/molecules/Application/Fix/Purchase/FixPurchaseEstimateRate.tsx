@@ -163,8 +163,6 @@ export const FixPurchaseEstimateRate: FC<{
       'fix_and_flip_purchase_rate_search',
     );
     const { height = 0 } = element!.getBoundingClientRect();
-    setIsFirstSearch(false);
-    setLoading(true);
     const postData: Variable<FPEstimateRateData> = {
       name: VariableName.estimateRate,
       type: 'json',
@@ -364,6 +362,10 @@ export const FixPurchaseEstimateRate: FC<{
       ) {
         return;
       }
+      if (isFirstSearch) {
+        setIsFirstSearch(false);
+      }
+      setLoading(true);
       run();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

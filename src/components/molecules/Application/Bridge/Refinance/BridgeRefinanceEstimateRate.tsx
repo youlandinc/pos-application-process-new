@@ -161,8 +161,6 @@ export const BridgeRefinanceEstimateRate: FC<{
   const onCheckGetList = async () => {
     const element = document.getElementById('bridge_refinance_rate_search');
     const { height = 0 } = element!.getBoundingClientRect();
-    setIsFirstSearch(false);
-    setLoading(true);
     const postData: Variable<BREstimateRateData> = {
       name: VariableName.estimateRate,
       type: 'json',
@@ -368,6 +366,10 @@ export const BridgeRefinanceEstimateRate: FC<{
       if (searchForm.isCashOut && !POSNotUndefined(searchForm?.cashOutAmount)) {
         return;
       }
+      if (isFirstSearch) {
+        setIsFirstSearch(false);
+      }
+      setLoading(true);
       run();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
