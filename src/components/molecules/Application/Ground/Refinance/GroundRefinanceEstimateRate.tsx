@@ -170,7 +170,6 @@ export const GroundRefinanceEstimateRate: FC<{
   const onCheckGetList = async () => {
     const element = document.getElementById('ground_up_refinance_rate_search');
     const { height = 0 } = element!.getBoundingClientRect();
-    setLoading(true);
     const postData: Variable<GREstimateRateData> = {
       name: VariableName.estimateRate,
       type: 'json',
@@ -378,6 +377,10 @@ export const GroundRefinanceEstimateRate: FC<{
       if (searchForm.isCashOut && !POSNotUndefined(searchForm?.cashOutAmount)) {
         return;
       }
+      if (isFirstSearch) {
+        setIsFirstSearch(false);
+      }
+      setLoading(true);
       run();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
