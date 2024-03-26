@@ -287,7 +287,7 @@ export const FixPurchaseRatesDrawer: FC<FixPurchaseRatesDrawerProps> = ({
               />
               <FixPurchaseCardItem
                 info={`${selectedItem?.loanTerm} months`}
-                label={'Loan term'}
+                label={'Loan duration'}
               />
               <FixPurchaseCardItem
                 info={POSFormatDollar(selectedItem?.paymentOfMonth)}
