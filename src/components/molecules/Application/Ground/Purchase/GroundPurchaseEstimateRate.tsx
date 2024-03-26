@@ -159,7 +159,6 @@ export const GroundPurchaseEstimateRate: FC<{
   const onCheckGetList = async () => {
     const element = document.getElementById('ground_up_purchase_rate_search');
     const { height = 0 } = element!.getBoundingClientRect();
-    setLoading(true);
     const postData: Variable<GPEstimateRateData> = {
       name: VariableName.estimateRate,
       type: 'json',
@@ -359,6 +358,10 @@ export const GroundPurchaseEstimateRate: FC<{
       ) {
         return;
       }
+      if (isFirstSearch) {
+        setIsFirstSearch(false);
+      }
+      setLoading(true);
       run();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
