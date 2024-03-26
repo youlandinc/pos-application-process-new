@@ -505,7 +505,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
                   >
                     Tasks
                   </Box>{' '}
-                  to see what you need to take care of to secure your loan.
+                  to see what you need to provide before closing.
                 </Typography>
                 <Typography component={'div'} mt={3} variant={'body3'}>
                   <Box>Disclaimer</Box>
@@ -517,7 +517,7 @@ export const BridgePurchaseOverview: FC = observer(() => {
                     your settlement agent.
                   </Box>
                   <Box mt={1.25}>
-                    Rates displayed are subject to rate lock and are not to be
+                    Rates displayed are subject to change and are not to be
                     considered an extension or offer of credit by
                     {' ' + saasState?.organizationName || ' YouLand'}.
                   </Box>

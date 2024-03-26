@@ -267,9 +267,7 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
               <Stack gap={1.5}>
                 Homeowner insurance must comply with our Policy Guidelines and
                 it is required to close your loan. Once you are covered, provide
-                your insurance provider&apos;s contact information. This allows
-                us to speak directly with your provider on the details and get
-                confirmation that your home is insured.
+                your insurance provider&apos;s contact information.
               </Stack>
             }
             tipSx={{ mb: 0 }}
@@ -293,35 +291,51 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
               mt={5}
               sub
             >
-              <StyledTextField
-                label={'Company name'}
-                onChange={(e) => setCompanyName(e.target.value)}
-                value={companyName}
-              />
-              <StyledTextField
-                label={'Agent name'}
-                onChange={(e) => setAgentName(e.target.value)}
-                value={agentName}
-              />
+              <Stack
+                flexDirection={{ lg: 'row', xs: 'column' }}
+                gap={3}
+                width={'100%'}
+              >
+                {' '}
+                <StyledTextField
+                  label={'Company name'}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  value={companyName}
+                />
+                <StyledTextField
+                  label={'Agent name'}
+                  onChange={(e) => setAgentName(e.target.value)}
+                  value={agentName}
+                />
+              </Stack>
 
-              <StyledTextFieldPhone
-                label={'Phone number'}
-                onValueChange={({ value }) => setPhoneNumber(value)}
-                value={phoneNumber}
-              />
-              <StyledTextField
-                label={'Email'}
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-              />
+              <Stack
+                flexDirection={{ lg: 'row', xs: 'column' }}
+                gap={3}
+                width={'100%'}
+              >
+                <StyledTextFieldPhone
+                  label={'Phone number'}
+                  onValueChange={({ value }) => setPhoneNumber(value)}
+                  value={phoneNumber}
+                />
+                <StyledTextField
+                  label={'Email'}
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                />
+              </Stack>
 
-              <StyledGoogleAutoComplete address={address} />
+              <StyledGoogleAutoComplete
+                address={address}
+                label={'Business address'}
+              />
             </StyledFormItem>
 
             <StyledFormItem
               label={
                 <Stack gap={1}>
-                  Upload your evidence of insurance
+                  Upload evidence of insurance
                   <Typography
                     color={'primary.main'}
                     onClick={open}
@@ -332,7 +346,7 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
                     }}
                     variant={'body1'}
                   >
-                    View requirements
+                    View document requirements
                   </Typography>
                 </Stack>
               }
@@ -425,7 +439,7 @@ export const BridgeRefinanceTaskInsuranceInformation: FC = observer(() => {
               <Typography variant={'subtitle2'}>Loan number</Typography>
               <Stack flexDirection={'row'} gap={1}>
                 <Typography variant={'body3'}>
-                  {router.query?.processId}
+                  {router.query?.processId as string}
                 </Typography>
                 <ContentCopy
                   onClick={async () => {

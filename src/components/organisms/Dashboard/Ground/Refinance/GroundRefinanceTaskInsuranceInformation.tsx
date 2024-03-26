@@ -267,9 +267,7 @@ export const GroundRefinanceTaskInsuranceInformation: FC = observer(() => {
               <Stack gap={1.5}>
                 Homeowner insurance must comply with our Policy Guidelines and
                 it is required to close your loan. Once you are covered, provide
-                your insurance provider&apos;s contact information. This allows
-                us to speak directly with your provider on the details and get
-                confirmation that your home is insured.
+                your insurance provider&apos;s contact information.
               </Stack>
             }
             tipSx={{ mb: 0 }}
@@ -321,7 +319,7 @@ export const GroundRefinanceTaskInsuranceInformation: FC = observer(() => {
             <StyledFormItem
               label={
                 <Stack gap={1}>
-                  Upload your evidence of insurance
+                  Upload evidence of insurance
                   <Typography
                     color={'primary.main'}
                     onClick={open}
@@ -332,7 +330,7 @@ export const GroundRefinanceTaskInsuranceInformation: FC = observer(() => {
                     }}
                     variant={'body1'}
                   >
-                    View requirements
+                    View document requirements
                   </Typography>
                 </Stack>
               }

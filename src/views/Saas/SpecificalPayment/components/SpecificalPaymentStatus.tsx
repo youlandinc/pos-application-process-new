@@ -26,10 +26,10 @@ export const SpecificalPaymentStatus: FC<{
           status: 'successful',
           content: (
             <Typography color={'text.secondary'}>
-              We have received your payment for the property appraisal and will
-              contact you soon to set a date for the appraisal. During the
-              visit, an expert will come by to check your property&apos;s value,
-              which may include looking inside your home.
+              We have received your payment and will contact you soon to set a
+              date for the appraisal. During the visit, an expert will come by
+              to check your property&apos;s value, which may include looking
+              inside your home.
             </Typography>
           ),
           contact: (
