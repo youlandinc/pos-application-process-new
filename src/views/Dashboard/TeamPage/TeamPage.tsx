@@ -102,21 +102,41 @@ export const TeamPage: FC = () => {
             borderRadius={2}
             flexDirection={{ xl: 'row', xs: 'column' }}
             gap={3}
-            justifyContent={'space-between'}
-            p={3}
+            p={{ lg: '24px 24px 24px 48px', xs: 3 }}
             width={'100%'}
           >
-            <Stack color={'text.primary'} flex={1.5} flexShrink={0} gap={1.5}>
+            <Stack
+              color={'text.primary'}
+              flex={1.5}
+              flexShrink={0}
+              gap={1.5}
+              justifyContent={'space-between'}
+            >
               <Typography variant={'h4'}>Hours of operation</Typography>
 
               <Typography
-                color={'text.secondary'}
-                mb={1.5}
-                variant={'body1'}
-                width={'100%'}
+                alignItems={'center'}
+                color={'text.primary'}
+                display={'flex'}
+                gap={1.5}
+                justifyContent={'flex-start'}
+                mt={1.5}
+                variant={'subtitle1'}
               >
-                If your current expert isn&apos;t available, you can leave a
-                message for them or speak with someone else.
+                <SupportAgentOutlined sx={{ width: 24, height: 24 }} />
+                {slogan}
+              </Typography>
+
+              <Typography
+                alignItems={'center'}
+                color={'text.primary'}
+                display={'flex'}
+                gap={1.5}
+                justifyContent={'flex-start'}
+                variant={'subtitle1'}
+              >
+                <WatchLaterOutlined sx={{ width: 24, height: 24 }} />
+                {workTime}
               </Typography>
 
               <Typography
@@ -142,36 +162,12 @@ export const TeamPage: FC = () => {
                 <MailOutlineOutlined sx={{ width: 24, height: 24 }} />
                 {email}
               </Typography>
-
-              <Typography
-                alignItems={'center'}
-                color={'text.primary'}
-                display={'flex'}
-                gap={1.5}
-                justifyContent={'flex-start'}
-                variant={'subtitle1'}
-              >
-                <SupportAgentOutlined sx={{ width: 24, height: 24 }} />
-                {slogan}
-              </Typography>
-
-              <Typography
-                alignItems={'center'}
-                color={'text.primary'}
-                display={'flex'}
-                gap={1.5}
-                justifyContent={'flex-start'}
-                variant={'subtitle1'}
-              >
-                <WatchLaterOutlined sx={{ width: 24, height: 24 }} />
-                {workTime}
-              </Typography>
             </Stack>
 
             <Icon
               component={MY_TEAM}
               sx={{
-                width: { xl: '60%', xs: '85%' },
+                width: { xl: 'calc(50% - 12px)', xs: '85%' },
                 height: 'auto',
                 '& .my_team_svg__pos_svg_theme_color': {
                   fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
