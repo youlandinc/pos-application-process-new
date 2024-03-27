@@ -562,13 +562,7 @@ export const BridgePurchaseTaskCoBorrowerDetails: FC = observer(() => {
             >
               {isCoBorrower && (
                 <>
-                  <StyledFormItem
-                    label={'Personal information'}
-                    sub
-                    tip={`By entering their phone number and email address below, you're authorizing ${
-                      saasState?.organizationName || 'YouLand'
-                    } to contact them using those methods. Carrier fees may apply.`}
-                  >
+                  <StyledFormItem label={'Personal information'} sub>
                     <Stack gap={3} maxWidth={600} width={'100%'}>
                       <StyledTextField
                         disabled={isConfirm}
