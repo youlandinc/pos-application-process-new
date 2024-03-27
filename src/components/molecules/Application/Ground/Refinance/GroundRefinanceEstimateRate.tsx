@@ -217,7 +217,9 @@ export const GroundRefinanceEstimateRate: FC<{
         }
       })
       .finally(() => {
-        setIsFirstSearch(false);
+        setIsFirstSearch(
+          searchForm.isCashOut && !POSNotUndefined(searchForm?.cashOutAmount),
+        );
         setLoading(false);
         if (['sx', 'sm', 'md'].includes(breakpoints)) {
           setTimeout(() => {
@@ -359,6 +361,9 @@ export const GroundRefinanceEstimateRate: FC<{
 
   const { run } = useDebounceFn(() => {
     if (searchForm.isCashOut && !POSNotUndefined(searchForm?.cashOutAmount)) {
+      if (!isFirstSearch) {
+        setIsFirstSearch(true);
+      }
       return;
     }
     onCheckGetList();
