@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode, useCallback, useState } from 'react';
 import { Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -20,11 +20,13 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-import { _fetchTaskFormInfo } from '@/requests/dashboard';
+import { _fetchTaskFormInfo, _updateTaskFormInfo } from '@/requests/dashboard';
 
 export const FixRefinanceTaskDocuments: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+
+  const [saveLoading, setSaveLoading] = useState(false);
 
   const [tabData, setTabData] = useState<
     { label: string; content: ReactNode }[]
@@ -78,6 +80,32 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
         });
       });
   }, [router.query.taskId]);
+
+  const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
+    try {
+      await _updateTaskFormInfo({
+        taskId: router.query.taskId as string,
+        taskForm: {
+          documents: [],
+        },
+      });
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [enqueueSnackbar, router]);
 
   return (
     <>
@@ -133,6 +161,15 @@ export const FixRefinanceTaskDocuments: FC = observer(() => {
                 variant={'text'}
               >
                 Back
+              </StyledButton>
+              <StyledButton
+                disabled={saveLoading}
+                loading={saveLoading}
+                loadingText={'Saving...'}
+                onClick={handledSubmit}
+                sx={{ flex: 1 }}
+              >
+                Confirm
               </StyledButton>
             </Stack>
           </StyledFormItem>
