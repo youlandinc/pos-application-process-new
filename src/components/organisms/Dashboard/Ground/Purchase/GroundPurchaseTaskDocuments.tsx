@@ -155,7 +155,14 @@ export const GroundPurchaseTaskDocuments: FC = observer(() => {
               />
             </Stack>
 
-            <Stack alignItems={'center'}>
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              maxWidth={600}
+              width={'100%'}
+            >
               <StyledButton
                 color={'info'}
                 onClick={async () => {
@@ -164,7 +171,7 @@ export const GroundPurchaseTaskDocuments: FC = observer(() => {
                     query: { processId: router.query.processId },
                   });
                 }}
-                sx={{ width: 276 }}
+                sx={{ flex: 1 }}
                 variant={'text'}
               >
                 Back
