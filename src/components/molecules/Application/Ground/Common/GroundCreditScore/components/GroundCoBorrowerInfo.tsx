@@ -5,7 +5,6 @@ import { NumberFormatValues } from 'react-number-format';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useSessionStorageState } from '@/hooks';
 import { CommonBorrowerType, DashboardTaskBorrowerType } from '@/types';
 import {
   IPersonalInfo,
@@ -35,7 +34,6 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
       formData: { creditScore },
     },
   } = useMst();
-  const { saasState } = useSessionStorageState('tenantConfig');
 
   const coBorrowerInfo: IPersonalInfo = creditScore.coBorrowerInfo;
   const selfInfo: IPersonalInfo = creditScore.selfInfo;
@@ -123,13 +121,7 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
             label={'Tell us about the co-borrower'}
             labelSx={{ mb: 0 }}
           >
-            <StyledFormItem
-              label={'Personal information'}
-              sub
-              tip={`By entering the co-borrower's phone number and email address below, you're authorizing ${
-                ' ' + saasState?.organizationName || ' YouLand'
-              } to contact them using those methods. Carrier fees may apply.`}
-            >
+            <StyledFormItem label={'Personal information'} sub>
               <Stack gap={3} maxWidth={600} width={'100%'}>
                 <Stack>
                   <StyledTextField
