@@ -357,11 +357,6 @@ export const FixPersonInfo: FC = observer(() => {
               : 'Personal information'
           }
           sub
-          tip={`By entering ${
-            HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].the_pronoun
-          } phone number and email address below, you're authorizing ${
-            ' ' + saasState?.organizationName || ' YouLand'
-          } to contact you using those methods. Carrier fees may apply.`}
         >
           <Stack gap={3} maxWidth={600} width={'100%'}>
             <Stack>
