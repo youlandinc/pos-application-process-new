@@ -5,7 +5,6 @@ import { NumberFormatValues } from 'react-number-format';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useSessionStorageState } from '@/hooks';
 import { CommonBorrowerType, DashboardTaskBorrowerType } from '@/types';
 import {
   IPersonalInfo,
@@ -35,7 +34,6 @@ export const GroundCoBorrowerInfo: FC = observer(() => {
       formData: { creditScore },
     },
   } = useMst();
-  const { saasState } = useSessionStorageState('tenantConfig');
 
   const coBorrowerInfo: IPersonalInfo = creditScore.coBorrowerInfo;
   const selfInfo: IPersonalInfo = creditScore.selfInfo;
