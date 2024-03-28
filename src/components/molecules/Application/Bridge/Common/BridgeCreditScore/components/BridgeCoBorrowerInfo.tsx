@@ -1,5 +1,4 @@
 import { ChangeEvent, FC, useCallback, useEffect } from 'react';
-import { Stack } from '@mui/material';
 import { NumberFormatValues } from 'react-number-format';
 
 import { observer } from 'mobx-react-lite';
@@ -113,60 +112,59 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
         />
       </StyledFormItem>
 
-      <Transitions>
+      <Transitions
+        style={{
+          maxWidth: 600,
+          width: '100%',
+          display: isCoBorrower ? 'flex' : 'none',
+        }}
+      >
         {isCoBorrower && (
           <StyledFormItem
             gap={6}
             label={'Tell us about the co-borrower'}
             labelSx={{ mb: 0 }}
           >
-            <StyledFormItem label={'Personal information'} sub>
-              <Stack gap={3} maxWidth={600} width={'100%'}>
-                <Stack>
-                  <StyledTextField
-                    label={'First name'}
-                    onChange={changeFieldValue('firstName')}
-                    placeholder={'First name'}
-                    validate={coBorrowerInfo.errors.firstName}
-                    value={coBorrowerInfo.firstName}
-                  />
-                </Stack>
-                <Stack>
-                  <StyledTextField
-                    label={'Last name'}
-                    onChange={changeFieldValue('lastName')}
-                    placeholder={'Last name'}
-                    validate={coBorrowerInfo.errors.lastName}
-                    value={coBorrowerInfo.lastName}
-                  />
-                </Stack>
-                <Stack>
-                  <StyledDatePicker
-                    label={'Date of birth'}
-                    onChange={changeFieldValue('dateOfBirth')}
-                    validate={coBorrowerInfo.errors.dateOfBirth}
-                    value={coBorrowerInfo.dateOfBirth}
-                  />
-                </Stack>
-                <Stack>
-                  <StyledTextFieldPhone
-                    label={'Phone number'}
-                    onValueChange={changeFieldValue('phoneNumber')}
-                    placeholder={'Phone number'}
-                    validate={coBorrowerInfo.errors.phoneNumber}
-                    value={coBorrowerInfo.phoneNumber}
-                  />
-                </Stack>
-                <Stack>
-                  <StyledTextField
-                    label={'Email'}
-                    onChange={changeFieldValue('email')}
-                    placeholder={'Email'}
-                    validate={coBorrowerInfo.errors.email}
-                    value={coBorrowerInfo.email}
-                  />
-                </Stack>
-              </Stack>
+            <StyledFormItem
+              gap={3}
+              label={'Personal information'}
+              labelSx={{ m: 0 }}
+              sub
+            >
+              <StyledTextField
+                label={'First name'}
+                onChange={changeFieldValue('firstName')}
+                placeholder={'First name'}
+                validate={coBorrowerInfo.errors.firstName}
+                value={coBorrowerInfo.firstName}
+              />
+              <StyledTextField
+                label={'Last name'}
+                onChange={changeFieldValue('lastName')}
+                placeholder={'Last name'}
+                validate={coBorrowerInfo.errors.lastName}
+                value={coBorrowerInfo.lastName}
+              />
+              <StyledDatePicker
+                label={'Date of birth'}
+                onChange={changeFieldValue('dateOfBirth')}
+                validate={coBorrowerInfo.errors.dateOfBirth}
+                value={coBorrowerInfo.dateOfBirth}
+              />
+              <StyledTextFieldPhone
+                label={'Phone number'}
+                onValueChange={changeFieldValue('phoneNumber')}
+                placeholder={'Phone number'}
+                validate={coBorrowerInfo.errors.phoneNumber}
+                value={coBorrowerInfo.phoneNumber}
+              />
+              <StyledTextField
+                label={'Email'}
+                onChange={changeFieldValue('email')}
+                placeholder={'Email'}
+                validate={coBorrowerInfo.errors.email}
+                value={coBorrowerInfo.email}
+              />
             </StyledFormItem>
 
             <StyledFormItem label={'What is their citizenship status?'} sub>
@@ -178,9 +176,7 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
             </StyledFormItem>
 
             <StyledFormItem label={'Current address'} sub>
-              <Stack maxWidth={600} width={'100%'}>
-                <StyledGoogleAutoComplete address={coBorrowerInfo.address} />
-              </Stack>
+              <StyledGoogleAutoComplete address={coBorrowerInfo.address} />
             </StyledFormItem>
 
             <Transitions
@@ -188,9 +184,10 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
                 display:
                   coBorrowerInfo.citizenship !==
                   CommonBorrowerType.foreign_national
-                    ? 'block'
+                    ? 'flex'
                     : 'none',
                 width: '100%',
+                maxWidth: 600,
               }}
             >
               {coBorrowerInfo.citizenship !==
@@ -199,13 +196,11 @@ export const BridgeCoBorrowerInfo: FC = observer(() => {
                   label={"Co-borrower's social security number"}
                   sub
                 >
-                  <Stack gap={3} maxWidth={600} width={'100%'}>
-                    <StyledTextFieldSocialNumber
-                      onValueChange={changeFieldValue('ssn')}
-                      validate={coBorrowerInfo.errors.ssn}
-                      value={coBorrowerInfo.ssn}
-                    />
-                  </Stack>
+                  <StyledTextFieldSocialNumber
+                    onValueChange={changeFieldValue('ssn')}
+                    validate={coBorrowerInfo.errors.ssn}
+                    value={coBorrowerInfo.ssn}
+                  />
                 </StyledFormItem>
               )}
             </Transitions>
