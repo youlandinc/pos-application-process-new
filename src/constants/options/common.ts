@@ -87,7 +87,7 @@ export const OPTIONS_COMMON_YES_OR_NO: Option[] = [
 
 export const OPTIONS_COMMON_USER_TYPE: Option[] = [
   {
-    label: 'Consumer',
+    label: 'Borrower',
     key: UserType.CUSTOMER,
     value: UserType.CUSTOMER,
   },
@@ -115,7 +115,7 @@ export const OPTIONS_COMMON_USER_TYPE: Option[] = [
 
 export const OPTIONS_SIGN_UP_ROLE: Option[] = [
   {
-    label: 'Consumer',
+    label: 'Borrower',
     key: UserType.CUSTOMER,
     value: UserType.CUSTOMER,
   },

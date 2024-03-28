@@ -90,10 +90,10 @@ const GroundPurchaseDashboardTaskMap: DashboardTaskList<GPDashboardTaskKey> = {
         code: 'GP_THIRD_CLOSING',
         url: '/dashboard/tasks/company_information',
       },
-      {
-        code: 'GP_THIRD_INSURANCE',
-        url: '/dashboard/tasks/insurance_information',
-      },
+      //{
+      //  code: 'GP_THIRD_INSURANCE',
+      //  url: '/dashboard/tasks/insurance_information',
+      //},
     ],
   },
   // SetUpAutoPay: {

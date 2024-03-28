@@ -90,10 +90,10 @@ const BridgeRefinanceDashboardTaskMap: DashboardTaskList<BRDashboardTaskKey> = {
         code: 'BR_THIRD_CLOSING',
         url: '/dashboard/tasks/company_information',
       },
-      {
-        code: 'BR_THIRD_INSURANCE',
-        url: '/dashboard/tasks/insurance_information',
-      },
+      //{
+      //  code: 'BR_THIRD_INSURANCE',
+      //  url: '/dashboard/tasks/insurance_information',
+      //},
     ],
   },
   //SetUpAutoPay: {

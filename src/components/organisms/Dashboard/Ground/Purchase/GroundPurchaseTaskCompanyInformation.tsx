@@ -334,7 +334,7 @@ export const GroundPurchaseTaskCompanyInformation: FC = observer(() => {
         ) : (
           <StyledFormItem
             gap={3}
-            label={'Title company (optional)'}
+            label={'Title / Escrow company'}
             mx={{ lg: 'auto', xs: 0 }}
             px={{ lg: 3, xs: 0 }}
             tip={`A closing agent assists with closing and verifies there are no outstanding title issues. ${
