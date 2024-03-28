@@ -339,7 +339,7 @@ export const SignUp: FC<SignUpProps> = observer(
           {saasState?.serviceTypeEnum === 'SAAS' && (
             <StyledSelect
               disabled={loading}
-              label={'Change account type'}
+              label={'Account type'}
               onChange={(e) =>
                 setUserType(e.target.value as keyof typeof UserType)
               }

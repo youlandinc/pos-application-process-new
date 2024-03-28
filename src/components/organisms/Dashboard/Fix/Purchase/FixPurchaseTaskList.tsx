@@ -90,10 +90,10 @@ const FixPurchaseDashboardTaskMap: DashboardTaskList<FPDashboardTaskKey> = {
         code: 'FP_THIRD_CLOSING',
         url: '/dashboard/tasks/company_information',
       },
-      {
-        code: 'FP_THIRD_INSURANCE',
-        url: '/dashboard/tasks/insurance_information',
-      },
+      //{
+      //  code: 'FP_THIRD_INSURANCE',
+      //  url: '/dashboard/tasks/insurance_information',
+      //},
     ],
   },
   // SetUpAutoPay: {
