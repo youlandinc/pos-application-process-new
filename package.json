@@ -28,6 +28,7 @@
     "crypto-js": "^4.2.0",
     "csstype": "^3.1.2",
     "date-fns": "^2.29.3",
+    "instant-messaging-youland": "^0.0.2",
     "lodash": "^4.17.21",
     "mobx": "^6.9.0",
     "mobx-react-lite": "^3.4.3",

@@ -26,6 +26,8 @@ import {
 import { POSHeader } from '@/components/molecules/POSLayout/components/POSHeader';
 import { useCheckInfoIsComplete } from '@/hooks';
 
+import { StyledChatBox } from 'instant-messaging-youland/lib';
+
 export const Entrance: FC = observer(() => {
   const router = useRouter();
 
@@ -85,6 +87,8 @@ export const Entrance: FC = observer(() => {
   return (
     <Box sx={{ bgcolor: '#FFFFFF' }}>
       <POSHeader scene={'application'} store={store} />
+
+      <StyledChatBox token={'fake token'} />
 
       <Stack
         alignItems={'center'}
