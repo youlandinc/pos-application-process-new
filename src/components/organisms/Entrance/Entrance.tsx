@@ -26,7 +26,7 @@ import {
 import { POSHeader } from '@/components/molecules/POSLayout/components/POSHeader';
 import { useCheckInfoIsComplete } from '@/hooks';
 
-import { StyledChatBox } from 'instant-messaging-youland/lib';
+//import { StyledChatBox } from 'instant-messaging-youland/lib';
 
 export const Entrance: FC = observer(() => {
   const router = useRouter();
@@ -88,7 +88,7 @@ export const Entrance: FC = observer(() => {
     <Box sx={{ bgcolor: '#FFFFFF' }}>
       <POSHeader scene={'application'} store={store} />
 
-      <StyledChatBox token={'fake token'} />
+      {/*<StyledChatBox token={'fake token'} />*/}
 
       <Stack
         alignItems={'center'}
@@ -115,7 +115,7 @@ export const Entrance: FC = observer(() => {
               alignItems={'center'}
               gap={3}
               label={'Which product are you interested in?'}
-              labelSx={{ m: 0, fontSize: { md: 36, xs: 24 } }}
+              labelSx={{ m: 0 }}
             >
               <StyledSelectOption
                 onChange={(value) => setUrl(value as string)}
