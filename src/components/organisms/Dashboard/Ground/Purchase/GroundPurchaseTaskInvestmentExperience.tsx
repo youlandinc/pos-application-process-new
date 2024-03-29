@@ -132,7 +132,7 @@ export const GroundPurchaseTaskInvestmentExperience: FC = observer(() => {
             width={'100%'}
           >
             <StyledFormItem
-              label={'Number of properties exited last 24 months'}
+              label={'Number of properties exited in last 24 months'}
               sub
             >
               <Stack maxWidth={600} width={'100%'}>
