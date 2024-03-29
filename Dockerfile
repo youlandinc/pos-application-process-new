@@ -2,8 +2,8 @@ FROM node:16-alpine
 
 WORKDIR /app
 
+COPY .npmrc .npmrc
 COPY package.json package.json
-
 COPY pnpm-lock.yaml pnpm-lock.yaml
 
 RUN npm cache clean --force
