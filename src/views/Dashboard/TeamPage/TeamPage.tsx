@@ -87,14 +87,10 @@ export const TeamPage: FC = () => {
         <StyledFormItem
           gap={6}
           justifyContent={'flex-start'}
-          label={"We're here with you every step of the way"}
+          label={'My team'}
           maxWidth={900}
           mx={{ lg: 'auto', xs: 0 }}
           px={{ lg: 3, xs: 0 }}
-          tip={
-            'From choosing a rate to scheduling closing, you have a dedicated team of specialists. Along the way, new faces will show up so be sure to check back often and drop a line if you need anything.'
-          }
-          tipSx={{ m: 0 }}
         >
           <Stack
             alignItems={'center'}
