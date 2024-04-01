@@ -263,8 +263,7 @@ export const FixPurchaseTaskPersonalDetails: FC = observer(() => {
 
             <StyledFormItem
               label={`Have ${
-                HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER]
-                  .the_third_subject
+                HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject
               } declared bankruptcy within the past 7 years?`}
               mt={2}
               sub
@@ -302,8 +301,7 @@ export const FixPurchaseTaskPersonalDetails: FC = observer(() => {
 
             <StyledFormItem
               label={`Have ${
-                HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER]
-                  .the_third_subject
+                HASH_COMMON_PERSON[userType ?? UserType.CUSTOMER].subject
               } had property foreclosure upon in the past 7 years?`}
               mt={2}
               sub
