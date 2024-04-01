@@ -85,9 +85,10 @@ export const TeamPage: FC = () => {
         </Stack>
       ) : (
         <StyledFormItem
-          gap={6}
+          gap={3}
           justifyContent={'flex-start'}
           label={'My team'}
+          labelSx={{ m: 0 }}
           maxWidth={900}
           mx={{ lg: 'auto', xs: 0 }}
           px={{ lg: 3, xs: 0 }}
@@ -172,7 +173,13 @@ export const TeamPage: FC = () => {
             />
           </Stack>
 
-          <Stack flexDirection={'row'} flexWrap={'wrap'} gap={3} width={'100%'}>
+          <Stack
+            flexDirection={'row'}
+            flexWrap={'wrap'}
+            gap={3}
+            mt={3}
+            width={'100%'}
+          >
             {teamList?.map((item, index) => (
               <DashboardServiceCardItem data={item} key={index} />
             ))}
