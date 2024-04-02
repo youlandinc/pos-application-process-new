@@ -15,7 +15,7 @@ validate.validators.date = (
     options.minAge &&
     -1 === compareAsc(addYears(new Date(), -options.minAge), new Date(value))
   ) {
-    return options.message || '^Borrowers must not be less than 18 years old';
+    return options.message || '^Borrower must be at least 18 years old';
   }
   if (1 === compareAsc(new Date(1900, 1, 1), new Date(value))) {
     return '^Date is too early';
