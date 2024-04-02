@@ -7,7 +7,7 @@ import { useMst } from '@/models/Root';
 
 import {
   useBreakpoints,
-  useCheckInfoIsComplete,
+  //useCheckInfoIsComplete,
   useCheckIsLogin,
 } from '@/hooks';
 
@@ -26,7 +26,7 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
   const breakpoint = useBreakpoints();
   const router = useRouter();
   useCheckIsLogin();
-  useCheckInfoIsComplete();
+  //useCheckInfoIsComplete();
 
   useEffect(() => {
     if (!router.pathname.includes('pipeline') && router.query.processId) {

@@ -142,7 +142,9 @@ export const PipelineLicense: FC = observer(() => {
       <StyledFormItem
         label={computedLicense.label}
         sx={{ width: '100%' }}
-        tip={`If you're looking to broker bridge loans, please upload your ${computedLicense.name} license for each respective state here.`}
+        tip={
+          "If you're looking to broker bridge loans, please upload your license for each respective state here."
+        }
       >
         <Stack alignItems={'center'} gap={3} width={'100%'}>
           <Stack width={'100%'}>
