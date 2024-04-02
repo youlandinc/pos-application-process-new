@@ -137,7 +137,6 @@ export const SaasDocumentPortalPage: FC = () => {
             {mode === 'edit' ? (
               <Stack
                 alignItems={'center'}
-                gap={3}
                 m={'0 auto'}
                 maxWidth={900}
                 width={'100%'}
@@ -149,63 +148,65 @@ export const SaasDocumentPortalPage: FC = () => {
                 >
                   Document portal
                 </Typography>
-                {address && <Typography>{address}</Typography>}
+                {address && <Typography mt={1}>{address}</Typography>}
 
-                {formList &&
-                  formList?.length > 0 &&
-                  formList.map((item, index) => (
-                    <StyledUploadButtonBox
-                      deleteOnly={true}
-                      fileKey={item.formId}
-                      fileName={item.formName}
-                      files={item.files || []}
-                      isFromLOS={true}
-                      key={`${item.formId}_${index}`}
-                      loanId={loanId}
-                      onDelete={async (deleteIndex) => {
-                        if (!item.files[deleteIndex].url) {
-                          return;
-                        }
-                        const params = {
-                          url: item.files[deleteIndex].url as string,
-                          loanId,
-                          formId: item.formId,
-                        };
-                        await _portalDeleteFile(params);
-                        const tempFiles = JSON.parse(
-                          JSON.stringify(item.files),
-                        );
-                        const tempList = JSON.parse(JSON.stringify(formList));
-                        tempFiles.splice(deleteIndex, 1);
-                        tempList.splice(index, 1, {
-                          ...item,
-                          files: tempFiles,
-                        });
-                        setFormList(tempList);
-                      }}
-                      onUpload={async (files) => {
-                        const formData = new FormData();
-                        formData.append('formId', item.formId);
-                        Array.from(files, (item) => {
-                          formData.append('files', item as Blob);
-                        });
-                        const { data } = await _portalUploadFile({
-                          files: formData,
-                          loanId,
-                        });
-                        const tempFiles = [...item.files, ...data];
-                        const tempList = JSON.parse(JSON.stringify(formList));
-                        tempList.splice(index, 1, {
-                          ...item,
-                          files: tempFiles,
-                        });
-                        setFormList(tempList);
-                      }}
-                      popup={item.popup}
-                      templateName={item.templateName}
-                      templateUrl={item.templateUrl}
-                    />
-                  ))}
+                <Stack gap={3} mt={6} width={'100%'}>
+                  {formList &&
+                    formList?.length > 0 &&
+                    formList.map((item, index) => (
+                      <StyledUploadButtonBox
+                        deleteOnly={true}
+                        fileKey={item.formId}
+                        fileName={item.formName}
+                        files={item.files || []}
+                        isFromLOS={true}
+                        key={`${item.formId}_${index}`}
+                        loanId={loanId}
+                        onDelete={async (deleteIndex) => {
+                          if (!item.files[deleteIndex].url) {
+                            return;
+                          }
+                          const params = {
+                            url: item.files[deleteIndex].url as string,
+                            loanId,
+                            formId: item.formId,
+                          };
+                          await _portalDeleteFile(params);
+                          const tempFiles = JSON.parse(
+                            JSON.stringify(item.files),
+                          );
+                          const tempList = JSON.parse(JSON.stringify(formList));
+                          tempFiles.splice(deleteIndex, 1);
+                          tempList.splice(index, 1, {
+                            ...item,
+                            files: tempFiles,
+                          });
+                          setFormList(tempList);
+                        }}
+                        onUpload={async (files) => {
+                          const formData = new FormData();
+                          formData.append('formId', item.formId);
+                          Array.from(files, (item) => {
+                            formData.append('files', item as Blob);
+                          });
+                          const { data } = await _portalUploadFile({
+                            files: formData,
+                            loanId,
+                          });
+                          const tempFiles = [...item.files, ...data];
+                          const tempList = JSON.parse(JSON.stringify(formList));
+                          tempList.splice(index, 1, {
+                            ...item,
+                            files: tempFiles,
+                          });
+                          setFormList(tempList);
+                        }}
+                        popup={item.popup}
+                        templateName={item.templateName}
+                        templateUrl={item.templateUrl}
+                      />
+                    ))}
+                </Stack>
               </Stack>
             ) : (
               <SaasLoanProgress cb={() => setMode('edit')} loanId={loanId} />
