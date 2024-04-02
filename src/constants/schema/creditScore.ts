@@ -5,42 +5,42 @@ export const CreditScoreSchema: Record<any, any> = {
     citizenship: {
       presence: {
         allowEmpty: false,
-        message: 'Must not be empty',
+        message: '^Must not be empty',
       },
     },
     firstName: {
       presence: {
         allowEmpty: false,
-        message: 'Must not be empty',
+        message: '^Must not be empty',
       },
     },
     lastName: {
       presence: {
         allowEmpty: false,
-        message: 'Must not be empty',
+        message: '^Must not be empty',
       },
     },
     phoneNumber: {
       presence: {
         allowEmpty: false,
-        message: 'Must not be empty',
+        message: '^Must not be empty',
       },
       AmericanPhoneNumber: {},
     },
     dateOfBirth: {
       presence: {
         allowEmpty: false,
-        message: 'Must not be empty',
+        message: '^Must not be empty',
       },
       date: {
         minAge: 18,
-        message: 'Borrower must be older than 18',
+        message: '^Borrower must be older than 18',
       },
     },
     email: {
       presence: {
         allowEmpty: false,
-        message: 'Must not be empty',
+        message: '^Must not be empty',
       },
     },
     ssn: (value: any, attributes: any) => {
@@ -48,7 +48,7 @@ export const CreditScoreSchema: Record<any, any> = {
         return {
           presence: {
             allowEmpty: false,
-            message: 'Must not be empty',
+            message: '^Must not be empty',
           },
           ssn: true,
         };
@@ -60,12 +60,12 @@ export const CreditScoreSchema: Record<any, any> = {
         return {
           presence: {
             allowEmpty: false,
-            message: 'Must not be empty',
+            message: '^Must not be empty',
           },
           numericality: {
             lessThanOrEqualTo: 850,
             greaterThanOrEqualTo: 300,
-            message: 'The score must be between 300 and 850.',
+            message: '^The score must be between 300 and 850.',
           },
         };
       }
