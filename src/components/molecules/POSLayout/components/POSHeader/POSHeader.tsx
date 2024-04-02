@@ -50,7 +50,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     session,
     bpmn,
     applicationForm: { initialized, formData },
-    userSetting: { applicable },
+    //userSetting: { applicable },
   } = store;
 
   const [authType, setAuthType] = useState<
@@ -217,7 +217,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
-              disabled={!applicable}
+              //disabled={!applicable}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/pipeline')}
               variant={'outlined'}
@@ -234,7 +234,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
-              disabled={!applicable}
+              //disabled={!applicable}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/')}
               variant={'outlined'}
@@ -258,7 +258,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <StyledButton
               className={'POS_mr_3'}
               color={'info'}
-              disabled={!applicable}
+              //disabled={!applicable}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/')}
               variant={'outlined'}
@@ -283,7 +283,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     formData?.state,
     breakpoint,
     store,
-    applicable,
+    //applicable,
     open,
     router,
   ]);

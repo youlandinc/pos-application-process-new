@@ -24,7 +24,7 @@ import {
 } from '@/components/atoms';
 
 import { POSHeader } from '@/components/molecules/POSLayout/components/POSHeader';
-import { useCheckInfoIsComplete } from '@/hooks';
+//import { useCheckInfoIsComplete } from '@/hooks';
 
 //import { StyledChatBox } from 'instant-messaging-youland/lib';
 
@@ -36,7 +36,7 @@ export const Entrance: FC = observer(() => {
 
   const [url, setUrl] = useState<string>('');
 
-  useCheckInfoIsComplete();
+  //useCheckInfoIsComplete();
 
   useAsync(async () => {
     if (!router.query.token) {
