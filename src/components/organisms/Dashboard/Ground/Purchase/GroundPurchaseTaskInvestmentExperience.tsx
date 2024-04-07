@@ -26,6 +26,8 @@ export const GroundPurchaseTaskInvestmentExperience: FC = observer(() => {
 
   const [propertiesNum, setPropertiesNum] = useState(0);
   const [investmentFiles, setInvestmentFiles] = useState<TaskFiles[]>([]);
+  const [templateName, setTemplateName] = useState('');
+  const [templateUrl, setTemplateUrl] = useState('');
 
   const fetchInitData = async () => {
     if (!router.query.taskId) {
@@ -37,9 +39,11 @@ export const GroundPurchaseTaskInvestmentExperience: FC = observer(() => {
     }
     return await _fetchTaskFormInfo(router.query.taskId as string)
       .then((res) => {
-        const { investmentFiles, propertiesNum } = res.data;
+        const { investmentFiles, templateName, templateUrl } = res.data;
         setInvestmentFiles(investmentFiles ?? []);
         setPropertiesNum(res.data.propertiesNum ?? propertiesNum);
+        setTemplateName(templateName);
+        setTemplateUrl(templateUrl);
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -180,10 +184,8 @@ export const GroundPurchaseTaskInvestmentExperience: FC = observer(() => {
                     fileName={'Track record'}
                     files={investmentFiles}
                     refresh={fetchInitData}
-                    templateName={'Track Record Template.xlsx'}
-                    templateUrl={
-                      'https://youland-template-file.s3.us-west-1.amazonaws.com/Track+record.xlsx'
-                    }
+                    templateName={templateName}
+                    templateUrl={templateUrl}
                   />
 
                   <Typography
