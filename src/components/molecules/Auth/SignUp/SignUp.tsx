@@ -466,6 +466,7 @@ export const SignUp: FC<SignUpProps> = observer(
     }, [
       confirmedPassword,
       email,
+      firstName,
       formError?.confirmedPassword,
       formError?.email,
       formError?.userType,
@@ -473,6 +474,7 @@ export const SignUp: FC<SignUpProps> = observer(
       handledSubmit,
       isDisabled,
       isNestForm,
+      lastName,
       loading,
       password,
       passwordError,
