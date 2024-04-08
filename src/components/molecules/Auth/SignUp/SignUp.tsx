@@ -63,6 +63,8 @@ export const SignUp: FC<SignUpProps> = observer(
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
     const [userType, setUserType] = useState<keyof typeof UserType>();
     const [otp, setOtp] = useState('');
@@ -111,6 +113,8 @@ export const SignUp: FC<SignUpProps> = observer(
           email,
           password,
           confirmedPassword,
+          firstName,
+          lastName,
         };
 
         const errors = validate(validateSchema, SignUpSchema);
@@ -124,6 +128,8 @@ export const SignUp: FC<SignUpProps> = observer(
           appkey: LOGIN_APP_KEY,
           emailParam: {
             email,
+            firstName,
+            lastName,
             password: userpool.encode(password),
             userType:
               saasState?.serviceTypeEnum === 'SAAS'
@@ -151,6 +157,8 @@ export const SignUp: FC<SignUpProps> = observer(
         confirmedPassword,
         email,
         enqueueSnackbar,
+        firstName,
+        lastName,
         open,
         password,
         saasState?.serviceTypeEnum,
@@ -350,6 +358,23 @@ export const SignUp: FC<SignUpProps> = observer(
             />
           )}
 
+          <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
+            <StyledTextField
+              label={'First name'}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder={'First name'}
+              required
+              value={firstName}
+            />
+            <StyledTextField
+              label={'Last name'}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder={'Last name'}
+              required
+              value={lastName}
+            />
+          </Stack>
+
           <StyledTextField
             disabled={loading}
             inputProps={{
@@ -441,6 +466,7 @@ export const SignUp: FC<SignUpProps> = observer(
     }, [
       confirmedPassword,
       email,
+      firstName,
       formError?.confirmedPassword,
       formError?.email,
       formError?.userType,
@@ -448,6 +474,7 @@ export const SignUp: FC<SignUpProps> = observer(
       handledSubmit,
       isDisabled,
       isNestForm,
+      lastName,
       loading,
       password,
       passwordError,
