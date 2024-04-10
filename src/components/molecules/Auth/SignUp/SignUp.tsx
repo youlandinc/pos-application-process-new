@@ -360,6 +360,7 @@ export const SignUp: FC<SignUpProps> = observer(
 
           <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
             <StyledTextField
+              disabled={loading}
               label={'First name'}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder={'First name'}
@@ -367,6 +368,7 @@ export const SignUp: FC<SignUpProps> = observer(
               value={firstName}
             />
             <StyledTextField
+              disabled={loading}
               label={'Last name'}
               onChange={(e) => setLastName(e.target.value)}
               placeholder={'Last name'}
