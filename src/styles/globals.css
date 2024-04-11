@@ -33,6 +33,10 @@ body {
   box-sizing: border-box;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -196,7 +200,7 @@ ul {
     right: 48px !important;
     max-width: calc(100% - 72px);
   }
-
+  
   .notistack-CollapseWrapper {
     padding: 0 0 8px 0;
   }
@@ -207,7 +211,7 @@ ul {
     top: 36px !important;
     max-width: calc(100% - 72px) !important;
   }
-
+  
   .notistack-CollapseWrapper {
     padding: 0 0 8px 0;
   }
