@@ -4,6 +4,13 @@ const CONSTANT_COLOR_HUE = 222;
 //const CONSTANT_COLOR_SATURATION = 42;
 //const CONSTANT_COLOR_LIGHTNESS = 55;
 
+declare module 'react' {
+  interface InputHTMLAttributes<T> extends HTMLAttributes<T> {
+    webkitdirectory?: string;
+    directory?: string;
+  }
+}
+
 declare module 'notistack' {
   interface OptionsObject {
     isSimple?: boolean;

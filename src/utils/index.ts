@@ -8,3 +8,4 @@ export * from './TypeOf';
 export * from './FindSpecificVariable';
 export * from './Handler';
 export * from './Format';
+export * from './UnknowHandler';

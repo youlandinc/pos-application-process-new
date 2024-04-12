@@ -31,7 +31,12 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { SUploadData } from '@/models/common/UploadFile';
 import { HttpError } from '@/types';
 import { _deleteTaskFile, _uploadTaskFile } from '@/requests/dashboard';
-import { POSFormatDate, POSGetParamsFromUrl } from '@/utils';
+import {
+  getFilesWebkitDataTransferItems,
+  POSFormatDate,
+  POSGetParamsFromUrl,
+  renameFile,
+} from '@/utils';
 
 import ICON_IMAGE from './icon_image.svg';
 import ICON_FILE from './icon_file.svg';
@@ -56,7 +61,7 @@ interface StyledUploadButtonBoxProps {
   // only can delete
   deleteOnly?: boolean;
   onDelete?: (index: number) => Promise<void>;
-  onUpload?: (file: FileList) => Promise<void>;
+  onUpload?: (file: FileList | any[]) => Promise<void>;
   // popup insurance
   popup?: string;
   isFromLOS?: boolean;
@@ -109,7 +114,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
   const { processId } = POSGetParamsFromUrl(location.href);
 
   const handleUpload = useCallback(
-    async (files: FileList) => {
+    async (files: FileList | any[]) => {
       setIsDragging(false);
       setInnerLoading(true);
 
@@ -152,7 +157,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
   );
 
   const validatorFileSize = useCallback(
-    (files: FileList) => {
+    (files: FileList | any[]) => {
       let flag = true;
 
       Array.from(files).some((item) => {
@@ -277,8 +282,28 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
       }}
       onDrop={async (e) => {
         e.preventDefault();
-        const files = e.dataTransfer.files;
-        validatorFileSize(files) && (await handleUpload(files));
+
+        const fileList = await getFilesWebkitDataTransferItems(
+          e.dataTransfer.items,
+        );
+
+        //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        const reducedFileList = fileList
+          //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          .filter((item) => item.name !== '.DS_Store')
+          //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          .map((file) => {
+            if (file?.name === file?.filepath) {
+              return file;
+            }
+
+            return renameFile(file, file.filepath);
+          });
+
+        await handleUpload(reducedFileList);
       }}
       px={3}
       py={2}
@@ -543,7 +568,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
                         <Typography color={'#9095A3'} variant={'body3'}>
                           {POSFormatDate(
                             new Date(item.uploadTime as string),
-                            'MM-dd-yyyy',
+                            'M-dd-yyyy',
                           )}
                         </Typography>
 
