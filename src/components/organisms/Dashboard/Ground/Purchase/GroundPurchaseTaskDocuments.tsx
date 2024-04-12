@@ -31,62 +31,7 @@ export const GroundPurchaseTaskDocuments: FC = observer(() => {
     { label: string; content: ReactNode }[]
   >([]);
 
-  const { loading } = useAsync(async () => {
-    if (!router.query.taskId) {
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { processId: router.query.processId },
-      });
-      return;
-    }
-    return await _fetchTaskFormInfo(router.query.taskId as string)
-      .then((res: AxiosResponse<DocumentUploadResponse>) => {
-        const {
-          data: { documents },
-        } = res;
-
-        const tabData = documents.reduce(
-          (acc, cur) => {
-            if (!cur?.categoryName) {
-              return acc;
-            }
-            const temp: { label: string; content: ReactNode } = {
-              label: '',
-              content: undefined,
-            };
-            temp.label = cur.categoryName;
-            temp.content = (
-              <Stack gap={3} my={3}>
-                {cur.categoryDocs.map((item, index) => (
-                  <StyledUploadButtonBox
-                    key={`${item.fileKey}_${index}`}
-                    {...item}
-                  />
-                ))}
-              </Stack>
-            );
-            acc.push(temp);
-            return acc;
-          },
-          [] as { label: string; content: ReactNode }[],
-        );
-        setTabData(tabData);
-      })
-      .catch((err) => {
-        const { header, message, variant } = err as HttpError;
-        enqueueSnackbar(message, {
-          variant: variant || 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-          isSimple: !header,
-          header,
-          onClose: () =>
-            router.push({
-              pathname: '/dashboard/tasks',
-              query: { processId: router.query.processId },
-            }),
-        });
-      });
-  }, [router.query.taskId]);
+  const { loading } = useAsync(async () => fetchData(), [router.query.taskId]);
 
   const handledSubmit = useCallback(async () => {
     setSaveLoading(true);
@@ -113,6 +58,63 @@ export const GroundPurchaseTaskDocuments: FC = observer(() => {
       setSaveLoading(false);
     }
   }, [enqueueSnackbar, router]);
+
+  const fetchData = async () => {
+    if (!router.query.taskId) {
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+      return;
+    }
+    return await _fetchTaskFormInfo(router.query.taskId as string)
+      .then((res: AxiosResponse<DocumentUploadResponse>) => {
+        const {
+          data: { documents },
+        } = res;
+        const tabData = documents.reduce(
+          (acc, cur) => {
+            if (!cur?.categoryName) {
+              return acc;
+            }
+            const temp: { label: string; content: ReactNode } = {
+              label: '',
+              content: undefined,
+            };
+            temp.label = cur.categoryName;
+            temp.content = (
+              <Stack gap={3} my={3}>
+                {cur.categoryDocs.map((item, index) => (
+                  <StyledUploadButtonBox
+                    key={`${item.fileKey}_${index}`}
+                    refresh={() => fetchData()}
+                    {...item}
+                  />
+                ))}
+              </Stack>
+            );
+            acc.push(temp);
+            return acc;
+          },
+          [] as { label: string; content: ReactNode }[],
+        );
+        setTabData(tabData);
+      })
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+          onClose: () =>
+            router.push({
+              pathname: '/dashboard/tasks',
+              query: { processId: router.query.processId },
+            }),
+        });
+      });
+  };
 
   return (
     <>

@@ -31,7 +31,35 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
     { label: string; content: ReactNode }[]
   >([]);
 
-  const { loading } = useAsync(async () => {
+  const { loading } = useAsync(async () => fetchData(), [router.query.taskId]);
+
+  const handledSubmit = useCallback(async () => {
+    setSaveLoading(true);
+    try {
+      await _updateTaskFormInfo({
+        taskId: router.query.taskId as string,
+        taskForm: {
+          documents: [],
+        },
+      });
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { processId: router.query.processId },
+      });
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  }, [enqueueSnackbar, router]);
+
+  const fetchData = async () => {
     if (!router.query.taskId) {
       await router.push({
         pathname: '/dashboard/tasks',
@@ -59,6 +87,7 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
                 {cur.categoryDocs.map((item, index) => (
                   <StyledUploadButtonBox
                     key={`${item.fileKey}_${index}`}
+                    refresh={() => fetchData()}
                     {...item}
                   />
                 ))}
@@ -85,33 +114,7 @@ export const BridgePurchaseTaskDocuments: FC = observer(() => {
             }),
         });
       });
-  }, [router.query.taskId]);
-
-  const handledSubmit = useCallback(async () => {
-    setSaveLoading(true);
-    try {
-      await _updateTaskFormInfo({
-        taskId: router.query.taskId as string,
-        taskForm: {
-          documents: [],
-        },
-      });
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { processId: router.query.processId },
-      });
-    } catch (err) {
-      const { header, message, variant } = err as HttpError;
-      enqueueSnackbar(message, {
-        variant: variant || 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-        isSimple: !header,
-        header,
-      });
-    } finally {
-      setSaveLoading(false);
-    }
-  }, [enqueueSnackbar, router]);
+  };
 
   return (
     <>
