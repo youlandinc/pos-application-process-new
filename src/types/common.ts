@@ -82,3 +82,12 @@ export type VariableValue =
   | FixStartingData
   | FPEstimateRateData
   | FREstimateRateData;
+
+export enum LoanSnapshot {
+  select_product = 'SELECT_PRODUCT',
+  starting_question = 'STARTING_QUESTION',
+  estimate_rate = 'ESTIMATE_RATE',
+  background_information = 'BACKGROUND_INFORMATION',
+  loan_summary = 'LOAN_SUMMARY',
+  loan_overview = 'LOAN_OVERVIEW',
+}

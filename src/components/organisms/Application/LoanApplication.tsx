@@ -29,7 +29,6 @@ import {
   VariableName,
 } from '@/types';
 
-//import { MortgagePurchaseForm, MortgageRefinanceForm } from './Mortgage';
 import { BridgePurchaseForm, BridgeRefinanceForm } from './Bridge';
 import { FixPurchaseForm, FixRefinanceForm } from './Fix';
 import { GroundPurchaseForm, GroundRefinanceForm } from './Ground';

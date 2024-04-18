@@ -6,6 +6,7 @@ import {
   GroundUpConstructionCreditScoreState,
   GroundUpConstructionPurchaseState,
   GroundUpConstructionRefinanceState,
+  LoanSnapshot,
   OccupancyOpt,
   OfferOpt,
   PipelineACHAccountType,
@@ -41,6 +42,28 @@ import {
 } from '@/types/pipeline';
 
 export const FormData = {
+  [LoanSnapshot.select_product]: {
+    loanType: '',
+    productCategory: '',
+  },
+  [LoanSnapshot.starting_question]: {
+    address: {
+      formatAddress: '',
+      aptNumber: '',
+      state: '',
+      street: '',
+      city: '',
+      postcode: '',
+      errors: {},
+      isValid: false,
+    },
+    propertyType: '',
+    propertyUnit: '',
+    isOccupyProperty: false,
+  },
+  [LoanSnapshot.estimate_rate]: {},
+  [LoanSnapshot.background_information]: {},
+  [LoanSnapshot.loan_summary]: {},
   mortgage: {
     purchase: {
       name: 'MortgagePurchase',
