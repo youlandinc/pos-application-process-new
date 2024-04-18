@@ -23,6 +23,7 @@ import {
   SPaymentDetails,
 } from '@/requests/dashboard';
 import {
+  AppraisalStage,
   DashboardTaskPaymentMethodsStatus,
   DashboardTaskPaymentTableStatus,
   FPRatesLoanInfo,
@@ -34,6 +35,8 @@ import {
 import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
 import {
   FixPurchasePaymentSummary,
+  PaymentAppraisal,
+  PaymentAppraisalProps,
   PaymentMethods,
   PaymentNotice,
   PaymentStatus,
@@ -138,6 +141,19 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
       instructions: '',
     });
 
+  const [appraisalStage, setAppraisalStage] = useState<AppraisalStage>(
+    AppraisalStage.NotStarted,
+  );
+  const [appraisalDetails, setAppraisalDetails] = useState<
+    PaymentAppraisalProps['appraisalDetails']
+  >({
+    paid_for: null,
+    ordered: null,
+    scheduled: null,
+    canceled: null,
+    completed: null,
+  });
+
   const { loading } = useAsync(async () => {
     if (!router.query.taskId) {
       await router.push({
@@ -162,6 +178,9 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
           email,
           phoneNumber,
           instructions,
+
+          appraisalStage,
+          appraisalDetails,
         } = res.data;
         setProductInfo(productInfo);
         setHaveAppraisal(haveAppraisal ?? false);
@@ -177,6 +196,9 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
           phoneNumber: phoneNumber ?? '',
           instructions: instructions ?? '',
         });
+
+        setAppraisalDetails(appraisalDetails);
+        setAppraisalStage(appraisalStage);
 
         if (appraisalFiles?.length > 0) {
           setTableStatus(DashboardTaskPaymentTableStatus.summary);
@@ -501,6 +523,32 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
     tableStatus,
   ]);
 
+  const renderByCondition = useMemo(() => {
+    if (paymentStatus === DashboardTaskPaymentMethodsStatus.undone) {
+      return (
+        <>
+          {renderNode}
+          {renderButton}
+        </>
+      );
+    }
+    if (appraisalStage !== AppraisalStage.NotStarted) {
+      return (
+        <PaymentAppraisal
+          appraisalDetails={appraisalDetails}
+          appraisalStage={appraisalStage}
+        />
+      );
+    }
+    return <PaymentStatus paymentStatus={paymentStatus} />;
+  }, [
+    appraisalDetails,
+    appraisalStage,
+    paymentStatus,
+    renderButton,
+    renderNode,
+  ]);
+
   return (
     <>
       <Transitions
@@ -520,7 +568,7 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
           >
             <StyledLoading sx={{ color: 'text.grey' }} />
           </Stack>
-        ) : paymentStatus === DashboardTaskPaymentMethodsStatus.undone ? (
+        ) : (
           <Transitions
             style={{
               width: '100%',
@@ -528,11 +576,8 @@ export const FixPurchaseTaskPayment: FC = observer(() => {
               margin: '0 auto',
             }}
           >
-            {renderNode}
-            {renderButton}
+            {renderByCondition}
           </Transitions>
-        ) : (
-          <PaymentStatus paymentStatus={paymentStatus} />
         )}
       </Transitions>
     </>

@@ -1,4 +1,4 @@
-import { CommonBorrowerType, UserType } from '@/types';
+import { AppraisalStage, CommonBorrowerType, UserType } from '@/types';
 import { ReactNode } from 'react';
 
 export const HASH_COMMON_PERSON = {
@@ -366,4 +366,36 @@ export const OPTIONS_COMMON_MARKS: {
   { label: '', value: 18 },
   { label: '', value: 19 },
   { label: '20+', value: 20 },
+];
+export const OPTIONS_COMMON_APPRAISAL_STAGE: Option[] = [
+  {
+    label: 'Not started',
+    value: AppraisalStage.NotStarted,
+    key: AppraisalStage.NotStarted,
+  },
+  {
+    label: 'Paid for',
+    value: AppraisalStage.PaidFor,
+    key: AppraisalStage.PaidFor,
+  },
+  {
+    label: 'Canceled',
+    value: AppraisalStage.Canceled,
+    key: AppraisalStage.Canceled,
+  },
+  {
+    label: 'Ordered',
+    value: AppraisalStage.Ordered,
+    key: AppraisalStage.Ordered,
+  },
+  {
+    label: 'Scheduled',
+    value: AppraisalStage.Scheduled,
+    key: AppraisalStage.Scheduled,
+  },
+  {
+    label: 'Completed',
+    value: AppraisalStage.Completed,
+    key: AppraisalStage.Completed,
+  },
 ];
