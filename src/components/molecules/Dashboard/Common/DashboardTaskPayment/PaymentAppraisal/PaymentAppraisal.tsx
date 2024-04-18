@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
 import {
   Stack,
   Step,
@@ -12,7 +12,7 @@ import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 
 import { AppraisalStage } from '@/types';
 
-import { StyledButton, StyledFormItem } from '@/components/atoms';
+import { StyledFormItem } from '@/components/atoms';
 
 interface baseData {
   completeDate?: string;
@@ -39,19 +39,17 @@ type ReduceAppraisalStage = `${AppraisalStage}`;
 
 export interface PaymentAppraisalProps {
   appraisalStage: ReduceAppraisalStage;
-  appraisalDetails: AppraisalDetails;
+  appraisalDetail: AppraisalDetails;
 }
 
 export const PaymentAppraisal: FC<PaymentAppraisalProps> = ({
   appraisalStage = AppraisalStage.Canceled,
-  appraisalDetails,
+  appraisalDetail,
 }) => {
-  const [activeStep, setActiveStep] = useState(hash[appraisalStage]);
-
   const computedData = useMemo(() => {
     if (
       appraisalStage === AppraisalStage.Canceled ||
-      appraisalDetails?.canceled
+      appraisalDetail?.canceled
     ) {
       return [
         {
@@ -59,9 +57,9 @@ export const PaymentAppraisal: FC<PaymentAppraisalProps> = ({
           label: 'Appraisal has been canceled',
           description:
             'Please email us at borrow@youland.com or call (833) 968-5263 for refunds and any questions you have.',
-          date: appraisalDetails?.canceled?.completeDate
+          date: appraisalDetail?.canceled?.completeDate
             ? `Canceled on ${format(
-                parseISO(appraisalDetails.canceled?.completeDate),
+                parseISO(appraisalDetail.canceled?.completeDate),
                 "MMMM dd, yyyy 'at' h:mm a",
               )}.`
             : '',
@@ -74,9 +72,9 @@ export const PaymentAppraisal: FC<PaymentAppraisalProps> = ({
         label: 'Appraisal payment completed',
         description:
           'We have received your appraisal payment and are actively processing your request to ensure you receive an accurate and timely appraisal.',
-        date: appraisalDetails?.paid_for?.completeDate
+        date: appraisalDetail?.paid_for?.completeDate
           ? `Completed on ${format(
-              parseISO(appraisalDetails.paid_for?.completeDate),
+              parseISO(appraisalDetail.paid_for?.completeDate),
               "MMMM dd, yyyy 'at' h:mm a",
             )}.`
           : '',
@@ -86,9 +84,9 @@ export const PaymentAppraisal: FC<PaymentAppraisalProps> = ({
         label: 'Appraisal has been ordered',
         description:
           'We are reaching out the point of contact for the property and schedule the inspection as soon as possible. On average, the appraisal takes 3-5 business days to complete.',
-        date: appraisalDetails?.ordered?.completeDate
+        date: appraisalDetail?.ordered?.completeDate
           ? `Ordered on ${format(
-              parseISO(appraisalDetails.ordered?.completeDate),
+              parseISO(appraisalDetail.ordered?.completeDate),
               "MMMM dd, yyyy 'at' h:mm a",
             )}.`
           : '',
@@ -97,16 +95,16 @@ export const PaymentAppraisal: FC<PaymentAppraisalProps> = ({
         icon: null,
         label: 'Inspection has been scheduled',
         description: `${
-          appraisalDetails?.scheduled?.scheduledDate
+          appraisalDetail?.scheduled?.scheduledDate
             ? `The inspection has been scheduled for ${format(
-                parseISO(appraisalDetails.scheduled?.scheduledDate),
+                parseISO(appraisalDetail.scheduled?.scheduledDate),
                 "MMMM dd, yyyy 'at' h:mm a",
               )}. `
             : ''
         }Following the inspection, the appraiser will proceed with the necessary assessments to finalize the appraisal report. We will notify you once the appraisal is complete.`,
-        date: appraisalDetails?.scheduled?.completeDate
+        date: appraisalDetail?.scheduled?.completeDate
           ? `Updated on ${format(
-              parseISO(appraisalDetails.scheduled?.completeDate),
+              parseISO(appraisalDetail.scheduled?.completeDate),
               "MMMM dd, yyyy 'at' h:mm a",
             )}.`
           : '',
@@ -116,21 +114,21 @@ export const PaymentAppraisal: FC<PaymentAppraisalProps> = ({
         label: 'Appraisal is completed',
         description:
           'Your appraisal order has been completed! If you have any questions or need further clarification, feel free to contact our customer service team. Thank you for your patience!',
-        date: appraisalDetails?.completed?.completeDate
+        date: appraisalDetail?.completed?.completeDate
           ? `Completed on ${format(
-              parseISO(appraisalDetails.completed?.completeDate),
+              parseISO(appraisalDetail.completed?.completeDate),
               "MMMM dd, yyyy 'at' h:mm a",
             )}.`
           : '',
       },
     ];
   }, [
-    appraisalDetails?.canceled,
-    appraisalDetails?.completed?.completeDate,
-    appraisalDetails?.ordered?.completeDate,
-    appraisalDetails?.paid_for?.completeDate,
-    appraisalDetails?.scheduled?.completeDate,
-    appraisalDetails?.scheduled?.scheduledDate,
+    appraisalDetail?.canceled,
+    appraisalDetail?.completed?.completeDate,
+    appraisalDetail?.ordered?.completeDate,
+    appraisalDetail?.paid_for?.completeDate,
+    appraisalDetail?.scheduled?.completeDate,
+    appraisalDetail?.scheduled?.scheduledDate,
     appraisalStage,
   ]);
 
@@ -141,7 +139,7 @@ export const PaymentAppraisal: FC<PaymentAppraisalProps> = ({
       tip={'Keep track of your appraisal progress below'}
     >
       <Stepper
-        activeStep={activeStep}
+        activeStep={hash[appraisalStage]}
         connector={null}
         orientation={'vertical'}
         sx={{
@@ -150,7 +148,7 @@ export const PaymentAppraisal: FC<PaymentAppraisalProps> = ({
       >
         {computedData.map((item, index) => (
           <Step
-            completed={index <= activeStep}
+            completed={index <= hash[appraisalStage]}
             expanded={true}
             key={`${item.label}-${index}`}
           >
@@ -164,7 +162,7 @@ export const PaymentAppraisal: FC<PaymentAppraisalProps> = ({
             </StepLabel>
             <StepContent>
               <Stack gap={1} mb={4}>
-                {activeStep === index && (
+                {hash[appraisalStage] === index && (
                   <Typography
                     color={computedData.length === 1 ? 'error' : 'text.primary'}
                     variant={'body3'}
@@ -173,7 +171,7 @@ export const PaymentAppraisal: FC<PaymentAppraisalProps> = ({
                   </Typography>
                 )}
 
-                {item.date && activeStep >= index && (
+                {item.date && hash[appraisalStage] >= index && (
                   <Typography
                     color={
                       computedData.length === 1 ? 'error' : 'text.secondary'
@@ -188,15 +186,6 @@ export const PaymentAppraisal: FC<PaymentAppraisalProps> = ({
           </Step>
         ))}
       </Stepper>
-
-      <Stack flexDirection={'row'} gap={3}>
-        <StyledButton onClick={() => setActiveStep(activeStep + 1)}>
-          increase
-        </StyledButton>
-        <StyledButton onClick={() => setActiveStep(activeStep - 1)}>
-          decrease
-        </StyledButton>
-      </Stack>
     </StyledFormItem>
   );
 };

@@ -145,8 +145,8 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
   const [appraisalStage, setAppraisalStage] = useState<AppraisalStage>(
     AppraisalStage.NotStarted,
   );
-  const [appraisalDetails, setAppraisalDetails] = useState<
-    PaymentAppraisalProps['appraisalDetails']
+  const [appraisalDetail, setAppraisalDetail] = useState<
+    PaymentAppraisalProps['appraisalDetail']
   >({
     paid_for: null,
     ordered: null,
@@ -181,7 +181,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
           instructions,
 
           appraisalStage,
-          appraisalDetails,
+          appraisalDetail,
         } = res.data;
         setProductInfo(productInfo);
         setHaveAppraisal(haveAppraisal ?? false);
@@ -198,7 +198,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
           instructions: instructions ?? '',
         });
 
-        setAppraisalDetails(appraisalDetails);
+        setAppraisalDetail(appraisalDetail);
         setAppraisalStage(appraisalStage);
 
         if (appraisalFiles?.length > 0) {
@@ -536,14 +536,14 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
     if (appraisalStage !== AppraisalStage.NotStarted) {
       return (
         <PaymentAppraisal
-          appraisalDetails={appraisalDetails}
+          appraisalDetail={appraisalDetail}
           appraisalStage={appraisalStage}
         />
       );
     }
     return <PaymentStatus paymentStatus={paymentStatus} />;
   }, [
-    appraisalDetails,
+    appraisalDetail,
     appraisalStage,
     paymentStatus,
     renderButton,
