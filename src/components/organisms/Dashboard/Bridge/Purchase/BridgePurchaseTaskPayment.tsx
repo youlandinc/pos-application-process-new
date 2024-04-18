@@ -15,6 +15,7 @@ import {
   SPaymentDetails,
 } from '@/requests/dashboard';
 import {
+  AppraisalStage,
   BPRatesLoanInfo,
   DashboardTaskPaymentMethodsStatus,
   DashboardTaskPaymentTableStatus,
@@ -26,6 +27,8 @@ import {
 import { StyledButton, StyledLoading, Transitions } from '@/components/atoms';
 import {
   BridgePurchasePaymentSummary,
+  PaymentAppraisal,
+  PaymentAppraisalProps,
   PaymentMethods,
   PaymentNotice,
   PaymentStatus,
@@ -139,6 +142,19 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
       instructions: '',
     });
 
+  const [appraisalStage, setAppraisalStage] = useState<AppraisalStage>(
+    AppraisalStage.NotStarted,
+  );
+  const [appraisalDetail, setAppraisalDetail] = useState<
+    PaymentAppraisalProps['appraisalDetail']
+  >({
+    paid_for: null,
+    ordered: null,
+    scheduled: null,
+    canceled: null,
+    completed: null,
+  });
+
   const { loading } = useAsync(async () => {
     if (!router.query.taskId) {
       await router.push({
@@ -163,6 +179,9 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
           email,
           phoneNumber,
           instructions,
+
+          appraisalStage,
+          appraisalDetail,
         } = res.data;
         setProductInfo(productInfo);
         setHaveAppraisal(haveAppraisal ?? false);
@@ -178,6 +197,9 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
           phoneNumber: phoneNumber ?? '',
           instructions: instructions ?? '',
         });
+
+        setAppraisalDetail(appraisalDetail);
+        setAppraisalStage(appraisalStage);
 
         if (appraisalFiles?.length > 0) {
           setTableStatus(DashboardTaskPaymentTableStatus.summary);
@@ -502,6 +524,32 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
     tableStatus,
   ]);
 
+  const renderByCondition = useMemo(() => {
+    if (paymentStatus === DashboardTaskPaymentMethodsStatus.undone) {
+      return (
+        <>
+          {renderNode}
+          {renderButton}
+        </>
+      );
+    }
+    if (appraisalStage !== AppraisalStage.NotStarted) {
+      return (
+        <PaymentAppraisal
+          appraisalDetail={appraisalDetail}
+          appraisalStage={appraisalStage}
+        />
+      );
+    }
+    return <PaymentStatus paymentStatus={paymentStatus} />;
+  }, [
+    appraisalDetail,
+    appraisalStage,
+    paymentStatus,
+    renderButton,
+    renderNode,
+  ]);
+
   return (
     <>
       <Transitions
@@ -521,7 +569,7 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
           >
             <StyledLoading sx={{ color: 'text.grey' }} />
           </Stack>
-        ) : paymentStatus === DashboardTaskPaymentMethodsStatus.undone ? (
+        ) : (
           <Transitions
             style={{
               width: '100%',
@@ -529,11 +577,8 @@ export const BridgePurchaseTaskPayment: FC = observer(() => {
               margin: '0 auto',
             }}
           >
-            {renderNode}
-            {renderButton}
+            {renderByCondition}
           </Transitions>
-        ) : (
-          <PaymentStatus paymentStatus={paymentStatus} />
         )}
       </Transitions>
     </>

@@ -1,8 +1,4 @@
-import {
-  FC,
-  useMemo,
-  //useState
-} from 'react';
+import { FC, useMemo, useState } from 'react';
 import { Box, Stack, SxProps, Typography } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
 import { useRouter } from 'next/router';
@@ -12,11 +8,14 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 
 import { useBreakpoints } from '@/hooks';
-import { AUTO_HIDE_DURATION } from '@/constants';
+import {
+  AUTO_HIDE_DURATION,
+  OPTIONS_COMMON_APPRAISAL_STAGE,
+} from '@/constants';
 import { POSFlex } from '@/styles';
 import { _fetchLoanTask } from '@/requests/dashboard';
 import {
-  //AppraisalStage,
+  AppraisalStage,
   DashboardTaskList,
   GRDashboardTaskKey,
   GroundDashboardLoanTask,
@@ -30,6 +29,7 @@ import {
   Transitions,
 } from '@/components/atoms';
 import { DashboardHeader } from '@/components/molecules';
+import { POSFindLabel } from '@/utils';
 
 const GroundRefinanceDashboardTaskMap: DashboardTaskList<GRDashboardTaskKey> = {
   ApplicationInformation: {
@@ -137,9 +137,9 @@ export const GroundRefinanceTaskList: FC = observer(() => {
   const [taskDetails, setTaskDetails] =
     useSetState<GroundDashboardTaskMap<GRDashboardTaskKey>>();
 
-  //const [appraisalStage, setAppraisalStage] = useState(
-  //  AppraisalStage.NotStarted,
-  //);
+  const [appraisalStage, setAppraisalStage] = useState(
+    AppraisalStage.NotStarted,
+  );
 
   const { loading } = useAsync(async () => {
     if (!router.query.processId) {
@@ -150,8 +150,8 @@ export const GroundRefinanceTaskList: FC = observer(() => {
     )
       .then((res) => {
         setTaskDetails(res?.data?.tasks);
-        //const { appraisalStage } = res.data;
-        //setAppraisalStage(appraisalStage || AppraisalStage.NotStarted);
+        const { appraisalStage } = res.data;
+        setAppraisalStage(appraisalStage || AppraisalStage.NotStarted);
       })
       .catch((err) => {
         const { header, message, variant } = err as HttpError;
@@ -169,41 +169,44 @@ export const GroundRefinanceTaskList: FC = observer(() => {
       });
   }, [router.query.processId]);
 
-  //const renderStage = useMemo(() => {
-  //  let bgcolor = '';
-  //  switch (appraisalStage) {
-  //    case AppraisalStage.NotStarted:
-  //      bgcolor = '#D2D6E1';
-  //      break;
-  //    case AppraisalStage.PaidFor:
-  //    case AppraisalStage.Ordered:
-  //    case AppraisalStage.Scheduled:
-  //      bgcolor = '#95A8D7';
-  //      break;
-  //    case AppraisalStage.Canceled:
-  //      bgcolor = '#E39482';
-  //      break;
-  //    case AppraisalStage.Completed:
-  //      bgcolor = '#85CCB6';
-  //      break;
-  //  }
-  //  return (
-  //    <Typography
-  //      alignItems={'center'}
-  //      bgcolor={bgcolor}
-  //      borderRadius={1}
-  //      color={'#FFFFFF'}
-  //      display={'flex'}
-  //      fontSize={12}
-  //      height={24}
-  //      justifyContent={'center'}
-  //      variant={'subtitle3'}
-  //      width={96}
-  //    >
-  //      {appraisalStage || AppraisalStage.NotStarted}
-  //    </Typography>
-  //  );
-  //}, [appraisalStage]);
+  const renderStage = useMemo(() => {
+    let bgcolor = '';
+    switch (appraisalStage) {
+      case AppraisalStage.NotStarted:
+        bgcolor = '#D2D6E1';
+        break;
+      case AppraisalStage.PaidFor:
+      case AppraisalStage.Ordered:
+      case AppraisalStage.Scheduled:
+        bgcolor = '#95A8D7';
+        break;
+      case AppraisalStage.Canceled:
+        bgcolor = '#E39482';
+        break;
+      case AppraisalStage.Completed:
+        bgcolor = '#85CCB6';
+        break;
+    }
+    return (
+      <Typography
+        alignItems={'center'}
+        bgcolor={bgcolor}
+        borderRadius={1}
+        color={'#FFFFFF'}
+        display={'flex'}
+        fontSize={12}
+        height={24}
+        justifyContent={'center'}
+        variant={'subtitle3'}
+        width={96}
+      >
+        {POSFindLabel(
+          OPTIONS_COMMON_APPRAISAL_STAGE,
+          appraisalStage || AppraisalStage.NotStarted,
+        )}
+      </Typography>
+    );
+  }, [appraisalStage]);
 
   const renderTaskList = useMemo(() => {
     return (
@@ -302,7 +305,7 @@ export const GroundRefinanceTaskList: FC = observer(() => {
               {GroundRefinanceDashboardTaskMap.PropertyAppraisal.title}
             </Typography>
             {/*todo:appraisal*/}
-            {/*{renderStage}*/}
+            {renderStage}
           </Box>
           {GroundRefinanceDashboardTaskMap.PropertyAppraisal.children.map(
             (sonItem) => (
@@ -436,12 +439,7 @@ export const GroundRefinanceTaskList: FC = observer(() => {
         </Box>
       </>
     );
-  }, [
-    //renderStage,
-    breakpoints,
-    router,
-    taskDetails,
-  ]);
+  }, [renderStage, breakpoints, router, taskDetails]);
 
   return (
     <Transitions

@@ -157,12 +157,12 @@ export enum LoanStage {
 }
 
 export enum AppraisalStage {
-  NotStarted = 'Not started',
-  PaidFor = 'Paid for',
-  Ordered = 'Ordered',
-  Scheduled = 'Scheduled',
-  Canceled = 'Canceled',
-  Completed = 'Completed',
+  NotStarted = 'NOT_STARTED',
+  PaidFor = 'PAID_FOR',
+  Ordered = 'ORDERED',
+  Scheduled = 'SCHEDULED',
+  Canceled = 'CANCELED',
+  Completed = 'COMPLETED',
 }
 
 export enum LoanSpecies {
