@@ -11,7 +11,7 @@ RUN rm -rf node_modules
 
 RUN npm config set registry  https://packages.aliyun.com/638eb9a6121be2db491c81fb/npm/npm-registry/
 
-RUN npm install --location=global pnpm@7.21.1
+RUN npm install --location=global pnpm@7.33.7
 
 RUN pnpm install
 
