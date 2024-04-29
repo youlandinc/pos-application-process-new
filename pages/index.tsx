@@ -3,8 +3,21 @@ import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
 
-const DynamicEntrance = dynamic(
-  () => import('@/views/EntrancePage').then((mod) => mod.EntrancePage),
+const DynamicApplicationPage = dynamic(
+  () =>
+    import('@/views/Application/ApplicationPage').then(
+      (mod) => mod.ApplicationPage,
+    ),
+  {
+    ssr: true,
+  },
+);
+
+const DynamicStartingQuestionPage = dynamic(
+  () =>
+    import('@/views/Application/StartingQuestionPage').then(
+      (mod) => mod.StartingQuestionPage,
+    ),
   {
     ssr: true,
   },
@@ -18,7 +31,9 @@ const Index = observer(() => {
         <meta content="YouLand Point Of Sales System" name="keywords" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
-      <DynamicEntrance />
+      <DynamicApplicationPage>
+        <DynamicStartingQuestionPage />
+      </DynamicApplicationPage>
     </>
   );
 });

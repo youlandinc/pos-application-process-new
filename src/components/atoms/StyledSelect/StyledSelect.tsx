@@ -61,12 +61,13 @@ export const StyledSelect: FC<StyledSelectProps> = ({
                   '& .MuiMenuItem-root': {
                     fontSize: 14,
                     color: 'text.primary',
+                    p: 1.5,
                   },
                   ...sxList,
                 },
               },
               PaperProps: {
-                style: { marginTop: 12 },
+                style: { marginTop: 12, borderRadius: 8 },
               },
             },
           }}

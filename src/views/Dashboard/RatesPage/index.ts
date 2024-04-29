@@ -1,1 +1,1 @@
-export * from './RatesPage';
+//export * from './RatesPage';

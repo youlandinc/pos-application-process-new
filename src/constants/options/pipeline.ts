@@ -1,5 +1,4 @@
 import {
-  LoanPurpose,
   LoanSpecies,
   LoanStage,
   PipelineACHAccountType,
@@ -83,19 +82,6 @@ export const OPTIONS_LOAN_SPECIES: Option[] = [
     key: LoanSpecies.GroundUpConstruction,
     value: LoanSpecies.GroundUpConstruction,
     label: 'Ground-up Construction',
-  },
-];
-
-export const OPTIONS_LOAN_PURPOSE: Option[] = [
-  {
-    key: LoanPurpose.Purchase,
-    value: LoanPurpose.Purchase,
-    label: 'Purchase',
-  },
-  {
-    key: LoanPurpose.Refinance,
-    value: LoanPurpose.Refinance,
-    label: 'Refinance',
   },
 ];
 

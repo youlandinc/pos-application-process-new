@@ -37,7 +37,7 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
     if (!saasState) {
       return;
     }
-    if (router.pathname.includes('application')) {
+    if (router.pathname.includes('application') || router.pathname === '/') {
       return;
     }
     if (

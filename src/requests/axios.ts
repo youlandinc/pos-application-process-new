@@ -48,7 +48,7 @@ service.interceptors.response.use(
         variant,
       };
       if (code === HttpErrorType.tokenExpired) {
-        rootStore.logout();
+        //rootStore.logout();
       }
     }
 

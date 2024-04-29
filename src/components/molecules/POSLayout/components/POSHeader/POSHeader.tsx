@@ -32,11 +32,12 @@ import {
   SignUp,
 } from '@/components/molecules';
 import { POSFormatUrl } from '@/utils';
+import { LoanSnapshotEnum } from '@/types';
 
 export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const router = useRouter();
 
-  const { bindProcess } = useStoreData();
+  const { bindLoan } = useStoreData();
   const { visible, open, close } = useSwitch(false);
   const {
     visible: closeVisible,
@@ -46,12 +47,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
   const breakpoint = useBreakpoints();
 
-  const {
-    session,
-    bpmn,
-    applicationForm: { initialized, formData },
-    //userSetting: { applicable },
-  } = store;
+  const { session, applicationForm } = store;
 
   const [authType, setAuthType] = useState<
     'login' | 'sign_up' | 'reset_password'
@@ -59,27 +55,14 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
 
   const hasSession = useMemo<boolean>(() => !!session, [session]);
 
-  const hasProcessId = useMemo<boolean>(
-    () => !!router.query.processId,
-    [router.query],
-  );
-
   const handledLoginSuccess = usePersistFn(() => {
     close();
-    if (
-      initialized &&
-      (
-        bpmn.owners as Array<{
-          userId: string;
-        }>
-      ).length === 0
-    ) {
-      bindProcess();
-    }
-    if (!initialized && hasProcessId) {
-      // If the current URL carries processId and is not initialized, it is likely that there is no permission to access the process of the current processId, then you can directly refresh the webpage after the login is complete, to trigger loadProcess
-      window.location.reload();
-    }
+    //  if (!router.query.loanId || applicationForm.loading) {
+    //    return;
+    //  }
+    //  if (!applicationForm.isBind) {
+    //    bindLoan({ loanId: router.query.loanId });
+    //  }
   });
 
   const handledSignUpAndResetSuccess = usePersistFn(() => {
@@ -103,7 +86,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     switch (scene) {
       case 'application':
         return !hasSession ? (
-          formData?.state !== 'auth' && (
+          applicationForm.snapshot !== LoanSnapshotEnum.auth_page && (
             <Box>
               <StyledButton
                 color={'info'}
@@ -280,10 +263,9 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   }, [
     scene,
     hasSession,
-    formData?.state,
+    applicationForm.snapshot,
     breakpoint,
     store,
-    //applicable,
     open,
     router,
   ]);
@@ -457,7 +439,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   }, [
     authType,
     close,
-    handledLoginSuccess,
+    //handledLoginSuccess,
     handledSignUpAndResetSuccess,
     saasState?.legalAgreements?.privacyPolicyUrl,
     saasState?.legalAgreements?.termsUrl,
@@ -484,7 +466,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         )}
         <Box sx={{ ml: 'auto' }}>{renderButton}</Box>
       </Box>
-      <DashboardSideDrawer close={sideClose} visible={closeVisible} />
+      {/*<DashboardSideDrawer close={sideClose} visible={closeVisible} />*/}
       <StyledDialog
         content={renderDialog.content}
         disableEscapeKeyDown

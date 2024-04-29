@@ -40,11 +40,10 @@ type AsyncState =
     };
 
 interface FormNodeBaseProps {
-  nextStep: () => void;
-  prevStep: () => void;
-  updateState: AsyncState;
-  changeTaskState: AsyncState;
-  completeTaskState: AsyncState;
+  nextStep?: () => void;
+  backStep?: () => void;
+  nextState?: boolean;
+  backState?: boolean;
 }
 
 interface SubFormNodeProps {

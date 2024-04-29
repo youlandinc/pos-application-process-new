@@ -49,7 +49,7 @@ export const POSFormatLocalPercent = (
   }
   return percentageValue.toLocaleString('en-US', {
     style: 'percent',
-    minimumFractionDigits: radix,
+    minimumFractionDigits: Number.isInteger(percentageValue) ? radix : 3,
   });
 };
 
@@ -93,4 +93,18 @@ export const POSFormatUrl = (url: string): string => {
     return 'https://' + url.substring(5);
   }
   return 'https://' + url;
+};
+
+export const POSGetDecimalPlaces = (value: number): number => {
+  const target = value * 100 + '';
+  if (target.endsWith('.')) {
+    return 0;
+  }
+  const decimalIndex = target.indexOf('.');
+
+  if (decimalIndex === -1) {
+    return 0;
+  }
+
+  return target.length - decimalIndex - 1;
 };

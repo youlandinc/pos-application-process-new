@@ -19,12 +19,12 @@ export const StyledFormItem: FC<StyledFormItemProps> = ({
   return (
     <Stack
       alignItems={'center'}
-      maxWidth={800}
+      maxWidth={900}
       sx={{ ...sx }}
       width={'100%'}
       {...rest}
     >
-      <Stack maxWidth={800} width={'100%'}>
+      <Stack width={'100%'}>
         <Typography
           component={'div'}
           mb={tip ? 1 : 3}
@@ -33,11 +33,11 @@ export const StyledFormItem: FC<StyledFormItemProps> = ({
           variant={
             ['xs', 'sm', 'md'].includes(breakpoints)
               ? sub
-                ? 'h5'
-                : 'h4'
+                ? 'h6'
+                : 'h5'
               : sub
-                ? 'h5'
-                : 'h4'
+                ? 'h6'
+                : 'h5'
           }
         >
           {label}

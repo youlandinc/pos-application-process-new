@@ -13,6 +13,8 @@ export const Address = types
     aptNumber: types.string,
     city: types.string,
     postcode: types.string,
+    lng: types.maybe(types.number),
+    lat: types.maybe(types.number),
     errors: types.frozen<AddressError>(),
     isValid: types.boolean,
   })
@@ -31,6 +33,9 @@ export const Address = types
         !!self.postcode &&
         self.postcode.length === 5
       );
+    },
+    get isStateValid() {
+      return !!self.state;
     },
   }))
   .actions((self) => ({
@@ -53,11 +58,11 @@ export const Address = types
     },
     injectServerData(value: AddressData) {
       const { address, aptNumber, city, state, postcode } = value;
-      self.formatAddress = address;
-      self.aptNumber = aptNumber;
-      self.city = city;
-      self.state = state;
-      self.postcode = postcode;
+      self.formatAddress = address ?? '';
+      self.aptNumber = aptNumber ?? '';
+      self.city = city ?? '';
+      self.state = state ?? '';
+      self.postcode = postcode ?? '';
       self.isValid = Object.keys(self).some((item) => item);
     },
     getPostData(): AddressData {

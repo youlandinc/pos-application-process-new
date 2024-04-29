@@ -1,4 +1,5 @@
 import { MutableRefObject, useCallback, useEffect, useState } from 'react';
+import { useMst } from '@/models/Root';
 
 const googleMap: { current: null | google.maps.Map } = { current: null };
 const panorama: { current: null | google.maps.StreetViewPanorama } = {
@@ -11,6 +12,8 @@ export const useGoogleStreetViewAndMap = (
   mapRef: MutableRefObject<HTMLDivElement | null>,
   panoramaRef: MutableRefObject<HTMLDivElement | null>,
 ) => {
+  const store = useMst();
+
   const [serviceLoaded, setServiceLoaded] = useState(false);
   const loadGoogleMapService = useCallback((): void => {
     if (!lat || !lng) {
@@ -50,8 +53,10 @@ export const useGoogleStreetViewAndMap = (
   };
 
   useEffect(() => {
-    loadGoogleMapService();
-  }, [loadGoogleMapService]);
+    if (store.loadedGoogle) {
+      loadGoogleMapService();
+    }
+  }, [loadGoogleMapService, store.loadedGoogle]);
 
   return {
     serviceLoaded,

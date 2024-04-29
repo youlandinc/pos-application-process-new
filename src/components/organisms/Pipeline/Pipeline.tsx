@@ -10,7 +10,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { POSGetProductTypeByUrl } from '@/utils';
-import { _deleteProcess, _fetchAllProcesses } from '@/requests';
+import { _deletePipelineLoan, _fetchPipelineLoanList } from '@/requests';
 import { useSessionStorageState, useSwitch } from '@/hooks';
 import { HttpError, LoanStage, PipelineAccountStatus, UserType } from '@/types';
 import { AUTO_HIDE_DURATION, PAGE_SIZE } from '@/constants';
@@ -39,7 +39,7 @@ export const Pipeline: FC = observer(() => {
     pipelineTask: { pipelineInitialized },
     userType,
     session,
-    selectedProcessData,
+    //selectedProcessData,
     applicationForm,
   } = useMst();
 
@@ -70,15 +70,15 @@ export const Pipeline: FC = observer(() => {
     if (!session) {
       return;
     }
-    if (
-      (!pipelineInitialized ||
-        !pipelineStatusInitialized ||
-        pipelineStatus !== PipelineAccountStatus.active) &&
-      //||!applicable
-      userType !== UserType.CUSTOMER
-    ) {
-      return;
-    }
+    //if (
+    //  (!pipelineInitialized ||
+    //    !pipelineStatusInitialized ||
+    //    pipelineStatus !== PipelineAccountStatus.active) &&
+    //  //||!applicable
+    //  userType !== UserType.CUSTOMER
+    //) {
+    //  return;
+    //}
     const params = {
       page: 1,
       size: PAGE_SIZE * page,
@@ -95,7 +95,7 @@ export const Pipeline: FC = observer(() => {
       stage: searchForm.loanStage,
     };
     setFetchLoading(true);
-    return await _fetchAllProcesses(params)
+    return await _fetchPipelineLoanList(params)
       .then((res) => {
         setIsLoadMore(
           res.data.content.length !== res.data.totalElements
@@ -136,15 +136,14 @@ export const Pipeline: FC = observer(() => {
       return;
     }
     switch (row.loanStage) {
-      case LoanStage.Application:
+      case 'APPLICATION':
         applicationForm.resetForm();
         await router.push(
-          `/application/${POSGetProductTypeByUrl(row.productType)}?processId=${
-            row.youlandId
-          }`,
-          `/application/${POSGetProductTypeByUrl(row.productType)}?processId=${
-            row.youlandId
-          }`,
+          {
+            pathname: '/',
+            query: { loanId: row.loanId },
+          },
+          undefined,
           {
             shallow: true,
           },
@@ -161,13 +160,13 @@ export const Pipeline: FC = observer(() => {
         );
         break;
       default:
-        selectedProcessData.setLoading(true);
-        selectedProcessData.setProcessId('');
-        await router.push({
-          pathname: '/dashboard/overview',
-          query: { processId: row.youlandId },
-        });
-        break;
+      //selectedProcessData.setLoading(true);
+      //selectedProcessData.setProcessId('');
+      //await router.push({
+      //  pathname: '/dashboard/overview',
+      //  query: { loanId: row.loanId },
+      //});
+      //break;
     }
   };
 
@@ -192,7 +191,7 @@ export const Pipeline: FC = observer(() => {
   const handledConfirmDelete = useCallback(async () => {
     setDeleteLoading(true);
     try {
-      await _deleteProcess(deleteId);
+      await _deletePipelineLoan(deleteId);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -260,8 +259,8 @@ export const Pipeline: FC = observer(() => {
           listData.map((item) => (
             <LoanItemCard
               formData={item}
-              key={item.youlandId}
-              onDelete={() => handledDelete(item.youlandId, item.address)}
+              key={item.loanId}
+              onDelete={() => handledDelete(item.loanId, item.address)}
               onView={() => handledView(item)}
               userType={userType}
             />

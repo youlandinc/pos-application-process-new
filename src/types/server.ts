@@ -1,4 +1,4 @@
-import { LoanStage, LoanType } from '@/types/enum';
+import { LoanStage } from '@/types/enum';
 import { OccupancyOpt } from '@/types/options';
 import { TaskFiles } from '@/types/pipeline';
 
@@ -33,7 +33,7 @@ export interface PreApprovalLetterData {
   name: string;
   expiredDate: string;
   loanAmount: number;
-  loanType: LoanType;
+  // loanType: LoanType;
   approvedDate: string;
   downPayment: number;
   purchasePrice: number;

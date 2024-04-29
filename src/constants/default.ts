@@ -1,3 +1,5 @@
+import { LoanSnapshotEnum } from '@/types';
+
 export const REQUEST_TIMEOUT = 30000;
 
 export const AUTO_HIDE_DURATION = 3000;
@@ -11,3 +13,13 @@ export const GOOGLE_SING_IN_ID =
 
 //export const LOGIN_APP_KEY = 'jcDlAFZpmslrRYwUzfpP';
 export const LOGIN_APP_KEY = 'jjHggHfNVaGvkabpQXfs';
+
+export const URL_HASH = {
+  [LoanSnapshotEnum.starting_question]: '/',
+  [LoanSnapshotEnum.estimate_rate]: 'estimate-rate',
+  [LoanSnapshotEnum.auth_page]: 'auth-page',
+  [LoanSnapshotEnum.loan_address]: 'loan-address',
+  [LoanSnapshotEnum.background_information]: 'background-information',
+  [LoanSnapshotEnum.compensation_page]: 'compensation-information',
+  [LoanSnapshotEnum.loan_summary]: 'loan-summary',
+};

@@ -5,33 +5,23 @@ import { Instance, types } from 'mobx-state-tree';
 
 import {
   ApplicationForm,
-  Bpmn,
   DetectUserActiveService,
   NotificationStation,
   PTaskForm,
-  SelectedProcessData,
   UserSetting,
   //UserConfig,
   //UserProfile
 } from './base';
 
-import {
-  LoanStage,
-  LoginType,
-  SceneType,
-  ServerTaskKey,
-  UserType,
-} from '@/types/enum';
+import { LoginType, UserType } from '@/types/enum';
 import { User } from '@/types/user';
 
-import { userpool } from '@/constants';
+import { FormData, userpool } from '@/constants';
+import { LoanSnapshotEnum } from '@/types';
 
 export const RootModel = {
   persistDataLoaded: types.boolean,
   loadedGoogle: types.boolean,
-
-  bpmn: Bpmn,
-  selectedProcessData: SelectedProcessData,
 
   applicationForm: ApplicationForm,
 
@@ -127,9 +117,7 @@ const RootStore = types.model(RootModel).actions((self) => {
         userpool.clearLastAuthUserInfo(lastAuthId);
         userpool.clearLastAuthUserToken(lastAuthId);
       }
-      Router.pathname === '/'
-        ? Router.push('/')
-        : (window.location.href = '/auth/login');
+      window.location.href = '/auth/login';
     },
   };
 });
@@ -139,24 +127,18 @@ const initialState = {
   persistDataLoaded: false,
 
   session: void 0,
-  bpmn: {
-    processId: '',
-    taskId: '',
-    ServerTaskKey: ServerTaskKey.starting,
-    variables: [{}],
-  },
 
   applicationForm: {
+    loading: true,
+    isBind: false,
     initialized: false,
-    productCategory: void 0,
-    applicationType: void 0,
-  },
-
-  selectedProcessData: {
-    data: void 0,
-    scene: SceneType.default,
-    loading: false,
-    loanStage: LoanStage.Application,
+    loanId: '',
+    snapshot: LoanSnapshotEnum.starting_question,
+    startingQuestion: FormData[LoanSnapshotEnum.starting_question],
+    estimateRate: FormData[LoanSnapshotEnum.estimate_rate],
+    loanAddress: FormData[LoanSnapshotEnum.loan_address],
+    backgroundInformation: FormData[LoanSnapshotEnum.background_information],
+    compensationInformation: FormData[LoanSnapshotEnum.compensation_page],
   },
 
   pipelineTask: {

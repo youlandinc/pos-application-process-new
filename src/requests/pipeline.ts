@@ -1,5 +1,6 @@
 import { del, get, post, put } from './axios';
 import { PipelineTaskItem, TaskFiles } from '@/types/pipeline';
+import { ProcessesParams } from '@/types/process';
 
 export const _fetchPipelineTask = () => {
   return get('/usercenter/pipeline/application/task');
@@ -42,19 +43,20 @@ export const _fetchLegalFile = (taskId: string) => {
   return get(`/usercenter/pipeline/application/legalPdf/${taskId}`);
 };
 
-export const _fetchBrokerIsApproval = () => {
-  return get('/usercenter/pipeline/application/tips');
-};
-
 // delete
 export const _fetchPipelineStatus = () => {
   return get('/usercenter/pipeline/approve/status');
 };
 
-export const _deleteProcess = (processInsId: string) => {
-  return del(`/processes/${processInsId}`);
-};
-
 export const _submitPipelineTask = () => {
   return post('/usercenter/pipeline/application/submit');
+};
+
+// new
+export const _fetchPipelineLoanList = (params: ProcessesParams) => {
+  return post('/pos/loan/user/process', params);
+};
+
+export const _deletePipelineLoan = (loanId: string) => {
+  return del(`/pos/loan/process/${loanId}`);
 };

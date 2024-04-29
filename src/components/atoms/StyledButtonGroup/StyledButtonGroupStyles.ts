@@ -1,16 +1,15 @@
 export const StyledButtonGroupStyles = {
   '& .MuiToggleButton-root': {
     width: '100%',
-    textTransform: 'capitalize',
+    textTransform: 'none',
     fontWeight: 600,
     fontSize: 16,
     color: 'text.primary',
-    padding: '14px 20px',
     borderRadius: 2,
     borderWidth: '2px',
     boxShadow: 'none',
-    py: 2,
-    px: 6,
+    p: 0,
+    py: 1.5,
     '&.MuiToggleButtonGroup-grouped:not(:first-of-type)': {
       ml: '-2px',
       borderLeft: '2px solid transparent',

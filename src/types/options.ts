@@ -1,21 +1,3 @@
-export enum ChannelOpt {
-  default = '',
-  podcast = 'podcast',
-  tv = 'tv',
-  lending_tree = 'lending_tree',
-  public_transit = 'public_transit',
-  news_outlet = 'news_outlet',
-  real_estate_agent = 'real_estate_agent',
-  search = 'search',
-  nerd_wallet = 'nerd_wallet',
-  friend_or_family = 'friend_or_family',
-  youtube = 'youtube',
-  credit_karma = 'credit_karma',
-  direct_mail = 'direct_mail',
-  facebook = 'facebook_ad',
-  other = 'other',
-}
-
 export enum PropertyNumberOpt {
   default = '',
   zero = 'none',
@@ -98,15 +80,6 @@ export enum PropertyPurposeOpt {
   default = '',
   secondHome = 'second_home',
   investment = 'investment_property',
-}
-
-export enum DenialReason {
-  dti_too_high = 'dti_too_high',
-  na = 'na',
-  missing_income = 'missing_income',
-  dti_not_calculable = 'dti_not_calculable',
-  no_available_products = 'no_available_products',
-  missing_debts = 'missing_debts',
 }
 
 export enum DebtWrongReasonOpt {
