@@ -157,7 +157,7 @@ export const Auth: FC<FormNodeBaseProps> = observer(
           )}
         </Transitions>
 
-        <Stack mt={10} width={'100%'}>
+        <Stack mt={{ xs: 3, lg: 10 }} width={'100%'}>
           <StyledButton
             color={'info'}
             disabled={backState}

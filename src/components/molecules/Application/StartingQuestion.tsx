@@ -5,10 +5,10 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import {
-  APPLICATION_STARTING_QUESTION_LOAN_CATEGORY,
-  APPLICATION_STARTING_QUESTION_LOAN_PROPERTY_TYPE,
-  APPLICATION_STARTING_QUESTION_LOAN_PROPERTY_UNIT,
-  APPLICATION_STARTING_QUESTION_LOAN_PURPOSE,
+  APPLICATION_LOAN_CATEGORY,
+  APPLICATION_LOAN_PURPOSE,
+  APPLICATION_PROPERTY_TYPE,
+  APPLICATION_PROPERTY_UNIT,
 } from '@/constants';
 
 import {
@@ -33,7 +33,7 @@ export const StartingQuestion: FC<FormNodeBaseProps> = observer(
     } = useMst();
 
     return (
-      <Stack gap={10} m={'0 auto'} maxWidth={600} width={'100%'}>
+      <Stack gap={{ xs: 3, lg: 10 }} m={'0 auto'} maxWidth={600} width={'100%'}>
         <StyledFormItem
           label={'Which product are you interested in?'}
           width={'100%'}
@@ -45,7 +45,7 @@ export const StartingQuestion: FC<FormNodeBaseProps> = observer(
                 value as string as LoanProductCategoryEnum,
               );
             }}
-            options={APPLICATION_STARTING_QUESTION_LOAN_CATEGORY}
+            options={APPLICATION_LOAN_CATEGORY}
             value={startingQuestion.productCategory}
           />
         </StyledFormItem>
@@ -61,7 +61,7 @@ export const StartingQuestion: FC<FormNodeBaseProps> = observer(
                 value as string as LoanPurposeEnum,
               );
             }}
-            options={APPLICATION_STARTING_QUESTION_LOAN_PURPOSE}
+            options={APPLICATION_LOAN_PURPOSE}
             value={startingQuestion.loanPurpose}
           />
         </StyledFormItem>
@@ -74,7 +74,7 @@ export const StartingQuestion: FC<FormNodeBaseProps> = observer(
                 value as string as LoanPropertyTypeEnum,
               );
             }}
-            options={APPLICATION_STARTING_QUESTION_LOAN_PROPERTY_TYPE}
+            options={APPLICATION_PROPERTY_TYPE}
             value={startingQuestion.propertyType}
           />
         </StyledFormItem>
@@ -100,7 +100,7 @@ export const StartingQuestion: FC<FormNodeBaseProps> = observer(
                     value as string as LoanPropertyUnitEnum,
                   );
                 }}
-                options={APPLICATION_STARTING_QUESTION_LOAN_PROPERTY_UNIT}
+                options={APPLICATION_PROPERTY_UNIT}
                 value={startingQuestion.propertyUnit}
               />
             </StyledFormItem>

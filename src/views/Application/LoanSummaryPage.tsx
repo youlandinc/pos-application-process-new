@@ -1,58 +1,76 @@
-import { FC, useLayoutEffect } from 'react';
+import { FC, useState } from 'react';
 import { Box, Fade } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { POSGetParamsFromUrl } from '@/utils';
 import { useStoreData } from '@/hooks';
-import { LoanSnapshotEnum } from '@/types';
+import { HttpError, LoanSnapshotEnum, UserType } from '@/types';
 
 import { LoanSummary } from '@/components/molecules/Application';
+import { useAsync } from 'react-use';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 export const LoanSummaryPage: FC = observer(() => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
   const { applicationForm, userType } = useMst();
-  const { compensationInformation } = applicationForm;
 
-  const { updateFrom, updateFormState, redirectFrom, redirectFromState } =
+  const { redirectFrom, redirectFromState, updateFormState, updateFrom } =
     useStoreData();
 
+  const [data, setData] = useState({});
+
   const back = async () => {
+    if (!userType) {
+      return;
+    }
     const postData = {
-      nextSnapshot: LoanSnapshotEnum.background_information,
+      nextSnapshot:
+        userType === UserType.CUSTOMER
+          ? LoanSnapshotEnum.background_information
+          : LoanSnapshotEnum.compensation_page,
       loanId: applicationForm.loanId,
     };
     await redirectFrom(postData);
   };
 
   const next = async () => {
-    if (!userType) {
-      return;
-    }
-    const postData = {
-      snapshot: LoanSnapshotEnum.compensation_page,
-      nextSnapshot: LoanSnapshotEnum.loan_summary,
-      loanId: applicationForm.loanId,
-      data: compensationInformation.getPostData(),
-    };
-    await updateFrom(postData);
+    // if (!userType) {
+    //   return;
+    // }
+    // const postData = {
+    //   snapshot: LoanSnapshotEnum.compensation_page,
+    //   nextSnapshot: LoanSnapshotEnum.loan_summary,
+    //   loanId: applicationForm.loanId,
+    //   data: compensationInformation.getPostData(),
+    // };
+    // await updateFrom(postData);
   };
 
-  useLayoutEffect(
-    () => {
-      const { loanId } = POSGetParamsFromUrl(location.href);
-      if (loanId) {
-        applicationForm.fetchApplicationFormData(loanId);
-        return;
+  useAsync(async () => {
+    const { loanId } = POSGetParamsFromUrl(location.href);
+    if (loanId) {
+      try {
+        const data = await applicationForm.fetchApplicationFormData(loanId);
+        setData(data);
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
       }
-      applicationForm.resetForm();
-      router.push('/');
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
+      return;
+    }
+    applicationForm.resetForm();
+    await router.push('/');
+  });
 
   return (
     <Fade in={!applicationForm.loading}>
@@ -61,6 +79,7 @@ export const LoanSummaryPage: FC = observer(() => {
           <LoanSummary
             backState={redirectFromState.loading}
             backStep={back}
+            data={data}
             nextState={updateFormState.loading}
             nextStep={next}
           />

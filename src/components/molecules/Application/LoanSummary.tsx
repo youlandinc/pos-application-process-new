@@ -1,50 +1,237 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Collapse, Stack, Typography } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
-import { POSFormatDollar, POSFormatPercent } from '@/utils';
-import { useGoogleStreetViewAndMap } from '@/hooks';
+import {
+  POSFindLabel,
+  POSFormatDollar,
+  POSFormatPercent,
+  POSGetDecimalPlaces,
+} from '@/utils';
+import { useGoogleStreetViewAndMap, useRenderPdf, useSwitch } from '@/hooks';
 
-import { StyledButton, StyledFormItem } from '@/components/atoms';
+import { StyledButton, StyledDialog, StyledFormItem } from '@/components/atoms';
+import {
+  APPLICATION_LOAN_CATEGORY,
+  APPLICATION_LOAN_PURPOSE,
+  APPLICATION_PROPERTY_TYPE,
+  APPLICATION_PROPERTY_UNIT,
+  AUTO_HIDE_DURATION,
+} from '@/constants';
+import {
+  HttpError,
+  LoanProductCategoryEnum,
+  LoanPropertyTypeEnum,
+  LoanPurposeEnum,
+} from '@/types';
+
+import { _fetchFile } from '@/requests/application';
+import { CloseOutlined } from '@mui/icons-material';
 
 export const LoanSummary: FC<FormNodeBaseProps> = observer(
-  ({ nextStep, nextState, backState, backStep }) => {
+  ({ nextStep, nextState, backState, backStep, data }) => {
+    const { applicationForm } = useMst();
+    const { enqueueSnackbar } = useSnackbar();
+
+    const {
+      open: previewOpen,
+      close: previewClose,
+      visible: previewVisible,
+    } = useSwitch(false);
     const [collapsed, setCollapsed] = useState<boolean>(false);
-    const [lng, setLng] = useState<number>(-74.0072955);
-    const [lat, setLat] = useState<number>(40.7094756);
+    const [viewLoading, setViewLoading] = useState<boolean>(false);
+
+    const pdfFile = useRef(null);
+    const { renderFile } = useRenderPdf(pdfFile);
 
     const mapRef = useRef<HTMLDivElement>(null);
     const panoramaRef = useRef<HTMLDivElement>(null);
 
     const { relocate, reset: resetMap } = useGoogleStreetViewAndMap(
-      lat,
-      lng,
+      data.propertyAddress?.lat,
+      data.propertyAddress?.lng,
       mapRef,
       panoramaRef,
     );
 
     useEffect(
       () => {
-        if (lng || lat) {
+        if (data.propertyAddress?.lng || data.propertyAddress?.lat) {
           return;
         }
-        relocate(lat, lng);
+        relocate(data.propertyAddress?.lat, data.propertyAddress?.lng);
         return () => {
           resetMap();
         };
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      [lat, lng, relocate],
+      [data.propertyAddress?.lat, data.propertyAddress?.lng, relocate],
     );
 
     useEffect(() => {
-      relocate(lat, lng);
+      relocate(data.propertyAddress?.lat, data.propertyAddress?.lng);
       return () => {
         resetMap();
       };
-    }, [lat, lng, relocate, resetMap]);
+    }, [
+      data.propertyAddress?.lat,
+      data.propertyAddress?.lng,
+      relocate,
+      resetMap,
+    ]);
+
+    const getPDF = useCallback(
+      async (fileType: 'letter' | 'summary') => {
+        setViewLoading(true);
+        try {
+          const { data } = await _fetchFile(applicationForm.loanId!, fileType);
+          previewOpen();
+          setTimeout(() => {
+            renderFile(data);
+          }, 100);
+        } catch (err) {
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
+          });
+        } finally {
+          setViewLoading(false);
+        }
+      },
+      [applicationForm.loanId, enqueueSnackbar, previewOpen, renderFile],
+    );
+
+    const renderLoanAmount = useMemo(() => {
+      switch (data?.productCategory) {
+        case LoanProductCategoryEnum.stabilized_bridge:
+          return data?.loanPurpose === LoanPurposeEnum.purchase ? (
+            <>
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.purchasePrice)}
+                title={'Purchase price'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.purchaseLoanAmount)}
+                title={'Purchase loan amount'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatPercent(
+                  data?.ltv,
+                  POSGetDecimalPlaces(data?.ltv),
+                )}
+                title={'Loan to value'}
+              />
+            </>
+          ) : (
+            <>
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.propertyValue)}
+                title={'As-is property value'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.refinanceLoanAmount)}
+                title={'Refinance loan amount'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.payoffAmount)}
+                title={'Payoff amount'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatPercent(
+                  data?.ltc,
+                  POSGetDecimalPlaces(data?.ltc),
+                )}
+                title={'Loan to value'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatPercent(
+                  data?.arltv,
+                  POSGetDecimalPlaces(data?.arltv),
+                )}
+                title={'After-repair loan to value'}
+              />
+            </>
+          );
+        case LoanProductCategoryEnum.fix_and_flip:
+          return data?.loanPurpose === LoanPurposeEnum.purchase ? (
+            <>
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.purchasePrice)}
+                title={'Purchase price'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.purchaseLoanAmount)}
+                title={'Purchase loan amount'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.rehabCost)}
+                title={'Est. cost of rehab'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatPercent(
+                  data?.ltv,
+                  POSGetDecimalPlaces(data?.ltv),
+                )}
+                title={'Loan to value'}
+              />
+            </>
+          ) : (
+            <>
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.propertyValue)}
+                title={'As-is property value'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.refinanceLoanAmount)}
+                title={'Refinance loan amount'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.payoffAmount)}
+                title={'Payoff amount'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.rehabCost)}
+                title={'Est. cost of rehab'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatPercent(
+                  data?.ltc,
+                  POSGetDecimalPlaces(data?.ltc),
+                )}
+                title={'Loan to value'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatPercent(
+                  data?.arltv,
+                  POSGetDecimalPlaces(data?.arltv),
+                )}
+                title={'After-repair loan to value'}
+              />
+            </>
+          );
+        default:
+          return null;
+      }
+    }, [
+      data?.arltv,
+      data?.loanPurpose,
+      data?.ltc,
+      data?.ltv,
+      data?.payoffAmount,
+      data?.productCategory,
+      data?.propertyValue,
+      data?.purchaseLoanAmount,
+      data?.purchasePrice,
+      data?.refinanceLoanAmount,
+      data?.rehabCost,
+    ]);
 
     return (
       <StyledFormItem
@@ -67,22 +254,11 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               width={'100%'}
             >
               <LoanSummaryCardRow
-                content={POSFormatDollar(1000000)}
+                content={POSFormatDollar(data?.totalLoanAmount)}
                 isHeader={true}
                 title={'Total loan amount'}
               />
-              <LoanSummaryCardRow
-                content={POSFormatDollar(1000000)}
-                title={'As-is property value'}
-              />
-              <LoanSummaryCardRow
-                content={POSFormatDollar(1000000)}
-                title={'Payoff amount'}
-              />
-              <LoanSummaryCardRow
-                content={POSFormatDollar(1000000)}
-                title={'Cash out amount'}
-              />
+              {renderLoanAmount}
             </Stack>
 
             <Stack
@@ -93,11 +269,17 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               width={'100%'}
             >
               <LoanSummaryCardRow
-                content={POSFormatPercent(0.01)}
+                content={POSFormatPercent(
+                  data?.interestRate,
+                  POSGetDecimalPlaces(data?.interestRate),
+                )}
                 isHeader={true}
                 title={'Interest rate'}
               />
-              <LoanSummaryCardRow content={`${18} months`} title={'Term'} />
+              <LoanSummaryCardRow
+                content={`${data?.loanTerm} months`}
+                title={'Term'}
+              />
             </Stack>
 
             <Stack
@@ -107,7 +289,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               width={'100%'}
             >
               <LoanSummaryCardRow
-                content={POSFormatDollar(1000000)}
+                content={POSFormatDollar(data?.monthlyPayment)}
                 isHeader={true}
                 title={'Monthly payment'}
               />
@@ -121,32 +303,35 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               width={'100%'}
             >
               <LoanSummaryCardRow
-                content={POSFormatDollar(1000000)}
+                content={POSFormatDollar(data?.closingCash)}
                 isHeader={true}
-                title={'Total loan amount'}
+                title={'Cash required at closing'}
               />
               <LoanSummaryCardRow
-                content={`${POSFormatDollar(1000000)} (${POSFormatPercent(
-                  0.01,
+                content={`${POSFormatDollar(
+                  data?.lenderOriginationFee,
+                )} (${POSFormatPercent(
+                  data?.lenderOriginationPoints,
+                  POSGetDecimalPlaces(data?.lenderOriginationPoints),
                 )})`}
                 title={'Lender origination fee'}
               />
               <LoanSummaryCardRow
-                content={POSFormatDollar(1000000)}
+                content={POSFormatDollar(data?.documentPreparationFee)}
                 title={'Document preparation fee'}
               />
               <LoanSummaryCardRow
-                content={POSFormatDollar(1000000)}
+                content={data?.thirdPartyCosts}
                 title={'Third-party costs'}
               />
               <LoanSummaryCardRow
-                content={POSFormatDollar(1000000)}
+                content={POSFormatDollar(data?.underwritingFee)}
                 title={'Underwriting fee'}
               />
-              <LoanSummaryCardRow
-                content={'Contact closing agent'}
-                title={'Pro-rated interest'}
-              />
+              {/*<LoanSummaryCardRow*/}
+              {/*  content={data?.proRatedInterest}*/}
+              {/*  title={'Pro-rated interest'}*/}
+              {/*/>*/}
             </Stack>
 
             <Stack
@@ -192,21 +377,45 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               <Collapse in={collapsed}>
                 <Stack gap={3} mb={3}>
                   <LoanSummaryCardRow
-                    content={'None'}
+                    content={data?.prepaymentPenalty || '0-0-0'}
                     title={'Prepayment penalty'}
                   />
-                  <LoanSummaryCardRow content={'1st'} title={'Lien'} />
                   <LoanSummaryCardRow
-                    content={'Fixed interest'}
+                    content={data?.lien || '1st'}
+                    title={'Lien'}
+                  />
+                  <LoanSummaryCardRow
+                    content={POSFindLabel(
+                      APPLICATION_LOAN_CATEGORY,
+                      data?.productCategory,
+                    )}
                     title={'Loan type'}
                   />
-                  <LoanSummaryCardRow content={'Purchase'} title={'Purpose'} />
                   <LoanSummaryCardRow
-                    content={'Single Family'}
+                    content={POSFindLabel(
+                      APPLICATION_LOAN_PURPOSE,
+                      data?.loanPurpose,
+                    )}
+                    title={'Purpose'}
+                  />
+                  {/*todo*/}
+                  <LoanSummaryCardRow
+                    content={
+                      data?.propertyType ===
+                      LoanPropertyTypeEnum.two_to_four_family
+                        ? POSFindLabel(
+                            APPLICATION_PROPERTY_UNIT,
+                            data?.propertyUnit,
+                          )
+                        : POSFindLabel(
+                            APPLICATION_PROPERTY_TYPE,
+                            data?.propertyType,
+                          )
+                    }
                     title={'Property type'}
                   />
                   <LoanSummaryCardRow
-                    content={'Non-owner occupied'}
+                    content={data?.occupancy}
                     title={'Occupancy'}
                   />
                 </Stack>
@@ -242,10 +451,36 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                   Address
                 </Typography>
                 <Typography color={'primary.darker'} variant={'h5'}>
-                  159 Alfalfa Avenue, Twenty nine Palms, CA 92277
+                  {`${
+                    data.propertyAddress?.address
+                      ? `${data.propertyAddress?.address}, `
+                      : ''
+                  }${
+                    data.propertyAddress?.aptNumber
+                      ? `#${data.propertyAddress?.aptNumber}`
+                      : ''
+                  }${
+                    data.propertyAddress?.city
+                      ? `${data.propertyAddress?.city}, `
+                      : ''
+                  }${
+                    data.propertyAddress?.state
+                      ? `${data.propertyAddress?.state} `
+                      : ''
+                  }${
+                    data.propertyAddress?.postcode
+                      ? `${data.propertyAddress?.postcode}`
+                      : ''
+                  }`}
                 </Typography>
               </Stack>
-              <StyledButton color={'info'} variant={'outlined'}>
+              <StyledButton
+                color={'info'}
+                disabled={viewLoading}
+                loading={viewLoading}
+                onClick={() => getPDF('letter')}
+                variant={'outlined'}
+              >
                 View pre-approval letter
               </StyledButton>
               {/*<StyledButton color={'info'} variant={'outlined'}>*/}
@@ -260,18 +495,21 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               width={'100%'}
             >
               <LoanSummaryCardRow
-                content={POSFormatDollar(1000000)}
+                content={POSFormatDollar(data?.compensationFee)}
                 isHeader={true}
                 title={'Total broker compensation'}
               />
               <LoanSummaryCardRow
-                content={`${POSFormatDollar(1000000)} (${POSFormatPercent(
-                  0.01,
+                content={`${POSFormatDollar(
+                  data?.originationFee,
+                )} (${POSFormatPercent(
+                  data?.originationPoints,
+                  POSGetDecimalPlaces(data?.originationPoints),
                 )})`}
                 title={'Broker origination fee'}
               />
               <LoanSummaryCardRow
-                content={POSFormatDollar(1000000)}
+                content={POSFormatDollar(data?.processingFee)}
                 title={'Broker processing fee'}
               />
             </Stack>
@@ -287,7 +525,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
           flexDirection={'row'}
           gap={3}
           maxWidth={600}
-          mt={10}
+          mt={{ xs: 3, lg: 10 }}
           width={'100%'}
         >
           <StyledButton
@@ -310,6 +548,35 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
             Submit application
           </StyledButton>
         </Stack>
+
+        <StyledDialog
+          content={<Box ref={pdfFile} />}
+          disableEscapeKeyDown
+          header={
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              pb={3}
+            >
+              <Typography variant={'h6'}>Pre-approval Letter</Typography>
+              <StyledButton isIconButton onClick={previewClose}>
+                <CloseOutlined />
+              </StyledButton>
+            </Stack>
+          }
+          open={previewVisible}
+          sx={{
+            '& .MuiPaper-root': {
+              maxWidth: { lg: '900px !important', xs: '100% !important' },
+              width: '100%',
+              '& .MuiDialogTitle-root, & .MuiDialogActions-root': {
+                bgcolor: '#F5F8FA',
+                p: 3,
+              },
+            },
+          }}
+        />
       </StyledFormItem>
     );
   },
@@ -337,7 +604,7 @@ const LoanSummaryCardRow: FC<{
         color={isHeader ? 'primary' : 'text.primary'}
         variant={isHeader ? 'h7' : 'subtitle1'}
       >
-        {content}
+        {content || '-'}
       </Typography>
     </Stack>
   );

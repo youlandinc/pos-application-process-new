@@ -6,6 +6,8 @@ export interface AddressData {
   city: string;
   state: string;
   postcode: string;
+  lng?: number;
+  lat?: number;
 }
 
 export type EstateAgent = User.BaseUserInfo;

@@ -2,8 +2,6 @@ import { useAsyncFn } from 'react-use';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 
-import { useMst } from '@/models/Root';
-
 import { HttpError } from '@/types';
 import { AUTO_HIDE_DURATION, URL_HASH } from '@/constants';
 
@@ -11,7 +9,6 @@ import { _bindLoan, _redirectLoan, _updateLoan } from '@/requests/application';
 import { usePersistFn } from '@/hooks/usePersistFn';
 
 export const useStoreData = () => {
-  const { applicationForm } = useMst();
   const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -19,15 +16,10 @@ export const useStoreData = () => {
   const [updateFormState, updateFrom] = useAsyncFn(async (params) => {
     return await _updateLoan(params)
       .then(async (res) => {
-        const {
-          data: { snapshot, data },
-        } = res;
-        applicationForm.setSnapshot(snapshot);
-        applicationForm.injectServerData(snapshot, data);
         await router.push({
           //eslint-disable-next-line @typescript-eslint/ban-ts-comment
           //@ts-ignore
-          pathname: URL_HASH[snapshot],
+          pathname: URL_HASH[params.nextSnapshot],
           query: { loanId: params.loanId },
         });
         return res;
@@ -46,15 +38,10 @@ export const useStoreData = () => {
   const [redirectFromState, redirectFrom] = useAsyncFn(async (params) => {
     return await _redirectLoan(params)
       .then(async (res) => {
-        const {
-          data: { snapshot, data },
-        } = res;
-        applicationForm.setSnapshot(snapshot);
-        applicationForm.injectServerData(snapshot, data);
         await router.push({
           //eslint-disable-next-line @typescript-eslint/ban-ts-comment
           //@ts-ignore
-          pathname: URL_HASH[snapshot],
+          pathname: URL_HASH[params.nextSnapshot],
           query: { loanId: params.loanId },
         });
         return res;

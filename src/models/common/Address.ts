@@ -57,21 +57,33 @@ export const Address = types
       self.errors = errors || {};
     },
     injectServerData(value: AddressData) {
-      const { address, aptNumber, city, state, postcode } = value;
+      const { address, aptNumber, city, state, postcode, lng, lat } = value;
       self.formatAddress = address ?? '';
       self.aptNumber = aptNumber ?? '';
       self.city = city ?? '';
       self.state = state ?? '';
       self.postcode = postcode ?? '';
+      self.lat = lat ?? void 0;
+      self.lng = lng ?? void 0;
       self.isValid = Object.keys(self).some((item) => item);
     },
     getPostData(): AddressData {
-      const { formatAddress: address, aptNumber, city, state, postcode } = self;
+      const {
+        formatAddress: address,
+        aptNumber,
+        city,
+        state,
+        postcode,
+        lat,
+        lng,
+      } = self;
       return {
         address,
         aptNumber,
         city,
         state,
+        lat,
+        lng,
         postcode,
       };
     },
@@ -83,6 +95,8 @@ export const Address = types
       self.aptNumber = '';
       self.city = '';
       self.postcode = '';
+      self.lng = void 0;
+      self.lat = void 0;
       self.errors = {} as AddressError;
       self.isValid = false;
     },

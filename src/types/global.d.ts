@@ -44,6 +44,7 @@ interface FormNodeBaseProps {
   backStep?: () => void;
   nextState?: boolean;
   backState?: boolean;
+  data?: any;
 }
 
 interface SubFormNodeProps {

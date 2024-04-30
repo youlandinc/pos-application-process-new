@@ -59,3 +59,7 @@ export const _fetchProductList = (
 ) => {
   return post('/pos/loan/process/rates', params);
 };
+
+export const _fetchFile = (loanId: string, fileType: 'summary' | 'letter') => {
+  return get(`/pos/loan/process/${loanId}/${fileType}`);
+};

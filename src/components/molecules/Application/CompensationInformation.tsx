@@ -55,6 +55,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
             }
             percentage={true}
             suffix={'%'}
+            thousandSeparator={false}
             value={compensationInformation.originationPoints}
           />
 
@@ -75,7 +76,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
           gap={3}
           label={'Do you want to provide additional info about this loan?'}
           labelSx={{ m: 0, textAlign: 'left' }}
-          mt={10}
+          mt={{ xs: 3, lg: 10 }}
         >
           <StyledButtonGroup
             onChange={(e, value) => {
@@ -120,7 +121,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
           flexDirection={'row'}
           gap={3}
           maxWidth={600}
-          mt={10}
+          mt={{ xs: 3, lg: 10 }}
           width={'100%'}
         >
           <StyledButton

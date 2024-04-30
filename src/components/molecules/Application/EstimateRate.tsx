@@ -25,12 +25,12 @@ import {
 import { useBreakpoints, useDebounceFn, useSessionStorageState } from '@/hooks';
 
 import {
-  APPLICATION_ESTIMATE_RATE_FICO_SCORE,
-  APPLICATION_ESTIMATE_RATE_LIQUIDITY,
-  APPLICATION_STARTING_QUESTION_LOAN_CATEGORY,
-  APPLICATION_STARTING_QUESTION_LOAN_PROPERTY_TYPE,
-  APPLICATION_STARTING_QUESTION_LOAN_PROPERTY_UNIT,
-  APPLICATION_STARTING_QUESTION_LOAN_PURPOSE,
+  APPLICATION_FICO_SCORE,
+  APPLICATION_LIQUIDITY,
+  APPLICATION_LOAN_CATEGORY,
+  APPLICATION_LOAN_PURPOSE,
+  APPLICATION_PROPERTY_TYPE,
+  APPLICATION_PROPERTY_UNIT,
   AUTO_HIDE_DURATION,
   OPTIONS_COMMON_STATE,
 } from '@/constants';
@@ -114,6 +114,46 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       estimateRate.rehabCost,
     ]);
 
+    const LTV = useMemo(() => {
+      return estimateRate.loanPurpose === LoanPurposeEnum.purchase
+        ? (estimateRate.purchaseLoanAmount ?? 0) /
+            (estimateRate.purchasePrice ?? 0)
+        : (estimateRate.refinanceLoanAmount ?? 0) /
+            (estimateRate.propertyValue ?? 0);
+    }, [
+      estimateRate?.loanPurpose,
+      estimateRate?.propertyValue,
+      estimateRate?.purchaseLoanAmount,
+      estimateRate?.purchasePrice,
+      estimateRate?.refinanceLoanAmount,
+    ]);
+
+    const LTC = useMemo(() => {
+      if (
+        estimateRate.productCategory !==
+        LoanProductCategoryEnum.stabilized_bridge
+      ) {
+        return estimateRate.loanPurpose === LoanPurposeEnum.purchase
+          ? ((estimateRate?.purchaseLoanAmount ?? 0) +
+              (estimateRate?.rehabCost ?? 0)) /
+              ((estimateRate?.purchasePrice ?? 0) +
+                (estimateRate?.rehabCost ?? 0))
+          : ((estimateRate.refinanceLoanAmount ?? 0) +
+              (estimateRate?.rehabCost ?? 0)) /
+              ((estimateRate.propertyValue ?? 0) +
+                (estimateRate?.rehabCost ?? 0));
+      }
+      return 0;
+    }, [
+      estimateRate.loanPurpose,
+      estimateRate.productCategory,
+      estimateRate.propertyValue,
+      estimateRate?.purchaseLoanAmount,
+      estimateRate?.purchasePrice,
+      estimateRate.refinanceLoanAmount,
+      estimateRate?.rehabCost,
+    ]);
+
     useEffect(
       () => {
         if (POSNotUndefined(expanded) || expanded) {
@@ -158,21 +198,15 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         m={'0 auto'}
         maxWidth={976}
         tip={`${POSFindLabel(
-          APPLICATION_STARTING_QUESTION_LOAN_CATEGORY,
+          APPLICATION_LOAN_CATEGORY,
           estimateRate.productCategory,
         )} ${POSFindLabel(
-          APPLICATION_STARTING_QUESTION_LOAN_PURPOSE,
+          APPLICATION_LOAN_PURPOSE,
           estimateRate.loanPurpose,
         )} | ${
           estimateRate.propertyType !== LoanPropertyTypeEnum.two_to_four_family
-            ? POSFindLabel(
-                APPLICATION_STARTING_QUESTION_LOAN_PROPERTY_TYPE,
-                estimateRate.propertyType,
-              )
-            : POSFindLabel(
-                APPLICATION_STARTING_QUESTION_LOAN_PROPERTY_UNIT,
-                estimateRate.propertyUnit,
-              )
+            ? POSFindLabel(APPLICATION_PROPERTY_TYPE, estimateRate.propertyType)
+            : POSFindLabel(APPLICATION_PROPERTY_UNIT, estimateRate.propertyUnit)
         }`}
         tipSx={{
           textAlign: { lg: 'left', xs: 'center' },
@@ -252,7 +286,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     e.target.value as string as LoanFicoScoreEnum,
                   );
                 }}
-                options={APPLICATION_ESTIMATE_RATE_FICO_SCORE}
+                options={APPLICATION_FICO_SCORE}
                 sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                 value={estimateRate.ficoScore}
               />
@@ -269,7 +303,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     value === LoanAnswerEnum.yes,
                   );
                 }}
-                options={APPLICATION_ESTIMATE_RATE_LIQUIDITY}
+                options={APPLICATION_LIQUIDITY}
                 selectLabel={'Liquidity'}
                 selectValue={
                   estimateRate.isLiquidity
@@ -358,7 +392,9 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 }
                 onValueChange={({ floatValue }) => {
                   estimateRate.changeFieldValue(
-                    'purchaseLoanAmount',
+                    estimateRate.loanPurpose === LoanPurposeEnum.refinance
+                      ? 'refinanceLoanAmount'
+                      : 'purchaseLoanAmount',
                     floatValue,
                   );
                 }}
@@ -412,7 +448,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                         variant={'body3'}
                       >
                         After-repair loan to value:{' '}
-                        <b>{POSFormatPercent(0.1, 1)}</b>
+                        <b>{POSFormatPercent(LTV, 1)}</b>
                       </Typography>
 
                       <Typography
@@ -425,7 +461,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                         }}
                         variant={'body3'}
                       >
-                        Loan to cost: <b>{POSFormatPercent(0.12345, 1)}</b>
+                        Loan to cost: <b>{POSFormatPercent(LTC, 1)}</b>
                       </Typography>
                     </>
                   ) : (
@@ -439,7 +475,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                       }}
                       variant={'body3'}
                     >
-                      Loan to value: <b>{POSFormatPercent(0.1, 1)}</b>
+                      Loan to value: <b>{POSFormatPercent(LTV, 1)}</b>
                     </Typography>
                   )}
                 </Stack>
@@ -494,7 +530,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                       variant={'body3'}
                     >
                       After-repair loan to value:{' '}
-                      <b>{POSFormatPercent(0.1, 1)}</b>
+                      <b>{POSFormatPercent(LTV, 1)}</b>
                     </Typography>
 
                     <Typography
@@ -507,7 +543,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                       }}
                       variant={'body3'}
                     >
-                      Loan to cost: <b>{POSFormatPercent(0.12345, 1)}</b>
+                      Loan to cost: <b>{POSFormatPercent(LTC, 1)}</b>
                     </Typography>
                   </>
                 ) : (
@@ -521,7 +557,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     }}
                     variant={'body3'}
                   >
-                    Loan to value: <b>{POSFormatPercent(0.1, 1)}</b>
+                    Loan to value: <b>{POSFormatPercent(LTV, 1)}</b>
                   </Typography>
                 )}
               </Stack>
@@ -558,10 +594,11 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
             errorList={errorList}
             loading={loading}
             productList={productList}
+            totalLoanAmount={totalLoanAmount}
           />
         </Stack>
 
-        <Stack alignItems={'center'} mt={10} width={'100%'}>
+        <Stack alignItems={'center'} mt={{ xs: 3, lg: 10 }} width={'100%'}>
           <StyledButton
             color={'info'}
             disabled={backState}

@@ -27,7 +27,7 @@ export const POSFormatPercent = (
     if (radix === 0) {
       return '0%';
     }
-    return '0.000%';
+    return '0%';
   }
   let target = percentageValue;
   if (POSTypeOf(target) === 'String') {
@@ -45,7 +45,7 @@ export const POSFormatLocalPercent = (
   radix = 3,
 ): string => {
   if (!percentageValue) {
-    return '0.000%';
+    return '0%';
   }
   return percentageValue.toLocaleString('en-US', {
     style: 'percent',

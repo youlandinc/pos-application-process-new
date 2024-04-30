@@ -28,7 +28,7 @@ import {
 import { format, parseISO } from 'date-fns';
 
 import { POSFlex } from '@/styles';
-import { LoanStage, UserType } from '@/types';
+import { LoanSnapshotEnum, LoanStage, UserType } from '@/types';
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
 
 import { StyledBadge, StyledButton } from '@/components/atoms';
@@ -39,6 +39,7 @@ export interface LoanItemCardProps {
     address: string;
     loanType: string;
     loanAmount: number;
+    snapshot: LoanSnapshotEnum;
     applicationDate: Date | null;
     loanStage: LoanStage;
     originationFee: number | null;

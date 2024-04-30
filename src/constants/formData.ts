@@ -35,7 +35,7 @@ export const FormData = {
     state: 'CA',
     ficoScore: LoanFicoScoreEnum.between_700_749,
     // for now not use liquidity
-    isLiquidity: false,
+    isLiquidity: true,
     liquidityAmount: 100000,
     // fix or ground-up
     rehabCost: 0,

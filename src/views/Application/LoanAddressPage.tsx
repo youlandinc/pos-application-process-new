@@ -1,11 +1,12 @@
 import { FC, useLayoutEffect } from 'react';
+import { Box, Fade } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
-import { POSGetParamsFromUrl } from '@/utils';
-import { useRouter } from 'next/router';
-import { useSessionStorageState, useStoreData } from '@/hooks';
 import { useMst } from '@/models/Root';
-import { Box, Fade } from '@mui/material';
+
+import { POSGetParamsFromUrl } from '@/utils';
+import { useStoreData } from '@/hooks';
 
 import { LoanAddress } from '@/components/molecules/Application';
 import { LoanSnapshotEnum } from '@/types';

@@ -24,7 +24,12 @@ export const LoanAddress: FC<FormNodeBaseProps> = observer(
       >
         <StyledGoogleAutoComplete address={loanAddress} />
 
-        <Stack flexDirection={'row'} gap={3} mt={10} width={'100%'}>
+        <Stack
+          flexDirection={'row'}
+          gap={3}
+          mt={{ xs: 3, lg: 10 }}
+          width={'100%'}
+        >
           <StyledButton
             color={'info'}
             disabled={backState}

@@ -30,7 +30,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
           label={'Has the borrower had a bankruptcy within the past 24 months?'}
           labelSx={{ textAlign: 'left' }}
           maxWidth={600}
-          mt={5}
+          mt={{ xs: 1, lg: 5 }}
           sub
         >
           <StyledButtonGroup
@@ -46,7 +46,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
           label={'Is the borrower delinquent on their mortgage account?'}
           labelSx={{ textAlign: 'left' }}
           maxWidth={600}
-          mt={7}
+          mt={{ xs: 3, lg: 7 }}
           sub
         >
           <StyledButtonGroup
@@ -64,7 +64,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
           }
           labelSx={{ textAlign: 'left' }}
           maxWidth={600}
-          mt={7}
+          mt={{ xs: 3, lg: 7 }}
           sub
         >
           <StyledButtonGroup
@@ -82,7 +82,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
           }
           labelSx={{ textAlign: 'left' }}
           maxWidth={600}
-          mt={7}
+          mt={{ xs: 3, lg: 7 }}
           sub
         >
           <StyledButtonGroup
@@ -100,7 +100,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
           }
           labelSx={{ textAlign: 'left' }}
           maxWidth={600}
-          mt={7}
+          mt={{ xs: 3, lg: 7 }}
           sub
         >
           <StyledButtonGroup
@@ -117,7 +117,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
           flexDirection={'row'}
           gap={3}
           maxWidth={600}
-          mt={10}
+          mt={{ xs: 3, lg: 10 }}
           width={'100%'}
         >
           <StyledButton

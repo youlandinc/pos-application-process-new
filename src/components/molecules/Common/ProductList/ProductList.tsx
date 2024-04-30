@@ -19,10 +19,11 @@ interface ProductListProps {
   errorList: Array<string | any>;
   productList: Array<ProductItemProps | any>;
   loading: boolean;
+  totalLoanAmount?: number;
 }
 
 export const ProductList: FC<ProductListProps> = observer(
-  ({ errorList, productList, loading }) => {
+  ({ errorList, productList, loading, totalLoanAmount }) => {
     const breakpoints = useBreakpoints();
 
     return (
@@ -53,7 +54,7 @@ export const ProductList: FC<ProductListProps> = observer(
                   {productList.map((item, index) => (
                     <ProductItem key={`${item.id}-${index}`} {...item} />
                   ))}
-                  <ProductCustomItem />
+                  <ProductCustomItem totalLoanAmount={totalLoanAmount} />
                 </Stack>
 
                 <Typography
@@ -85,7 +86,7 @@ export const ProductList: FC<ProductListProps> = observer(
               <>
                 <ProductMessageList errorList={errorList} />
                 {/*<ProductNoResultContact />*/}
-                <ProductCustomItem />
+                <ProductCustomItem totalLoanAmount={totalLoanAmount} />
               </>
             )}
           </>

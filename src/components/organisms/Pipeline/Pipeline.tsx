@@ -13,7 +13,7 @@ import { POSGetProductTypeByUrl } from '@/utils';
 import { _deletePipelineLoan, _fetchPipelineLoanList } from '@/requests';
 import { useSessionStorageState, useSwitch } from '@/hooks';
 import { HttpError, LoanStage, PipelineAccountStatus, UserType } from '@/types';
-import { AUTO_HIDE_DURATION, PAGE_SIZE } from '@/constants';
+import { AUTO_HIDE_DURATION, PAGE_SIZE, URL_HASH } from '@/constants';
 import { StyledButton, StyledDialog, StyledLoading } from '@/components/atoms';
 
 import {
@@ -140,7 +140,7 @@ export const Pipeline: FC = observer(() => {
         applicationForm.resetForm();
         await router.push(
           {
-            pathname: '/',
+            pathname: URL_HASH[row.snapshot],
             query: { loanId: row.loanId },
           },
           undefined,

@@ -145,6 +145,7 @@ export const ApplicationForm = types
         }
         self.loading = false;
         self.initialized = true;
+        return data;
       } catch (err) {
         self.loading = false;
         const { header, message, variant } = err as HttpError;

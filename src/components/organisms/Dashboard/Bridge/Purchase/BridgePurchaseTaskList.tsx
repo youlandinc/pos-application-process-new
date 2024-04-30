@@ -103,7 +103,6 @@ const BridgePurchaseDashboardTaskMap: DashboardTaskList<BPDashboardTaskKey> = {
   //       code: 'BP_THIRD_CLOSING',
   //       url: '/dashboard/tasks/company_information',
   //     },
-
   //   ],
   // },
   DocumentsMaterials: {
