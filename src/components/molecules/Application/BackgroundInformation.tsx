@@ -35,6 +35,9 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
         >
           <StyledButtonGroup
             onChange={(e, value) => {
+              if (value === backgroundInformation.hadBankruptcy) {
+                return;
+              }
               backgroundInformation.changeFieldValue('hadBankruptcy', value);
             }}
             options={OPTIONS_COMMON_LOAN_ANSWER}
@@ -51,6 +54,9 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
         >
           <StyledButtonGroup
             onChange={(e, value) => {
+              if (value === backgroundInformation.hadDelinquent) {
+                return;
+              }
               backgroundInformation.changeFieldValue('hadDelinquent', value);
             }}
             options={OPTIONS_COMMON_LOAN_ANSWER}
@@ -69,6 +75,9 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
         >
           <StyledButtonGroup
             onChange={(e, value) => {
+              if (value === backgroundInformation.hadForeclosure) {
+                return;
+              }
               backgroundInformation.changeFieldValue('hadForeclosure', value);
             }}
             options={OPTIONS_COMMON_LOAN_ANSWER}
@@ -87,6 +96,9 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
         >
           <StyledButtonGroup
             onChange={(e, value) => {
+              if (value === backgroundInformation.hadFelony) {
+                return;
+              }
               backgroundInformation.changeFieldValue('hadFelony', value);
             }}
             options={OPTIONS_COMMON_LOAN_ANSWER}
@@ -105,6 +117,9 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
         >
           <StyledButtonGroup
             onChange={(e, value) => {
+              if (value === backgroundInformation.hadLitigation) {
+                return;
+              }
               backgroundInformation.changeFieldValue('hadLitigation', value);
             }}
             options={OPTIONS_COMMON_LOAN_ANSWER}

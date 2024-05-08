@@ -93,6 +93,7 @@ export default function MyApp(props: MyAppProps) {
             light: `hsla(${saasState?.posSettings?.h ?? 222},100%,92%,1)`,
             lighter: `hsla(${saasState?.posSettings?.h ?? 222},100%,97%,1)`,
             lightest: `hsla(${saasState?.posSettings?.h ?? 222},32%,98%,1)`,
+            brightness: `hsla(${saasState?.posSettings?.h ?? 222},80%,70%,1)`,
           },
         },
       });

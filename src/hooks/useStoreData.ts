@@ -17,8 +17,6 @@ export const useStoreData = () => {
     return await _updateLoan(params)
       .then(async (res) => {
         await router.push({
-          //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
           pathname: URL_HASH[params.nextSnapshot],
           query: { loanId: params.loanId },
         });
@@ -39,8 +37,6 @@ export const useStoreData = () => {
     return await _redirectLoan(params)
       .then(async (res) => {
         await router.push({
-          //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
           pathname: URL_HASH[params.nextSnapshot],
           query: { loanId: params.loanId },
         });

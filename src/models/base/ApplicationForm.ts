@@ -18,6 +18,7 @@ import {
   CompensationInformation,
   EstimateRate,
 } from '@/models/application';
+
 import { Address } from '@/models/common/Address';
 
 import { AUTO_HIDE_DURATION, FormData, URL_HASH } from '@/constants';
@@ -133,12 +134,9 @@ export const ApplicationForm = types
         self.loanId = loanId;
         self.isBind = isBind;
         self.injectServerData(snapshot, data);
-        //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
+
         if (Router.pathname !== URL_HASH[snapshot]) {
           yield Router.push({
-            //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
             pathname: URL_HASH[snapshot],
             query: { loanId },
           });

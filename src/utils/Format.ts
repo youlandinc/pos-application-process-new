@@ -95,7 +95,12 @@ export const POSFormatUrl = (url: string): string => {
   return 'https://' + url;
 };
 
-export const POSGetDecimalPlaces = (value: number): number => {
+export const POSGetDecimalPlaces = (
+  value: number | undefined | null,
+): number => {
+  if (!value) {
+    return 0;
+  }
   const target = value * 100 + '';
   if (target.endsWith('.')) {
     return 0;

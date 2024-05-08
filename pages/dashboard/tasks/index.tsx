@@ -13,14 +13,12 @@ const DynamicDashboardPage = dynamic(
 
 const DynamicTaskListPage = dynamic(
   () =>
-    import('@/views/Dashboard/TaskPage/TaskListPage').then(
-      (mod) => mod.TaskListPage,
-    ),
+    import('@/views/Dashboard/TaskListPage').then((mod) => mod.TaskListPage),
   {
     ssr: true,
   },
 );
-const Task: FC = observer(() => {
+const DashboardTaskPage: FC = observer(() => {
   return (
     <>
       <Head>
@@ -33,4 +31,4 @@ const Task: FC = observer(() => {
   );
 });
 
-export default Task;
+export default DashboardTaskPage;

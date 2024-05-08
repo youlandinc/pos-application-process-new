@@ -3,6 +3,7 @@ import {
   LoanStage,
   PipelineACHAccountType,
   PipelineLicenseType,
+  PipelineLoanStageEnum,
 } from '@/types';
 import { PipelineLicenseTypeOpt } from '@/types/options';
 
@@ -26,39 +27,44 @@ export const OPTIONS_PIPELINE_LICENSE_TYPE: Option[] = [
 
 export const OPTIONS_LOAN_STAGE: Option[] = [
   {
-    key: LoanStage.Application,
-    value: LoanStage.Application,
-    label: 'Application',
+    key: PipelineLoanStageEnum.not_submitted,
+    value: PipelineLoanStageEnum.not_submitted,
+    label: 'Not submitted',
   },
   {
-    key: LoanStage.PreApproved,
-    value: LoanStage.PreApproved,
-    label: 'Pre-approval',
-  },
-  //{
-  //  key: LoanStage.RateLocking,
-  //  value: LoanStage.RateLocking,
-  //  label: 'Rate locking',
-  //},
-  //{
-  //  key: LoanStage.RateLocked,
-  //  value: LoanStage.RateLocked,
-  //  label: 'Rate locked',
-  //},
-  {
-    key: LoanStage.Approved,
-    value: LoanStage.Approved,
-    label: 'Approved',
+    key: PipelineLoanStageEnum.scenario,
+    value: PipelineLoanStageEnum.scenario,
+    label: 'Submitted',
   },
   {
-    key: LoanStage.FinalClosing,
-    value: LoanStage.FinalClosing,
-    label: 'Final closing',
+    key: PipelineLoanStageEnum.initial_approval,
+    value: PipelineLoanStageEnum.initial_approval,
+    label: 'Initial approval',
   },
   {
-    key: LoanStage.Refusal,
-    value: LoanStage.Refusal,
+    key: PipelineLoanStageEnum.preparing_docs,
+    value: PipelineLoanStageEnum.preparing_docs,
+    label: 'Preparing docs',
+  },
+  {
+    key: PipelineLoanStageEnum.docs_out,
+    value: PipelineLoanStageEnum.docs_out,
+    label: 'Docs out',
+  },
+  {
+    key: PipelineLoanStageEnum.funded,
+    value: PipelineLoanStageEnum.funded,
+    label: 'Funded',
+  },
+  {
+    key: PipelineLoanStageEnum.rejected,
+    value: PipelineLoanStageEnum.rejected,
     label: 'Rejected',
+  },
+  {
+    key: PipelineLoanStageEnum.inactive,
+    value: PipelineLoanStageEnum.inactive,
+    label: 'Inactive',
   },
 ];
 

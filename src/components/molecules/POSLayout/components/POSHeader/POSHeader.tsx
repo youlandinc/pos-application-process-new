@@ -25,14 +25,9 @@ import {
   StyledDialog,
   StyledHeaderLogo,
 } from '@/components/atoms';
-import {
-  DashboardSideDrawer,
-  ForgotPassword,
-  Login,
-  SignUp,
-} from '@/components/molecules';
+import { ForgotPassword, Login, SignUp } from '@/components/molecules';
 import { POSFormatUrl } from '@/utils';
-import { LoanSnapshotEnum } from '@/types';
+import { LayoutSceneTypeEnum, LoanSnapshotEnum } from '@/types';
 
 export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const router = useRouter();
@@ -84,7 +79,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
 
   const renderButton = useMemo(() => {
     switch (scene) {
-      case 'application':
+      case LayoutSceneTypeEnum.application:
         return !hasSession ? (
           applicationForm.snapshot !== LoanSnapshotEnum.auth_page && (
             <Box>
@@ -156,7 +151,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <MyAccountButton scene={scene} store={store} />
           </Box>
         );
-      case 'dashboard':
+      case LayoutSceneTypeEnum.dashboard:
         return (
           <Box>
             <StyledButton
@@ -194,7 +189,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <MyAccountButton scene={scene} store={store} />
           </Box>
         );
-      case 'pipeline':
+      case LayoutSceneTypeEnum.pipeline:
         return (
           <Box>
             <StyledButton
@@ -235,7 +230,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           </Box>
         );
 
-      case 'pipeline_without_all': {
+      case LayoutSceneTypeEnum.pipeline_without_all: {
         return (
           <Box>
             <StyledButton
@@ -453,7 +448,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
       justifyContent={'center'}
     >
       <Box sx={POSHeaderStyles}>
-        {scene === 'dashboard' ? (
+        {scene === LayoutSceneTypeEnum.dashboard ? (
           ['xs', 'sm', 'md'].includes(breakpoint) ? (
             <StyledButton isIconButton onClick={sideOpen}>
               <DehazeOutlined />

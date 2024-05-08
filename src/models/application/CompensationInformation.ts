@@ -24,14 +24,18 @@ export const CompensationInformation = types
           additionalInfo,
         } = data;
 
-        self.originationPoints = originationPoints ?? void 0;
+        self.originationPoints = originationPoints
+          ? originationPoints * 100
+          : void 0;
         self.processingFee = processingFee ?? void 0;
-        self.isAdditional = isAdditional ?? void 0;
+        self.isAdditional = isAdditional ?? false;
         self.additionalInfo = additionalInfo ?? void 0;
       },
       getPostData() {
         return {
-          originationPoints: self.originationPoints,
+          originationPoints: self.originationPoints
+            ? self.originationPoints / 100
+            : 0,
           processingFee: self.processingFee,
           isAdditional: self.isAdditional,
           additionalInfo: self.additionalInfo,

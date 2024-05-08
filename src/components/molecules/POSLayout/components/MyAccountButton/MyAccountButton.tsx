@@ -1,7 +1,7 @@
 import { userpool } from '@/constants';
 
 import { useBreakpoints } from '@/hooks';
-import { UserType } from '@/types';
+import { LayoutSceneTypeEnum, UserType } from '@/types';
 import { ExpandMoreOutlined, PermIdentityOutlined } from '@mui/icons-material';
 import {
   ClickAwayListener,
@@ -108,10 +108,10 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
 
   const renderMenuList = useMemo(() => {
     switch (scene) {
-      case 'application':
-      case 'dashboard':
-      case 'pipeline':
-      case 'pipeline_without_all':
+      case LayoutSceneTypeEnum.application:
+      case LayoutSceneTypeEnum.dashboard:
+      case LayoutSceneTypeEnum.pipeline:
+      case LayoutSceneTypeEnum.pipeline_without_all:
         if (userType === UserType.CUSTOMER) {
           return MENU_LIST_CUSTOMER.map((item, index) => (
             <MenuItem
@@ -198,7 +198,6 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
               <ClickAwayListener onClickAway={handledClose}>
                 <MenuList sx={{ mt: 2, width: 170, p: 0 }}>
                   <StyledAvatarUpload ref={avatarRef} />
-
                   {renderMenuList}
                 </MenuList>
               </ClickAwayListener>

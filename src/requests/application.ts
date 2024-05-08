@@ -36,10 +36,6 @@ export const _bindLoan = (params: {
   return put('/pos/loan/process/bind', params);
 };
 
-export const _fetchLoanDetail = (loanId: string) => {
-  return get(`/pos/loan/process/${loanId}`);
-};
-
 export const _fetchLoanDetailTest = (loanId: string) => {
   return get(`/pos/loan/process/data/${loanId}`);
 };

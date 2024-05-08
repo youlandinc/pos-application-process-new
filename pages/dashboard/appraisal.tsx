@@ -1,7 +1,8 @@
-import Head from 'next/head';
 import { FC } from 'react';
-import { observer } from 'mobx-react-lite';
+import Head from 'next/head';
 import dynamic from 'next/dynamic';
+
+import { observer } from 'mobx-react-lite';
 
 const DynamicDashboardPage = dynamic(
   () =>
@@ -11,24 +12,25 @@ const DynamicDashboardPage = dynamic(
   },
 );
 
-const DynamicTeamPage = dynamic(
-  () => import('@/views/Dashboard/TeamPage').then((mod) => mod.TeamPage),
+const DynamicAppraisalPagePage = dynamic(
+  () =>
+    import('@/views/Dashboard/AppraisalPage').then((mod) => mod.AppraisalPage),
   {
     ssr: true,
   },
 );
 
-const Team: FC = observer(() => {
+const DashboardAppraisalPage: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>My Team</title>
+        <title>Overview</title>
       </Head>
       <DynamicDashboardPage>
-        <DynamicTeamPage />
+        <DynamicAppraisalPagePage />
       </DynamicDashboardPage>
     </>
   );
 });
 
-export default Team;
+export default DashboardAppraisalPage;

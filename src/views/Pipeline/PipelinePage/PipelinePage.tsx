@@ -4,15 +4,15 @@ import { FC, ReactNode, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { UserType } from '@/types';
+import { LayoutSceneTypeEnum, UserType } from '@/types';
 
 import { StyledLoading } from '@/components/atoms';
 import { POSLayout } from '@/components/molecules';
 
 export const PipelinePage: FC<{
   children?: ReactNode;
-  scene: 'application' | 'pipeline' | 'dashboard' | 'pipeline_without_all';
-}> = observer(({ children, scene = 'pipeline' }) => {
+  scene: LayoutSceneTypeEnum;
+}> = observer(({ children, scene = LayoutSceneTypeEnum.pipeline }) => {
   const {
     userType,
     pipelineTask,
@@ -54,7 +54,7 @@ export const PipelinePage: FC<{
       <StyledLoading sx={{ color: 'text.grey' }} />
     </Stack>
   ) : (
-    <POSLayout scene={scene}>
+    <POSLayout scene={LayoutSceneTypeEnum.pipeline}>
       <>{children}</>
     </POSLayout>
   );

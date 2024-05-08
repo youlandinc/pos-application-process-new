@@ -14,7 +14,7 @@ export const GOOGLE_SING_IN_ID =
 //export const LOGIN_APP_KEY = 'jcDlAFZpmslrRYwUzfpP';
 export const LOGIN_APP_KEY = 'jjHggHfNVaGvkabpQXfs';
 
-export const URL_HASH = {
+export const URL_HASH: Record<string, any> = {
   [LoanSnapshotEnum.starting_question]: '/',
   [LoanSnapshotEnum.estimate_rate]: '/estimate-rate',
   [LoanSnapshotEnum.auth_page]: '/auth-page',

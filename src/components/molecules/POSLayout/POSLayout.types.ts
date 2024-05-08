@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
+import { LayoutSceneTypeEnum } from '@/types';
 
 export interface POSLayoutProps {
   children?: ReactNode;
-  scene: 'application' | 'pipeline' | 'dashboard' | 'pipeline_without_all';
+  scene: LayoutSceneTypeEnum;
 }

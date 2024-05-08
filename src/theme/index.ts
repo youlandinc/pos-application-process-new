@@ -59,6 +59,7 @@ declare module '@mui/material/styles' {
     background?: string;
     contrastHover?: string;
     contrastBackground?: string;
+    brightness?: string;
   }
 
   interface SimplePaletteColorOptions {
@@ -70,6 +71,7 @@ declare module '@mui/material/styles' {
     background?: string;
     contrastHover?: string;
     contrastBackground?: string;
+    brightness?: string;
   }
 }
 
@@ -112,6 +114,7 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: `hsla(${CONSTANT_COLOR_HUE},42%,55%,1)`,
+      brightness: `hsla(${CONSTANT_COLOR_HUE},80%,70%,1)`,
       dark: `hsla(${CONSTANT_COLOR_HUE},43%,50%,1)`,
       darker: `hsla(${CONSTANT_COLOR_HUE},38%,30%,1)`,
       darkest: `hsla(${CONSTANT_COLOR_HUE},28%,18%,1)`,
@@ -149,8 +152,8 @@ export const theme = createTheme({
     info: {
       main: '#9095A3',
       hover: '#81889B',
-      background: '#F4F4F6',
       contrastText: '#FFFFFF',
+      darker: 'rgba(144, 149, 163, 0.1)',
     },
     action: {
       default: '#D2D6E1',

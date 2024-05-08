@@ -39,16 +39,20 @@ export const LoanSummaryPage: FC = observer(() => {
   };
 
   const next = async () => {
-    // if (!userType) {
-    //   return;
-    // }
-    // const postData = {
-    //   snapshot: LoanSnapshotEnum.compensation_page,
-    //   nextSnapshot: LoanSnapshotEnum.loan_summary,
-    //   loanId: applicationForm.loanId,
-    //   data: compensationInformation.getPostData(),
-    // };
-    // await updateFrom(postData);
+    if (!userType) {
+      return;
+    }
+    const postData = {
+      snapshot: LoanSnapshotEnum.loan_summary,
+      nextSnapshot: LoanSnapshotEnum.loan_overview,
+      loanId: applicationForm.loanId,
+      data: {},
+    };
+    await updateFrom(postData);
+    await router.push({
+      pathname: '/dashboard/overview',
+      query: { loanId: applicationForm.loanId },
+    });
   };
 
   useAsync(async () => {

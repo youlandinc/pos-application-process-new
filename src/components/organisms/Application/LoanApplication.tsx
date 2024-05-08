@@ -1,7 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { Stack } from '@mui/material';
-import { NextRouter, useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -16,43 +14,35 @@ import {
   StartingQuestion,
 } from '@/components/molecules/Application';
 
-import { StyledButton, StyledLoading } from '@/components/atoms';
+import { StyledLoading } from '@/components/atoms';
 
-import { FormNodeItem, LoanSnapshotEnum } from '@/types';
-import { IApplicationForm } from '@/models/base';
-import { POSGetParamsFromUrl } from '@/utils';
-import { _startNewLoan } from '@/requests/application';
-import { useSessionStorageState, useStoreData } from '@/hooks';
+import { LoanSnapshotEnum } from '@/types';
 
 const useGenerateComponent = () => {
   const {
     applicationForm: { snapshot },
   } = useMst();
 
-  const renderFormNode = useMemo(
-    () =>
-      (next?: FormNodeItem['nextStep'], back?: FormNodeItem['prevStep']) => {
-        switch (snapshot) {
-          case LoanSnapshotEnum.starting_question:
-            return <StartingQuestion />;
-          case LoanSnapshotEnum.auth_page:
-            return <Auth />;
-          case LoanSnapshotEnum.estimate_rate:
-            return <EstimateRate />;
-          case LoanSnapshotEnum.loan_address:
-            return <LoanAddress />;
-          case LoanSnapshotEnum.background_information:
-            return <BackgroundInformation />;
-          case LoanSnapshotEnum.compensation_page:
-            return <CompensationInformation />;
-          case LoanSnapshotEnum.loan_summary:
-            return <LoanSummary />;
-          default:
-            return null;
-        }
-      },
-    [snapshot],
-  );
+  const renderFormNode = useMemo(() => {
+    switch (snapshot) {
+      case LoanSnapshotEnum.starting_question:
+        return <StartingQuestion />;
+      case LoanSnapshotEnum.auth_page:
+        return <Auth />;
+      case LoanSnapshotEnum.estimate_rate:
+        return <EstimateRate />;
+      case LoanSnapshotEnum.loan_address:
+        return <LoanAddress />;
+      case LoanSnapshotEnum.background_information:
+        return <BackgroundInformation />;
+      case LoanSnapshotEnum.compensation_page:
+        return <CompensationInformation />;
+      case LoanSnapshotEnum.loan_summary:
+        return <LoanSummary />;
+      default:
+        return null;
+    }
+  }, [snapshot]);
 
   return {
     renderFormNode,
@@ -78,7 +68,7 @@ export const LoanApplication = observer(() => {
         </Stack>
       ) : (
         <Stack alignItems={'center'} width={'100%'}>
-          {renderFormNode()}
+          {renderFormNode}
         </Stack>
       )}
     </>

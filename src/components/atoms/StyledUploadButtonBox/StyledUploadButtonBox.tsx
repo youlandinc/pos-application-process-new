@@ -29,8 +29,8 @@ import {
 import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { SUploadData } from '@/models/common/UploadFile';
+import { _deleteFile, _uploadFile } from '@/requests/base';
 import { HttpError } from '@/types';
-import { _deleteTaskFile, _uploadTaskFile } from '@/requests/dashboard';
 import {
   getFilesWebkitDataTransferItems,
   POSFormatDate,
@@ -124,13 +124,13 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
           return;
         }
         const formData = new FormData();
-        formData.append('fieldName', fileKey);
+        formData.append('fileKey', fileKey);
         Array.from(files, (item) => {
           formData.append('files', item);
         });
-        const { data } = await _uploadTaskFile(
+        const { data } = await _uploadFile(
           formData,
-          router.query.taskId as string,
+          router.query.loanId as string,
         );
         setFileList([...fileList, ...data]);
         await refresh?.();
@@ -225,8 +225,8 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         close();
         return;
       }
-      await _deleteTaskFile(router.query.taskId as string, {
-        fieldName: fileKey,
+      await _deleteFile(router.query.loanId as string, {
+        fileKey: fileKey,
         fileUrl: fileList[deleteIndex].url,
       });
       await refresh?.();

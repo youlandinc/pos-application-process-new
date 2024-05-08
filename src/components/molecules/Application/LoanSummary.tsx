@@ -447,7 +447,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 width={'100%'}
               />
               <Stack gap={1}>
-                <Typography color={'success.main'} variant={'subtitle1'}>
+                <Typography color={'primary.brightness'} variant={'subtitle1'}>
                   Address
                 </Typography>
                 <Typography color={'primary.darker'} variant={'h5'}>

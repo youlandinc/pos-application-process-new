@@ -8,11 +8,9 @@ import { format } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
-
-import { POSGetProductTypeByUrl } from '@/utils';
 import { _deletePipelineLoan, _fetchPipelineLoanList } from '@/requests';
 import { useSessionStorageState, useSwitch } from '@/hooks';
-import { HttpError, LoanStage, PipelineAccountStatus, UserType } from '@/types';
+import { HttpError, LoanSnapshotEnum, UserType } from '@/types';
 import { AUTO_HIDE_DURATION, PAGE_SIZE, URL_HASH } from '@/constants';
 import { StyledButton, StyledDialog, StyledLoading } from '@/components/atoms';
 
@@ -31,15 +29,10 @@ export const Pipeline: FC = observer(() => {
   const { saasState } = useSessionStorageState('tenantConfig');
 
   const {
-    userSetting: {
-      pipelineStatus,
-      pipelineStatusInitialized,
-      //applicable
-    },
-    pipelineTask: { pipelineInitialized },
+    // userSetting: { pipelineStatus, pipelineStatusInitialized },
+    // pipelineTask: { pipelineInitialized },
     userType,
     session,
-    //selectedProcessData,
     applicationForm,
   } = useMst();
 
@@ -126,48 +119,35 @@ export const Pipeline: FC = observer(() => {
     //applicable,
     searchForm,
     page,
-    pipelineInitialized,
-    pipelineStatusInitialized,
-    pipelineStatus,
+    // pipelineInitialized,
+    // pipelineStatusInitialized,
+    // pipelineStatus,
   ]);
 
   const handledView = async (row: LoanItemCardProps['formData']) => {
     if (!row) {
       return;
     }
-    switch (row.loanStage) {
-      case 'APPLICATION':
-        applicationForm.resetForm();
-        await router.push(
-          {
-            pathname: URL_HASH[row.snapshot],
-            query: { loanId: row.loanId },
-          },
-          undefined,
-          {
-            shallow: true,
-          },
-        );
-        break;
-      case LoanStage.Refusal:
-        enqueueSnackbar(
-          'Your application has been rejected, feel free to submit a new\n' +
-            'application',
-          {
-            variant: 'error',
-            autoHideDuration: AUTO_HIDE_DURATION,
-          },
-        );
-        break;
-      default:
-      //selectedProcessData.setLoading(true);
-      //selectedProcessData.setProcessId('');
-      //await router.push({
-      //  pathname: '/dashboard/overview',
-      //  query: { loanId: row.loanId },
-      //});
-      //break;
+
+    if (row.snapshot === LoanSnapshotEnum.loan_overview) {
+      await router.push({
+        pathname: '/dashboard/overview',
+        query: { loanId: row.loanId },
+      });
+      return;
     }
+
+    applicationForm.resetForm();
+    await router.push(
+      {
+        pathname: URL_HASH[row.snapshot],
+        query: { loanId: row.loanId },
+      },
+      undefined,
+      {
+        shallow: true,
+      },
+    );
   };
 
   const handledDelete = (id: string, address: string) => {
@@ -218,11 +198,13 @@ export const Pipeline: FC = observer(() => {
     getListData();
   }, [getListData, page]);
 
-  return (!pipelineInitialized ||
-    !pipelineStatusInitialized ||
-    pipelineStatus !== PipelineAccountStatus.active) &&
-    //||!applicable
-    userType !== UserType.CUSTOMER ? null : (
+  // !pipelineInitialized ||
+  // !pipelineStatusInitialized ||
+  // pipelineStatus !== PipelineAccountStatus.active) &&
+  // //||!applicable
+  // userType !== UserType.CUSTOMER ? null : (
+
+  return (
     <>
       <SearchBar
         onParamsChange={(k, v) =>
@@ -283,6 +265,7 @@ export const Pipeline: FC = observer(() => {
           </Box>
         )}
       </Stack>
+
       {isLoadMore && (
         <Box mt={3} textAlign={'center'}>
           <StyledButton
@@ -298,6 +281,7 @@ export const Pipeline: FC = observer(() => {
           </StyledButton>
         </Box>
       )}
+
       <StyledDialog
         content={
           <Typography

@@ -28,10 +28,11 @@ import {
 import { format, parseISO } from 'date-fns';
 
 import { POSFlex } from '@/styles';
-import { LoanSnapshotEnum, LoanStage, UserType } from '@/types';
-import { POSFormatDollar, POSFormatPercent } from '@/utils';
+import { LoanSnapshotEnum, PipelineLoanStageEnum, UserType } from '@/types';
+import { POSFindLabel, POSFormatDollar, POSFormatPercent } from '@/utils';
 
 import { StyledBadge, StyledButton } from '@/components/atoms';
+import { OPTIONS_LOAN_STAGE } from '@/constants';
 
 export interface LoanItemCardProps {
   formData: {
@@ -41,7 +42,7 @@ export interface LoanItemCardProps {
     loanAmount: number;
     snapshot: LoanSnapshotEnum;
     applicationDate: Date | null;
-    loanStage: LoanStage;
+    loanStage: PipelineLoanStageEnum;
     originationFee: number | null;
     originationPoints: number | null;
     processingFee: number | null;
@@ -277,7 +278,10 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
         </Box>
         <Box className={'product_item'}>
           <Box>Stage</Box>
-          <StyledBadge content={loanStage} status={loanStage} />
+          <StyledBadge
+            content={POSFindLabel(OPTIONS_LOAN_STAGE, loanStage)}
+            status={loanStage}
+          />
         </Box>
         {/*{(userType === UserType.BROKER ||*/}
         {/*  userType === UserType.LOAN_OFFICER ||*/}

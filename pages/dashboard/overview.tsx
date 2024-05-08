@@ -1,7 +1,8 @@
-import Head from 'next/head';
 import { FC } from 'react';
-import { observer } from 'mobx-react-lite';
+import Head from 'next/head';
 import dynamic from 'next/dynamic';
+
+import { observer } from 'mobx-react-lite';
 
 const DynamicDashboardPage = dynamic(
   () =>
@@ -19,7 +20,7 @@ const DynamicOverviewPage = dynamic(
   },
 );
 
-const Overview: FC = observer(() => {
+const DashboardOverviewPage: FC = observer(() => {
   return (
     <>
       <Head>
@@ -32,4 +33,4 @@ const Overview: FC = observer(() => {
   );
 });
 
-export default Overview;
+export default DashboardOverviewPage;

@@ -11,23 +11,24 @@ const DynamicDashboardPage = dynamic(
   },
 );
 
-const DynamicRatesPage = dynamic(
-  () => import('@/views/Dashboard/RatesPage').then((mod) => mod.RatesPage),
+const DynamicTeamPage = dynamic(
+  () => import('@/views/Dashboard/TeamPage').then((mod) => mod.TeamPage),
   {
     ssr: true,
   },
 );
-const Rates: FC = observer(() => {
+
+const DashboardTeamPage: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Rates</title>
+        <title>My Team</title>
       </Head>
       <DynamicDashboardPage>
-        <DynamicRatesPage />
+        <DynamicTeamPage />
       </DynamicDashboardPage>
     </>
   );
 });
 
-export default Rates;
+export default DashboardTeamPage;

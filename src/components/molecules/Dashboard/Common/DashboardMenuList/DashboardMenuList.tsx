@@ -1,5 +1,5 @@
 import { ISelectedProcessData } from '@/models/base';
-import { DashboardTaskInfo, SceneType } from '@/types';
+import { DashboardTaskInfo, MenuItems, SceneType } from '@/types';
 import {
   AccountBalanceOutlined,
   FolderOpenOutlined,
@@ -17,30 +17,17 @@ import { DashboardSideInfoBox } from './component';
 import { _fetchLoanTask } from '@/requests/dashboard';
 
 type POSMenuListProps = {
-  info: ISelectedProcessData;
-  scene: SceneType;
-  loading?: boolean;
+  // info?: ISelectedProcessData;
+  scene?: SceneType;
+  // loading?: boolean;
 };
 
-interface MenuItems {
-  key: string;
-  label: string;
-  path: string;
-  icon: ReactNode;
-}
-
-const list: MenuItems[] = [
+const DASHBOARD_MENU_LIST: MenuItems[] = [
   {
     label: 'Overview',
     path: 'overview',
     key: 'overview',
     icon: <AccountBalanceOutlined />,
-  },
-  {
-    label: 'Application summary',
-    path: 'application_summary',
-    key: 'application_summary',
-    icon: <GradingOutlined />,
   },
   {
     label: 'Tasks',
@@ -49,9 +36,9 @@ const list: MenuItems[] = [
     icon: <GradingOutlined />,
   },
   {
-    label: 'Rates',
-    path: 'rates',
-    key: 'rates',
+    label: 'Appraisal',
+    path: 'appraisal',
+    key: 'appraisal',
     icon: <TimelineOutlined />,
   },
   {
@@ -60,27 +47,19 @@ const list: MenuItems[] = [
     key: 'documents',
     icon: <FolderOpenOutlined />,
   },
-  //{
-  //  label: 'Loan Estimate',
-  //  path: 'loan_estimate',
-  //  key: 'loan_estimate',
-  //},
   {
-    label: 'My team',
+    label: 'Team',
     path: 'team',
     key: 'team',
     icon: <PeopleAltOutlined />,
   },
-  //{
-  //  label: 'Resources',
-  //  path: 'resources',
-  //  key: 'resources',
-  //  icon: <PublicOutlined />,
-  //},
 ];
 
 export const DashboardMenuList: FC<POSMenuListProps> = observer(
-  ({ scene, info, loading }) => {
+  ({
+    scene,
+    // info, loading
+  }) => {
     // const store = useMst();
     const router = useRouter();
     const [activeKey, setActiveKey] = useState(() => {
@@ -99,84 +78,14 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
             return;
           }
           setActiveKey(key);
-          if (key === 'documents') {
-            const {
-              data: { tasks },
-            } = await _fetchLoanTask(router.query.processId as string);
-
-            const taskId: string = Object.keys(tasks).reduce((acc, cur) => {
-              if (cur.includes('_DOCUMENTS_DOCUMENTS')) {
-                acc = (tasks as Record<string, DashboardTaskInfo>)[cur].taskId;
-              }
-              return acc;
-            }, '');
-
-            await router.push({
-              pathname: '/dashboard/tasks/documents/',
-              query: {
-                processId: router.query.processId,
-                taskId,
-              },
-            });
-            return;
-          }
           await router.push({
             pathname: `/dashboard/${path}`,
-            query: { processId: router.query.processId },
+            query: { loanId: router.query.loanId },
           });
         };
       },
       [activeKey, router],
     );
-
-    const renderMenuList = useMemo(() => {
-      let formatMenuList: MenuItems[] = [];
-      switch (scene) {
-        case 'mortgage purchase':
-          formatMenuList = list;
-          break;
-        case 'mortgage refinance':
-          formatMenuList = list.reduce((acc: MenuItems[], next: MenuItems) => {
-            if (next.key !== 'pre_approval_letter') {
-              acc.push(next);
-            }
-            return acc;
-          }, []);
-          break;
-        case SceneType.bridge_purchase:
-        case SceneType.bridge_refinance:
-        case SceneType.fix_purchase:
-        case SceneType.fix_refinance:
-        case SceneType.ground_purchase:
-        case SceneType.ground_refinance:
-          formatMenuList = list.reduce((acc: MenuItems[], next: MenuItems) => {
-            if (next.key !== 'application_summary') {
-              acc.push(next);
-            }
-            return acc;
-          }, []);
-          break;
-      }
-      if (formatMenuList.length < 1) {
-        return null;
-      }
-      return formatMenuList.map(({ path, key, label, icon }) => {
-        return (
-          <Box
-            className={activeKey === key ? 'active item' : 'item'}
-            color={'text.hover'}
-            fontSize={16}
-            key={key}
-            lineHeight={1.5}
-            onClick={selectMenu(path, key)}
-            px={3}
-            py={1.8}
-          >
-            {icon} {label}
-          </Box>
-        );
-      });
-    }, [activeKey, scene, selectMenu]);
 
     return (
       <>
@@ -209,9 +118,24 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
             },
           }}
         >
-          {renderMenuList}
+          {DASHBOARD_MENU_LIST.map(({ path, key, label, icon }) => {
+            return (
+              <Box
+                className={activeKey === key ? 'active item' : 'item'}
+                color={'text.hover'}
+                fontSize={16}
+                key={key}
+                lineHeight={1.5}
+                onClick={selectMenu(path, key)}
+                px={3}
+                py={1.8}
+              >
+                {icon} {label}
+              </Box>
+            );
+          })}
         </Box>
-        <DashboardSideInfoBox info={info} loading={loading} />
+        {/*<DashboardSideInfoBox info={info} loading={loading} />*/}
       </>
     );
   },
