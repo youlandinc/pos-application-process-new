@@ -1,5 +1,5 @@
 import { FC, ReactNode, useState } from 'react';
-import { Fade, Stack, Typography } from '@mui/material';
+import { Fade, Icon, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
@@ -17,6 +17,8 @@ import { _fetchLoanDocumentData } from '@/requests/dashboard';
 import { HttpError } from '@/types';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
+import NOTIFICATION_WARNING from '@/components/atoms/StyledNotification/notification_warning.svg';
+
 export const Documents: FC = () => {
   const router = useRouter();
   const breakpoints = useBreakpoints();
@@ -28,6 +30,8 @@ export const Documents: FC = () => {
     { label: string; content: ReactNode }[]
   >([]);
 
+  const [isTips, setIsTips] = useState<boolean>(false);
+
   const { loading } = useAsync(async () => await fetchData(), [location.href]);
 
   const fetchData = async () => {
@@ -36,8 +40,11 @@ export const Documents: FC = () => {
       return;
     }
     try {
-      const { data } = await _fetchLoanDocumentData(loanId);
-      const tabData = data.reduce(
+      const {
+        data: { docs, isTips },
+      } = await _fetchLoanDocumentData(loanId);
+      setIsTips(isTips);
+      const tabData = docs.reduce(
         (acc, cur) => {
           if (!cur?.categoryName) {
             return acc;
@@ -106,6 +113,24 @@ export const Documents: FC = () => {
             privacy compliance, and regular security audits.
           </Typography>
         </Typography>
+
+        {isTips && (
+          <Stack
+            bgcolor={'rgba(255, 249, 234, 1)'}
+            borderRadius={2}
+            boxShadow={'0 2px 2px rgba(227, 227, 227, 1)'}
+            color={'rgba(229, 154, 0, 1)'}
+            flexDirection={'row'}
+            fontSize={14}
+            fontWeight={600}
+            gap={1}
+            p={'12px 16px'}
+          >
+            <Icon component={NOTIFICATION_WARNING} sx={{ mt: -0.25 }} />
+            Complete the &quot;Borrower&quot; task first to see only the
+            necessary documents below
+          </Stack>
+        )}
 
         <Stack maxWidth={'100%'} width={'100%'}>
           <StyledTab

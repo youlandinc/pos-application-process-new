@@ -17,7 +17,7 @@ import {
 } from '@/constants';
 import { Address, IAddress } from '@/models/common/Address';
 import {
-  CommonBorrowerType,
+  DashboardTaskCitizenshipType,
   DashboardTaskGender,
   DashboardTaskMaritalStatus,
   HttpError,
@@ -68,7 +68,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
 
   const [isCoBorrower, setIsCoBorrower] = useState<boolean>();
   const [citizenship, setCitizenship] = useState<
-    CommonBorrowerType | undefined
+    DashboardTaskCitizenshipType | undefined
   >();
 
   const [firstName, setFirstName] = useState<string | undefined>();
@@ -212,7 +212,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
       saasState?.posSettings?.softCreditRequirement ===
       SoftCreditRequirementEnum.optional
     ) {
-      if (citizenship === CommonBorrowerType.foreign_national) {
+      if (citizenship === DashboardTaskCitizenshipType.foreign_national) {
         return conditionForeign || !authorizedCreditCheck;
       }
       if (isSkipCheck) {
@@ -220,7 +220,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
       }
       return conditionLocal;
     }
-    return citizenship === CommonBorrowerType.foreign_national
+    return citizenship === DashboardTaskCitizenshipType.foreign_national
       ? conditionForeign
       : conditionLocal;
   }, [
@@ -277,7 +277,10 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
       },
     };
 
-    if (citizenship !== CommonBorrowerType.foreign_national && isSkipCheck) {
+    if (
+      citizenship !== DashboardTaskCitizenshipType.foreign_national &&
+      isSkipCheck
+    ) {
       if (
         !inputCreditScore ||
         inputCreditScore <= 300 ||
@@ -294,7 +297,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
       setCreditScore(res.data);
       if (
         isCoBorrower &&
-        citizenship !== CommonBorrowerType.foreign_national &&
+        citizenship !== DashboardTaskCitizenshipType.foreign_national &&
         !isSkipCheck
       ) {
         setTableView('score');
@@ -342,7 +345,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
       return saasState?.posSettings?.softCreditRequirement ===
         SoftCreditRequirementEnum.optional &&
         isSkipCheck &&
-        citizenship !== CommonBorrowerType.foreign_national ? (
+        citizenship !== DashboardTaskCitizenshipType.foreign_national ? (
         <StyledFormItem
           label={"Co-borrower's credit score"}
           mt={4}
@@ -476,7 +479,7 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
           value={inputCreditScore}
         />
       </StyledFormItem>
-    ) : citizenship !== CommonBorrowerType.foreign_national ? (
+    ) : citizenship !== DashboardTaskCitizenshipType.foreign_national ? (
       <StyledFormItem
         label={`Credit score is ${creditScore}`}
         labelSx={{ m: 0 }}
@@ -651,7 +654,9 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                       <StyledSelectOption
                         disabled={isConfirm}
                         onChange={(value) =>
-                          setCitizenship(value as string as CommonBorrowerType)
+                          setCitizenship(
+                            value as string as DashboardTaskCitizenshipType,
+                          )
                         }
                         options={OPTIONS_COMMON_CITIZEN_TYPE}
                         value={citizenship}
@@ -668,7 +673,8 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                     </Stack>
                   </StyledFormItem>
 
-                  {citizenship !== CommonBorrowerType.foreign_national && (
+                  {citizenship !==
+                    DashboardTaskCitizenshipType.foreign_national && (
                     <StyledFormItem
                       label={"Co-borrower's social security number"}
                       mt={5}
@@ -687,7 +693,8 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
 
                   {saasState?.posSettings?.softCreditRequirement ===
                     SoftCreditRequirementEnum.optional &&
-                    citizenship !== CommonBorrowerType.foreign_national &&
+                    citizenship !==
+                      DashboardTaskCitizenshipType.foreign_national &&
                     !isConfirm && (
                       <StyledFormItem
                         label={''}
@@ -748,7 +755,8 @@ export const FixPurchaseTaskCoBorrowerDetails: FC = observer(() => {
                 >
                   {saasState?.posSettings?.softCreditRequirement ===
                   SoftCreditRequirementEnum.optional
-                    ? citizenship === CommonBorrowerType.foreign_national
+                    ? citizenship ===
+                      DashboardTaskCitizenshipType.foreign_national
                       ? 'Save'
                       : isSkipCheck
                         ? 'Save'

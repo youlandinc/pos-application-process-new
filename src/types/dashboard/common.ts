@@ -1,27 +1,36 @@
 export enum DashboardTaskCitizenshipStatus {
+  default = '',
   us_citizen = 'US_CITIZEN',
   permanent_resident_alien = 'PERMANENT_RESIDENT_ALIEN',
   non_permanent_resident_alien = 'NON_PERMANENT_RESIDENT_ALIEN',
 }
 
-export enum DashboardTaskMaritalStatus {
-  unmarried = 'UNMARRIED',
-  married = 'MARRIED',
-  separated = 'SEPARATED',
-}
-
 export enum DashboardTaskBorrowerType {
+  default = '',
   individual = 'INDIVIDUAL',
   entity = 'ENTITY',
   trust = 'TRUST',
 }
 
 export enum DashboardTaskBorrowerEntityType {
+  default = '',
   limited_liability_company = 'LIMITED_LIABILITY_COMPANY',
   corporation = 'CORPORATION',
   limited_partnership = 'LIMITED_PARTNERSHIP',
   limited_company = 'LIMITED_COMPANY',
   individual = 'INDIVIDUAL',
+}
+
+export enum DashboardTaskCitizenshipType {
+  us_citizen = 'US_CITIZEN',
+  permanent_resident_alien = 'PERMANENT_RESIDENT_ALIEN',
+  foreign_national = 'FOREIGN_NATIONAL',
+}
+
+export enum DashboardTaskMaritalStatus {
+  unmarried = 'UNMARRIED',
+  married = 'MARRIED',
+  separated = 'SEPARATED',
 }
 
 export enum DashboardTaskGender {

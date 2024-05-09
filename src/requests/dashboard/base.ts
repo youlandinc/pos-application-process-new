@@ -1,5 +1,5 @@
-import { get } from '@/requests/axios';
-import { DashboardDocumentsResponse } from '@/types';
+import { get, post } from '@/requests/axios';
+import { DashboardDocumentsResponse, DashboardTaskKey } from '@/types';
 
 // right box info
 export const _fetchDashboardInfo = (loanId: string) => {
@@ -18,12 +18,20 @@ export const _fetchLoanTaskList = (loanId: string) => {
 
 export const _fetchLoanTaskDetail = (params: {
   loanId: string;
-  taskKey: string;
+  taskKey: DashboardTaskKey;
 }) => {
   return get(`/pos/task/${params.loanId}/${params.taskKey}`);
 };
 
+export const _updateLoanTaskDetail = (params: {
+  loanId: string;
+  taskKey: DashboardTaskKey;
+  data: any;
+}) => {
+  return post('/pos/task', params);
+};
+
 // documents
 export const _fetchLoanDocumentData = (loanId: string) => {
-  return get<DashboardDocumentsResponse[]>(`/pos/task/docs/${loanId}`);
+  return get<DashboardDocumentsResponse>(`/pos/task/docs/${loanId}`);
 };

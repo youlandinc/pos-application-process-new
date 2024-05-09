@@ -1,6 +1,6 @@
 import {
   AppraisalStage,
-  CommonBorrowerType,
+  DashboardTaskCitizenshipType,
   LoanAnswerEnum,
   UserType,
 } from '@/types';
@@ -62,18 +62,18 @@ export const HASH_COMMON_PERSON = {
 export const OPTIONS_COMMON_CITIZEN_TYPE: Option[] = [
   {
     label: 'US citizen',
-    value: CommonBorrowerType.us_citizen,
-    key: CommonBorrowerType.us_citizen,
+    value: DashboardTaskCitizenshipType.us_citizen,
+    key: DashboardTaskCitizenshipType.us_citizen,
   },
   {
     label: 'Permanent Resident-Alien',
-    value: CommonBorrowerType.permanent_resident_alien,
-    key: CommonBorrowerType.permanent_resident_alien,
+    value: DashboardTaskCitizenshipType.permanent_resident_alien,
+    key: DashboardTaskCitizenshipType.permanent_resident_alien,
   },
   {
     label: 'Foreign national',
-    value: CommonBorrowerType.foreign_national,
-    key: CommonBorrowerType.foreign_national,
+    value: DashboardTaskCitizenshipType.foreign_national,
+    key: DashboardTaskCitizenshipType.foreign_national,
   },
 ];
 
