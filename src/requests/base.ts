@@ -9,11 +9,12 @@ export const _uploadFile = (params: FormData, loanId: string) => {
   });
 };
 
-export const _deleteFile = (
-  loanId: string,
-  params: { fileKey: string; fileUrl: string | undefined },
-) => {
-  return del(`/pos/task/file/${loanId}`, {
+export const _deleteFile = (params: {
+  fileKey: string;
+  fileUrl: string | undefined;
+  loanId: string;
+}) => {
+  return del('/pos/task/file', {
     data: params,
   });
 };

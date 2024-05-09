@@ -1,23 +1,44 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 
-import { POSGetParamsFromUrl } from '@/utils';
+import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
 import { useBreakpoints } from '@/hooks';
-
-import { _fetchLoanTaskList } from '@/requests/dashboard';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { StyledLoading } from '@/components/atoms';
 
+import { _fetchLoanTaskList } from '@/requests/dashboard';
+import { DashboardTaskKey, DashboardTasksResponse, HttpError } from '@/types';
+
 export const Tasks: FC = () => {
   const breakpoints = useBreakpoints();
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [taskHash, setTaskHash] = useState<DashboardTasksResponse>();
 
   const { loading } = useAsync(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
-    const { data } = await _fetchLoanTaskList(loanId);
-    console.log(data);
-  });
+    if (!loanId) {
+      return;
+    }
+    try {
+      const { data } = await _fetchLoanTaskList(loanId);
+      setTaskHash(data);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    }
+  }, [location.href]);
 
   return loading ? (
     <Stack
@@ -60,6 +81,12 @@ export const Tasks: FC = () => {
             alignItems={'center'}
             flexDirection={'row'}
             justifyContent={'space-between'}
+            onClick={() =>
+              router.push({
+                pathname: '/dashboard/tasks/borrower',
+                query: { loanId: POSGetParamsFromUrl(location.href).loanId },
+              })
+            }
             px={3}
             py={1.5}
             sx={{
@@ -72,14 +99,21 @@ export const Tasks: FC = () => {
             width={'100%'}
           >
             <Typography>Borrower</Typography>
-
-            <CheckCircle color={'success'} />
+            {taskHash?.[DashboardTaskKey.borrower] && (
+              <CheckCircle color={'success'} />
+            )}
           </Stack>
 
           <Stack
             alignItems={'center'}
             flexDirection={'row'}
             justifyContent={'space-between'}
+            onClick={() =>
+              router.push({
+                pathname: '/dashboard/tasks/co-borrower',
+                query: { loanId: POSGetParamsFromUrl(location.href).loanId },
+              })
+            }
             px={3}
             py={1.5}
             sx={{
@@ -92,13 +126,21 @@ export const Tasks: FC = () => {
             width={'100%'}
           >
             <Typography>Co-borrower</Typography>
-            <CheckCircle color={'success'} />
+            {taskHash?.[DashboardTaskKey.co_borrower] && (
+              <CheckCircle color={'success'} />
+            )}
           </Stack>
 
           <Stack
             alignItems={'center'}
             flexDirection={'row'}
             justifyContent={'space-between'}
+            onClick={() =>
+              router.push({
+                pathname: '/dashboard/tasks/real-estate-investment-experience',
+                query: { loanId: POSGetParamsFromUrl(location.href).loanId },
+              })
+            }
             px={3}
             py={1.5}
             sx={{
@@ -111,12 +153,21 @@ export const Tasks: FC = () => {
             width={'100%'}
           >
             <Typography>Real estate investment experience</Typography>
-            <CheckCircle color={'success'} />
+            {taskHash?.[DashboardTaskKey.real_investment] && (
+              <CheckCircle color={'success'} />
+            )}
           </Stack>
+
           <Stack
             alignItems={'center'}
             flexDirection={'row'}
             justifyContent={'space-between'}
+            onClick={() =>
+              router.push({
+                pathname: '/dashboard/tasks/demographics-information',
+                query: { loanId: POSGetParamsFromUrl(location.href).loanId },
+              })
+            }
             px={3}
             py={1.5}
             sx={{
@@ -129,7 +180,9 @@ export const Tasks: FC = () => {
             width={'100%'}
           >
             <Typography>Demographics information</Typography>
-            <CheckCircle color={'success'} />
+            {taskHash?.[DashboardTaskKey.demographics] && (
+              <CheckCircle color={'success'} />
+            )}
           </Stack>
         </Stack>
 
@@ -147,6 +200,12 @@ export const Tasks: FC = () => {
             alignItems={'center'}
             flexDirection={'row'}
             justifyContent={'space-between'}
+            onClick={() =>
+              router.push({
+                pathname: '/dashboard/tasks/title-or-escrow-company',
+                query: { loanId: POSGetParamsFromUrl(location.href).loanId },
+              })
+            }
             px={3}
             py={1.5}
             sx={{
@@ -159,39 +218,51 @@ export const Tasks: FC = () => {
             width={'100%'}
           >
             <Typography>Title / Escrow company (optional)</Typography>
-            <CheckCircle color={'success'} />
+            {taskHash?.[DashboardTaskKey.title_escrow] && (
+              <CheckCircle color={'success'} />
+            )}
           </Stack>
         </Stack>
 
-        <Stack
-          border={'1px solid #D2D6E1'}
-          borderRadius={2}
-          p={'24px 24px 12px 24px'}
-          width={'100%'}
-        >
-          <Typography color={'text.primary'} mb={1.5} variant={'h7'}>
-            Agreements
-          </Typography>
-
+        {POSNotUndefined(taskHash?.[DashboardTaskKey.holdback_process]) && (
           <Stack
-            alignItems={'center'}
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            px={3}
-            py={1.5}
-            sx={{
-              '&:hover': {
-                cursor: 'pointer',
-                borderRadius: 1,
-                bgcolor: 'info.darker',
-              },
-            }}
+            border={'1px solid #D2D6E1'}
+            borderRadius={2}
+            p={'24px 24px 12px 24px'}
             width={'100%'}
           >
-            <Typography>Construction holdback process</Typography>
-            <CheckCircle color={'success'} />
+            <Typography color={'text.primary'} mb={1.5} variant={'h7'}>
+              Agreements
+            </Typography>
+
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              onClick={() =>
+                router.push({
+                  pathname: '/dashboard/tasks/construction-holdback-process',
+                  query: { loanId: POSGetParamsFromUrl(location.href).loanId },
+                })
+              }
+              px={3}
+              py={1.5}
+              sx={{
+                '&:hover': {
+                  cursor: 'pointer',
+                  borderRadius: 1,
+                  bgcolor: 'info.darker',
+                },
+              }}
+              width={'100%'}
+            >
+              <Typography>Construction holdback process</Typography>
+              {taskHash?.[DashboardTaskKey.holdback_process] && (
+                <CheckCircle color={'success'} />
+              )}
+            </Stack>
           </Stack>
-        </Stack>
+        )}
       </Stack>
     </Fade>
   );

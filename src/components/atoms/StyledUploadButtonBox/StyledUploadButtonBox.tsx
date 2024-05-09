@@ -225,9 +225,10 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         close();
         return;
       }
-      await _deleteFile(router.query.loanId as string, {
+      await _deleteFile({
         fileKey: fileKey,
         fileUrl: fileList[deleteIndex].url,
+        loanId: router.query.loanId as string,
       });
       await refresh?.();
       close();

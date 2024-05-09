@@ -1,5 +1,5 @@
-import { ISelectedProcessData } from '@/models/base';
-import { DashboardTaskInfo, MenuItems, SceneType } from '@/types';
+import { FC, useCallback, useState } from 'react';
+import { Box } from '@mui/material';
 import {
   AccountBalanceOutlined,
   FolderOpenOutlined,
@@ -7,19 +7,19 @@ import {
   PeopleAltOutlined,
   TimelineOutlined,
 } from '@mui/icons-material';
-import { Box } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/router';
-import { FC, ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { DashboardSideInfoBox } from './component';
-import { _fetchLoanTask } from '@/requests/dashboard';
+
+import { LayoutSceneTypeEnum, MenuItems } from '@/types';
+import { IDashboardInfo } from '@/models/base/DashboardInfo';
 
 type POSMenuListProps = {
-  // info?: ISelectedProcessData;
-  scene?: SceneType;
-  // loading?: boolean;
+  info: IDashboardInfo;
+  scene?: LayoutSceneTypeEnum;
+  loading?: boolean;
 };
 
 const DASHBOARD_MENU_LIST: MenuItems[] = [
@@ -56,11 +56,7 @@ const DASHBOARD_MENU_LIST: MenuItems[] = [
 ];
 
 export const DashboardMenuList: FC<POSMenuListProps> = observer(
-  ({
-    scene,
-    // info, loading
-  }) => {
-    // const store = useMst();
+  ({ scene, info, loading }) => {
     const router = useRouter();
     const [activeKey, setActiveKey] = useState(() => {
       const results = router.pathname.split('/');
@@ -135,7 +131,7 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
             );
           })}
         </Box>
-        {/*<DashboardSideInfoBox info={info} loading={loading} />*/}
+        <DashboardSideInfoBox info={info} loading={loading} />
       </>
     );
   },

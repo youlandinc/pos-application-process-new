@@ -8,7 +8,6 @@ import { useMst } from '@/models/Root';
 import { POSFormatUrl, POSGetImageSize } from '@/utils';
 
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
-import { SceneType } from '@/types';
 
 import { StyledButton, StyledDrawer } from '@/components/atoms';
 import { DashboardMenuList } from '@/components/molecules';
@@ -21,7 +20,7 @@ interface DashboardSideDrawerProps {
 export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
   ({ visible = false, close }) => {
     const breakpoint = useBreakpoints();
-    const { selectedProcessData } = useMst();
+    const { dashboardInfo } = useMst();
     const { saasState } = useSessionStorageState('tenantConfig');
 
     const [ratio, setRatio] = useState(-1);
@@ -82,14 +81,7 @@ export const DashboardSideDrawer: FC<DashboardSideDrawerProps> = observer(
 
     return (
       <StyledDrawer
-        content={
-          <>
-            <DashboardMenuList
-              info={selectedProcessData}
-              scene={selectedProcessData.scene || SceneType.bridge_purchase}
-            />
-          </>
-        }
+        content={<DashboardMenuList info={dashboardInfo} />}
         disableEscapeKeyDown
         header={
           <Box

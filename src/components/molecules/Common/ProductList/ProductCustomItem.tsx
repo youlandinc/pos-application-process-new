@@ -134,6 +134,7 @@ export const ProductCustomItem: FC<{ totalLoanAmount?: number }> = observer(
             >
               <Typography variant={'body1'}>Rate</Typography>
               <StyledTextFieldNumber
+                decimalScale={3}
                 label={'Interest rate'}
                 onValueChange={({ floatValue }) =>
                   estimateRate.changeFieldValue('interestRate', floatValue)

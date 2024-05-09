@@ -14,9 +14,8 @@ import {
 } from '@/components/atoms';
 
 import { _fetchLoanDocumentData } from '@/requests/dashboard';
-import { DocumentUploadResponse, HttpError } from '@/types';
+import { HttpError } from '@/types';
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { AxiosResponse } from 'axios';
 
 export const Documents: FC = () => {
   const router = useRouter();

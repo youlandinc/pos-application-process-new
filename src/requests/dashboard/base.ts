@@ -1,6 +1,11 @@
 import { get } from '@/requests/axios';
 import { DashboardDocumentsResponse } from '@/types';
 
+// right box info
+export const _fetchDashboardInfo = (loanId: string) => {
+  return get(`/pos/loan/process/property/${loanId}`);
+};
+
 // overview
 export const _fetchLoanDetail = (loanId: string) => {
   return get(`/pos/loan/process/data/${loanId}`);

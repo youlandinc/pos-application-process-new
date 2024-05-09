@@ -17,13 +17,19 @@ import { LoginType, UserType } from '@/types/enum';
 import { User } from '@/types/user';
 
 import { FormData, userpool } from '@/constants';
-import { LoanSnapshotEnum } from '@/types';
+import {
+  LoanPropertyTypeEnum,
+  LoanPropertyUnitEnum,
+  LoanSnapshotEnum,
+} from '@/types';
+import { DashboardInfo } from '@/models/base/DashboardInfo';
 
 export const RootModel = {
   persistDataLoaded: types.boolean,
   loadedGoogle: types.boolean,
 
   applicationForm: ApplicationForm,
+  dashboardInfo: DashboardInfo,
 
   pipelineTask: PTaskForm,
 
@@ -139,6 +145,14 @@ const initialState = {
     loanAddress: FormData[LoanSnapshotEnum.loan_address],
     backgroundInformation: FormData[LoanSnapshotEnum.background_information],
     compensationInformation: FormData[LoanSnapshotEnum.compensation_page],
+  },
+  dashboardInfo: {
+    propertyAddress: FormData[LoanSnapshotEnum.loan_address],
+    propertyType: LoanPropertyTypeEnum.default,
+    propertyUnit: LoanPropertyUnitEnum.default,
+    loanType: '',
+    loading: false,
+    loanId: '',
   },
 
   pipelineTask: {

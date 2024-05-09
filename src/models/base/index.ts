@@ -1,4 +1,5 @@
 export * from './ApplicationForm';
+export * from './DashboardInfo';
 
 export * from './PTaskForm';
 

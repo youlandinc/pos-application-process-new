@@ -29,7 +29,12 @@ import { format, parseISO } from 'date-fns';
 
 import { POSFlex } from '@/styles';
 import { LoanSnapshotEnum, PipelineLoanStageEnum, UserType } from '@/types';
-import { POSFindLabel, POSFormatDollar, POSFormatPercent } from '@/utils';
+import {
+  POSFindLabel,
+  POSFormatDollar,
+  POSFormatPercent,
+  POSGetDecimalPlaces,
+} from '@/utils';
 
 import { StyledBadge, StyledButton } from '@/components/atoms';
 import { OPTIONS_LOAN_STAGE } from '@/constants';
@@ -276,6 +281,23 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
             )}
           </Typography>
         </Box>
+
+        {userType !== UserType.CUSTOMER && (
+          <Box className={'product_item'}>
+            <Box>Compensation</Box>
+            <Typography variant={'subtitle1'}>
+              {`${
+                originationPoints !== null
+                  ? `${POSFormatPercent(
+                      originationPoints,
+                      POSGetDecimalPlaces(originationPoints),
+                    )} + `
+                  : ''
+              }${POSFormatDollar(processingFee)}`}
+            </Typography>
+          </Box>
+        )}
+
         <Box className={'product_item'}>
           <Box>Stage</Box>
           <StyledBadge
@@ -283,46 +305,6 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
             status={loanStage}
           />
         </Box>
-        {/*{(userType === UserType.BROKER ||*/}
-        {/*  userType === UserType.LOAN_OFFICER ||*/}
-        {/*  userType === UserType.LENDER) && (*/}
-        {/*  <>*/}
-        {/*    <Box className={'product_item'}>*/}
-        {/*      <Box>Origination fee</Box>*/}
-        {/*      <Typography variant={'subtitle1'}>*/}
-        {/*        {`${POSFormatDollar(*/}
-        {/*          brokerOriginationFee ||*/}
-        {/*            officerOriginationFee ||*/}
-        {/*            lenderOriginationFee,*/}
-        {/*        )}(${POSFormatPercent(*/}
-        {/*          (brokerPoints && brokerPoints / 100) ||*/}
-        {/*            (officerPoints && officerPoints / 100) ||*/}
-        {/*            (lenderPoints && lenderPoints / 100) ||*/}
-        {/*            undefined,*/}
-        {/*        )})`}*/}
-        {/*      </Typography>*/}
-        {/*    </Box>*/}
-        {/*    <Box className={'product_item'}>*/}
-        {/*      <Box>Processing fee</Box>*/}
-        {/*      <Typography variant={'subtitle1'}>*/}
-        {/*        {POSFormatDollar(*/}
-        {/*          brokerProcessingFee ||*/}
-        {/*            officerProcessingFee ||*/}
-        {/*            lenderProcessingFee,*/}
-        {/*        )}*/}
-        {/*      </Typography>*/}
-        {/*    </Box>*/}
-        {/*  </>*/}
-        {/*)}*/}
-
-        {/*{userType === UserType.REAL_ESTATE_AGENT && (*/}
-        {/*  <Box className={'product_item'}>*/}
-        {/*    <Box>Referral fee</Box>*/}
-        {/*    <Typography variant={'subtitle1'}>*/}
-        {/*      {POSFormatDollar(agentFee)}*/}
-        {/*    </Typography>*/}
-        {/*  </Box>*/}
-        {/*)}*/}
       </Box>
     </Box>
   );

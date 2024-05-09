@@ -273,15 +273,18 @@ export const theme = createTheme({
         disableRipple: true,
       },
     },
-    //MuiTab: {
-    //  styleOverrides: {
-    //    root: {
-    //      color: '#9095A3',
-    //      '.Mui-selected': {
-    //        color: 'primary.main',
-    //      },
-    //    },
-    //  },
-    //},
+    MuiTab: {
+      defaultProps: {
+        disableRipple: true,
+      },
+      // styleOverrides: {
+      //   root: {
+      //     color: '#9095A3',
+      //     '.Mui-selected': {
+      //       color: 'primary.main',
+      //     },
+      //   },
+      // },
+    },
   },
 });

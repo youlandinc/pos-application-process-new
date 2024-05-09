@@ -25,7 +25,12 @@ import {
   StyledDialog,
   StyledHeaderLogo,
 } from '@/components/atoms';
-import { ForgotPassword, Login, SignUp } from '@/components/molecules';
+import {
+  DashboardSideDrawer,
+  ForgotPassword,
+  Login,
+  SignUp,
+} from '@/components/molecules';
 import { POSFormatUrl } from '@/utils';
 import { LayoutSceneTypeEnum, LoanSnapshotEnum } from '@/types';
 
@@ -461,7 +466,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         )}
         <Box sx={{ ml: 'auto' }}>{renderButton}</Box>
       </Box>
-      {/*<DashboardSideDrawer close={sideClose} visible={closeVisible} />*/}
+      <DashboardSideDrawer close={sideClose} visible={closeVisible} />
       <StyledDialog
         content={renderDialog.content}
         disableEscapeKeyDown

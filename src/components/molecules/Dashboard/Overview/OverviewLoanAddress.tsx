@@ -148,7 +148,7 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
       </StyledButton>
 
       <StyledDialog
-        content={<Box ref={pdfFile} />}
+        content={<Box py={10} ref={pdfFile} />}
         disableEscapeKeyDown
         header={
           <Stack

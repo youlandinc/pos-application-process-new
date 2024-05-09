@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Skeleton, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
@@ -62,6 +62,13 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
     const [productList, setProductList] = useState<
       Array<ProductItemProps | any>
     >([]);
+    const [limits, setLimits] = useState<
+      | {
+          maxLoanAmount: number;
+          minLoanAmount: number;
+        }
+      | undefined
+    >();
     const [errorList, setErrorList] = useState<Array<string | any>>([]);
 
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -77,6 +84,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         const { data } = await _fetchProductList(postData);
         setProductList(data?.products ?? []);
         setErrorList(data?.reasons ?? []);
+        setLimits(data?.limits ?? void 0);
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
@@ -152,6 +160,145 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       estimateRate?.purchasePrice,
       estimateRate.refinanceLoanAmount,
       estimateRate?.rehabCost,
+    ]);
+
+    const renderSummary = useMemo(() => {
+      switch (estimateRate.productCategory) {
+        case LoanProductCategoryEnum.stabilized_bridge:
+          if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
+            return (
+              <Typography
+                color={'text.secondary'}
+                sx={{
+                  '& > b': {
+                    color: 'text.primary',
+                    fontWeight: 600,
+                  },
+                }}
+                variant={'body1'}
+              >
+                This property is located in{' '}
+                <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
+                the FlCO score is{' '}
+                <b>
+                  {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
+                </b>
+                {estimateRate.isLiquidity
+                  ? `, the liquidity is ${(
+                      <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
+                    )}`
+                  : ''}
+                . The purchase price is{' '}
+                <b>{POSFormatDollar(estimateRate.purchasePrice)}</b>. The total
+                loan amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
+              </Typography>
+            );
+          }
+          return (
+            <Typography
+              color={'text.secondary'}
+              sx={{
+                '& > b': {
+                  color: 'text.primary',
+                  fontWeight: 600,
+                },
+              }}
+              variant={'body1'}
+            >
+              This property is located in{' '}
+              <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
+              the FlCO score is{' '}
+              <b>
+                {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
+              </b>
+              {estimateRate.isLiquidity
+                ? `, the liquidity is ${(
+                    <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
+                  )}`
+                : ''}
+              . The as-is property value is{' '}
+              <b>{POSFormatDollar(estimateRate.propertyValue)}</b>. The total
+              loan amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
+            </Typography>
+          );
+        case LoanProductCategoryEnum.fix_and_flip:
+          if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
+            return (
+              <Typography
+                color={'text.secondary'}
+                sx={{
+                  '& > b': {
+                    color: 'text.primary',
+                    fontWeight: 600,
+                  },
+                }}
+                variant={'body1'}
+              >
+                This property is located in{' '}
+                <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
+                the FlCO score is{' '}
+                <b>
+                  {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
+                </b>
+                {estimateRate.isLiquidity
+                  ? `, the liquidity is ${(
+                      <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
+                    )}`
+                  : ''}
+                . The purchase price is{' '}
+                <b>{POSFormatDollar(estimateRate.purchasePrice)}</b>. The
+                estimated cost of rehab is{' '}
+                <b>{POSFormatDollar(estimateRate.rehabCost)}</b>, and the
+                after-repair value of the property will be{' '}
+                <b>{POSFormatDollar(estimateRate.arv)}</b>. The total loan
+                amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
+              </Typography>
+            );
+          }
+          return (
+            <Typography
+              color={'text.secondary'}
+              sx={{
+                '& > b': {
+                  color: 'text.primary',
+                  fontWeight: 600,
+                },
+              }}
+              variant={'body1'}
+            >
+              This property is located in{' '}
+              <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
+              the FlCO score is{' '}
+              <b>
+                {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
+              </b>
+              {estimateRate.isLiquidity
+                ? `, the liquidity is ${(
+                    <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
+                  )}`
+                : ''}
+              . The as-is property value is{' '}
+              <b>{POSFormatDollar(estimateRate.propertyValue)}</b>. The
+              estimated cost of rehab is{' '}
+              <b>{POSFormatDollar(estimateRate.rehabCost)}</b>, and the
+              after-repair value of the property will be{' '}
+              <b>{POSFormatDollar(estimateRate.arv)}</b>. The total loan amount
+              is <b>{POSFormatDollar(totalLoanAmount)}</b>.
+            </Typography>
+          );
+        default:
+          return '';
+      }
+    }, [
+      estimateRate.ficoScore,
+      estimateRate.isLiquidity,
+      estimateRate.liquidityAmount,
+      estimateRate.loanPurpose,
+      estimateRate.productCategory,
+      estimateRate.propertyValue,
+      estimateRate.purchasePrice,
+      estimateRate.state,
+      totalLoanAmount,
     ]);
 
     useEffect(
@@ -241,21 +388,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 Edit
               </StyledButton>
             </Stack>
-            <Typography
-              color={'text.secondary'}
-              sx={{
-                '& > b': {
-                  color: 'text.primary',
-                  fontWeight: 600,
-                },
-              }}
-              variant={'body1'}
-            >
-              This property is located in <b>California</b>, the FlCO score is{' '}
-              <b>700-750</b>, the liquidity is <b>{POSFormatDollar(100000)}</b>.
-              The purchase price is <b>$200,000</b>. The total loan amount is{' '}
-              <b>{POSFormatDollar(100000)}</b>.
-            </Typography>
+            {renderSummary}
           </Stack>
         )}
 
@@ -314,24 +447,44 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
               />
 
               {!['xs', 'sm', 'md'].includes(breakpoints) && (
-                <Stack flex={1} maxWidth={240}>
-                  <Typography color={'text.secondary'} variant={'body3'}>
-                    You qualify for a loan amount between{' '}
-                  </Typography>
-                  <Typography
-                    color={'text.secondary'}
-                    sx={{
-                      '& > b': {
-                        color: 'primary.main',
-                        fontWeight: 600,
-                      },
-                    }}
-                    variant={'body3'}
-                  >
-                    <b>{POSFormatDollar(1000000)}</b> and{' '}
-                    <b>{POSFormatDollar(1000000)}</b>.
-                  </Typography>
-                </Stack>
+                <>
+                  <Stack flex={1} maxWidth={240}>
+                    {loading ? (
+                      <>
+                        <Skeleton
+                          animation={'wave'}
+                          height={14}
+                          variant="rounded"
+                        />
+                        <Skeleton
+                          animation={'wave'}
+                          height={14}
+                          sx={{ marginTop: 1 }}
+                          variant="rounded"
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Typography color={'text.secondary'} variant={'body3'}>
+                          You qualify for a loan amount between{' '}
+                        </Typography>
+                        <Typography
+                          color={'text.secondary'}
+                          sx={{
+                            '& > b': {
+                              color: 'primary.main',
+                              fontWeight: 600,
+                            },
+                          }}
+                          variant={'body3'}
+                        >
+                          <b>{POSFormatDollar(limits?.minLoanAmount)}</b> and{' '}
+                          <b>{POSFormatDollar(limits?.maxLoanAmount)}</b>.
+                        </Typography>
+                      </>
+                    )}
+                  </Stack>
+                </>
               )}
             </Stack>
 
@@ -364,23 +517,45 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
               />
 
               {['xs', 'sm', 'md'].includes(breakpoints) && (
-                <Stack flex={1} maxWidth={240}>
-                  <Typography color={'text.secondary'} variant={'body3'}>
-                    You qualify for a loan amount between{' '}
-                  </Typography>
-                  <Typography
-                    color={'text.secondary'}
-                    sx={{
-                      '& > b': {
-                        color: 'primary.main',
-                        fontWeight: 600,
-                      },
-                    }}
-                    variant={'body3'}
-                  >
-                    <b>{POSFormatDollar(1000000)}</b> and{' '}
-                    <b>{POSFormatDollar(1000000)}</b>.
-                  </Typography>
+                <Stack flex={1} maxWidth={240} width={'100%'}>
+                  {loading ? (
+                    <>
+                      <Skeleton
+                        animation={'wave'}
+                        height={14}
+                        variant="rounded"
+                        width={'100%'}
+                      />
+                      <Skeleton
+                        animation={'wave'}
+                        height={14}
+                        sx={{
+                          marginTop: 1,
+                        }}
+                        variant="rounded"
+                        width={'100%'}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Typography color={'text.secondary'} variant={'body3'}>
+                        You qualify for a loan amount between{' '}
+                      </Typography>
+                      <Typography
+                        color={'text.secondary'}
+                        sx={{
+                          '& > b': {
+                            color: 'primary.main',
+                            fontWeight: 600,
+                          },
+                        }}
+                        variant={'body3'}
+                      >
+                        <b>{POSFormatDollar(limits?.minLoanAmount)}</b> and{' '}
+                        <b>{POSFormatDollar(limits?.maxLoanAmount)}</b>.
+                      </Typography>
+                    </>
+                  )}
                 </Stack>
               )}
 

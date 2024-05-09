@@ -46,6 +46,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
           width={'100%'}
         >
           <StyledTextFieldNumber
+            decimalScale={3}
             label={'Broker origination fee'}
             onValueChange={({ floatValue }) =>
               compensationInformation.changeFieldValue(

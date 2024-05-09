@@ -8,10 +8,10 @@ import { format } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
-import { _deletePipelineLoan, _fetchPipelineLoanList } from '@/requests';
+
 import { useSessionStorageState, useSwitch } from '@/hooks';
-import { HttpError, LoanSnapshotEnum, UserType } from '@/types';
 import { AUTO_HIDE_DURATION, PAGE_SIZE, URL_HASH } from '@/constants';
+
 import { StyledButton, StyledDialog, StyledLoading } from '@/components/atoms';
 
 import {
@@ -20,6 +20,9 @@ import {
   SearchBar,
   SearchBarProps,
 } from './components';
+
+import { _deletePipelineLoan, _fetchPipelineLoanList } from '@/requests';
+import { HttpError, LoanSnapshotEnum, UserType } from '@/types';
 
 import PIPELINE_NO_RESULT from '@/svg/pipeline/pipeline_no_result.svg';
 
@@ -31,6 +34,7 @@ export const Pipeline: FC = observer(() => {
   const {
     // userSetting: { pipelineStatus, pipelineStatusInitialized },
     // pipelineTask: { pipelineInitialized },
+    dashboardInfo,
     userType,
     session,
     applicationForm,
@@ -130,6 +134,8 @@ export const Pipeline: FC = observer(() => {
     }
 
     if (row.snapshot === LoanSnapshotEnum.loan_overview) {
+      dashboardInfo.setLoanId('');
+      dashboardInfo.setLoading(true);
       await router.push({
         pathname: '/dashboard/overview',
         query: { loanId: row.loanId },

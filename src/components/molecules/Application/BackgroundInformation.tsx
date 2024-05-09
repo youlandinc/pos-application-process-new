@@ -35,7 +35,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
         >
           <StyledButtonGroup
             onChange={(e, value) => {
-              if (value === backgroundInformation.hadBankruptcy) {
+              if (value === null) {
                 return;
               }
               backgroundInformation.changeFieldValue('hadBankruptcy', value);
@@ -54,7 +54,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
         >
           <StyledButtonGroup
             onChange={(e, value) => {
-              if (value === backgroundInformation.hadDelinquent) {
+              if (value === null) {
                 return;
               }
               backgroundInformation.changeFieldValue('hadDelinquent', value);
@@ -75,7 +75,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
         >
           <StyledButtonGroup
             onChange={(e, value) => {
-              if (value === backgroundInformation.hadForeclosure) {
+              if (value === null) {
                 return;
               }
               backgroundInformation.changeFieldValue('hadForeclosure', value);
@@ -96,7 +96,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
         >
           <StyledButtonGroup
             onChange={(e, value) => {
-              if (value === backgroundInformation.hadFelony) {
+              if (value === null) {
                 return;
               }
               backgroundInformation.changeFieldValue('hadFelony', value);
@@ -117,7 +117,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
         >
           <StyledButtonGroup
             onChange={(e, value) => {
-              if (value === backgroundInformation.hadLitigation) {
+              if (value === null) {
                 return;
               }
               backgroundInformation.changeFieldValue('hadLitigation', value);

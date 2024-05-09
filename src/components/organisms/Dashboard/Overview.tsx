@@ -15,7 +15,7 @@ import {
   OverviewLoanStatus,
 } from '@/components/molecules';
 
-import { HttpError, PipelineLoanStageEnum } from '@/types';
+import { HttpError } from '@/types';
 import { _fetchLoanDetail } from '@/requests/dashboard';
 
 export const Overview: FC = () => {
@@ -84,7 +84,10 @@ export const Overview: FC = () => {
           width={'100%'}
         >
           <Stack gap={3} width={{ xs: '100%', xl: 'calc(67% - 12px)' }}>
-            <OverviewLoanStatus loanStatus={PipelineLoanStageEnum.scenario} />
+            <OverviewLoanStatus
+              loanStatus={overviewData?.loanStatus}
+              loanStatusDetails={overviewData?.loanStatusDetails}
+            />
             <OverviewLoanDetails {...overviewData} />
           </Stack>
 
