@@ -183,11 +183,14 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 <b>
                   {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
                 </b>
-                {estimateRate.isLiquidity
-                  ? `, the liquidity is ${(
-                      <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
-                    )}`
-                  : ''}
+                {estimateRate.isLiquidity ? (
+                  <>
+                    , the liquidity is{' '}
+                    <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
+                  </>
+                ) : (
+                  ''
+                )}
                 . The purchase price is{' '}
                 <b>{POSFormatDollar(estimateRate.purchasePrice)}</b>. The total
                 loan amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
@@ -211,11 +214,14 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
               <b>
                 {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
               </b>
-              {estimateRate.isLiquidity
-                ? `, the liquidity is ${(
-                    <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
-                  )}`
-                : ''}
+              {estimateRate.isLiquidity ? (
+                <>
+                  , the liquidity is{' '}
+                  <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
+                </>
+              ) : (
+                ''
+              )}
               . The as-is property value is{' '}
               <b>{POSFormatDollar(estimateRate.propertyValue)}</b>. The total
               loan amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
@@ -240,11 +246,14 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 <b>
                   {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
                 </b>
-                {estimateRate.isLiquidity
-                  ? `, the liquidity is ${(
-                      <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
-                    )}`
-                  : ''}
+                {estimateRate.isLiquidity ? (
+                  <>
+                    , the liquidity is{' '}
+                    <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
+                  </>
+                ) : (
+                  ''
+                )}
                 . The purchase price is{' '}
                 <b>{POSFormatDollar(estimateRate.purchasePrice)}</b>. The
                 estimated cost of rehab is{' '}
@@ -272,11 +281,14 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
               <b>
                 {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
               </b>
-              {estimateRate.isLiquidity
-                ? `, the liquidity is ${(
-                    <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
-                  )}`
-                : ''}
+              {estimateRate.isLiquidity ? (
+                <>
+                  , the liquidity is{' '}
+                  <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
+                </>
+              ) : (
+                ''
+              )}
               . The as-is property value is{' '}
               <b>{POSFormatDollar(estimateRate.propertyValue)}</b>. The
               estimated cost of rehab is{' '}
