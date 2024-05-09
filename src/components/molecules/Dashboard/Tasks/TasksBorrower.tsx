@@ -214,7 +214,7 @@ export const TasksBorrower: FC = () => {
         trustName,
 
         entityName,
-        entityType,
+        entityType: entityType ? null : entityType,
         entityId,
         entityState,
       },
