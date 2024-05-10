@@ -45,4 +45,5 @@ export interface EstimateRateFormData {
   isCustom: boolean;
   loanTerm: number;
   interestRate: number;
+  isDutch: boolean;
 }

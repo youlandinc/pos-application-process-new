@@ -53,6 +53,8 @@ export const FormData = {
     isCustom: false,
     loanTerm: 0,
     interestRate: 0,
+    // dutch / no dutch
+    isDutch: false,
   },
   [LoanSnapshotEnum.loan_address]: {
     formatAddress: '',

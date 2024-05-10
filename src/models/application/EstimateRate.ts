@@ -60,6 +60,7 @@ export const EstimateRate = types
     isCustom: types.boolean,
     loanTerm: types.maybe(types.number),
     interestRate: types.maybe(types.number),
+    isDutch: types.maybe(types.boolean),
   })
   .actions((self) => ({
     changeFieldValue<T extends keyof typeof self>(
@@ -91,6 +92,7 @@ export const EstimateRate = types
         isCustom: self.isCustom,
         loanTerm: self.loanTerm,
         interestRate: self.interestRate,
+        isDutch: self.isDutch,
       };
     },
     injectServerData(data: EstimateRateFormData) {
@@ -114,6 +116,7 @@ export const EstimateRate = types
         isCustom,
         loanTerm,
         interestRate,
+        isDutch,
       } = data;
 
       self.productCategory =
@@ -136,5 +139,6 @@ export const EstimateRate = types
       self.isCustom = isCustom ?? false;
       self.loanTerm = isCustom ? loanTerm : undefined;
       self.interestRate = isCustom ? interestRate * 100 : undefined;
+      self.isDutch = isDutch ?? false;
     },
   }));

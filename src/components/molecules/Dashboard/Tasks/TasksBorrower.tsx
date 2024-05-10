@@ -1,6 +1,20 @@
 import { FC, useMemo, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
+import { format, isDate, isValid } from 'date-fns';
+import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+
+import { Address, IAddress } from '@/models/common/Address';
+
+import { POSGetParamsFromUrl } from '@/utils';
+import {
+  AUTO_HIDE_DURATION,
+  OPTIONS_COMMON_CITIZEN_TYPE,
+  OPTIONS_COMMON_STATE,
+  OPTIONS_TASK_BORROWER_TYPE,
+  OPTIONS_TASK_ENTITY_TYPE,
+} from '@/constants';
 
 import {
   StyledButton,
@@ -15,15 +29,7 @@ import {
   StyledTextFieldSocialNumber,
   Transitions,
 } from '@/components/atoms';
-import {
-  AUTO_HIDE_DURATION,
-  OPTIONS_COMMON_CITIZEN_TYPE,
-  OPTIONS_COMMON_STATE,
-  OPTIONS_TASK_BORROWER_TYPE,
-  OPTIONS_TASK_ENTITY_TYPE,
-} from '@/constants';
 
-import { Address, IAddress } from '@/models/common/Address';
 import {
   DashboardTaskBorrowerEntityType,
   DashboardTaskBorrowerType,
@@ -31,14 +37,10 @@ import {
   DashboardTaskKey,
   HttpError,
 } from '@/types';
-import { useAsync } from 'react-use';
-import { POSGetParamsFromUrl } from '@/utils';
 import {
   _fetchLoanTaskDetail,
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
-import { useSnackbar } from 'notistack';
-import { format, isDate, isValid } from 'date-fns';
 
 export const TasksBorrower: FC = () => {
   const router = useRouter();
@@ -149,30 +151,54 @@ export const TasksBorrower: FC = () => {
     }
     const dateCondition = isValid(birthDate) && isDate(birthDate);
     const baseCondition =
-      !!citizenship &&
       !!firstName &&
       !!lastName &&
       !!phoneNumber &&
       !!email &&
-      !!ssn &&
       address.isValid &&
       dateCondition;
 
     if (borrowerType === DashboardTaskBorrowerType.individual) {
-      return baseCondition;
+      if (!citizenship) {
+        return false;
+      }
+      if (citizenship === DashboardTaskCitizenshipStatus.foreign_national) {
+        return baseCondition;
+      }
+      return baseCondition && !!ssn;
     }
     if (borrowerType === DashboardTaskBorrowerType.entity) {
+      if (!citizenship) {
+        return false;
+      }
+      if (citizenship === DashboardTaskCitizenshipStatus.foreign_national) {
+        return (
+          baseCondition &&
+          !!entityName &&
+          !!entityType &&
+          !!entityId &&
+          !!entityState &&
+          !!signatoryTitle
+        );
+      }
       return (
         baseCondition &&
         !!entityName &&
         !!entityType &&
         !!entityId &&
         !!entityState &&
-        !!signatoryTitle
+        !!signatoryTitle &&
+        !!ssn
       );
     }
     if (borrowerType === DashboardTaskBorrowerType.trust) {
-      return baseCondition && !!trustName && !!signatoryTitle;
+      if (!citizenship) {
+        return false;
+      }
+      if (citizenship === DashboardTaskCitizenshipStatus.foreign_national) {
+        return baseCondition && !!trustName && !!signatoryTitle;
+      }
+      return baseCondition && !!trustName && !!signatoryTitle && !!ssn;
     }
   }, [
     address.isValid,
@@ -214,7 +240,7 @@ export const TasksBorrower: FC = () => {
         trustName,
 
         entityName,
-        entityType: entityType ? null : entityType,
+        entityType: entityType ? entityType : null,
         entityId,
         entityState,
       },
@@ -255,7 +281,7 @@ export const TasksBorrower: FC = () => {
         alignItems={'center'}
         gap={6}
         justifyContent={'flex-start'}
-        maxWidth={600}
+        maxWidth={648}
         mx={'auto'}
         px={{ lg: 3, xs: 0 }}
         width={'100%'}
@@ -456,34 +482,45 @@ export const TasksBorrower: FC = () => {
           <StyledGoogleAutoComplete address={address} />
         </StyledFormItem>
 
-        <StyledFormItem
-          gap={3}
-          label={'Social security number'}
-          labelSx={{ textAlign: 'left', m: 0 }}
-          sub
+        <Transitions
+          style={{
+            display:
+              citizenship !== DashboardTaskCitizenshipStatus.foreign_national
+                ? 'flex'
+                : 'none',
+            width: '100%',
+          }}
         >
-          <StyledTextFieldSocialNumber
-            label={'Social security number'}
-            onValueChange={(v) => setSsn(v)}
-            value={ssn}
-          />
-        </StyledFormItem>
+          {citizenship !== DashboardTaskCitizenshipStatus.foreign_national && (
+            <StyledFormItem
+              gap={3}
+              label={'Social security number'}
+              labelSx={{ textAlign: 'left', m: 0 }}
+              sub
+            >
+              <StyledTextFieldSocialNumber
+                label={'Social security number'}
+                onValueChange={(v) => setSsn(v)}
+                value={ssn}
+              />
+            </StyledFormItem>
+          )}
+        </Transitions>
 
         <Stack
           flexDirection={{ xs: 'unset', md: 'row' }}
           gap={3}
-          maxWidth={600}
           width={'100%'}
         >
           <StyledButton
             color={'info'}
-            onClick={() => {
-              router.push({
+            onClick={async () => {
+              await router.push({
                 pathname: '/dashboard/tasks',
                 query: { loanId: router.query.loanId },
               });
             }}
-            sx={{ flex: 1, maxWidth: 276, width: '100%' }}
+            sx={{ flex: 1, width: '100%' }}
             variant={'text'}
           >
             Back
@@ -493,7 +530,7 @@ export const TasksBorrower: FC = () => {
             disabled={saveLoading || !isFormDataValid}
             loading={saveLoading}
             onClick={handleSave}
-            sx={{ flex: 1, maxWidth: 276, width: '100%' }}
+            sx={{ flex: 1, width: '100%' }}
           >
             Save
           </StyledButton>

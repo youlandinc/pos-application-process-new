@@ -1,5 +1,25 @@
 import { TaskFiles } from '@/types';
 
+// tasks
+export enum DashboardTaskKey {
+  borrower = 'BORROWER',
+  co_borrower = 'CO_BORROWER',
+  demographics = 'DEMOGRAPHICS',
+  real_investment = 'REAL_INVESTMENT',
+  title_escrow = 'TITLE_ESCROW',
+  holdback_process = 'HOLDBACK_PROCESS',
+}
+
+export interface DashboardTasksResponse {
+  [DashboardTaskKey.borrower]: boolean;
+  [DashboardTaskKey.co_borrower]: boolean;
+  [DashboardTaskKey.demographics]: boolean;
+  [DashboardTaskKey.real_investment]: boolean;
+  [DashboardTaskKey.title_escrow]: boolean;
+  [DashboardTaskKey.holdback_process]?: boolean;
+}
+
+// documents
 export interface DashboardDocumentsResponse {
   docs: {
     id: number;
@@ -18,20 +38,20 @@ export interface DashboardDocumentsResponse {
   isTips: boolean;
 }
 
-export enum DashboardTaskKey {
-  borrower = 'BORROWER',
-  co_borrower = 'CO_BORROWER',
-  demographics = 'DEMOGRAPHICS',
-  real_investment = 'REAL_INVESTMENT',
-  title_escrow = 'TITLE_ESCROW',
-  holdback_process = 'HOLDBACK_PROCESS',
+// teams
+export interface TeamMemberData {
+  name: string;
+  title: string;
+  avatar: string;
+  phone: string;
+  email: string;
+  position: string;
 }
 
-export interface DashboardTasksResponse {
-  [DashboardTaskKey.borrower]: boolean;
-  [DashboardTaskKey.co_borrower]: boolean;
-  [DashboardTaskKey.demographics]: boolean;
-  [DashboardTaskKey.real_investment]: boolean;
-  [DashboardTaskKey.title_escrow]: boolean;
-  [DashboardTaskKey.holdback_process]?: boolean;
+export interface DashboardTeamResponse {
+  loanOfficers: TeamMemberData[];
+  email: string;
+  phone: string;
+  workingDays: string;
+  workingHours: string;
 }

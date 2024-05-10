@@ -10,25 +10,16 @@ import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { POSFormatUSPhoneToText } from '@/utils';
+import { POSFormatUSPhoneToText, POSGetParamsFromUrl } from '@/utils';
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 
 import { StyledLoading } from '@/components/atoms';
 import { DashboardServiceCardItem } from '@/components/molecules';
 
-import { HttpError } from '@/types';
-import { _fetchMyTeamData } from '@/requests';
+import { HttpError, TeamMemberData } from '@/types';
+import { _fetchTeamMembers } from '@/requests/dashboard';
 
 import MY_TEAM from '@/svg/dashboard/my_team.svg';
-
-export interface TeamMemberData {
-  name: string;
-  title: string;
-  avatar: string;
-  phone: string;
-  email: string;
-  position: string;
-}
 
 export const Team = () => {
   const breakpoints = useBreakpoints();
@@ -42,29 +33,30 @@ export const Team = () => {
   const [phone, setPhone] = useState<string>('');
 
   const { loading } = useAsync(async () => {
-    await _fetchMyTeamData()
-      .then((res) => {
-        setTeamList(res?.data?.extInfo?.posSettings?.members || []);
-        setSlogan(
-          res?.data?.extInfo?.posSettings?.workingDays ||
-            "We're available 7 days a week",
-        );
-        setWorkTime(
-          res?.data?.extInfo?.posSettings?.workingHours || '9AM - 6PM PT',
-        );
-        setEmail(res?.data?.email || '');
-        setPhone(res?.data?.phone || '');
-      })
-      .catch((err) => {
-        const { header, message, variant } = err as HttpError;
-        enqueueSnackbar(message, {
-          variant: variant || 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-          isSimple: !header,
-          header,
-        });
+    const { loanId } = POSGetParamsFromUrl(location.href);
+    if (!loanId) {
+      return;
+    }
+    try {
+      const {
+        data: { loanOfficers, email, workingDays, workingHours, phone },
+      } = await _fetchTeamMembers(loanId);
+
+      setTeamList(loanOfficers);
+      setSlogan(workingDays || "We're available 7 days a week");
+      setWorkTime(workingHours || '9AM - 6PM PT');
+      setEmail(email || '');
+      setPhone(phone || '');
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
-  });
+    }
+  }, []);
 
   return loading ? (
     <Stack

@@ -1,4 +1,4 @@
-import { DashboardTaskCitizenshipType } from '@/types';
+import { DashboardTaskCitizenshipStatus } from '@/types';
 
 export const CreditScoreSchema: Record<any, any> = {
   selfInfo: {
@@ -45,7 +45,8 @@ export const CreditScoreSchema: Record<any, any> = {
     },
     ssn: (value: any, attributes: any) => {
       if (
-        attributes.citizenship !== DashboardTaskCitizenshipType.foreign_national
+        attributes.citizenship !==
+        DashboardTaskCitizenshipStatus.foreign_national
       ) {
         return {
           presence: {

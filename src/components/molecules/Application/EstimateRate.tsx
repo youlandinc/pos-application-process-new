@@ -1,6 +1,7 @@
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { enqueueSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -43,8 +44,8 @@ import {
   StyledTextFieldNumber,
 } from '@/components/atoms';
 import { ProductList } from '@/components/molecules/Common';
+
 import { _fetchProductList } from '@/requests/application';
-import { enqueueSnackbar } from 'notistack';
 
 export const EstimateRate: FC<FormNodeBaseProps> = observer(
   ({ backStep, backState }) => {
@@ -110,7 +111,8 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
           return estimateRate.loanPurpose === LoanPurposeEnum.purchase
             ? (estimateRate?.purchaseLoanAmount ?? 0) +
                 (estimateRate?.rehabCost ?? 0)
-            : estimateRate.refinanceLoanAmount;
+            : (estimateRate?.purchaseLoanAmount ?? 0) +
+                (estimateRate?.rehabCost ?? 0);
         default:
           return 0;
       }
@@ -120,6 +122,26 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       estimateRate.purchaseLoanAmount,
       estimateRate.refinanceLoanAmount,
       estimateRate.rehabCost,
+    ]);
+
+    const totalLoanAmountWithoutDutch = useMemo(() => {
+      switch (estimateRate.productCategory) {
+        case LoanProductCategoryEnum.stabilized_bridge:
+          return estimateRate.loanPurpose === LoanPurposeEnum.purchase
+            ? estimateRate.purchaseLoanAmount
+            : estimateRate.refinanceLoanAmount;
+        case LoanProductCategoryEnum.fix_and_flip:
+          return estimateRate.loanPurpose === LoanPurposeEnum.purchase
+            ? estimateRate?.purchaseLoanAmount
+            : estimateRate?.purchaseLoanAmount;
+        default:
+          return 0;
+      }
+    }, [
+      estimateRate.loanPurpose,
+      estimateRate.productCategory,
+      estimateRate.purchaseLoanAmount,
+      estimateRate.refinanceLoanAmount,
     ]);
 
     const LTV = useMemo(() => {
@@ -302,6 +324,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
           return '';
       }
     }, [
+      estimateRate.arv,
       estimateRate.ficoScore,
       estimateRate.isLiquidity,
       estimateRate.liquidityAmount,
@@ -309,6 +332,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       estimateRate.productCategory,
       estimateRate.propertyValue,
       estimateRate.purchasePrice,
+      estimateRate.rehabCost,
       estimateRate.state,
       totalLoanAmount,
     ]);
@@ -781,7 +805,11 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
             errorList={errorList}
             loading={loading}
             productList={productList}
-            totalLoanAmount={totalLoanAmount}
+            totalLoanAmount={
+              estimateRate.isDutch
+                ? totalLoanAmount
+                : totalLoanAmountWithoutDutch
+            }
           />
         </Stack>
 

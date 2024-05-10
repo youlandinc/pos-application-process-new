@@ -1,19 +1,95 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
+import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 
-import { StyledButton, StyledLoading } from '@/components/atoms';
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { POSGetParamsFromUrl } from '@/utils';
+import { useRenderPdf, useSessionStorageState } from '@/hooks';
+
+import {
+  StyledButton,
+  StyledFormItem,
+  StyledLoading,
+} from '@/components/atoms';
+
+import { DashboardTaskKey, HttpError } from '@/types';
+import {
+  _fetchLoanTaskDetail,
+  _updateLoanTaskDetail,
+} from '@/requests/dashboard';
 
 export const TasksHoldbackProcess: FC = () => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [loading, setLoading] = useState(true);
+  const { saasState } = useSessionStorageState('tenantConfig');
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+  const pdfFile = useRef(null);
+  const { renderFile } = useRenderPdf(pdfFile);
+
+  const [saveLoading, setSaveLoading] = useState(false);
+
+  const { loading } = useAsync(async () => {
+    const { loanId } = POSGetParamsFromUrl(location.href);
+    if (!loanId) {
+      return;
+    }
+    try {
+      const {
+        data: {
+          data: { fileHtml },
+        },
+      } = await _fetchLoanTaskDetail({
+        loanId,
+        taskKey: DashboardTaskKey.holdback_process,
+      });
+      setTimeout(() => {
+        renderFile(fileHtml);
+      }, 50);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+        onClose: () =>
+          router.push({
+            pathname: '/dashboard/tasks',
+            query: { loanId: router.query.loanId },
+          }),
+      });
+    }
   }, []);
+
+  const handleSave = async () => {
+    const postData = {
+      data: {},
+      loanId: router.query.loanId as string,
+      taskKey: DashboardTaskKey.holdback_process,
+    };
+
+    setSaveLoading(true);
+    try {
+      await _updateLoanTaskDetail(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { loanId: router.query.loanId },
+      });
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
+  };
 
   return loading ? (
     <Stack
@@ -29,7 +105,7 @@ export const TasksHoldbackProcess: FC = () => {
     <Fade in={!loading}>
       <Stack
         alignItems={'center'}
-        gap={3}
+        gap={6}
         justifyContent={'flex-start'}
         maxWidth={900}
         mx={{ lg: 'auto', xs: 0 }}
@@ -38,11 +114,30 @@ export const TasksHoldbackProcess: FC = () => {
       >
         <Typography color={'text.primary'} textAlign={'center'} variant={'h4'}>
           Agreements
-          <Typography color={'text.secondary'} mt={1.5} variant={'body1'}>
-            The law requires us to ask for this information in order to monitor
-            our compliance with equal credit opportunity. The law provides that
-            we may not discriminate based on the basis of this information.
-          </Typography>
+        </Typography>
+
+        <StyledFormItem
+          gap={3}
+          label={`Review and accept ${
+            //sass
+            saasState?.organizationName || ' YouLand'
+          }'s construction holdback process`}
+          width={'100%'}
+        >
+          <Stack
+            border={'1px solid #DEDEDE'}
+            borderRadius={2}
+            boxShadow={'0px 3px 10px 0px #DEDEDE'}
+            p={10}
+            ref={pdfFile}
+            width={'100%'}
+          />
+        </StyledFormItem>
+
+        <Typography color={'text.secondary'} variant={'body1'}>
+          By clicking the below button, I hereby agree to the above{' '}
+          {saasState?.organizationName || ' YouLand'}&apos;s construction
+          holdback process (on behalf of the borrower).
         </Typography>
 
         <Stack
@@ -53,8 +148,8 @@ export const TasksHoldbackProcess: FC = () => {
         >
           <StyledButton
             color={'info'}
-            onClick={() => {
-              router.push({
+            onClick={async () => {
+              await router.push({
                 pathname: '/dashboard/tasks',
                 query: { loanId: router.query.loanId },
               });
@@ -66,6 +161,9 @@ export const TasksHoldbackProcess: FC = () => {
           </StyledButton>
           <StyledButton
             color={'primary'}
+            disabled={saveLoading}
+            loading={saveLoading}
+            onClick={handleSave}
             sx={{ flex: 1, maxWidth: 276, width: '100%' }}
           >
             Save

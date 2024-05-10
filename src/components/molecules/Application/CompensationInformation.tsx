@@ -81,6 +81,9 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
         >
           <StyledButtonGroup
             onChange={(e, value) => {
+              if (value === null) {
+                return;
+              }
               compensationInformation.changeFieldValue(
                 'isAdditional',
                 value === LoanAnswerEnum.yes,

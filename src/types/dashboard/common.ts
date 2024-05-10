@@ -2,6 +2,7 @@ export enum DashboardTaskCitizenshipStatus {
   default = '',
   us_citizen = 'US_CITIZEN',
   permanent_resident_alien = 'PERMANENT_RESIDENT_ALIEN',
+  foreign_national = 'FOREIGN_NATIONAL',
   non_permanent_resident_alien = 'NON_PERMANENT_RESIDENT_ALIEN',
 }
 
@@ -12,6 +13,21 @@ export enum DashboardTaskBorrowerType {
   trust = 'TRUST',
 }
 
+export enum DashboardTaskGender {
+  default = '',
+  male = 'MAN',
+  female = 'WOMAN',
+  not_provide = 'NOT_PROVIDE',
+}
+
+export enum DashboardTaskInstructions {
+  title_officer = 'TITLE_OFFICER',
+  issuing_agent = 'ISSUING_AGENT',
+  closing_attorney = 'CLOSING_ATTORNEY',
+}
+
+// not use
+
 export enum DashboardTaskBorrowerEntityType {
   default = '',
   limited_liability_company = 'LIMITED_LIABILITY_COMPANY',
@@ -21,22 +37,10 @@ export enum DashboardTaskBorrowerEntityType {
   individual = 'INDIVIDUAL',
 }
 
-export enum DashboardTaskCitizenshipType {
-  us_citizen = 'US_CITIZEN',
-  permanent_resident_alien = 'PERMANENT_RESIDENT_ALIEN',
-  foreign_national = 'FOREIGN_NATIONAL',
-}
-
 export enum DashboardTaskMaritalStatus {
   unmarried = 'UNMARRIED',
   married = 'MARRIED',
   separated = 'SEPARATED',
-}
-
-export enum DashboardTaskGender {
-  male = 'MALE',
-  female = 'FEMALE',
-  not_provide = 'NOT_PROVIDE',
 }
 
 export enum DashboardTaskPrimaryReasonRefinance {
@@ -52,12 +56,6 @@ export enum DashboardTaskExitStrategy {
   rehab_and_sell = 'REHAB_AND_SELL',
   rehab_rent_refinance = 'REHAB_RENT_REFINANCE',
   obtain_long_term_financing = 'OBTAIN_LONG_TERM_FINANCING',
-}
-
-export enum DashboardTaskInstructions {
-  title_officer = 'TITLE_OFFICER',
-  issuing_agent = 'ISSUING_AGENT',
-  closing_attorney = 'CLOSING_ATTORNEY',
 }
 
 export enum DashboardTaskLoanClosing {
