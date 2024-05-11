@@ -3,8 +3,8 @@ import { Fade, Stack, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 
-import { POSGetParamsFromUrl } from '@/utils';
 import { AUTO_HIDE_DURATION } from '@/constants';
+import { POSGetParamsFromUrl } from '@/utils';
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 
 import { StyledLoading } from '@/components/atoms';
@@ -92,6 +92,7 @@ export const Overview: FC = () => {
           </Stack>
 
           <OverviewLoanAddress
+            isCustom={overviewData?.isCustom}
             propertyAddress={overviewData?.propertyAddress}
           />
         </Stack>

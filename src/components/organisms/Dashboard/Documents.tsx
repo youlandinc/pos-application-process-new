@@ -1,11 +1,10 @@
 import { FC, ReactNode, useState } from 'react';
 import { Fade, Icon, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
 
 import { POSGetParamsFromUrl } from '@/utils';
-import { useBreakpoints, useSessionStorageState } from '@/hooks';
+import { useBreakpoints } from '@/hooks';
 
 import {
   StyledLoading,
@@ -20,11 +19,8 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import NOTIFICATION_WARNING from '@/components/atoms/StyledNotification/notification_warning.svg';
 
 export const Documents: FC = () => {
-  const router = useRouter();
   const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
-
-  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [tabData, setTabData] = useState<
     { label: string; content: ReactNode }[]

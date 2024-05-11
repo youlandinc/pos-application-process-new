@@ -6,8 +6,8 @@ import {
   SupportAgentOutlined,
   WatchLaterOutlined,
 } from '@mui/icons-material';
-import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFormatUSPhoneToText, POSGetParamsFromUrl } from '@/utils';

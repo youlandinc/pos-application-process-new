@@ -11,11 +11,6 @@ export enum LoanSnapshotEnum {
   loan_overview = 'LOAN_OVERVIEW',
 }
 
-export interface FormNodeItem {
-  nextStep?: () => void;
-  prevStep?: () => void;
-}
-
 export interface CompensationInformationFromData {
   originationPoints: number;
   processingFee: number;

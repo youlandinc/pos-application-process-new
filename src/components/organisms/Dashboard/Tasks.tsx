@@ -1,8 +1,8 @@
 import { FC, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
-import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
+import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
 import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
@@ -11,8 +11,8 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { StyledLoading } from '@/components/atoms';
 
-import { _fetchLoanTaskList } from '@/requests/dashboard';
 import { DashboardTaskKey, DashboardTasksResponse, HttpError } from '@/types';
+import { _fetchLoanTaskList } from '@/requests/dashboard';
 
 export const Tasks: FC = () => {
   const breakpoints = useBreakpoints();

@@ -12,10 +12,12 @@ import { POSGetParamsFromUrl } from '@/utils';
 
 interface OverviewLoanAddressProps {
   propertyAddress?: AddressData;
+  isCustom?: boolean;
 }
 
 export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
   propertyAddress,
+  isCustom,
 }) => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -131,21 +133,24 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
           }${propertyAddress?.postcode ? `${propertyAddress?.postcode}` : ''}`}
         </Typography>
       </Stack>
-      <StyledButton
-        color={'info'}
-        disabled={viewLoading}
-        loading={viewLoading}
-        onClick={() => getPDF('letter')}
-        sx={{
-          '&.MuiButton-outlined': {
-            padding: '16px 0',
-          },
-          width: '100%',
-        }}
-        variant={'outlined'}
-      >
-        View pre-approval letter
-      </StyledButton>
+
+      {!isCustom && (
+        <StyledButton
+          color={'info'}
+          disabled={viewLoading}
+          loading={viewLoading}
+          onClick={() => getPDF('letter')}
+          sx={{
+            '&.MuiButton-outlined': {
+              padding: '16px 0',
+            },
+            width: '100%',
+          }}
+          variant={'outlined'}
+        >
+          View pre-approval letter
+        </StyledButton>
+      )}
 
       <StyledDialog
         content={<Box py={10} ref={pdfFile} />}
@@ -157,7 +162,7 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
             justifyContent={'space-between'}
             pb={3}
           >
-            <Typography variant={'h6'}>Pre-approval Letter</Typography>
+            <Typography variant={'h6'}>Pre-approval letter</Typography>
             <StyledButton isIconButton onClick={previewClose}>
               <CloseOutlined />
             </StyledButton>

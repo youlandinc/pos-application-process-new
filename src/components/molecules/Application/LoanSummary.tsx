@@ -474,15 +474,17 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                   }`}
                 </Typography>
               </Stack>
-              <StyledButton
-                color={'info'}
-                disabled={viewLoading}
-                loading={viewLoading}
-                onClick={() => getPDF('letter')}
-                variant={'outlined'}
-              >
-                View pre-approval letter
-              </StyledButton>
+              {!data?.isCustom && (
+                <StyledButton
+                  color={'info'}
+                  disabled={viewLoading}
+                  loading={viewLoading}
+                  onClick={() => getPDF('letter')}
+                  variant={'outlined'}
+                >
+                  View pre-approval letter
+                </StyledButton>
+              )}
               {/*<StyledButton color={'info'} variant={'outlined'}>*/}
               {/*  View loan summary*/}
               {/*</StyledButton>*/}
@@ -550,16 +552,15 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
         </Stack>
 
         <StyledDialog
-          content={<Box ref={pdfFile} />}
+          content={<Box py={10} ref={pdfFile} />}
           disableEscapeKeyDown
           header={
             <Stack
               alignItems={'center'}
               flexDirection={'row'}
               justifyContent={'space-between'}
-              pb={3}
             >
-              <Typography variant={'h6'}>Pre-approval Letter</Typography>
+              <Typography variant={'h6'}>Pre-approval letter</Typography>
               <StyledButton isIconButton onClick={previewClose}>
                 <CloseOutlined />
               </StyledButton>

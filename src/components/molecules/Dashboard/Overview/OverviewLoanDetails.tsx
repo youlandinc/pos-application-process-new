@@ -365,7 +365,7 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
               width={'100%'}
             >
               <LoanDetailsCardRow
-                content={''}
+                content={' '}
                 isHeader={true}
                 title={'Additional details'}
               />

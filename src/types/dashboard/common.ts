@@ -1,3 +1,4 @@
+// tasks
 export enum DashboardTaskCitizenshipStatus {
   default = '',
   us_citizen = 'US_CITIZEN',
@@ -75,10 +76,10 @@ export enum DashboardTaskPaymentTableStatus {
 }
 
 export enum DashboardTaskPaymentMethodsStatus {
-  undone = 'UNDONE',
-  processing = 'PROCESSING',
-  complete = 'COMPLETE',
-  fail = 'FAIL',
+  undone = 'created',
+  processing = 'processing',
+  complete = 'succeeded',
+  fail = 'failed',
 }
 
 export interface CustomRateData {
