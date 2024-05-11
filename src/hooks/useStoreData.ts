@@ -13,13 +13,14 @@ export const useStoreData = () => {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const [updateFormState, updateFrom] = useAsyncFn(async (params) => {
+  const [updateFormState, updateFrom] = useAsyncFn(async (params, cb?) => {
     return await _updateLoan(params)
       .then(async (res) => {
         await router.push({
           pathname: URL_HASH[params.nextSnapshot],
           query: { loanId: params.loanId },
         });
+        cb?.();
         return res;
       })
       .catch((err) => {

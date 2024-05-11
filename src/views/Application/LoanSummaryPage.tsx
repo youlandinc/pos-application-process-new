@@ -48,11 +48,12 @@ export const LoanSummaryPage: FC = observer(() => {
       loanId: applicationForm.loanId,
       data: {},
     };
-    await updateFrom(postData);
-    await router.push({
-      pathname: '/dashboard/overview',
-      query: { loanId: applicationForm.loanId },
-    });
+    await updateFrom(postData, () =>
+      router.push({
+        pathname: '/dashboard/overview',
+        query: { loanId: applicationForm.loanId },
+      }),
+    );
   };
 
   useAsync(async () => {

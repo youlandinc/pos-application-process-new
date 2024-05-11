@@ -41,7 +41,13 @@ export const ProductList: FC<ProductListProps> = observer(
           <>
             {productList.length > 0 && (
               <Stack alignItems={'center'} width={'100%'}>
-                <Typography color={'text.secondary'} mb={3} variant={'body1'}>
+                <Typography
+                  color={'text.secondary'}
+                  mb={3}
+                  variant={
+                    ['xs', 'sm', 'md'].includes(breakpoints) ? 'body3' : 'body1'
+                  }
+                >
                   The following loan programs are available for you.
                 </Typography>
 
@@ -60,7 +66,7 @@ export const ProductList: FC<ProductListProps> = observer(
                 <Typography
                   color={'text.secondary'}
                   mt={3}
-                  textAlign={{ xs: 'left', md: 'center' }}
+                  textAlign={'center'}
                   variant={
                     ['xs', 'sm', 'md'].includes(breakpoints) ? 'body3' : 'body1'
                   }
@@ -71,7 +77,7 @@ export const ProductList: FC<ProductListProps> = observer(
                 </Typography>
                 <Typography
                   color={'text.secondary'}
-                  textAlign={{ xs: 'left', md: 'center' }}
+                  textAlign={'center'}
                   variant={
                     ['xs', 'sm', 'md'].includes(breakpoints) ? 'body3' : 'body1'
                   }

@@ -154,7 +154,7 @@ export const ProductCustomItem: FC<{ totalLoanAmount?: number }> = observer(
               justifyContent={'space-between'}
             >
               <Typography variant={'body1'}>Monthly payment</Typography>
-              <Typography variant={'h6'}>
+              <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
                 {POSFormatDollar(monthlyPayment)}
               </Typography>
             </Stack>

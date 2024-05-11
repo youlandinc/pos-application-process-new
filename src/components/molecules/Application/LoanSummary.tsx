@@ -12,7 +12,12 @@ import {
   POSFormatPercent,
   POSGetDecimalPlaces,
 } from '@/utils';
-import { useGoogleStreetViewAndMap, useRenderPdf, useSwitch } from '@/hooks';
+import {
+  useBreakpoints,
+  useGoogleStreetViewAndMap,
+  useRenderPdf,
+  useSwitch,
+} from '@/hooks';
 
 import { StyledButton, StyledDialog, StyledFormItem } from '@/components/atoms';
 import {
@@ -36,6 +41,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
   ({ nextStep, nextState, backState, backStep, data }) => {
     const { applicationForm } = useMst();
     const { enqueueSnackbar } = useSnackbar();
+    const breakpoints = useBreakpoints();
 
     const {
       open: previewOpen,
@@ -237,20 +243,23 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
       <StyledFormItem
         gap={3}
         label={'View your loan terms'}
-        labelSx={{ textAlign: { xs: 'column', lg: 'left' } }}
+        labelSx={{
+          fontSize: { xs: 18, lg: 24 },
+        }}
         maxWidth={'auto'}
+        mt={{ xs: -3, lg: 0 }}
       >
         <Stack
           flexDirection={{ xs: 'column', lg: 'row' }}
-          gap={{ xs: 3, xl: 6 }}
+          gap={3}
           width={'100%'}
         >
           <Stack flex={1} gap={3}>
             <Stack
               border={'1px solid #D2D6E1'}
               borderRadius={2}
-              gap={3}
-              p={3}
+              gap={{ xs: 1.5, lg: 3 }}
+              p={{ xs: 1.5, lg: 3 }}
               width={'100%'}
             >
               <LoanSummaryCardRow
@@ -264,8 +273,8 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
             <Stack
               border={'1px solid #D2D6E1'}
               borderRadius={2}
-              gap={3}
-              p={3}
+              gap={{ xs: 1.5, lg: 3 }}
+              p={{ xs: 1.5, lg: 3 }}
               width={'100%'}
             >
               <LoanSummaryCardRow
@@ -285,7 +294,8 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
             <Stack
               border={'1px solid #D2D6E1'}
               borderRadius={2}
-              p={3}
+              gap={{ xs: 1.5, lg: 3 }}
+              p={{ xs: 1.5, lg: 3 }}
               width={'100%'}
             >
               <LoanSummaryCardRow
@@ -298,8 +308,8 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
             <Stack
               border={'1px solid #D2D6E1'}
               borderRadius={2}
-              gap={3}
-              p={3}
+              gap={{ xs: 1.5, lg: 3 }}
+              p={{ xs: 1.5, lg: 3 }}
               width={'100%'}
             >
               <LoanSummaryCardRow
@@ -343,7 +353,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                   setCollapsed(true);
                 }
               }}
-              px={3}
+              px={{ xs: 1.5, lg: 3 }}
               sx={{
                 cursor: collapsed ? 'unset' : 'pointer',
               }}
@@ -352,17 +362,24 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               <Stack
                 alignItems={'center'}
                 flexDirection={'row'}
-                gap={3}
+                gap={{ xs: 1.5, lg: 3 }}
                 justifyContent={'space-between'}
                 onClick={(e) => {
                   e.preventDefault();
                   setCollapsed(!collapsed);
                 }}
-                py={3}
+                py={{ xs: 1.5, lg: 3 }}
                 sx={{ cursor: 'pointer' }}
                 width={'100%'}
               >
-                <Typography color={'primary'} variant={'h7'}>
+                <Typography
+                  color={'primary'}
+                  variant={
+                    ['xs', 'sm', 'md'].includes(breakpoints)
+                      ? 'subtitle2'
+                      : 'h7'
+                  }
+                >
                   Additional details
                 </Typography>
                 <KeyboardArrowUpIcon
@@ -375,7 +392,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               </Stack>
 
               <Collapse in={collapsed}>
-                <Stack gap={3} mb={3}>
+                <Stack gap={{ xs: 1.5, lg: 3 }} mb={{ xs: 1.5, lg: 3 }}>
                   <LoanSummaryCardRow
                     content={data?.prepaymentPenalty || '0-0-0'}
                     title={'Prepayment penalty'}
@@ -427,8 +444,8 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
             <Stack
               border={'1px solid #D2D6E1'}
               borderRadius={2}
-              gap={3}
-              p={3}
+              gap={{ xs: 1.5, lg: 3 }}
+              p={{ xs: 1.5, lg: 3 }}
               width={'100%'}
             >
               <Box
@@ -447,10 +464,19 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 width={'100%'}
               />
               <Stack gap={1}>
-                <Typography color={'primary.brightness'} variant={'subtitle1'}>
+                <Typography
+                  color={'primary.brightness'}
+                  mt={{ xs: 1.5, lg: 0 }}
+                  variant={'subtitle1'}
+                >
                   Address
                 </Typography>
-                <Typography color={'primary.darker'} variant={'h5'}>
+                <Typography
+                  color={'primary.darker'}
+                  variant={
+                    ['xs', 'sm', 'md'].includes(breakpoints) ? 'h7' : 'h5'
+                  }
+                >
                   {`${
                     data.propertyAddress?.address
                       ? `${data.propertyAddress?.address}, `
@@ -492,14 +518,14 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
             <Stack
               border={'1px solid #D2D6E1'}
               borderRadius={2}
-              gap={3}
-              p={3}
+              gap={{ xs: 1.5, lg: 3 }}
+              p={{ xs: 1.5, lg: 3 }}
               width={'100%'}
             >
               <LoanSummaryCardRow
                 content={POSFormatDollar(data?.compensationFee)}
                 isHeader={true}
-                title={'Total broker compensation'}
+                title={'Total compensation'}
               />
               <LoanSummaryCardRow
                 content={`${POSFormatDollar(
@@ -515,7 +541,11 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 title={'Broker processing fee'}
               />
             </Stack>
-            <Typography color={'text.secondary'} variant={'body2'}>
+            <Typography
+              color={'text.secondary'}
+              fontSize={{ xs: 12, lg: 16 }}
+              px={{ xs: 0.75, lg: 1.5 }}
+            >
               <b>Disclaimer: </b>The estimates above are subject to change and
               do not include 3rd party settlement fees required to close your
               loan.
@@ -528,6 +558,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
           gap={3}
           maxWidth={600}
           mt={{ xs: 3, lg: 10 }}
+          mx={'auto'}
           width={'100%'}
         >
           <StyledButton
@@ -547,7 +578,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
             onClick={nextStep}
             sx={{ width: 'calc(50% - 12px)' }}
           >
-            Submit application
+            Submit {!['xs', 'sm', 'md'].includes(breakpoints) && 'application'}
           </StyledButton>
         </Stack>
 
@@ -588,6 +619,7 @@ const LoanSummaryCardRow: FC<{
   content: string;
   isHeader?: boolean;
 }> = ({ title, content, isHeader = false }) => {
+  const breakpoints = useBreakpoints();
   return (
     <Stack
       alignItems={'center'}
@@ -597,13 +629,30 @@ const LoanSummaryCardRow: FC<{
     >
       <Typography
         color={isHeader ? 'primary' : 'text.secondary'}
-        variant={isHeader ? 'h7' : 'body1'}
+        variant={
+          isHeader
+            ? ['xs', 'sm', 'md'].includes(breakpoints)
+              ? 'subtitle2'
+              : 'h7'
+            : ['xs', 'sm', 'md'].includes(breakpoints)
+              ? 'body3'
+              : 'body1'
+        }
       >
         {title}
       </Typography>
       <Typography
         color={isHeader ? 'primary' : 'text.primary'}
-        variant={isHeader ? 'h7' : 'subtitle1'}
+        fontWeight={600}
+        variant={
+          isHeader
+            ? ['xs', 'sm', 'md'].includes(breakpoints)
+              ? 'subtitle2'
+              : 'h7'
+            : ['xs', 'sm', 'md'].includes(breakpoints)
+              ? 'body3'
+              : 'body1'
+        }
       >
         {content || '-'}
       </Typography>

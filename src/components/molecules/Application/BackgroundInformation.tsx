@@ -20,17 +20,16 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
 
     return (
       <StyledFormItem
+        gap={{ xs: 6, lg: 7 }}
         label={'Background information'}
-        labelSx={{ m: 0 }}
+        labelSx={{ pb: 0 }}
         m={'0 auto'}
-        maxWidth={900}
+        maxWidth={600}
         width={'100%'}
       >
         <StyledFormItem
           label={'Has the borrower had a bankruptcy within the past 24 months?'}
-          labelSx={{ textAlign: 'left' }}
           maxWidth={600}
-          mt={{ xs: 1, lg: 5 }}
           sub
         >
           <StyledButtonGroup
@@ -45,11 +44,10 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
             value={backgroundInformation.hadBankruptcy}
           />
         </StyledFormItem>
+
         <StyledFormItem
           label={'Is the borrower delinquent on their mortgage account?'}
-          labelSx={{ textAlign: 'left' }}
           maxWidth={600}
-          mt={{ xs: 3, lg: 7 }}
           sub
         >
           <StyledButtonGroup
@@ -64,13 +62,12 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
             value={backgroundInformation.hadDelinquent}
           />
         </StyledFormItem>
+
         <StyledFormItem
           label={
             'Has the borrower had a foreclosure or short sale in the past 7 years?'
           }
-          labelSx={{ textAlign: 'left' }}
           maxWidth={600}
-          mt={{ xs: 3, lg: 7 }}
           sub
         >
           <StyledButtonGroup
@@ -85,13 +82,12 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
             value={backgroundInformation.hadForeclosure}
           />
         </StyledFormItem>
+
         <StyledFormItem
           label={
             'Has the borrower been convicted of a felony in the past 7 years?'
           }
-          labelSx={{ textAlign: 'left' }}
           maxWidth={600}
-          mt={{ xs: 3, lg: 7 }}
           sub
         >
           <StyledButtonGroup
@@ -106,13 +102,12 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
             value={backgroundInformation.hadFelony}
           />
         </StyledFormItem>
+
         <StyledFormItem
           label={
             'Has the borrower been involved with any litigation in the past?'
           }
-          labelSx={{ textAlign: 'left' }}
           maxWidth={600}
-          mt={{ xs: 3, lg: 7 }}
           sub
         >
           <StyledButtonGroup
@@ -132,7 +127,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
           flexDirection={'row'}
           gap={3}
           maxWidth={600}
-          mt={{ xs: 3, lg: 10 }}
+          mt={{ xs: 0, lg: 1 }}
           width={'100%'}
         >
           <StyledButton
@@ -141,7 +136,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
             loading={backState}
             onClick={backStep}
             sx={{
-              width: 'calc(50% - 12px)',
+              flex: 1,
             }}
             variant={'text'}
           >
@@ -153,7 +148,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
             loading={nextState}
             onClick={nextStep}
             sx={{
-              width: 'calc(50% - 12px)',
+              flex: 1,
             }}
           >
             Next

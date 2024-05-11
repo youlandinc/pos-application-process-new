@@ -125,9 +125,19 @@ export const TasksInvestmentExperience: FC = () => {
         px={{ lg: 3, xs: 0 }}
         width={'100%'}
       >
-        <Typography color={'text.primary'} textAlign={'center'} variant={'h4'}>
+        <Typography
+          color={'text.primary'}
+          fontSize={{ xs: 20, lg: 24 }}
+          textAlign={'center'}
+          variant={'h5'}
+        >
           Real estate investment experience
-          <Typography color={'text.secondary'} mt={1.5} variant={'body1'}>
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={1.5}
+            variant={'body1'}
+          >
             List your previous real estate investments, including rentals and
             fix-and-flips. These will be verified through a title search.
           </Typography>

@@ -31,53 +31,58 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
     //},[])
 
     return (
-      <StyledFormItem
-        label={'Compensation'}
-        labelSx={{ m: 0, textAlign: 'left' }}
-        m={'0 auto'}
-        maxWidth={600}
-        tip={'Please list your commission fees below'}
-        tipSx={{ m: 0, mt: 1, textAlign: 'left' }}
-      >
-        <Stack
-          flexDirection={{ xs: 'column', lg: 'row' }}
+      <Stack gap={{ xs: 6, lg: 8 }} m={'0 auto'} maxWidth={600} width={'100%'}>
+        <StyledFormItem
           gap={3}
-          mt={3}
-          width={'100%'}
+          label={'Compensation'}
+          labelSx={{ pb: 3 }}
+          sub
+          tip={'Please list your commission fees below'}
+          tipSx={{
+            mt: 0.5,
+            textAlign: 'left',
+            fontSize: { xs: 12, lg: 16 },
+          }}
         >
-          <StyledTextFieldNumber
-            decimalScale={3}
-            label={'Broker origination fee'}
-            onValueChange={({ floatValue }) =>
-              compensationInformation.changeFieldValue(
-                'originationPoints',
-                floatValue,
-              )
-            }
-            percentage={true}
-            suffix={'%'}
-            thousandSeparator={false}
-            value={compensationInformation.originationPoints}
-          />
+          <Stack
+            flexDirection={{ xs: 'column', lg: 'row' }}
+            gap={3}
+            ml={-0.5}
+            width={'100%'}
+          >
+            <StyledTextFieldNumber
+              decimalScale={3}
+              label={'Broker origination fee'}
+              onValueChange={({ floatValue }) =>
+                compensationInformation.changeFieldValue(
+                  'originationPoints',
+                  floatValue,
+                )
+              }
+              percentage={true}
+              suffix={'%'}
+              thousandSeparator={false}
+              value={compensationInformation.originationPoints}
+            />
 
-          <StyledTextFieldNumber
-            label={'Broker processing fee'}
-            onValueChange={({ floatValue }) =>
-              compensationInformation.changeFieldValue(
-                'processingFee',
-                floatValue,
-              )
-            }
-            prefix={'$'}
-            value={compensationInformation.processingFee}
-          />
-        </Stack>
+            <StyledTextFieldNumber
+              label={'Broker processing fee'}
+              onValueChange={({ floatValue }) =>
+                compensationInformation.changeFieldValue(
+                  'processingFee',
+                  floatValue,
+                )
+              }
+              prefix={'$'}
+              value={compensationInformation.processingFee}
+            />
+          </Stack>
+        </StyledFormItem>
 
         <StyledFormItem
           gap={3}
           label={'Do you want to provide additional info about this loan?'}
-          labelSx={{ m: 0, textAlign: 'left' }}
-          mt={{ xs: 3, lg: 10 }}
+          sub
         >
           <StyledButtonGroup
             onChange={(e, value) => {
@@ -107,6 +112,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
             {compensationInformation.isAdditional && (
               <StyledTextField
                 label={'Additional information'}
+                multiline
                 onChange={(e) =>
                   compensationInformation.changeFieldValue(
                     'additionalInfo',
@@ -114,6 +120,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
                   )
                 }
                 placeholder={'Additional information'}
+                rows={4}
                 sx={{ width: '100%' }}
                 value={compensationInformation.additionalInfo}
               />
@@ -121,19 +128,13 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
           </Transitions>
         </StyledFormItem>
 
-        <Stack
-          flexDirection={'row'}
-          gap={3}
-          maxWidth={600}
-          mt={{ xs: 3, lg: 10 }}
-          width={'100%'}
-        >
+        <Stack flexDirection={'row'} gap={3} maxWidth={600} width={'100%'}>
           <StyledButton
             color={'info'}
             disabled={backState}
             loading={backState}
             onClick={backStep}
-            sx={{ width: 'calc(50% - 12px)' }}
+            sx={{ flex: 1 }}
             variant={'text'}
           >
             Back
@@ -143,12 +144,12 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
             disabled={nextState}
             loading={nextState}
             onClick={nextStep}
-            sx={{ width: 'calc(50% - 12px)' }}
+            sx={{ flex: 1 }}
           >
             Next
           </StyledButton>
         </Stack>
-      </StyledFormItem>
+      </Stack>
     );
   },
 );

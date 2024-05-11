@@ -2,7 +2,12 @@ import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { StyledButton, StyledDialog } from '@/components/atoms';
 import { AddressData, HttpError } from '@/types';
-import { useGoogleStreetViewAndMap, useRenderPdf, useSwitch } from '@/hooks';
+import {
+  useBreakpoints,
+  useGoogleStreetViewAndMap,
+  useRenderPdf,
+  useSwitch,
+} from '@/hooks';
 import { _fetchFile } from '@/requests/application';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { useSnackbar } from 'notistack';
@@ -19,6 +24,7 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
   propertyAddress,
   isCustom,
 }) => {
+  const breakpoints = useBreakpoints();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -117,7 +123,7 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
         ref={mapRef}
         width={'100%'}
       />
-      <Stack gap={1} width={'100%'}>
+      <Stack gap={0.5} width={'100%'}>
         <Typography
           color={'primary.brightness'}
           variant={'subtitle1'}
@@ -125,7 +131,11 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
         >
           Address
         </Typography>
-        <Typography color={'primary.darker'} variant={'h6'} width={'100%'}>
+        <Typography
+          color={'primary.darker'}
+          variant={['xs', 'sm', 'md'].includes(breakpoints) ? 'h7' : 'h6'}
+          width={'100%'}
+        >
           {`${propertyAddress?.address ? `${propertyAddress?.address}, ` : ''}${
             propertyAddress?.aptNumber ? `#${propertyAddress?.aptNumber}` : ''
           }${propertyAddress?.city ? `${propertyAddress?.city}, ` : ''}${

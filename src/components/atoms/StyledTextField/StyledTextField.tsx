@@ -59,6 +59,7 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
             validate
           ) : undefined
         }
+        // InputLabelProps={{ shrink: true }}
         onChange={onChange}
         sx={{
           ...StyledTextFieldStyles,

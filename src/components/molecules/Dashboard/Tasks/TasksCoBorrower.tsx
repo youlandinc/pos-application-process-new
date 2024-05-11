@@ -214,9 +214,19 @@ export const TasksCoBorrower: FC = () => {
         px={{ lg: 3, xs: 0 }}
         width={'100%'}
       >
-        <Typography color={'text.primary'} textAlign={'center'} variant={'h4'}>
+        <Typography
+          color={'text.primary'}
+          fontSize={{ xs: 20, lg: 24 }}
+          textAlign={'center'}
+          variant={'h5'}
+        >
           Co-borrower information
-          <Typography color={'text.secondary'} mt={1.5} variant={'body1'}>
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={1.5}
+            variant={'body1'}
+          >
             Credit and background checks will apply to the co-borrower as well.
           </Typography>
         </Typography>

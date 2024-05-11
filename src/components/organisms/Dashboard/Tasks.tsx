@@ -70,10 +70,15 @@ export const Tasks: FC = () => {
         <Stack
           border={'1px solid #D2D6E1'}
           borderRadius={2}
-          p={'24px 24px 12px 24px'}
+          p={{ xs: '16px 16px 8px 16px', lg: '24px 24px 12px 24px' }}
           width={'100%'}
         >
-          <Typography color={'text.primary'} mb={1.5} variant={'h7'}>
+          <Typography
+            color={'text.primary'}
+            fontSize={{ xs: 16, lg: 18 }}
+            mb={{ xs: 1, lg: 1.5 }}
+            variant={'h7'}
+          >
             Borrower information
           </Typography>
 
@@ -87,8 +92,8 @@ export const Tasks: FC = () => {
                 query: { loanId: POSGetParamsFromUrl(location.href).loanId },
               })
             }
-            px={3}
-            py={1.5}
+            px={{ xs: 2, lg: 3 }}
+            py={{ xs: 1, lg: 1.5 }}
             sx={{
               '&:hover': {
                 cursor: 'pointer',
@@ -98,7 +103,7 @@ export const Tasks: FC = () => {
             }}
             width={'100%'}
           >
-            <Typography>Borrower</Typography>
+            <Typography fontSize={{ xs: 12, lg: 16 }}>Borrower</Typography>
             {taskHash?.[DashboardTaskKey.borrower] && (
               <CheckCircle color={'success'} />
             )}
@@ -114,8 +119,8 @@ export const Tasks: FC = () => {
                 query: { loanId: POSGetParamsFromUrl(location.href).loanId },
               })
             }
-            px={3}
-            py={1.5}
+            px={{ xs: 2, lg: 3 }}
+            py={{ xs: 1, lg: 1.5 }}
             sx={{
               '&:hover': {
                 cursor: 'pointer',
@@ -125,7 +130,7 @@ export const Tasks: FC = () => {
             }}
             width={'100%'}
           >
-            <Typography>Co-borrower</Typography>
+            <Typography fontSize={{ xs: 12, lg: 16 }}>Co-borrower</Typography>
             {taskHash?.[DashboardTaskKey.co_borrower] && (
               <CheckCircle color={'success'} />
             )}
@@ -141,8 +146,8 @@ export const Tasks: FC = () => {
                 query: { loanId: POSGetParamsFromUrl(location.href).loanId },
               })
             }
-            px={3}
-            py={1.5}
+            px={{ xs: 2, lg: 3 }}
+            py={{ xs: 1, lg: 1.5 }}
             sx={{
               '&:hover': {
                 cursor: 'pointer',
@@ -152,7 +157,9 @@ export const Tasks: FC = () => {
             }}
             width={'100%'}
           >
-            <Typography>Real estate investment experience</Typography>
+            <Typography fontSize={{ xs: 12, lg: 16 }}>
+              Real estate investment experience
+            </Typography>
             {taskHash?.[DashboardTaskKey.real_investment] && (
               <CheckCircle color={'success'} />
             )}
@@ -168,8 +175,8 @@ export const Tasks: FC = () => {
                 query: { loanId: POSGetParamsFromUrl(location.href).loanId },
               })
             }
-            px={3}
-            py={1.5}
+            px={{ xs: 2, lg: 3 }}
+            py={{ xs: 1, lg: 1.5 }}
             sx={{
               '&:hover': {
                 cursor: 'pointer',
@@ -179,7 +186,9 @@ export const Tasks: FC = () => {
             }}
             width={'100%'}
           >
-            <Typography>Demographics information</Typography>
+            <Typography fontSize={{ xs: 12, lg: 16 }}>
+              Demographics information
+            </Typography>
             {taskHash?.[DashboardTaskKey.demographics] && (
               <CheckCircle color={'success'} />
             )}
@@ -189,10 +198,15 @@ export const Tasks: FC = () => {
         <Stack
           border={'1px solid #D2D6E1'}
           borderRadius={2}
-          p={'24px 24px 12px 24px'}
+          p={{ xs: '16px 16px 8px 16px', lg: '24px 24px 12px 24px' }}
           width={'100%'}
         >
-          <Typography color={'text.primary'} mb={1.5} variant={'h7'}>
+          <Typography
+            color={'text.primary'}
+            fontSize={{ xs: 16, lg: 18 }}
+            mb={{ xs: 1, lg: 1.5 }}
+            variant={'h7'}
+          >
             Third-party information
           </Typography>
 
@@ -206,8 +220,8 @@ export const Tasks: FC = () => {
                 query: { loanId: POSGetParamsFromUrl(location.href).loanId },
               })
             }
-            px={3}
-            py={1.5}
+            px={{ xs: 2, lg: 3 }}
+            py={{ xs: 1, lg: 1.5 }}
             sx={{
               '&:hover': {
                 cursor: 'pointer',
@@ -217,7 +231,9 @@ export const Tasks: FC = () => {
             }}
             width={'100%'}
           >
-            <Typography>Title / Escrow company (optional)</Typography>
+            <Typography fontSize={{ xs: 12, lg: 16 }}>
+              Title / Escrow company (optional)
+            </Typography>
             {taskHash?.[DashboardTaskKey.title_escrow] && (
               <CheckCircle color={'success'} />
             )}
@@ -228,13 +244,17 @@ export const Tasks: FC = () => {
           <Stack
             border={'1px solid #D2D6E1'}
             borderRadius={2}
-            p={'24px 24px 12px 24px'}
+            p={{ xs: '16px 16px 8px 16px', lg: '24px 24px 12px 24px' }}
             width={'100%'}
           >
-            <Typography color={'text.primary'} mb={1.5} variant={'h7'}>
+            <Typography
+              color={'text.primary'}
+              fontSize={{ xs: 16, lg: 18 }}
+              mb={{ xs: 1, lg: 1.5 }}
+              variant={'h7'}
+            >
               Agreements
             </Typography>
-
             <Stack
               alignItems={'center'}
               flexDirection={'row'}
@@ -245,8 +265,8 @@ export const Tasks: FC = () => {
                   query: { loanId: POSGetParamsFromUrl(location.href).loanId },
                 })
               }
-              px={3}
-              py={1.5}
+              px={{ xs: 2, lg: 3 }}
+              py={{ xs: 1, lg: 1.5 }}
               sx={{
                 '&:hover': {
                   cursor: 'pointer',
@@ -256,7 +276,9 @@ export const Tasks: FC = () => {
               }}
               width={'100%'}
             >
-              <Typography>Construction holdback process</Typography>
+              <Typography fontSize={{ xs: 12, lg: 16 }}>
+                Construction holdback process
+              </Typography>
               {taskHash?.[DashboardTaskKey.holdback_process] && (
                 <CheckCircle color={'success'} />
               )}

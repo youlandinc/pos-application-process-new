@@ -235,6 +235,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
         orientation={'vertical'}
         sx={{
           width: '100%',
+          pl: 1,
         }}
       >
         {computedData.map((item, index) => (
@@ -244,9 +245,20 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
             key={`${item.label}-${index}`}
           >
             <StepLabel icon={item.icon}>
-              <Stack flexDirection={'row'} justifyContent={'space-between'}>
+              <Stack
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                ml={0.5}
+              >
                 <Typography
-                  color={computedData.length === 1 ? 'error' : 'text.primary'}
+                  color={
+                    computedData.length === 1
+                      ? 'error'
+                      : index <= hash[loanStatus]
+                        ? 'text.primary'
+                        : 'text.secondary'
+                  }
+                  fontSize={{ xs: 14, lg: 16 }}
                   variant={'subtitle1'}
                 >
                   {item.label}
@@ -308,11 +320,12 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                       ? 1
                       : 4.5
                 }
+                ml={0.5}
               >
                 {hash[loanStatus] === index && (
                   <Typography
                     color={'text.secondary'}
-                    variant={'body3'}
+                    variant={'body2'}
                     width={{ xs: '100%', xl: '50%' }}
                   >
                     {item.description}

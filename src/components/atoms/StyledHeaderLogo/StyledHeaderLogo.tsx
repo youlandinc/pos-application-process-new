@@ -70,17 +70,21 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
             src={saasState?.logoUrl || logoUrl}
             style={{
               position: 'absolute',
-              top: ['sm', 'xs', 'md'].includes(breakpoints) ? '50%' : 46,
-              transform: ['sm', 'xs', 'md'].includes(breakpoints)
+              top: ['sm', 'xs', 'md', 'lg'].includes(breakpoints) ? '50%' : 46,
+              transform: ['sm', 'xs', 'md', 'lg'].includes(breakpoints)
                 ? 'translateY(-50%)'
                 : 'none',
               left:
-                ratio === 1 && !['sm', 'xs', 'md'].includes(breakpoints)
+                ratio === 1 && !['sm', 'xs', 'md', 'lg'].includes(breakpoints)
                   ? 44
                   : 0,
               zIndex: 1,
-              maxHeight: 68,
-              maxWidth: 225,
+              maxHeight: ['sm', 'xs', 'md', 'lg'].includes(breakpoints)
+                ? 36
+                : 68,
+              maxWidth: ['sm', 'xs', 'md', 'lg'].includes(breakpoints)
+                ? 160
+                : 225,
             }}
           />
         </picture>

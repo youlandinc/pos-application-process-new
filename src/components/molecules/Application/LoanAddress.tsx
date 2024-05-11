@@ -4,6 +4,8 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { useBreakpoints } from '@/hooks';
+
 import {
   StyledButton,
   StyledFormItem,
@@ -12,24 +14,26 @@ import {
 
 export const LoanAddress: FC<FormNodeBaseProps> = observer(
   ({ nextStep, nextState, backState, backStep }) => {
+    const breakpoints = useBreakpoints();
+
     const {
       applicationForm: { loanAddress },
     } = useMst();
 
     return (
-      <StyledFormItem
-        label={"What's the address of the property?"}
-        m={'0 auto'}
-        maxWidth={600}
-      >
-        <StyledGoogleAutoComplete address={loanAddress} />
-
-        <Stack
-          flexDirection={'row'}
+      <Stack gap={{ xs: 6, lg: 10 }} m={'0 auto'} maxWidth={600} width={'100%'}>
+        <StyledFormItem
           gap={3}
-          mt={{ xs: 3, lg: 10 }}
-          width={'100%'}
+          label={"What's the address of the property?"}
+          labelSx={{
+            pb: 3,
+          }}
+          maxWidth={600}
         >
+          <StyledGoogleAutoComplete address={loanAddress} />
+        </StyledFormItem>
+
+        <Stack flexDirection={'row'} gap={3} width={'100%'}>
           <StyledButton
             color={'info'}
             disabled={backState}
@@ -51,7 +55,7 @@ export const LoanAddress: FC<FormNodeBaseProps> = observer(
             Next
           </StyledButton>
         </Stack>
-      </StyledFormItem>
+      </Stack>
     );
   },
 );

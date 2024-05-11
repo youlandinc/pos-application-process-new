@@ -6,6 +6,12 @@ interface FormNodeBaseProps {
   data?: any;
 }
 
+interface Option {
+  label: string;
+  value: string | number;
+  key: string | number;
+}
+
 type Maybe<T> = T | void;
 
 interface UserSession {

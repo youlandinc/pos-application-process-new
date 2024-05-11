@@ -33,7 +33,7 @@ export const OverviewIconList: FC<OverviewIconListProps> = ({
         p={3}
         width={{ xs: '100%', xl: 'calc(33.33% - 12px)' }}
       >
-        <Stack>
+        <Stack gap={0.5}>
           <Typography color={'text.secondary'} variant={'body3'}>
             Total loan amount
           </Typography>
@@ -66,7 +66,7 @@ export const OverviewIconList: FC<OverviewIconListProps> = ({
         p={3}
         width={{ xs: '100%', xl: 'calc(33.33% - 12px)' }}
       >
-        <Stack>
+        <Stack gap={0.5}>
           <Typography color={'text.secondary'} variant={'body3'}>
             Interest rate
           </Typography>
@@ -99,7 +99,7 @@ export const OverviewIconList: FC<OverviewIconListProps> = ({
         p={3}
         width={{ xs: '100%', xl: 'calc(33.33% - 12px)' }}
       >
-        <Stack>
+        <Stack gap={0.5}>
           <Typography color={'text.secondary'} variant={'body3'}>
             Monthly payment
           </Typography>

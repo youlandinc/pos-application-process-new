@@ -94,6 +94,7 @@ export const Documents: FC = () => {
         gap={3}
         justifyContent={'flex-start'}
         maxWidth={900}
+        mt={{ xs: -3, lg: 0 }}
         mx={{ lg: 'auto', xs: 0 }}
         px={{ lg: 3, xs: 0 }}
         width={'100%'}
@@ -103,7 +104,12 @@ export const Documents: FC = () => {
           variant={['xs', 'sm', 'md'].includes(breakpoints) ? 'h6' : 'h5'}
         >
           Documents
-          <Typography color={'text.secondary'} mt={1.5} textAlign={'center'}>
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={{ xs: 1, lg: 0 }}
+            textAlign={'center'}
+          >
             We&apos;ve implemented robust security measures to ensure your
             data&apos;s privacy and protection, including advanced encryption,
             privacy compliance, and regular security audits.
@@ -117,14 +123,14 @@ export const Documents: FC = () => {
             boxShadow={'0 2px 2px rgba(227, 227, 227, 1)'}
             color={'rgba(229, 154, 0, 1)'}
             flexDirection={'row'}
-            fontSize={14}
+            fontSize={{ xs: 12, lg: 14 }}
             fontWeight={600}
             gap={1}
             p={'12px 16px'}
           >
             <Icon component={NOTIFICATION_WARNING} sx={{ mt: -0.25 }} />
             Complete the &quot;Borrower&quot; task first to see only the
-            necessary documents below
+            necessary documents below.
           </Stack>
         )}
 

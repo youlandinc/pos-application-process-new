@@ -43,13 +43,13 @@ export const StyledTab: FC<StyledTabProps> = (props) => {
           '& .MuiTab-root': {
             textTransform: 'none',
             p: 1.25,
-            fontSize: 16,
+            fontSize: { xs: 14, lg: 16 },
           },
           '& .MuiTabs-flexContainer .MuiButtonBase-root': {
             p: 0,
             minWidth: 0,
             minHeight: 0,
-            mx: 4,
+            mx: { xs: 1, lg: 3 },
             mb: 1.25,
             fontWeight: 600,
           },

@@ -279,27 +279,31 @@ export const TasksBorrower: FC = () => {
     <Fade in={!loading}>
       <Stack
         alignItems={'center'}
-        gap={6}
+        gap={3}
         justifyContent={'flex-start'}
         maxWidth={648}
         mx={'auto'}
         px={{ lg: 3, xs: 0 }}
         width={'100%'}
       >
-        <Typography color={'text.primary'} textAlign={'center'} variant={'h4'}>
+        <Typography
+          color={'text.primary'}
+          fontSize={{ xs: 20, lg: 24 }}
+          textAlign={'center'}
+          variant={'h5'}
+        >
           Borrower information
-          <Typography color={'text.secondary'} mt={1.5} variant={'body1'}>
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            variant={'body1'}
+          >
             Please enter your personal details below so we may begin processing
             your loan documents.
           </Typography>
         </Typography>
 
-        <StyledFormItem
-          gap={3}
-          label={'Borrower type'}
-          labelSx={{ textAlign: 'left', m: 0 }}
-          sub
-        >
+        <StyledFormItem gap={3} label={'Borrower type'} sub>
           <StyledSelectOption
             onChange={(value) => {
               setBorrowerType(value as string as DashboardTaskBorrowerType);
@@ -322,7 +326,7 @@ export const TasksBorrower: FC = () => {
             <StyledFormItem
               gap={3}
               label={'Entity information'}
-              labelSx={{ textAlign: 'left', m: 0 }}
+              mt={{ xs: 3, lg: 5 }}
               sub
             >
               <StyledTextField
@@ -370,7 +374,7 @@ export const TasksBorrower: FC = () => {
             <StyledFormItem
               gap={3}
               label={'Trust information'}
-              labelSx={{ textAlign: 'left', m: 0 }}
+              mt={{ xs: 3, lg: 5 }}
               sub
             >
               <StyledTextField
@@ -391,7 +395,8 @@ export const TasksBorrower: FC = () => {
               ? 'Personal information'
               : 'Authorized signatory information'
           }
-          labelSx={{ textAlign: 'left', m: 0 }}
+          labelSx={{ pb: 3 }}
+          mt={{ xs: 3, lg: 5 }}
           sub
         >
           <Stack
@@ -461,7 +466,7 @@ export const TasksBorrower: FC = () => {
         <StyledFormItem
           gap={3}
           label={'Citizenship status'}
-          labelSx={{ textAlign: 'left', m: 0 }}
+          mt={{ xs: 3, lg: 5 }}
           sub
         >
           <StyledSelectOption
@@ -476,7 +481,8 @@ export const TasksBorrower: FC = () => {
         <StyledFormItem
           gap={3}
           label={'Current address'}
-          labelSx={{ textAlign: 'left', m: 0 }}
+          labelSx={{ pb: 3 }}
+          mt={{ xs: 3, lg: 5 }}
           sub
         >
           <StyledGoogleAutoComplete address={address} />
@@ -495,7 +501,7 @@ export const TasksBorrower: FC = () => {
             <StyledFormItem
               gap={3}
               label={'Social security number'}
-              labelSx={{ textAlign: 'left', m: 0 }}
+              mt={{ xs: 3, lg: 5 }}
               sub
             >
               <StyledTextFieldSocialNumber
@@ -510,6 +516,7 @@ export const TasksBorrower: FC = () => {
         <Stack
           flexDirection={{ xs: 'unset', md: 'row' }}
           gap={3}
+          mt={{ xs: 3, lg: 5 }}
           width={'100%'}
         >
           <StyledButton

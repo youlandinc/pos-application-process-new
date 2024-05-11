@@ -239,8 +239,8 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
             <Stack
               border={'1px solid #D2D6E1'}
               borderRadius={2}
-              gap={3}
-              p={3}
+              gap={{ xs: 1.5, lg: 3 }}
+              p={{ xs: 1.5, lg: 3 }}
               width={'100%'}
             >
               <LoanDetailsCardRow
@@ -255,8 +255,8 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
             <Stack
               border={'1px solid #D2D6E1'}
               borderRadius={2}
-              gap={3}
-              p={3}
+              gap={{ xs: 1.5, lg: 3 }}
+              p={{ xs: 1.5, lg: 3 }}
               width={'100%'}
             >
               <LoanDetailsCardRow
@@ -277,8 +277,8 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
             <Stack
               border={'1px solid #D2D6E1'}
               borderRadius={2}
-              gap={3}
-              p={3}
+              gap={{ xs: 1.5, lg: 3 }}
+              p={{ xs: 1.5, lg: 3 }}
               width={'100%'}
             >
               <LoanDetailsCardRow
@@ -291,8 +291,8 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
             <Stack
               border={'1px solid #D2D6E1'}
               borderRadius={2}
-              gap={3}
-              p={3}
+              gap={{ xs: 1.5, lg: 3 }}
+              p={{ xs: 1.5, lg: 3 }}
               width={'100%'}
             >
               <LoanDetailsCardRow
@@ -332,8 +332,8 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
               <Stack
                 border={'1px solid #D2D6E1'}
                 borderRadius={2}
-                gap={3}
-                p={3}
+                gap={{ xs: 1.5, lg: 3 }}
+                p={{ xs: 1.5, lg: 3 }}
                 width={'100%'}
               >
                 <LoanDetailsCardRow
@@ -360,8 +360,8 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
             <Stack
               border={'1px solid #D2D6E1'}
               borderRadius={2}
-              gap={3}
-              p={3}
+              gap={{ xs: 1.5, lg: 3 }}
+              p={{ xs: 1.5, lg: 3 }}
               width={'100%'}
             >
               <LoanDetailsCardRow
@@ -402,7 +402,7 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
           </Stack>
         }
         footer={
-          <Stack width={'100%'}>
+          <Stack px={{ xs: 1.5, lg: 0 }} width={'100%'}>
             <StyledButton
               onClick={(e) => {
                 e.preventDefault();
@@ -419,8 +419,11 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
             alignItems={'center'}
             flexDirection={'row'}
             justifyContent={'space-between'}
+            px={{ xs: 1.5, lg: 0 }}
           >
-            <Typography variant={'h5'}>Loan details</Typography>
+            <Typography fontSize={{ xs: 20, lg: 24 }} variant={'h5'}>
+              Loan details
+            </Typography>
             <Close
               onClick={(e) => {
                 e.preventDefault();
@@ -444,6 +447,7 @@ const LoanDetailsCardRow: FC<{
   content: string;
   isHeader?: boolean;
 }> = ({ title, content, isHeader = false }) => {
+  const breakpoints = useBreakpoints();
   return (
     <Stack
       alignItems={'center'}
@@ -453,13 +457,30 @@ const LoanDetailsCardRow: FC<{
     >
       <Typography
         color={isHeader ? 'text.primary' : 'text.secondary'}
-        variant={isHeader ? 'h7' : 'body1'}
+        variant={
+          isHeader
+            ? ['xs', 'sm', 'md'].includes(breakpoints)
+              ? 'subtitle2'
+              : 'h7'
+            : ['xs', 'sm', 'md'].includes(breakpoints)
+              ? 'body3'
+              : 'body1'
+        }
       >
         {title}
       </Typography>
       <Typography
         color={isHeader ? 'text.primary' : 'text.primary'}
-        variant={isHeader ? 'h7' : 'subtitle1'}
+        fontWeight={600}
+        variant={
+          isHeader
+            ? ['xs', 'sm', 'md'].includes(breakpoints)
+              ? 'subtitle2'
+              : 'h7'
+            : ['xs', 'sm', 'md'].includes(breakpoints)
+              ? 'body3'
+              : 'body1'
+        }
       >
         {content || '-'}
       </Typography>

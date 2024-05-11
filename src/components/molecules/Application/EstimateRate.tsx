@@ -197,7 +197,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     fontWeight: 600,
                   },
                 }}
-                variant={'body1'}
+                variant={'body2'}
               >
                 This property is located in{' '}
                 <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
@@ -228,7 +228,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   fontWeight: 600,
                 },
               }}
-              variant={'body1'}
+              variant={'body2'}
             >
               This property is located in{' '}
               <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
@@ -260,7 +260,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     fontWeight: 600,
                   },
                 }}
-                variant={'body1'}
+                variant={'body2'}
               >
                 This property is located in{' '}
                 <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
@@ -295,7 +295,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   fontWeight: 600,
                 },
               }}
-              variant={'body1'}
+              variant={'body2'}
             >
               This property is located in{' '}
               <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
@@ -374,10 +374,6 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
     return (
       <StyledFormItem
         label={'Estimate your rate'}
-        labelSx={{
-          textAlign: { lg: 'left', xs: 'center' },
-          m: 0,
-        }}
         m={'0 auto'}
         maxWidth={976}
         tip={`${POSFindLabel(
@@ -392,10 +388,8 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
             : POSFindLabel(APPLICATION_PROPERTY_UNIT, estimateRate.propertyUnit)
         }`}
         tipSx={{
-          textAlign: { lg: 'left', xs: 'center' },
-          color: 'text.primary',
-          m: 0,
-          mt: 1,
+          textAlign: 'left',
+          fontSize: { xs: 12, lg: 16 },
         }}
       >
         {POSNotUndefined(expanded) && !expanded && (
@@ -403,7 +397,6 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
             alignItems={'center'}
             gap={3}
             justifyContent={'space-between'}
-            mt={3}
             width={'100%'}
           >
             <Stack
@@ -429,11 +422,12 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         )}
 
         {(!POSNotUndefined(expanded) || expanded) && (
-          <Stack gap={3} mt={{ xs: 3, lg: 4 }} width={'100%'}>
+          <Stack gap={3} width={'100%'}>
             <Stack
-              alignItems={{ xs: 'flex-start', lg: 'center' }}
+              alignItems={{ xs: 'flex-start', lg: 'stretch' }}
               flexDirection={{ xs: 'column', lg: 'row' }}
               gap={3}
+              ml={-0.5}
             >
               <StyledSelect
                 label={'State'}
@@ -459,7 +453,6 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                 value={estimateRate.ficoScore}
               />
-
               <StyledSelectTextField
                 fieldLabel={'Liquidity'}
                 fieldValue={estimateRate.liquidityAmount}
@@ -484,7 +477,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
 
               {!['xs', 'sm', 'md'].includes(breakpoints) && (
                 <>
-                  <Stack flex={1} maxWidth={240}>
+                  <Stack flex={1} maxWidth={240} mt={0.5}>
                     {loading ? (
                       <>
                         <Skeleton
@@ -525,9 +518,10 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
             </Stack>
 
             <Stack
-              alignItems={{ xs: 'flex-start', lg: 'center' }}
+              alignItems={{ xs: 'flex-start', lg: 'stretch' }}
               flexDirection={{ xs: 'column', lg: 'row' }}
               gap={3}
+              ml={-0.5}
             >
               <StyledTextFieldNumber
                 label={
@@ -551,49 +545,6 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     : estimateRate.purchasePrice
                 }
               />
-
-              {['xs', 'sm', 'md'].includes(breakpoints) && (
-                <Stack flex={1} maxWidth={240} width={'100%'}>
-                  {loading ? (
-                    <>
-                      <Skeleton
-                        animation={'wave'}
-                        height={14}
-                        variant="rounded"
-                        width={'100%'}
-                      />
-                      <Skeleton
-                        animation={'wave'}
-                        height={14}
-                        sx={{
-                          marginTop: 1,
-                        }}
-                        variant="rounded"
-                        width={'100%'}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <Typography color={'text.secondary'} variant={'body3'}>
-                        You qualify for a loan amount between{' '}
-                      </Typography>
-                      <Typography
-                        color={'text.secondary'}
-                        sx={{
-                          '& > b': {
-                            color: 'primary.main',
-                            fontWeight: 600,
-                          },
-                        }}
-                        variant={'body3'}
-                      >
-                        <b>{POSFormatDollar(limits?.minLoanAmount)}</b> and{' '}
-                        <b>{POSFormatDollar(limits?.maxLoanAmount)}</b>.
-                      </Typography>
-                    </>
-                  )}
-                </Stack>
-              )}
 
               <StyledTextFieldNumber
                 label={
@@ -642,7 +593,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
               )}
 
               {!['xs', 'sm', 'md'].includes(breakpoints) && (
-                <Stack flex={1}>
+                <Stack flex={1} mt={0.5}>
                   {[
                     LoanProductCategoryEnum.fix_and_flip,
                     LoanProductCategoryEnum.ground_up_construction,
@@ -701,6 +652,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 alignItems={{ xs: 'flex-start', lg: 'center' }}
                 flexDirection={{ xs: 'column', lg: 'row' }}
                 gap={3}
+                ml={-0.5}
               >
                 <StyledTextFieldNumber
                   label={'Est. cost of rehab'}
@@ -723,8 +675,59 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
               </Stack>
             )}
 
+            <Typography
+              color={'text.secondary'}
+              sx={{ '& > span': { color: 'primary.main', fontWeight: 600 } }}
+              variant={'h7'}
+            >
+              Total loan amount: <span>{POSFormatDollar(totalLoanAmount)}</span>
+            </Typography>
+
             {['xs', 'sm', 'md'].includes(breakpoints) && (
-              <Stack flex={1}>
+              <Stack flex={1} maxWidth={240} mt={-1.5} width={'100%'}>
+                {loading ? (
+                  <>
+                    <Skeleton
+                      animation={'wave'}
+                      height={14}
+                      variant="rounded"
+                      width={'100%'}
+                    />
+                    <Skeleton
+                      animation={'wave'}
+                      height={14}
+                      sx={{
+                        marginTop: 1,
+                      }}
+                      variant="rounded"
+                      width={'100%'}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Typography color={'text.secondary'} variant={'body3'}>
+                      You qualify for a loan amount between{' '}
+                    </Typography>
+                    <Typography
+                      color={'text.secondary'}
+                      sx={{
+                        '& > b': {
+                          color: 'primary.main',
+                          fontWeight: 600,
+                        },
+                      }}
+                      variant={'body3'}
+                    >
+                      <b>{POSFormatDollar(limits?.minLoanAmount)}</b> and{' '}
+                      <b>{POSFormatDollar(limits?.maxLoanAmount)}</b>.
+                    </Typography>
+                  </>
+                )}
+              </Stack>
+            )}
+
+            {['xs', 'sm', 'md'].includes(breakpoints) && (
+              <Stack flex={1} mt={-1.5}>
                 {[
                   LoanProductCategoryEnum.fix_and_flip,
                   LoanProductCategoryEnum.ground_up_construction,
@@ -773,14 +776,6 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 )}
               </Stack>
             )}
-
-            <Typography
-              color={'text.secondary'}
-              sx={{ '& > span': { color: 'primary.main', fontWeight: 600 } }}
-              variant={'h7'}
-            >
-              Total loan amount: <span>{POSFormatDollar(totalLoanAmount)}</span>
-            </Typography>
           </Stack>
         )}
 
@@ -813,7 +808,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
           />
         </Stack>
 
-        <Stack alignItems={'center'} mt={{ xs: 3, lg: 10 }} width={'100%'}>
+        <Stack alignItems={'center'} mt={{ xs: 6, lg: 8 }} width={'100%'}>
           <StyledButton
             color={'info'}
             disabled={backState}

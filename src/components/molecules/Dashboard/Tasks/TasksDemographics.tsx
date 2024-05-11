@@ -348,10 +348,16 @@ export const TasksDemographics: FC = () => {
         px={{ lg: 3, xs: 0 }}
         width={'100%'}
       >
-        <Typography color={'text.primary'} textAlign={'center'} variant={'h4'}>
+        <Typography
+          color={'text.primary'}
+          fontSize={{ xs: 20, lg: 24 }}
+          textAlign={'center'}
+          variant={'h5'}
+        >
           Demographics information
           <Typography
             color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
             mt={1.5}
             sx={{ display: 'flex', flexDirection: 'column' }}
             variant={'body1'}

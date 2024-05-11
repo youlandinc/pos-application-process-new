@@ -78,7 +78,9 @@ export const ProductItem: FC<ProductItemProps> = observer(
           justifyContent={'space-between'}
         >
           <Typography variant={'body1'}>Term</Typography>
-          <Typography variant={'h6'}>{loanTerm} months</Typography>
+          <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
+            {loanTerm} months
+          </Typography>
         </Stack>
 
         <Stack
@@ -88,7 +90,7 @@ export const ProductItem: FC<ProductItemProps> = observer(
           justifyContent={'space-between'}
         >
           <Typography variant={'body1'}>Rate</Typography>
-          <Typography variant={'h6'}>
+          <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
             {POSFormatPercent(interestRate)}
           </Typography>
         </Stack>
@@ -121,7 +123,7 @@ export const ProductItem: FC<ProductItemProps> = observer(
               />
             </StyledTooltip>
           </Stack>
-          <Typography variant={'h6'}>
+          <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
             {POSFormatDollar(monthlyPayment)}
           </Typography>
         </Stack>
