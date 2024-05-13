@@ -137,6 +137,9 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
       label={'Property appraisal'}
       maxWidth={900}
       tip={'Keep track of your appraisal progress below'}
+      tipSx={{
+        textAlign: 'left',
+      }}
     >
       <Stepper
         activeStep={hash[appraisalStage]}

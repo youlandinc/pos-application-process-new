@@ -144,6 +144,12 @@ export const Appraisal: FC = () => {
         },
       } = await _fetchAppraisalData(loanId);
 
+      setFormState(
+        paymentStatus === AppraisalTaskPaymentStatus.undone
+          ? 'profile'
+          : 'afterPayment',
+      );
+
       setProfileData({
         haveAppraisal: haveAppraisal ?? false,
         appraisalFiles: appraisalFiles ?? [],
