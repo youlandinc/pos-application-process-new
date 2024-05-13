@@ -7,8 +7,8 @@ import {
   ApplicationForm,
   DetectUserActiveService,
   NotificationStation,
-  PTaskForm,
-  UserSetting,
+  // PTaskForm,
+  // UserSetting,
   //UserConfig,
   //UserProfile
 } from './base';
@@ -31,10 +31,10 @@ export const RootModel = {
   applicationForm: ApplicationForm,
   dashboardInfo: DashboardInfo,
 
-  pipelineTask: PTaskForm,
+  // pipelineTask: PTaskForm,
 
   session: types.maybe(types.frozen<UserSession>()),
-  userSetting: UserSetting,
+  // userSetting: UserSetting,
   userProfile: types.maybe(types.frozen<ClientUserProfile>()),
 
   // todo: need extract to user model
@@ -155,18 +155,18 @@ const initialState = {
     loanId: '',
   },
 
-  pipelineTask: {
-    pipelineInitialized: false,
-    allowSubmit: false,
-  },
+  // pipelineTask: {
+  //   pipelineInitialized: false,
+  //   allowSubmit: false,
+  // },
 
   userProfile: void 0,
-  userSetting: {
-    loading: false,
-    pipelineStatus: void 0,
-    pipelineStatusInitialized: false,
-    applicable: false,
-  },
+  // userSetting: {
+  //   loading: false,
+  //   pipelineStatus: void 0,
+  //   pipelineStatusInitialized: false,
+  //   applicable: false,
+  // },
   userType: void 0,
   loginType: void 0,
 

@@ -120,7 +120,7 @@ export const TasksInvestmentExperience: FC = () => {
         alignItems={'center'}
         gap={6}
         justifyContent={'flex-start'}
-        maxWidth={900}
+        maxWidth={700}
         mx={{ lg: 'auto', xs: 0 }}
         px={{ lg: 3, xs: 0 }}
         width={'100%'}
@@ -135,16 +135,23 @@ export const TasksInvestmentExperience: FC = () => {
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
-            mt={1.5}
             variant={'body1'}
           >
             List your previous real estate investments, including rentals and
-            fix-and-flips. These will be verified through a title search.
+            fix-and-flips.
+          </Typography>
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            variant={'body1'}
+          >
+            These will be verified through a title search.
           </Typography>
         </Typography>
 
         <StyledFormItem
           label={'Number of properties exited in last 24 months'}
+          labelSx={{ textAlign: 'center' }}
           sub
         >
           <Stack maxWidth={648} width={'100%'}>
@@ -183,7 +190,11 @@ export const TasksInvestmentExperience: FC = () => {
           }}
         >
           {propertiesNum && (
-            <StyledFormItem label={'Upload track record'} sub>
+            <StyledFormItem
+              label={'Upload track record'}
+              labelSx={{ textAlign: 'center' }}
+              sub
+            >
               <StyledUploadButtonBox
                 accept={
                   'image/*,.pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -198,6 +209,7 @@ export const TasksInvestmentExperience: FC = () => {
 
               <Typography
                 color={'text.secondary'}
+                fontSize={{ xs: 12, lg: 16 }}
                 mt={3}
                 variant={'subtitle1'}
                 width={'100%'}
@@ -213,18 +225,34 @@ export const TasksInvestmentExperience: FC = () => {
                   color: 'text.secondary',
                 }}
               >
-                <Typography component={'li'} variant={'body1'}>
+                <Typography
+                  component={'li'}
+                  fontSize={{ xs: 12, lg: 16 }}
+                  variant={'body1'}
+                >
                   Property should be owned for at least 30 days but no more than
                   36 months and either sold or turned into a rental within the
                   last 36 months.
                 </Typography>
-                <Typography component={'li'} variant={'body1'}>
+                <Typography
+                  component={'li'}
+                  fontSize={{ xs: 12, lg: 16 }}
+                  variant={'body1'}
+                >
                   Sale price should be at least $50,000.
                 </Typography>
-                <Typography component={'li'} variant={'body1'}>
+                <Typography
+                  component={'li'}
+                  fontSize={{ xs: 12, lg: 16 }}
+                  variant={'body1'}
+                >
                   Property can&apos;t be vacant land or your current residence.
                 </Typography>
-                <Typography component={'li'} variant={'body1'}>
+                <Typography
+                  component={'li'}
+                  fontSize={{ xs: 12, lg: 16 }}
+                  variant={'body1'}
+                >
                   Title holder must be linked to the loan application&apos;s
                   borrower or guarantor. For each property listed, please write
                   the person/entity on the title next to the address.

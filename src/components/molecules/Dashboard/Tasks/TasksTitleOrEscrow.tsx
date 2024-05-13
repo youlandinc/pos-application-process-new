@@ -232,7 +232,7 @@ export const TasksTitleOrEscrow: FC = () => {
           contactForm: {
             ...contactForm,
             contractDate: dateValid(contactForm.contractDate)
-              ? format(contactForm.contractDate as Date, 'MM-dd-yyyy')
+              ? format(contactForm.contractDate as Date, 'yyyy-MM-dd')
               : null,
           },
           contactAddress: clientContactAddress.getPostData(),
@@ -247,7 +247,7 @@ export const TasksTitleOrEscrow: FC = () => {
           contactForm: {
             ...contactForm,
             contractDate: dateValid(contactForm.contractDate)
-              ? format(contactForm.contractDate as Date, 'MM-dd-yyyy')
+              ? format(contactForm.contractDate as Date, 'yyyy-MM-dd')
               : null,
           },
           contactAddress: clientContactAddress.getPostData(),
@@ -316,7 +316,6 @@ export const TasksTitleOrEscrow: FC = () => {
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
-            mt={1.5}
             sx={{ display: 'flex', flexDirection: 'column' }}
             variant={'body1'}
           >
@@ -332,7 +331,7 @@ export const TasksTitleOrEscrow: FC = () => {
         <StyledFormItem
           gap={3}
           label={'Provide contact details for the title company'}
-          labelSx={{ m: 0, textAlign: 'left' }}
+          labelSx={{ pb: 3 }}
           maxWidth={600}
           sub
         >
@@ -374,7 +373,6 @@ export const TasksTitleOrEscrow: FC = () => {
           label={
             'Who is signing the closing instructions on behalf of the title company?'
           }
-          labelSx={{ m: 0, textAlign: 'left' }}
           maxWidth={600}
           sub
         >
@@ -462,7 +460,6 @@ export const TasksTitleOrEscrow: FC = () => {
         <StyledFormItem
           gap={3}
           label={'Is the title company also managing loan closing?'}
-          labelSx={{ m: 0, textAlign: 'left' }}
           maxWidth={600}
           sub
         >
@@ -493,7 +490,6 @@ export const TasksTitleOrEscrow: FC = () => {
               <StyledFormItem
                 gap={3}
                 label={'Who is managing loan closing?'}
-                labelSx={{ m: 0, textAlign: 'left' }}
                 sub
                 width={'100%'}
               >
@@ -595,13 +591,17 @@ export const TasksTitleOrEscrow: FC = () => {
                 />
               </StyledFormItem>
             ) : (
-              <StyledTextFieldNumber
-                decimalScale={0}
-                label={'Escrow number'}
-                onValueChange={({ floatValue }) => setEscrowNumber(floatValue)}
-                thousandSeparator={false}
-                value={escrowNumber}
-              />
+              <Stack mt={-3} width={'100%'}>
+                <StyledTextFieldNumber
+                  decimalScale={0}
+                  label={'Escrow number'}
+                  onValueChange={({ floatValue }) =>
+                    setEscrowNumber(floatValue)
+                  }
+                  thousandSeparator={false}
+                  value={escrowNumber}
+                />
+              </Stack>
             )
           ) : null}
         </Transitions>
@@ -609,7 +609,7 @@ export const TasksTitleOrEscrow: FC = () => {
         <Stack
           flexDirection={{ xs: 'unset', md: 'row' }}
           gap={3}
-          maxWidth={648}
+          maxWidth={600}
           width={'100%'}
         >
           <StyledButton

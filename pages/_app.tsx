@@ -180,9 +180,7 @@ export default function MyApp(props: MyAppProps) {
         <title>Apply for a loan</title>
       </Head>
       <Provider value={rootStore}>
-        <ProviderPersistData
-          rootStoreKeys={['session', 'userProfile', 'userSetting']}
-        >
+        <ProviderPersistData rootStoreKeys={['session', 'userProfile']}>
           <ProviderDetectActive>
             <CacheProvider value={emotionCache}>
               {renderComponent}

@@ -49,7 +49,7 @@ const MENU_LIST_CUSTOMER = [
 ];
 
 const MENU_LIST_NOT_CUSTOMER = [
-  { label: 'info', url: '/pipeline/profile' },
+  // { label: 'info', url: '/pipeline/profile' },
   { label: 'Change avatar', url: 'change_avatar' },
   { label: 'Change email', url: '/auth/change_email' },
   {

@@ -111,7 +111,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
           return estimateRate.loanPurpose === LoanPurposeEnum.purchase
             ? (estimateRate?.purchaseLoanAmount ?? 0) +
                 (estimateRate?.rehabCost ?? 0)
-            : (estimateRate?.purchaseLoanAmount ?? 0) +
+            : (estimateRate?.refinanceLoanAmount ?? 0) +
                 (estimateRate?.rehabCost ?? 0);
         default:
           return 0;
@@ -133,7 +133,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         case LoanProductCategoryEnum.fix_and_flip:
           return estimateRate.loanPurpose === LoanPurposeEnum.purchase
             ? estimateRate?.purchaseLoanAmount
-            : estimateRate?.purchaseLoanAmount;
+            : estimateRate?.refinanceLoanAmount;
         default:
           return 0;
       }

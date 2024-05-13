@@ -19,6 +19,19 @@ export interface DashboardTasksResponse {
   [DashboardTaskKey.holdback_process]?: boolean;
 }
 
+// appraisal
+
+export interface DashboardPaymentDetailsResponse {
+  borrowerName?: string;
+  clientSecret: string;
+  paymentAmount: number;
+  appraisalFees: null | number;
+  expeditedFees: null | number;
+  isExpedited: boolean;
+  propertyAddress: string;
+  productName: string;
+}
+
 // documents
 export interface DashboardDocumentsResponse {
   docs: {

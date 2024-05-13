@@ -12,6 +12,8 @@ import { observer } from 'mobx-react-lite';
 
 import { POSHeaderProps, POSHeaderStyles } from './index';
 import { MyAccountButton } from '../MyAccountButton';
+import { DashboardSideDrawer } from '../DashboardSideDrawer';
+
 import {
   useBreakpoints,
   usePersistFn,
@@ -25,12 +27,7 @@ import {
   StyledDialog,
   StyledHeaderLogo,
 } from '@/components/atoms';
-import {
-  DashboardSideDrawer,
-  ForgotPassword,
-  Login,
-  SignUp,
-} from '@/components/molecules';
+import { ForgotPassword, Login, SignUp } from '@/components/molecules';
 import { POSFormatUrl } from '@/utils';
 import { LayoutSceneTypeEnum, LoanSnapshotEnum } from '@/types';
 

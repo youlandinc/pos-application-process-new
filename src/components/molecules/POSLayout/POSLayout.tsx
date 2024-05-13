@@ -9,10 +9,11 @@ import { useBreakpoints, useCheckIsLogin } from '@/hooks';
 
 import { POSLayoutProps } from './index';
 import { POSHeader } from './components/POSHeader';
+import { DashboardMenuList } from './components/DashboardMenuList';
+
 import { LayoutSceneTypeEnum } from '@/types';
 
 import { StyledBoxWrap } from '@/components/atoms';
-import { DashboardMenuList } from '@/components/molecules';
 
 export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
   const breakpoint = useBreakpoints();

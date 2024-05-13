@@ -1,4 +1,4 @@
-export type ProcessesParams = {
+export type PipelineRequestParams = {
   page: number;
   size: number;
   loanId: string;

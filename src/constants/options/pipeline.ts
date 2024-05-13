@@ -1,6 +1,5 @@
 import {
   LoanSpecies,
-  LoanStage,
   PipelineACHAccountType,
   PipelineLicenseType,
   PipelineLoanStageEnum,

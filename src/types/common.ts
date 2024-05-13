@@ -45,3 +45,12 @@ export interface MenuItems {
   path: string;
   icon: ReactNode;
 }
+
+export enum AppraisalStatusEnum {
+  not_started = 'NOT_STARTED',
+  paid_for = 'PAID_FOR',
+  ordered = 'ORDERED',
+  scheduled = 'SCHEDULED',
+  canceled = 'CANCELED',
+  completed = 'COMPLETED',
+}

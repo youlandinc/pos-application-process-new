@@ -156,7 +156,7 @@ export const TasksCoBorrower: FC = () => {
   const handleSave = async () => {
     const postData = {
       loanId: POSGetParamsFromUrl(location.href).loanId,
-      taskKey: DashboardTaskKey.borrower,
+      taskKey: DashboardTaskKey.co_borrower,
       data: {
         isCoBorrower,
         citizenship,
@@ -207,10 +207,10 @@ export const TasksCoBorrower: FC = () => {
     <Fade in={!loading}>
       <Stack
         alignItems={'center'}
-        gap={6}
+        gap={3}
         justifyContent={'flex-start'}
         maxWidth={648}
-        mx={{ lg: 'auto', xs: 0 }}
+        mx={'auto'}
         px={{ lg: 3, xs: 0 }}
         width={'100%'}
       >
@@ -224,19 +224,13 @@ export const TasksCoBorrower: FC = () => {
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
-            mt={1.5}
             variant={'body1'}
           >
             Credit and background checks will apply to the co-borrower as well.
           </Typography>
         </Typography>
 
-        <StyledFormItem
-          gap={3}
-          label={'Is there a co-borrower?'}
-          labelSx={{ textAlign: 'left', m: 0 }}
-          sub
-        >
+        <StyledFormItem gap={3} label={'Is there a co-borrower?'} sub>
           <StyledButtonGroup
             onChange={(e, value) => {
               if (value === null) {
@@ -257,11 +251,11 @@ export const TasksCoBorrower: FC = () => {
           }}
         >
           {isCoBorrower && (
-            <Stack gap={6} width={'100%'}>
+            <Stack gap={6} mt={3} width={'100%'}>
               <StyledFormItem
                 gap={3}
                 label={'Personal information'}
-                labelSx={{ textAlign: 'left', m: 0 }}
+                labelSx={{ pb: 3 }}
                 sub
               >
                 <Stack
@@ -312,12 +306,7 @@ export const TasksCoBorrower: FC = () => {
                 </Stack>
               </StyledFormItem>
 
-              <StyledFormItem
-                gap={3}
-                label={'Citizenship status'}
-                labelSx={{ textAlign: 'left', m: 0 }}
-                sub
-              >
+              <StyledFormItem gap={3} label={'Citizenship status'} sub>
                 <StyledSelectOption
                   onChange={(value) =>
                     setCitizenship(
@@ -332,7 +321,7 @@ export const TasksCoBorrower: FC = () => {
               <StyledFormItem
                 gap={3}
                 label={'Current address'}
-                labelSx={{ textAlign: 'left', m: 0 }}
+                labelSx={{ pb: 3 }}
                 sub
               >
                 <StyledGoogleAutoComplete address={address} />
@@ -353,7 +342,7 @@ export const TasksCoBorrower: FC = () => {
                   <StyledFormItem
                     gap={3}
                     label={'Social security number'}
-                    labelSx={{ textAlign: 'left', m: 0 }}
+                    labelSx={{ pb: 3 }}
                     sub
                   >
                     <StyledTextFieldSocialNumber

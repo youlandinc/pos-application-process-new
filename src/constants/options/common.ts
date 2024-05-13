@@ -1,5 +1,5 @@
 import {
-  AppraisalStage,
+  AppraisalStatusEnum,
   DashboardTaskCitizenshipStatus,
   LoanAnswerEnum,
   UserType,
@@ -376,35 +376,36 @@ export const OPTIONS_COMMON_MARKS: {
   { label: '', value: 19 },
   { label: '20+', value: 20 },
 ];
+
 export const OPTIONS_COMMON_APPRAISAL_STAGE: Option[] = [
   {
     label: 'Not started',
-    value: AppraisalStage.NotStarted,
-    key: AppraisalStage.NotStarted,
+    value: AppraisalStatusEnum.not_started,
+    key: AppraisalStatusEnum.not_started,
   },
   {
     label: 'Paid for',
-    value: AppraisalStage.PaidFor,
-    key: AppraisalStage.PaidFor,
+    value: AppraisalStatusEnum.paid_for,
+    key: AppraisalStatusEnum.paid_for,
   },
   {
     label: 'Canceled',
-    value: AppraisalStage.Canceled,
-    key: AppraisalStage.Canceled,
+    value: AppraisalStatusEnum.canceled,
+    key: AppraisalStatusEnum.canceled,
   },
   {
     label: 'Ordered',
-    value: AppraisalStage.Ordered,
-    key: AppraisalStage.Ordered,
+    value: AppraisalStatusEnum.ordered,
+    key: AppraisalStatusEnum.ordered,
   },
   {
     label: 'Scheduled',
-    value: AppraisalStage.Scheduled,
-    key: AppraisalStage.Scheduled,
+    value: AppraisalStatusEnum.scheduled,
+    key: AppraisalStatusEnum.scheduled,
   },
   {
     label: 'Completed',
-    value: AppraisalStage.Completed,
-    key: AppraisalStage.Completed,
+    value: AppraisalStatusEnum.completed,
+    key: AppraisalStatusEnum.completed,
   },
 ];

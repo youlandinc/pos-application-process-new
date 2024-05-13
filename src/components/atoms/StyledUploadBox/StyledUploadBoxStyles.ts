@@ -45,7 +45,11 @@ export const StyledUploadBoxStyles: SxProps = {
     mt: 3,
   },
   '& .fileName': {
-    ...POSTextEllipsis({ xs: 200, lg: 260, xl: 400 }),
+    ...POSTextEllipsis({
+      xs: 200,
+      lg: 260,
+      // , xl: 400
+    }),
   },
   '& .uploadBox': {
     width: '100%',

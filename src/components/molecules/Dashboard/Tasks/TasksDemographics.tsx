@@ -374,7 +374,6 @@ export const TasksDemographics: FC = () => {
         <StyledFormItem
           gap={3}
           label={'What is your ethnicity?'}
-          labelSx={{ m: 0, textAlign: 'left' }}
           maxWidth={648}
           sub
         >
@@ -483,13 +482,7 @@ export const TasksDemographics: FC = () => {
           </Stack>
         </StyledFormItem>
 
-        <StyledFormItem
-          gap={3}
-          label={'What is your race?'}
-          labelSx={{ m: 0, textAlign: 'left' }}
-          maxWidth={648}
-          sub
-        >
+        <StyledFormItem gap={3} label={'What is your race?'} maxWidth={648} sub>
           <Stack gap={1.5} width={'100%'}>
             <Box>
               <StyledCheckbox
@@ -739,13 +732,7 @@ export const TasksDemographics: FC = () => {
           </Stack>
         </StyledFormItem>
 
-        <StyledFormItem
-          gap={3}
-          label={'What is your sex?'}
-          labelSx={{ m: 0, textAlign: 'left' }}
-          maxWidth={648}
-          sub
-        >
+        <StyledFormItem gap={3} label={'What is your sex?'} maxWidth={648} sub>
           <Stack gap={1.5} width={'100%'}>
             <StyledCheckbox
               checked={male}

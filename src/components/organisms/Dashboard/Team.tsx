@@ -14,7 +14,7 @@ import { POSFormatUSPhoneToText, POSGetParamsFromUrl } from '@/utils';
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 
 import { StyledLoading } from '@/components/atoms';
-import { DashboardServiceCardItem } from '@/components/molecules';
+import { TeamMemberCardItem } from '@/components/molecules';
 
 import { HttpError, TeamMemberData } from '@/types';
 import { _fetchTeamMembers } from '@/requests/dashboard';
@@ -173,7 +173,7 @@ export const Team = () => {
           width={'100%'}
         >
           {teamList?.map((item, index) => (
-            <DashboardServiceCardItem data={item} key={index} />
+            <TeamMemberCardItem data={item} key={index} />
           ))}
         </Stack>
       </Stack>
