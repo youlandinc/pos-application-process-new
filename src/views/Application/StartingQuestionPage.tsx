@@ -17,7 +17,7 @@ export const StartingQuestionPage: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { saasState } = useSessionStorageState('tenantConfig');
-  
+
   const { applicationForm } = useMst();
 
   const { updateFrom, updateFormState } = useStoreData();

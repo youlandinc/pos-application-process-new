@@ -34,7 +34,6 @@ import { HttpError } from '@/types';
 import {
   getFilesWebkitDataTransferItems,
   POSFormatDate,
-  POSGetParamsFromUrl,
   renameFile,
 } from '@/utils';
 
@@ -111,8 +110,6 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
 
   const [isDragging, setIsDragging] = useState(false);
 
-  const { processId } = POSGetParamsFromUrl(location.href);
-
   const handleUpload = useCallback(
     async (files: FileList | any[]) => {
       setIsDragging(false);
@@ -152,7 +149,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
       fileList,
       onUpload,
       refresh,
-      router.query.taskId,
+      router.query.loanId,
     ],
   );
 
@@ -258,7 +255,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     fileList,
     onDelete,
     refresh,
-    router.query.taskId,
+    router.query.loanId,
   ]);
 
   useEffect(() => {
@@ -732,12 +729,14 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
               <Typography variant={'subtitle2'}>Loan number</Typography>
               <Stack flexDirection={'row'} gap={1}>
                 <Typography variant={'body3'}>
-                  {isFromLOS ? loanId : processId}
+                  {isFromLOS ? loanId : router.query.loanId}
                 </Typography>
                 <ContentCopy
                   onClick={async () => {
                     await navigator.clipboard.writeText(
-                      isFromLOS ? (loanId as string) : (processId as string),
+                      isFromLOS
+                        ? (loanId as string)
+                        : (router.query.loanId as string),
                     );
                     enqueueSnackbar('Copied data to clipboard', {
                       variant: 'success',

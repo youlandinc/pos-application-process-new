@@ -6,7 +6,7 @@ import { AppraisalTaskPaymentStatus } from '@/types';
 import { useSessionStorageState } from '@/hooks';
 import { POSFormatUSPhoneToText } from '@/utils';
 
-// import { _restartPaymentPipeline } from '@/requests/dashboard';
+import { _restartAppraisalPaymentProcess } from '@/requests/dashboard';
 
 import { StyledButton } from '@/components/atoms';
 
@@ -213,7 +213,9 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
             >
               <StyledButton
                 onClick={async () => {
-                  // await _restartPaymentPipeline(router.query.taskId as string);
+                  await _restartAppraisalPaymentProcess(
+                    router.query.loanId as string,
+                  );
                   router.reload();
                 }}
                 sx={{ flex: 1, maxWidth: 276 }}

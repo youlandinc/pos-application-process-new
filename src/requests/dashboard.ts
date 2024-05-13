@@ -68,6 +68,10 @@ export const _fetchAppraisalPaymentData = (params: {
   );
 };
 
+export const _restartAppraisalPaymentProcess = (loanId: string) => {
+  return post(`/pos/appraisal/payment/${loanId}`);
+};
+
 // documents
 export const _fetchLoanDocumentData = (loanId: string) => {
   return get<DashboardDocumentsResponse>(`/pos/task/docs/${loanId}`);
