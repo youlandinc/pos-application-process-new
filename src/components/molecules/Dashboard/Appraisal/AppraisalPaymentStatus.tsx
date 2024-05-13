@@ -65,7 +65,7 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
           ),
           footer: (
             <Stack
-              flexDirection={'row'}
+              alignItems={'center'}
               gap={3}
               maxWidth={600}
               mt={3}
@@ -74,9 +74,9 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
               <StyledButton
                 color={'primary'}
                 onClick={async () => router.reload()}
-                sx={{ flex: 1 }}
+                sx={{ flex: 1, maxWidth: 276, width: '100%' }}
               >
-                Next
+                Continue
               </StyledButton>
             </Stack>
           ),
@@ -205,7 +205,7 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
           ),
           footer: (
             <Stack
-              flexDirection={'row'}
+              alignItems={'center'}
               gap={3}
               maxWidth={600}
               mt={3}
@@ -218,7 +218,7 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
                   );
                   router.reload();
                 }}
-                sx={{ flex: 1, maxWidth: 276 }}
+                sx={{ flex: 1, maxWidth: 276, width: '100%' }}
               >
                 Try again
               </StyledButton>
