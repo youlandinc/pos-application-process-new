@@ -159,7 +159,7 @@ export const TasksCoBorrower: FC = () => {
       taskKey: DashboardTaskKey.co_borrower,
       data: {
         isCoBorrower,
-        citizenship,
+        citizenship: citizenship || undefined,
         firstName,
         lastName,
         birthDate:
