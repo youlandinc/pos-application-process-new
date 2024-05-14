@@ -19,11 +19,13 @@ interface baseData {
 }
 
 interface AppraisalDetailsData {
-  paid_for: baseData | null;
-  ordered: baseData | null;
-  scheduled: (baseData & { scheduledDate?: string }) | null;
-  canceled: (baseData & { reason?: string }) | null;
-  completed: baseData | null;
+  [AppraisalStatusEnum.paid_for]: baseData | null;
+  [AppraisalStatusEnum.ordered]: baseData | null;
+  [AppraisalStatusEnum.scheduled]:
+    | (baseData & { scheduledDate?: string })
+    | null;
+  [AppraisalStatusEnum.canceled]: (baseData & { reason?: string }) | null;
+  [AppraisalStatusEnum.completed]: baseData | null;
 }
 
 const hash = {
@@ -49,7 +51,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
   const computedData = useMemo(() => {
     if (
       appraisalStage === AppraisalStatusEnum.canceled ||
-      appraisalDetail?.canceled
+      appraisalDetail?.[AppraisalStatusEnum.canceled]
     ) {
       return [
         {
@@ -57,9 +59,11 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
           label: 'Appraisal has been canceled',
           description:
             'Please email us at borrow@youland.com or call (833) 968-5263 for refunds and any questions you have.',
-          date: appraisalDetail?.canceled?.completeDate
+          date: appraisalDetail?.[AppraisalStatusEnum.canceled]?.completeDate
             ? `Canceled on ${format(
-                parseISO(appraisalDetail.canceled?.completeDate),
+                parseISO(
+                  appraisalDetail?.[AppraisalStatusEnum.canceled]?.completeDate,
+                ),
                 "MMMM dd, yyyy 'at' h:mm a",
               )}.`
             : '',
@@ -72,9 +76,11 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
         label: 'Appraisal payment completed',
         description:
           'We have received your appraisal payment and are actively processing your request to ensure you receive an accurate and timely appraisal.',
-        date: appraisalDetail?.paid_for?.completeDate
+        date: appraisalDetail?.[AppraisalStatusEnum.paid_for]?.completeDate
           ? `Completed on ${format(
-              parseISO(appraisalDetail.paid_for?.completeDate),
+              parseISO(
+                appraisalDetail?.[AppraisalStatusEnum.paid_for]?.completeDate,
+              ),
               "MMMM dd, yyyy 'at' h:mm a",
             )}.`
           : '',
@@ -84,9 +90,11 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
         label: 'Appraisal has been ordered',
         description:
           'We are reaching out the point of contact for the property and schedule the inspection as soon as possible. On average, the appraisal takes 3-5 business days to complete.',
-        date: appraisalDetail?.ordered?.completeDate
+        date: appraisalDetail?.[AppraisalStatusEnum.ordered]?.completeDate
           ? `Ordered on ${format(
-              parseISO(appraisalDetail.ordered?.completeDate),
+              parseISO(
+                appraisalDetail?.[AppraisalStatusEnum.ordered]?.completeDate,
+              ),
               "MMMM dd, yyyy 'at' h:mm a",
             )}.`
           : '',
@@ -95,16 +103,21 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
         icon: null,
         label: 'Inspection has been scheduled',
         description: `${
-          appraisalDetail?.scheduled?.scheduledDate
+          appraisalDetail?.[AppraisalStatusEnum.scheduled]?.scheduledDate
             ? `The inspection has been scheduled for ${format(
-                parseISO(appraisalDetail.scheduled?.scheduledDate),
+                parseISO(
+                  appraisalDetail?.[AppraisalStatusEnum.scheduled]
+                    ?.scheduledDate,
+                ),
                 "MMMM dd, yyyy 'at' h:mm a",
               )}. `
             : ''
         }Following the inspection, the appraiser will proceed with the necessary assessments to finalize the appraisal report. We will notify you once the appraisal is complete.`,
-        date: appraisalDetail?.scheduled?.completeDate
+        date: appraisalDetail?.[AppraisalStatusEnum.scheduled]?.completeDate
           ? `Updated on ${format(
-              parseISO(appraisalDetail.scheduled?.completeDate),
+              parseISO(
+                appraisalDetail?.[AppraisalStatusEnum.scheduled]?.completeDate,
+              ),
               "MMMM dd, yyyy 'at' h:mm a",
             )}.`
           : '',
@@ -114,21 +127,23 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
         label: 'Appraisal is completed',
         description:
           'Your appraisal order has been completed! If you have any questions or need further clarification, feel free to contact our customer service team. Thank you for your patience!',
-        date: appraisalDetail?.completed?.completeDate
+        date: appraisalDetail?.[AppraisalStatusEnum.completed]?.completeDate
           ? `Completed on ${format(
-              parseISO(appraisalDetail.completed?.completeDate),
+              parseISO(
+                appraisalDetail?.[AppraisalStatusEnum.completed]?.completeDate,
+              ),
               "MMMM dd, yyyy 'at' h:mm a",
             )}.`
           : '',
       },
     ];
   }, [
-    appraisalDetail?.canceled,
-    appraisalDetail?.completed?.completeDate,
-    appraisalDetail?.ordered?.completeDate,
-    appraisalDetail?.paid_for?.completeDate,
-    appraisalDetail?.scheduled?.completeDate,
-    appraisalDetail?.scheduled?.scheduledDate,
+    appraisalDetail?.[AppraisalStatusEnum.canceled],
+    appraisalDetail?.[AppraisalStatusEnum.completed]?.completeDate,
+    appraisalDetail?.[AppraisalStatusEnum.ordered]?.completeDate,
+    appraisalDetail?.[AppraisalStatusEnum.paid_for]?.completeDate,
+    appraisalDetail?.[AppraisalStatusEnum.scheduled]?.completeDate,
+    appraisalDetail?.[AppraisalStatusEnum.scheduled]?.scheduledDate,
     appraisalStage,
   ]);
 

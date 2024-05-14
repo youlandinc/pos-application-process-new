@@ -24,7 +24,7 @@ export const POSFormatPercent = (
   radix = 3,
 ): string => {
   if (!percentageValue) {
-    if (radix === 0) {
+    if (radix <= 0) {
       return '0%';
     }
     return '0%';
@@ -34,8 +34,8 @@ export const POSFormatPercent = (
     target = parseFloat(target as string);
   }
   return (
-    ((Math.floor((target as number) * 1000000) / 1000000) * 100).toFixed(
-      radix,
+    ((Math.floor((target as number) * 10000000) / 10000000) * 100).toFixed(
+      radix >= 3 ? 3 : radix,
     ) + '%'
   );
 };
@@ -101,7 +101,7 @@ export const POSGetDecimalPlaces = (
   if (!value) {
     return 0;
   }
-  const target = value * 100 + '';
+  const target = value + '';
   if (target.endsWith('.')) {
     return 0;
   }
@@ -111,5 +111,9 @@ export const POSGetDecimalPlaces = (
     return 0;
   }
 
-  return target.length - decimalIndex - 1;
+  return target.substring(target.indexOf('.') + 1).length >= 5
+    ? 3
+    : target.substring(target.indexOf('.') + 1).length - 2 <= 0
+      ? 0
+      : target.substring(target.indexOf('.') + 1).length - 2;
 };

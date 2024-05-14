@@ -68,11 +68,11 @@ export const OPTIONS_LOAN_STAGE: Option[] = [
 ];
 
 export const OPTIONS_LOAN_SPECIES: Option[] = [
-  {
-    key: LoanSpecies.Mortgage,
-    value: LoanSpecies.Mortgage,
-    label: 'Mortgage',
-  },
+  // {
+  //   key: LoanSpecies.Mortgage,
+  //   value: LoanSpecies.Mortgage,
+  //   label: 'Mortgage',
+  // },
   {
     key: LoanSpecies.Bridge,
     value: LoanSpecies.Bridge,
@@ -83,11 +83,11 @@ export const OPTIONS_LOAN_SPECIES: Option[] = [
     value: LoanSpecies.FixAndFlip,
     label: 'Fix and Flip',
   },
-  {
-    key: LoanSpecies.GroundUpConstruction,
-    value: LoanSpecies.GroundUpConstruction,
-    label: 'Ground-up Construction',
-  },
+  // {
+  //   key: LoanSpecies.GroundUpConstruction,
+  //   value: LoanSpecies.GroundUpConstruction,
+  //   label: 'Ground-up Construction',
+  // },
 ];
 
 export const OPTIONS_LICENSE_TYPE: Option[] = [

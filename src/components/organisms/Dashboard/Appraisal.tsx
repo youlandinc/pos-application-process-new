@@ -58,11 +58,11 @@ export const Appraisal: FC = () => {
   const [appraisalDetail, setAppraisalDetail] = useState<
     AppraisalStatusProps['appraisalDetail']
   >({
-    paid_for: null,
-    ordered: null,
-    scheduled: null,
-    canceled: null,
-    completed: null,
+    [AppraisalStatusEnum.paid_for]: null,
+    [AppraisalStatusEnum.ordered]: null,
+    [AppraisalStatusEnum.scheduled]: null,
+    [AppraisalStatusEnum.canceled]: null,
+    [AppraisalStatusEnum.completed]: null,
   });
 
   const appraisalPaymentRef = useRef(null);

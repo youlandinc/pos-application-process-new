@@ -10,6 +10,7 @@ import {
   POSFindLabel,
   POSFormatDollar,
   POSFormatPercent,
+  POSGetDecimalPlaces,
   POSNotUndefined,
 } from '@/utils';
 
@@ -159,6 +160,11 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
     ]);
 
     const LTC = useMemo(() => {
+      console.log(
+        ((estimateRate.refinanceLoanAmount ?? 0) +
+          (estimateRate?.rehabCost ?? 0)) /
+          ((estimateRate.propertyValue ?? 0) + (estimateRate?.rehabCost ?? 0)),
+      );
       if (
         estimateRate.productCategory !==
         LoanProductCategoryEnum.stabilized_bridge
@@ -177,10 +183,10 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
     }, [
       estimateRate.loanPurpose,
       estimateRate.productCategory,
-      estimateRate.propertyValue,
+      estimateRate?.propertyValue,
       estimateRate?.purchaseLoanAmount,
       estimateRate?.purchasePrice,
-      estimateRate.refinanceLoanAmount,
+      estimateRate?.refinanceLoanAmount,
       estimateRate?.rehabCost,
     ]);
 
@@ -610,7 +616,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                         variant={'body3'}
                       >
                         After-repair loan to value:{' '}
-                        <b>{POSFormatPercent(LTV, 1)}</b>
+                        <b>{POSFormatPercent(LTV, POSGetDecimalPlaces(LTV))}</b>
                       </Typography>
 
                       <Typography
@@ -623,7 +629,8 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                         }}
                         variant={'body3'}
                       >
-                        Loan to cost: <b>{POSFormatPercent(LTC, 1)}</b>
+                        Loan to cost:{' '}
+                        <b>{POSFormatPercent(LTC, POSGetDecimalPlaces(LTC))}</b>
                       </Typography>
                     </>
                   ) : (
