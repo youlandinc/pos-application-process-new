@@ -1,6 +1,7 @@
 import { IRoot } from '@/models/Root';
+import { LayoutSceneTypeEnum } from '@/types';
 
 export interface MyAccountButtonProps {
-  scene: 'application' | 'pipeline' | 'dashboard' | 'pipeline_without_all';
+  scene: LayoutSceneTypeEnum;
   store: IRoot;
 }

@@ -5,34 +5,37 @@ import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import {
-  useBreakpoints,
-  //useCheckInfoIsComplete,
-  useCheckIsLogin,
-} from '@/hooks';
+import { useBreakpoints, useCheckIsLogin } from '@/hooks';
 
 import { POSLayoutProps } from './index';
 import { POSHeader } from './components/POSHeader';
-import { SceneType } from '@/types';
+import { DashboardMenuList } from './components/DashboardMenuList';
+
+import { LayoutSceneTypeEnum } from '@/types';
 
 import { StyledBoxWrap } from '@/components/atoms';
-import { DashboardMenuList } from '@/components/molecules';
 
 export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
-  const store = useMst();
-  const {
-    selectedProcessData: { fetchProcessData, loading },
-  } = store;
   const breakpoint = useBreakpoints();
   const router = useRouter();
+
+  const store = useMst();
+  const {
+    dashboardInfo: { fetchDashboardInfo, loading },
+  } = store;
+
   useCheckIsLogin();
   //useCheckInfoIsComplete();
 
   useEffect(() => {
-    if (!router.pathname.includes('pipeline') && router.query.processId) {
-      fetchProcessData(router.query.processId);
+    if (
+      !router.pathname.includes('pipeline') &&
+      router.pathname.includes('dashboard') &&
+      router.query.loanId
+    ) {
+      fetchDashboardInfo(router.query.loanId as string);
     }
-  }, [fetchProcessData, router.pathname, router.query.processId]);
+  }, [fetchDashboardInfo, router.pathname, router.query.loanId]);
 
   return (
     <Box sx={{ height: '100%' }}>
@@ -40,21 +43,24 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
       <StyledBoxWrap
         sx={{
           display:
-            scene === 'dashboard' || scene === 'pipeline' ? 'flex' : 'block',
-          flexDirection: scene === 'dashboard' ? 'row' : 'column',
+            scene === LayoutSceneTypeEnum.dashboard ||
+            scene === LayoutSceneTypeEnum.pipeline
+              ? 'flex'
+              : 'block',
+          flexDirection:
+            scene === LayoutSceneTypeEnum.dashboard ? 'row' : 'column',
         }}
       >
-        {scene === 'dashboard' && ['lg', 'xl', 'xxl'].includes(breakpoint) && (
-          <Box sx={{ minWidth: 280 }}>
-            <DashboardMenuList
-              info={store.selectedProcessData}
-              loading={loading}
-              scene={
-                store.selectedProcessData.scene || SceneType.bridge_purchase
-              }
-            />
-          </Box>
-        )}
+        {scene === LayoutSceneTypeEnum.dashboard &&
+          ['lg', 'xl', 'xxl'].includes(breakpoint) && (
+            <Box sx={{ minWidth: 280 }}>
+              <DashboardMenuList
+                info={store.dashboardInfo}
+                loading={loading}
+                scene={scene}
+              />
+            </Box>
+          )}
         {children}
       </StyledBoxWrap>
     </Box>

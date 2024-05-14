@@ -13,7 +13,7 @@ export const StyledDrawerStyles = {
       bgcolor: 'background.white',
       py: 3,
       px: {
-        md: 6,
+        md: 3,
         xs: 1.5,
       },
       maxHeight: 92,
@@ -28,7 +28,7 @@ export const StyledDrawerStyles = {
       bgcolor: 'background.white',
       py: 3,
       px: {
-        md: 6,
+        md: 3,
         xs: 1.5,
       },
     },

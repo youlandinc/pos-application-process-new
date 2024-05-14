@@ -6,7 +6,7 @@ export const POSHeaderStyles = {
   width: {
     xxl: 1440,
     xl: 1240,
-    lg: 938,
+    lg: 976,
     xs: '100%',
   },
   px: {

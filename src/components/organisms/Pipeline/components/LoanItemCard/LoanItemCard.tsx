@@ -25,32 +25,32 @@ import {
   MoreVertOutlined,
   RemoveRedEyeOutlined,
 } from '@mui/icons-material';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 import { POSFlex } from '@/styles';
-import { LoanStage, LoanType, UserType } from '@/types';
-import { POSFormatDollar, POSFormatPercent } from '@/utils';
+import { LoanSnapshotEnum, PipelineLoanStageEnum, UserType } from '@/types';
+import {
+  POSFindLabel,
+  POSFormatDollar,
+  POSFormatPercent,
+  POSGetDecimalPlaces,
+} from '@/utils';
 
 import { StyledBadge, StyledButton } from '@/components/atoms';
+import { OPTIONS_LOAN_STAGE } from '@/constants';
 
 export interface LoanItemCardProps {
   formData: {
+    loanId: string;
     address: string;
-    productType: LoanType;
+    loanType: string;
     loanAmount: number;
-    applicationTime: Date | string;
-    loanStage: LoanStage;
-    brokerOriginationFee?: number;
-    brokerProcessingFee?: number;
-    brokerPoints?: number;
-    lenderOriginationFee?: number;
-    lenderProcessingFee?: number;
-    lenderPoints?: number;
-    officerOriginationFee?: number;
-    officerProcessingFee?: number;
-    officerPoints?: number;
-    youlandId: string;
-    agentFee?: number;
+    snapshot: LoanSnapshotEnum;
+    applicationDate: Date | null;
+    loanStage: PipelineLoanStageEnum;
+    originationFee: number | null;
+    originationPoints: number | null;
+    processingFee: number | null;
   };
   userType: UserType | undefined;
   children?: ReactNode;
@@ -70,20 +70,13 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
 
   const {
     address,
-    productType,
+    loanType,
     loanAmount,
-    applicationTime,
+    applicationDate,
     loanStage,
-    brokerOriginationFee,
-    brokerProcessingFee,
-    brokerPoints,
-    lenderOriginationFee,
-    lenderProcessingFee,
-    lenderPoints,
-    officerOriginationFee,
-    officerProcessingFee,
-    officerPoints,
-    agentFee,
+    originationFee,
+    originationPoints,
+    processingFee,
   } = formData;
 
   const [line_1, line_2] = address.split('NEW_LINE');
@@ -158,7 +151,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
         width={'100%'}
       >
         <Box minWidth={0} width={'calc(100% - 64px)'}>
-          {address ? (
+          {line_1 ? (
             <>
               <Typography
                 overflow={'hidden'}
@@ -263,7 +256,6 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
               xs: 12,
             },
             mt: 3,
-
             '&:first-of-type': {
               mt: 0,
             },
@@ -272,7 +264,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
       >
         <Box className={'product_item'}>
           <Box>Loan type</Box>
-          <Typography variant={'subtitle1'}>{productType}</Typography>
+          <Typography variant={'subtitle1'}>{loanType}</Typography>
         </Box>
         <Box className={'product_item'}>
           <Box>Loan amount</Box>
@@ -281,55 +273,38 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
           </Typography>
         </Box>
         <Box className={'product_item'}>
-          <Box>Application date</Box>
+          <Box>Date submitted</Box>
           <Typography variant={'subtitle1'}>
-            {format(new Date(applicationTime), 'MM/dd/yyyy')}
+            {format(
+              parseISO(applicationDate as unknown as string),
+              'MM/dd/yyyy',
+            )}
           </Typography>
         </Box>
-        <Box className={'product_item'}>
-          <Box>Stage</Box>
-          <StyledBadge content={loanStage} status={loanStage} />
-        </Box>
-        {(userType === UserType.BROKER ||
-          userType === UserType.LOAN_OFFICER ||
-          userType === UserType.LENDER) && (
-          <>
-            <Box className={'product_item'}>
-              <Box>Origination fee</Box>
-              <Typography variant={'subtitle1'}>
-                {`${POSFormatDollar(
-                  brokerOriginationFee ||
-                    officerOriginationFee ||
-                    lenderOriginationFee,
-                )}(${POSFormatPercent(
-                  (brokerPoints && brokerPoints / 100) ||
-                    (officerPoints && officerPoints / 100) ||
-                    (lenderPoints && lenderPoints / 100) ||
-                    undefined,
-                )})`}
-              </Typography>
-            </Box>
-            <Box className={'product_item'}>
-              <Box>Processing fee</Box>
-              <Typography variant={'subtitle1'}>
-                {POSFormatDollar(
-                  brokerProcessingFee ||
-                    officerProcessingFee ||
-                    lenderProcessingFee,
-                )}
-              </Typography>
-            </Box>
-          </>
-        )}
 
-        {userType === UserType.REAL_ESTATE_AGENT && (
+        {userType !== UserType.CUSTOMER && (
           <Box className={'product_item'}>
-            <Box>Referral fee</Box>
+            <Box>Compensation</Box>
             <Typography variant={'subtitle1'}>
-              {POSFormatDollar(agentFee)}
+              {`${
+                originationPoints !== null
+                  ? `${POSFormatPercent(
+                      originationPoints,
+                      POSGetDecimalPlaces(originationPoints),
+                    )} + `
+                  : ''
+              }${POSFormatDollar(processingFee)}`}
             </Typography>
           </Box>
         )}
+
+        <Box className={'product_item'}>
+          <Box>Stage</Box>
+          <StyledBadge
+            content={POSFindLabel(OPTIONS_LOAN_STAGE, loanStage)}
+            status={loanStage}
+          />
+        </Box>
       </Box>
     </Box>
   );

@@ -24,18 +24,18 @@ export const POSFormatPercent = (
   radix = 3,
 ): string => {
   if (!percentageValue) {
-    if (radix === 0) {
+    if (radix <= 0) {
       return '0%';
     }
-    return '0.000%';
+    return '0%';
   }
   let target = percentageValue;
   if (POSTypeOf(target) === 'String') {
     target = parseFloat(target as string);
   }
   return (
-    ((Math.floor((target as number) * 1000000) / 1000000) * 100).toFixed(
-      radix,
+    ((Math.floor((target as number) * 10000000) / 10000000) * 100).toFixed(
+      radix >= 3 ? 3 : radix,
     ) + '%'
   );
 };
@@ -45,11 +45,11 @@ export const POSFormatLocalPercent = (
   radix = 3,
 ): string => {
   if (!percentageValue) {
-    return '0.000%';
+    return '0%';
   }
   return percentageValue.toLocaleString('en-US', {
     style: 'percent',
-    minimumFractionDigits: radix,
+    minimumFractionDigits: Number.isInteger(percentageValue) ? radix : 3,
   });
 };
 
@@ -93,4 +93,27 @@ export const POSFormatUrl = (url: string): string => {
     return 'https://' + url.substring(5);
   }
   return 'https://' + url;
+};
+
+export const POSGetDecimalPlaces = (
+  value: number | undefined | null,
+): number => {
+  if (!value) {
+    return 0;
+  }
+  const target = value + '';
+  if (target.endsWith('.')) {
+    return 0;
+  }
+  const decimalIndex = target.indexOf('.');
+
+  if (decimalIndex === -1) {
+    return 0;
+  }
+
+  return target.substring(target.indexOf('.') + 1).length >= 5
+    ? 3
+    : target.substring(target.indexOf('.') + 1).length - 2 <= 0
+      ? 0
+      : target.substring(target.indexOf('.') + 1).length - 2;
 };

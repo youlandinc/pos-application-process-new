@@ -19,33 +19,35 @@ export const StyledFormItem: FC<StyledFormItemProps> = ({
   return (
     <Stack
       alignItems={'center'}
-      maxWidth={800}
+      maxWidth={900}
       sx={{ ...sx }}
       width={'100%'}
       {...rest}
     >
-      <Stack maxWidth={800} width={'100%'}>
-        <Typography
-          component={'div'}
-          mb={tip ? 1 : 3}
-          sx={labelSx}
-          textAlign={'center'}
-          variant={
-            ['xs', 'sm', 'md'].includes(breakpoints)
-              ? sub
-                ? 'h5'
-                : 'h4'
-              : sub
-                ? 'h5'
-                : 'h4'
-          }
-        >
-          {label}
-        </Typography>
+      <Typography
+        component={'div'}
+        pb={{ xs: 1.5, lg: 3 }}
+        sx={labelSx}
+        textAlign={'left'}
+        variant={
+          sub
+            ? ['xs', 'sm', 'md'].includes(breakpoints)
+              ? 'subtitle1'
+              : 'h6'
+            : ['xs', 'sm', 'md'].includes(breakpoints)
+              ? 'h6'
+              : 'h5'
+        }
+        width={'100%'}
+      >
+        {label}
         {tip && (
           <Typography
             component={'div'}
-            mb={3}
+            fontSize={{
+              xs: 12,
+              lg: 16,
+            }}
             sx={{ color: 'info.main', ...tipSx }}
             textAlign={'center'}
             variant={'body1'}
@@ -53,8 +55,11 @@ export const StyledFormItem: FC<StyledFormItemProps> = ({
             {tip}
           </Typography>
         )}
+      </Typography>
+
+      <Stack gap={rest?.gap} mt={rest?.gap ? -rest?.gap : 0} width={'100%'}>
+        {children}
       </Stack>
-      {children}
     </Stack>
   );
 };

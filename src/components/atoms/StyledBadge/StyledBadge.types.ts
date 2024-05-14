@@ -1,6 +1,6 @@
-import { LoanStage } from '@/types';
+import { PipelineLoanStageEnum } from '@/types';
 
 export interface StyledBadgeProps {
   content: string;
-  status: LoanStage;
+  status: PipelineLoanStageEnum;
 }

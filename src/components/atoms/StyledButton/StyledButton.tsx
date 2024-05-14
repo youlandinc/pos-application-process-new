@@ -3,6 +3,7 @@ import { forwardRef } from 'react';
 import { Button, IconButton } from '@mui/material';
 
 import { StyledButtonProps, StyledButtonStyles } from './index';
+import { useBreakpoints } from '@/hooks';
 
 export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
   (
@@ -18,6 +19,8 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
     },
     ref,
   ) => {
+    const breakpoints = useBreakpoints();
+
     const handledSx = () => {
       switch (variant) {
         case 'text':
@@ -78,6 +81,13 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
               }
             }}
             ref={ref}
+            size={
+              rest.size
+                ? rest.size
+                : ['xs', 'sm', 'md'].includes(breakpoints)
+                  ? 'small'
+                  : 'medium'
+            }
             sx={{
               '&:hover': {
                 bgcolor: handledSx(),

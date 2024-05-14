@@ -3,7 +3,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import { Close, FilterAltOutlined, SearchOutlined } from '@mui/icons-material';
 
 import {
-  OPTIONS_LOAN_PURPOSE,
+  APPLICATION_LOAN_PURPOSE,
   OPTIONS_LOAN_SPECIES,
   OPTIONS_LOAN_STAGE,
 } from '@/constants';
@@ -48,12 +48,13 @@ export const SearchBar: FC<SearchBarProps> = ({
     switch (userType) {
       case UserType.BROKER:
         return (
-          <Typography variant={'h4'}>
+          <Typography fontSize={{ xs: 20, lg: 24 }} variant={'h5'}>
             Pipeline{' '}
             <Typography
               color={'primary.main'}
               component={'span'}
-              variant={'inherit'}
+              fontSize={{ xs: 16, lg: 20 }}
+              variant={'h6'}
             >
               for brokers
             </Typography>
@@ -61,45 +62,38 @@ export const SearchBar: FC<SearchBarProps> = ({
         );
       case UserType.LENDER:
         return (
-          <Typography variant={'h4'}>
+          <Typography fontSize={{ xs: 20, lg: 24 }} variant={'h5'}>
             Pipeline{' '}
             <Typography
               color={'primary.main'}
               component={'span'}
-              variant={'inherit'}
+              fontSize={{ xs: 16, lg: 20 }}
+              variant={'h5'}
             >
               for lenders
             </Typography>
           </Typography>
         );
-      case UserType.LOAN_OFFICER:
-        return (
-          <Typography variant={'h4'}>
-            Pipeline{' '}
-            <Typography
-              color={'primary.main'}
-              component={'span'}
-              variant={'inherit'}
-            >
-              for loan officers
-            </Typography>
-          </Typography>
-        );
       case UserType.REAL_ESTATE_AGENT:
         return (
-          <Typography variant={'h4'}>
+          <Typography fontSize={{ xs: 20, lg: 24 }} variant={'h5'}>
             Pipeline{' '}
             <Typography
               color={'primary.main'}
               component={'span'}
-              variant={'inherit'}
+              fontSize={{ xs: 16, lg: 20 }}
+              variant={'h5'}
             >
               for real estate agents
             </Typography>
           </Typography>
         );
       default:
-        return <Typography variant={'h4'}>My loans</Typography>;
+        return (
+          <Typography fontSize={{ xs: 20, lg: 24 }} variant={'h5'}>
+            My loans
+          </Typography>
+        );
     }
   }, [userType]);
 
@@ -171,7 +165,7 @@ export const SearchBar: FC<SearchBarProps> = ({
                       onParamsChange('loanPurpose', e);
                       onValueChange(true);
                     }}
-                    options={OPTIONS_LOAN_PURPOSE}
+                    options={APPLICATION_LOAN_PURPOSE}
                     value={searchForm.loanPurpose}
                   />
                 </Box>
@@ -284,7 +278,7 @@ export const SearchBar: FC<SearchBarProps> = ({
                 onParamsChange('loanPurpose', e);
                 onValueChange(true);
               }}
-              options={OPTIONS_LOAN_PURPOSE}
+              options={APPLICATION_LOAN_PURPOSE}
               value={searchForm.loanPurpose}
             />
           </Box>

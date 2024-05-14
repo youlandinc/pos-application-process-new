@@ -52,6 +52,8 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
           }
         }
       });
+      address.changeFieldValue('lat', place.geometry.location.lat());
+      address.changeFieldValue('lng', place.geometry.location.lng());
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

@@ -38,6 +38,7 @@ export * from './StyledCheckbox';
 export * from './StyledSelect';
 export * from './StyledSelectMultiple';
 export * from './StyledSelectOption';
+export * from './StyledSelectTextField';
 
 export * from './StyledGoogleAutoComplete';
 

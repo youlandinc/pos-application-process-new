@@ -29,12 +29,11 @@ import {
 import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { SUploadData } from '@/models/common/UploadFile';
+import { _deleteFile, _uploadFile } from '@/requests/base';
 import { HttpError } from '@/types';
-import { _deleteTaskFile, _uploadTaskFile } from '@/requests/dashboard';
 import {
   getFilesWebkitDataTransferItems,
   POSFormatDate,
-  POSGetParamsFromUrl,
   renameFile,
 } from '@/utils';
 
@@ -111,8 +110,6 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
 
   const [isDragging, setIsDragging] = useState(false);
 
-  const { processId } = POSGetParamsFromUrl(location.href);
-
   const handleUpload = useCallback(
     async (files: FileList | any[]) => {
       setIsDragging(false);
@@ -124,13 +121,13 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
           return;
         }
         const formData = new FormData();
-        formData.append('fieldName', fileKey);
+        formData.append('fileKey', fileKey);
         Array.from(files, (item) => {
           formData.append('files', item);
         });
-        const { data } = await _uploadTaskFile(
+        const { data } = await _uploadFile(
           formData,
-          router.query.taskId as string,
+          router.query.loanId as string,
         );
         setFileList([...fileList, ...data]);
         await refresh?.();
@@ -152,7 +149,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
       fileList,
       onUpload,
       refresh,
-      router.query.taskId,
+      router.query.loanId,
     ],
   );
 
@@ -225,9 +222,10 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         close();
         return;
       }
-      await _deleteTaskFile(router.query.taskId as string, {
-        fieldName: fileKey,
+      await _deleteFile({
+        fileKey: fileKey,
         fileUrl: fileList[deleteIndex].url,
+        loanId: router.query.loanId as string,
       });
       await refresh?.();
       close();
@@ -257,7 +255,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     fileList,
     onDelete,
     refresh,
-    router.query.taskId,
+    router.query.loanId,
   ]);
 
   useEffect(() => {
@@ -731,12 +729,14 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
               <Typography variant={'subtitle2'}>Loan number</Typography>
               <Stack flexDirection={'row'} gap={1}>
                 <Typography variant={'body3'}>
-                  {isFromLOS ? loanId : processId}
+                  {isFromLOS ? loanId : router.query.loanId}
                 </Typography>
                 <ContentCopy
                   onClick={async () => {
                     await navigator.clipboard.writeText(
-                      isFromLOS ? (loanId as string) : (processId as string),
+                      isFromLOS
+                        ? (loanId as string)
+                        : (router.query.loanId as string),
                     );
                     enqueueSnackbar('Copied data to clipboard', {
                       variant: 'success',

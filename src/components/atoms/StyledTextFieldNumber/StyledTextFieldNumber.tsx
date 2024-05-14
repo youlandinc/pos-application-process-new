@@ -55,6 +55,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
         {...rest}
         id="formatted-numberformat-input"
         InputProps={{
+          ...rest.InputProps,
           inputComponent: NumericFormatCustom as any,
           inputProps: {
             allowNegative,

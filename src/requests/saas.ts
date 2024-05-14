@@ -2,9 +2,6 @@ import { del, get, post, put } from './axios';
 import { User } from '@/types/user';
 
 // common
-export const _fetchMyTeamData = () => {
-  return get('/usercenter/api/tenant/query/fulfillConfig');
-};
 
 export const _fetchSaasConfig = () => {
   return get<User.TenantConfigRequest>(

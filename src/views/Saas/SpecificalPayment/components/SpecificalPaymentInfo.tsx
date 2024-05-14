@@ -2,10 +2,10 @@ import { FC, ReactNode } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { POSFormatDollar } from '@/utils';
-import { SPaymentDetails } from '@/requests/dashboard';
+import { DashboardPaymentDetailsResponse } from '@/types';
 
 export const SpecificalPaymentInfo: FC<
-  Partial<SPaymentDetails> & {
+  Partial<DashboardPaymentDetailsResponse> & {
     additional?: ReactNode;
   }
 > = ({
