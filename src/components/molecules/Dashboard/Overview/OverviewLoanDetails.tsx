@@ -137,12 +137,8 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
               title={'Payoff amount'}
             />
             <LoanDetailsCardRow
-              content={POSFormatPercent(ltc, POSGetDecimalPlaces(ltc))}
+              content={POSFormatPercent(ltv, POSGetDecimalPlaces(ltv))}
               title={'Loan to value'}
-            />
-            <LoanDetailsCardRow
-              content={POSFormatPercent(arltv, POSGetDecimalPlaces(arltv))}
-              title={'After-repair loan to value'}
             />
           </>
         );
@@ -162,8 +158,12 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
               title={'Est. cost of rehab'}
             />
             <LoanDetailsCardRow
-              content={POSFormatPercent(ltv, POSGetDecimalPlaces(ltv))}
-              title={'Loan to value'}
+              content={POSFormatPercent(ltc, POSGetDecimalPlaces(ltc))}
+              title={'Loan to cost'}
+            />
+            <LoanDetailsCardRow
+              content={POSFormatPercent(arltv, POSGetDecimalPlaces(arltv))}
+              title={'After-repair loan to value'}
             />
           </>
         ) : (
@@ -186,7 +186,7 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
             />
             <LoanDetailsCardRow
               content={POSFormatPercent(ltc, POSGetDecimalPlaces(ltc))}
-              title={'Loan to value'}
+              title={'Loan to cost'}
             />
             <LoanDetailsCardRow
               content={POSFormatPercent(arltv, POSGetDecimalPlaces(arltv))}

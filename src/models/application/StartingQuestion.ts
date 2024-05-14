@@ -80,11 +80,12 @@ export const ApplicationStartingQuestion = types
         isOccupyProperty,
       } = data;
 
-      self.loanType = loanType;
-      self.productCategory = productCategory;
-      self.loanPurpose = loanPurpose;
-      self.propertyType = propertyType;
-      self.propertyUnit = propertyUnit;
+      self.loanType = loanType ?? LoanTypeEnum.bridge;
+      self.productCategory =
+        productCategory ?? LoanProductCategoryEnum.stabilized_bridge;
+      self.loanPurpose = loanPurpose ?? LoanPurposeEnum.purchase;
+      self.propertyType = propertyType ?? LoanPropertyTypeEnum.single_family;
+      self.propertyUnit = propertyUnit ?? LoanPropertyUnitEnum.two_units;
       self.isOccupyProperty = isOccupyProperty;
     },
   }));

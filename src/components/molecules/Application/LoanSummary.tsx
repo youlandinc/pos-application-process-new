@@ -156,13 +156,6 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 )}
                 title={'Loan to value'}
               />
-              <LoanSummaryCardRow
-                content={POSFormatPercent(
-                  data?.arltv,
-                  POSGetDecimalPlaces(data?.arltv),
-                )}
-                title={'After-repair loan to value'}
-              />
             </>
           );
         case LoanProductCategoryEnum.fix_and_flip:
@@ -182,10 +175,17 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               />
               <LoanSummaryCardRow
                 content={POSFormatPercent(
-                  data?.ltv,
-                  POSGetDecimalPlaces(data?.ltv),
+                  data?.ltc,
+                  POSGetDecimalPlaces(data?.ltc),
                 )}
-                title={'Loan to value'}
+                title={'Loan to cost'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatPercent(
+                  data?.arltv,
+                  POSGetDecimalPlaces(data?.arltv),
+                )}
+                title={'After-repair loan to value'}
               />
             </>
           ) : (
@@ -211,7 +211,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                   data?.ltc,
                   POSGetDecimalPlaces(data?.ltc),
                 )}
-                title={'Loan to value'}
+                title={'Loan to cost'}
               />
               <LoanSummaryCardRow
                 content={POSFormatPercent(

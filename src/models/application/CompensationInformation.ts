@@ -25,11 +25,11 @@ export const CompensationInformation = types
         } = data;
 
         self.originationPoints = originationPoints
-          ? originationPoints * 100
-          : void 0;
-        self.processingFee = processingFee ?? void 0;
+          ? (originationPoints * 1000000) / 10000
+          : 1.5;
+        self.processingFee = processingFee ?? 200;
         self.isAdditional = isAdditional ?? false;
-        self.additionalInfo = additionalInfo ?? void 0;
+        self.additionalInfo = additionalInfo ?? '';
       },
       getPostData() {
         return {
