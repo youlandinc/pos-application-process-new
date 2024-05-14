@@ -145,10 +145,12 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
 
     const LTV = useMemo(() => {
       return estimateRate.loanPurpose === LoanPurposeEnum.purchase
-        ? (estimateRate.purchaseLoanAmount ?? 0) /
-            (estimateRate.purchasePrice ?? 0)
-        : (estimateRate.refinanceLoanAmount ?? 0) /
-            (estimateRate.propertyValue ?? 0);
+        ? estimateRate.purchasePrice
+          ? (estimateRate.purchaseLoanAmount ?? 0) / estimateRate.purchasePrice
+          : 0
+        : estimateRate.propertyValue
+          ? (estimateRate.refinanceLoanAmount ?? 0) / estimateRate.propertyValue
+          : 0;
     }, [
       estimateRate?.loanPurpose,
       estimateRate?.propertyValue,

@@ -10,7 +10,7 @@ interface TeamMemberCardItemProps {
 }
 
 export const TeamMemberCardItem: FC<TeamMemberCardItemProps> = ({
-  data: { name, avatar, email, phone, title, position },
+  data: { name, avatar, email, phone, role, position },
 }) => {
   return (
     <Stack
@@ -59,7 +59,7 @@ export const TeamMemberCardItem: FC<TeamMemberCardItemProps> = ({
           variant={'h6'}
           width={'100%'}
         >
-          {title}
+          {role}
         </Typography>
         <Typography
           color={'text.secondary'}
