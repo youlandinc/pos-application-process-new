@@ -42,7 +42,7 @@ export const LoanAddress: FC<FormNodeBaseProps> = observer(
           </StyledButton>
           <StyledButton
             color={'primary'}
-            disabled={nextState}
+            disabled={nextState || loanAddress.isValid}
             loading={nextState}
             onClick={nextStep}
             sx={{ width: 'calc(50% - 12px)' }}

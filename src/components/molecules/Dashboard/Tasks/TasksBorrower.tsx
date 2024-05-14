@@ -223,8 +223,8 @@ export const TasksBorrower: FC = () => {
       loanId: POSGetParamsFromUrl(location.href).loanId,
       taskKey: DashboardTaskKey.borrower,
       data: {
-        borrowerType,
-        citizenship,
+        borrowerType: borrowerType || undefined,
+        citizenship: citizenship || undefined,
         firstName,
         lastName,
         birthDate:
@@ -240,7 +240,7 @@ export const TasksBorrower: FC = () => {
         trustName,
 
         entityName,
-        entityType: entityType ? entityType : null,
+        entityType: entityType || undefined,
         entityId,
         entityState,
       },

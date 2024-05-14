@@ -145,10 +145,12 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
 
     const LTV = useMemo(() => {
       return estimateRate.loanPurpose === LoanPurposeEnum.purchase
-        ? (estimateRate.purchaseLoanAmount ?? 0) /
-            (estimateRate.purchasePrice ?? 0)
-        : (estimateRate.refinanceLoanAmount ?? 0) /
-            (estimateRate.propertyValue ?? 0);
+        ? estimateRate.purchasePrice
+          ? (estimateRate.purchaseLoanAmount ?? 0) / estimateRate.purchasePrice
+          : 0
+        : estimateRate.propertyValue
+          ? (estimateRate.refinanceLoanAmount ?? 0) / estimateRate.propertyValue
+          : 0;
     }, [
       estimateRate?.loanPurpose,
       estimateRate?.propertyValue,
@@ -162,15 +164,20 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         estimateRate.productCategory !==
         LoanProductCategoryEnum.stabilized_bridge
       ) {
-        return estimateRate.loanPurpose === LoanPurposeEnum.purchase
-          ? ((estimateRate?.purchaseLoanAmount ?? 0) +
-              (estimateRate?.rehabCost ?? 0)) /
-              ((estimateRate?.purchasePrice ?? 0) +
-                (estimateRate?.rehabCost ?? 0))
-          : ((estimateRate.refinanceLoanAmount ?? 0) +
-              (estimateRate?.rehabCost ?? 0)) /
-              ((estimateRate.propertyValue ?? 0) +
-                (estimateRate?.rehabCost ?? 0));
+        switch (estimateRate.loanPurpose) {
+          case LoanPurposeEnum.purchase:
+            return estimateRate?.purchasePrice
+              ? ((estimateRate?.purchaseLoanAmount ?? 0) +
+                  (estimateRate?.rehabCost ?? 0)) /
+                  (estimateRate?.purchasePrice + (estimateRate?.rehabCost ?? 0))
+              : 0;
+          case LoanPurposeEnum.refinance:
+            return estimateRate?.propertyValue
+              ? ((estimateRate.refinanceLoanAmount ?? 0) +
+                  (estimateRate?.rehabCost ?? 0)) /
+                  (estimateRate.propertyValue + (estimateRate?.rehabCost ?? 0))
+              : 0;
+        }
       }
       return 0;
     }, [
