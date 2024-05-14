@@ -142,7 +142,7 @@ export const StyledAvatarUpload = forwardRef<
       <picture className={imageStyle.outer} onClick={open}>
         <img
           alt={'avatar'}
-          src={avatarUrl || '/images/placeholder_avatar.png'}
+          src={avatarUrl ?? '/images/placeholder_avatar.png'}
           style={{
             width: '100%',
             height: '100%',
