@@ -3,8 +3,11 @@ import { Fade, Icon, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
 
-import { POSGetParamsFromUrl } from '@/utils';
 import { useBreakpoints } from '@/hooks';
+
+import { POSGetParamsFromUrl } from '@/utils';
+
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 import {
   StyledLoading,
@@ -12,9 +15,8 @@ import {
   StyledUploadButtonBox,
 } from '@/components/atoms';
 
-import { _fetchLoanDocumentData } from '@/requests/dashboard';
 import { HttpError } from '@/types';
-import { AUTO_HIDE_DURATION } from '@/constants';
+import { _fetchLoanDocumentData } from '@/requests/dashboard';
 
 import NOTIFICATION_WARNING from '@/components/atoms/StyledNotification/notification_warning.svg';
 

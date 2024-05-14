@@ -6,6 +6,8 @@ import { enqueueSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { useBreakpoints, useDebounceFn, useSessionStorageState } from '@/hooks';
+
 import {
   POSFindLabel,
   POSFormatDollar,
@@ -13,19 +15,6 @@ import {
   POSGetDecimalPlaces,
   POSNotUndefined,
 } from '@/utils';
-
-import {
-  HttpError,
-  LoanAnswerEnum,
-  LoanFicoScoreEnum,
-  LoanProductCategoryEnum,
-  LoanPropertyTypeEnum,
-  LoanPurposeEnum,
-  ProductItemProps,
-} from '@/types';
-
-import { useBreakpoints, useDebounceFn, useSessionStorageState } from '@/hooks';
-
 import {
   APPLICATION_FICO_SCORE,
   APPLICATION_LIQUIDITY,
@@ -46,6 +35,15 @@ import {
 } from '@/components/atoms';
 import { ProductList } from '@/components/molecules/Common';
 
+import {
+  HttpError,
+  LoanAnswerEnum,
+  LoanFicoScoreEnum,
+  LoanProductCategoryEnum,
+  LoanPropertyTypeEnum,
+  LoanPurposeEnum,
+  ProductItemProps,
+} from '@/types';
 import { _fetchProductList } from '@/requests/application';
 
 export const EstimateRate: FC<FormNodeBaseProps> = observer(
@@ -160,11 +158,6 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
     ]);
 
     const LTC = useMemo(() => {
-      console.log(
-        ((estimateRate.refinanceLoanAmount ?? 0) +
-          (estimateRate?.rehabCost ?? 0)) /
-          ((estimateRate.propertyValue ?? 0) + (estimateRate?.rehabCost ?? 0)),
-      );
       if (
         estimateRate.productCategory !==
         LoanProductCategoryEnum.stabilized_bridge

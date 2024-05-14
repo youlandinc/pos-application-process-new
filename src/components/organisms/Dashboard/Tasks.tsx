@@ -5,8 +5,9 @@ import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
-import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
 import { useBreakpoints } from '@/hooks';
+
+import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { StyledLoading } from '@/components/atoms';

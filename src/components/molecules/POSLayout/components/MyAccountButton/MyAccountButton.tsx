@@ -1,18 +1,4 @@
-import { userpool } from '@/constants';
-
-import { useBreakpoints } from '@/hooks';
-import { LayoutSceneTypeEnum, UserType } from '@/types';
-import { ExpandMoreOutlined, PermIdentityOutlined } from '@mui/icons-material';
-import {
-  ClickAwayListener,
-  Grow,
-  MenuItem,
-  MenuList,
-  Paper,
-  Popper,
-} from '@mui/material';
-import { useRouter } from 'next/router';
-import {
+import React, {
   FC,
   MouseEvent,
   SyntheticEvent,
@@ -21,7 +7,22 @@ import {
   useRef,
   useState,
 } from 'react';
+import {
+  ClickAwayListener,
+  Grow,
+  MenuItem,
+  MenuList,
+  Paper,
+  Popper,
+} from '@mui/material';
+import { ExpandMoreOutlined, PermIdentityOutlined } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 
+import { useBreakpoints } from '@/hooks';
+
+import { userpool } from '@/constants';
+
+import { LayoutSceneTypeEnum, UserType } from '@/types';
 import { MyAccountButtonProps, MyAccountStyles } from './index';
 
 import {

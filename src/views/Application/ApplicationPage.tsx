@@ -7,6 +7,7 @@ import { useMst } from '@/models/Root';
 import { useStoreData } from '@/hooks';
 
 import { POSLayout } from '@/components/molecules';
+
 import { LayoutSceneTypeEnum } from '@/types';
 
 export const ApplicationPage: FC<{ children?: ReactNode }> = observer(

@@ -5,11 +5,13 @@ import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { POSGetParamsFromUrl } from '@/utils';
 import { useStoreData } from '@/hooks';
-import { LoanSnapshotEnum } from '@/types';
+
+import { POSGetParamsFromUrl } from '@/utils';
 
 import { CompensationInformation } from '@/components/molecules/Application';
+
+import { LoanSnapshotEnum } from '@/types';
 
 export const CompensationInformationPage: FC = observer(() => {
   const router = useRouter();

@@ -10,10 +10,6 @@ import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
 
-import { POSHeaderProps, POSHeaderStyles } from './index';
-import { MyAccountButton } from '../MyAccountButton';
-import { DashboardSideDrawer } from '../DashboardSideDrawer';
-
 import {
   useBreakpoints,
   usePersistFn,
@@ -22,19 +18,24 @@ import {
   useSwitch,
 } from '@/hooks';
 
+import { POSFormatUrl } from '@/utils';
+
+import { POSHeaderProps, POSHeaderStyles } from './index';
+import { MyAccountButton } from '../MyAccountButton';
+import { DashboardSideDrawer } from '../DashboardSideDrawer';
+
 import {
   StyledButton,
   StyledDialog,
   StyledHeaderLogo,
 } from '@/components/atoms';
 import { ForgotPassword, Login, SignUp } from '@/components/molecules';
-import { POSFormatUrl } from '@/utils';
+
 import { LayoutSceneTypeEnum, LoanSnapshotEnum } from '@/types';
 
 export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const router = useRouter();
 
-  const { bindLoan } = useStoreData();
   const { visible, open, close } = useSwitch(false);
   const {
     visible: closeVisible,
@@ -436,7 +437,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   }, [
     authType,
     close,
-    //handledLoginSuccess,
+    handledLoginSuccess,
     handledSignUpAndResetSuccess,
     saasState?.legalAgreements?.privacyPolicyUrl,
     saasState?.legalAgreements?.termsUrl,

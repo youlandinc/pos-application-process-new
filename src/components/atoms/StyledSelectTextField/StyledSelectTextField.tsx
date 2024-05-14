@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { Menu, MenuItem, Stack, SxProps } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 

@@ -4,14 +4,17 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
+import { useSessionStorageState, useStoreData } from '@/hooks';
+
+import { POSGetParamsFromUrl } from '@/utils';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { StartingQuestion } from '@/components/molecules/Application';
+
 import { HttpError, LoanSnapshotEnum } from '@/types';
 import { _startNewLoan } from '@/requests/application';
-import { useMst } from '@/models/Root';
-import { POSGetParamsFromUrl } from '@/utils';
-import { useSessionStorageState, useStoreData } from '@/hooks';
-import { AUTO_HIDE_DURATION } from '@/constants';
 
 export const StartingQuestionPage: FC = observer(() => {
   const router = useRouter();

@@ -1,10 +1,17 @@
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Collapse, Stack, Typography } from '@mui/material';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { CloseOutlined, KeyboardArrowUp } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
+
+import {
+  useBreakpoints,
+  useGoogleStreetViewAndMap,
+  useRenderPdf,
+  useSwitch,
+} from '@/hooks';
 
 import {
   POSFindLabel,
@@ -13,29 +20,22 @@ import {
   POSGetDecimalPlaces,
 } from '@/utils';
 import {
-  useBreakpoints,
-  useGoogleStreetViewAndMap,
-  useRenderPdf,
-  useSwitch,
-} from '@/hooks';
-
-import { StyledButton, StyledDialog, StyledFormItem } from '@/components/atoms';
-import {
   APPLICATION_LOAN_CATEGORY,
   APPLICATION_LOAN_PURPOSE,
   APPLICATION_PROPERTY_TYPE,
   APPLICATION_PROPERTY_UNIT,
   AUTO_HIDE_DURATION,
 } from '@/constants';
+
+import { StyledButton, StyledDialog, StyledFormItem } from '@/components/atoms';
+
 import {
   HttpError,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPurposeEnum,
 } from '@/types';
-
 import { _fetchFile } from '@/requests/application';
-import { CloseOutlined } from '@mui/icons-material';
 
 export const LoanSummary: FC<FormNodeBaseProps> = observer(
   ({ nextStep, nextState, backState, backStep, data }) => {
@@ -182,8 +182,8 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               />
               <LoanSummaryCardRow
                 content={POSFormatPercent(
-                  data?.arltv,
-                  POSGetDecimalPlaces(data?.arltv),
+                  data?.arLtv,
+                  POSGetDecimalPlaces(data?.arLtv),
                 )}
                 title={'After-repair loan to value'}
               />
@@ -215,8 +215,8 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               />
               <LoanSummaryCardRow
                 content={POSFormatPercent(
-                  data?.arltv,
-                  POSGetDecimalPlaces(data?.arltv),
+                  data?.arLtv,
+                  POSGetDecimalPlaces(data?.arLtv),
                 )}
                 title={'After-repair loan to value'}
               />
@@ -226,7 +226,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
           return null;
       }
     }, [
-      data?.arltv,
+      data?.arLtv,
       data?.loanPurpose,
       data?.ltc,
       data?.ltv,
@@ -382,7 +382,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 >
                   Additional details
                 </Typography>
-                <KeyboardArrowUpIcon
+                <KeyboardArrowUp
                   color={'primary'}
                   sx={{
                     transform: collapsed ? 'rotate(0deg)' : 'rotate(180deg)',

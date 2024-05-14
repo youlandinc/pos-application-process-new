@@ -9,9 +9,10 @@ import {
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
+
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFormatUSPhoneToText, POSGetParamsFromUrl } from '@/utils';
-import { useBreakpoints, useSessionStorageState } from '@/hooks';
 
 import { StyledLoading } from '@/components/atoms';
 import { TeamMemberCardItem } from '@/components/molecules';

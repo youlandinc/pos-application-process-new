@@ -1,19 +1,23 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
-import { StyledButton, StyledDialog } from '@/components/atoms';
-import { AddressData, HttpError } from '@/types';
+import { CloseOutlined } from '@mui/icons-material';
+// import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+
 import {
   useBreakpoints,
   useGoogleStreetViewAndMap,
   useRenderPdf,
   useSwitch,
 } from '@/hooks';
-import { _fetchFile } from '@/requests/application';
+
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
-import { CloseOutlined } from '@mui/icons-material';
 import { POSGetParamsFromUrl } from '@/utils';
+
+import { StyledButton, StyledDialog } from '@/components/atoms';
+
+import { AddressData, HttpError } from '@/types';
+import { _fetchFile } from '@/requests/application';
 
 interface OverviewLoanAddressProps {
   propertyAddress?: AddressData;
@@ -25,7 +29,7 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
   isCustom,
 }) => {
   const breakpoints = useBreakpoints();
-  const router = useRouter();
+  // const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const pdfFile = useRef(null);
@@ -67,7 +71,7 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
         setViewLoading(false);
       }
     },
-    [router.query.loanId, enqueueSnackbar, previewOpen, renderFile],
+    [enqueueSnackbar, previewOpen, renderFile],
   );
 
   const { relocate, reset: resetMap } = useGoogleStreetViewAndMap(

@@ -6,17 +6,17 @@ import { AppraisalTaskPaymentStatus } from '@/types';
 import { useSessionStorageState } from '@/hooks';
 import { POSFormatUSPhoneToText } from '@/utils';
 
-import { _restartAppraisalPaymentProcess } from '@/requests/dashboard';
-
 import { StyledButton } from '@/components/atoms';
 
-interface PaymentStatusProps {
-  paymentStatus: AppraisalTaskPaymentStatus;
-}
+import { _restartAppraisalPaymentProcess } from '@/requests/dashboard';
 
 import PAYMENT_SUCCESS from '@/views/Saas/SpecificalPayment/components/payment_success.svg';
 import PAYMENT_PENDING from '@/views/Saas/SpecificalPayment/components/payment_pending.svg';
 import PAYMENT_FAIL from '@/views/Saas/SpecificalPayment/components/payment_failed.svg';
+
+interface PaymentStatusProps {
+  paymentStatus: AppraisalTaskPaymentStatus;
+}
 
 export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
   paymentStatus,

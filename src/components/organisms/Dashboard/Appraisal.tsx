@@ -1,10 +1,21 @@
 import { FC, useCallback, useMemo, useRef, useState } from 'react';
 import { Box, Fade, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSGetParamsFromUrl } from '@/utils';
+
+import { StyledLoading } from '@/components/atoms';
+import {
+  AppraisalPayment,
+  AppraisalPaymentStatus,
+  AppraisalProfile,
+  AppraisalProfileData,
+  AppraisalStatus,
+  AppraisalStatusProps,
+} from '@/components/molecules';
 
 import {
   AppraisalStatusEnum,
@@ -17,17 +28,6 @@ import {
   _fetchAppraisalPaymentData,
   _updateAppraisalData,
 } from '@/requests/dashboard';
-
-import { StyledLoading } from '@/components/atoms';
-import {
-  AppraisalPayment,
-  AppraisalPaymentStatus,
-  AppraisalProfile,
-  AppraisalProfileData,
-  AppraisalStatus,
-  AppraisalStatusProps,
-} from '@/components/molecules';
-import { useRouter } from 'next/router';
 
 export const Appraisal: FC = () => {
   const router = useRouter();

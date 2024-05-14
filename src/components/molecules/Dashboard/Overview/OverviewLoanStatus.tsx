@@ -7,10 +7,10 @@ import {
   Stepper,
   Typography,
 } from '@mui/material';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
+import { CancelRounded } from '@mui/icons-material';
 import { useRouter } from 'next/router';
-import { format, parseISO } from 'date-fns';
 import { useSnackbar } from 'notistack';
+import { format, parseISO } from 'date-fns';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { useBreakpoints } from '@/hooks';
@@ -63,158 +63,164 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
 
   const [resubmitLoading, setResubmitLoading] = useState(false);
 
-  const computedData = useMemo(() => {
-    switch (loanStatus) {
-      case PipelineLoanStageEnum.rejected:
-        return [
-          {
-            icon: <CancelRoundedIcon sx={{ color: 'error.main' }} />,
-            label: 'Loan rejected',
-            description: (
-              <Stack>
-                {loanStatusDetails?.[PipelineLoanStageEnum.rejected]
-                  ?.reason && (
+  const computedData = useMemo(
+    () => {
+      switch (loanStatus) {
+        case PipelineLoanStageEnum.rejected:
+          return [
+            {
+              icon: <CancelRounded sx={{ color: 'error.main' }} />,
+              label: 'Loan rejected',
+              description: (
+                <Stack>
+                  {loanStatusDetails?.[PipelineLoanStageEnum.rejected]
+                    ?.reason && (
+                    <Typography color={'inherit'} variant={'body3'}>
+                      <b style={{ fontWeight: 600 }}>Reason: </b>
+                      {loanStatusDetails?.[PipelineLoanStageEnum.rejected]
+                        ?.reason || '123'}
+                    </Typography>
+                  )}
                   <Typography color={'inherit'} variant={'body3'}>
-                    <b style={{ fontWeight: 600 }}>Reason: </b>
-                    {loanStatusDetails?.[PipelineLoanStageEnum.rejected]
-                      ?.reason || '123'}
+                    Please contact your loan officer for any questions you have.
                   </Typography>
-                )}
-                <Typography color={'inherit'} variant={'body3'}>
-                  Please contact your loan officer for any questions you have.
-                </Typography>
-              </Stack>
-            ),
-            date: loanStatusDetails?.[PipelineLoanStageEnum.rejected]
-              ?.completeDate
-              ? `Completed on ${format(
-                  parseISO(
-                    loanStatusDetails?.[PipelineLoanStageEnum.rejected]
-                      ?.completeDate,
-                  ),
-                  "MMMM dd, yyyy 'at' h:mm a",
-                )}.`
-              : '',
-          },
-        ];
-      case PipelineLoanStageEnum.inactive:
-        return [
-          {
-            icon: <CancelRoundedIcon sx={{ color: 'error.main' }} />,
-            label: 'Loan is now inactive',
-            description: 'Please click the button below to resubmit this loan.',
-            date: loanStatusDetails?.[PipelineLoanStageEnum.inactive]
-              ?.completeDate
-              ? `Completed on ${format(
-                  parseISO(
-                    loanStatusDetails?.[PipelineLoanStageEnum.inactive]
-                      ?.completeDate,
-                  ),
-                  "MMMM dd, yyyy 'at' h:mm a",
-                )}.`
-              : '',
-          },
-        ];
-      case PipelineLoanStageEnum.scenario:
-      case PipelineLoanStageEnum.initial_approval:
-      case PipelineLoanStageEnum.preparing_docs:
-      case PipelineLoanStageEnum.docs_out:
-      case PipelineLoanStageEnum.funded:
-        return [
-          {
-            icon: null,
-            label: 'Application submitted',
-            description:
-              "We're currently reviewing your file to check for eligibility. You'll hear from us soon!",
-            date: loanStatusDetails?.[PipelineLoanStageEnum.scenario]
-              ?.completeDate
-              ? `Completed on ${format(
-                  parseISO(
-                    loanStatusDetails?.[PipelineLoanStageEnum.scenario]
-                      ?.completeDate,
-                  ),
-                  "MMMM dd, yyyy 'at' h:mm a",
-                )}.`
-              : '',
-          },
-          {
-            icon: null,
-            label: 'Preliminary underwriting passed',
-            description:
-              'We have determined we can move forward with this loan. Please pay for the appraisal, upload documents and complete the necessary tasks.',
-            date: loanStatusDetails?.[PipelineLoanStageEnum.initial_approval]
-              ?.completeDate
-              ? `Completed on ${format(
-                  parseISO(
-                    loanStatusDetails?.[PipelineLoanStageEnum.initial_approval]
-                      ?.completeDate,
-                  ),
-                  "MMMM dd, yyyy 'at' h:mm a",
-                )}.`
-              : '',
-          },
-          {
-            icon: null,
-            label: 'Preparing loan documents',
-            description:
-              'We have completed the approval process for this loan and are now preparing the documents.These will be sent out as soon as possible.',
-            date: loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs]
-              ?.completeDate
-              ? `Completed on ${format(
-                  parseISO(
-                    loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs]
-                      ?.completeDate,
-                  ),
-                  "MMMM dd, yyyy 'at' h:mm a",
-                )}.`
-              : '',
-          },
-          {
-            icon: null,
-            label: 'Docs out',
-            description:
-              'The documents for this loan have been sent out to the settlement agent.',
-            date: loanStatusDetails?.[PipelineLoanStageEnum.docs_out]
-              ?.completeDate
-              ? `Completed on ${format(
-                  parseISO(
-                    loanStatusDetails?.[PipelineLoanStageEnum.docs_out]
-                      ?.completeDate,
-                  ),
-                  "MMMM dd, yyyy 'at' h:mm a",
-                )}.`
-              : '',
-          },
-          {
-            icon: null,
-            label: 'Loan funded',
-            description:
-              'Congratulations! This loan has been closed and funded.',
-            date: loanStatusDetails?.[PipelineLoanStageEnum.funded]
-              ?.completeDate
-              ? `Completed on ${format(
-                  parseISO(
-                    loanStatusDetails?.[PipelineLoanStageEnum.funded]
-                      ?.completeDate,
-                  ),
-                  "MMMM dd, yyyy 'at' h:mm a",
-                )}.`
-              : '',
-          },
-        ];
-      default:
-        return [];
-    }
-  }, [
-    loanStatus,
-    loanStatusDetails?.[PipelineLoanStageEnum.docs_out],
-    loanStatusDetails?.[PipelineLoanStageEnum.funded],
-    loanStatusDetails?.[PipelineLoanStageEnum.inactive],
-    loanStatusDetails?.[PipelineLoanStageEnum.initial_approval],
-    loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs],
-    loanStatusDetails?.[PipelineLoanStageEnum.rejected],
-    loanStatusDetails?.[PipelineLoanStageEnum.scenario],
-  ]);
+                </Stack>
+              ),
+              date: loanStatusDetails?.[PipelineLoanStageEnum.rejected]
+                ?.completeDate
+                ? `Completed on ${format(
+                    parseISO(
+                      loanStatusDetails?.[PipelineLoanStageEnum.rejected]
+                        ?.completeDate,
+                    ),
+                    "MMMM dd, yyyy 'at' h:mm a",
+                  )}.`
+                : '',
+            },
+          ];
+        case PipelineLoanStageEnum.inactive:
+          return [
+            {
+              icon: <CancelRounded sx={{ color: 'error.main' }} />,
+              label: 'Loan is now inactive',
+              description:
+                'Please click the button below to resubmit this loan.',
+              date: loanStatusDetails?.[PipelineLoanStageEnum.inactive]
+                ?.completeDate
+                ? `Completed on ${format(
+                    parseISO(
+                      loanStatusDetails?.[PipelineLoanStageEnum.inactive]
+                        ?.completeDate,
+                    ),
+                    "MMMM dd, yyyy 'at' h:mm a",
+                  )}.`
+                : '',
+            },
+          ];
+        case PipelineLoanStageEnum.scenario:
+        case PipelineLoanStageEnum.initial_approval:
+        case PipelineLoanStageEnum.preparing_docs:
+        case PipelineLoanStageEnum.docs_out:
+        case PipelineLoanStageEnum.funded:
+          return [
+            {
+              icon: null,
+              label: 'Application submitted',
+              description:
+                "We're currently reviewing your file to check for eligibility. You'll hear from us soon!",
+              date: loanStatusDetails?.[PipelineLoanStageEnum.scenario]
+                ?.completeDate
+                ? `Completed on ${format(
+                    parseISO(
+                      loanStatusDetails?.[PipelineLoanStageEnum.scenario]
+                        ?.completeDate,
+                    ),
+                    "MMMM dd, yyyy 'at' h:mm a",
+                  )}.`
+                : '',
+            },
+            {
+              icon: null,
+              label: 'Preliminary underwriting passed',
+              description:
+                'We have determined we can move forward with this loan. Please pay for the appraisal, upload documents and complete the necessary tasks.',
+              date: loanStatusDetails?.[PipelineLoanStageEnum.initial_approval]
+                ?.completeDate
+                ? `Completed on ${format(
+                    parseISO(
+                      loanStatusDetails?.[
+                        PipelineLoanStageEnum.initial_approval
+                      ]?.completeDate,
+                    ),
+                    "MMMM dd, yyyy 'at' h:mm a",
+                  )}.`
+                : '',
+            },
+            {
+              icon: null,
+              label: 'Preparing loan documents',
+              description:
+                'We have completed the approval process for this loan and are now preparing the documents.These will be sent out as soon as possible.',
+              date: loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs]
+                ?.completeDate
+                ? `Completed on ${format(
+                    parseISO(
+                      loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs]
+                        ?.completeDate,
+                    ),
+                    "MMMM dd, yyyy 'at' h:mm a",
+                  )}.`
+                : '',
+            },
+            {
+              icon: null,
+              label: 'Docs out',
+              description:
+                'The documents for this loan have been sent out to the settlement agent.',
+              date: loanStatusDetails?.[PipelineLoanStageEnum.docs_out]
+                ?.completeDate
+                ? `Completed on ${format(
+                    parseISO(
+                      loanStatusDetails?.[PipelineLoanStageEnum.docs_out]
+                        ?.completeDate,
+                    ),
+                    "MMMM dd, yyyy 'at' h:mm a",
+                  )}.`
+                : '',
+            },
+            {
+              icon: null,
+              label: 'Loan funded',
+              description:
+                'Congratulations! This loan has been closed and funded.',
+              date: loanStatusDetails?.[PipelineLoanStageEnum.funded]
+                ?.completeDate
+                ? `Completed on ${format(
+                    parseISO(
+                      loanStatusDetails?.[PipelineLoanStageEnum.funded]
+                        ?.completeDate,
+                    ),
+                    "MMMM dd, yyyy 'at' h:mm a",
+                  )}.`
+                : '',
+            },
+          ];
+        default:
+          return [];
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      loanStatus,
+      loanStatusDetails?.[PipelineLoanStageEnum.docs_out],
+      loanStatusDetails?.[PipelineLoanStageEnum.funded],
+      loanStatusDetails?.[PipelineLoanStageEnum.inactive],
+      loanStatusDetails?.[PipelineLoanStageEnum.initial_approval],
+      loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs],
+      loanStatusDetails?.[PipelineLoanStageEnum.rejected],
+      loanStatusDetails?.[PipelineLoanStageEnum.scenario],
+    ],
+  );
 
   return (
     <Stack

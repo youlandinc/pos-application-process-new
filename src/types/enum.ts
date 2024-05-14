@@ -1,24 +1,3 @@
-export enum LoanStage {
-  Application = 'Application',
-  PreApproved = 'Pre-approved',
-  RateLocking = 'Rate locking',
-  RateLocked = 'Rate locked',
-  Approved = 'Approved',
-  DocsOut = 'Docs out',
-  Funded = 'Funded',
-  FinalClosing = 'Final closing',
-  Refusal = 'Rejected',
-}
-
-export enum AppraisalStage {
-  NotStarted = 'NOT_STARTED',
-  PaidFor = 'PAID_FOR',
-  Ordered = 'ORDERED',
-  Scheduled = 'SCHEDULED',
-  Canceled = 'CANCELED',
-  Completed = 'COMPLETED',
-}
-
 export enum LoanSpecies {
   Mortgage = 'Mortgage',
   Bridge = 'Bridge',

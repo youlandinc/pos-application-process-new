@@ -6,8 +6,10 @@ import { useMst } from '@/models/Root';
 
 import { useSessionStorageState, useStoreData } from '@/hooks';
 
-import { Auth } from '@/components/molecules/Application';
 import { POSGetParamsFromUrl } from '@/utils';
+
+import { Auth } from '@/components/molecules/Application';
+
 import { LoanSnapshotEnum } from '@/types';
 
 export const AuthPage: FC = observer(() => {

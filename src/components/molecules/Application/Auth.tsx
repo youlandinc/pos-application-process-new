@@ -10,7 +10,7 @@ import { StyledButton, StyledFormItem, Transitions } from '@/components/atoms';
 import { ForgotPassword, Login, SignUp } from '@/components/molecules';
 
 export const Auth: FC<FormNodeBaseProps> = observer(
-  ({ backStep, backState, nextState, nextStep }) => {
+  ({ backStep, backState, nextStep }) => {
     const { saasState } = useSessionStorageState('tenantConfig');
 
     const [authType, setAuthType] = useState<

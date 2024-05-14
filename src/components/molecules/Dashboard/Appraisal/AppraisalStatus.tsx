@@ -8,11 +8,11 @@ import {
   Typography,
 } from '@mui/material';
 import { format, parseISO } from 'date-fns';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-
-import { AppraisalStatusEnum } from '@/types';
+import { CancelRounded } from '@mui/icons-material';
 
 import { StyledFormItem } from '@/components/atoms';
+
+import { AppraisalStatusEnum } from '@/types';
 
 interface baseData {
   completeDate?: string;
@@ -28,6 +28,13 @@ interface AppraisalDetailsData {
   [AppraisalStatusEnum.completed]: baseData | null;
 }
 
+type ReduceAppraisalStage = `${AppraisalStatusEnum}`;
+
+export interface AppraisalStatusProps {
+  appraisalStage: ReduceAppraisalStage;
+  appraisalDetail: AppraisalDetailsData;
+}
+
 const hash = {
   [AppraisalStatusEnum.paid_for]: 0,
   [AppraisalStatusEnum.ordered]: 1,
@@ -37,115 +44,115 @@ const hash = {
   [AppraisalStatusEnum.not_started]: 0,
 };
 
-type ReduceAppraisalStage = `${AppraisalStatusEnum}`;
-
-export interface AppraisalStatusProps {
-  appraisalStage: ReduceAppraisalStage;
-  appraisalDetail: AppraisalDetailsData;
-}
-
 export const AppraisalStatus: FC<AppraisalStatusProps> = ({
   appraisalStage = AppraisalStatusEnum.canceled,
   appraisalDetail,
 }) => {
-  const computedData = useMemo(() => {
-    if (
-      appraisalStage === AppraisalStatusEnum.canceled ||
-      appraisalDetail?.[AppraisalStatusEnum.canceled]
-    ) {
+  const computedData = useMemo(
+    () => {
+      if (
+        appraisalStage === AppraisalStatusEnum.canceled ||
+        appraisalDetail?.[AppraisalStatusEnum.canceled]
+      ) {
+        return [
+          {
+            icon: <CancelRounded sx={{ color: 'error.main' }} />,
+            label: 'Appraisal has been canceled',
+            description:
+              'Please email us at borrow@youland.com or call (833) 968-5263 for refunds and any questions you have.',
+            date: appraisalDetail?.[AppraisalStatusEnum.canceled]?.completeDate
+              ? `Canceled on ${format(
+                  parseISO(
+                    appraisalDetail?.[AppraisalStatusEnum.canceled]
+                      ?.completeDate,
+                  ),
+                  "MMMM dd, yyyy 'at' h:mm a",
+                )}.`
+              : '',
+          },
+        ];
+      }
       return [
         {
-          icon: <CancelRoundedIcon sx={{ color: 'error.main' }} />,
-          label: 'Appraisal has been canceled',
+          icon: null,
+          label: 'Appraisal payment completed',
           description:
-            'Please email us at borrow@youland.com or call (833) 968-5263 for refunds and any questions you have.',
-          date: appraisalDetail?.[AppraisalStatusEnum.canceled]?.completeDate
-            ? `Canceled on ${format(
+            'We have received your appraisal payment and are actively processing your request to ensure you receive an accurate and timely appraisal.',
+          date: appraisalDetail?.[AppraisalStatusEnum.paid_for]?.completeDate
+            ? `Completed on ${format(
                 parseISO(
-                  appraisalDetail?.[AppraisalStatusEnum.canceled]?.completeDate,
+                  appraisalDetail?.[AppraisalStatusEnum.paid_for]?.completeDate,
+                ),
+                "MMMM dd, yyyy 'at' h:mm a",
+              )}.`
+            : '',
+        },
+        {
+          icon: null,
+          label: 'Appraisal has been ordered',
+          description:
+            'We are reaching out the point of contact for the property and schedule the inspection as soon as possible. On average, the appraisal takes 3-5 business days to complete.',
+          date: appraisalDetail?.[AppraisalStatusEnum.ordered]?.completeDate
+            ? `Ordered on ${format(
+                parseISO(
+                  appraisalDetail?.[AppraisalStatusEnum.ordered]?.completeDate,
+                ),
+                "MMMM dd, yyyy 'at' h:mm a",
+              )}.`
+            : '',
+        },
+        {
+          icon: null,
+          label: 'Inspection has been scheduled',
+          description: `${
+            appraisalDetail?.[AppraisalStatusEnum.scheduled]?.scheduledDate
+              ? `The inspection has been scheduled for ${format(
+                  parseISO(
+                    appraisalDetail?.[AppraisalStatusEnum.scheduled]
+                      ?.scheduledDate,
+                  ),
+                  "MMMM dd, yyyy 'at' h:mm a",
+                )}. `
+              : ''
+          }Following the inspection, the appraiser will proceed with the necessary assessments to finalize the appraisal report. We will notify you once the appraisal is complete.`,
+          date: appraisalDetail?.[AppraisalStatusEnum.scheduled]?.completeDate
+            ? `Updated on ${format(
+                parseISO(
+                  appraisalDetail?.[AppraisalStatusEnum.scheduled]
+                    ?.completeDate,
+                ),
+                "MMMM dd, yyyy 'at' h:mm a",
+              )}.`
+            : '',
+        },
+        {
+          icon: null,
+          label: 'Appraisal is completed',
+          description:
+            'Your appraisal order has been completed! If you have any questions or need further clarification, feel free to contact our customer service team. Thank you for your patience!',
+          date: appraisalDetail?.[AppraisalStatusEnum.completed]?.completeDate
+            ? `Completed on ${format(
+                parseISO(
+                  appraisalDetail?.[AppraisalStatusEnum.completed]
+                    ?.completeDate,
                 ),
                 "MMMM dd, yyyy 'at' h:mm a",
               )}.`
             : '',
         },
       ];
-    }
-    return [
-      {
-        icon: null,
-        label: 'Appraisal payment completed',
-        description:
-          'We have received your appraisal payment and are actively processing your request to ensure you receive an accurate and timely appraisal.',
-        date: appraisalDetail?.[AppraisalStatusEnum.paid_for]?.completeDate
-          ? `Completed on ${format(
-              parseISO(
-                appraisalDetail?.[AppraisalStatusEnum.paid_for]?.completeDate,
-              ),
-              "MMMM dd, yyyy 'at' h:mm a",
-            )}.`
-          : '',
-      },
-      {
-        icon: null,
-        label: 'Appraisal has been ordered',
-        description:
-          'We are reaching out the point of contact for the property and schedule the inspection as soon as possible. On average, the appraisal takes 3-5 business days to complete.',
-        date: appraisalDetail?.[AppraisalStatusEnum.ordered]?.completeDate
-          ? `Ordered on ${format(
-              parseISO(
-                appraisalDetail?.[AppraisalStatusEnum.ordered]?.completeDate,
-              ),
-              "MMMM dd, yyyy 'at' h:mm a",
-            )}.`
-          : '',
-      },
-      {
-        icon: null,
-        label: 'Inspection has been scheduled',
-        description: `${
-          appraisalDetail?.[AppraisalStatusEnum.scheduled]?.scheduledDate
-            ? `The inspection has been scheduled for ${format(
-                parseISO(
-                  appraisalDetail?.[AppraisalStatusEnum.scheduled]
-                    ?.scheduledDate,
-                ),
-                "MMMM dd, yyyy 'at' h:mm a",
-              )}. `
-            : ''
-        }Following the inspection, the appraiser will proceed with the necessary assessments to finalize the appraisal report. We will notify you once the appraisal is complete.`,
-        date: appraisalDetail?.[AppraisalStatusEnum.scheduled]?.completeDate
-          ? `Updated on ${format(
-              parseISO(
-                appraisalDetail?.[AppraisalStatusEnum.scheduled]?.completeDate,
-              ),
-              "MMMM dd, yyyy 'at' h:mm a",
-            )}.`
-          : '',
-      },
-      {
-        icon: null,
-        label: 'Appraisal is completed',
-        description:
-          'Your appraisal order has been completed! If you have any questions or need further clarification, feel free to contact our customer service team. Thank you for your patience!',
-        date: appraisalDetail?.[AppraisalStatusEnum.completed]?.completeDate
-          ? `Completed on ${format(
-              parseISO(
-                appraisalDetail?.[AppraisalStatusEnum.completed]?.completeDate,
-              ),
-              "MMMM dd, yyyy 'at' h:mm a",
-            )}.`
-          : '',
-      },
-    ];
-  }, [
-    appraisalDetail?.[AppraisalStatusEnum.canceled],
-    appraisalDetail?.[AppraisalStatusEnum.completed]?.completeDate,
-    appraisalDetail?.[AppraisalStatusEnum.ordered]?.completeDate,
-    appraisalDetail?.[AppraisalStatusEnum.paid_for]?.completeDate,
-    appraisalDetail?.[AppraisalStatusEnum.scheduled]?.completeDate,
-    appraisalDetail?.[AppraisalStatusEnum.scheduled]?.scheduledDate,
-    appraisalStage,
-  ]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      appraisalDetail?.CANCELED,
+      appraisalDetail?.COMPLETED?.completeDate,
+      appraisalDetail?.ORDERED?.completeDate,
+      appraisalDetail?.PAID_FOR?.completeDate,
+      appraisalDetail?.SCHEDULED?.completeDate,
+      appraisalDetail?.SCHEDULED?.scheduledDate,
+      appraisalStage,
+    ],
+  );
 
   return (
     <StyledFormItem

@@ -5,8 +5,10 @@ import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { POSGetParamsFromUrl } from '@/utils';
 import { useStoreData } from '@/hooks';
+
+import { POSGetParamsFromUrl } from '@/utils';
+
 import { LoanSnapshotEnum, UserType } from '@/types';
 
 import { BackgroundInformation } from '@/components/molecules/Application';

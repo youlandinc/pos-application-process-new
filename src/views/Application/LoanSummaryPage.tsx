@@ -1,18 +1,20 @@
 import { FC, useState } from 'react';
 import { Box, Fade } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { POSGetParamsFromUrl } from '@/utils';
 import { useStoreData } from '@/hooks';
-import { HttpError, LoanSnapshotEnum, UserType } from '@/types';
+
+import { POSGetParamsFromUrl } from '@/utils';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { LoanSummary } from '@/components/molecules/Application';
-import { useAsync } from 'react-use';
-import { AUTO_HIDE_DURATION } from '@/constants';
+
+import { HttpError, LoanSnapshotEnum, UserType } from '@/types';
 
 export const LoanSummaryPage: FC = observer(() => {
   const router = useRouter();

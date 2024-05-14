@@ -1,14 +1,8 @@
 import { FC, useMemo } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { ArrowForwardIosOutlined, Close } from '@mui/icons-material';
+
 import { useBreakpoints, useSwitch } from '@/hooks';
-import { StyledButton, StyledDrawer } from '@/components/atoms';
-import {
-  LoanProductCategoryEnum,
-  LoanPropertyTypeEnum,
-  LoanPropertyUnitEnum,
-  LoanPurposeEnum,
-} from '@/types';
 import {
   POSFindLabel,
   POSFormatDollar,
@@ -22,6 +16,15 @@ import {
   APPLICATION_PROPERTY_UNIT,
 } from '@/constants';
 
+import { StyledButton, StyledDrawer } from '@/components/atoms';
+
+import {
+  LoanProductCategoryEnum,
+  LoanPropertyTypeEnum,
+  LoanPropertyUnitEnum,
+  LoanPurposeEnum,
+} from '@/types';
+
 interface OverviewLoanDetailsProps {
   productCategory: LoanProductCategoryEnum;
   loanPurpose: LoanPurposeEnum;
@@ -34,7 +37,7 @@ interface OverviewLoanDetailsProps {
   refinanceLoanAmount?: number;
   payoffAmount?: number;
   ltc?: number;
-  arltv?: number;
+  arLtv?: number;
   rehabCost?: number;
   //
   interestRate?: number;
@@ -74,7 +77,7 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
   refinanceLoanAmount,
   payoffAmount,
   ltc,
-  arltv,
+  arLtv,
   rehabCost,
   //
   interestRate,
@@ -162,7 +165,7 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
               title={'Loan to cost'}
             />
             <LoanDetailsCardRow
-              content={POSFormatPercent(arltv, POSGetDecimalPlaces(arltv))}
+              content={POSFormatPercent(arLtv, POSGetDecimalPlaces(arLtv))}
               title={'After-repair loan to value'}
             />
           </>
@@ -189,7 +192,7 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
               title={'Loan to cost'}
             />
             <LoanDetailsCardRow
-              content={POSFormatPercent(arltv, POSGetDecimalPlaces(arltv))}
+              content={POSFormatPercent(arLtv, POSGetDecimalPlaces(arLtv))}
               title={'After-repair loan to value'}
             />
           </>
@@ -198,7 +201,7 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
         return null;
     }
   }, [
-    arltv,
+    arLtv,
     loanPurpose,
     ltc,
     ltv,

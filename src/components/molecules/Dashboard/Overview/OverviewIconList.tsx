@@ -4,15 +4,15 @@ import { Icon, Stack, Typography } from '@mui/material';
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
 
+import LOGO_1 from '@/svg/dashboard/overview_logo_1.svg';
+import LOGO_2 from '@/svg/dashboard/overview_logo_2.svg';
+import LOGO_3 from '@/svg/dashboard/overview_logo_3.svg';
+
 interface OverviewIconListProps {
   totalLoanAmount?: number;
   interestRate?: number;
   monthlyPayment?: number;
 }
-
-import LOGO_1 from '@/svg/dashboard/overview_logo_1.svg';
-import LOGO_2 from '@/svg/dashboard/overview_logo_2.svg';
-import LOGO_3 from '@/svg/dashboard/overview_logo_3.svg';
 
 export const OverviewIconList: FC<OverviewIconListProps> = ({
   totalLoanAmount,

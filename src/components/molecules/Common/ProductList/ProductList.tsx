@@ -4,7 +4,6 @@ import { Stack, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 
 import { useBreakpoints } from '@/hooks';
-import { ProductItemProps } from '@/types';
 
 import { StyledLoading } from '@/components/atoms';
 
@@ -14,6 +13,8 @@ import {
   ProductMessageList,
   // ProductNoResultContact,
 } from './index';
+
+import { ProductItemProps } from '@/types';
 
 interface ProductListProps {
   errorList: Array<string | any>;

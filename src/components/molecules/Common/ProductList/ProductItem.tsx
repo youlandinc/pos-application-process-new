@@ -3,16 +3,17 @@ import { Stack, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
 
 import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
+import { useStoreData } from '@/hooks';
 
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
 import { LoanSnapshotEnum, ProductItemProps } from '@/types';
 
 import { StyledButton, StyledTooltip } from '@/components/atoms';
-import { useStoreData } from '@/hooks';
-import { useMst } from '@/models/Root';
 
 export const ProductItem: FC<ProductItemProps> = observer(
-  ({ loanTerm, interestRate, monthlyPayment, lowest, selected, id }) => {
+  ({ loanTerm, interestRate, monthlyPayment, lowest }) => {
     const { applicationForm } = useMst();
     const { estimateRate } = applicationForm;
 

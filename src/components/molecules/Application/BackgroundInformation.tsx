@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -10,7 +11,6 @@ import {
   StyledButtonGroup,
   StyledFormItem,
 } from '@/components/atoms';
-import { Stack } from '@mui/material';
 
 export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
   ({ backStep, backState, nextStep, nextState }) => {

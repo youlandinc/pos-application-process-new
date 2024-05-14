@@ -1,6 +1,7 @@
-import { Transitions } from '@/components/atoms';
 import { FC, useEffect, useState } from 'react';
 import { Box, TextField } from '@mui/material';
+
+import { Transitions } from '@/components/atoms';
 
 import { StyledTextFieldProps, StyledTextFieldStyles } from './index';
 

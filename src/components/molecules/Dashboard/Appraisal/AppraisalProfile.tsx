@@ -1,9 +1,9 @@
 import { FC, useMemo, useState } from 'react';
 import { Stack } from '@mui/material';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 
 import { AUTO_HIDE_DURATION, OPTIONS_COMMON_YES_OR_NO } from '@/constants';
-
-import { HttpError, LoanAnswerEnum, TaskFiles } from '@/types';
 
 import {
   StyledButton,
@@ -14,9 +14,9 @@ import {
   StyledUploadBox,
   Transitions,
 } from '@/components/atoms';
+
+import { HttpError, LoanAnswerEnum, TaskFiles } from '@/types';
 import { _deleteFile, _uploadFile } from '@/requests/base';
-import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/router';
 
 export interface AppraisalProfileData {
   haveAppraisal: boolean;

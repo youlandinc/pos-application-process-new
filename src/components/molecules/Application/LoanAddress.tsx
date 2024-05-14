@@ -4,8 +4,6 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useBreakpoints } from '@/hooks';
-
 import {
   StyledButton,
   StyledFormItem,
@@ -14,8 +12,6 @@ import {
 
 export const LoanAddress: FC<FormNodeBaseProps> = observer(
   ({ nextStep, nextState, backState, backStep }) => {
-    const breakpoints = useBreakpoints();
-
     const {
       applicationForm: { loanAddress },
     } = useMst();
