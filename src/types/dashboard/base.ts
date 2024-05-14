@@ -54,7 +54,7 @@ export interface DashboardDocumentsResponse {
 // teams
 export interface TeamMemberData {
   name: string;
-  role: string;
+  title: string;
   avatar: string;
   phone: string;
   email: string;
