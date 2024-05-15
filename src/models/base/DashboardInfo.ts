@@ -45,8 +45,8 @@ export const DashboardInfo = types
         } = yield _fetchDashboardInfo(loanId);
         self.propertyAddress.injectServerData(propertyAddress);
         self.loanType = loanType;
-        self.propertyType = propertyType;
-        self.propertyUnit = propertyUnit;
+        self.propertyType = propertyType || LoanPropertyTypeEnum.default;
+        self.propertyUnit = propertyUnit || LoanPropertyUnitEnum.default;
         self.loanId = loanId;
       } catch (err) {
         const { header, message, variant } = err as HttpError;
