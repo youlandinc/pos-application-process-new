@@ -41,7 +41,7 @@ export const TasksInvestmentExperience: FC = () => {
     try {
       const {
         data: {
-          data: { investmentFiles },
+          data: { investmentFiles, templateName, templateUrl, propertiesNum },
         },
       } = await _fetchLoanTaskDetail({
         loanId,
