@@ -19,6 +19,7 @@ interface StyledSelectTextField {
   onFieldChange: (floatValue: number | undefined) => void;
   sx?: SxProps;
   percentage?: boolean;
+  validate?: string[];
 }
 
 export const StyledSelectTextField: FC<StyledSelectTextField> = ({
@@ -31,6 +32,7 @@ export const StyledSelectTextField: FC<StyledSelectTextField> = ({
   onFieldChange,
   sx,
   percentage = false,
+  validate,
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
 
@@ -117,6 +119,7 @@ export const StyledSelectTextField: FC<StyledSelectTextField> = ({
               paddingRight: '8px !important',
             },
           }}
+          validate={validate}
           value={fieldValue}
         />
       ) : (
