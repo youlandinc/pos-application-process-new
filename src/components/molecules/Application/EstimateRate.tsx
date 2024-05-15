@@ -73,7 +73,37 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
 
     const wrapperRef = useRef<HTMLDivElement>(null);
 
+    const payoffAmountError = useMemo(() => {
+      if (estimateRate.loanPurpose === LoanPurposeEnum.refinance) {
+        if (estimateRate.isPayoff) {
+          if (
+            (estimateRate?.payoffAmount ?? 0) >
+            (estimateRate?.refinanceLoanAmount ?? 0)
+          ) {
+            return [
+              'Payoff amount must be equal to or less than the refinance loan amount',
+            ];
+          }
+        }
+      }
+      return [];
+    }, [
+      estimateRate.isPayoff,
+      estimateRate.loanPurpose,
+      estimateRate?.payoffAmount,
+      estimateRate?.refinanceLoanAmount,
+    ]);
+
     const fetchProductList = async () => {
+      if (payoffAmountError.length > 0) {
+        setLoading(false);
+        setProductList([]);
+        setErrorList([
+          'Payoff amount must be equal to or less than the refinance loan amount',
+        ]);
+        return;
+      }
+
       const postData = {
         tenantId: saasState?.tenantId || '1000052023020700000112',
         loanId: router.query.loanId as string,
@@ -595,6 +625,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                       : LoanAnswerEnum.no
                   }
                   sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+                  validate={payoffAmountError}
                 />
               )}
 

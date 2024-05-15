@@ -37,7 +37,13 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
                     <Box
                       component={'span'}
                       key={item + '_' + index}
-                      sx={{ display: 'block', m: 0 }}
+                      sx={{
+                        display: 'block',
+                        m: 0,
+                        '&:first-of-type': {
+                          mt: 0.5,
+                        },
+                      }}
                     >
                       {item}
                     </Box>
@@ -51,7 +57,13 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
               <Box
                 component={'span'}
                 key={item + '_' + index}
-                sx={{ display: 'block', m: 0 }}
+                sx={{
+                  display: 'block',
+                  m: 0,
+                  '&:first-of-type': {
+                    mt: 0.5,
+                  },
+                }}
               >
                 {item}
               </Box>
