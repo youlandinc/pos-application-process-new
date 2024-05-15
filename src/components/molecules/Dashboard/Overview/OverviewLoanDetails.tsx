@@ -23,7 +23,9 @@ import {
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
   LoanPurposeEnum,
+  UserType,
 } from '@/types';
+import { useMst } from '@/models/Root';
 
 interface OverviewLoanDetailsProps {
   productCategory: LoanProductCategoryEnum;
@@ -106,6 +108,8 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
 }) => {
   const breakpoints = useBreakpoints();
   const { open, visible, close } = useSwitch();
+
+  const { userType } = useMst();
 
   const renderLoanAmount = useMemo(() => {
     switch (productCategory) {
@@ -212,6 +216,97 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
     purchasePrice,
     refinanceLoanAmount,
     rehabCost,
+  ]);
+
+  const renderCompensation = useMemo(() => {
+    switch (userType) {
+      case UserType.BROKER:
+        return (
+          <Stack
+            border={'1px solid #D2D6E1'}
+            borderRadius={2}
+            gap={{ xs: 1.5, lg: 3 }}
+            p={{ xs: 1.5, lg: 3 }}
+            width={'100%'}
+          >
+            <LoanDetailsCardRow
+              content={POSFormatDollar(compensationFee)}
+              isHeader={true}
+              title={'Total broker compensation'}
+            />
+            <LoanDetailsCardRow
+              content={`${POSFormatDollar(originationFee)} (${POSFormatPercent(
+                originationPoints,
+                POSGetDecimalPlaces(originationPoints),
+              )})`}
+              title={'Broker origination fee'}
+            />
+            <LoanDetailsCardRow
+              content={POSFormatDollar(processingFee)}
+              title={'Broker processing fee'}
+            />
+          </Stack>
+        );
+      case UserType.LOAN_OFFICER:
+        return (
+          <Stack
+            border={'1px solid #D2D6E1'}
+            borderRadius={2}
+            gap={{ xs: 1.5, lg: 3 }}
+            p={{ xs: 1.5, lg: 3 }}
+            width={'100%'}
+          >
+            <LoanDetailsCardRow
+              content={POSFormatDollar(compensationFee)}
+              isHeader={true}
+              title={'Total loan officer compensation'}
+            />
+            <LoanDetailsCardRow
+              content={`${POSFormatDollar(originationFee)} (${POSFormatPercent(
+                originationPoints,
+                POSGetDecimalPlaces(originationPoints),
+              )})`}
+              title={'Loan officer origination fee'}
+            />
+            <LoanDetailsCardRow
+              content={POSFormatDollar(processingFee)}
+              title={'Loan officer processing fee'}
+            />
+          </Stack>
+        );
+      case UserType.REAL_ESTATE_AGENT:
+        return (
+          <>
+            <Stack
+              border={'1px solid #D2D6E1'}
+              borderRadius={2}
+              gap={{ xs: 1.5, lg: 3 }}
+              p={{ xs: 1.5, lg: 3 }}
+              width={'100%'}
+            >
+              <LoanDetailsCardRow
+                content={POSFormatDollar(compensationFee)}
+                isHeader={true}
+                title={'Total agent compensation'}
+              />
+              <LoanDetailsCardRow
+                content={POSFormatDollar(processingFee)}
+                title={'Referral fee'}
+              />
+            </Stack>
+          </>
+        );
+      case UserType.CUSTOMER:
+        return null;
+      default:
+        return null;
+    }
+  }, [
+    compensationFee,
+    originationFee,
+    originationPoints,
+    processingFee,
+    userType,
   ]);
 
   return (
@@ -331,34 +426,7 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
               {/*/>*/}
             </Stack>
 
-            {compensationFee && (
-              <Stack
-                border={'1px solid #D2D6E1'}
-                borderRadius={2}
-                gap={{ xs: 1.5, lg: 3 }}
-                p={{ xs: 1.5, lg: 3 }}
-                width={'100%'}
-              >
-                <LoanDetailsCardRow
-                  content={POSFormatDollar(compensationFee)}
-                  isHeader={true}
-                  title={'Total broker compensation'}
-                />
-                <LoanDetailsCardRow
-                  content={`${POSFormatDollar(
-                    originationFee,
-                  )} (${POSFormatPercent(
-                    originationPoints,
-                    POSGetDecimalPlaces(originationPoints),
-                  )})`}
-                  title={'Broker origination fee'}
-                />
-                <LoanDetailsCardRow
-                  content={POSFormatDollar(processingFee)}
-                  title={'Broker processing fee'}
-                />
-              </Stack>
-            )}
+            {renderCompensation}
 
             <Stack
               border={'1px solid #D2D6E1'}

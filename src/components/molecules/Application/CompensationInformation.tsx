@@ -1,11 +1,11 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
-import { LoanAnswerEnum } from '@/types';
+import { LoanAnswerEnum, UserType } from '@/types';
 
 import {
   StyledButton,
@@ -20,15 +20,23 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
   ({ nextState, nextStep, backState, backStep }) => {
     const {
       applicationForm: { compensationInformation },
+      userType,
     } = useMst();
 
     // todo - user type
 
-    //const computedLabel = useMemo(()=>{
-    //  swtich(userType){
-    //
-    //  }
-    //},[])
+    const renderName = useMemo(() => {
+      switch (userType) {
+        case UserType.REAL_ESTATE_AGENT:
+          return 'Referral fee';
+        case UserType.BROKER:
+          return 'Broker';
+        case UserType.LOAN_OFFICER:
+          return 'Loan officer';
+        default:
+          return 'Compensation';
+      }
+    }, [userType]);
 
     return (
       <Stack gap={{ xs: 6, lg: 8 }} m={'0 auto'} maxWidth={600} width={'100%'}>
@@ -50,23 +58,29 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
             ml={-0.5}
             width={'100%'}
           >
-            <StyledTextFieldNumber
-              decimalScale={3}
-              label={'Broker origination fee'}
-              onValueChange={({ floatValue }) =>
-                compensationInformation.changeFieldValue(
-                  'originationPoints',
-                  floatValue,
-                )
-              }
-              percentage={true}
-              suffix={'%'}
-              thousandSeparator={false}
-              value={compensationInformation.originationPoints}
-            />
+            {userType !== UserType.REAL_ESTATE_AGENT && (
+              <StyledTextFieldNumber
+                decimalScale={3}
+                label={`${renderName} origination fee`}
+                onValueChange={({ floatValue }) =>
+                  compensationInformation.changeFieldValue(
+                    'originationPoints',
+                    floatValue,
+                  )
+                }
+                percentage={true}
+                suffix={'%'}
+                thousandSeparator={false}
+                value={compensationInformation.originationPoints}
+              />
+            )}
 
             <StyledTextFieldNumber
-              label={'Broker processing fee'}
+              label={
+                userType === UserType.REAL_ESTATE_AGENT
+                  ? renderName
+                  : `${renderName} processing fee`
+              }
               onValueChange={({ floatValue }) =>
                 compensationInformation.changeFieldValue(
                   'processingFee',
