@@ -40,15 +40,15 @@ export const TasksInvestmentExperience: FC = () => {
 
     try {
       const {
-        data: {
-          data: { investmentFiles, templateName, templateUrl, propertiesNum },
-        },
+        data: { data },
       } = await _fetchLoanTaskDetail({
         loanId,
         taskKey: DashboardTaskKey.real_investment,
       });
+      const { investmentFiles, templateName, templateUrl } = data;
+
       setInvestmentFiles(investmentFiles ?? []);
-      setPropertiesNum(propertiesNum ?? 0);
+      setPropertiesNum(data?.propertiesNum ?? propertiesNum);
       setTemplateName(templateName);
       setTemplateUrl(templateUrl);
     } catch (err) {
