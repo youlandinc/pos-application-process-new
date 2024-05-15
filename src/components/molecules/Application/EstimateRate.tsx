@@ -105,7 +105,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       }
 
       const postData = {
-        tenantId: saasState?.tenantId || '1000052023020700000112',
+        tenantId: saasState?.tenantId,
         loanId: router.query.loanId as string,
         ...estimateRate.getPostData(),
       };
@@ -386,11 +386,15 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
 
     useEffect(
       () => {
+        if (!saasState?.tenantId) {
+          return;
+        }
         setLoading(true);
         run();
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [
+        saasState?.tenantId,
         estimateRate?.state,
         estimateRate?.ficoScore,
         estimateRate?.isLiquidity,

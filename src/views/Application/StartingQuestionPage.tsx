@@ -31,6 +31,9 @@ export const StartingQuestionPage: FC = observer(() => {
     const { loanId } = POSGetParamsFromUrl(location.href);
 
     if (!loanId) {
+      if (!saasState?.tenantId) {
+        return;
+      }
       const postData = {
         ...applicationForm.startingQuestion.getPostData(),
         tenantId: saasState?.tenantId || '1000052023020700000112',
