@@ -5,7 +5,7 @@ import { useAsync } from 'react-use';
 import { addDays, format } from 'date-fns';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { POSFormatDollar, POSGetParamsFromUrl } from '@/utils';
+import { POSGetParamsFromUrl } from '@/utils';
 
 import { HttpError } from '@/types';
 
@@ -161,8 +161,8 @@ export const SpecificalPaymentPage = () => {
                 </Typography>
 
                 <Typography variant={'body2'}>
-                  To move forward with your loan application, an appraisal fee
-                  of {POSFormatDollar(appraisalFees)} is due by {closeDate}
+                  To move forward with your loan application, please complete
+                  the payment below.
                 </Typography>
                 <StyledPaymentCard
                   cb={(status) => {

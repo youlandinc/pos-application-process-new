@@ -26,7 +26,7 @@ export const CompensationInformation = types
 
         self.originationPoints = originationPoints
           ? (originationPoints * 1000000) / 10000
-          : 1.5;
+          : 1;
         self.processingFee = processingFee ?? 200;
         self.isAdditional = isAdditional ?? false;
         self.additionalInfo = additionalInfo ?? '';

@@ -11,7 +11,7 @@ import { POSGetParamsFromUrl } from '@/utils';
 
 import { CompensationInformation } from '@/components/molecules/Application';
 
-import { LoanSnapshotEnum } from '@/types';
+import { LoanSnapshotEnum, UserType } from '@/types';
 
 export const CompensationInformationPage: FC = observer(() => {
   const router = useRouter();
@@ -37,7 +37,13 @@ export const CompensationInformationPage: FC = observer(() => {
       snapshot: LoanSnapshotEnum.compensation_page,
       nextSnapshot: LoanSnapshotEnum.loan_summary,
       loanId: applicationForm.loanId,
-      data: compensationInformation.getPostData(),
+      data: {
+        ...compensationInformation.getPostData(),
+        originationPoints:
+          userType === UserType.REAL_ESTATE_AGENT
+            ? 0
+            : compensationInformation.getPostData().originationPoints,
+      },
     };
     await updateFrom(postData);
   };

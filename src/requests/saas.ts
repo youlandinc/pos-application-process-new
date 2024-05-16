@@ -47,6 +47,7 @@ export interface ILoanRate {
   interestReserveAmount: number;
 }
 
+// payment
 export const _creatSpecifyPayment = (param: ICreateSpecifyPaymentParams) => {
   return post<ICreatePaymentRes>('/los/loan/approval/createPayment', param);
 };
@@ -75,7 +76,6 @@ export const _portalFetchData = (loanId: string) => {
   return get(`/los/anon/document/portal/form/${loanId}`);
 };
 
-// ?
 export const _portalRating = (params: {
   loanId: string;
   score: string | number | null;

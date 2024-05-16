@@ -1,25 +1,32 @@
 import { FC } from 'react';
 import { Icon, Stack, Typography } from '@mui/material';
 
+import { useMst } from '@/models/Root';
+
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
 
 import LOGO_1 from '@/svg/dashboard/overview_logo_1.svg';
 import LOGO_2 from '@/svg/dashboard/overview_logo_2.svg';
 import LOGO_3 from '@/svg/dashboard/overview_logo_3.svg';
+import { UserType } from '@/types';
 
 interface OverviewIconListProps {
   totalLoanAmount?: number;
   interestRate?: number;
   monthlyPayment?: number;
+  compensationFee?: number;
 }
 
 export const OverviewIconList: FC<OverviewIconListProps> = ({
   totalLoanAmount,
   interestRate,
   monthlyPayment,
+  compensationFee,
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
+
+  const { userType } = useMst();
 
   return (
     <Stack flexDirection={{ xs: 'column', xl: 'row' }} gap={3} width={'100%'}>
@@ -99,14 +106,26 @@ export const OverviewIconList: FC<OverviewIconListProps> = ({
         p={3}
         width={{ xs: '100%', xl: 'calc(33.33% - 12px)' }}
       >
-        <Stack gap={0.5}>
-          <Typography color={'text.secondary'} variant={'body3'}>
-            Monthly payment
-          </Typography>
-          <Typography color={'text.primary'} variant={'h5'}>
-            {POSFormatDollar(monthlyPayment)}
-          </Typography>
-        </Stack>
+        {userType === UserType.CUSTOMER ? (
+          <Stack gap={0.5}>
+            <Typography color={'text.secondary'} variant={'body3'}>
+              Monthly payment
+            </Typography>
+            <Typography color={'text.primary'} variant={'h5'}>
+              {POSFormatDollar(monthlyPayment, 2)}
+            </Typography>
+          </Stack>
+        ) : (
+          <Stack gap={0.5}>
+            <Typography color={'text.secondary'} variant={'body3'}>
+              Total compensation
+            </Typography>
+            <Typography color={'text.primary'} variant={'h5'}>
+              {POSFormatDollar(compensationFee, 2)}
+            </Typography>
+          </Stack>
+        )}
+
         <Icon
           component={LOGO_3}
           sx={{

@@ -393,7 +393,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               width={'100%'}
             >
               <LoanSummaryCardRow
-                content={POSFormatDollar(data?.monthlyPayment)}
+                content={POSFormatDollar(data?.monthlyPayment, 2)}
                 isHeader={true}
                 title={'Monthly payment'}
               />
@@ -421,6 +421,10 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 title={'Lender origination fee'}
               />
               <LoanSummaryCardRow
+                content={POSFormatDollar(data?.lenderProcessingFee)}
+                title={'Lender processing fee'}
+              />
+              <LoanSummaryCardRow
                 content={POSFormatDollar(data?.documentPreparationFee)}
                 title={'Document preparation fee'}
               />
@@ -431,6 +435,10 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               <LoanSummaryCardRow
                 content={POSFormatDollar(data?.underwritingFee)}
                 title={'Underwriting fee'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.wireFee)}
+                title={'Wire fee'}
               />
               {/*<LoanSummaryCardRow*/}
               {/*  content={data?.proRatedInterest}*/}
@@ -617,9 +625,8 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               fontSize={{ xs: 12, lg: 16 }}
               px={{ xs: 0.75, lg: 1.5 }}
             >
-              <b>Disclaimer: </b>The estimates above are subject to change and
-              do not include 3rd party settlement fees required to close your
-              loan.
+              <b>Disclaimer: </b>The estimates are subject to change and do not
+              include 3rd party settlement fees required to close your loan.
             </Typography>
           </Stack>
         </Stack>
@@ -654,7 +661,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
         </Stack>
 
         <StyledDialog
-          content={<Box py={10} ref={pdfFile} />}
+          content={<Box py={6} ref={pdfFile} />}
           disableEscapeKeyDown
           header={
             <Stack

@@ -354,7 +354,7 @@ export const TasksDemographics: FC = () => {
           textAlign={'center'}
           variant={'h5'}
         >
-          Demographics information
+          Demographic information
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}

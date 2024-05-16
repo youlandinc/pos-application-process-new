@@ -74,6 +74,7 @@ export const Overview: FC = () => {
         </Typography>
 
         <OverviewIconList
+          compensationFee={overviewData?.compensationFee}
           interestRate={overviewData?.interestRate}
           monthlyPayment={overviewData?.monthlyPayment}
           totalLoanAmount={overviewData?.totalLoanAmount}

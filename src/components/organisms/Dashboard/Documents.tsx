@@ -131,8 +131,8 @@ export const Documents: FC = () => {
             p={'12px 16px'}
           >
             <Icon component={NOTIFICATION_WARNING} sx={{ mt: -0.25 }} />
-            Complete the &quot;Borrower&quot; task first to see only the
-            necessary documents below.
+            Complete the &quot;Borrower&quot; task first will filter out the
+            unnecessary documents below.
           </Stack>
         )}
 

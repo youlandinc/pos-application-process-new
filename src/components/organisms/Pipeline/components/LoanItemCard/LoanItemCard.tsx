@@ -286,9 +286,9 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
             <Box>Compensation</Box>
             <Typography variant={'subtitle1'}>
               {`${
-                originationPoints !== null
+                userType !== UserType.REAL_ESTATE_AGENT
                   ? `${POSFormatPercent(
-                      originationPoints,
+                      originationPoints || 0,
                       POSGetDecimalPlaces(originationPoints),
                     )} + `
                   : ''
