@@ -188,7 +188,7 @@ export const Tasks: FC = () => {
             width={'100%'}
           >
             <Typography fontSize={{ xs: 12, lg: 16 }}>
-              Demographics information
+              Demographic information
             </Typography>
             {taskHash?.[DashboardTaskKey.demographics] && (
               <CheckCircle color={'success'} />

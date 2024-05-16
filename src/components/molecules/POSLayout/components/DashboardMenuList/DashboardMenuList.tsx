@@ -1,11 +1,10 @@
 import { FC, useCallback, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Icon } from '@mui/material';
 import {
   AccountBalanceOutlined,
   FolderOpenOutlined,
   GradingOutlined,
   PeopleAltOutlined,
-  TimelineOutlined,
 } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 
@@ -15,6 +14,8 @@ import { DashboardSideInfoBox } from './component';
 
 import { LayoutSceneTypeEnum, MenuItems } from '@/types';
 import { IDashboardInfo } from '@/models/base/DashboardInfo';
+
+import APPRAISAL_ICON from './Appraisal.svg';
 
 type POSMenuListProps = {
   info: IDashboardInfo;
@@ -39,7 +40,7 @@ const DASHBOARD_MENU_LIST: MenuItems[] = [
     label: 'Appraisal',
     path: 'appraisal',
     key: 'appraisal',
-    icon: <TimelineOutlined />,
+    icon: <Icon component={APPRAISAL_ICON} />,
   },
   {
     label: 'Documents',

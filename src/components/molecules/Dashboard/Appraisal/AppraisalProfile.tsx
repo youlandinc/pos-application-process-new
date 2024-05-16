@@ -127,15 +127,8 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = ({
     if (haveAppraisal) {
       return appraisalFiles.length > 0;
     }
-    return !!firstName && !!lastName && !!phoneNumber && !!email;
-  }, [
-    appraisalFiles.length,
-    email,
-    firstName,
-    haveAppraisal,
-    lastName,
-    phoneNumber,
-  ]);
+    return !!firstName && !!lastName && !!phoneNumber;
+  }, [appraisalFiles.length, firstName, haveAppraisal, lastName, phoneNumber]);
 
   return (
     <>
@@ -178,7 +171,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = ({
           <Stack gap={6} width={'100%'}>
             <StyledFormItem
               gap={3}
-              label={'Would you like to request an expedited report?'}
+              label={'Would you like to expedite your appraisal order?'}
               sub
               tip={
                 'An expedited appraisal order can typically be completed within 3-5 business days. An additional fee of $150 will apply.'

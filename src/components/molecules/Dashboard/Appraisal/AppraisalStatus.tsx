@@ -179,7 +179,13 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
           >
             <StepLabel icon={item.icon}>
               <Typography
-                color={computedData.length === 1 ? 'error' : 'text.primary'}
+                color={
+                  computedData.length === 1
+                    ? 'error'
+                    : index <= hash[appraisalStage]
+                      ? 'text.primary'
+                      : 'text.secondary'
+                }
                 variant={'subtitle1'}
               >
                 {item.label}

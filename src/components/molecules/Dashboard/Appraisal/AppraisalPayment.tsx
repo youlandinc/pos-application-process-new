@@ -24,7 +24,6 @@ export const AppraisalPayment = forwardRef<
   PaymentTableProps
 >(({ paymentDetail, backStep, nextState, nextStep, backState }, ref) => {
   const [checkProcessing, setCheckProcessing] = useState(false);
-  const [checkPropertyTypes, setCheckPropertyTypes] = useState(false);
 
   return (
     <StyledFormItem
@@ -58,7 +57,8 @@ export const AppraisalPayment = forwardRef<
             <b>Important: </b> By proceeding, you acknowledge that if your
             property doesn&apos;t meet the required standards at the time of the
             inspection, you&apos;ll be responsible for the cost of a second
-            appraisal.
+            appraisal. Furthermore, certain property types (rural, large
+            property size) or urgent requests may require additional payments.
           </>
         }
         onChange={(e) => {
@@ -66,7 +66,7 @@ export const AppraisalPayment = forwardRef<
         }}
         sx={{
           mr: 1,
-          mt: 3,
+          mt: 2.5,
           '& .MuiCheckbox-root': {
             mt: '-9px',
             mr: '-9px',
@@ -74,27 +74,7 @@ export const AppraisalPayment = forwardRef<
         }}
       />
 
-      <StyledCheckbox
-        checked={checkPropertyTypes}
-        label={
-          <>
-            <b>Important: </b> Please note certain property types (rural, large
-            property size) or urgent requests will need more payments.
-          </>
-        }
-        onChange={(e) => {
-          setCheckPropertyTypes(e.target.checked);
-        }}
-        sx={{
-          mr: 1,
-          '& .MuiCheckbox-root': {
-            mt: '-9px',
-            mr: '-9px',
-          },
-        }}
-      />
-
-      <Stack gap={1.5} mt={3} width={'100%'}>
+      <Stack gap={1.5} mt={2.5} width={'100%'}>
         <Typography
           color={'info.dark'}
           component={'div'}
@@ -127,7 +107,7 @@ export const AppraisalPayment = forwardRef<
         gap={3}
         justifyContent={'center'}
         maxWidth={600}
-        mt={10}
+        mt={8}
         mx={'auto'}
         width={'100%'}
       >
@@ -143,7 +123,7 @@ export const AppraisalPayment = forwardRef<
         </StyledButton>
         <StyledButton
           color={'primary'}
-          disabled={!checkProcessing || !checkPropertyTypes || nextState}
+          disabled={!checkProcessing || nextState}
           loading={nextState}
           onClick={nextStep}
           sx={{ flex: 1 }}

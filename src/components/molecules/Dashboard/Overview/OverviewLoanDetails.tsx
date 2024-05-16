@@ -50,9 +50,11 @@ interface OverviewLoanDetailsProps {
   closingCash?: number;
   lenderOriginationFee?: number;
   lenderOriginationPoints?: number;
+  lenderProcessingFee?: number;
   documentPreparationFee?: number;
   thirdPartyCosts?: string;
   underwritingFee?: number;
+  wireFee?: number;
   // proRatedInterest?: number;
   //
   compensationFee?: number;
@@ -90,9 +92,11 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
   closingCash,
   lenderOriginationFee,
   lenderOriginationPoints,
+  lenderProcessingFee,
   documentPreparationFee,
   thirdPartyCosts,
   underwritingFee,
+  wireFee,
   // proRatedInterest,
   //
   compensationFee,
@@ -380,7 +384,7 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
               width={'100%'}
             >
               <LoanDetailsCardRow
-                content={POSFormatDollar(monthlyPayment)}
+                content={POSFormatDollar(monthlyPayment, 2)}
                 isHeader={true}
                 title={'Monthly payment'}
               />
@@ -409,6 +413,10 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
                 title={'Lender origination fee'}
               />
               <LoanDetailsCardRow
+                content={POSFormatDollar(lenderProcessingFee)}
+                title={'Lender processing fee'}
+              />
+              <LoanDetailsCardRow
                 content={POSFormatDollar(documentPreparationFee)}
                 title={'Document preparation fee'}
               />
@@ -419,6 +427,10 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
               <LoanDetailsCardRow
                 content={POSFormatDollar(underwritingFee)}
                 title={'Underwriting fee'}
+              />
+              <LoanDetailsCardRow
+                content={POSFormatDollar(wireFee)}
+                title={'Wire fee'}
               />
               {/*<LoanSummaryCardRow*/}
               {/*  content={proRatedInterest}*/}
