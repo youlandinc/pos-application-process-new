@@ -4,7 +4,7 @@ import { Box, Fade } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useSessionStorageState, useStoreData } from '@/hooks';
+import { useStoreData } from '@/hooks';
 
 import { POSGetParamsFromUrl } from '@/utils';
 
@@ -13,7 +13,6 @@ import { Auth } from '@/components/molecules/Application';
 import { LoanSnapshotEnum } from '@/types';
 
 export const AuthPage: FC = observer(() => {
-  const { saasState } = useSessionStorageState('tenantConfig');
   const { applicationForm } = useMst();
 
   const { redirectFrom, redirectFromState } = useStoreData();

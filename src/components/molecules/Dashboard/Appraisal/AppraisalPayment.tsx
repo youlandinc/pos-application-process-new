@@ -14,6 +14,7 @@ import { DashboardPaymentDetailsResponse } from '@/types';
 interface PaymentTableProps {
   paymentDetail: DashboardPaymentDetailsResponse | undefined;
   backStep: () => void;
+  backState: boolean;
   nextState: boolean;
   nextStep: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
@@ -21,7 +22,7 @@ interface PaymentTableProps {
 export const AppraisalPayment = forwardRef<
   StyledPaymentCardRef,
   PaymentTableProps
->(({ paymentDetail, backStep, nextState, nextStep }, ref) => {
+>(({ paymentDetail, backStep, nextState, nextStep, backState }, ref) => {
   const [checkProcessing, setCheckProcessing] = useState(false);
   const [checkPropertyTypes, setCheckPropertyTypes] = useState(false);
 
@@ -132,6 +133,8 @@ export const AppraisalPayment = forwardRef<
       >
         <StyledButton
           color={'info'}
+          disabled={backState}
+          loading={backState}
           onClick={backStep}
           sx={{ flex: 1 }}
           variant={'text'}

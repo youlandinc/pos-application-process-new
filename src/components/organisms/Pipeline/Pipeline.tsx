@@ -22,7 +22,7 @@ import {
 } from './components';
 
 import { _deletePipelineLoan, _fetchPipelineLoanList } from '@/requests';
-import { HttpError, LoanSnapshotEnum, UserType } from '@/types';
+import { HttpError, LoanSnapshotEnum } from '@/types';
 
 import PIPELINE_NO_RESULT from '@/svg/pipeline/pipeline_no_result.svg';
 

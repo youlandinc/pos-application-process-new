@@ -56,7 +56,7 @@ const DASHBOARD_MENU_LIST: MenuItems[] = [
 ];
 
 export const DashboardMenuList: FC<POSMenuListProps> = observer(
-  ({ scene, info, loading }) => {
+  ({ info, loading }) => {
     const router = useRouter();
     const [activeKey, setActiveKey] = useState(() => {
       const results = router.pathname.split('/');

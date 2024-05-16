@@ -14,7 +14,6 @@ import {
   useBreakpoints,
   usePersistFn,
   useSessionStorageState,
-  useStoreData,
   useSwitch,
 } from '@/hooks';
 
@@ -55,12 +54,6 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
 
   const handledLoginSuccess = usePersistFn(() => {
     close();
-    //  if (!router.query.loanId || applicationForm.loading) {
-    //    return;
-    //  }
-    //  if (!applicationForm.isBind) {
-    //    bindLoan({ loanId: router.query.loanId });
-    //  }
   });
 
   const handledSignUpAndResetSuccess = usePersistFn(() => {

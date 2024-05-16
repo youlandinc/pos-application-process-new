@@ -37,6 +37,8 @@ export const Appraisal: FC = () => {
     'profile' | 'payment' | 'afterPayment'
   >('profile');
 
+  const [backToProfileLoading, setBackToProfileLoading] = useState(false);
+
   const [profileLoading, setProfileLoading] = useState(false);
   const [profileData, setProfileData] = useState<AppraisalProfileData>({
     haveAppraisal: false,
@@ -93,6 +95,7 @@ export const Appraisal: FC = () => {
         });
       } finally {
         setProfileLoading(false);
+        setBackToProfileLoading(false);
       }
     },
     [enqueueSnackbar, router.query.loanId],
@@ -119,7 +122,7 @@ export const Appraisal: FC = () => {
     [],
   );
 
-  const { loading } = useAsync(async () => {
+  const fetchData = useCallback(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
     if (!loanId) {
       return;
@@ -175,7 +178,9 @@ export const Appraisal: FC = () => {
         header,
       });
     }
-  }, [location.href]);
+  }, [enqueueSnackbar]);
+
+  const { loading } = useAsync(fetchData, [location.href]);
 
   const renderFormNode = useMemo(() => {
     switch (formState) {
@@ -213,7 +218,10 @@ export const Appraisal: FC = () => {
           <Fade in={!profileLoading}>
             <Box>
               <AppraisalPayment
-                backStep={() => {
+                backState={backToProfileLoading}
+                backStep={async () => {
+                  setBackToProfileLoading(true);
+                  await fetchData();
                   setFormState('profile');
                 }}
                 nextState={paymentLoading}
@@ -241,11 +249,13 @@ export const Appraisal: FC = () => {
     formState,
     profileLoading,
     profileData,
+    backToProfileLoading,
     paymentLoading,
     paymentDetail,
     appraisalStatus,
     appraisalDetail,
     updateAppraisalProfileAndGetPaymentDetails,
+    fetchData,
     handlePayment,
     paymentStatus,
   ]);
