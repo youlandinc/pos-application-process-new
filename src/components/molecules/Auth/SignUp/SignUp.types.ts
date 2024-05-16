@@ -1,5 +1,5 @@
 export interface SignUpProps {
   isNestForm?: boolean;
-  successCb?: () => void;
+  successCb?: () => void | Promise<void>;
   isRedirect?: boolean;
 }

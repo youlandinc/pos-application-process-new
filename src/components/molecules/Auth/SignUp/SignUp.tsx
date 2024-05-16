@@ -261,7 +261,6 @@ export const SignUp: FC<SignUpProps> = observer(
       setLoading(true);
       try {
         await _userVerifyCode(data);
-        successCb && successCb();
         close();
         if (isRedirect) {
           await router.push('./login');
