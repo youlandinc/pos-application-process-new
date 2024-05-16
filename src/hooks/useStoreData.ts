@@ -57,6 +57,7 @@ export const useStoreData = () => {
   const bindLoan = usePersistFn((params) => {
     _bindLoan(params)
       .then((res) => res)
+      // eslint-disable-next-line no-console
       .catch((err) => console.log(err));
   });
 

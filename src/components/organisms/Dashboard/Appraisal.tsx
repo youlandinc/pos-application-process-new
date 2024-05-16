@@ -122,7 +122,7 @@ export const Appraisal: FC = () => {
     [],
   );
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
     if (!loanId) {
       return;
@@ -178,7 +178,7 @@ export const Appraisal: FC = () => {
         header,
       });
     }
-  };
+  }, [enqueueSnackbar]);
 
   const { loading } = useAsync(fetchData, [location.href]);
 
