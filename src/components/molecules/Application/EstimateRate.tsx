@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { Fade, Skeleton, Stack, Typography } from '@mui/material';
+import { Skeleton, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 

@@ -249,7 +249,7 @@ export const Appraisal: FC = () => {
     formState,
     profileLoading,
     profileData,
-    loading,
+    backToProfileLoading,
     paymentLoading,
     paymentDetail,
     appraisalStatus,

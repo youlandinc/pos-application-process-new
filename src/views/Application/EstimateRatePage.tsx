@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useSessionStorageState, useStoreData } from '@/hooks';
+import { useStoreData } from '@/hooks';
 
 import { POSGetParamsFromUrl } from '@/utils';
 import { LoanSnapshotEnum } from '@/types';
@@ -14,7 +14,6 @@ import { EstimateRate } from '@/components/molecules/Application';
 
 export const EstimateRatePage: FC = observer(() => {
   const router = useRouter();
-  const { saasState } = useSessionStorageState('tenantConfig');
 
   const { redirectFrom, redirectFromState } = useStoreData();
 

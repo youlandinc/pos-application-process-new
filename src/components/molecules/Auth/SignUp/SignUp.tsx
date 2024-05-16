@@ -278,16 +278,7 @@ export const SignUp: FC<SignUpProps> = observer(
       } finally {
         setLoading(false);
       }
-    }, [
-      close,
-      email,
-      enqueueSnackbar,
-      handledLogin,
-      isRedirect,
-      otp,
-      router,
-      successCb,
-    ]);
+    }, [close, email, enqueueSnackbar, handledLogin, isRedirect, otp, router]);
 
     const isDisabled = useMemo(() => {
       for (const [, value] of Object.entries(passwordError)) {

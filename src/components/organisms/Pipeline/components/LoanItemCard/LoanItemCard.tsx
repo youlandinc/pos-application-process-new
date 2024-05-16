@@ -74,7 +74,6 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
     loanAmount,
     applicationDate,
     loanStage,
-    originationFee,
     originationPoints,
     processingFee,
   } = formData;
