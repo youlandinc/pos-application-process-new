@@ -59,3 +59,9 @@ export const _fetchProductList = (
 export const _fetchFile = (loanId: string, fileType: 'summary' | 'letter') => {
   return get(`/pos/loan/process/${loanId}/${fileType}`);
 };
+
+export const _downloadFile = (loanId: string) => {
+  return get(`/pos/loan/process/${loanId}/letter/download`, {
+    responseType: 'blob',
+  });
+};

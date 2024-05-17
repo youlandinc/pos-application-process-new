@@ -18,6 +18,7 @@ import {
   POSFormatDollar,
   POSFormatPercent,
   POSGetDecimalPlaces,
+  POSGetParamsFromUrl,
 } from '@/utils';
 import {
   APPLICATION_LOAN_CATEGORY,
@@ -36,7 +37,7 @@ import {
   LoanPurposeEnum,
   UserType,
 } from '@/types';
-import { _fetchFile } from '@/requests/application';
+import { _downloadFile, _fetchFile } from '@/requests/application';
 
 export const LoanSummary: FC<FormNodeBaseProps> = observer(
   ({ nextStep, nextState, backState, backStep, data }) => {
@@ -54,6 +55,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
 
     const pdfFile = useRef(null);
     const { renderFile } = useRenderPdf(pdfFile);
+    const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
 
     const mapRef = useRef<HTMLDivElement>(null);
     const panoramaRef = useRef<HTMLDivElement>(null);
@@ -332,6 +334,46 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
       data?.processingFee,
       userType,
     ]);
+
+    const handleDownload = useCallback(async () => {
+      const handler = (data: any, fileName?: string) => {
+        // file export
+        if (!data) {
+          return;
+        }
+        const fileUrl = window.URL.createObjectURL(
+          new Blob([data], { type: 'application/octet-stream' }),
+        );
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.download = fileName || 'Pre-approval-letter.pdf';
+        a.href = fileUrl;
+        a.click();
+        if (document.body.contains(a)) {
+          document.body.removeChild(a);
+        }
+      };
+
+      const { loanId } = POSGetParamsFromUrl(location.href);
+      if (!loanId) {
+        return;
+      }
+      setDownloadLoading(true);
+      try {
+        const res = await _downloadFile(loanId);
+        handler(res.data);
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      } finally {
+        setDownloadLoading(false);
+      }
+    }, [enqueueSnackbar]);
 
     const keydownEvent = useCallback(
       (e: KeyboardEvent) => {
@@ -630,17 +672,23 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                   }`}
                 </Typography>
               </Stack>
-              {!data?.isCustom && (
-                <StyledButton
-                  color={'info'}
-                  disabled={viewLoading}
-                  loading={viewLoading}
-                  onClick={() => getPDF('letter')}
-                  variant={'outlined'}
-                >
-                  View pre-approval letter
-                </StyledButton>
+              <StyledButton
+                color={'info'}
+                disabled={viewLoading || data?.isCustom}
+                loading={viewLoading}
+                onClick={() => getPDF('letter')}
+                variant={'outlined'}
+              >
+                View pre-approval letter
+              </StyledButton>
+              {data?.isCustom && (
+                <Typography color={'text.secondary'} variant={'body3'}>
+                  When using a custom loan amount, the pre-approval letter is
+                  only available after the loan has passed preliminary
+                  underwriting.
+                </Typography>
               )}
+
               {/*<StyledButton color={'info'} variant={'outlined'}>*/}
               {/*  View loan summary*/}
               {/*</StyledButton>*/}
@@ -692,11 +740,24 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
         <StyledDialog
           content={<Box py={6} ref={pdfFile} />}
           disableEscapeKeyDown
+          footer={
+            <Stack pt={3}>
+              <StyledButton
+                disabled={downloadLoading}
+                loading={downloadLoading}
+                onClick={handleDownload}
+                sx={{ width: 200 }}
+              >
+                Download
+              </StyledButton>
+            </Stack>
+          }
           header={
             <Stack
               alignItems={'center'}
               flexDirection={'row'}
               justifyContent={'space-between'}
+              pb={3}
             >
               <Typography variant={'h6'}>Pre-approval letter</Typography>
               <StyledButton isIconButton onClick={previewClose}>
