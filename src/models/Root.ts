@@ -117,9 +117,9 @@ const RootStore = types.model(RootModel).actions((self) => {
       if (Router.pathname === '/auth/sign_in') {
         return;
       }
+      self.isLogout = true;
       this.updateSession();
       this.updateProfile();
-      self.isLogout = true;
       self.detectUserActiveService.setDetectUserActiveService(void 0);
       const lastAuthId = userpool.getLastAuthUserId();
       if (lastAuthId) {
