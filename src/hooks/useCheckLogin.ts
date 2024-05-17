@@ -28,13 +28,13 @@ export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
 };
 
 export const useCheckIsLogin = (jumpPath = '/auth/login') => {
-  const { session, isLogout } = useMst();
+  const { session, logoutNotification } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
   const check = usePersistFn(() => {
     if (!session) {
-      if (!isLogout) {
+      if (logoutNotification) {
         enqueueSnackbar("You haven't logged", {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,

@@ -60,7 +60,7 @@ export const RootModel = {
   detectUserActiveService: DetectUserActiveService,
   notificationStation: NotificationStation,
 
-  isLogout: types.boolean,
+  logoutNotification: types.boolean,
 };
 
 const RootStore = types.model(RootModel).actions((self) => {
@@ -113,11 +113,13 @@ const RootStore = types.model(RootModel).actions((self) => {
     resetApplicationForm() {
       self.applicationForm.resetForm();
     },
+    setLogoutNotification(val: boolean) {
+      self.logoutNotification = val;
+    },
     logout() {
       if (Router.pathname === '/auth/sign_in') {
         return;
       }
-      self.isLogout = true;
       this.updateSession();
       this.updateProfile();
       self.detectUserActiveService.setDetectUserActiveService(void 0);
@@ -179,7 +181,7 @@ const initialState = {
   notificationStation: {
     notifications: [],
   },
-  isLogout: false,
+  logoutNotification: false,
 };
 
 export const rootStore = RootStore.create(initialState);
