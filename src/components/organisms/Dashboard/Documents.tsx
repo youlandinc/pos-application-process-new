@@ -2,6 +2,7 @@ import { FC, ReactNode, useState } from 'react';
 import { Fade, Icon, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
+import { useRouter } from 'next/router';
 
 import { useBreakpoints } from '@/hooks';
 
@@ -21,6 +22,7 @@ import { _fetchLoanDocumentData } from '@/requests/dashboard';
 import NOTIFICATION_WARNING from '@/components/atoms/StyledNotification/notification_warning.svg';
 
 export const Documents: FC = () => {
+  const router = useRouter();
   const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -35,6 +37,11 @@ export const Documents: FC = () => {
   const fetchData = async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
     if (!loanId) {
+      await router.push('/pipeline');
+      enqueueSnackbar('Invalid loan ID', {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
       return;
     }
     try {
@@ -131,7 +138,7 @@ export const Documents: FC = () => {
             p={'12px 16px'}
           >
             <Icon component={NOTIFICATION_WARNING} sx={{ mt: -0.25 }} />
-            Complete the &quot;Borrower&quot; task first will filter out the
+            Complete the &quot;Borrower&quot; task first to filter out the
             unnecessary documents below.
           </Stack>
         )}

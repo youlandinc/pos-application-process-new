@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 import { Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
@@ -17,6 +17,33 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
     const {
       applicationForm: { backgroundInformation },
     } = useMst();
+
+    const keydownEvent = useCallback(
+      (e: KeyboardEvent) => {
+        const button: (HTMLElement & { disabled?: boolean }) | null =
+          document.getElementById(
+            'application-background-information-next-button',
+          );
+
+        if (!button) {
+          return;
+        }
+
+        if (e.key === 'Enter') {
+          if (!button.disabled) {
+            nextStep?.();
+          }
+        }
+      },
+      [nextStep],
+    );
+
+    useEffect(() => {
+      document.addEventListener('keydown', keydownEvent, false);
+      return () => {
+        document.removeEventListener('keydown', keydownEvent, false);
+      };
+    }, [keydownEvent]);
 
     return (
       <StyledFormItem
@@ -145,6 +172,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
           <StyledButton
             color={'primary'}
             disabled={nextState}
+            id={'application-background-information-next-button'}
             loading={nextState}
             onClick={nextStep}
             sx={{

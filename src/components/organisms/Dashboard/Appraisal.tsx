@@ -125,6 +125,11 @@ export const Appraisal: FC = () => {
   const fetchData = useCallback(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
     if (!loanId) {
+      await router.push('/pipeline');
+      enqueueSnackbar('Invalid loan ID', {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
       return;
     }
     try {

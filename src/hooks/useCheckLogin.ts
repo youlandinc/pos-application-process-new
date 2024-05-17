@@ -4,9 +4,8 @@ import { useSnackbar } from 'notistack';
 
 import { useMst } from '@/models/Root';
 
-import { usePersistFn, useSessionStorageState } from './index';
+import { usePersistFn } from './index';
 import { AUTO_HIDE_DURATION } from '@/constants';
-// import { UserType } from '@/types';
 
 export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
   const { session, persistDataLoaded, userType, loginType } = useMst();
@@ -28,41 +27,26 @@ export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
 };
 
 export const useCheckIsLogin = (jumpPath = '/auth/login') => {
-  const { session, persistDataLoaded, userType, loginType } = useMst();
+  const { session, isLogout } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const { saasState } = useSessionStorageState('tenantConfig');
 
   const check = usePersistFn(() => {
-    if (!saasState) {
-      return;
-    }
-    if (router.pathname.includes('application') || router.pathname === '/') {
-      return;
-    }
-    if (
-      !persistDataLoaded ||
-      (!session && !userType && !loginType) ||
-      router.pathname === jumpPath
-    ) {
-      return;
-    }
-    router.push(jumpPath);
-    if (
-      !router.pathname.includes('pipeline') &&
-      router.pathname.includes('application')
-    ) {
-      enqueueSnackbar("You haven't logged", {
-        variant: 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-      });
+    if (!session) {
+      if (isLogout) {
+        enqueueSnackbar("You haven't logged", {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
+      }
+      router.push(jumpPath);
     }
   });
 
   // only detecting at the first time entry
   useEffect(() => {
     check();
-  }, [check, persistDataLoaded]);
+  }, [check, session]);
 };
 
 // export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {

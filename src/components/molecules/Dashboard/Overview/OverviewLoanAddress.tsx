@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 // import { useRouter } from 'next/router';
@@ -16,17 +16,19 @@ import { POSGetParamsFromUrl } from '@/utils';
 
 import { StyledButton, StyledDialog } from '@/components/atoms';
 
-import { AddressData, HttpError } from '@/types';
+import { AddressData, HttpError, PipelineLoanStageEnum } from '@/types';
 import { _fetchFile } from '@/requests/application';
 
 interface OverviewLoanAddressProps {
   propertyAddress?: AddressData;
   isCustom?: boolean;
+  loanStatus: PipelineLoanStageEnum;
 }
 
 export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
   propertyAddress,
   isCustom,
+  loanStatus,
 }) => {
   const breakpoints = useBreakpoints();
   // const router = useRouter();
@@ -102,6 +104,50 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
     };
   }, [propertyAddress?.lat, propertyAddress?.lng, relocate, resetMap]);
 
+  const renderViewButton = useMemo(() => {
+    switch (loanStatus) {
+      case PipelineLoanStageEnum.initial_approval:
+      case PipelineLoanStageEnum.funded:
+      case PipelineLoanStageEnum.preparing_docs:
+      case PipelineLoanStageEnum.docs_out:
+        return (
+          <StyledButton
+            color={'info'}
+            disabled={viewLoading}
+            loading={viewLoading}
+            onClick={() => getPDF('letter')}
+            sx={{
+              '&.MuiButton-outlined': {
+                padding: '16px 0',
+              },
+              width: '100%',
+            }}
+            variant={'outlined'}
+          >
+            View pre-approval letter
+          </StyledButton>
+        );
+      default:
+        return (
+          <StyledButton
+            color={'info'}
+            disabled={viewLoading || !isCustom}
+            loading={viewLoading}
+            onClick={() => getPDF('letter')}
+            sx={{
+              '&.MuiButton-outlined': {
+                padding: '16px 0',
+              },
+              width: '100%',
+            }}
+            variant={'outlined'}
+          >
+            View pre-approval letter
+          </StyledButton>
+        );
+    }
+  }, [getPDF, isCustom, loanStatus, viewLoading]);
+
   return (
     <Stack
       alignItems={'center'}
@@ -148,23 +194,7 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
         </Typography>
       </Stack>
 
-      {!isCustom && (
-        <StyledButton
-          color={'info'}
-          disabled={viewLoading}
-          loading={viewLoading}
-          onClick={() => getPDF('letter')}
-          sx={{
-            '&.MuiButton-outlined': {
-              padding: '16px 0',
-            },
-            width: '100%',
-          }}
-          variant={'outlined'}
-        >
-          View pre-approval letter
-        </StyledButton>
-      )}
+      {renderViewButton}
 
       <StyledDialog
         content={<Box py={6} ref={pdfFile} />}

@@ -412,10 +412,12 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
                 )})`}
                 title={'Lender origination fee'}
               />
-              <LoanDetailsCardRow
-                content={POSFormatDollar(lenderProcessingFee)}
-                title={'Lender processing fee'}
-              />
+              {lenderProcessingFee !== null && (
+                <LoanDetailsCardRow
+                  content={POSFormatDollar(lenderProcessingFee)}
+                  title={'Lender processing fee'}
+                />
+              )}
               <LoanDetailsCardRow
                 content={POSFormatDollar(documentPreparationFee)}
                 title={'Document preparation fee'}
@@ -428,10 +430,12 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = ({
                 content={POSFormatDollar(underwritingFee)}
                 title={'Underwriting fee'}
               />
-              <LoanDetailsCardRow
-                content={POSFormatDollar(wireFee)}
-                title={'Wire fee'}
-              />
+              {wireFee !== null && (
+                <LoanDetailsCardRow
+                  content={POSFormatDollar(wireFee)}
+                  title={'Wire fee'}
+                />
+              )}
               {/*<LoanSummaryCardRow*/}
               {/*  content={proRatedInterest}*/}
               {/*  title={'Pro-rated interest'}*/}

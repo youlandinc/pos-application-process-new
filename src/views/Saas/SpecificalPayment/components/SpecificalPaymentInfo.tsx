@@ -74,7 +74,7 @@ export const SpecificalPaymentInfo: FC<
             color={'primary.main'}
             component={'span'}
             textAlign={'right'}
-            variant={'h5'}
+            variant={'h6'}
           >
             {POSFormatDollar(paymentAmount)}
           </Typography>

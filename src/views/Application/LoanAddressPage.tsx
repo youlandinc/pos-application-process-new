@@ -1,4 +1,4 @@
-import { FC, useLayoutEffect } from 'react';
+import { FC, useLayoutEffect, useState } from 'react';
 import { Box, Fade } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -9,7 +9,7 @@ import { useStoreData } from '@/hooks';
 
 import { POSGetParamsFromUrl } from '@/utils';
 
-import { LoanSnapshotEnum } from '@/types';
+import { HttpErrorType, LoanSnapshotEnum } from '@/types';
 
 import { LoanAddress } from '@/components/molecules/Application';
 
@@ -17,6 +17,8 @@ export const LoanAddressPage: FC = observer(() => {
   const router = useRouter();
   const { applicationForm } = useMst();
   const { loanAddress } = applicationForm;
+
+  const [stateError, setStateError] = useState(false);
 
   const { updateFrom, updateFormState, redirectFrom, redirectFromState } =
     useStoreData();
@@ -36,7 +38,11 @@ export const LoanAddressPage: FC = observer(() => {
       loanId: applicationForm.loanId,
       data: loanAddress.getPostData(),
     };
-    await updateFrom(postData);
+    await updateFrom(postData).then((res) => {
+      if (res === HttpErrorType.state_verify_error) {
+        setStateError(true);
+      }
+    });
   };
 
   useLayoutEffect(
@@ -62,6 +68,7 @@ export const LoanAddressPage: FC = observer(() => {
             backStep={back}
             nextState={updateFormState.loading}
             nextStep={next}
+            stateError={stateError}
           />
         )}
       </Box>

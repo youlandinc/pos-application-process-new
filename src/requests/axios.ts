@@ -23,6 +23,7 @@ service.interceptors.request.use(
       message: error.message,
       header: '',
       variant: HttpVariantType.error,
+      code: error.code,
     });
   },
 );
@@ -38,6 +39,7 @@ service.interceptors.response.use(
       message: '',
       header: '',
       variant: HttpVariantType.error,
+      code,
     };
 
     if (error.response) {
@@ -46,6 +48,7 @@ service.interceptors.response.use(
         message,
         header,
         variant,
+        code,
       };
       if (code === HttpErrorType.tokenExpired) {
         rootStore.logout();
@@ -57,6 +60,7 @@ service.interceptors.response.use(
         message: 'A system error has occurred.',
         header: '',
         variant: HttpVariantType.error,
+        code,
       };
     }
 
@@ -66,6 +70,7 @@ service.interceptors.response.use(
           'Unable to connect to the server. Please check your network connection and try again.',
         header: 'Network Error',
         variant: HttpVariantType.error,
+        code,
       };
     }
 

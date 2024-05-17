@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useCallback, useEffect, useMemo } from 'react';
 import { Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
@@ -23,7 +23,32 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
       userType,
     } = useMst();
 
-    // todo - user type
+    const keydownEvent = useCallback(
+      (e: KeyboardEvent) => {
+        const button: (HTMLElement & { disabled?: boolean }) | null =
+          document.getElementById(
+            'application-compensation-information-next-button',
+          );
+
+        if (!button) {
+          return;
+        }
+
+        if (e.key === 'Enter') {
+          if (!button.disabled) {
+            nextStep?.();
+          }
+        }
+      },
+      [nextStep],
+    );
+
+    useEffect(() => {
+      document.addEventListener('keydown', keydownEvent, false);
+      return () => {
+        document.removeEventListener('keydown', keydownEvent, false);
+      };
+    }, [keydownEvent]);
 
     const renderName = useMemo(() => {
       switch (userType) {
@@ -156,6 +181,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
           <StyledButton
             color={'primary'}
             disabled={nextState}
+            id={'application-compensation-information-next-button'}
             loading={nextState}
             onClick={nextStep}
             sx={{ flex: 1 }}

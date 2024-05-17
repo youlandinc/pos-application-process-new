@@ -29,7 +29,11 @@ import { Provider, rootStore } from '@/models/Root';
 
 import { _fetchSaasConfig } from '@/requests/saas';
 import { HttpError } from '@/types';
-import { useBreakpoints, useSessionStorageState } from '@/hooks';
+import {
+  useBreakpoints,
+  useCheckIsLogin,
+  useSessionStorageState,
+} from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
 import {
@@ -141,31 +145,6 @@ export default function MyApp(props: MyAppProps) {
         </div>
       );
     }
-    return (
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <LocalizationProvider apterLocale={en} dateAdapter={AdapterDateFns}>
-          <SnackbarProvider
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: ['sm', 'xs'].includes(breakpoints)
-                ? 'center'
-                : 'right',
-            }}
-            Components={{
-              success: StyledNotification,
-              error: StyledNotification,
-              default: StyledNotification,
-              info: StyledNotification,
-              warning: StyledNotification,
-            }}
-            maxSnack={3}
-          >
-            <Component {...pageProps} />
-          </SnackbarProvider>
-        </LocalizationProvider>
-      </ThemeProvider>
-    );
   }, [Component, breakpoints, loading, pageProps, saasState]);
 
   return (
