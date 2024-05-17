@@ -17,7 +17,7 @@ import { POSGetParamsFromUrl } from '@/utils';
 import { StyledButton, StyledDialog } from '@/components/atoms';
 
 import { AddressData, HttpError, PipelineLoanStageEnum } from '@/types';
-import { _fetchFile } from '@/requests/application';
+import { _downloadFile, _fetchFile } from '@/requests/application';
 
 interface OverviewLoanAddressProps {
   propertyAddress?: AddressData;
@@ -47,6 +47,7 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
   } = useSwitch(false);
 
   const [viewLoading, setViewLoading] = useState<boolean>(false);
+  const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
 
   const getPDF = useCallback(
     async (fileType: 'letter' | 'summary') => {
@@ -104,49 +105,60 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
     };
   }, [propertyAddress?.lat, propertyAddress?.lng, relocate, resetMap]);
 
-  const renderViewButton = useMemo(() => {
+  const handleDownload = useCallback(async () => {
+    const handler = (data: any, fileName?: string) => {
+      // file export
+      if (!data) {
+        return;
+      }
+      const fileUrl = window.URL.createObjectURL(
+        new Blob([data], { type: 'application/octet-stream' }),
+      );
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.download = fileName || 'Pre-approval-letter.pdf';
+      a.href = fileUrl;
+      a.click();
+      if (document.body.contains(a)) {
+        document.body.removeChild(a);
+      }
+    };
+
+    const { loanId } = POSGetParamsFromUrl(location.href);
+    if (!loanId) {
+      return;
+    }
+    setDownloadLoading(true);
+    try {
+      const res = await _downloadFile(loanId);
+      handler(res.data);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setDownloadLoading(false);
+    }
+  }, [enqueueSnackbar]);
+
+  const isDisabled = useMemo(() => {
+    if (!isCustom) {
+      return viewLoading;
+    }
     switch (loanStatus) {
       case PipelineLoanStageEnum.initial_approval:
-      case PipelineLoanStageEnum.funded:
       case PipelineLoanStageEnum.preparing_docs:
       case PipelineLoanStageEnum.docs_out:
-        return (
-          <StyledButton
-            color={'info'}
-            disabled={viewLoading}
-            loading={viewLoading}
-            onClick={() => getPDF('letter')}
-            sx={{
-              '&.MuiButton-outlined': {
-                padding: '16px 0',
-              },
-              width: '100%',
-            }}
-            variant={'outlined'}
-          >
-            View pre-approval letter
-          </StyledButton>
-        );
+      case PipelineLoanStageEnum.funded:
+        return viewLoading;
       default:
-        return (
-          <StyledButton
-            color={'info'}
-            disabled={viewLoading || !isCustom}
-            loading={viewLoading}
-            onClick={() => getPDF('letter')}
-            sx={{
-              '&.MuiButton-outlined': {
-                padding: '16px 0',
-              },
-              width: '100%',
-            }}
-            variant={'outlined'}
-          >
-            View pre-approval letter
-          </StyledButton>
-        );
+        return viewLoading || isCustom;
     }
-  }, [getPDF, isCustom, loanStatus, viewLoading]);
+  }, [isCustom, loanStatus, viewLoading]);
 
   return (
     <Stack
@@ -194,11 +206,44 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
         </Typography>
       </Stack>
 
-      {renderViewButton}
+      <StyledButton
+        color={'info'}
+        disabled={isDisabled}
+        loading={viewLoading}
+        onClick={() => getPDF('letter')}
+        sx={{
+          '&.MuiButton-outlined': {
+            padding: '16px 0',
+          },
+          width: '100%',
+        }}
+        variant={'outlined'}
+      >
+        View pre-approval letter
+      </StyledButton>
+
+      {isCustom && (
+        <Typography color={'text.secondary'} variant={'body3'}>
+          When using a custom loan amount, the pre-approval letter is only
+          available after the loan has passed preliminary underwriting.
+        </Typography>
+      )}
 
       <StyledDialog
         content={<Box py={6} ref={pdfFile} />}
         disableEscapeKeyDown
+        footer={
+          <Stack pt={3}>
+            <StyledButton
+              disabled={downloadLoading}
+              loading={downloadLoading}
+              onClick={handleDownload}
+              sx={{ width: 200 }}
+            >
+              Download
+            </StyledButton>
+          </Stack>
+        }
         header={
           <Stack
             alignItems={'center'}

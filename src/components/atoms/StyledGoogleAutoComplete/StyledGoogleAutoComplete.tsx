@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { Autocomplete, Box, Grid, Stack, Typography } from '@mui/material';
 import { LocationOnOutlined } from '@mui/icons-material';
 import parse from 'autosuggest-highlight/parse';
@@ -23,45 +23,45 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
 
     const [stateValidate, setStateValidate] = useState(stateError);
 
-    useEffect(() => {
-      setStateValidate(stateError);
-    }, [stateError]);
-
-    const handledPlaceSelect = useCallback((place: any) => {
-      if (!place.formatted_address) {
-        return;
-      }
-
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      place.address_components.forEach((com) => {
-        const type = com.types[0];
-        if (!type) {
+    const handledPlaceSelect = useCallback(
+      (place: any) => {
+        if (!place.formatted_address) {
           return;
         }
-        switch (type) {
-          case 'administrative_area_level_1': {
-            address.changeFieldValue('state', com.short_name);
+        stateValidate && setStateValidate(false);
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        place.address_components.forEach((com) => {
+          const type = com.types[0];
+          if (!type) {
             return;
           }
-          case 'locality': {
-            address.changeFieldValue('city', com.long_name);
-            return;
+          switch (type) {
+            case 'administrative_area_level_1': {
+              address.changeFieldValue('state', com.short_name);
+              return;
+            }
+            case 'locality': {
+              address.changeFieldValue('city', com.long_name);
+              return;
+            }
+            case 'route': {
+              address.changeFieldValue('street', com.long_name);
+              return;
+            }
+            case 'postal_code': {
+              address.changeFieldValue('postcode', com.long_name);
+              return;
+            }
           }
-          case 'route': {
-            address.changeFieldValue('street', com.long_name);
-            return;
-          }
-          case 'postal_code': {
-            address.changeFieldValue('postcode', com.long_name);
-            return;
-          }
-        }
-      });
-      address.changeFieldValue('lat', place.geometry.location.lat());
-      address.changeFieldValue('lng', place.geometry.location.lng());
+        });
+        address.changeFieldValue('lat', place.geometry.location.lat());
+        address.changeFieldValue('lng', place.geometry.location.lng());
+      },
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+      [stateValidate],
+    );
 
     return (
       <Stack width={'100%'}>
@@ -107,11 +107,10 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                 label={'State'}
                 onChange={(e) => {
                   address.changeFieldValue('state', e.target.value as string);
-                  stateValidate && setStateValidate(undefined);
                 }}
                 options={OPTIONS_COMMON_STATE}
                 sx={{ flex: 1 }}
-                validate={stateValidate ? [' '] : undefined}
+                validate={stateError ? [' '] : undefined}
                 value={address.state}
               />
             </Stack>

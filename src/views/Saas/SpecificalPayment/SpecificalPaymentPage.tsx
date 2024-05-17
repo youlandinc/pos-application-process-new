@@ -37,7 +37,7 @@ export const SpecificalPaymentPage = () => {
   const [isExpedited, setIsExpedited] = useState(false);
   const [expeditedFees, setExpeditedFees] = useState(0);
   const [paymentAmount, setPaymentAmount] = useState(0);
-  const [closeDate, setCloseDate] = useState<any>();
+  // const [closeDate, setCloseDate] = useState<any>();
 
   const [paymentStatus, setPaymentStatus] = useState('');
 
@@ -78,11 +78,11 @@ export const SpecificalPaymentPage = () => {
       setExpeditedFees(expeditedFees);
       setPaymentAmount(paymentAmount);
 
-      setCloseDate(
-        typeof created === 'number'
-          ? format(addDays(created, 3), 'MMMM dd, yyyy')
-          : format(new Date(), 'MMMM dd, yyyy'),
-      );
+      // setCloseDate(
+      //   typeof created === 'number'
+      //     ? format(addDays(created, 3), 'MMMM dd, yyyy')
+      //     : format(new Date(), 'MMMM dd, yyyy'),
+      // );
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {

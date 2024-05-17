@@ -1,4 +1,4 @@
-import { FC, useLayoutEffect, useState } from 'react';
+import { FC, useEffect, useLayoutEffect, useState } from 'react';
 import { Box, Fade } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -58,6 +58,10 @@ export const LoanAddressPage: FC = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
+
+  useEffect(() => {
+    setStateError(false);
+  }, [loanAddress.state]);
 
   return (
     <Fade in={!applicationForm.loading}>
