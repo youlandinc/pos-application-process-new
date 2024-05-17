@@ -24,13 +24,14 @@ export const useStoreData = () => {
         return res;
       })
       .catch((err) => {
-        const { header, message, variant } = err as HttpError;
+        const { header, message, variant, code } = err as HttpError;
         enqueueSnackbar(message, {
           variant: variant || 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
           isSimple: !header,
           header,
         });
+        return code;
       });
   }, []);
 

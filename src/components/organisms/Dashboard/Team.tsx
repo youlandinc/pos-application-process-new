@@ -8,6 +8,7 @@ import {
 } from '@mui/icons-material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/router';
 
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 
@@ -24,6 +25,7 @@ import MY_TEAM from '@/svg/dashboard/my_team.svg';
 
 export const Team = () => {
   const breakpoints = useBreakpoints();
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { saasState } = useSessionStorageState('tenantConfig');
 
@@ -36,6 +38,11 @@ export const Team = () => {
   const { loading } = useAsync(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
     if (!loanId) {
+      await router.push('/pipeline');
+      enqueueSnackbar('Invalid loan ID', {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
       return;
     }
     try {

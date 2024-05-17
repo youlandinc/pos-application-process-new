@@ -333,6 +333,31 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
       userType,
     ]);
 
+    const keydownEvent = useCallback(
+      (e: KeyboardEvent) => {
+        const button: (HTMLElement & { disabled?: boolean }) | null =
+          document.getElementById('application-loan-summary-next-button');
+
+        if (!button) {
+          return;
+        }
+
+        if (e.key === 'Enter') {
+          if (!button.disabled) {
+            nextStep?.();
+          }
+        }
+      },
+      [nextStep],
+    );
+
+    useEffect(() => {
+      document.addEventListener('keydown', keydownEvent, false);
+      return () => {
+        document.removeEventListener('keydown', keydownEvent, false);
+      };
+    }, [keydownEvent]);
+
     return (
       <StyledFormItem
         gap={3}
@@ -420,10 +445,12 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 )})`}
                 title={'Lender origination fee'}
               />
-              <LoanSummaryCardRow
-                content={POSFormatDollar(data?.lenderProcessingFee)}
-                title={'Lender processing fee'}
-              />
+              {data?.lenderProcessingFee !== null && (
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.lenderProcessingFee)}
+                  title={'Lender processing fee'}
+                />
+              )}
               <LoanSummaryCardRow
                 content={POSFormatDollar(data?.documentPreparationFee)}
                 title={'Document preparation fee'}
@@ -436,10 +463,12 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 content={POSFormatDollar(data?.underwritingFee)}
                 title={'Underwriting fee'}
               />
-              <LoanSummaryCardRow
-                content={POSFormatDollar(data?.wireFee)}
-                title={'Wire fee'}
-              />
+              {data?.wireFee !== null && (
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.wireFee)}
+                  title={'Wire fee'}
+                />
+              )}
               {/*<LoanSummaryCardRow*/}
               {/*  content={data?.proRatedInterest}*/}
               {/*  title={'Pro-rated interest'}*/}
@@ -517,7 +546,6 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                     )}
                     title={'Purpose'}
                   />
-                  {/*todo*/}
                   <LoanSummaryCardRow
                     content={
                       data?.propertyType ===
@@ -652,6 +680,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
           <StyledButton
             color={'primary'}
             disabled={nextState}
+            id={'application-loan-summary-next-button'}
             loading={nextState}
             onClick={nextStep}
             sx={{ width: 'calc(50% - 12px)' }}

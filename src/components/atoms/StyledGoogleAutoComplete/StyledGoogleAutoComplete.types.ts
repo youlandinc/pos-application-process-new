@@ -5,6 +5,7 @@ export interface StyledGoogleAutoCompleteProps {
   fullAddress?: boolean;
   disabled?: boolean;
   label?: string;
+  stateError?: boolean;
 }
 
 export interface _StyledGoogleAutoCompleteProps {

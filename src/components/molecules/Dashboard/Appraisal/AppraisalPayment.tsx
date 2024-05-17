@@ -66,7 +66,7 @@ export const AppraisalPayment = forwardRef<
         }}
         sx={{
           mr: 1,
-          mt: 2.5,
+          mt: 1,
           '& .MuiCheckbox-root': {
             mt: '-9px',
             mr: '-9px',

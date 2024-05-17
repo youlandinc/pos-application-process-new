@@ -59,6 +59,8 @@ export const RootModel = {
 
   detectUserActiveService: DetectUserActiveService,
   notificationStation: NotificationStation,
+
+  isLogout: types.boolean,
 };
 
 const RootStore = types.model(RootModel).actions((self) => {
@@ -117,6 +119,7 @@ const RootStore = types.model(RootModel).actions((self) => {
       }
       this.updateSession();
       this.updateProfile();
+      self.isLogout = true;
       self.detectUserActiveService.setDetectUserActiveService(void 0);
       const lastAuthId = userpool.getLastAuthUserId();
       if (lastAuthId) {
@@ -176,6 +179,7 @@ const initialState = {
   notificationStation: {
     notifications: [],
   },
+  isLogout: false,
 };
 
 export const rootStore = RootStore.create(initialState);

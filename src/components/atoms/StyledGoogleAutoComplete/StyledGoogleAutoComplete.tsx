@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Autocomplete, Box, Grid, Stack, Typography } from '@mui/material';
 import { LocationOnOutlined } from '@mui/icons-material';
 import parse from 'autosuggest-highlight/parse';
@@ -18,8 +18,14 @@ import { OPTIONS_COMMON_STATE } from '@/constants';
 import { StyledSelect, StyledTextField } from '@/components/atoms';
 
 export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
-  observer(({ address, fullAddress = true, disabled, label }) => {
+  observer(({ address, fullAddress = true, disabled, label, stateError }) => {
     const { formatAddress } = address;
+
+    const [stateValidate, setStateValidate] = useState(stateError);
+
+    useEffect(() => {
+      setStateValidate(stateError);
+    }, [stateError]);
 
     const handledPlaceSelect = useCallback((place: any) => {
       if (!place.formatted_address) {
@@ -101,9 +107,11 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                 label={'State'}
                 onChange={(e) => {
                   address.changeFieldValue('state', e.target.value as string);
+                  stateValidate && setStateValidate(undefined);
                 }}
                 options={OPTIONS_COMMON_STATE}
                 sx={{ flex: 1 }}
+                validate={stateValidate ? [' '] : undefined}
                 value={address.state}
               />
             </Stack>

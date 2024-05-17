@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/router';
 
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 
@@ -21,12 +22,18 @@ import { _fetchLoanDetail } from '@/requests/dashboard';
 
 export const Overview: FC = () => {
   const breakpoints = useBreakpoints();
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { saasState } = useSessionStorageState('tenantConfig');
 
   const { loading } = useAsync(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
     if (!loanId) {
+      await router.push('/pipeline');
+      enqueueSnackbar('Invalid loan ID', {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
       return;
     }
     try {
@@ -95,6 +102,7 @@ export const Overview: FC = () => {
 
           <OverviewLoanAddress
             isCustom={overviewData?.isCustom}
+            loanStatus={overviewData?.loanStatus}
             propertyAddress={overviewData?.propertyAddress}
           />
         </Stack>
