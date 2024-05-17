@@ -6,6 +6,7 @@ import { useMst } from '@/models/Root';
 
 import { usePersistFn } from './index';
 import { AUTO_HIDE_DURATION } from '@/constants';
+import { LoanSnapshotEnum } from '@/types';
 
 export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
   const { session, persistDataLoaded, userType, loginType } = useMst();
@@ -27,17 +28,25 @@ export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
 };
 
 export const useCheckIsLogin = (jumpPath = '/auth/login') => {
-  const { session, isLogout } = useMst();
+  const { session, logoutNotification } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
   const check = usePersistFn(() => {
     if (!session) {
-      if (isLogout) {
+      if (logoutNotification) {
         enqueueSnackbar("You haven't logged", {
           variant: 'error',
           autoHideDuration: AUTO_HIDE_DURATION,
         });
+      }
+      if (
+        router.pathname === jumpPath ||
+        router.pathname === '/' ||
+        router.pathname.includes('estimate-rate') ||
+        router.pathname.includes('auth-page')
+      ) {
+        return;
       }
       router.push(jumpPath);
     }

@@ -69,15 +69,7 @@ export const SpecificalPaymentInfo: FC<
           textAlign={'right'}
           variant={'h6'}
         >
-          Total:{' '}
-          <Typography
-            color={'primary.main'}
-            component={'span'}
-            textAlign={'right'}
-            variant={'h6'}
-          >
-            {POSFormatDollar(paymentAmount)}
-          </Typography>
+          Total: {POSFormatDollar(paymentAmount)}
         </Typography>
       </Stack>
       {additional && additional}
