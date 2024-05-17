@@ -183,7 +183,7 @@ export const Appraisal: FC = () => {
         header,
       });
     }
-  }, [enqueueSnackbar]);
+  }, [enqueueSnackbar, router]);
 
   const { loading } = useAsync(fetchData, [location.href]);
 
