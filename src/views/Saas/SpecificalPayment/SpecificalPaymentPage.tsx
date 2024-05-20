@@ -63,7 +63,7 @@ export const SpecificalPaymentPage = () => {
           isExpedited,
           appraisalFees,
           expeditedFees,
-          created,
+          // created,
         },
       } = await _creatSpecifyPayment({
         id: parseInt(id),
