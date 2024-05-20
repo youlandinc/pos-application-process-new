@@ -52,8 +52,6 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
 
-  console.log(saasState?.phone, saasState?.email);
-
   const computedData = useMemo(
     () => {
       if (
