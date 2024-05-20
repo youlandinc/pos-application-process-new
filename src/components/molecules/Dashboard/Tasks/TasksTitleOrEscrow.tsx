@@ -5,6 +5,8 @@ import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
+import { observer } from 'mobx-react-lite';
+
 import { Address, IAddress, SAddress } from '@/models/common/Address';
 
 import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
@@ -81,7 +83,7 @@ const resetAddress = {
   postcode: '',
 };
 
-export const TasksTitleOrEscrow: FC = () => {
+export const TasksTitleOrEscrow: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const { saasState } = useSessionStorageState('tenantConfig');
@@ -143,13 +145,13 @@ export const TasksTitleOrEscrow: FC = () => {
       });
       setManageForm(manageForm);
 
-      setIsLoanClosing(isLoanClosing ?? true);
-      setEscrowNumber(escrowNumber ?? undefined);
-      setInstructions(instructions ?? '');
-      setWhoIsManaging(whoIsManaging ?? '');
+      setIsLoanClosing(isLoanClosing || true);
+      setEscrowNumber(escrowNumber || undefined);
+      setInstructions(instructions || '');
+      setWhoIsManaging(whoIsManaging || '');
 
-      clientContactAddress.injectServerData(contactAddress ?? resetAddress);
-      clientManageAddress.injectServerData(manageAddress ?? resetAddress);
+      clientContactAddress.injectServerData(contactAddress || resetAddress);
+      clientManageAddress.injectServerData(manageAddress || resetAddress);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -199,7 +201,7 @@ export const TasksTitleOrEscrow: FC = () => {
     }
     return isLoanClosing
       ? conditionA() && !!instructions && !!escrowNumber
-      : conditionA() && conditionB() && whoIsManaging && !!instructions;
+      : conditionA() && conditionB() && !!whoIsManaging && !!instructions;
   }, [
     clientContactAddress.checkAddressValid,
     contactForm.companyName,
@@ -638,4 +640,4 @@ export const TasksTitleOrEscrow: FC = () => {
       </Stack>
     </Fade>
   );
-};
+});
