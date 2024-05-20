@@ -50,7 +50,10 @@ export const userpool = {
       `${this._getKeyPrefix()}.lastAuthUser_id`,
       userId as string,
     );
-    localStorage.setItem(`${prefix}.lastAuthUser_avatar`, avatar as string);
+    localStorage.setItem(
+      `${prefix}.lastAuthUser_avatar`,
+      (avatar ?? '') as string,
+    );
   },
   setLastAuthUserToken(
     key: LOGIN_STORAGE,

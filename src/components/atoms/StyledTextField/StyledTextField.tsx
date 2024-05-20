@@ -1,6 +1,7 @@
-import { Transitions } from '@/components/atoms';
 import { FC, useEffect, useState } from 'react';
 import { Box, TextField } from '@mui/material';
+
+import { Transitions } from '@/components/atoms';
 
 import { StyledTextFieldProps, StyledTextFieldStyles } from './index';
 
@@ -36,7 +37,13 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
                     <Box
                       component={'span'}
                       key={item + '_' + index}
-                      sx={{ display: 'block', m: 0 }}
+                      sx={{
+                        display: 'block',
+                        m: 0,
+                        '&:first-of-type': {
+                          mt: 0.5,
+                        },
+                      }}
                     >
                       {item}
                     </Box>
@@ -50,7 +57,13 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
               <Box
                 component={'span'}
                 key={item + '_' + index}
-                sx={{ display: 'block', m: 0 }}
+                sx={{
+                  display: 'block',
+                  m: 0,
+                  '&:first-of-type': {
+                    mt: 0.5,
+                  },
+                }}
               >
                 {item}
               </Box>
@@ -59,6 +72,7 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
             validate
           ) : undefined
         }
+        // InputLabelProps={{ shrink: true }}
         onChange={onChange}
         sx={{
           ...StyledTextFieldStyles,

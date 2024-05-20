@@ -41,7 +41,7 @@ export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
   return (
     <Stack
       alignItems={'center'}
-      gap={3}
+      gap={{ xs: 1.5, lg: 3 }}
       justifyContent={'center'}
       width={'100%'}
     >

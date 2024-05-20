@@ -58,15 +58,21 @@ export const StyledSelect: FC<StyledSelectProps> = ({
                       saasState?.posSettings?.h ?? 222
                     },100%,95%,1) !important`,
                   },
+                  '& .Mui-selected:hover': {
+                    bgcolor: `hsla(${
+                      saasState?.posSettings?.h ?? 222
+                    },100%,92%,1) !important`,
+                  },
                   '& .MuiMenuItem-root': {
                     fontSize: 14,
                     color: 'text.primary',
+                    p: 1.5,
                   },
                   ...sxList,
                 },
               },
               PaperProps: {
-                style: { marginTop: 12 },
+                style: { marginTop: 12, borderRadius: 8 },
               },
             },
           }}

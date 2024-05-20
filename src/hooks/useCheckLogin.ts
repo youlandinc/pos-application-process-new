@@ -1,12 +1,12 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
 import { useMst } from '@/models/Root';
 
-import { usePersistFn, useSessionStorageState } from './index';
+import { usePersistFn } from './index';
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { UserType } from '@/types';
+// import { LoanSnapshotEnum } from '@/types';
 
 export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
   const { session, persistDataLoaded, userType, loginType } = useMst();
@@ -28,93 +28,86 @@ export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
 };
 
 export const useCheckIsLogin = (jumpPath = '/auth/login') => {
-  const { session, persistDataLoaded, userType, loginType } = useMst();
+  const { session, logoutNotification } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const { saasState } = useSessionStorageState('tenantConfig');
 
   const check = usePersistFn(() => {
-    if (!saasState) {
-      return;
-    }
-    if (router.pathname.includes('application')) {
-      return;
-    }
-    if (
-      !persistDataLoaded ||
-      (!session && !userType && !loginType) ||
-      router.pathname === jumpPath
-    ) {
-      return;
-    }
-    router.push(jumpPath);
-    if (
-      !router.pathname.includes('pipeline') &&
-      router.pathname.includes('application')
-    ) {
-      enqueueSnackbar("You haven't logged", {
-        variant: 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-      });
+    if (!session) {
+      if (logoutNotification) {
+        enqueueSnackbar("You haven't logged", {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
+      }
+      if (
+        router.pathname === jumpPath ||
+        router.pathname === '/' ||
+        router.pathname.includes('estimate-rate') ||
+        router.pathname.includes('auth-page')
+      ) {
+        return;
+      }
+      router.push(jumpPath);
     }
   });
 
   // only detecting at the first time entry
   useEffect(() => {
     check();
-  }, [check, persistDataLoaded]);
+  }, [check, session]);
 };
 
-export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
-  const {
-    session,
-    persistDataLoaded,
-    userType,
-    loginType,
-    userSetting: { pipelineStatusInitialized, fetchPipelineStatus, applicable },
-  } = useMst();
-
-  const { enqueueSnackbar } = useSnackbar();
-  const router = useRouter();
-  const check = useCallback(async () => {
-    if (
-      !persistDataLoaded ||
-      (!session && !userType && !loginType && !applicable) ||
-      router.pathname.includes('/pipeline/profile') ||
-      router.pathname.includes('/pipeline/task') ||
-      router.pathname.includes('/change_email') ||
-      router.pathname.includes('/change_password')
-    ) {
-      return;
-    }
-    if (session) {
-      await fetchPipelineStatus();
-      if (
-        pipelineStatusInitialized &&
-        userType !== UserType.CUSTOMER &&
-        !applicable
-      ) {
-        await router.push(jumpPath);
-        enqueueSnackbar('Your information is incomplete', {
-          variant: 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-        });
-      }
-    }
-  }, [
-    applicable,
-    enqueueSnackbar,
-    fetchPipelineStatus,
-    jumpPath,
-    loginType,
-    persistDataLoaded,
-    pipelineStatusInitialized,
-    router,
-    session,
-    userType,
-  ]);
-
-  useEffect(() => {
-    check();
-  }, [check]);
-};
+// export const useCheckInfoIsComplete = (jumpPath = '/pipeline/profile') => {
+//   const {
+//     session,
+//     persistDataLoaded,
+//     userType,
+//     loginType,
+//     userSetting: { pipelineStatusInitialized, fetchPipelineStatus, applicable },
+//   } = useMst();
+//
+//   const { enqueueSnackbar } = useSnackbar();
+//   const router = useRouter();
+//   const check = useCallback(async () => {
+//     if (
+//       !persistDataLoaded ||
+//       (!session && !userType && !loginType && !applicable) ||
+//       router.pathname.includes('/pipeline/profile') ||
+//       router.pathname.includes('/pipeline/task') ||
+//       router.pathname.includes('/change_email') ||
+//       router.pathname.includes('/change_password')
+//     ) {
+//       return;
+//     }
+//     if (session) {
+//       await fetchPipelineStatus();
+//       if (
+//         pipelineStatusInitialized &&
+//         userType !== UserType.CUSTOMER &&
+//         !applicable
+//       ) {
+//         await router.push(jumpPath);
+//         enqueueSnackbar('Your information is incomplete', {
+//           variant: 'error',
+//           autoHideDuration: AUTO_HIDE_DURATION,
+//         });
+//       }
+//     }
+//   }, [
+//     applicable,
+//     enqueueSnackbar,
+//     fetchPipelineStatus,
+//     jumpPath,
+//     loginType,
+//     persistDataLoaded,
+//     pipelineStatusInitialized,
+//     router,
+//     session,
+//     userType,
+//   ]);
+//
+//   useEffect(() => {
+//     check();
+//   }, [check]);
+// };

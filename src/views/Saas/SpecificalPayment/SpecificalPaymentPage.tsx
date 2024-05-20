@@ -2,10 +2,10 @@ import { useCallback, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
-import { addDays, format } from 'date-fns';
+// import { addDays, format } from 'date-fns';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { POSFormatDollar, POSGetParamsFromUrl } from '@/utils';
+import { POSGetParamsFromUrl } from '@/utils';
 
 import { HttpError } from '@/types';
 
@@ -37,7 +37,7 @@ export const SpecificalPaymentPage = () => {
   const [isExpedited, setIsExpedited] = useState(false);
   const [expeditedFees, setExpeditedFees] = useState(0);
   const [paymentAmount, setPaymentAmount] = useState(0);
-  const [closeDate, setCloseDate] = useState<any>();
+  // const [closeDate, setCloseDate] = useState<any>();
 
   const [paymentStatus, setPaymentStatus] = useState('');
 
@@ -78,11 +78,11 @@ export const SpecificalPaymentPage = () => {
       setExpeditedFees(expeditedFees);
       setPaymentAmount(paymentAmount);
 
-      setCloseDate(
-        typeof created === 'number'
-          ? format(addDays(created, 3), 'MMMM dd, yyyy')
-          : format(new Date(), 'MMMM dd, yyyy'),
-      );
+      // setCloseDate(
+      //   typeof created === 'number'
+      //     ? format(addDays(created, 3), 'MMMM dd, yyyy')
+      //     : format(new Date(), 'MMMM dd, yyyy'),
+      // );
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -161,8 +161,8 @@ export const SpecificalPaymentPage = () => {
                 </Typography>
 
                 <Typography variant={'body2'}>
-                  To move forward with your loan application, an appraisal fee
-                  of {POSFormatDollar(appraisalFees)} is due by {closeDate}
+                  To move forward with your loan application, please complete
+                  the payment below.
                 </Typography>
                 <StyledPaymentCard
                   cb={(status) => {

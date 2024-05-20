@@ -2,9 +2,9 @@ import { POSFlex, POSFont } from '@/styles';
 
 export const StyledSelectOptionStyles = {
   ...POSFlex('center', 'center', 'row'),
-  ...POSFont({ xs: 16, md: 20 }, 600, 1.5, 'info.dark'),
+  ...POSFont({ xs: 14, md: 20 }, 600, 1.5, 'info.dark'),
   cursor: 'pointer',
-  height: 64,
+  height: { xs: 48, lg: 64 },
   width: '100%',
   maxWidth: 600,
   border: '2px solid',

@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 
 import { StyledBadgeProps } from './index';
 import { POSFlex, POSFont } from '@/styles';
-import { LoanStage } from '@/types';
+import { PipelineLoanStageEnum } from '@/types';
 
 export const StyledBadge: FC<StyledBadgeProps> = ({ content, status }) => {
   const computedStyles = () => ({
@@ -14,46 +14,42 @@ export const StyledBadge: FC<StyledBadgeProps> = ({ content, status }) => {
     borderRadius: 1,
     background: () => {
       switch (status) {
-        case LoanStage.Application:
-          return 'rgba(144, 149, 163, 0.2);';
-        case LoanStage.FinalClosing:
-          return 'rgba(68, 235, 10, 0.2)';
-        case LoanStage.Approved:
-          return 'rgba(43, 193, 85, 0.1)';
-        case LoanStage.PreApproved:
-          return 'rgba(21, 110, 250, 0.2)';
-        case LoanStage.RateLocked:
-          return 'rgba(63, 81, 181, 0.2)';
-        case LoanStage.RateLocking:
-          return 'rgba(63, 81, 181, 0.2)';
-        case LoanStage.Refusal:
-          return 'rgba(255, 109, 77, 0.1)';
-        case LoanStage.DocsOut:
+        case PipelineLoanStageEnum.not_submitted:
+          return 'rgba(176, 176, 176, 0.2)';
+        case PipelineLoanStageEnum.scenario:
+          return 'rgba(176, 176, 176, 0.2)';
+        case PipelineLoanStageEnum.inactive:
+          return 'rgba(176, 176, 176, 0.2)';
+        case PipelineLoanStageEnum.initial_approval:
+          return '#DBF4EF';
+        case PipelineLoanStageEnum.preparing_docs:
+          return 'rgba(10, 154, 235, 0.2)';
+        case PipelineLoanStageEnum.docs_out:
           return 'rgba(68, 10, 235, 0.15)';
-        case LoanStage.Funded:
-          return 'rgba(68, 235, 10, 0.20)';
+        case PipelineLoanStageEnum.funded:
+          return 'rgba(68, 235, 10, 0.2)';
+        case PipelineLoanStageEnum.rejected:
+          return 'rgba(235, 10, 10, 0.15)';
       }
     },
     color: () => {
       switch (status) {
-        case LoanStage.Application:
-          return '#202939';
-        case LoanStage.FinalClosing:
-          return '#00A223';
-        case LoanStage.Approved:
-          return '#4FBF67';
-        case LoanStage.PreApproved:
-          return '#3F81E9';
-        case LoanStage.RateLocked:
-          return '#3F51B5';
-        case LoanStage.RateLocking:
-          return '#3F51B5';
-        case LoanStage.Refusal:
-          return '#FF6D4D';
-        case LoanStage.DocsOut:
+        case PipelineLoanStageEnum.not_submitted:
+          return '#4F4F4F';
+        case PipelineLoanStageEnum.scenario:
+          return '#4F4F4F';
+        case PipelineLoanStageEnum.inactive:
+          return 'rgba(79, 79, 79, 0.5)';
+        case PipelineLoanStageEnum.initial_approval:
+          return '#099D99';
+        case PipelineLoanStageEnum.preparing_docs:
+          return '#005EA1';
+        case PipelineLoanStageEnum.docs_out:
           return '#5A00A1';
-        case LoanStage.Funded:
+        case PipelineLoanStageEnum.funded:
           return '#00A123';
+        case PipelineLoanStageEnum.rejected:
+          return '#A10000';
       }
     },
   });

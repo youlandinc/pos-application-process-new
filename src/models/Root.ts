@@ -5,40 +5,36 @@ import { Instance, types } from 'mobx-state-tree';
 
 import {
   ApplicationForm,
-  Bpmn,
   DetectUserActiveService,
   NotificationStation,
-  PTaskForm,
-  SelectedProcessData,
-  UserSetting,
+  // PTaskForm,
+  // UserSetting,
   //UserConfig,
   //UserProfile
 } from './base';
 
-import {
-  LoanStage,
-  LoginType,
-  SceneType,
-  ServerTaskKey,
-  UserType,
-} from '@/types/enum';
+import { LoginType, UserType } from '@/types/enum';
 import { User } from '@/types/user';
 
-import { userpool } from '@/constants';
+import { FormData, userpool } from '@/constants';
+import {
+  LoanPropertyTypeEnum,
+  LoanPropertyUnitEnum,
+  LoanSnapshotEnum,
+} from '@/types';
+import { DashboardInfo } from '@/models/base/DashboardInfo';
 
 export const RootModel = {
   persistDataLoaded: types.boolean,
   loadedGoogle: types.boolean,
 
-  bpmn: Bpmn,
-  selectedProcessData: SelectedProcessData,
-
   applicationForm: ApplicationForm,
+  dashboardInfo: DashboardInfo,
 
-  pipelineTask: PTaskForm,
+  // pipelineTask: PTaskForm,
 
   session: types.maybe(types.frozen<UserSession>()),
-  userSetting: UserSetting,
+  // userSetting: UserSetting,
   userProfile: types.maybe(types.frozen<ClientUserProfile>()),
 
   // todo: need extract to user model
@@ -63,6 +59,8 @@ export const RootModel = {
 
   detectUserActiveService: DetectUserActiveService,
   notificationStation: NotificationStation,
+
+  logoutNotification: types.boolean,
 };
 
 const RootStore = types.model(RootModel).actions((self) => {
@@ -115,6 +113,9 @@ const RootStore = types.model(RootModel).actions((self) => {
     resetApplicationForm() {
       self.applicationForm.resetForm();
     },
+    setLogoutNotification(val: boolean) {
+      self.logoutNotification = val;
+    },
     logout() {
       if (Router.pathname === '/auth/sign_in') {
         return;
@@ -127,9 +128,7 @@ const RootStore = types.model(RootModel).actions((self) => {
         userpool.clearLastAuthUserInfo(lastAuthId);
         userpool.clearLastAuthUserToken(lastAuthId);
       }
-      Router.pathname === '/'
-        ? Router.push('/')
-        : (window.location.href = '/auth/login');
+      window.location.href = '/auth/login';
     },
   };
 });
@@ -139,38 +138,40 @@ const initialState = {
   persistDataLoaded: false,
 
   session: void 0,
-  bpmn: {
-    processId: '',
-    taskId: '',
-    ServerTaskKey: ServerTaskKey.starting,
-    variables: [{}],
-  },
 
   applicationForm: {
+    loading: true,
+    isBind: false,
     initialized: false,
-    productCategory: void 0,
-    applicationType: void 0,
+    loanId: '',
+    snapshot: LoanSnapshotEnum.starting_question,
+    startingQuestion: FormData[LoanSnapshotEnum.starting_question],
+    estimateRate: FormData[LoanSnapshotEnum.estimate_rate],
+    loanAddress: FormData[LoanSnapshotEnum.loan_address],
+    backgroundInformation: FormData[LoanSnapshotEnum.background_information],
+    compensationInformation: FormData[LoanSnapshotEnum.compensation_page],
   },
-
-  selectedProcessData: {
-    data: void 0,
-    scene: SceneType.default,
+  dashboardInfo: {
+    propertyAddress: FormData[LoanSnapshotEnum.loan_address],
+    propertyType: LoanPropertyTypeEnum.default,
+    propertyUnit: LoanPropertyUnitEnum.default,
+    loanType: '',
     loading: false,
-    loanStage: LoanStage.Application,
+    loanId: '',
   },
 
-  pipelineTask: {
-    pipelineInitialized: false,
-    allowSubmit: false,
-  },
+  // pipelineTask: {
+  //   pipelineInitialized: false,
+  //   allowSubmit: false,
+  // },
 
   userProfile: void 0,
-  userSetting: {
-    loading: false,
-    pipelineStatus: void 0,
-    pipelineStatusInitialized: false,
-    applicable: false,
-  },
+  // userSetting: {
+  //   loading: false,
+  //   pipelineStatus: void 0,
+  //   pipelineStatusInitialized: false,
+  //   applicable: false,
+  // },
   userType: void 0,
   loginType: void 0,
 
@@ -180,6 +181,7 @@ const initialState = {
   notificationStation: {
     notifications: [],
   },
+  logoutNotification: false,
 };
 
 export const rootStore = RootStore.create(initialState);

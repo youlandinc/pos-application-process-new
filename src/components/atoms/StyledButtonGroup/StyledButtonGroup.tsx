@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 
+import { useBreakpoints } from '@/hooks';
+
 import { StyledButtonGroupProps, StyledButtonGroupStyles } from './index';
 
 export const StyledButtonGroup: FC<StyledButtonGroupProps> = ({
@@ -10,6 +12,8 @@ export const StyledButtonGroup: FC<StyledButtonGroupProps> = ({
   options,
   ...rest
 }) => {
+  const breakpoints = useBreakpoints();
+
   return (
     <ToggleButtonGroup
       color={color}
@@ -18,11 +22,16 @@ export const StyledButtonGroup: FC<StyledButtonGroupProps> = ({
         ...StyledButtonGroupStyles,
         ...sx,
       }}
-      value={value === undefined ? '' : value ? 'yes' : 'no'}
+      value={value}
       {...rest}
     >
       {options?.map((item, index) => (
-        <ToggleButton disableRipple key={index} value={item.value}>
+        <ToggleButton
+          disableRipple
+          key={index}
+          size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
+          value={item.value}
+        >
           {item.label}
         </ToggleButton>
       ))}

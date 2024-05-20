@@ -1,4 +1,9 @@
-import { AppraisalStage, CommonBorrowerType, UserType } from '@/types';
+import {
+  AppraisalStatusEnum,
+  DashboardTaskCitizenshipStatus,
+  LoanAnswerEnum,
+  UserType,
+} from '@/types';
 import { ReactNode } from 'react';
 
 export const HASH_COMMON_PERSON = {
@@ -57,31 +62,62 @@ export const HASH_COMMON_PERSON = {
 export const OPTIONS_COMMON_CITIZEN_TYPE: Option[] = [
   {
     label: 'US citizen',
-    value: CommonBorrowerType.us_citizen,
-    key: CommonBorrowerType.us_citizen,
+    value: DashboardTaskCitizenshipStatus.us_citizen,
+    key: DashboardTaskCitizenshipStatus.us_citizen,
   },
   {
     label: 'Permanent Resident-Alien',
-    value: CommonBorrowerType.permanent_resident_alien,
-    key: CommonBorrowerType.permanent_resident_alien,
+    value: DashboardTaskCitizenshipStatus.permanent_resident_alien,
+    key: DashboardTaskCitizenshipStatus.permanent_resident_alien,
   },
   {
     label: 'Foreign national',
-    value: CommonBorrowerType.foreign_national,
-    key: CommonBorrowerType.foreign_national,
+    value: DashboardTaskCitizenshipStatus.foreign_national,
+    key: DashboardTaskCitizenshipStatus.foreign_national,
   },
 ];
 
 export const OPTIONS_COMMON_YES_OR_NO: Option[] = [
   {
     label: 'Yes',
-    value: 'yes',
-    key: 'yes',
+    value: LoanAnswerEnum.yes,
+    key: LoanAnswerEnum.yes,
   },
   {
     label: 'No',
-    value: 'no',
-    key: 'no',
+    value: LoanAnswerEnum.no,
+    key: LoanAnswerEnum.no,
+  },
+];
+
+export const OPTIONS_COMMON_YES_OR_NOT_SURE: Option[] = [
+  {
+    label: 'Yes',
+    value: LoanAnswerEnum.yes,
+    key: LoanAnswerEnum.yes,
+  },
+  {
+    label: 'Not sure',
+    value: LoanAnswerEnum.no,
+    key: LoanAnswerEnum.no,
+  },
+];
+
+export const OPTIONS_COMMON_LOAN_ANSWER: Option[] = [
+  {
+    label: 'Yes',
+    value: LoanAnswerEnum.yes,
+    key: LoanAnswerEnum.yes,
+  },
+  {
+    label: 'No',
+    value: LoanAnswerEnum.no,
+    key: LoanAnswerEnum.no,
+  },
+  {
+    label: 'Not sure',
+    value: LoanAnswerEnum.not_sure,
+    key: LoanAnswerEnum.not_sure,
   },
 ];
 
@@ -314,33 +350,6 @@ export const OPTIONS_COMMON_STATE: Option[] = [
   { label: 'Wyoming', value: 'WY', key: 'WY' },
 ];
 
-export const OPTIONS_COMMON_ENTRANCE: Option[] = [
-  // {
-  //   name: 'Mortgage',
-  //   url: '/application/mortgage',
-  // },
-  //{ name: 'Alternative mortgage', url: '/application/alternative_mortgage' },
-  //{ name: 'Rental', url: '/application/rental' },
-  {
-    label: 'Stabilized Bridge',
-    key: '/application/bridge',
-    value: '/application/bridge',
-  },
-  {
-    label: 'Fix and Flip',
-    key: '/application/fix_and_flip',
-    value: '/application/fix_and_flip',
-  },
-  {
-    label: 'Ground-up Construction',
-    key: '/application/ground_up_construction',
-    value: '/application/ground_up_construction',
-  },
-  //{ name: 'Jumbo', url: '/application/jumbo' },
-  //{ name: 'Crypto mortgage', url: '/application/crypto_mortgage' },
-  //{ name: 'Crypto loan', url: '/application/crypto_loan' },
-];
-
 export const OPTIONS_COMMON_MARKS: {
   value: number;
   label?: ReactNode;
@@ -367,35 +376,36 @@ export const OPTIONS_COMMON_MARKS: {
   { label: '', value: 19 },
   { label: '20+', value: 20 },
 ];
+
 export const OPTIONS_COMMON_APPRAISAL_STAGE: Option[] = [
   {
     label: 'Not started',
-    value: AppraisalStage.NotStarted,
-    key: AppraisalStage.NotStarted,
+    value: AppraisalStatusEnum.not_started,
+    key: AppraisalStatusEnum.not_started,
   },
   {
     label: 'Paid for',
-    value: AppraisalStage.PaidFor,
-    key: AppraisalStage.PaidFor,
+    value: AppraisalStatusEnum.paid_for,
+    key: AppraisalStatusEnum.paid_for,
   },
   {
     label: 'Canceled',
-    value: AppraisalStage.Canceled,
-    key: AppraisalStage.Canceled,
+    value: AppraisalStatusEnum.canceled,
+    key: AppraisalStatusEnum.canceled,
   },
   {
     label: 'Ordered',
-    value: AppraisalStage.Ordered,
-    key: AppraisalStage.Ordered,
+    value: AppraisalStatusEnum.ordered,
+    key: AppraisalStatusEnum.ordered,
   },
   {
     label: 'Scheduled',
-    value: AppraisalStage.Scheduled,
-    key: AppraisalStage.Scheduled,
+    value: AppraisalStatusEnum.scheduled,
+    key: AppraisalStatusEnum.scheduled,
   },
   {
     label: 'Completed',
-    value: AppraisalStage.Completed,
-    key: AppraisalStage.Completed,
+    value: AppraisalStatusEnum.completed,
+    key: AppraisalStatusEnum.completed,
   },
 ];

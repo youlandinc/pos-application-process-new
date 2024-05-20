@@ -14,13 +14,13 @@ export const StyledBoxWrap: FC<StyledBoxWrapProps> = ({ sx, children }) => {
           width: {
             xxl: 1440,
             xl: 1240,
-            lg: 938,
+            lg: 976,
             xs: '100%',
           },
-          py: 'clamp(40px,6.4vw,80px) ',
+          py: 'clamp(24px,6.4vw,60px)',
           px: {
             lg: 0,
-            xs: 'clamp(24px,6.4vw,80px)',
+            xs: 'clamp(24px,6.4vw,60px)',
           },
           ...sx,
         }}

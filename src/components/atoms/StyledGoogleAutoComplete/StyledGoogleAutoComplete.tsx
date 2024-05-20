@@ -18,42 +18,50 @@ import { OPTIONS_COMMON_STATE } from '@/constants';
 import { StyledSelect, StyledTextField } from '@/components/atoms';
 
 export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
-  observer(({ address, fullAddress = true, disabled, label }) => {
+  observer(({ address, fullAddress = true, disabled, label, stateError }) => {
     const { formatAddress } = address;
 
-    const handledPlaceSelect = useCallback((place: any) => {
-      if (!place.formatted_address) {
-        return;
-      }
+    const [stateValidate, setStateValidate] = useState(stateError);
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      place.address_components.forEach((com) => {
-        const type = com.types[0];
-        if (!type) {
+    const handledPlaceSelect = useCallback(
+      (place: any) => {
+        if (!place.formatted_address) {
           return;
         }
-        switch (type) {
-          case 'administrative_area_level_1': {
-            address.changeFieldValue('state', com.short_name);
+        stateValidate && setStateValidate(false);
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        place.address_components.forEach((com) => {
+          const type = com.types[0];
+          if (!type) {
             return;
           }
-          case 'locality': {
-            address.changeFieldValue('city', com.long_name);
-            return;
+          switch (type) {
+            case 'administrative_area_level_1': {
+              address.changeFieldValue('state', com.short_name);
+              return;
+            }
+            case 'locality': {
+              address.changeFieldValue('city', com.long_name);
+              return;
+            }
+            case 'route': {
+              address.changeFieldValue('street', com.long_name);
+              return;
+            }
+            case 'postal_code': {
+              address.changeFieldValue('postcode', com.long_name);
+              return;
+            }
           }
-          case 'route': {
-            address.changeFieldValue('street', com.long_name);
-            return;
-          }
-          case 'postal_code': {
-            address.changeFieldValue('postcode', com.long_name);
-            return;
-          }
-        }
-      });
+        });
+        address.changeFieldValue('lat', place.geometry.location.lat());
+        address.changeFieldValue('lng', place.geometry.location.lng());
+      },
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+      [stateValidate],
+    );
 
     return (
       <Stack width={'100%'}>
@@ -102,6 +110,7 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                 }}
                 options={OPTIONS_COMMON_STATE}
                 sx={{ flex: 1 }}
+                validate={stateError ? [' '] : undefined}
                 value={address.state}
               />
             </Stack>

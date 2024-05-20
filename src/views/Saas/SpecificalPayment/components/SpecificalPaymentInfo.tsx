@@ -2,10 +2,10 @@ import { FC, ReactNode } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { POSFormatDollar } from '@/utils';
-import { SPaymentDetails } from '@/requests/dashboard';
+import { DashboardPaymentDetailsResponse } from '@/types';
 
 export const SpecificalPaymentInfo: FC<
-  Partial<SPaymentDetails> & {
+  Partial<DashboardPaymentDetailsResponse> & {
     additional?: ReactNode;
   }
 > = ({
@@ -63,16 +63,13 @@ export const SpecificalPaymentInfo: FC<
         {/*    </Typography>*/}
         {/*  </Stack>*/}
         {/*)}*/}
-        <Typography color={'#365EC6'} mt={1} textAlign={'right'} variant={'h5'}>
-          Total:{' '}
-          <Typography
-            color={'#365EC6'}
-            component={'span'}
-            textAlign={'right'}
-            variant={'h4'}
-          >
-            {POSFormatDollar(paymentAmount)}
-          </Typography>
+        <Typography
+          color={'primary.main'}
+          mt={1}
+          textAlign={'right'}
+          variant={'h6'}
+        >
+          Total: {POSFormatDollar(paymentAmount)}
         </Typography>
       </Stack>
       {additional && additional}

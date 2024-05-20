@@ -1,32 +1,5 @@
 import { User } from '@/types/user';
-import {
-  BorrowerData,
-  BorrowerDebtRecordData,
-  BorrowerDebtSummaryData,
-  BPEstimateRateData,
-  BREstimateRateData,
-  BridgeApplicationProcessSnapshot,
-  BridgeStartingData,
-  FixApplicationProcessSnapshot,
-  FixStartingData,
-  FPEstimateRateData,
-  FREstimateRateData,
-  IncomeData,
-  MortgageAboutOtherRelationData,
-  MortgageApplicationProcessSnapshot,
-  MortgageAssetsData,
-  MortgageFinancialSituationData,
-  MortgageLoanLockFeeData,
-  MortgagePropertyNewData,
-  MortgagePropertyOwnData,
-  MortgageStartingData,
-  MRMonthlyPaymentData,
-  MRResidenceOwnData,
-  MRStartingData,
-  MRWhyRefinanceData,
-  SelfInfoData,
-  WhereKnowUsData,
-} from '@/types/application';
+import { ReactNode } from 'react';
 
 export interface AddressData {
   address: string;
@@ -34,51 +7,50 @@ export interface AddressData {
   city: string;
   state: string;
   postcode: string;
+  lng?: number;
+  lat?: number;
 }
 
 export type EstateAgent = User.BaseUserInfo;
 
-export interface Encompass {
-  loanId: string;
-  applicationId: string;
-  borrowerAltId: string;
-  coBorrowerAltId: string;
-  status: 'Locked' | 'Locking' | 'Unlocked';
-  currentLockDate?: string;
-  currentLockExpires?: string;
-  currentNumberOfDays?: string;
+export enum LoanAnswerEnum {
+  default = '',
+  yes = 'YES',
+  no = 'NO',
+  not_sure = 'NOT_SURE',
 }
 
-export type VariableValue =
-  | EstateAgent
-  | Encompass
-  | SelfInfoData
-  | IncomeData
-  | BorrowerData
-  | BorrowerDebtSummaryData
-  | BorrowerDebtRecordData
-  | WhereKnowUsData
-  // mortgage
-  | MortgageApplicationProcessSnapshot
-  | MortgageStartingData
-  | MortgagePropertyNewData
-  | MortgageLoanLockFeeData
-  | MortgageAssetsData
-  | MortgagePropertyOwnData
-  | MortgageAboutOtherRelationData
-  | MortgageFinancialSituationData
-  // mortgage refinance
-  | MRStartingData
-  | MRMonthlyPaymentData
-  | MRWhyRefinanceData
-  | MRResidenceOwnData
-  // bridge
-  | BridgeApplicationProcessSnapshot
-  | BridgeStartingData
-  | BPEstimateRateData
-  | BREstimateRateData
-  // fix and flip
-  | FixApplicationProcessSnapshot
-  | FixStartingData
-  | FPEstimateRateData
-  | FREstimateRateData;
+export enum PipelineLoanStageEnum {
+  not_submitted = 'NOT_SUBMITTED',
+  //scenario = submitted
+  scenario = 'SCENARIO',
+  initial_approval = 'INITIAL_APPROVAL',
+  preparing_docs = 'PREPARING_DOCS',
+  docs_out = 'DOCS_OUT',
+  funded = 'FUNDED',
+  rejected = 'REJECTED',
+  inactive = 'INACTIVE',
+}
+
+export enum LayoutSceneTypeEnum {
+  application = 'APPLICATION',
+  pipeline = 'PIPELINE',
+  dashboard = 'DASHBOARD',
+  pipeline_without_all = 'PIPELINE_WITHOUT_ALL',
+}
+
+export interface MenuItems {
+  key: string;
+  label: string;
+  path: string;
+  icon: ReactNode;
+}
+
+export enum AppraisalStatusEnum {
+  not_started = 'NOT_STARTED',
+  paid_for = 'PAID_FOR',
+  ordered = 'ORDERED',
+  scheduled = 'SCHEDULED',
+  canceled = 'CANCELED',
+  completed = 'COMPLETED',
+}

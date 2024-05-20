@@ -180,7 +180,7 @@ export const SignUp: FC<SignUpProps> = observer(
         store.updateUserType(userType as UserType);
         store.updateLoginType(loginType as LoginType);
         const { asPath } = router;
-        if (asPath.includes('processId')) {
+        if (asPath.includes('loanId')) {
           setLoading(false);
           return router.push(asPath);
         }
@@ -261,7 +261,6 @@ export const SignUp: FC<SignUpProps> = observer(
       setLoading(true);
       try {
         await _userVerifyCode(data);
-        successCb && successCb();
         close();
         if (isRedirect) {
           await router.push('./login');
@@ -279,16 +278,7 @@ export const SignUp: FC<SignUpProps> = observer(
       } finally {
         setLoading(false);
       }
-    }, [
-      close,
-      email,
-      enqueueSnackbar,
-      handledLogin,
-      isRedirect,
-      otp,
-      router,
-      successCb,
-    ]);
+    }, [close, email, enqueueSnackbar, handledLogin, isRedirect, otp, router]);
 
     const isDisabled = useMemo(() => {
       for (const [, value] of Object.entries(passwordError)) {

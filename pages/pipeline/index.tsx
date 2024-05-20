@@ -3,6 +3,7 @@ import { FC } from 'react';
 import dynamic from 'next/dynamic';
 
 import { observer } from 'mobx-react-lite';
+import { LayoutSceneTypeEnum } from '@/types';
 
 const DynamicPipelinePage = dynamic(
   () =>
@@ -30,7 +31,7 @@ const PipelineProfileModule: FC = observer(() => {
       <Head>
         <title>My loans</title>
       </Head>
-      <DynamicPipelinePage scene={'pipeline_without_all'}>
+      <DynamicPipelinePage scene={LayoutSceneTypeEnum.pipeline_without_all}>
         <DynamicPipelineListPage />
       </DynamicPipelinePage>
     </>

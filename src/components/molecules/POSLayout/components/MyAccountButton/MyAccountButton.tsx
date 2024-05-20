@@ -1,18 +1,4 @@
-import { userpool } from '@/constants';
-
-import { useBreakpoints } from '@/hooks';
-import { UserType } from '@/types';
-import { ExpandMoreOutlined, PermIdentityOutlined } from '@mui/icons-material';
-import {
-  ClickAwayListener,
-  Grow,
-  MenuItem,
-  MenuList,
-  Paper,
-  Popper,
-} from '@mui/material';
-import { useRouter } from 'next/router';
-import {
+import React, {
   FC,
   MouseEvent,
   SyntheticEvent,
@@ -21,7 +7,22 @@ import {
   useRef,
   useState,
 } from 'react';
+import {
+  ClickAwayListener,
+  Grow,
+  MenuItem,
+  MenuList,
+  Paper,
+  Popper,
+} from '@mui/material';
+import { ExpandMoreOutlined, PermIdentityOutlined } from '@mui/icons-material';
+import { useRouter } from 'next/router';
 
+import { useBreakpoints } from '@/hooks';
+
+import { userpool } from '@/constants';
+
+import { LayoutSceneTypeEnum, UserType } from '@/types';
 import { MyAccountButtonProps, MyAccountStyles } from './index';
 
 import {
@@ -49,7 +50,7 @@ const MENU_LIST_CUSTOMER = [
 ];
 
 const MENU_LIST_NOT_CUSTOMER = [
-  { label: 'info', url: '/pipeline/profile' },
+  // { label: 'info', url: '/pipeline/profile' },
   { label: 'Change avatar', url: 'change_avatar' },
   { label: 'Change email', url: '/auth/change_email' },
   {
@@ -108,10 +109,10 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
 
   const renderMenuList = useMemo(() => {
     switch (scene) {
-      case 'application':
-      case 'dashboard':
-      case 'pipeline':
-      case 'pipeline_without_all':
+      case LayoutSceneTypeEnum.application:
+      case LayoutSceneTypeEnum.dashboard:
+      case LayoutSceneTypeEnum.pipeline:
+      case LayoutSceneTypeEnum.pipeline_without_all:
         if (userType === UserType.CUSTOMER) {
           return MENU_LIST_CUSTOMER.map((item, index) => (
             <MenuItem
@@ -198,7 +199,6 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
               <ClickAwayListener onClickAway={handledClose}>
                 <MenuList sx={{ mt: 2, width: 170, p: 0 }}>
                   <StyledAvatarUpload ref={avatarRef} />
-
                   {renderMenuList}
                 </MenuList>
               </ClickAwayListener>

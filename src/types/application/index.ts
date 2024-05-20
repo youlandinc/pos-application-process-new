@@ -1,6 +1,4 @@
-export * from './common';
+export * from './base';
 
-export * from './mortgage';
-export * from './bridge';
-export * from './fix';
-export * from './ground';
+export * from './StartingQuestion';
+export * from './EstimateRate';

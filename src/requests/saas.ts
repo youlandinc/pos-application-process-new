@@ -2,9 +2,6 @@ import { del, get, post, put } from './axios';
 import { User } from '@/types/user';
 
 // common
-export const _fetchMyTeamData = () => {
-  return get('/usercenter/api/tenant/query/fulfillConfig');
-};
 
 export const _fetchSaasConfig = () => {
   return get<User.TenantConfigRequest>(
@@ -50,6 +47,7 @@ export interface ILoanRate {
   interestReserveAmount: number;
 }
 
+// payment
 export const _creatSpecifyPayment = (param: ICreateSpecifyPaymentParams) => {
   return post<ICreatePaymentRes>('/los/loan/approval/createPayment', param);
 };
@@ -78,7 +76,6 @@ export const _portalFetchData = (loanId: string) => {
   return get(`/los/anon/document/portal/form/${loanId}`);
 };
 
-// ?
 export const _portalRating = (params: {
   loanId: string;
   score: string | number | null;

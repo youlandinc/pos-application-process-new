@@ -1,42 +1,43 @@
-import { HttpError } from '@/types';
-import { createTheme } from '@mui/material/styles';
 import { useEffect, useMemo } from 'react';
+
 import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { Router } from 'next/router';
 import Script from 'next/script';
 
 import { useAsync } from 'react-use';
-
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import { ThemeProvider } from '@mui/material';
-import CssBaseline from '@mui/material/CssBaseline';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import en from 'date-fns/locale/en-US';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import NProgress from 'nprogress';
 import { SnackbarProvider, useSnackbar } from 'notistack';
+
+import { ThemeProvider } from '@mui/material';
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import CssBaseline from '@mui/material/CssBaseline';
+import { createTheme } from '@mui/material/styles';
+import { createEmotionCache } from '@/styles';
+import { theme } from '@/theme';
 
 import 'normalize.css';
 import 'reset.css';
 import '@/styles/globals.css';
 
-import { createEmotionCache } from '@/styles';
-import { theme } from '@/theme';
+import { Provider, rootStore } from '@/models/Root';
+
+import { _fetchSaasConfig } from '@/requests/saas';
+import { HttpError } from '@/types';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 import {
   ProviderDetectActive,
   ProviderPersistData,
   StyledLoading,
+  StyledNotification,
 } from '@/components/atoms';
-import { Provider, rootStore } from '@/models/Root';
-
-import { _fetchSaasConfig } from '@/requests/saas';
-import { useBreakpoints, useSessionStorageState } from '@/hooks';
-import { AUTO_HIDE_DURATION } from '@/constants';
-
-import { StyledNotification } from '@/components/atoms';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -93,6 +94,7 @@ export default function MyApp(props: MyAppProps) {
             light: `hsla(${saasState?.posSettings?.h ?? 222},100%,92%,1)`,
             lighter: `hsla(${saasState?.posSettings?.h ?? 222},100%,97%,1)`,
             lightest: `hsla(${saasState?.posSettings?.h ?? 222},32%,98%,1)`,
+            brightness: `hsla(${saasState?.posSettings?.h ?? 222},80%,70%,1)`,
           },
         },
       });
@@ -153,9 +155,7 @@ export default function MyApp(props: MyAppProps) {
         <title>Apply for a loan</title>
       </Head>
       <Provider value={rootStore}>
-        <ProviderPersistData
-          rootStoreKeys={['session', 'userProfile', 'userSetting']}
-        >
+        <ProviderPersistData rootStoreKeys={['session', 'userProfile']}>
           <ProviderDetectActive>
             <CacheProvider value={emotionCache}>
               {renderComponent}
@@ -164,7 +164,10 @@ export default function MyApp(props: MyAppProps) {
         </ProviderPersistData>
       </Provider>
       <Script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASfIDno0_JIFsVZvatp09IqCT360RyWlI&libraries=places&callback"
+        onLoad={() => {
+          rootStore.setLoadedGoogle();
+        }}
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASfIDno0_JIFsVZvatp09IqCT360RyWlI&libraries=places,streetView,maps"
         //strategy={'beforeInteractive'}
         type="text/javascript"
       />

@@ -10,33 +10,31 @@ import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
 
-import { POSHeaderProps, POSHeaderStyles } from './index';
-import { MyAccountButton } from '../MyAccountButton';
 import {
   useBreakpoints,
   usePersistFn,
   useSessionStorageState,
-  useStoreData,
   useSwitch,
 } from '@/hooks';
+
+import { POSFormatUrl } from '@/utils';
+
+import { POSHeaderProps, POSHeaderStyles } from './index';
+import { MyAccountButton } from '../MyAccountButton';
+import { DashboardSideDrawer } from '../DashboardSideDrawer';
 
 import {
   StyledButton,
   StyledDialog,
   StyledHeaderLogo,
 } from '@/components/atoms';
-import {
-  DashboardSideDrawer,
-  ForgotPassword,
-  Login,
-  SignUp,
-} from '@/components/molecules';
-import { POSFormatUrl } from '@/utils';
+import { ForgotPassword, Login, SignUp } from '@/components/molecules';
+
+import { LayoutSceneTypeEnum, LoanSnapshotEnum } from '@/types';
 
 export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const router = useRouter();
 
-  const { bindProcess } = useStoreData();
   const { visible, open, close } = useSwitch(false);
   const {
     visible: closeVisible,
@@ -46,12 +44,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
   const breakpoint = useBreakpoints();
 
-  const {
-    session,
-    bpmn,
-    applicationForm: { initialized, formData },
-    //userSetting: { applicable },
-  } = store;
+  const { session, applicationForm } = store;
 
   const [authType, setAuthType] = useState<
     'login' | 'sign_up' | 'reset_password'
@@ -59,27 +52,8 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
 
   const hasSession = useMemo<boolean>(() => !!session, [session]);
 
-  const hasProcessId = useMemo<boolean>(
-    () => !!router.query.processId,
-    [router.query],
-  );
-
   const handledLoginSuccess = usePersistFn(() => {
     close();
-    if (
-      initialized &&
-      (
-        bpmn.owners as Array<{
-          userId: string;
-        }>
-      ).length === 0
-    ) {
-      bindProcess();
-    }
-    if (!initialized && hasProcessId) {
-      // If the current URL carries processId and is not initialized, it is likely that there is no permission to access the process of the current processId, then you can directly refresh the webpage after the login is complete, to trigger loadProcess
-      window.location.reload();
-    }
   });
 
   const handledSignUpAndResetSuccess = usePersistFn(() => {
@@ -101,9 +75,9 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
 
   const renderButton = useMemo(() => {
     switch (scene) {
-      case 'application':
+      case LayoutSceneTypeEnum.application:
         return !hasSession ? (
-          formData?.state !== 'auth' && (
+          applicationForm.snapshot !== LoanSnapshotEnum.auth_page && (
             <Box>
               <StyledButton
                 color={'info'}
@@ -173,7 +147,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <MyAccountButton scene={scene} store={store} />
           </Box>
         );
-      case 'dashboard':
+      case LayoutSceneTypeEnum.dashboard:
         return (
           <Box>
             <StyledButton
@@ -211,7 +185,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <MyAccountButton scene={scene} store={store} />
           </Box>
         );
-      case 'pipeline':
+      case LayoutSceneTypeEnum.pipeline:
         return (
           <Box>
             <StyledButton
@@ -252,7 +226,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           </Box>
         );
 
-      case 'pipeline_without_all': {
+      case LayoutSceneTypeEnum.pipeline_without_all: {
         return (
           <Box>
             <StyledButton
@@ -280,10 +254,9 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   }, [
     scene,
     hasSession,
-    formData?.state,
+    applicationForm.snapshot,
     breakpoint,
     store,
-    //applicable,
     open,
     router,
   ]);
@@ -471,7 +444,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
       justifyContent={'center'}
     >
       <Box sx={POSHeaderStyles}>
-        {scene === 'dashboard' ? (
+        {scene === LayoutSceneTypeEnum.dashboard ? (
           ['xs', 'sm', 'md'].includes(breakpoint) ? (
             <StyledButton isIconButton onClick={sideOpen}>
               <DehazeOutlined />

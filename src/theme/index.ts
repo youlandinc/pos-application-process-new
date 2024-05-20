@@ -55,6 +55,11 @@ declare module '@mui/material/styles' {
     darkest?: string;
     lighter?: string;
     lightest?: string;
+    hover?: string;
+    background?: string;
+    contrastHover?: string;
+    contrastBackground?: string;
+    brightness?: string;
   }
 
   interface SimplePaletteColorOptions {
@@ -62,6 +67,11 @@ declare module '@mui/material/styles' {
     darkest?: string;
     lighter?: string;
     lightest?: string;
+    hover?: string;
+    background?: string;
+    contrastHover?: string;
+    contrastBackground?: string;
+    brightness?: string;
   }
 }
 
@@ -104,39 +114,45 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: `hsla(${CONSTANT_COLOR_HUE},42%,55%,1)`,
+      brightness: `hsla(${CONSTANT_COLOR_HUE},80%,70%,1)`,
       dark: `hsla(${CONSTANT_COLOR_HUE},43%,50%,1)`,
       darker: `hsla(${CONSTANT_COLOR_HUE},38%,30%,1)`,
       darkest: `hsla(${CONSTANT_COLOR_HUE},28%,18%,1)`,
       light: `hsla(${CONSTANT_COLOR_HUE},100%,92%,1)`,
       lighter: `hsla(${CONSTANT_COLOR_HUE},100%,97%,1)`,
       lightest: `hsla(${CONSTANT_COLOR_HUE},32%,98%,1)`,
-      contrastText: '#fff',
+      contrastText: '#FFFFFF',
+      contrastHover: '#2B52B6',
+      contrastBackground: '#365EC6',
     },
     secondary: {
-      main: '#F3D370',
-      dark: '#D9B239',
-      darker: 'rgba(243, 211, 112, 0.2)',
+      main: '#FFFFFF',
+      hover: '#F4F6FA',
+      background: 'rgba(255,255,255,.1)',
+      contrastText: '#5B76BC',
     },
     success: {
-      main: '#36B37E',
-      contrastText: '#fff',
-      dark: '#0A5554',
-      darker: 'rgba(225, 239, 228, 1)',
+      main: '#69C0A5',
+      hover: '#43A788',
+      background: '#F0F9F6',
+      contrastText: '#FFFFFF',
     },
     warning: {
-      main: '#FFAB00',
-      contrastText: '#fff',
-      dark: '#7A4100',
-      darker: 'rgba(255, 171, 0, 0.2)',
+      main: '#EEB94D',
+      hover: '#E39F15',
+      background: '#FFF7E6',
+      contrastText: '#FFFFFF',
     },
     error: {
       main: '#DE6449',
-      dark: '#BB482E',
-      darker: '#CD5135',
+      hover: '#CD5135',
+      background: '#FFEEEA',
+      contrastText: '#FFFFFF',
     },
     info: {
       main: '#9095A3',
-      dark: '#636A7C',
+      hover: '#81889B',
+      contrastText: '#FFFFFF',
       darker: 'rgba(144, 149, 163, 0.1)',
     },
     action: {
@@ -176,63 +192,63 @@ export const theme = createTheme({
       fontWeight: 600,
     },
     h3: {
-      fontSize: 32,
+      fontSize: 36,
       lineHeight: 1.5,
       fontWeight: 600,
     },
     h4: {
-      fontSize: 24,
+      fontSize: 30,
       lineHeight: 1.5,
       fontWeight: 600,
     },
     h5: {
-      fontSize: 20,
-      lineHeight: '30px',
+      fontSize: 24,
+      lineHeight: 1.5,
       fontWeight: 600,
     },
     h6: {
-      fontSize: 18,
-      lineHeight: '28px',
+      fontSize: 20,
+      lineHeight: 1.5,
       fontWeight: 600,
     },
     h7: {
-      fontSize: 16,
-      lineHeight: '24px',
+      fontSize: 18,
+      lineHeight: 1.5,
       fontWeight: 600,
     },
     subtitle1: {
       fontSize: 16,
-      lineHeight: '24px',
+      lineHeight: 1.5,
       fontWeight: 600,
     },
     subtitle2: {
       fontSize: 14,
-      lineHeight: '20px',
+      lineHeight: 1.5,
       fontWeight: 600,
     },
     subtitle3: {
       fontSize: 12,
-      lineHeight: '18px',
+      lineHeight: 1.5,
       fontWeight: 600,
     },
     body1: {
       fontSize: 16,
-      lineHeight: '24px',
+      lineHeight: 1.5,
       fontWeight: 400,
     },
     body2: {
       fontSize: 14,
-      lineHeight: '20px',
+      lineHeight: 1.5,
       fontWeight: 400,
     },
     body3: {
       fontSize: 12,
-      lineHeight: '18px',
+      lineHeight: 1.5,
       fontWeight: 400,
     },
   },
   components: {
-    MuiButtonBase: {
+    MuiButton: {
       defaultProps: {
         disableRipple: true,
       },
@@ -241,6 +257,34 @@ export const theme = createTheme({
       defaultProps: {
         disableRipple: true,
       },
+    },
+    MuiCheckbox: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+    MuiMenuItem: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+    MuiRadio: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+    MuiTab: {
+      defaultProps: {
+        disableRipple: true,
+      },
+      // styleOverrides: {
+      //   root: {
+      //     color: '#9095A3',
+      //     '.Mui-selected': {
+      //       color: 'primary.main',
+      //     },
+      //   },
+      // },
     },
   },
 });

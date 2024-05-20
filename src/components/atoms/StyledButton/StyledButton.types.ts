@@ -6,6 +6,7 @@ export interface StyledButtonPropsWithDisabled extends ButtonProps {
   isIconButton?: boolean;
   disabled?: boolean;
   component?: string;
+  ref?: any;
 }
 
 export type StyledButtonProps<
