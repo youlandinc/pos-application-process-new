@@ -5,6 +5,8 @@ import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
+import { observer } from 'mobx-react-lite';
+
 import { Address, IAddress } from '@/models/common/Address';
 
 import { POSGetParamsFromUrl } from '@/utils';
@@ -42,7 +44,7 @@ import {
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
 
-export const TasksBorrower: FC = () => {
+export const TasksBorrower: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -545,4 +547,4 @@ export const TasksBorrower: FC = () => {
       </Stack>
     </Fade>
   );
-};
+});
