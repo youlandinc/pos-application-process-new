@@ -13,6 +13,8 @@ import { CancelRounded } from '@mui/icons-material';
 import { StyledFormItem } from '@/components/atoms';
 
 import { AppraisalStatusEnum } from '@/types';
+import { useSessionStorageState } from '@/hooks';
+import { POSFormatUSPhoneToText } from '@/utils';
 
 interface baseData {
   completeDate?: string;
@@ -48,6 +50,8 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
   appraisalStage = AppraisalStatusEnum.canceled,
   appraisalDetail,
 }) => {
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   const computedData = useMemo(
     () => {
       if (
@@ -58,9 +62,14 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
           {
             icon: <CancelRounded sx={{ color: 'error.main' }} />,
             label: 'Appraisal has been canceled',
-            // todo saas
-            description:
-              'Please email us at borrow@youland.com or call (833) 968-5263 for refunds and any questions you have.',
+            description: (
+              <>
+                Please email us at {saasState?.email || 'borrow@youland.com'}
+                {saasState?.phone &&
+                  ` or call ${POSFormatUSPhoneToText(saasState?.phone)}`}{' '}
+                for refunds and any questions you have.
+              </>
+            ),
             date: appraisalDetail?.[AppraisalStatusEnum.canceled]?.completeDate
               ? `Canceled on ${format(
                   parseISO(
@@ -145,6 +154,8 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
+      saasState?.email,
+      saasState?.phone,
       appraisalDetail?.CANCELED,
       appraisalDetail?.COMPLETED?.completeDate,
       appraisalDetail?.ORDERED?.completeDate,

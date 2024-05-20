@@ -6,7 +6,7 @@ import { useMst } from '@/models/Root';
 
 import { usePersistFn } from './index';
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { LoanSnapshotEnum } from '@/types';
+// import { LoanSnapshotEnum } from '@/types';
 
 export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
   const { session, persistDataLoaded, userType, loginType } = useMst();
