@@ -42,9 +42,7 @@ export const ProductNoResultContact: FC = () => {
           justifyContent={'center'}
         >
           <CallOutlined />
-          {POSFormatUSPhoneToText(
-            saasState?.posSettings?.phone || '(833) 968-5263',
-          )}
+          {POSFormatUSPhoneToText(saasState?.phone || '(833) 968-5263')}
         </Stack>
         <Stack
           alignItems={'center'}
@@ -53,7 +51,7 @@ export const ProductNoResultContact: FC = () => {
           justifyContent={'center'}
         >
           <MailOutlineOutlined />
-          {saasState?.posSettings?.email || 'borrow@youland.com'}
+          {saasState?.email || 'borrow@youland.com'}
         </Stack>
       </Stack>
     </Stack>
