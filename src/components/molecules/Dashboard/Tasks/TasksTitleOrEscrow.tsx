@@ -145,13 +145,13 @@ export const TasksTitleOrEscrow: FC = observer(() => {
       });
       setManageForm(manageForm);
 
-      setIsLoanClosing(isLoanClosing || true);
-      setEscrowNumber(escrowNumber || undefined);
-      setInstructions(instructions || '');
-      setWhoIsManaging(whoIsManaging || '');
+      setIsLoanClosing(isLoanClosing ?? true);
+      setEscrowNumber(escrowNumber ?? undefined);
+      setInstructions(instructions ?? '');
+      setWhoIsManaging(whoIsManaging ?? '');
 
-      clientContactAddress.injectServerData(contactAddress || resetAddress);
-      clientManageAddress.injectServerData(manageAddress || resetAddress);
+      clientContactAddress.injectServerData(contactAddress ?? resetAddress);
+      clientManageAddress.injectServerData(manageAddress ?? resetAddress);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
