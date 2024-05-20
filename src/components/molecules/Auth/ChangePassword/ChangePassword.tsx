@@ -97,7 +97,7 @@ export const ChangePassword: FC = () => {
           variant: 'success',
           autoHideDuration: AUTO_HIDE_DURATION,
         });
-        await router.push('./login');
+        await router.push('/pipeline');
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
