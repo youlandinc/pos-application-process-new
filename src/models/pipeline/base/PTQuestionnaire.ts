@@ -6,7 +6,6 @@ import {
   PipelineQuestionnaire,
   PipelineQuestionnaireOwner,
   PipelineTaskItem,
-  PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
 } from '@/types/pipeline';
@@ -20,6 +19,7 @@ import {
 } from 'mobx-state-tree';
 import { validate } from 'validate.js';
 import { PQOwnerData, SPQOwnerData } from './PQOwner';
+import { AccountRoleTaskItemStatus } from '@/types';
 
 export const PTQuestionnaire = types
   .model({
@@ -27,9 +27,9 @@ export const PTQuestionnaire = types
     taskName: PipelineTaskName[PipelineTaskKey.BQ],
     taskStatus: types.maybe(
       types.union(
-        types.literal(PipelineTaskItemStatus.UNFINISHED),
-        types.literal(PipelineTaskItemStatus.FINISHED),
-        types.literal(PipelineTaskItemStatus.CONFIRMED),
+        types.literal(AccountRoleTaskItemStatus.unfinished),
+        types.literal(AccountRoleTaskItemStatus.finished),
+        types.literal(AccountRoleTaskItemStatus.confirmed),
       ),
     ),
     taskForm: types.model({

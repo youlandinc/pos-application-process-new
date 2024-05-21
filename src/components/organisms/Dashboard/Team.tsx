@@ -1,11 +1,5 @@
 import { useState } from 'react';
 import { Fade, Icon, Stack, Typography } from '@mui/material';
-import {
-  MailOutlineOutlined,
-  PhoneEnabledOutlined,
-  SupportAgentOutlined,
-  WatchLaterOutlined,
-} from '@mui/icons-material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
@@ -21,7 +15,8 @@ import { TeamMemberCardItem } from '@/components/molecules';
 import { HttpError, TeamMemberData } from '@/types';
 import { _fetchTeamMembers } from '@/requests/dashboard';
 
-import MY_TEAM from '@/svg/dashboard/my_team.svg';
+import TEAM_OPERATION from '@/svg/dashboard/team_operation.svg';
+import TEAM_CONTACT from '@/svg/dashboard/team_contact.svg';
 
 export const Team = () => {
   const breakpoints = useBreakpoints();
@@ -91,95 +86,104 @@ export const Team = () => {
           variant={['xs', 'sm', 'md'].includes(breakpoints) ? 'h6' : 'h5'}
         >
           My team
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={1.5}
+            textAlign={'center'}
+          >
+            Our team of loan management specialists is here to fix issues and
+            provide expert advice.
+          </Typography>
         </Typography>
 
         <Stack
           alignItems={'center'}
-          bgcolor={'primary.lightest'}
-          borderRadius={2}
-          flexDirection={{ xl: 'row', xs: 'column' }}
+          flexDirection={{ xs: 'column', md: 'row' }}
           gap={3}
-          p={{ lg: '24px 24px 24px 48px', xs: 3 }}
           width={'100%'}
         >
           <Stack
-            color={'text.primary'}
-            flex={1.5}
-            flexShrink={0}
+            alignItems={'center'}
+            border={'1px solid #D2D6E1'}
+            borderRadius={2}
+            flex={1}
             gap={1.5}
-            justifyContent={'space-between'}
+            p={3}
+            width={'100%'}
           >
-            <Typography variant={'h4'}>Hours of operation</Typography>
-
+            <Icon component={TEAM_OPERATION} sx={{ width: 64, height: 64 }} />
             <Typography
-              alignItems={'center'}
               color={'text.primary'}
-              display={'flex'}
-              gap={1.5}
-              justifyContent={'flex-start'}
-              mt={1.5}
-              variant={'subtitle1'}
+              fontSize={{
+                xs: 16,
+                md: 18,
+              }}
+              variant={'h7'}
             >
-              <SupportAgentOutlined sx={{ width: 24, height: 24 }} />
-              {slogan}
+              Hours of operation
             </Typography>
 
-            <Typography
+            <Stack
               alignItems={'center'}
-              color={'text.primary'}
-              display={'flex'}
-              gap={1.5}
-              justifyContent={'flex-start'}
-              variant={'subtitle1'}
+              fontSize={{
+                xs: 12,
+                md: 14,
+                xl: 16,
+              }}
+              gap={0.5}
             >
-              <WatchLaterOutlined sx={{ width: 24, height: 24 }} />
-              {workTime}
-            </Typography>
-
-            <Typography
-              alignItems={'center'}
-              color={'text.primary'}
-              display={'flex'}
-              gap={1.5}
-              justifyContent={'flex-start'}
-              variant={'subtitle1'}
-            >
-              <PhoneEnabledOutlined sx={{ width: 24, height: 24 }} />
-              {POSFormatUSPhoneToText(phone)}
-            </Typography>
-
-            <Typography
-              alignItems={'center'}
-              color={'text.primary'}
-              display={'flex'}
-              gap={1.5}
-              justifyContent={'flex-start'}
-              variant={'subtitle1'}
-            >
-              <MailOutlineOutlined sx={{ width: 24, height: 24 }} />
-              {email}
-            </Typography>
+              <Typography color={'text.primary'} fontSize={'inherit'}>
+                {slogan}
+              </Typography>
+              <Typography color={'text.primary'} fontSize={'inherit'}>
+                {workTime}
+              </Typography>
+            </Stack>
           </Stack>
 
-          <Icon
-            component={MY_TEAM}
-            sx={{
-              width: { xl: 'calc(50% - 12px)', xs: '85%' },
-              height: 'auto',
-              '& .my_team_svg__pos_svg_theme_color': {
-                fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
-              },
-            }}
-          />
+          <Stack
+            alignItems={'center'}
+            border={'1px solid #D2D6E1'}
+            borderRadius={2}
+            flex={1}
+            gap={1.5}
+            p={3}
+            width={'100%'}
+          >
+            <Icon component={TEAM_CONTACT} sx={{ width: 64, height: 64 }} />
+
+            <Typography
+              color={'text.primary'}
+              fontSize={{
+                xs: 16,
+                md: 18,
+              }}
+              variant={'h7'}
+            >
+              Contact us
+            </Typography>
+
+            <Stack
+              alignItems={'center'}
+              fontSize={{
+                xs: 12,
+                md: 14,
+                xl: 16,
+              }}
+              gap={0.5}
+            >
+              <Typography color={'text.primary'} fontSize={'inherit'}>
+                {email}
+              </Typography>
+              <Typography color={'text.primary'} fontSize={'inherit'}>
+                {POSFormatUSPhoneToText(phone)}
+              </Typography>
+            </Stack>
+          </Stack>
         </Stack>
 
-        <Stack
-          flexDirection={'row'}
-          flexWrap={'wrap'}
-          gap={3}
-          mt={3}
-          width={'100%'}
-        >
+        <Stack flexDirection={'row'} flexWrap={'wrap'} gap={3} width={'100%'}>
           {teamList?.map((item, index) => (
             <TeamMemberCardItem data={item} key={index} />
           ))}

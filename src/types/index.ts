@@ -6,3 +6,4 @@ export * from './options';
 export * from './application';
 export * from './dashboard';
 export * from './pipeline';
+export * from './account';

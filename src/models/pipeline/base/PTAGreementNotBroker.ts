@@ -5,8 +5,8 @@ import {
   PipelineAgreement,
   PipelineLicenseType,
   PipelineTaskItem,
-  PipelineTaskItemStatus,
 } from '@/types/pipeline';
+import { AccountRoleTaskItemStatus } from '@/types';
 
 export const PTAgreementNotBroker = types
   .model({
@@ -14,9 +14,9 @@ export const PTAgreementNotBroker = types
     taskName: types.maybe(types.string),
     taskStatus: types.maybe(
       types.union(
-        types.literal(PipelineTaskItemStatus.UNFINISHED),
-        types.literal(PipelineTaskItemStatus.FINISHED),
-        types.literal(PipelineTaskItemStatus.CONFIRMED),
+        types.literal(AccountRoleTaskItemStatus.unfinished),
+        types.literal(AccountRoleTaskItemStatus.finished),
+        types.literal(AccountRoleTaskItemStatus.confirmed),
       ),
     ),
     taskForm: types.model({

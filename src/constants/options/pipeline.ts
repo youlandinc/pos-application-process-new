@@ -28,7 +28,7 @@ export const OPTIONS_LOAN_STAGE: Option[] = [
   {
     key: PipelineLoanStageEnum.not_submitted,
     value: PipelineLoanStageEnum.not_submitted,
-    label: 'Not submitted',
+    label: 'Unsubmitted',
   },
   {
     key: PipelineLoanStageEnum.scenario,
