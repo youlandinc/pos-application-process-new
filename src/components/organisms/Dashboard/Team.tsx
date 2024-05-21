@@ -4,7 +4,7 @@ import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 
-import { useBreakpoints, useSessionStorageState } from '@/hooks';
+import { useBreakpoints } from '@/hooks';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFormatUSPhoneToText, POSGetParamsFromUrl } from '@/utils';
@@ -22,7 +22,6 @@ export const Team = () => {
   const breakpoints = useBreakpoints();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [teamList, setTeamList] = useState<TeamMemberData[]>();
   const [slogan, setSlogan] = useState<string>('');
