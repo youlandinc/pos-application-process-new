@@ -10,10 +10,10 @@ import { SUploadData, UploadData } from '@/models/common/UploadFile';
 import {
   PipelineGovernment,
   PipelineTaskItem,
-  PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
 } from '@/types/pipeline';
+import { AccountRoleTaskItemStatus } from '@/types';
 
 export const PTGovernment = types
   .model({
@@ -21,9 +21,9 @@ export const PTGovernment = types
     taskId: types.maybe(types.string),
     taskStatus: types.maybe(
       types.union(
-        types.literal(PipelineTaskItemStatus.UNFINISHED),
-        types.literal(PipelineTaskItemStatus.FINISHED),
-        types.literal(PipelineTaskItemStatus.CONFIRMED),
+        types.literal(AccountRoleTaskItemStatus.unfinished),
+        types.literal(AccountRoleTaskItemStatus.finished),
+        types.literal(AccountRoleTaskItemStatus.confirmed),
       ),
     ),
     taskForm: types.model({

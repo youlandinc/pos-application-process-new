@@ -5,10 +5,10 @@ import { UploadData } from '@/models/common/UploadFile';
 import {
   PipelineACH,
   PipelineTaskItem,
-  PipelineTaskItemStatus,
   PipelineTaskKey,
   PipelineTaskName,
 } from '@/types/pipeline';
+import { AccountRoleTaskItemStatus } from '@/types';
 
 export const PTACH = types
   .model({
@@ -16,9 +16,9 @@ export const PTACH = types
     taskName: PipelineTaskName[PipelineTaskKey.AI],
     taskStatus: types.maybe(
       types.union(
-        types.literal(PipelineTaskItemStatus.UNFINISHED),
-        types.literal(PipelineTaskItemStatus.FINISHED),
-        types.literal(PipelineTaskItemStatus.CONFIRMED),
+        types.literal(AccountRoleTaskItemStatus.unfinished),
+        types.literal(AccountRoleTaskItemStatus.finished),
+        types.literal(AccountRoleTaskItemStatus.confirmed),
       ),
     ),
     taskForm: types.model({

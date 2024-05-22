@@ -369,7 +369,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
 
                 <Box className="form_foot">
                   <StyledButton color="info" variant="text">
-                    <Link href={'./login/'}> Back to log in</Link>
+                    <Link href={'/auth/login'}> Back to log in</Link>
                   </StyledButton>
                 </Box>
               </Box>

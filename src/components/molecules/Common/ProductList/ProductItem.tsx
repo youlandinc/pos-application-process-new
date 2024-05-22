@@ -8,7 +8,11 @@ import { useMst } from '@/models/Root';
 import { useStoreData } from '@/hooks';
 
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
-import { LoanSnapshotEnum, ProductItemProps } from '@/types';
+import {
+  LoanProductCategoryEnum,
+  LoanSnapshotEnum,
+  ProductItemProps,
+} from '@/types';
 
 import { StyledButton, StyledTooltip } from '@/components/atoms';
 
@@ -109,20 +113,23 @@ export const ProductItem: FC<ProductItemProps> = observer(
             gap={1}
           >
             Monthly payment{' '}
-            <StyledTooltip
-              title={
-                'The interest calculation is based on a non-dutch basis and does not include the rehab loan amount.'
-              }
-            >
-              <InfoOutlined
-                sx={{
-                  width: 16,
-                  height: 16,
-                  color: 'info.dark',
-                  mb: 0.25,
-                }}
-              />
-            </StyledTooltip>
+            {estimateRate.productCategory ===
+              LoanProductCategoryEnum.fix_and_flip && (
+              <StyledTooltip
+                title={
+                  'The interest calculation is based on a non-dutch basis and does not include the rehab loan amount.'
+                }
+              >
+                <InfoOutlined
+                  sx={{
+                    width: 16,
+                    height: 16,
+                    color: 'info.dark',
+                    mb: 0.25,
+                  }}
+                />
+              </StyledTooltip>
+            )}
           </Stack>
           <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
             {POSFormatDollar(monthlyPayment)}

@@ -1,5 +1,5 @@
-import { PipelineTaskItemStatus } from '@/types';
+import { AccountRoleTaskItemStatus } from '@/types';
 
 export interface StyledStatusProps {
-  status: PipelineTaskItemStatus;
+  status: AccountRoleTaskItemStatus;
 }
