@@ -1,11 +1,5 @@
 import { AddressData } from '@/types/common';
 
-export enum PipelineTaskItemStatus {
-  UNFINISHED = 'unfinished',
-  FINISHED = 'finished',
-  CONFIRMED = 'confirmed',
-}
-
 export enum PipelineTaskName {
   // common
   W9_FORM = 'W9 Form',
@@ -83,7 +77,7 @@ export interface PipelineTaskItem<
 > {
   taskId: string;
   taskName: PipelineTaskName;
-  taskStatus: PipelineTaskItemStatus;
+  taskStatus: any;
   taskForm: T | null;
 }
 
@@ -151,11 +145,4 @@ export enum PipelineACHAccountType {
   CHECKING = 'CHECKING',
   SAVINGS = 'SAVINGS',
   DEFAULT = '',
-}
-
-export enum PipelineAccountStatus {
-  active = 'ACTIVE',
-  suspended = 'SUSPENDED',
-  pending_info = 'PENDING_INFO',
-  ready_for_review = 'READY_FOR_REVIEW',
 }

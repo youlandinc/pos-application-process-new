@@ -3,9 +3,9 @@ import {
   PipelineACH,
   PipelineACHAccountType,
   PipelineTaskItem,
-  PipelineTaskItemStatus,
 } from '@/types/pipeline';
 import { Address } from '@/models/common/Address';
+import { AccountRoleTaskItemStatus } from '@/types';
 
 export const PTACHNotBroker = types
   .model({
@@ -13,9 +13,9 @@ export const PTACHNotBroker = types
     taskName: types.maybe(types.string),
     taskStatus: types.maybe(
       types.union(
-        types.literal(PipelineTaskItemStatus.UNFINISHED),
-        types.literal(PipelineTaskItemStatus.FINISHED),
-        types.literal(PipelineTaskItemStatus.CONFIRMED),
+        types.literal(AccountRoleTaskItemStatus.unfinished),
+        types.literal(AccountRoleTaskItemStatus.finished),
+        types.literal(AccountRoleTaskItemStatus.confirmed),
       ),
     ),
     taskForm: types.model({
