@@ -14,7 +14,7 @@ import {
   // ProductNoResultContact,
 } from './index';
 
-import { ProductItemProps } from '@/types';
+import { LoanProductCategoryEnum, ProductItemProps } from '@/types';
 
 interface ProductListProps {
   errorList: Array<string | any>;
