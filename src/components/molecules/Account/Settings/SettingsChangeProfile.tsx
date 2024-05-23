@@ -17,8 +17,6 @@ import {
 import { AccountUserProfileParams, HttpError } from '@/types';
 import { _updateUserInfo } from '@/requests';
 
-// import { validate } from 'validate.js';
-
 interface SettingsChangeProfileProps {
   store: AccountUserProfileParams;
   dispatch: any;
@@ -104,9 +102,13 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
           await userpool.refreshToken(lastAuthId);
         }
 
-        userpool.setLastAuthUserInfo(lastAuthId, 'firstName', firstName);
-        userpool.setLastAuthUserInfo(lastAuthId, 'lastName', lastName);
-        userpool.setLastAuthUserInfo(lastAuthId, 'background', backgroundColor);
+        userpool.setLastAuthUserInfo(lastAuthId, 'firstName', firstName ?? '');
+        userpool.setLastAuthUserInfo(lastAuthId, 'lastName', lastName ?? '');
+        userpool.setLastAuthUserInfo(
+          lastAuthId,
+          'background',
+          backgroundColor ?? '',
+        );
 
         enqueueSnackbar('Profile updated', {
           variant: 'success',
