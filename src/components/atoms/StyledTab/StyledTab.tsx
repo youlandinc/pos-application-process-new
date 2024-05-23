@@ -1,5 +1,11 @@
 import { Box, Stack, SxProps, Tab, Tabs } from '@mui/material';
-import React, { FC, PropsWithChildren, ReactNode, useState } from 'react';
+import React, {
+  FC,
+  PropsWithChildren,
+  ReactNode,
+  useEffect,
+  useState,
+} from 'react';
 
 type TabPanelProps = {
   index: number;
@@ -13,6 +19,7 @@ type StyledTabProps = {
     content: ReactNode;
   }[];
   sx?: SxProps;
+  startIndex?: number;
 };
 
 export const TabPanel = (props: PropsWithChildren<TabPanelProps>) => {
@@ -25,10 +32,16 @@ export const TabPanel = (props: PropsWithChildren<TabPanelProps>) => {
   );
 };
 
-export const StyledTab: FC<StyledTabProps> = (props) => {
-  const { tabsData, sx } = props;
+export const StyledTab: FC<StyledTabProps> = ({
+  tabsData,
+  sx,
+  startIndex = 0,
+}) => {
+  const [value, setValue] = useState(startIndex);
 
-  const [value, setValue] = useState(0);
+  useEffect(() => {
+    setValue(startIndex);
+  }, [startIndex]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);

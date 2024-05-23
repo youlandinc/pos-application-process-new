@@ -44,7 +44,7 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
         sx={{
           display:
             scene === LayoutSceneTypeEnum.dashboard ||
-            scene === LayoutSceneTypeEnum.pipeline
+            scene === LayoutSceneTypeEnum.account
               ? 'flex'
               : 'block',
           flexDirection:

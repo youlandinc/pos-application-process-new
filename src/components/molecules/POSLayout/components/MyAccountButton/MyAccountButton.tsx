@@ -14,6 +14,7 @@ import {
   MenuList,
   Paper,
   Popper,
+  Stack,
 } from '@mui/material';
 import { ExpandMoreOutlined, PermIdentityOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
@@ -25,11 +26,7 @@ import { userpool } from '@/constants';
 import { LayoutSceneTypeEnum, UserType } from '@/types';
 import { MyAccountButtonProps, MyAccountStyles } from './index';
 
-import {
-  StyledAvatarUpload,
-  StyledAvatarUploadRef,
-  StyledButton,
-} from '@/components/atoms';
+import { StyledAvatarUploadRef, StyledButton } from '@/components/atoms';
 
 const hash = {
   [UserType.LOAN_OFFICER]: 'Loan officer',
@@ -40,31 +37,40 @@ const hash = {
 };
 
 const MENU_LIST_CUSTOMER = [
-  { label: 'Change avatar', url: 'change_avatar' },
-  { label: 'Change email', url: '/auth/change_email' },
-  {
-    label: 'Change password',
-    url: '/auth/change_password',
-  },
+  { label: 'Account', url: '/account' },
   { label: 'Sign out', url: 'sign_out' },
 ];
 
 const MENU_LIST_NOT_CUSTOMER = [
-  // { label: 'info', url: '/pipeline/profile' },
-  { label: 'Change avatar', url: 'change_avatar' },
-  { label: 'Change email', url: '/auth/change_email' },
-  {
-    label: 'Change password',
-    url: '/auth/change_password',
-  },
+  { label: 'info', url: '/account/?qualification=true' },
+  { label: 'Account', url: '/account' },
   { label: 'Sign out', url: 'sign_out' },
 ];
 
 export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
-  const userType = userpool.getLastAuthUserInfo(
-    userpool.getLastAuthUserId(),
-    'user_type',
+  const lastAuthUserId = userpool.getLastAuthUserId();
+  const userType = userpool.getLastAuthUserInfo(lastAuthUserId, 'user_type');
+
+  const avatar = userpool.getLastAuthUserInfo(lastAuthUserId, 'avatar');
+  const backgroundColor = userpool.getLastAuthUserInfo(
+    lastAuthUserId,
+    'background',
   );
+
+  const computedName = useMemo(() => {
+    const firstName = userpool
+      .getLastAuthUserInfo(lastAuthUserId, 'firstName')
+      ?.charAt(0)
+      .toUpperCase();
+    const lastName = userpool
+      .getLastAuthUserInfo(lastAuthUserId, 'lastName')
+      ?.charAt(0)
+      .toUpperCase();
+    if (!firstName && !lastName) {
+      return false;
+    }
+    return `${firstName}${lastName}`;
+  }, [lastAuthUserId]);
 
   const [popperVisible, setPopperVisible] = useState(false);
 
@@ -111,7 +117,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
     switch (scene) {
       case LayoutSceneTypeEnum.application:
       case LayoutSceneTypeEnum.dashboard:
-      case LayoutSceneTypeEnum.pipeline:
+      case LayoutSceneTypeEnum.account:
       case LayoutSceneTypeEnum.pipeline_without_all:
         if (userType === UserType.CUSTOMER) {
           return MENU_LIST_CUSTOMER.map((item, index) => (
@@ -198,7 +204,69 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
             <Paper>
               <ClickAwayListener onClickAway={handledClose}>
                 <MenuList sx={{ mt: 2, width: 170, p: 0 }}>
-                  <StyledAvatarUpload ref={avatarRef} />
+                  <Stack
+                    alignItems={'center'}
+                    py={1.5}
+                    sx={{ cursor: 'default' }}
+                  >
+                    {avatar ? (
+                      <picture
+                        style={{
+                          display: 'block',
+                          position: 'relative',
+                          height: 48,
+                          width: 48,
+                          borderRadius: '50%',
+                          overflow: 'hidden',
+                        }}
+                      >
+                        <img
+                          alt=""
+                          src={avatar}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                          }}
+                        />
+                      </picture>
+                    ) : computedName ? (
+                      <Stack
+                        alignItems={'center'}
+                        borderRadius={'50%'}
+                        color={'#ffffff'}
+                        fontSize={16}
+                        fontWeight={600}
+                        height={48}
+                        justifyContent={'center'}
+                        pt={0.25}
+                        sx={{ background: backgroundColor }}
+                        width={48}
+                      >
+                        {computedName}
+                      </Stack>
+                    ) : (
+                      <picture
+                        style={{
+                          display: 'block',
+                          position: 'relative',
+                          height: 48,
+                          width: 48,
+                          borderRadius: '50%',
+                          overflow: 'hidden',
+                          border: '1px solid #D2D6E1',
+                        }}
+                      >
+                        <img
+                          alt=""
+                          src={'/images/placeholder_avatar.png'}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                          }}
+                        />
+                      </picture>
+                    )}
+                  </Stack>
                   {renderMenuList}
                 </MenuList>
               </ClickAwayListener>

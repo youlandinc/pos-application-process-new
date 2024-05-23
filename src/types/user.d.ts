@@ -65,6 +65,9 @@ declare namespace User {
     tenantId: string;
     userId: string | undefined;
     userType: UserType;
+    firstName: string;
+    lastName: string;
+    backgroundColor: string;
   }
 
   interface UserRefreshTokenParams {
