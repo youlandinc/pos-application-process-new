@@ -40,23 +40,13 @@ const hash = {
 };
 
 const MENU_LIST_CUSTOMER = [
-  { label: 'Change avatar', url: 'change_avatar' },
-  { label: 'Change email', url: '/auth/change_email' },
-  {
-    label: 'Change password',
-    url: '/auth/change_password',
-  },
+  { label: 'Account', url: '/account' },
   { label: 'Sign out', url: 'sign_out' },
 ];
 
 const MENU_LIST_NOT_CUSTOMER = [
-  // { label: 'info', url: '/pipeline/profile' },
-  { label: 'Change avatar', url: 'change_avatar' },
-  { label: 'Change email', url: '/auth/change_email' },
-  {
-    label: 'Change password',
-    url: '/auth/change_password',
-  },
+  { label: 'info', url: '/account/?qualification=true' },
+  { label: 'Account', url: '/account' },
   { label: 'Sign out', url: 'sign_out' },
 ];
 
@@ -111,7 +101,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
     switch (scene) {
       case LayoutSceneTypeEnum.application:
       case LayoutSceneTypeEnum.dashboard:
-      case LayoutSceneTypeEnum.pipeline:
+      case LayoutSceneTypeEnum.account:
       case LayoutSceneTypeEnum.pipeline_without_all:
         if (userType === UserType.CUSTOMER) {
           return MENU_LIST_CUSTOMER.map((item, index) => (

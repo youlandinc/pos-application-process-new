@@ -690,6 +690,15 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
       <StyledDialog
         content={
           <Stack gap={3} my={3}>
+            <Stack gap={1.5}>
+              <Typography variant={'subtitle2'}>
+                Coverage requirements
+              </Typography>
+              <Typography variant={'body3'}>
+                Dwelling coverage must cover the loan amount or the replacement
+                cost estimate (RCE), whichever of the two is lower.
+              </Typography>
+            </Stack>
             <Stack>
               <Typography variant={'subtitle2'}>
                 Mortgagee information
@@ -787,7 +796,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         }}
         open={popUpVisible}
         PaperProps={{
-          sx: { maxWidth: '600px !important' },
+          sx: { maxWidth: '800px !important' },
         }}
       />
     </Box>

@@ -1,10 +1,4 @@
 export const ForgotPasswordSchema = {
-  verificationCode: {
-    presence: {
-      allowEmpty: false,
-      message: 'can not be empty',
-    },
-  },
   email: {
     presence: {
       allowEmpty: false,

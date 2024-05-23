@@ -13,6 +13,7 @@ type StyledTabProps = {
     content: ReactNode;
   }[];
   sx?: SxProps;
+  startIndex?: number;
 };
 
 export const TabPanel = (props: PropsWithChildren<TabPanelProps>) => {
@@ -25,10 +26,12 @@ export const TabPanel = (props: PropsWithChildren<TabPanelProps>) => {
   );
 };
 
-export const StyledTab: FC<StyledTabProps> = (props) => {
-  const { tabsData, sx } = props;
-
-  const [value, setValue] = useState(0);
+export const StyledTab: FC<StyledTabProps> = ({
+  tabsData,
+  sx,
+  startIndex = 0,
+}) => {
+  const [value, setValue] = useState(startIndex);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);

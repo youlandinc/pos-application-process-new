@@ -13,7 +13,7 @@ import 'cropperjs/dist/cropper.css';
 import { useAsyncFn } from 'react-use';
 
 import { useSwitch } from '@/hooks';
-import { _updateAvatar, _uploadAvatar } from '@/requests';
+import { _updateUserInfoAvatar, _uploadUserInfoAvatar } from '@/requests';
 import { userpool } from '@/constants';
 
 import { StyledButton, StyledDialog } from '@/components/atoms';
@@ -85,10 +85,10 @@ export const StyledAvatarUpload = forwardRef<
   const [, uploadAvatar] = useAsyncFn(
     async (formData) => {
       setLoading(true);
-      return await _uploadAvatar(formData)
+      return await _uploadUserInfoAvatar(formData)
         .then(async ({ data }) => {
           if (Array.isArray(data)) {
-            await _updateAvatar({ avatar: data[0].url });
+            await _updateUserInfoAvatar({ avatar: data[0].url });
             setAvatarUrl(data[0].url);
             userpool.setLastAuthUserInfo(
               userpool.getLastAuthUserId(),
@@ -254,7 +254,7 @@ export const StyledAvatarUpload = forwardRef<
                 fontSize={12}
                 onClick={async () => {
                   setImageSrc('');
-                  await _updateAvatar({ avatar: '' });
+                  await _updateUserInfoAvatar({ avatar: '' });
                   userpool.setLastAuthUserInfo(
                     userpool.getLastAuthUserId(),
                     'avatar',

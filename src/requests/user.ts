@@ -1,13 +1,5 @@
-import { get, post, put } from './axios';
+import { get, post } from './axios';
 import { User } from '@/types/user';
-
-//export const _fetchUserSetting = () => {
-//  return get<User.UserSetting>('/dashboard/user/settings/info');
-//};
-//
-//export const _updateUserSetting = (setting: Partial<User.UserSetting>) => {
-//  return post<User.UserSetting>('/dashboard/user/settings/info', setting);
-//};
 
 export const _userSingUp = (params: User.UserSignUp) => {
   return post<User.UserSignUp>(
@@ -37,22 +29,6 @@ export const _userSendCode = (params: User.UserSendCodeParams) => {
   return post<any>('/usercenter/api/consumer/signUp/user/resendCode', params);
 };
 
-export const _userChangeEmail = (params: User.UserChangeEmailParams) => {
-  return post<any>(
-    '/usercenter/api/consumer/changeEmail/user/sendCode',
-    params,
-  );
-};
-
-export const _userCompletedChangeEmail = (
-  params: User.UserVerifyCodeParams,
-) => {
-  return post<any>(
-    '/usercenter/api/consumer/changeEmail/user/complete',
-    params,
-  );
-};
-
 export const _userChangePassword = (params: User.UserChangePasswordParams) => {
   return post<any>(
     '/usercenter/api/consumer/changePassword/user/complete',
@@ -76,22 +52,45 @@ export const _userResetPassword = (params: User.UserResetPassParams) => {
   );
 };
 
-// export const _userUpload = (params) => {
-//   return post<User.UserUploadRequest[]>('/dashboard/user/upload ', params);
-// };
-
 export const _fetchUserInfoByToken = (params: { token: string }) => {
   return get('/usercenter/api/user/fetchUserInfo', {
     headers: { Authorization: `Bearer ${params.token}` },
   });
 };
 
-export const _updateAvatar = (param: { avatar: string }) => {
-  return post('/usercenter/api/user/modifyUserInfo', param);
+interface ForgotPasswordFetchCodeRequestParams {
+  appkey: string;
+  email: string;
+  bizType: string;
+}
+
+interface ForgotPasswordVerifyCodeRequestParams {
+  appkey: string;
+  email: string;
+  code: string;
+  bizType: string;
+}
+
+interface ForgotPasswordSubmitRequestParams {
+  accessToken: string;
+  newPass: string;
+  appkey: string;
+}
+
+export const _fetchUserResetPasswordSendCode = (
+  params: ForgotPasswordFetchCodeRequestParams,
+) => {
+  return post('/usercenter/api/consumer/resetPassword/user/sendCode', params);
 };
 
-export const _uploadAvatar = (files: FormData) => {
-  return put('/usercenter/api/common/file/upload', files, {
-    headers: { 'content-type': 'multipart/form-data' },
-  });
+export const _fetchUserResetPasswordVerifyCode = (
+  params: ForgotPasswordVerifyCodeRequestParams,
+) => {
+  return post('/usercenter/api/consumer/resetPassword/user/verifyCode', params);
+};
+
+export const _fetchUserResetPasswordSubmit = (
+  params: ForgotPasswordSubmitRequestParams,
+) => {
+  return post('/usercenter/api/consumer/resetPassword/user/complete', params);
 };

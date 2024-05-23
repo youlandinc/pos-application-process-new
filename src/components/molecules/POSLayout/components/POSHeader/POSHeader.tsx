@@ -185,7 +185,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <MyAccountButton scene={scene} store={store} />
           </Box>
         );
-      case LayoutSceneTypeEnum.pipeline:
+      case LayoutSceneTypeEnum.account:
         return (
           <Box>
             <StyledButton
