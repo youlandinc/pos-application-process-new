@@ -2,21 +2,22 @@ import { FC, useReducer, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 
 import { useBreakpoints } from '@/hooks';
-
 import { useMst } from '@/models/Root';
 
+import { AUTO_HIDE_DURATION, userpool } from '@/constants';
+
 import { StyledLoading, StyledTab } from '@/components/atoms';
-import { _fetchUserInfo } from '@/requests';
 import {
   SettingsChangeAvatar,
   SettingsChangePassword,
   SettingsChangeProfile,
 } from '@/components/molecules';
+
 import { AccountUserProfileParams, HttpError } from '@/types';
-import { AUTO_HIDE_DURATION, userpool } from '@/constants';
-import { useSnackbar } from 'notistack';
+import { _fetchUserInfo } from '@/requests';
 
 const AccountReducer = (
   state: AccountUserProfileParams,
@@ -93,10 +94,14 @@ export const AccountSettings: FC = () => {
 
       const lastAuthId = userpool.getLastAuthUserId();
 
-      userpool.setLastAuthUserInfo(lastAuthId, 'avatar', avatar);
-      userpool.setLastAuthUserInfo(lastAuthId, 'firstName', firstName);
-      userpool.setLastAuthUserInfo(lastAuthId, 'lastName', lastName);
-      userpool.setLastAuthUserInfo(lastAuthId, 'background', backgroundColor);
+      userpool.setLastAuthUserInfo(lastAuthId, 'avatar', avatar ?? '');
+      userpool.setLastAuthUserInfo(lastAuthId, 'firstName', firstName ?? '');
+      userpool.setLastAuthUserInfo(lastAuthId, 'lastName', lastName ?? '');
+      userpool.setLastAuthUserInfo(
+        lastAuthId,
+        'background',
+        backgroundColor ?? '',
+      );
 
       setBackgroundColor(backgroundColor || '');
     } catch (err) {
