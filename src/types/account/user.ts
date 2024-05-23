@@ -7,7 +7,7 @@ export interface AccountUserProfileParams {
   avatar: string;
   firstName: string;
   lastName: string;
-  birthday: string | null | Date;
+  birthDay: string | null | Date;
   email: string;
   phone: string;
 }

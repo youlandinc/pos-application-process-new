@@ -66,8 +66,8 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
 
       const params = {
         ...store,
-        birthday: dateValid(store.birthday)
-          ? format(store.birthday as Date, 'yyyy-MM-dd')
+        birthDay: dateValid(store.birthDay)
+          ? format(store.birthDay as Date, 'yyyy-MM-dd')
           : null,
       };
 
@@ -78,7 +78,7 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
             userProfile: {
               firstName,
               lastName,
-              birthday,
+              birthDay,
               email,
               phone,
               avatar,
@@ -93,7 +93,7 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
             avatar: avatar || '',
             firstName: firstName || '',
             lastName: lastName || '',
-            birthday: birthday ? new Date(birthday) : null,
+            birthDay: birthDay ? new Date(birthDay) : null,
             email: email || '',
             phone: phone || '',
           },
@@ -183,12 +183,12 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
           dispatch({
             type: 'change',
             payload: {
-              field: 'birthday',
+              field: 'birthDay',
               value,
             },
           });
         }}
-        value={store.birthday}
+        value={store.birthDay}
       />
 
       <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={{ xs: 2, md: 3 }}>
