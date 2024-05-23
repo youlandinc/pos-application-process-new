@@ -18,7 +18,7 @@ import { userpool } from '@/constants';
 
 import { StyledButton, StyledDialog } from '@/components/atoms';
 
-import ICON_UPLOAD from './icon_upload.svg';
+import ICON_UPLOAD from '../../molecules/Account/Settings/icon_upload.svg';
 
 export interface StyledAvatarUploadProps {
   fileSize?: number;

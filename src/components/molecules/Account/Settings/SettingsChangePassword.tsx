@@ -22,7 +22,7 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-import { _userChangePassword } from '@/requests';
+import { _updateUserInfoPassword } from '@/requests';
 import { HttpError } from '@/types';
 
 export const SettingsChangePassword: FC = () => {
@@ -82,7 +82,7 @@ export const SettingsChangePassword: FC = () => {
 
       setLoading(true);
       try {
-        await _userChangePassword({
+        await _updateUserInfoPassword({
           oldPass: userpool.encode(oldPassword),
           newPass: userpool.encode(confirmedPassword),
         });
@@ -119,11 +119,14 @@ export const SettingsChangePassword: FC = () => {
       border={'1px solid #D2D6E1'}
       borderRadius={2}
       component={'form'}
-      gap={3}
+      gap={{ xs: 2, md: 3 }}
       onSubmit={onSubmitClick}
-      p={3}
+      p={{ xs: 2, md: 3 }}
     >
-      <Typography variant={'h6'}>Change your password</Typography>
+      <Typography fontSize={{ xs: 16, md: 20 }} variant={'h6'}>
+        Change your password
+      </Typography>
+
       <StyledTextFieldPassword
         disabled={loading}
         inputProps={{
@@ -222,7 +225,7 @@ export const SettingsChangePassword: FC = () => {
         color={'primary'}
         disabled={isDisabled || loading}
         loading={loading}
-        sx={{ width: { xs: 180, lg: 200 } }}
+        sx={{ width: { xs: '100%', lg: 200 } }}
         type={'submit'}
       >
         Change password

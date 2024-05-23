@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useReducer, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
@@ -14,22 +14,100 @@ import {
   SettingsChangePassword,
   SettingsChangeProfile,
 } from '@/components/molecules';
+import { AccountUserProfileParams, HttpError } from '@/types';
+import { AUTO_HIDE_DURATION, userpool } from '@/constants';
+import { useSnackbar } from 'notistack';
+
+const AccountReducer = (
+  state: AccountUserProfileParams,
+  action: {
+    type: string;
+    payload: any;
+  },
+) => {
+  switch (action.type) {
+    case 'init': {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
+    case 'change': {
+      return {
+        ...state,
+        [action.payload.field]: action.payload.value,
+      };
+    }
+    default:
+      return state;
+  }
+};
+
+const initialState: AccountUserProfileParams = {
+  avatar: '',
+  firstName: '',
+  lastName: '',
+  birthDay: '',
+  email: '',
+  phone: '',
+};
 
 export const AccountSettings: FC = () => {
   const router = useRouter();
   const breakpoints = useBreakpoints();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { userType } = useMst();
 
+  const [store, dispatch] = useReducer(AccountReducer, initialState);
+  const [backgroundColor, setBackgroundColor] = useState<string>('');
+
   const { loading } = useAsync(async () => {
     // Fetch user settings
-    const res = await _fetchUserInfo();
-    console.log(res);
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     resolve(1);
-    //   }, 1000);
-    // });
+    try {
+      const {
+        data: {
+          userInfo: {
+            avatar,
+            backgroundColor,
+            firstName,
+            lastName,
+            birthDay,
+            email,
+            phone,
+          },
+        },
+      } = await _fetchUserInfo();
+
+      dispatch({
+        type: 'init',
+        payload: {
+          avatar: avatar || '',
+          firstName: firstName || '',
+          lastName: lastName || '',
+          birthDay: birthDay ? new Date(birthDay) : null,
+          email: email || '',
+          phone: phone || '',
+        },
+      });
+
+      const lastAuthId = userpool.getLastAuthUserId();
+
+      userpool.setLastAuthUserInfo(lastAuthId, 'avatar', avatar);
+      userpool.setLastAuthUserInfo(lastAuthId, 'firstName', firstName);
+      userpool.setLastAuthUserInfo(lastAuthId, 'lastName', lastName);
+      userpool.setLastAuthUserInfo(lastAuthId, 'background', backgroundColor);
+
+      setBackgroundColor(backgroundColor || '');
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    }
   }, []);
 
   return loading ? (
@@ -61,7 +139,7 @@ export const AccountSettings: FC = () => {
 
         <Stack maxWidth={'100%'} width={'100%'}>
           <StyledTab
-            startIndex={0}
+            startIndex={router.query.qualification ? 1 : 0}
             sx={{
               '& .MuiTabs-flexContainer .MuiButtonBase-root': {
                 p: 0,
@@ -76,9 +154,13 @@ export const AccountSettings: FC = () => {
               {
                 label: 'Settings',
                 content: (
-                  <Stack gap={6}>
-                    <SettingsChangeAvatar />
-                    <SettingsChangeProfile />
+                  <Stack gap={{ xs: 3, md: 6 }}>
+                    <SettingsChangeAvatar
+                      backgroundColor={backgroundColor}
+                      dispatch={dispatch}
+                      store={store}
+                    />
+                    <SettingsChangeProfile dispatch={dispatch} store={store} />
                     <SettingsChangePassword />
                   </Stack>
                 ),

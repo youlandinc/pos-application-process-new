@@ -1,13 +1,13 @@
-export interface AccountUserInfo {
-  avatar: string;
-  phone: string;
-  birthday: Date | string | null;
-  email: string;
-  firstName: string;
-  lastName: string;
-}
-
 export interface AccountUserChangePasswordParams {
   newPass: string;
   oldPass: string;
+}
+
+export interface AccountUserProfileParams {
+  avatar: string;
+  firstName: string;
+  lastName: string;
+  birthDay: string | null | Date;
+  email: string;
+  phone: string;
 }

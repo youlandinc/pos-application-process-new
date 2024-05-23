@@ -1,5 +1,10 @@
 import { get, post } from './axios';
 import { User } from '@/types/user';
+import {
+  ForgotPasswordFetchCodeRequestParams,
+  ForgotPasswordSubmitRequestParams,
+  ForgotPasswordVerifyCodeRequestParams,
+} from '@/types';
 
 export const _userSingUp = (params: User.UserSignUp) => {
   return post<User.UserSignUp>(
@@ -29,54 +34,7 @@ export const _userSendCode = (params: User.UserSendCodeParams) => {
   return post<any>('/usercenter/api/consumer/signUp/user/resendCode', params);
 };
 
-export const _userChangePassword = (params: User.UserChangePasswordParams) => {
-  return post<any>(
-    '/usercenter/api/consumer/changePassword/user/complete',
-    params,
-  );
-};
-
-export const _userSendCodeForResetPassword = (
-  params: User.UserSendCodeParams,
-) => {
-  return post<any>(
-    '/usercenter/api/consumer/resetPassword/user/sendCode',
-    params,
-  );
-};
-
-export const _userResetPassword = (params: User.UserResetPassParams) => {
-  return post<any>(
-    '/usercenter/api/consumer/resetPassword/user/complete',
-    params,
-  );
-};
-
-export const _fetchUserInfoByToken = (params: { token: string }) => {
-  return get('/usercenter/api/user/fetchUserInfo', {
-    headers: { Authorization: `Bearer ${params.token}` },
-  });
-};
-
-interface ForgotPasswordFetchCodeRequestParams {
-  appkey: string;
-  email: string;
-  bizType: string;
-}
-
-interface ForgotPasswordVerifyCodeRequestParams {
-  appkey: string;
-  email: string;
-  code: string;
-  bizType: string;
-}
-
-interface ForgotPasswordSubmitRequestParams {
-  accessToken: string;
-  newPass: string;
-  appkey: string;
-}
-
+// forget password
 export const _fetchUserResetPasswordSendCode = (
   params: ForgotPasswordFetchCodeRequestParams,
 ) => {
