@@ -1,4 +1,4 @@
-import { FC, useCallback, useRef, useState } from 'react';
+import React, { FC, useCallback, useRef, useState } from 'react';
 import { Fade, Icon, Stack, Typography } from '@mui/material';
 import { Cropper, ReactCropperElement } from 'react-cropper';
 import { useAsyncFn } from 'react-use';
@@ -28,10 +28,6 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
   const breakPoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [avatarUrl, setAvatarUrl] = useState(
-    store.avatar || '/images/placeholder_avatar.png',
-  );
-
   const cropperRef = useRef<ReactCropperElement>(null);
   const uploadTrigger = useRef<HTMLInputElement>(null);
 
@@ -60,8 +56,6 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
         .then(async ({ data }) => {
           if (Array.isArray(data)) {
             await _updateUserInfoAvatar({ avatar: data[0].url });
-
-            setAvatarUrl(data[0].url);
 
             dispatch({
               type: 'change',
@@ -192,7 +186,7 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
             >
               <img
                 alt={'avatar'}
-                src={avatarUrl || '/images/placeholder_avatar.png'}
+                src={store.avatar}
                 style={{
                   width: '100%',
                   height: '100%',
@@ -200,7 +194,7 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
                 }}
               />
             </picture>
-          ) : (
+          ) : store.firstName && store.lastName ? (
             <Stack
               alignItems={'center'}
               borderRadius={'50%'}
@@ -220,6 +214,27 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
               {store.firstName.charAt(0).toUpperCase()}
               {store.lastName.charAt(0).toUpperCase()}
             </Stack>
+          ) : (
+            <picture
+              style={{
+                display: 'block',
+                position: 'relative',
+                height: '100%',
+                width: '100%',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                border: '1px solid #D2D6E1',
+              }}
+            >
+              <img
+                alt=""
+                src={'/images/placeholder_avatar.png'}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                }}
+              />
+            </picture>
           )}
 
           <img
@@ -277,8 +292,6 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
                   type: 'change',
                   payload: { field: 'avatar', value: '' },
                 });
-
-                setAvatarUrl('');
 
                 const lastAuthId = userpool.getLastAuthUserId();
                 if (lastAuthId) {
