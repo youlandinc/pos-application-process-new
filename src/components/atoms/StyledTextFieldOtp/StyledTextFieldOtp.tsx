@@ -8,6 +8,7 @@ export const StyledTextFieldOtp: FC<StyledTextFieldOtpProps> = ({
   disabled,
   values,
   fields = 4,
+  onComplete,
 }) => {
   return (
     <>
@@ -16,6 +17,7 @@ export const StyledTextFieldOtp: FC<StyledTextFieldOtpProps> = ({
         disabled={disabled}
         fields={fields}
         onChange={onChange}
+        onComplete={onComplete}
         values={values}
       />
     </>

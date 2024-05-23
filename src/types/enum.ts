@@ -6,11 +6,11 @@ export enum LoanSpecies {
 }
 
 export enum BizType {
-  LOGIN = 'LOGIN',
-  REGISTER = 'REGISTER',
-  RESET_PASS = 'RESET_PASS',
-  CHANGE_PASS = 'CHANGE_PASS',
-  CHANGE_EMAIL = 'CHANGE_EMAIL',
+  login = 'LOGIN',
+  register = 'REGISTER',
+  reset_pass = 'RESET_PASS',
+  change_pass = 'CHANGE_PASS',
+  change_email = 'CHANGE_EMAIL',
 }
 
 export enum LoginType {

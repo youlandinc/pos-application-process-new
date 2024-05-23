@@ -25,7 +25,7 @@ const DynamicPipelineListPage = dynamic(
   },
 );
 
-const PipelineProfileModule: FC = observer(() => {
+const PipelinePage: FC = observer(() => {
   return (
     <>
       <Head>
@@ -38,4 +38,4 @@ const PipelineProfileModule: FC = observer(() => {
   );
 });
 
-export default PipelineProfileModule;
+export default PipelinePage;

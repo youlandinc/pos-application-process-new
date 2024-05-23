@@ -31,6 +31,9 @@ validate.validators.ssn = (value: string) => {
 };
 
 validate.validators.AmericanPhoneNumber = (value: string) => {
+  if (!value) {
+    return;
+  }
   const regex = /^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/;
   if (regex.test(value)) {
     return;

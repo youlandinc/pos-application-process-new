@@ -37,7 +37,7 @@ export const PipelinePage: FC<{
     // ]);
 
     return (
-      <POSLayout scene={LayoutSceneTypeEnum.pipeline}>
+      <POSLayout scene={LayoutSceneTypeEnum.account}>
         <>{children}</>
       </POSLayout>
     );
