@@ -84,6 +84,10 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
           if (lastAuthId) {
             await userpool.refreshToken(lastAuthId);
           }
+
+          enqueueSnackbar('Profile updated', {
+            variant: 'success',
+          });
         })
         .catch(({ message }) => {
           enqueueSnackbar(message ?? 'Upload error', {
