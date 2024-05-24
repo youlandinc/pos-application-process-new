@@ -1,5 +1,12 @@
 import React, { FC, useCallback, useRef, useState } from 'react';
-import { Fade, Icon, Stack, Typography } from '@mui/material';
+import {
+  Breakpoint,
+  Fade,
+  Icon,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { Cropper, ReactCropperElement } from 'react-cropper';
 import { useAsyncFn } from 'react-use';
 import { useSnackbar } from 'notistack';
@@ -25,7 +32,7 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
   dispatch,
   backgroundColor,
 }) => {
-  const breakPoints = useBreakpoints();
+  const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
 
   const cropperRef = useRef<ReactCropperElement>(null);
@@ -166,8 +173,8 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
           style={{
             display: 'block',
             position: 'relative',
-            height: ['xs', 'sm', 'md'].includes(breakPoints) ? 80 : 120,
-            width: ['xs', 'sm', 'md'].includes(breakPoints) ? 80 : 120,
+            height: ['xs', 'sm', 'md'].includes(breakpoints) ? 80 : 120,
+            width: ['xs', 'sm', 'md'].includes(breakpoints) ? 80 : 120,
             borderRadius: '50%',
             cursor: 'pointer',
             flexShrink: 0,
@@ -244,8 +251,8 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
               position: 'absolute',
               right: 0,
               bottom: 0,
-              width: ['xs', 'sm', 'md'].includes(breakPoints) ? 20 : 30,
-              height: ['xs', 'sm', 'md'].includes(breakPoints) ? 20 : 30,
+              width: ['xs', 'sm', 'md'].includes(breakpoints) ? 20 : 30,
+              height: ['xs', 'sm', 'md'].includes(breakpoints) ? 20 : 30,
               zIndex: 999,
             }}
           />

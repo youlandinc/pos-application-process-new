@@ -1,4 +1,4 @@
-import { FC, useReducer, useState } from 'react';
+import { FC, useMemo, useReducer, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
@@ -16,8 +16,8 @@ import {
   SettingsChangeProfile,
 } from '@/components/molecules';
 
-import { AccountUserProfileParams, HttpError } from '@/types';
-import { _fetchUserInfo } from '@/requests';
+import { AccountUserProfileParams, HttpError, UserType } from '@/types';
+import { _fetchUerInfoWrapper } from '@/requests';
 
 const AccountReducer = (
   state: AccountUserProfileParams,
@@ -68,17 +68,22 @@ export const AccountSettings: FC = () => {
     try {
       const {
         data: {
-          userInfo: {
-            avatar,
-            backgroundColor,
-            firstName,
-            lastName,
-            birthDay,
-            email,
-            phone,
+          info,
+          settings: {
+            userInfo: {
+              avatar,
+              backgroundColor,
+              firstName,
+              lastName,
+              birthDay,
+              email,
+              phone,
+            },
           },
         },
-      } = await _fetchUserInfo();
+      } = await _fetchUerInfoWrapper();
+
+      console.log(info);
 
       dispatch({
         type: 'init',
@@ -114,6 +119,20 @@ export const AccountSettings: FC = () => {
       });
     }
   }, []);
+
+  const computedLabel = useMemo(() => {
+    switch (userType) {
+      case UserType.REAL_ESTATE_AGENT:
+        return 'Real estate agent info';
+      case UserType.BROKER:
+        return 'Broker info';
+      case UserType.LOAN_OFFICER:
+        return 'Loan officer info';
+      case UserType.CUSTOMER:
+      default:
+        return '';
+    }
+  }, [userType]);
 
   return loading ? (
     <Stack
@@ -171,10 +190,7 @@ export const AccountSettings: FC = () => {
                 ),
               },
               {
-                label: `${
-                  userType!.toLowerCase().charAt(0).toUpperCase() +
-                  userType!.toLowerCase().slice(1)
-                } info`,
+                label: computedLabel,
                 content: <Stack>123</Stack>,
               },
             ]}
