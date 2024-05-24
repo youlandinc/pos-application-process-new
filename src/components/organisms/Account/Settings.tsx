@@ -1,4 +1,4 @@
-import { FC, ReactNode, useMemo, useReducer, useState } from 'react';
+import { FC, useMemo, useReducer, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
@@ -67,21 +67,9 @@ export const AccountSettings: FC = () => {
   const { userType } = useMst();
 
   const [store, dispatch] = useReducer(AccountReducer, initialState);
-  const [, setBackgroundColor] = useState<string>('');
+  const [backgroundColor, setBackgroundColor] = useState<string>('');
 
   const [taskHash, setTaskHash] = useState<AccountRoleTaskHash | undefined>();
-
-  const [tabsData, setTabData] = useState<
-    {
-      label: string;
-      content: ReactNode;
-    }[]
-  >([
-    {
-      label: '',
-      content: '',
-    },
-  ]);
 
   const { loading } = useAsync(async () => {
     // Fetch user settings
@@ -128,32 +116,7 @@ export const AccountSettings: FC = () => {
 
       setBackgroundColor(backgroundColor || '');
 
-      const temp = [
-        {
-          label: 'Settings',
-          content: (
-            <Stack gap={{ xs: 3, md: 6 }} mt={3}>
-              <SettingsChangeAvatar
-                backgroundColor={backgroundColor || ''}
-                dispatch={dispatch}
-                store={store}
-              />
-              <SettingsChangeProfile dispatch={dispatch} store={store} />
-              <SettingsChangePassword />
-            </Stack>
-          ),
-        },
-      ];
-
-      if (info?.tasks) {
-        setTaskHash(info?.tasks);
-        temp.push({
-          label: computedLabel,
-          content: <QualificationList taskHash={taskHash!} />,
-        });
-      }
-
-      setTabData(temp);
+      setTaskHash(info?.tasks);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -163,7 +126,7 @@ export const AccountSettings: FC = () => {
         header,
       });
     }
-  }, []);
+  }, [dispatch]);
 
   const computedLabel = useMemo(() => {
     switch (userType) {
@@ -208,7 +171,7 @@ export const AccountSettings: FC = () => {
 
         <Stack maxWidth={'100%'} width={'100%'}>
           <StyledTab
-            startIndex={router.query.qualification ? 1 : 0}
+            startIndex={!taskHash ? 0 : router.query.qualification ? 1 : 0}
             sx={{
               '& .MuiTabs-flexContainer .MuiButtonBase-root': {
                 p: 0,
@@ -219,7 +182,51 @@ export const AccountSettings: FC = () => {
                 fontWeight: 600,
               },
             }}
-            tabsData={tabsData}
+            tabsData={
+              taskHash
+                ? [
+                    {
+                      label: 'Settings',
+                      content: (
+                        <Stack gap={{ xs: 3, md: 6 }} mt={3}>
+                          <SettingsChangeAvatar
+                            backgroundColor={backgroundColor || ''}
+                            dispatch={dispatch}
+                            store={store}
+                          />
+                          <SettingsChangeProfile
+                            dispatch={dispatch}
+                            store={store}
+                          />
+                          <SettingsChangePassword />
+                        </Stack>
+                      ),
+                    },
+                    {
+                      label: computedLabel,
+                      content: <QualificationList taskHash={taskHash!} />,
+                    },
+                  ]
+                : [
+                    {
+                      label: 'Settings',
+                      content: (
+                        <Stack gap={{ xs: 3, md: 6 }} mt={3}>
+                          <SettingsChangeAvatar
+                            backgroundColor={backgroundColor || ''}
+                            dispatch={dispatch}
+                            store={store}
+                          />
+                          <SettingsChangeProfile
+                            dispatch={dispatch}
+                            store={store}
+                          />
+                          <SettingsChangePassword />
+                        </Stack>
+                      ),
+                    },
+                  ]
+            }
           />
         </Stack>
       </Stack>
