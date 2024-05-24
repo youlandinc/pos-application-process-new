@@ -1,12 +1,5 @@
 import React, { FC, useCallback, useRef, useState } from 'react';
-import {
-  Breakpoint,
-  Fade,
-  Icon,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Fade, Icon, Stack, Typography } from '@mui/material';
 import { Cropper, ReactCropperElement } from 'react-cropper';
 import { useAsyncFn } from 'react-use';
 import { useSnackbar } from 'notistack';

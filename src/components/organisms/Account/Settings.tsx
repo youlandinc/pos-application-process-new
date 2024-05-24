@@ -16,8 +16,14 @@ import {
   SettingsChangeProfile,
 } from '@/components/molecules';
 
-import { AccountUserProfileParams, HttpError, UserType } from '@/types';
+import {
+  AccountRoleTaskHash,
+  AccountUserProfileParams,
+  HttpError,
+  UserType,
+} from '@/types';
 import { _fetchUerInfoWrapper } from '@/requests';
+import { QualificationList } from '@/components/molecules/Account/Qualification/QualificationList';
 
 const AccountReducer = (
   state: AccountUserProfileParams,
@@ -63,12 +69,14 @@ export const AccountSettings: FC = () => {
   const [store, dispatch] = useReducer(AccountReducer, initialState);
   const [backgroundColor, setBackgroundColor] = useState<string>('');
 
+  const [taskHash, setTaskHash] = useState<AccountRoleTaskHash | undefined>();
+
   const { loading } = useAsync(async () => {
     // Fetch user settings
     try {
       const {
         data: {
-          info,
+          info: { tasks },
           settings: {
             userInfo: {
               avatar,
@@ -83,7 +91,7 @@ export const AccountSettings: FC = () => {
         },
       } = await _fetchUerInfoWrapper();
 
-      console.log(info);
+      setTaskHash(tasks);
 
       dispatch({
         type: 'init',
@@ -178,7 +186,7 @@ export const AccountSettings: FC = () => {
               {
                 label: 'Settings',
                 content: (
-                  <Stack gap={{ xs: 3, md: 6 }}>
+                  <Stack gap={{ xs: 3, md: 6 }} mt={3}>
                     <SettingsChangeAvatar
                       backgroundColor={backgroundColor}
                       dispatch={dispatch}
@@ -191,7 +199,7 @@ export const AccountSettings: FC = () => {
               },
               {
                 label: computedLabel,
-                content: <Stack>123</Stack>,
+                content: <QualificationList taskHash={taskHash!} />,
               },
             ]}
           />
