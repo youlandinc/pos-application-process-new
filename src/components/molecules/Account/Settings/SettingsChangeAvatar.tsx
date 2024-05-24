@@ -222,8 +222,6 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
                 height: '100%',
                 width: '100%',
                 cursor: 'pointer',
-                border: '1px solid #D2D6E1',
-                overflow: 'hidden',
               }}
             >
               <img
@@ -233,6 +231,7 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
                   width: '100%',
                   height: '100%',
                   borderRadius: '50%',
+                  border: '1px solid #D2D6E1',
                 }}
               />
             </picture>
