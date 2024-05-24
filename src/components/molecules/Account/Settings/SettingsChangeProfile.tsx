@@ -143,6 +143,7 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
 
       <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={{ xs: 2, md: 3 }}>
         <StyledTextField
+          disabled={loading}
           label={'First name'}
           onChange={(e) => {
             dispatch({
@@ -160,6 +161,7 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
           value={store.firstName}
         />
         <StyledTextField
+          disabled={loading}
           label={'Last name'}
           onChange={(e) => {
             dispatch({
@@ -179,6 +181,7 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
       </Stack>
 
       <StyledDatePicker
+        disabled={loading}
         disableFuture={false}
         label={'Date of birth'}
         onChange={(value) => {
@@ -195,6 +198,7 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
 
       <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={{ xs: 2, md: 3 }}>
         <StyledTextFieldPhone
+          disabled={loading}
           error={phoneError}
           label={'Phone number'}
           onValueChange={({ value }) => {
@@ -211,6 +215,7 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
           value={store.phone}
         />
         <StyledTextField
+          disabled={loading}
           error={emailError}
           label={'Contact email'}
           onChange={(e) => {

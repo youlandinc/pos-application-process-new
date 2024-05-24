@@ -16,10 +16,6 @@ export const _updateUserInfoAvatar = (param: {
   return post('/usercenter/api/user/modifyUserInfo', param);
 };
 
-export const _fetchUserInfo = () => {
-  return get('/usercenter/api/consumer/user/fetch');
-};
-
 export const _updateUserInfo = (params: AccountUserProfileParams) => {
   return post('/usercenter/api/user/modifyUserInfo', params);
 };
@@ -28,4 +24,13 @@ export const _updateUserInfoPassword = (
   params: AccountUserChangePasswordParams,
 ) => {
   return post('/usercenter/api/consumer/changePassword/user/complete', params);
+};
+
+export const _fetchUerInfoWrapper = () => {
+  return get('/usercenter/account/info');
+};
+
+// this is a base api
+export const _fetchUserInfo = () => {
+  return get('/usercenter/api/consumer/user/fetch');
 };
