@@ -1,4 +1,4 @@
-import { FC, ReactNode, useMemo, useReducer, useState } from 'react';
+import { FC, useMemo, useReducer, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
