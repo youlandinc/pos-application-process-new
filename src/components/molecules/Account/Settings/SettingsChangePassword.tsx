@@ -105,7 +105,7 @@ export const SettingsChangePassword: FC = () => {
         setLoading(false);
       }
     },
-    [password, confirmedPassword, oldPassword, enqueueSnackbar],
+    [password, confirmedPassword, oldPassword, enqueueSnackbar, router],
   );
 
   const isDisabled = useMemo(() => {

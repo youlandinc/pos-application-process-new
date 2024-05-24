@@ -1,5 +1,5 @@
 export enum AccountRoleTaskKey {
-  licence = 'LICENCE',
+  license = 'LICENSE',
   agreement = 'AGREEMENT',
   government_id = 'GOVERNMENT_ID',
   w9 = 'W9',
@@ -20,10 +20,16 @@ export enum AccountRoleTaskItemStatus {
   confirmed = 'CONFIRMED',
 }
 
-export type AccountRoleTaskItem = {
-  [key in keyof typeof AccountRoleTaskKey]: AccountRoleTaskItemStatus;
-};
+export interface AccountRoleTaskHash {
+  [AccountRoleTaskKey.agreement]: AccountRoleTaskItemStatus;
+  [AccountRoleTaskKey.w9]: AccountRoleTaskItemStatus;
+  [AccountRoleTaskKey.ach]: AccountRoleTaskItemStatus;
+
+  [AccountRoleTaskKey.license]?: AccountRoleTaskItemStatus;
+  [AccountRoleTaskKey.questionnaire]?: AccountRoleTaskItemStatus;
+  [AccountRoleTaskKey.government_id]?: AccountRoleTaskItemStatus;
+}
 
 export interface AccountRoleTaskResponse {
-  tasks: AccountRoleTaskItem[];
+  tasks: AccountRoleTaskHash;
 }
