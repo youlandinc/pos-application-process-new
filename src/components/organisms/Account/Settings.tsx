@@ -1,4 +1,4 @@
-import { FC, useMemo, useReducer, useState } from 'react';
+import { FC, ReactNode, useMemo, useReducer, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
@@ -11,6 +11,7 @@ import { AUTO_HIDE_DURATION, userpool } from '@/constants';
 
 import { StyledLoading, StyledTab } from '@/components/atoms';
 import {
+  QualificationList,
   SettingsChangeAvatar,
   SettingsChangePassword,
   SettingsChangeProfile,
@@ -23,7 +24,6 @@ import {
   UserType,
 } from '@/types';
 import { _fetchUerInfoWrapper } from '@/requests';
-import { QualificationList } from '@/components/molecules/Account/Qualification/QualificationList';
 
 const AccountReducer = (
   state: AccountUserProfileParams,
@@ -67,16 +67,28 @@ export const AccountSettings: FC = () => {
   const { userType } = useMst();
 
   const [store, dispatch] = useReducer(AccountReducer, initialState);
-  const [backgroundColor, setBackgroundColor] = useState<string>('');
+  const [, setBackgroundColor] = useState<string>('');
 
   const [taskHash, setTaskHash] = useState<AccountRoleTaskHash | undefined>();
+
+  const [tabsData, setTabData] = useState<
+    {
+      label: string;
+      content: ReactNode;
+    }[]
+  >([
+    {
+      label: '',
+      content: '',
+    },
+  ]);
 
   const { loading } = useAsync(async () => {
     // Fetch user settings
     try {
       const {
         data: {
-          info: { tasks },
+          info,
           settings: {
             userInfo: {
               avatar,
@@ -90,8 +102,6 @@ export const AccountSettings: FC = () => {
           },
         },
       } = await _fetchUerInfoWrapper();
-
-      setTaskHash(tasks);
 
       dispatch({
         type: 'init',
@@ -117,6 +127,33 @@ export const AccountSettings: FC = () => {
       );
 
       setBackgroundColor(backgroundColor || '');
+
+      const temp = [
+        {
+          label: 'Settings',
+          content: (
+            <Stack gap={{ xs: 3, md: 6 }} mt={3}>
+              <SettingsChangeAvatar
+                backgroundColor={backgroundColor || ''}
+                dispatch={dispatch}
+                store={store}
+              />
+              <SettingsChangeProfile dispatch={dispatch} store={store} />
+              <SettingsChangePassword />
+            </Stack>
+          ),
+        },
+      ];
+
+      if (info?.tasks) {
+        setTaskHash(info?.tasks);
+        temp.push({
+          label: computedLabel,
+          content: <QualificationList taskHash={taskHash!} />,
+        });
+      }
+
+      setTabData(temp);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -182,26 +219,7 @@ export const AccountSettings: FC = () => {
                 fontWeight: 600,
               },
             }}
-            tabsData={[
-              {
-                label: 'Settings',
-                content: (
-                  <Stack gap={{ xs: 3, md: 6 }} mt={3}>
-                    <SettingsChangeAvatar
-                      backgroundColor={backgroundColor}
-                      dispatch={dispatch}
-                      store={store}
-                    />
-                    <SettingsChangeProfile dispatch={dispatch} store={store} />
-                    <SettingsChangePassword />
-                  </Stack>
-                ),
-              },
-              {
-                label: computedLabel,
-                content: <QualificationList taskHash={taskHash!} />,
-              },
-            ]}
+            tabsData={tabsData}
           />
         </Stack>
       </Stack>
