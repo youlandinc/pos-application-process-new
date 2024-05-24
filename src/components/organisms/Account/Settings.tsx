@@ -71,18 +71,6 @@ export const AccountSettings: FC = () => {
 
   const [taskHash, setTaskHash] = useState<AccountRoleTaskHash | undefined>();
 
-  const [tabsData, setTabData] = useState<
-    {
-      label: string;
-      content: ReactNode;
-    }[]
-  >([
-    {
-      label: '',
-      content: '',
-    },
-  ]);
-
   const { loading } = useAsync(async () => {
     // Fetch user settings
     try {
