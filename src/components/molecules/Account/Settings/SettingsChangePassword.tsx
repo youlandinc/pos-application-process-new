@@ -9,6 +9,7 @@ import {
 import { Box, Stack, Typography } from '@mui/material';
 import { validate } from 'validate.js';
 import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/router';
 
 import {
   AUTO_HIDE_DURATION,
@@ -26,6 +27,7 @@ import { _updateUserInfoPassword } from '@/requests';
 import { HttpError } from '@/types';
 
 export const SettingsChangePassword: FC = () => {
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const [loading, setLoading] = useState(false);
@@ -90,6 +92,7 @@ export const SettingsChangePassword: FC = () => {
           variant: 'success',
           autoHideDuration: AUTO_HIDE_DURATION,
         });
+        router.reload();
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
@@ -102,7 +105,7 @@ export const SettingsChangePassword: FC = () => {
         setLoading(false);
       }
     },
-    [password, confirmedPassword, oldPassword, enqueueSnackbar],
+    [password, confirmedPassword, oldPassword, enqueueSnackbar, router],
   );
 
   const isDisabled = useMemo(() => {

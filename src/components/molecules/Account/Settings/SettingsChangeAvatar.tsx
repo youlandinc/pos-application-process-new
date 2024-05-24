@@ -25,7 +25,7 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
   dispatch,
   backgroundColor,
 }) => {
-  const breakPoints = useBreakpoints();
+  const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
 
   const cropperRef = useRef<ReactCropperElement>(null);
@@ -166,8 +166,8 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
           style={{
             display: 'block',
             position: 'relative',
-            height: ['xs', 'sm', 'md'].includes(breakPoints) ? 80 : 120,
-            width: ['xs', 'sm', 'md'].includes(breakPoints) ? 80 : 120,
+            height: ['xs', 'sm', 'md'].includes(breakpoints) ? 80 : 120,
+            width: ['xs', 'sm', 'md'].includes(breakpoints) ? 80 : 120,
             borderRadius: '50%',
             cursor: 'pointer',
             flexShrink: 0,
@@ -221,9 +221,7 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
                 position: 'relative',
                 height: '100%',
                 width: '100%',
-                borderRadius: '50%',
                 cursor: 'pointer',
-                border: '1px solid #D2D6E1',
               }}
             >
               <img
@@ -232,6 +230,8 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
                 style={{
                   width: '100%',
                   height: '100%',
+                  borderRadius: '50%',
+                  border: '1px solid #D2D6E1',
                 }}
               />
             </picture>
@@ -244,8 +244,8 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
               position: 'absolute',
               right: 0,
               bottom: 0,
-              width: ['xs', 'sm', 'md'].includes(breakPoints) ? 20 : 30,
-              height: ['xs', 'sm', 'md'].includes(breakPoints) ? 20 : 30,
+              width: ['xs', 'sm', 'md'].includes(breakpoints) ? 20 : 30,
+              height: ['xs', 'sm', 'md'].includes(breakpoints) ? 20 : 30,
               zIndex: 999,
             }}
           />
