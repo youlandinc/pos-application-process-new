@@ -33,10 +33,10 @@ export const TabPanel = (props: PropsWithChildren<TabPanelProps>) => {
 };
 
 export const StyledTab: FC<StyledTabProps> = ({
-                                                tabsData,
-                                                sx,
-                                                startIndex = 0,
-                                              }) => {
+  tabsData,
+  sx,
+  startIndex = 0,
+}) => {
   const [value, setValue] = useState(startIndex);
 
   useEffect(() => {
@@ -74,19 +74,11 @@ export const StyledTab: FC<StyledTabProps> = ({
         variant={'scrollable'}
       >
         {tabsData.map((item, index) => (
-          <Tab
-            key={index}
-            label={item.label}
-          />
+          <Tab key={index} label={item.label} />
         ))}
       </Tabs>
       {tabsData.map((item, index) => (
-        <TabPanel
-          index={index}
-          key={index}
-          sx={{ flex: 1 }}
-          value={value}
-        >
+        <TabPanel index={index} key={index} sx={{ flex: 1 }} value={value}>
           {item.content}
         </TabPanel>
       ))}
