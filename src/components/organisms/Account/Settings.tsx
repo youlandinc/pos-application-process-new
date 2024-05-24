@@ -132,19 +132,13 @@ export const AccountSettings: FC = () => {
         {
           label: 'Settings',
           content: (
-            <Stack
-              gap={{ xs: 3, md: 6 }}
-              mt={3}
-            >
+            <Stack gap={{ xs: 3, md: 6 }} mt={3}>
               <SettingsChangeAvatar
                 backgroundColor={backgroundColor || ''}
                 dispatch={dispatch}
                 store={store}
               />
-              <SettingsChangeProfile
-                dispatch={dispatch}
-                store={store}
-              />
+              <SettingsChangeProfile dispatch={dispatch} store={store} />
               <SettingsChangePassword />
             </Stack>
           ),
@@ -212,10 +206,7 @@ export const AccountSettings: FC = () => {
           Account
         </Typography>
 
-        <Stack
-          maxWidth={'100%'}
-          width={'100%'}
-        >
+        <Stack maxWidth={'100%'} width={'100%'}>
           <StyledTab
             startIndex={router.query.qualification ? 1 : 0}
             sx={{
