@@ -1,6 +1,5 @@
 import {
   LoanSpecies,
-  PipelineACHAccountType,
   PipelineLicenseType,
   PipelineLoanStageEnum,
 } from '@/types';
@@ -100,18 +99,5 @@ export const OPTIONS_LICENSE_TYPE: Option[] = [
     key: PipelineLicenseType.DRE_LICENSE,
     value: PipelineLicenseType.DRE_LICENSE,
     label: 'DRE license',
-  },
-];
-
-export const OPTIONS_ACCOUNT_TYPE: Option[] = [
-  {
-    key: PipelineACHAccountType.CHECKING,
-    value: PipelineACHAccountType.CHECKING,
-    label: 'Checking',
-  },
-  {
-    key: PipelineACHAccountType.SAVINGS,
-    value: PipelineACHAccountType.SAVINGS,
-    label: 'Savings',
   },
 ];

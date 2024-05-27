@@ -33,3 +33,9 @@ export interface AccountRoleTaskHash {
 export interface AccountRoleTaskResponse {
   tasks: AccountRoleTaskHash;
 }
+
+export enum QualificationACHAccountType {
+  checking = 'CHECKING',
+  savings = 'SAVINGS',
+  default = '',
+}

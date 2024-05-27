@@ -6,10 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { LayoutSceneTypeEnum } from '@/types';
 
 const DynamicPipelinePage = dynamic(
-  () =>
-    import('@/views/Pipeline/PipelinePage/PipelinePage').then(
-      (mod) => mod.PipelinePage,
-    ),
+  () => import('@/views/Pipeline/PipelinePage').then((mod) => mod.PipelinePage),
   {
     ssr: true,
   },
@@ -17,7 +14,7 @@ const DynamicPipelinePage = dynamic(
 
 const DynamicPipelineListPage = dynamic(
   () =>
-    import('@/views/Pipeline/PipelineListPage/PipelineListPage').then(
+    import('@/views/Pipeline/PipelineListPage').then(
       (mod) => mod.PipelineListPage,
     ),
   {
