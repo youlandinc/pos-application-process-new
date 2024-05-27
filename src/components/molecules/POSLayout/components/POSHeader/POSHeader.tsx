@@ -129,10 +129,12 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         ) : (
           <Box>
             <StyledButton
-              className={'POS_mr_3'}
               color={'info'}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/pipeline')}
+              sx={{
+                marginRight: { xs: '1.25vw', md: 3 },
+              }}
               variant={'outlined'}
             >
               <WidgetsOutlined
@@ -151,10 +153,12 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         return (
           <Box>
             <StyledButton
-              className={'POS_mr_3'}
               color={'info'}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/pipeline')}
+              sx={{
+                marginRight: { xs: '1.25vw', md: 3 },
+              }}
               variant={'outlined'}
             >
               <WidgetsOutlined
@@ -167,10 +171,12 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
             </StyledButton>
             <StyledButton
-              className={'POS_mr_3'}
               color={'info'}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/')}
+              sx={{
+                marginRight: { xs: '1.25vw', md: 3 },
+              }}
               variant={'outlined'}
             >
               <PostAddOutlined
@@ -189,11 +195,12 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         return (
           <Box>
             <StyledButton
-              className={'POS_mr_3'}
               color={'info'}
-              //disabled={!applicable}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/pipeline')}
+              sx={{
+                marginRight: { xs: '1.25vw', md: 3 },
+              }}
               variant={'outlined'}
             >
               <WidgetsOutlined
@@ -206,11 +213,12 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
             </StyledButton>
             <StyledButton
-              className={'POS_mr_3'}
               color={'info'}
-              //disabled={!applicable}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/')}
+              sx={{
+                marginRight: { xs: '1.25vw', md: 3 },
+              }}
               variant={'outlined'}
             >
               <PostAddOutlined

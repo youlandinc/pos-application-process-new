@@ -7,7 +7,6 @@ import {
   ApplicationForm,
   DetectUserActiveService,
   NotificationStation,
-  // PTaskForm,
   // UserSetting,
   //UserConfig,
   //UserProfile
@@ -30,8 +29,6 @@ export const RootModel = {
 
   applicationForm: ApplicationForm,
   dashboardInfo: DashboardInfo,
-
-  // pipelineTask: PTaskForm,
 
   session: types.maybe(types.frozen<UserSession>()),
   // userSetting: UserSetting,

@@ -1,4 +1,5 @@
 import { AddressData } from '@/types/common';
+import { QualificationACHAccountType } from '@/types';
 
 export enum PipelineTaskName {
   // common
@@ -132,17 +133,11 @@ export interface PipelineACH {
   accountName: string;
   routingNumber: string;
   accountNumber: string;
-  accountType: PipelineACHAccountType;
+  accountType: QualificationACHAccountType;
 }
 
 export enum PipelineLicenseType {
   NMLS_LICENSE = 'NMLS',
   DRE_LICENSE = 'DRE',
-  DEFAULT = '',
-}
-
-export enum PipelineACHAccountType {
-  CHECKING = 'CHECKING',
-  SAVINGS = 'SAVINGS',
   DEFAULT = '',
 }
