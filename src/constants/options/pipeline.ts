@@ -3,25 +3,6 @@ import {
   PipelineLicenseType,
   PipelineLoanStageEnum,
 } from '@/types';
-import { PipelineLicenseTypeOpt } from '@/types/options';
-
-export const OPTIONS_PIPELINE_LICENSE_TYPE: Option[] = [
-  {
-    label: 'NMLS',
-    key: PipelineLicenseTypeOpt.nmls,
-    value: PipelineLicenseTypeOpt.nmls,
-  },
-  {
-    label: 'DRE broker',
-    key: PipelineLicenseTypeOpt.dre_broker,
-    value: PipelineLicenseTypeOpt.dre_broker,
-  },
-  {
-    label: 'DRE sale person',
-    key: PipelineLicenseTypeOpt.dre_sale_person,
-    value: PipelineLicenseTypeOpt.dre_sale_person,
-  },
-];
 
 export const OPTIONS_LOAN_STAGE: Option[] = [
   {

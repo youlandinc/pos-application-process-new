@@ -5,13 +5,6 @@ export enum PropertyNumberOpt {
   five_more = 'five_more',
 }
 
-export enum PipelineLicenseTypeOpt {
-  default = '',
-  nmls = 'nmls',
-  dre_broker = 'dre_broker',
-  dre_sale_person = 'dre_sale_person',
-}
-
 export enum ProcessOpt {
   researching = 'researching',
   makingOffer = 'making_offer',

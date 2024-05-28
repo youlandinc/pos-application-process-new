@@ -124,7 +124,12 @@ export const ACH: FC = observer(() => {
         isSimple: !header,
         header,
       });
-      router.back();
+      await router.push({
+        pathname: '/account',
+        query: {
+          qualification: true,
+        },
+      });
     }
   });
 
@@ -229,7 +234,12 @@ export const ACH: FC = observer(() => {
     try {
       await _updateRoleTaskDetail(params);
       setSaveLoading(false);
-      router.back();
+      await router.push({
+        pathname: '/account',
+        query: {
+          qualification: true,
+        },
+      });
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -338,51 +348,57 @@ export const ACH: FC = observer(() => {
           </Stack>
         </Stack>
 
-        <Stack alignItems={'center'} gap={6}>
-          <StyledButton
-            color={'primary'}
-            disabled={genLoading}
-            loading={genLoading}
-            loadingText={'Generating...'}
-            onClick={handledGenerateFile}
-            sx={{ maxWidth: 560, width: '100%' }}
-            variant={'outlined'}
-          >
-            Generate File
-          </StyledButton>
+        {computedCondition.isGenFile && (
+          <Stack alignItems={'center'} gap={6}>
+            <StyledButton
+              color={'primary'}
+              disabled={genLoading}
+              loading={genLoading}
+              onClick={handledGenerateFile}
+              sx={{ maxWidth: 560, width: '100%' }}
+              variant={'outlined'}
+            >
+              Generate File
+            </StyledButton>
 
-          <Transitions
-            style={{
-              display: documentFile?.url ? 'block' : 'none',
-            }}
-          >
-            {documentFile?.url && (
-              <Typography
-                color={'text.secondary'}
-                component={'div'}
-                textAlign={'center'}
-                variant={'body1'}
-              >
-                The attached document is the{' '}
+            <Transitions
+              style={{
+                display: documentFile?.url ? 'block' : 'none',
+              }}
+            >
+              {documentFile?.url && (
                 <Typography
-                  component={'span'}
-                  fontWeight={600}
-                  onClick={() => window.open(documentFile.url)}
-                  sx={{
-                    color: 'primary.main',
-                    cursor: 'pointer',
-                    fontWeight: 600,
-                  }}
+                  color={'text.secondary'}
+                  component={'div'}
+                  textAlign={'center'}
+                  variant={'body1'}
                 >
-                  ACH Information.pdf
-                </Typography>{' '}
-                that you have confirmed. In case you need to make any changes, a
-                new agreement will be generated and require your agreement
-                again.
-              </Typography>
-            )}
-          </Transitions>
-        </Stack>
+                  The attached document is the{' '}
+                  <Typography
+                    component={'span'}
+                    fontWeight={600}
+                    onClick={() => {
+                      if (genLoading) {
+                        return;
+                      }
+                      window.open(documentFile.url);
+                    }}
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
+                  >
+                    ACH Information.pdf
+                  </Typography>{' '}
+                  that you have confirmed. In case you need to make any changes,
+                  a new agreement will be generated and require your agreement
+                  again.
+                </Typography>
+              )}
+            </Transitions>
+          </Stack>
+        )}
 
         <Stack
           alignItems={'center'}
@@ -393,7 +409,14 @@ export const ACH: FC = observer(() => {
         >
           <StyledButton
             color={'info'}
-            onClick={() => router.back()}
+            onClick={() =>
+              router.push({
+                pathname: '/account',
+                query: {
+                  qualification: true,
+                },
+              })
+            }
             sx={{
               flex: 1,
               width: '100%',
@@ -441,7 +464,6 @@ export const ACH: FC = observer(() => {
               <StyledButton
                 disabled={agreeLoading}
                 loading={agreeLoading}
-                loadingText={'Processing...'}
                 onClick={handledSaveFile}
                 sx={{ flexShrink: 0, height: 56, width: 200 }}
               >

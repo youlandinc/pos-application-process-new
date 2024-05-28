@@ -59,6 +59,7 @@ export const StyledTextFieldSocialNumber: FC<
       onValueChange(string.split('-').join(''));
     }
   };
+
   const handledBlur = () => {
     const r = new RegExp('(?:d{3})-(?:d{2})-(d{4})');
     const result = text.replace(r, '');
