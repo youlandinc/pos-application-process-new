@@ -1,5 +1,5 @@
 import { FC, useRef, useState } from 'react';
-import { Box, Fade, Stack, Typography } from '@mui/material';
+import { Box, Fade, Grow, Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
@@ -241,151 +241,172 @@ export const Questionnaire: FC = observer(() => {
         <Stack gap={3}>
           {questionnaire.licenses.map((license, index) => {
             return (
-              <Stack gap={3} key={license.id}>
-                <Stack
-                  alignItems={'center'}
-                  flexDirection={'row'}
-                  gap={3}
-                  justifyContent={'space-between'}
-                  width={'100%'}
-                >
-                  <Typography fontSize={{ xs: 18, lg: 24 }} variant={'h5'}>
-                    {'Owner name ' + (index + 1)}
-                  </Typography>
-                  {index !== 0 && (
-                    <StyledButton
-                      color={'primary'}
+              <Grow
+                in={true}
+                key={license.id}
+                style={{ transformOrigin: 'top left' }}
+                timeout={index * 300}
+              >
+                <Stack gap={3} key={license.id}>
+                  <Stack
+                    alignItems={'center'}
+                    flexDirection={'row'}
+                    gap={3}
+                    justifyContent={'space-between'}
+                    width={'100%'}
+                  >
+                    <Typography fontSize={{ xs: 18, lg: 24 }} variant={'h5'}>
+                      {'Owner name ' + (index + 1)}
+                    </Typography>
+                    {index !== 0 && (
+                      <StyledButton
+                        color={'primary'}
+                        disabled={genLoading || saveLoading}
+                        onClick={() => {
+                          questionnaire.removeOwner(index);
+                        }}
+                        size={'small'}
+                        variant={'outlined'}
+                      >
+                        Remove
+                      </StyledButton>
+                    )}
+                    {index === 0 && (
+                      <StyledButton
+                        color={'primary'}
+                        disabled={
+                          questionnaire.licenses.length >= 4 ||
+                          genLoading ||
+                          saveLoading
+                        }
+                        onClick={() => {
+                          questionnaire.addOwner({
+                            ...initialized,
+                            id: _uniqueId('owner_'),
+                          });
+                        }}
+                        size={'small'}
+                        variant={'outlined'}
+                      >
+                        {['xs', 'sm', 'md'].includes(breakpoints)
+                          ? '+ Add'
+                          : '+ Add a new owner'}
+                      </StyledButton>
+                    )}
+                  </Stack>
+
+                  <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
+                    <StyledTextField
                       disabled={genLoading || saveLoading}
-                      onClick={() => {
-                        questionnaire.removeOwner(index);
+                      label={'First name'}
+                      onChange={(e) => {
+                        const value = (e.target.value as string).replace(
+                          /^./,
+                          (match) => match.toUpperCase(),
+                        );
+                        questionnaire.changeFieldValue(
+                          index,
+                          'firstName',
+                          value,
+                        );
                       }}
-                      size={'small'}
-                      variant={'outlined'}
-                    >
-                      Remove
-                    </StyledButton>
-                  )}
-                  {index === 0 && (
-                    <StyledButton
-                      color={'primary'}
-                      disabled={
-                        questionnaire.licenses.length >= 4 ||
-                        genLoading ||
-                        saveLoading
+                      placeholder={'First name'}
+                      value={license.firstName}
+                    />
+                    <StyledTextField
+                      disabled={genLoading || saveLoading}
+                      label={'Last name'}
+                      onChange={(e) => {
+                        const value = (e.target.value as string).replace(
+                          /^./,
+                          (match) => match.toUpperCase(),
+                        );
+                        questionnaire.changeFieldValue(
+                          index,
+                          'lastName',
+                          value,
+                        );
+                      }}
+                      placeholder={'Last name'}
+                      value={license.lastName}
+                    />
+                  </Stack>
+
+                  <StyledTextFieldSocialNumber
+                    disabled={genLoading || saveLoading}
+                    onValueChange={(value) => {
+                      questionnaire.changeFieldValue(index, 'ssn', value);
+                    }}
+                    placeholder={'SSN'}
+                    value={license.ssn!}
+                  />
+
+                  <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
+                    <StyledDatePicker
+                      disabled={genLoading || saveLoading}
+                      label={'MM/DD/YYYY'}
+                      onChange={(date) => {
+                        const value =
+                          isValid(date) && isDate(date)
+                            ? format(date as Date, 'yyyy-MM-dd')
+                            : null;
+                        questionnaire.changeFieldValue(
+                          index,
+                          'birthday',
+                          value,
+                        );
+                      }}
+                      value={
+                        license.birthday ? new Date(license.birthday) : null
                       }
-                      onClick={() => {
-                        questionnaire.addOwner({
-                          ...initialized,
-                          id: _uniqueId('owner_'),
-                        });
+                    />
+
+                    <StyledSelect
+                      disabled={genLoading || saveLoading}
+                      label={'State'}
+                      onChange={(e) => {
+                        questionnaire.changeFieldValue(
+                          index,
+                          'state',
+                          e.target.value,
+                        );
                       }}
-                      size={'small'}
-                      variant={'outlined'}
-                    >
-                      {['xs', 'sm', 'md'].includes(breakpoints)
-                        ? '+ Add'
-                        : '+ Add a new owner'}
-                    </StyledButton>
-                  )}
+                      options={OPTIONS_COMMON_STATE}
+                      value={license.state}
+                    />
+                  </Stack>
+
+                  <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
+                    <StyledSelect
+                      disabled={genLoading || saveLoading}
+                      label={'License type'}
+                      onChange={(e) => {
+                        questionnaire.changeFieldValue(
+                          index,
+                          'licenseType',
+                          e.target.value,
+                        );
+                      }}
+                      options={QUALIFICATION_QUESTIONNAIRE_LICENSE_TYPE}
+                      value={license.licenseType}
+                    />
+
+                    <StyledTextField
+                      disabled={genLoading || saveLoading}
+                      label={'License #'}
+                      onChange={(e) => {
+                        questionnaire.changeFieldValue(
+                          index,
+                          'license',
+                          e.target.value,
+                        );
+                      }}
+                      placeholder={'License #'}
+                      value={license.license}
+                    />
+                  </Stack>
                 </Stack>
-
-                <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
-                  <StyledTextField
-                    disabled={genLoading || saveLoading}
-                    label={'First name'}
-                    onChange={(e) => {
-                      const value = (e.target.value as string).replace(
-                        /^./,
-                        (match) => match.toUpperCase(),
-                      );
-                      questionnaire.changeFieldValue(index, 'firstName', value);
-                    }}
-                    placeholder={'First name'}
-                    value={license.firstName}
-                  />
-                  <StyledTextField
-                    disabled={genLoading || saveLoading}
-                    label={'Last name'}
-                    onChange={(e) => {
-                      const value = (e.target.value as string).replace(
-                        /^./,
-                        (match) => match.toUpperCase(),
-                      );
-                      questionnaire.changeFieldValue(index, 'lastName', value);
-                    }}
-                    placeholder={'Last name'}
-                    value={license.lastName}
-                  />
-                </Stack>
-
-                <StyledTextFieldSocialNumber
-                  disabled={genLoading || saveLoading}
-                  onValueChange={(value) => {
-                    questionnaire.changeFieldValue(index, 'ssn', value);
-                  }}
-                  placeholder={'SSN'}
-                  value={license.ssn!}
-                />
-
-                <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
-                  <StyledDatePicker
-                    disabled={genLoading || saveLoading}
-                    label={'MM/DD/YYYY'}
-                    onChange={(date) => {
-                      const value =
-                        isValid(date) && isDate(date)
-                          ? format(date as Date, 'yyyy-MM-dd')
-                          : null;
-                      questionnaire.changeFieldValue(index, 'birthday', value);
-                    }}
-                    value={license.birthday ? new Date(license.birthday) : null}
-                  />
-
-                  <StyledSelect
-                    disabled={genLoading || saveLoading}
-                    label={'State'}
-                    onChange={(e) => {
-                      questionnaire.changeFieldValue(
-                        index,
-                        'state',
-                        e.target.value,
-                      );
-                    }}
-                    options={OPTIONS_COMMON_STATE}
-                    value={license.state}
-                  />
-                </Stack>
-
-                <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
-                  <StyledSelect
-                    disabled={genLoading || saveLoading}
-                    label={'License type'}
-                    onChange={(e) => {
-                      questionnaire.changeFieldValue(
-                        index,
-                        'licenseType',
-                        e.target.value,
-                      );
-                    }}
-                    options={QUALIFICATION_QUESTIONNAIRE_LICENSE_TYPE}
-                    value={license.licenseType}
-                  />
-
-                  <StyledTextField
-                    disabled={genLoading || saveLoading}
-                    label={'License #'}
-                    onChange={(e) => {
-                      questionnaire.changeFieldValue(
-                        index,
-                        'license',
-                        e.target.value,
-                      );
-                    }}
-                    placeholder={'License #'}
-                    value={license.license}
-                  />
-                </Stack>
-              </Stack>
+              </Grow>
             );
           })}
         </Stack>
