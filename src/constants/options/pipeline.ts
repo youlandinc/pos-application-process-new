@@ -1,28 +1,8 @@
 import {
   LoanSpecies,
-  PipelineACHAccountType,
   PipelineLicenseType,
   PipelineLoanStageEnum,
 } from '@/types';
-import { PipelineLicenseTypeOpt } from '@/types/options';
-
-export const OPTIONS_PIPELINE_LICENSE_TYPE: Option[] = [
-  {
-    label: 'NMLS',
-    key: PipelineLicenseTypeOpt.nmls,
-    value: PipelineLicenseTypeOpt.nmls,
-  },
-  {
-    label: 'DRE broker',
-    key: PipelineLicenseTypeOpt.dre_broker,
-    value: PipelineLicenseTypeOpt.dre_broker,
-  },
-  {
-    label: 'DRE sale person',
-    key: PipelineLicenseTypeOpt.dre_sale_person,
-    value: PipelineLicenseTypeOpt.dre_sale_person,
-  },
-];
 
 export const OPTIONS_LOAN_STAGE: Option[] = [
   {
@@ -100,18 +80,5 @@ export const OPTIONS_LICENSE_TYPE: Option[] = [
     key: PipelineLicenseType.DRE_LICENSE,
     value: PipelineLicenseType.DRE_LICENSE,
     label: 'DRE license',
-  },
-];
-
-export const OPTIONS_ACCOUNT_TYPE: Option[] = [
-  {
-    key: PipelineACHAccountType.CHECKING,
-    value: PipelineACHAccountType.CHECKING,
-    label: 'Checking',
-  },
-  {
-    key: PipelineACHAccountType.SAVINGS,
-    value: PipelineACHAccountType.SAVINGS,
-    label: 'Savings',
   },
 ];

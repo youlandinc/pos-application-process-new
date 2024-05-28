@@ -7,19 +7,20 @@ import {
   useState,
 } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { validate } from 'validate.js';
 
-import { ForgotPasswordProps, ForgotPasswordStyles } from './index';
+import { ForgotPasswordProps } from './index';
 import { POSFlex } from '@/styles';
 
 import {
   StyledBoxWrap,
   StyledButton,
+  StyledDialog,
   StyledHeaderLogo,
   StyledTextField,
+  StyledTextFieldOtp,
   StyledTextFieldPassword,
   Transitions,
 } from '@/components/atoms';
@@ -30,9 +31,13 @@ import {
   LOGIN_APP_KEY,
   userpool,
 } from '@/constants';
-import { useBreakpoints, useSessionStorageState } from '@/hooks';
+import { useSessionStorageState, useSwitch } from '@/hooks';
 import { BizType, HttpError } from '@/types';
-import { _userResetPassword, _userSendCodeForResetPassword } from '@/requests';
+import {
+  _fetchUserResetPasswordSendCode,
+  _fetchUserResetPasswordSubmit,
+  _fetchUserResetPasswordVerifyCode,
+} from '@/requests';
 
 import FORGOT_PASSWORD_SVG from '@/svg/auth/forgot_password.svg';
 
@@ -43,16 +48,23 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
 
-  const breakpoint = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
+  const { open, close, visible } = useSwitch(false);
+
+  const [formState, setFormState] = useState<'initial' | 'terminal'>('initial');
+
+  const [vrCodeLoading, setVrCodeLoading] = useState(false);
   const [email, setEmail] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
+
+  const [verifyLoading, setVerifyLoading] = useState(false);
+  const [accessToken, setAccessToken] = useState('');
+
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword] = useState('');
 
-  const [seconds, setSeconds] = useState(60);
   const [formError, setFormError] = useState<
     Partial<Record<keyof typeof ForgotPasswordSchema, string[]>> | undefined
   >();
@@ -83,49 +95,22 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
       });
     }, []);
 
-  const onSendCodeClick = useCallback(async () => {
-    const errors = validate({ email }, ForgotPasswordSchema);
-    setFormError(errors?.email && { email: errors?.email });
-    if (errors?.email) {
-      return;
+  const isDisabled = useMemo(() => {
+    for (const [, value] of Object.entries(passwordError)) {
+      if (!value) {
+        return true;
+      }
     }
+    return !password || !confirmedPassword;
+  }, [confirmedPassword, password, passwordError]);
 
-    try {
-      const data = {
-        email,
-        bizType: BizType.RESET_PASS,
-        appkey: LOGIN_APP_KEY,
-      };
-      await _userSendCodeForResetPassword(data);
-      let num = 60;
-      const timer = setInterval(() => {
-        num--;
-        setSeconds(num);
-        if (num < 1) {
-          setSeconds(60);
-          clearInterval(timer);
-        }
-      }, 1000);
-    } catch (err) {
-      const { header, message, variant } = err as HttpError;
-      enqueueSnackbar(message, {
-        variant: variant || 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-        isSimple: !header,
-        header,
-      });
-    }
-  }, [email, enqueueSnackbar]);
-
-  const onSubmitClick = useCallback<FormEventHandler>(
+  const fetchVrCode = useCallback<FormEventHandler>(
     async (e) => {
+      e.stopPropagation();
       e.preventDefault();
       const errors = validate(
         {
-          verificationCode,
           email,
-          password,
-          confirmedPassword,
         },
         ForgotPasswordSchema,
       );
@@ -135,17 +120,113 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
         return;
       }
 
+      const params = {
+        appkey: LOGIN_APP_KEY,
+        email,
+        bizType: BizType.reset_pass,
+      };
+
+      setVrCodeLoading(true);
       try {
-        const data = {
-          newPass: userpool.encode(password),
-          appkey: LOGIN_APP_KEY,
-          verifyCode: verificationCode,
-          email,
-        };
-        await _userResetPassword(data);
-        successCb && successCb();
+        await _fetchUserResetPasswordSendCode(params);
+        open();
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      } finally {
+        setVrCodeLoading(false);
+      }
+    },
+    [email, enqueueSnackbar, open],
+  );
+
+  const resendVrCode = useCallback(async () => {
+    const params = {
+      appkey: LOGIN_APP_KEY,
+      email,
+      bizType: BizType.reset_pass,
+    };
+
+    setVrCodeLoading(true);
+    try {
+      await _fetchUserResetPasswordSendCode(params);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setVrCodeLoading(false);
+    }
+  }, [email, enqueueSnackbar]);
+
+  const handleVerifyCode = useCallback(
+    async (v: string) => {
+      const params = {
+        appkey: LOGIN_APP_KEY,
+        email,
+        code: v,
+        bizType: BizType.reset_pass,
+      };
+      setVerifyLoading(true);
+
+      try {
+        const { data } = await _fetchUserResetPasswordVerifyCode(params);
+        setAccessToken(data);
+        setFormState('terminal');
+        close();
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      } finally {
+        setVerifyLoading(false);
+      }
+    },
+    [close, email, enqueueSnackbar],
+  );
+
+  const onSubmitClick = useCallback<FormEventHandler>(
+    async (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      const errors = validate(
+        {
+          password,
+          confirmedPassword,
+        },
+        ForgotPasswordSchema,
+      );
+
+      if (errors.confirmedPassword) {
+        return;
+      }
+
+      const params = {
+        accessToken,
+        newPass: userpool.encode(confirmedPassword),
+        appkey: LOGIN_APP_KEY,
+      };
+
+      setSubmitLoading(true);
+
+      try {
+        await _fetchUserResetPasswordSubmit(params);
+        successCb?.();
         if (isRedirect) {
-          await router.push('./login');
+          await router.push('/auth/login');
         }
       } catch (err) {
         const { header, message, variant } = err as HttpError;
@@ -155,81 +236,120 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
           isSimple: !header,
           header,
         });
+      } finally {
+        setSubmitLoading(false);
       }
     },
     [
-      verificationCode,
-      email,
-      password,
+      accessToken,
       confirmedPassword,
-      successCb,
-      isRedirect,
-      router,
       enqueueSnackbar,
+      isRedirect,
+      password,
+      router,
+      successCb,
     ],
   );
 
-  const sendButtonText = useMemo(() => {
-    if (seconds < 60) {
-      return ['xs', 'sm', 'md', 'lg'].includes(breakpoint) || isNestForm
-        ? `00:${seconds}`
-        : `Resend in 00:${seconds}`;
-    }
-    return ['xs', 'sm', 'md', 'lg'].includes(breakpoint) || isNestForm
-      ? 'Send'
-      : 'Send verification code';
-  }, [breakpoint, isNestForm, seconds]);
-
-  const isDisabled = useMemo(() => {
-    for (const [, value] of Object.entries(passwordError)) {
-      if (!value) {
-        return true;
-      }
-    }
-    return !email || !password || !confirmedPassword || !verificationCode;
-  }, [confirmedPassword, email, password, passwordError, verificationCode]);
-
   const FormBody = useMemo(() => {
-    return (
-      <Box
-        className="form_body"
-        component={'form'}
-        onSubmit={onSubmitClick}
-        sx={isNestForm ? ForgotPasswordStyles.form : {}}
-      >
-        <StyledTextField
-          inputProps={{
-            autoComplete: 'new-password',
-          }}
-          label={'Email'}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder={'Email'}
-          required
-          validate={formError?.email}
-          value={email}
-        />
-        <Box className="POS_flex POS_jc_sb">
+    if (formState === 'initial') {
+      return (
+        <Stack
+          component={'form'}
+          gap={3}
+          mt={isNestForm ? 3 : 0}
+          onSubmit={fetchVrCode}
+        >
           <StyledTextField
-            inputProps={{
-              autoComplete: 'new-password',
-            }}
-            label={'Verification code'}
-            onChange={(e) => setVerificationCode(e.target.value)}
-            placeholder={'Verification code'}
-            required
-            value={verificationCode}
+            label={'Email'}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={'Email'}
+            validate={formError?.email}
+            value={email}
           />
-          <StyledButton
-            color="primary"
-            disabled={!email || seconds < 60}
-            onClick={onSendCodeClick}
-            sx={{ ml: 1.5 }}
-            variant="contained"
-          >
-            {sendButtonText}
-          </StyledButton>
-        </Box>
 
+          <StyledButton
+            disabled={!email || vrCodeLoading}
+            loading={vrCodeLoading}
+            type={'submit'}
+          >
+            Next
+          </StyledButton>
+
+          <StyledDialog
+            content={
+              <Stack gap={3} overflow={'hidden'}>
+                <Typography
+                  color={'text.secondary'}
+                  component={'div'}
+                  textAlign={'left'}
+                  variant={'body2'}
+                >
+                  We&apos;ve sent a code to{' '}
+                  <Typography component={'span'} variant={'subtitle2'}>
+                    {email}
+                  </Typography>
+                </Typography>
+
+                <Stack alignItems={'center'}>
+                  <StyledTextFieldOtp
+                    disabled={verifyLoading}
+                    onComplete={handleVerifyCode}
+                  />
+                </Stack>
+
+                <Typography
+                  color={'text.secondary'}
+                  textAlign={'center'}
+                  variant={'body2'}
+                >
+                  Didn&apos;t get a code?{' '}
+                  <Typography
+                    color={'#5B76BC'}
+                    component={'span'}
+                    onClick={resendVrCode}
+                    sx={{
+                      cursor: 'pointer',
+                    }}
+                    variant={'subtitle2'}
+                  >
+                    Click to resend
+                  </Typography>
+                </Typography>
+              </Stack>
+            }
+            disableEscapeKeyDown
+            footer={
+              <StyledButton
+                color={'info'}
+                disabled={verifyLoading}
+                onClick={close}
+                size={'small'}
+                variant={'outlined'}
+              >
+                Cancel
+              </StyledButton>
+            }
+            header={
+              <Typography variant={'h6'}>Enter verification code</Typography>
+            }
+            onClose={(e, reason) => {
+              if (reason !== 'backdropClick') {
+                close();
+              }
+            }}
+            open={visible}
+          />
+        </Stack>
+      );
+    }
+    return (
+      <Stack
+        component={'form'}
+        gap={3}
+        mt={isNestForm ? 3 : 0}
+        onSubmit={onSubmitClick}
+      >
         <Box>
           <StyledTextFieldPassword
             error={
@@ -249,7 +369,22 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
           />
           <Transitions>
             {password && (
-              <Box className={'password_error_list'} component={'ul'}>
+              <Box
+                component={'ul'}
+                sx={{
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: 'success.main',
+                  listStyle: 'disc',
+                  listStylePosition: 'inside',
+                  p: 0,
+                  mt: 0.25,
+                  '& .error_active': {
+                    color: 'error.main',
+                    transition: 'color .3s',
+                  },
+                }}
+              >
                 <Box
                   className={!passwordError.lengthError ? 'error_active' : ''}
                   component={'li'}
@@ -291,29 +426,35 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
         />
         <StyledButton
           color="primary"
-          disabled={isDisabled}
+          disabled={isDisabled || submitLoading}
+          loading={submitLoading}
           type={'submit'}
           variant="contained"
         >
           Set password
         </StyledButton>
-      </Box>
+      </Stack>
     );
   }, [
+    close,
     confirmedPassword,
     email,
+    fetchVrCode,
     formError?.confirmedPassword,
     formError?.email,
+    formState,
+    handleVerifyCode,
     handledPasswordChange,
     isDisabled,
     isNestForm,
-    onSendCodeClick,
     onSubmitClick,
     password,
     passwordError,
-    seconds,
-    sendButtonText,
-    verificationCode,
+    resendVrCode,
+    submitLoading,
+    verifyLoading,
+    visible,
+    vrCodeLoading,
   ]);
 
   return (
@@ -346,7 +487,14 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
               minHeight: 'calc(100vh - 92px)',
             }}
           >
-            <Box sx={ForgotPasswordStyles.forgotPassword}>
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              height={'100%'}
+              justifyContent={'center'}
+              pb={12}
+              width={'100%'}
+            >
               <Icon
                 component={FORGOT_PASSWORD_SVG}
                 sx={{
@@ -360,20 +508,47 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
                 }}
               />
 
-              <Box className="forgot_password_form">
-                <Typography className="form_title" variant="h3">
+              <Stack
+                borderRadius={2}
+                boxShadow={{
+                  lg: '0px 0px 2px rgba(17, 52, 227, 0.1), 0px 10px 10px rgba(17, 52, 227, 0.1)',
+                  xs: 'none',
+                }}
+                className="forgot_password_form"
+                flex={1}
+                gap={3}
+                px={{ lg: 4, xs: 3 }}
+                py={7}
+                width={{ lg: '700px', xs: '100%' }}
+              >
+                <Typography
+                  fontSize={'clamp(24px,2.5vw,32px)'}
+                  textAlign={'center'}
+                  variant={'h3'}
+                >
                   Reset password
+                  <Typography color={'text.secondary'} variant={'body2'}>
+                    Please enter your email address and we will send you a code
+                    to verify your account.
+                  </Typography>
                 </Typography>
 
                 {FormBody}
 
-                <Box className="form_foot">
-                  <StyledButton color="info" variant="text">
-                    <Link href={'/auth/login'}> Back to log in</Link>
+                <Stack alignItems={'center'}>
+                  <StyledButton
+                    color={'info'}
+                    onClick={async () => {
+                      await router.push('/auth/login');
+                    }}
+                    sx={{ width: '100%' }}
+                    variant={'text'}
+                  >
+                    Back to log in
                   </StyledButton>
-                </Box>
-              </Box>
-            </Box>
+                </Stack>
+              </Stack>
+            </Stack>
           </StyledBoxWrap>
         </>
       )}

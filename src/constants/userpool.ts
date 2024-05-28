@@ -6,7 +6,15 @@ import { LOGIN_APP_KEY } from '@/constants/default';
 import { rootStore } from '@/models/Root';
 
 type LOGIN_STORAGE = 'idToken' | 'accessToken' | 'refreshToken' | 'clockDrift';
-type LOGIN_PROFILE = 'email' | 'name' | 'user_type' | 'login_type' | 'avatar';
+type LOGIN_PROFILE =
+  | 'email'
+  | 'name'
+  | 'user_type'
+  | 'login_type'
+  | 'avatar'
+  | 'firstName'
+  | 'lastName'
+  | 'background';
 
 export const userpool = {
   encode: (password: string): string => {
@@ -19,7 +27,16 @@ export const userpool = {
   },
   setLastAuthUserBase(info: User.UserSignInRequest): void {
     const {
-      userProfile: { userId, email, userType, loginType, avatar },
+      userProfile: {
+        userId,
+        email,
+        userType,
+        loginType,
+        avatar,
+        firstName,
+        lastName,
+        backgroundColor,
+      },
       refreshToken,
       accessToken,
       expiredIn,
@@ -53,6 +70,18 @@ export const userpool = {
     localStorage.setItem(
       `${prefix}.lastAuthUser_avatar`,
       (avatar ?? '') as string,
+    );
+    localStorage.setItem(
+      `${prefix}.lastAuthUser_firstName`,
+      (firstName ?? '') as string,
+    );
+    localStorage.setItem(
+      `${prefix}.lastAuthUser_lastName`,
+      (lastName ?? '') as string,
+    );
+    localStorage.setItem(
+      `${prefix}.lastAuthUser_background`,
+      (backgroundColor ?? '') as string,
     );
   },
   setLastAuthUserToken(

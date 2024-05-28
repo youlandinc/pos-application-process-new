@@ -90,14 +90,13 @@ export const TeamMemberCardItem: FC<TeamMemberCardItemProps> = ({
       )}
 
       <Stack
-        flexDirection={'row'}
-        flexWrap={'wrap'}
-        fontSize={{ xs: 12, md: 14 }}
-        gap={3}
-        justifyContent={{
+        alignItems={{
           xs: 'center',
           md: 'unset',
         }}
+        flexDirection={{ xs: 'column', md: 'row' }}
+        fontSize={{ xs: 12, md: 14 }}
+        gap={{ xs: 0.5, xl: 3 }}
         mt={position ? 0 : 1}
         width={'100%'}
       >

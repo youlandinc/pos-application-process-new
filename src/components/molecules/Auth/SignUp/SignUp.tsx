@@ -67,7 +67,6 @@ export const SignUp: FC<SignUpProps> = observer(
     const [lastName, setLastName] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
     const [userType, setUserType] = useState<keyof typeof UserType>();
-    const [otp, setOtp] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
     const [formError, setFormError] = useState<
       Partial<Record<keyof typeof SignUpSchema, string[]>> | undefined
@@ -231,7 +230,7 @@ export const SignUp: FC<SignUpProps> = observer(
         return;
       }
       const data = {
-        bizType: BizType.REGISTER,
+        bizType: BizType.register,
         appkey: LOGIN_APP_KEY,
         email,
       };
@@ -251,34 +250,37 @@ export const SignUp: FC<SignUpProps> = observer(
       }
     }, [email, enqueueSnackbar, loading]);
 
-    const handledVerifyOtp = useCallback(async () => {
-      const data = {
-        appkey: LOGIN_APP_KEY,
-        code: otp,
-        email,
-        bizType: BizType.REGISTER,
-      };
-      setLoading(true);
-      try {
-        await _userVerifyCode(data);
-        close();
-        if (isRedirect) {
-          await router.push('./login');
-          return;
+    const handledVerifyOtp = useCallback(
+      async (v: string) => {
+        const data = {
+          appkey: LOGIN_APP_KEY,
+          code: v,
+          email,
+          bizType: BizType.register,
+        };
+        setLoading(true);
+        try {
+          await _userVerifyCode(data);
+          close();
+          if (isRedirect) {
+            await router.push('./login');
+            return;
+          }
+          await handledLogin();
+        } catch (err) {
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
+          });
+        } finally {
+          setLoading(false);
         }
-        await handledLogin();
-      } catch (err) {
-        const { header, message, variant } = err as HttpError;
-        enqueueSnackbar(message, {
-          variant: variant || 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-          isSimple: !header,
-          header,
-        });
-      } finally {
-        setLoading(false);
-      }
-    }, [close, email, enqueueSnackbar, handledLogin, isRedirect, otp, router]);
+      },
+      [close, email, enqueueSnackbar, handledLogin, isRedirect, router],
+    );
 
     const isDisabled = useMemo(() => {
       for (const [, value] of Object.entries(passwordError)) {
@@ -595,6 +597,7 @@ export const SignUp: FC<SignUpProps> = observer(
             </StyledBoxWrap>
           </>
         )}
+
         <StyledDialog
           content={
             <Box mt={3} overflow={'hidden'}>
@@ -610,7 +613,7 @@ export const SignUp: FC<SignUpProps> = observer(
                 </Typography>
               </Typography>
               <Box className={'POS_flex POS_jc_c POS_al_c'} mt={3}>
-                <StyledTextFieldOtp onChange={(v) => setOtp(v)} />
+                <StyledTextFieldOtp onComplete={handledVerifyOtp} />
               </Box>
               <Typography
                 className={'POS_tc POS_fullwidth'}
@@ -643,18 +646,9 @@ export const SignUp: FC<SignUpProps> = observer(
                 disabled={loading}
                 onClick={close}
                 size={'small'}
-                sx={{ mr: 1 }}
                 variant={'outlined'}
               >
                 Cancel
-              </StyledButton>
-              <StyledButton
-                color={'primary'}
-                disabled={loading}
-                onClick={handledVerifyOtp}
-                size={'small'}
-              >
-                Confirm
               </StyledButton>
             </Box>
           }

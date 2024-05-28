@@ -34,7 +34,7 @@ export enum PipelineLoanStageEnum {
 
 export enum LayoutSceneTypeEnum {
   application = 'APPLICATION',
-  pipeline = 'PIPELINE',
+  account = 'ACCOUNT',
   dashboard = 'DASHBOARD',
   pipeline_without_all = 'PIPELINE_WITHOUT_ALL',
 }

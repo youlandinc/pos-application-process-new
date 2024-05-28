@@ -7,8 +7,7 @@ import {
   ApplicationForm,
   DetectUserActiveService,
   NotificationStation,
-  // PTaskForm,
-  // UserSetting,
+  //UserSetting,
   //UserConfig,
   //UserProfile
 } from './base';
@@ -23,6 +22,7 @@ import {
   LoanSnapshotEnum,
 } from '@/types';
 import { DashboardInfo } from '@/models/base/DashboardInfo';
+import { Questionnaire } from './account/Questionnaire';
 
 export const RootModel = {
   persistDataLoaded: types.boolean,
@@ -31,7 +31,7 @@ export const RootModel = {
   applicationForm: ApplicationForm,
   dashboardInfo: DashboardInfo,
 
-  // pipelineTask: PTaskForm,
+  questionnaire: Questionnaire,
 
   session: types.maybe(types.frozen<UserSession>()),
   // userSetting: UserSetting,
@@ -160,18 +160,12 @@ const initialState = {
     loanId: '',
   },
 
-  // pipelineTask: {
-  //   pipelineInitialized: false,
-  //   allowSubmit: false,
-  // },
+  questionnaire: {
+    licenses: [],
+  },
 
   userProfile: void 0,
-  // userSetting: {
-  //   loading: false,
-  //   pipelineStatus: void 0,
-  //   pipelineStatusInitialized: false,
-  //   applicable: false,
-  // },
+
   userType: void 0,
   loginType: void 0,
 
