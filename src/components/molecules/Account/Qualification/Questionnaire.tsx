@@ -228,10 +228,9 @@ export const Questionnaire: FC = observer(() => {
           <Typography
             color={'text.secondary'}
             component={'p'}
+            fontSize={{ xs: 12, md: 16 }}
             mt={1.5}
-            variant={
-              ['xs', 'sm', 'md'].includes(breakpoints) ? 'body3' : 'body1'
-            }
+            variant={'body3'}
           >
             Please indicate the states in which you are licensed to broker loans
             and the type of license you hold in each state
@@ -435,12 +434,15 @@ export const Questionnaire: FC = observer(() => {
               <Typography
                 color={'text.secondary'}
                 component={'div'}
+                fontSize={{ xs: 12, md: 16 }}
                 textAlign={'center'}
-                variant={'body1'}
+                variant={'body3'}
               >
                 The attached document is the{' '}
                 <Typography
+                  color={'primary.main'}
                   component={'span'}
+                  fontSize={'inherit'}
                   fontWeight={600}
                   onClick={() => {
                     if (genLoading) {
@@ -448,11 +450,7 @@ export const Questionnaire: FC = observer(() => {
                     }
                     window.open(documentFile.url);
                   }}
-                  sx={{
-                    color: 'primary.main',
-                    cursor: 'pointer',
-                    fontWeight: 600,
-                  }}
+                  sx={{ cursor: 'pointer' }}
                 >
                   Broker Questionnaire.pdf
                 </Typography>{' '}
@@ -518,9 +516,7 @@ export const Questionnaire: FC = observer(() => {
               textAlign={'left'}
               width={'100%'}
             >
-              <Typography
-                variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body1'}
-              >
+              <Typography fontSize={{ xs: 12, md: 16 }} variant={'body3'}>
                 By clicking the button, I hereby agree to the above broker
                 agreement and authorize{' '}
                 {saasState?.organizationName || 'YouLand'} to check my
