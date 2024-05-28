@@ -39,3 +39,20 @@ export enum QualificationACHAccountType {
   savings = 'SAVINGS',
   default = '',
 }
+
+export enum QualificationQuestionnaireLicenseType {
+  default = '',
+  nmls = 'NMLS',
+  dre_broker = 'DRE_BROKER',
+  dre_salesperson = 'DRE_SALE_PERSON',
+}
+
+export interface QuestionnairePerson {
+  firstName: string;
+  lastName: string;
+  ssn: string;
+  birthday: null | Date | string;
+  state: string;
+  licenseType: QualificationQuestionnaireLicenseType;
+  license: string;
+}
