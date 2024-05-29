@@ -23,18 +23,9 @@ import { useBreakpoints } from '@/hooks';
 
 import { userpool } from '@/constants';
 
-import { LayoutSceneTypeEnum, UserType } from '@/types';
 import { MyAccountButtonProps, MyAccountStyles } from './index';
 
 import { StyledAvatarUploadRef, StyledButton } from '@/components/atoms';
-
-const hash = {
-  [UserType.LOAN_OFFICER]: 'Loan officer',
-  [UserType.BROKER]: 'Broker',
-  [UserType.LENDER]: 'Lender',
-  [UserType.REAL_ESTATE_AGENT]: 'Agent',
-  [UserType.CUSTOMER]: 'Customer',
-};
 
 const MENU_LIST = [
   { label: 'Account', url: '/account' },
