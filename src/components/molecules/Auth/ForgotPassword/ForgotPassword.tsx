@@ -68,6 +68,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
   const [formError, setFormError] = useState<
     Partial<Record<keyof typeof ForgotPasswordSchema, string[]>> | undefined
   >();
+
   const [passwordError, setPasswordError] = useState<{
     lengthError: boolean;
     letterError: boolean;
@@ -211,6 +212,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
       );
 
       if (errors.confirmedPassword) {
+        setFormError(errors);
         return;
       }
 
@@ -418,7 +420,15 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
             autoComplete: 'new-password',
           }}
           label={'Confirm password'}
-          onChange={(e) => setConfirmedPassword(e.target.value)}
+          onChange={(e) => {
+            if (formError?.confirmedPassword) {
+              setFormError({
+                ...formError,
+                confirmedPassword: undefined,
+              });
+            }
+            setConfirmedPassword(e.target.value);
+          }}
           placeholder={'Confirm password'}
           required
           validate={formError?.confirmedPassword}
@@ -440,8 +450,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
     confirmedPassword,
     email,
     fetchVrCode,
-    formError?.confirmedPassword,
-    formError?.email,
+    formError,
     formState,
     handleVerifyCode,
     handledPasswordChange,
