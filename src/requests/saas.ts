@@ -13,6 +13,7 @@ export const _fetchSaasConfig = () => {
 export interface ICreateSpecifyPaymentParams {
   id: number | undefined;
   receiptEmail: string | undefined;
+  orderNo:string | undefined
 }
 
 export interface ICreatePaymentRes {

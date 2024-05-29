@@ -49,7 +49,7 @@ export const SpecificalPaymentPage = () => {
   }, [paymentStatus]);
 
   const { loading } = useAsync(async () => {
-    const { id, email } = POSGetParamsFromUrl(location.href);
+    const { id, email,orderNo } = POSGetParamsFromUrl(location.href);
     if (!id || !email) {
       return;
     }
@@ -63,11 +63,13 @@ export const SpecificalPaymentPage = () => {
           isExpedited,
           appraisalFees,
           expeditedFees,
+
           // created,
         },
       } = await _creatSpecifyPayment({
         id: parseInt(id),
         receiptEmail: email,
+        orderNo
       });
       setClientSecret(clientSecret);
       setProductName(productName);
