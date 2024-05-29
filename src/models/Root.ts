@@ -117,7 +117,7 @@ const RootStore = types.model(RootModel).actions((self) => {
       self.logoutNotification = val;
     },
     logout() {
-      if (Router.pathname === '/auth/sign_in') {
+      if (Router.pathname === '/auth/login') {
         return;
       }
       this.updateSession();
@@ -128,7 +128,7 @@ const RootStore = types.model(RootModel).actions((self) => {
         userpool.clearLastAuthUserInfo(lastAuthId);
         userpool.clearLastAuthUserToken(lastAuthId);
       }
-      window.location.href = '/auth/login';
+      Router.push('/auth/login');
     },
   };
 });
