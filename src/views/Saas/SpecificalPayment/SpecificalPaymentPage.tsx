@@ -37,6 +37,7 @@ export const SpecificalPaymentPage = () => {
   const [isExpedited, setIsExpedited] = useState(false);
   const [expeditedFees, setExpeditedFees] = useState(0);
   const [paymentAmount, setPaymentAmount] = useState(0);
+  const [paymentName, setPaymentName] = useState('');
   // const [closeDate, setCloseDate] = useState<any>();
 
   const [paymentStatus, setPaymentStatus] = useState('');
@@ -49,7 +50,7 @@ export const SpecificalPaymentPage = () => {
   }, [paymentStatus]);
 
   const { loading } = useAsync(async () => {
-    const { id, email } = POSGetParamsFromUrl(location.href);
+    const { id, email, orderNo } = POSGetParamsFromUrl(location.href);
     if (!id || !email) {
       return;
     }
@@ -63,11 +64,13 @@ export const SpecificalPaymentPage = () => {
           isExpedited,
           appraisalFees,
           expeditedFees,
+          paymentName,
           // created,
         },
       } = await _creatSpecifyPayment({
         id: parseInt(id),
         receiptEmail: email,
+        orderNo,
       });
       setClientSecret(clientSecret);
       setProductName(productName);
@@ -77,6 +80,8 @@ export const SpecificalPaymentPage = () => {
       setIsExpedited(isExpedited);
       setExpeditedFees(expeditedFees);
       setPaymentAmount(paymentAmount);
+
+      setPaymentName(paymentName ?? '');
 
       // setCloseDate(
       //   typeof created === 'number'
@@ -189,6 +194,7 @@ export const SpecificalPaymentPage = () => {
                   expeditedFees={expeditedFees}
                   isExpedited={isExpedited}
                   paymentAmount={paymentAmount}
+                  paymentName={paymentName}
                   productName={productName}
                   propertyAddress={propertyAddress}
                 />

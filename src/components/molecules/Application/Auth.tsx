@@ -26,6 +26,7 @@ export const Auth: FC<FormNodeBaseProps> = observer(
               ? 'Sign up to save your progress'
               : 'Reset password'
         }
+        labelSx={{ textAlign: { xs: 'left', md: 'center' }, pb: 0 }}
         sx={{ maxWidth: 600, m: '0 auto' }}
       >
         <Transitions style={{ width: '100%' }}>
@@ -161,7 +162,7 @@ export const Auth: FC<FormNodeBaseProps> = observer(
           )}
         </Transitions>
 
-        <Stack mt={{ xs: 3, lg: 10 }} width={'100%'}>
+        <Stack mt={{ xs: 3, lg: 6 }} width={'100%'}>
           <StyledButton
             color={'info'}
             disabled={backState}

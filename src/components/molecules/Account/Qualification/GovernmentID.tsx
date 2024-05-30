@@ -45,7 +45,12 @@ export const GovernmentID: FC = () => {
         isSimple: !header,
         header,
       });
-      router.back();
+      await router.push({
+        pathname: '/account',
+        query: {
+          qualification: true,
+        },
+      });
     }
   });
 
@@ -184,7 +189,14 @@ export const GovernmentID: FC = () => {
         >
           <StyledButton
             color={'info'}
-            onClick={() => router.back()}
+            onClick={() =>
+              router.push({
+                pathname: '/account',
+                query: {
+                  qualification: true,
+                },
+              })
+            }
             sx={{
               flex: 1,
               width: '100%',

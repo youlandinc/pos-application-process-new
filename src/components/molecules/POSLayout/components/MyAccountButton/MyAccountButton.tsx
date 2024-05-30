@@ -23,33 +23,17 @@ import { useBreakpoints } from '@/hooks';
 
 import { userpool } from '@/constants';
 
-import { LayoutSceneTypeEnum, UserType } from '@/types';
 import { MyAccountButtonProps, MyAccountStyles } from './index';
 
 import { StyledAvatarUploadRef, StyledButton } from '@/components/atoms';
 
-const hash = {
-  [UserType.LOAN_OFFICER]: 'Loan officer',
-  [UserType.BROKER]: 'Broker',
-  [UserType.LENDER]: 'Lender',
-  [UserType.REAL_ESTATE_AGENT]: 'Agent',
-  [UserType.CUSTOMER]: 'Customer',
-};
-
-const MENU_LIST_CUSTOMER = [
+const MENU_LIST = [
   { label: 'Account', url: '/account' },
   { label: 'Sign out', url: 'sign_out' },
 ];
 
-const MENU_LIST_NOT_CUSTOMER = [
-  { label: 'info', url: '/account/?qualification=true' },
-  { label: 'Account', url: '/account' },
-  { label: 'Sign out', url: 'sign_out' },
-];
-
-export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
+export const MyAccountButton: FC<MyAccountButtonProps> = ({ store }) => {
   const lastAuthUserId = userpool.getLastAuthUserId();
-  const userType = userpool.getLastAuthUserInfo(lastAuthUserId, 'user_type');
 
   const avatar = userpool.getLastAuthUserInfo(lastAuthUserId, 'avatar');
   const backgroundColor = userpool.getLastAuthUserInfo(
@@ -114,47 +98,17 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ scene, store }) => {
   );
 
   const renderMenuList = useMemo(() => {
-    switch (scene) {
-      case LayoutSceneTypeEnum.application:
-      case LayoutSceneTypeEnum.dashboard:
-      case LayoutSceneTypeEnum.account:
-      case LayoutSceneTypeEnum.pipeline_without_all:
-        if (userType === UserType.CUSTOMER) {
-          return MENU_LIST_CUSTOMER.map((item, index) => (
-            <MenuItem
-              disableRipple
-              key={`${item.label}_${index}`}
-              onClick={(e) => handledMenuItemClick(e, item.url)}
-              sx={MyAccountStyles.menu_item}
-            >
-              {item.label}
-            </MenuItem>
-          ));
-        }
-        return MENU_LIST_NOT_CUSTOMER.map((item, index) => (
-          <MenuItem
-            disableRipple
-            key={`${item.label}_${index}`}
-            onClick={(e) => handledMenuItemClick(e, item.url)}
-            sx={MyAccountStyles.menu_item}
-          >
-            {item.label === 'info'
-              ? `${hash[userType as keyof typeof UserType]} ${item.label}`
-              : item.label}
-          </MenuItem>
-        ));
-      default:
-        return (
-          <MenuItem
-            disableRipple
-            onClick={(e) => handledMenuItemClick(e, 'sign_out')}
-            sx={MyAccountStyles.menu_item}
-          >
-            Sign out
-          </MenuItem>
-        );
-    }
-  }, [handledMenuItemClick, scene, userType]);
+    return MENU_LIST.map((item, index) => (
+      <MenuItem
+        disableRipple
+        key={`${item.label}_${index}`}
+        onClick={(e) => handledMenuItemClick(e, item.url)}
+        sx={{ ...MyAccountStyles.menu_item, justifyContent: 'center' }}
+      >
+        {item.label}
+      </MenuItem>
+    ));
+  }, [handledMenuItemClick]);
 
   return (
     <>

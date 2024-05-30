@@ -282,10 +282,9 @@ export const ACH: FC = observer(() => {
           <Typography
             color={'text.secondary'}
             component={'p'}
+            fontSize={{ xs: 12, md: 16 }}
             mt={1.5}
-            variant={
-              ['xs', 'sm', 'md'].includes(breakpoints) ? 'body3' : 'body1'
-            }
+            variant={'body3'}
           >
             We need you to provide US ACH information in order to pay your{' '}
             {computedCondition.name} compensation.
@@ -370,12 +369,15 @@ export const ACH: FC = observer(() => {
                 <Typography
                   color={'text.secondary'}
                   component={'div'}
+                  fontSize={{ xs: 12, md: 16 }}
                   textAlign={'center'}
-                  variant={'body1'}
+                  variant={'body3'}
                 >
                   The attached document is the{' '}
                   <Typography
+                    color={'primary.main'}
                     component={'span'}
+                    fontSize={'inherit'}
                     fontWeight={600}
                     onClick={() => {
                       if (genLoading) {
@@ -383,11 +385,7 @@ export const ACH: FC = observer(() => {
                       }
                       window.open(documentFile.url);
                     }}
-                    sx={{
-                      color: 'primary.main',
-                      cursor: 'pointer',
-                      fontWeight: 600,
-                    }}
+                    sx={{ cursor: 'pointer' }}
                   >
                     ACH Information.pdf
                   </Typography>{' '}

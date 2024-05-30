@@ -246,10 +246,9 @@ export const Agreement: FC = observer(() => {
           <Typography
             color={'text.secondary'}
             component={'p'}
+            fontSize={{ xs: 12, md: 16 }}
             mt={1.5}
-            variant={
-              ['xs', 'sm', 'md'].includes(breakpoints) ? 'body3' : 'body1'
-            }
+            variant={'body3'}
           >
             {computedCondition.subtitle}
           </Typography>
@@ -293,12 +292,15 @@ export const Agreement: FC = observer(() => {
                 <Typography
                   color={'text.secondary'}
                   component={'div'}
+                  fontSize={{ xs: 12, md: 16 }}
                   textAlign={'center'}
-                  variant={'body1'}
+                  variant={'body3'}
                 >
                   The attached document is the{' '}
                   <Typography
+                    color={'primary.main'}
                     component={'span'}
+                    fontSize={'inherit'}
                     fontWeight={600}
                     onClick={() => {
                       if (genLoading) {
@@ -306,11 +308,7 @@ export const Agreement: FC = observer(() => {
                       }
                       window.open(documentFile.url);
                     }}
-                    sx={{
-                      color: 'primary.main',
-                      cursor: 'pointer',
-                      fontWeight: 600,
-                    }}
+                    sx={{ cursor: 'pointer' }}
                   >
                     Broker Agreement.pdf
                   </Typography>{' '}
@@ -377,9 +375,7 @@ export const Agreement: FC = observer(() => {
               textAlign={'left'}
               width={'100%'}
             >
-              <Typography
-                variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body1'}
-              >
+              <Typography fontSize={{ xs: 12, md: 16 }} variant={'body3'}>
                 By clicking the button, I hereby agree to the above broker
                 agreement.
               </Typography>

@@ -29,6 +29,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
               color: 'primary.main',
               height: { md: 56, xs: 40 },
               justifyContent: 'flex-end',
+              width: { xs: 160, xl: 225 },
             }}
           >
             {saasState?.organizationName}
@@ -47,23 +48,6 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
             width: 0,
           }}
         >
-          {/*<Box*/}
-          {/*  height={68}*/}
-          {/*  sx={{*/}
-          {/*    position: 'absolute',*/}
-          {/*    top: ['sm', 'xs', 'md'].includes(breakpoints) ? '50%' : 46,*/}
-          {/*    transform: ['sm', 'xs', 'md'].includes(breakpoints)*/}
-          {/*      ? 'translateY(-50%)'*/}
-          {/*      : 'none',*/}
-          {/*    left:*/}
-          {/*      ratio === 1 && !['sm', 'xs', 'md'].includes(breakpoints)*/}
-          {/*        ? 20*/}
-          {/*        : 0,*/}
-          {/*    zIndex: 1,*/}
-          {/*    bgcolor: 'black',*/}
-          {/*  }}*/}
-          {/*  width={68}*/}
-          {/*></Box>*/}
           <img
             alt=""
             height={'auto'}
@@ -97,8 +81,9 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
           fontWeight: 600,
           lineHeight: 1.5,
           color: 'primary.main',
-          height: { md: 56, xs: 40 },
-          justifyContent: 'flex-end',
+          height: '100%',
+          justifyContent: 'center',
+          width: { xs: 160, xl: 225 },
         }}
       >
         {saasState?.organizationName}
