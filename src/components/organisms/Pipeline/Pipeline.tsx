@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useSessionStorageState, useSwitch } from '@/hooks';
+import { useSwitch } from '@/hooks';
 import { AUTO_HIDE_DURATION, PAGE_SIZE, URL_HASH } from '@/constants';
 
 import { StyledButton, StyledDialog, StyledLoading } from '@/components/atoms';
@@ -29,7 +29,6 @@ import PIPELINE_NO_RESULT from '@/svg/pipeline/pipeline_no_result.svg';
 export const Pipeline: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const { saasState } = useSessionStorageState('tenantConfig');
 
   const {
     // userSetting: { pipelineStatus, pipelineStatusInitialized },
