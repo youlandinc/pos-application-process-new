@@ -1,4 +1,5 @@
 import {
+  LoanProductCategoryEnum,
   LoanSpecies,
   PipelineLicenseType,
   PipelineLoanStageEnum,
@@ -48,26 +49,16 @@ export const OPTIONS_LOAN_STAGE: Option[] = [
 ];
 
 export const OPTIONS_LOAN_SPECIES: Option[] = [
-  // {
-  //   key: LoanSpecies.Mortgage,
-  //   value: LoanSpecies.Mortgage,
-  //   label: 'Mortgage',
-  // },
   {
-    key: LoanSpecies.Bridge,
-    value: LoanSpecies.Bridge,
+    key: LoanProductCategoryEnum.stabilized_bridge,
+    value: LoanProductCategoryEnum.stabilized_bridge,
     label: 'Bridge',
   },
   {
-    key: LoanSpecies.FixAndFlip,
-    value: LoanSpecies.FixAndFlip,
+    key: LoanProductCategoryEnum.fix_and_flip,
+    value:LoanProductCategoryEnum.fix_and_flip,
     label: 'Fix and Flip',
   },
-  // {
-  //   key: LoanSpecies.GroundUpConstruction,
-  //   value: LoanSpecies.GroundUpConstruction,
-  //   label: 'Ground-up Construction',
-  // },
 ];
 
 export const OPTIONS_LICENSE_TYPE: Option[] = [
