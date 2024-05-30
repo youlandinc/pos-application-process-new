@@ -254,21 +254,24 @@ export const Pipeline: FC = observer(() => {
             />
           ))
         ) : (
-          <Box sx={{ m: '24px auto' }}>
+          <Stack alignItems={'center'} sx={{ m: '24px auto' }}>
             <Icon
               component={PIPELINE_NO_RESULT}
               sx={{
-                width: { md: 544, xs: '100%' },
+                width: 267,
                 height: 'auto',
-                '& .pipeline_no_result_svg__pos_svg_theme_color': {
-                  fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
-                },
               }}
             />
-            <Typography mt={6} textAlign={'center'} variant={'body1'}>
+            <Typography
+              color={'text.secondary'}
+              fontSize={{ xs: 12, md: 16 }}
+              mt={6}
+              textAlign={'center'}
+              variant={'body1'}
+            >
               You don&apos;t have any loan yet, apply for a new one above.
             </Typography>
-          </Box>
+          </Stack>
         )}
       </Stack>
 
