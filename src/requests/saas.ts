@@ -13,7 +13,7 @@ export const _fetchSaasConfig = () => {
 export interface ICreateSpecifyPaymentParams {
   id: number | undefined;
   receiptEmail: string | undefined;
-  orderNo:string | undefined
+  orderNo: string | undefined;
 }
 
 export interface ICreatePaymentRes {
@@ -28,6 +28,7 @@ export interface ICreatePaymentRes {
   appraisalFees: number;
   expeditedFees: number;
   isExpedited: boolean;
+  paymentName: string | null;
 }
 
 export interface ILoanRate {

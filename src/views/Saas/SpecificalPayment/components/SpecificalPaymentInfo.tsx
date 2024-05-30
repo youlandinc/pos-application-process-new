@@ -16,6 +16,7 @@ export const SpecificalPaymentInfo: FC<
   //expeditedFees,
   paymentAmount,
   additional,
+  paymentName,
 }) => {
   return (
     <>
@@ -35,19 +36,36 @@ export const SpecificalPaymentInfo: FC<
           </Typography>
           <Typography variant={'body2'}>Type: {productName}</Typography>
         </Stack>
-        <Stack
-          alignItems={'center'}
-          borderBottom={'1px solid #E4E7EF'}
-          flexDirection={'row'}
-          justifyContent={'space-between'}
-          mt={3}
-          pb={1}
-        >
-          <Typography variant={'subtitle2'}>Appraisal fee</Typography>
-          <Typography variant={'body2'}>
-            {POSFormatDollar(appraisalFees)}
-          </Typography>
-        </Stack>
+        {paymentName ? (
+          <Stack
+            alignItems={'center'}
+            borderBottom={'1px solid #E4E7EF'}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+            mt={3}
+            pb={1}
+          >
+            <Typography variant={'subtitle2'}>{paymentName}</Typography>
+            <Typography variant={'body2'}>
+              {POSFormatDollar(paymentAmount)}
+            </Typography>
+          </Stack>
+        ) : (
+          <Stack
+            alignItems={'center'}
+            borderBottom={'1px solid #E4E7EF'}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+            mt={3}
+            pb={1}
+          >
+            <Typography variant={'subtitle2'}>Appraisal fee</Typography>
+            <Typography variant={'body2'}>
+              {POSFormatDollar(appraisalFees)}
+            </Typography>
+          </Stack>
+        )}
+
         {/*{isExpedited && (*/}
         {/*  <Stack*/}
         {/*    alignItems={'center'}*/}

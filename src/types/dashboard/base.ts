@@ -30,6 +30,7 @@ export interface DashboardPaymentDetailsResponse {
   isExpedited: boolean;
   propertyAddress: string;
   productName: string;
+  paymentName: null | string;
 }
 
 // documents
