@@ -81,7 +81,7 @@ export const SpecificalPaymentPage = () => {
       setExpeditedFees(expeditedFees);
       setPaymentAmount(paymentAmount);
 
-      setPaymentName(paymentName ?? 'product name');
+      setPaymentName(paymentName ?? '');
 
       // setCloseDate(
       //   typeof created === 'number'
