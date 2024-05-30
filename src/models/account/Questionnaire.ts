@@ -31,4 +31,19 @@ export const Questionnaire = types
         return self.licenses;
       },
     };
-  });
+  })
+  .views((self) => ({
+    get isListValidate() {
+      return self.licenses.every((item) => {
+        return (
+          item.firstName &&
+          item.lastName &&
+          item.ssn &&
+          item.birthday &&
+          item.state &&
+          item.licenseType &&
+          item.license
+        );
+      });
+    },
+  }));

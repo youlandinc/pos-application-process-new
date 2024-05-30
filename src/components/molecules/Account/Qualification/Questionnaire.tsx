@@ -276,7 +276,8 @@ export const Questionnaire: FC = observer(() => {
                         disabled={
                           questionnaire.licenses.length >= 4 ||
                           genLoading ||
-                          saveLoading
+                          saveLoading ||
+                          !questionnaire.isListValidate
                         }
                         onClick={() => {
                           questionnaire.addOwner({
@@ -413,7 +414,9 @@ export const Questionnaire: FC = observer(() => {
         <Stack alignItems={'center'} gap={6}>
           <StyledButton
             color={'info'}
-            disabled={genLoading || saveLoading}
+            disabled={
+              genLoading || saveLoading || !questionnaire.isListValidate
+            }
             loading={genLoading}
             onClick={handledGenerateFile}
             sx={{
@@ -490,7 +493,7 @@ export const Questionnaire: FC = observer(() => {
           </StyledButton>
           <StyledButton
             color={'primary'}
-            disabled={saveLoading}
+            disabled={saveLoading || !questionnaire.isListValidate}
             loading={saveLoading}
             onClick={onClickSave}
             sx={{
