@@ -286,8 +286,8 @@ export const ACH: FC = observer(() => {
             mt={1.5}
             variant={'body3'}
           >
-            We need you to provide US ACH information in order to pay your{' '}
-            {computedCondition.name} compensation.
+            Please provide your ACH information to ensure timely payment of your
+            compensation
           </Typography>
         </Typography>
 
@@ -357,7 +357,7 @@ export const ACH: FC = observer(() => {
               sx={{ maxWidth: 560, width: '100%' }}
               variant={'outlined'}
             >
-              Generate File
+              Generate file
             </StyledButton>
 
             <Transitions
@@ -373,7 +373,7 @@ export const ACH: FC = observer(() => {
                   textAlign={'center'}
                   variant={'body3'}
                 >
-                  The attached document is the{' '}
+                  The attached document is your approved{' '}
                   <Typography
                     color={'primary.main'}
                     component={'span'}
@@ -388,10 +388,9 @@ export const ACH: FC = observer(() => {
                     sx={{ cursor: 'pointer' }}
                   >
                     ACH Information.pdf
-                  </Typography>{' '}
-                  that you have confirmed. In case you need to make any changes,
-                  a new agreement will be generated and require your agreement
-                  again.
+                  </Typography>
+                  . For any changes, a new agreement will be generated and will
+                  require your confirmation again.
                 </Typography>
               )}
             </Transitions>
