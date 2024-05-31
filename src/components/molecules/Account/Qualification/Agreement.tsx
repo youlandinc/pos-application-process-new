@@ -280,7 +280,7 @@ export const Agreement: FC = observer(() => {
               sx={{ maxWidth: 560, width: '100%' }}
               variant={'outlined'}
             >
-              Generate File
+              Generate file
             </StyledButton>
 
             <Transitions

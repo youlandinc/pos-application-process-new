@@ -145,7 +145,7 @@ export const SpecificalPaymentPage = () => {
           ) : (
             <Stack
               flexDirection={{ xs: 'column', xl: 'row' }}
-              gap={6}
+              gap={{ xs: 3, md: 6 }}
               px={{
                 lg: 0,
                 xs: 'clamp(24px,6.4vw,80px)',
@@ -156,16 +156,29 @@ export const SpecificalPaymentPage = () => {
                 border={'1px solid #E4E7EF'}
                 borderRadius={2}
                 flex={1}
-                gap={3}
+                gap={{ xs: 1.5, md: 3 }}
                 minWidth={{ xl: 500, xs: 'auto' }}
                 order={{ xs: 2, xl: 1 }}
                 p={3}
               >
-                <Typography variant={'h4'}>
+                <Typography
+                  color={'text.primary'}
+                  fontSize={{
+                    xs: 18,
+                    md: 24,
+                  }}
+                  variant={'h5'}
+                >
                   Complete your appraisal payment
                 </Typography>
 
-                <Typography variant={'body2'}>
+                <Typography
+                  fontSize={{
+                    xs: 12,
+                    md: 14,
+                  }}
+                  variant={'body2'}
+                >
                   To move forward with your loan application, please complete
                   the payment below.
                 </Typography>
@@ -180,7 +193,7 @@ export const SpecificalPaymentPage = () => {
 
               <Stack
                 flexShrink={0}
-                gap={6}
+                gap={{ xs: 3, md: 6 }}
                 order={{ xs: 1, xl: 2 }}
                 width={{ xs: '100%', xl: 530 }}
               >
