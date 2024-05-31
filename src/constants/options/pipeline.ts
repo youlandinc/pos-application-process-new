@@ -1,6 +1,5 @@
 import {
   LoanProductCategoryEnum,
-  LoanSpecies,
   PipelineLicenseType,
   PipelineLoanStageEnum,
 } from '@/types';
@@ -56,7 +55,7 @@ export const OPTIONS_LOAN_SPECIES: Option[] = [
   },
   {
     key: LoanProductCategoryEnum.fix_and_flip,
-    value:LoanProductCategoryEnum.fix_and_flip,
+    value: LoanProductCategoryEnum.fix_and_flip,
     label: 'Fix and Flip',
   },
 ];
