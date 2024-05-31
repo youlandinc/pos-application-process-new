@@ -20,21 +20,27 @@ export const SpecificalPaymentInfo: FC<
 }) => {
   return (
     <>
-      <Stack
-        border={'1px solid #E4E7EF'}
-        borderRadius={2}
-        //gap={3}
-        p={3}
-        width={'100%'}
-      >
-        <Typography fontSize={24} variant="h4">
+      <Stack border={'1px solid #E4E7EF'} borderRadius={2} p={3} width={'100%'}>
+        <Typography fontSize={{ xs: 18, md: 24 }} variant={'h5'}>
           Order summary
         </Typography>
         <Stack gap={1} mt={1}>
-          <Typography variant={'body2'}>
+          <Typography
+            color={'text.primary'}
+            fontSize={{ xs: 12, md: 14 }}
+            variant={'body2'}
+          >
             Property address: {propertyAddress}
           </Typography>
-          <Typography variant={'body2'}>Type: {productName}</Typography>
+          {!paymentName && (
+            <Typography
+              color={'text.primary'}
+              fontSize={{ xs: 12, md: 14 }}
+              variant={'body2'}
+            >
+              Type: {productName}
+            </Typography>
+          )}
         </Stack>
         {paymentName ? (
           <Stack
@@ -42,7 +48,7 @@ export const SpecificalPaymentInfo: FC<
             borderBottom={'1px solid #E4E7EF'}
             flexDirection={'row'}
             justifyContent={'space-between'}
-            mt={3}
+            mt={{ xs: 1.5, md: 3 }}
             pb={1}
           >
             <Typography variant={'subtitle2'}>{paymentName}</Typography>
@@ -83,6 +89,7 @@ export const SpecificalPaymentInfo: FC<
         {/*)}*/}
         <Typography
           color={'primary.main'}
+          fontSize={{ xs: 18, md: 24 }}
           mt={1}
           textAlign={'right'}
           variant={'h6'}

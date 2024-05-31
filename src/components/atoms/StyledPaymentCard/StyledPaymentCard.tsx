@@ -108,7 +108,7 @@ const _StyledSpecialPaymentCard = forwardRef<
       {!hideFooter && (
         <Stack
           direction={{ xl: 'row', xs: 'column' }}
-          gap={{ xl: 6, xs: 3 }}
+          gap={{ xs: 3, md: 6 }}
           justifyContent={'space-between'}
         >
           <StyledCheckbox

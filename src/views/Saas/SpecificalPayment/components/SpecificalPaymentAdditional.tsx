@@ -5,7 +5,7 @@ export const SpecificalPaymentAdditional: FC<{ sx?: SxProps }> = ({
   ...rest
 }) => {
   return (
-    <Stack color={'#636A7C'} gap={3} {...rest}>
+    <Stack color={'#636A7C'} gap={{ xs: 1.5, md: 3 }} {...rest}>
       <Typography color={'#9095A3'} variant={'subtitle1'}>
         What happens next
       </Typography>
