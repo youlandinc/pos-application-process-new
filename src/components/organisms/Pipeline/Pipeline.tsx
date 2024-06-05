@@ -301,7 +301,7 @@ export const Pipeline: FC = observer(() => {
             {deleteLoading
               ? 'Deleting...'
               : `Are you sure you want to delete ${
-                  deleteAddress[0] ? deleteAddress[0] : 'this application ?'
+                  deleteAddress[0] ? deleteAddress[0] : 'this loan application?'
                 } ${deleteAddress[1] ? deleteAddress[1] + '?' : ''}`}
           </Typography>
         }
@@ -323,14 +323,14 @@ export const Pipeline: FC = observer(() => {
               onClick={handledConfirmDelete}
               size={'small'}
             >
-              Confirm
+              Delete
             </StyledButton>
           </Stack>
         }
         header={
           <Stack alignItems={'flex-start'} flexDirection={'row'}>
             <DeleteForever className={'POS_mr_1'} />
-            <Typography variant={'h6'}>Delete?</Typography>
+            <Typography variant={'h6'}>Are you sure?</Typography>
           </Stack>
         }
         onClose={handledClose}
