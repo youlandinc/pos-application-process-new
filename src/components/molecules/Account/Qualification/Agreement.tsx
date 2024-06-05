@@ -9,7 +9,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { useBreakpoints, useRenderPdf, useSwitch } from '@/hooks';
-import { AUTO_HIDE_DURATION, LOGIN_APP_KEY, userpool } from '@/constants';
+import { AUTO_HIDE_DURATION, userpool } from '@/constants';
 
 import {
   StyledButton,
@@ -27,7 +27,6 @@ import {
   _generateRoleFile,
   _previewRoleFile,
   _updateRoleTaskDetail,
-  _userRefreshToken,
 } from '@/requests';
 
 const initialDocumentFile = {
@@ -42,7 +41,7 @@ export const Agreement: FC = observer(() => {
   const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { userType, session } = useMst();
+  const { userType } = useMst();
 
   const { visible, open, close } = useSwitch(false);
 
