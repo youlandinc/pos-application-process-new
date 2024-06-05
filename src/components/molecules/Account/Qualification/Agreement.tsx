@@ -9,7 +9,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { useBreakpoints, useRenderPdf, useSwitch } from '@/hooks';
-import { AUTO_HIDE_DURATION } from '@/constants';
+import { AUTO_HIDE_DURATION, userpool } from '@/constants';
 
 import {
   StyledButton,
@@ -198,6 +198,7 @@ export const Agreement: FC = observer(() => {
     };
     try {
       await _updateRoleTaskDetail(params);
+      await userpool.refreshToken(userpool.getLastAuthUserId());
       await router.push({
         pathname: '/account',
         query: {
