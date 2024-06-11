@@ -66,7 +66,7 @@ export const OPTIONS_COMMON_CITIZEN_TYPE: Option[] = [
     key: DashboardTaskCitizenshipStatus.us_citizen,
   },
   {
-    label: 'Permanent Resident-Alien',
+    label: 'Permanent Resident',
     value: DashboardTaskCitizenshipStatus.permanent_resident_alien,
     key: DashboardTaskCitizenshipStatus.permanent_resident_alien,
   },

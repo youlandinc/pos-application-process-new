@@ -300,8 +300,8 @@ export const TasksBorrower: FC = observer(() => {
             fontSize={{ xs: 12, lg: 16 }}
             variant={'body1'}
           >
-            Please enter your personal details below so we may begin processing
-            your loan documents.
+            Please enter borrower&apos;s details below so we may begin
+            processing your loan documents.
           </Typography>
         </Typography>
 
