@@ -1,5 +1,5 @@
 import React, { forwardRef, useState } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import {
   StyledButton,
@@ -74,33 +74,33 @@ export const AppraisalPayment = forwardRef<
         }}
       />
 
-      <Stack gap={1.5} mt={2.5} width={'100%'}>
-        <Typography
-          color={'info.dark'}
-          component={'div'}
-          fontWeight={600}
-          variant={'body3'}
-        >
-          Appraisal visit:
-          <Typography color={'info.dark'} component={'div'} variant={'body3'}>
-            An expert will come by to check your property&apos;s value, which
-            may include looking inside your home.
-          </Typography>
-        </Typography>
+      {/*<Stack gap={1.5} mt={2.5} width={'100%'}>*/}
+      {/*  <Typography*/}
+      {/*    color={'info.dark'}*/}
+      {/*    component={'div'}*/}
+      {/*    fontWeight={600}*/}
+      {/*    variant={'body3'}*/}
+      {/*  >*/}
+      {/*    Appraisal visit:*/}
+      {/*    <Typography color={'info.dark'} component={'div'} variant={'body3'}>*/}
+      {/*      An expert will come by to check your property&apos;s value, which*/}
+      {/*      may include looking inside your home.*/}
+      {/*    </Typography>*/}
+      {/*  </Typography>*/}
 
-        <Typography
-          color={'info.dark'}
-          component={'div'}
-          fontWeight={600}
-          variant={'body3'}
-        >
-          Heads up:
-          <Typography color={'info.dark'} component={'div'} variant={'body3'}>
-            Federal law says you need a carbon monoxide detector and a secure
-            water heater. Make sure these are in place to avoid issues.
-          </Typography>
-        </Typography>
-      </Stack>
+      {/*  <Typography*/}
+      {/*    color={'info.dark'}*/}
+      {/*    component={'div'}*/}
+      {/*    fontWeight={600}*/}
+      {/*    variant={'body3'}*/}
+      {/*  >*/}
+      {/*    Heads up:*/}
+      {/*    <Typography color={'info.dark'} component={'div'} variant={'body3'}>*/}
+      {/*      Federal law says you need a carbon monoxide detector and a secure*/}
+      {/*      water heater. Make sure these are in place to avoid issues.*/}
+      {/*    </Typography>*/}
+      {/*  </Typography>*/}
+      {/*</Stack>*/}
 
       <Stack
         flexDirection={'row'}
