@@ -174,7 +174,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = ({
               label={'Would you like to expedite your appraisal order?'}
               sub
               tip={
-                'An expedited appraisal order can typically be completed within 3-5 business days. An additional fee of $150 will apply.'
+                'An expedited appraisal order will typically be completed within 3-5 business days. An additional fee of $150 will apply.'
               }
               tipSx={{ textAlign: 'left', mt: 1.5 }}
             >
@@ -226,11 +226,11 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = ({
                 width={'100%'}
               >
                 <StyledTextField
-                  label={'Email'}
+                  label={'Email (optional)'}
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
-                  placeholder={'Email'}
+                  placeholder={'Email (optional)'}
                   value={email}
                 />
                 <StyledTextFieldPhone
@@ -242,11 +242,11 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = ({
               </Stack>
 
               <StyledTextField
-                label={'Property access instructions'}
+                label={'Property access instructions (optional)'}
                 onChange={(e) => {
                   setInstructions(e.target.value);
                 }}
-                placeholder={'Property access instructions'}
+                placeholder={'Property access instructions (optional)'}
                 value={instructions}
               />
             </StyledFormItem>
