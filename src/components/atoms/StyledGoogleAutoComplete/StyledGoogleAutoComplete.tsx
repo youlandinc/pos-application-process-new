@@ -1,5 +1,12 @@
 import { FC, useCallback, useState } from 'react';
-import { Autocomplete, Box, Grid, Stack, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  Box,
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { LocationOnOutlined } from '@mui/icons-material';
 import parse from 'autosuggest-highlight/parse';
 import { observer } from 'mobx-react-lite';
@@ -195,7 +202,6 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
       id="youland-google-map-autoComplete"
       sx={StyledGoogleAutoCompleteStyles.inside.autoComplete}
       {...rest}
-      autoComplete={false}
       autoSelect={false}
       clearOnBlur={false}
       filterOptions={(options) => options}
@@ -209,9 +215,6 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
             : option.description;
       }}
       includeInputInList
-      inputProps={{
-        autoComplete: 'new-password',
-      }}
       inputValue={inputValue}
       loading={loading}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -239,6 +242,10 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
         <StyledTextField
           {...params}
           fullWidth
+          InputProps={{
+            ...params.InputProps,
+            autoComplete: 'new-password',
+          }}
           label={label || 'Street address'}
           placeholder="Address"
           variant="outlined"
