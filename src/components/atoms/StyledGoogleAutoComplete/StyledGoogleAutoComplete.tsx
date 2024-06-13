@@ -94,6 +94,9 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
             >
               <StyledTextField
                 disabled={disabled}
+                inputProps={{
+                  autoComplete: 'new-password',
+                }}
                 label={'City'}
                 onChange={(e) =>
                   address.changeFieldValue('city', e.target.value)
@@ -104,6 +107,9 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
               />
               <StyledSelect
                 disabled={disabled}
+                inputProps={{
+                  autoComplete: 'new-password',
+                }}
                 label={'State'}
                 onChange={(e) => {
                   address.changeFieldValue('state', e.target.value as string);
@@ -124,6 +130,9 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
             >
               <StyledTextField
                 disabled={disabled}
+                inputProps={{
+                  autoComplete: 'new-password',
+                }}
                 label={'Apt/Unit'}
                 onChange={(e) =>
                   address.changeFieldValue('aptNumber', e.target.value)
@@ -134,6 +143,9 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
               />
               <StyledTextField
                 disabled={disabled}
+                inputProps={{
+                  autoComplete: 'new-password',
+                }}
                 label={'Zip code'}
                 onChange={(e) =>
                   address.changeFieldValue('postcode', e.target.value)
