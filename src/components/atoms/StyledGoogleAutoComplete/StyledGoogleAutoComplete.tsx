@@ -209,6 +209,9 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
             : option.description;
       }}
       includeInputInList
+      inputProps={{
+        autoComplete: 'new-password',
+      }}
       inputValue={inputValue}
       loading={loading}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
