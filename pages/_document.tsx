@@ -10,28 +10,28 @@ export default function Document() {
           crossOrigin="anonymous"
           href="/fonts/Poppins-Medium.woff2"
           rel="stylesheet preload"
-          type="font/woff2"
+          type="font"
         />
         <link
           as="style"
           crossOrigin="anonymous"
           href="/fonts/Poppins-Regular.woff2"
           rel="stylesheet preload"
-          type="font/woff2"
+          type="font"
         />
         <link
           as="style"
           crossOrigin="anonymous"
           href="/fonts/Poppins-SemiBold.woff2"
           rel="stylesheet preload"
-          type="font/woff2"
+          type="font"
         />
         <link
           as="style"
           crossOrigin="anonymous"
           href="/fonts/Poppins-Bold.woff2"
           rel="stylesheet preload"
-          type="font/woff2"
+          type="font"
         />
       </Head>
       <body>
