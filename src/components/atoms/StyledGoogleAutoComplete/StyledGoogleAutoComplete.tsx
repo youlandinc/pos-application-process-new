@@ -242,7 +242,7 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
         <StyledTextField
           {...params}
           fullWidth
-          InputProps={{
+          inputProps={{
             ...params.InputProps,
             autoComplete: 'new-password',
           }}
