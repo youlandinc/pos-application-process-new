@@ -243,7 +243,7 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
           {...params}
           fullWidth
           inputProps={{
-            ...params.InputProps,
+            ...params.inputProps,
             autoComplete: 'new-password',
           }}
           label={label || 'Street address'}
