@@ -121,9 +121,7 @@ export const Login: FC<LoginProps> = observer(
         >
           <StyledTextField
             disabled={loading}
-            inputProps={{
-              autoComplete: 'new-password',
-            }}
+            disabledAutoFill={false}
             label={'Email'}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={'Email'}
@@ -132,9 +130,7 @@ export const Login: FC<LoginProps> = observer(
           />
           <StyledTextFieldPassword
             disabled={loading}
-            inputProps={{
-              autoComplete: 'new-password',
-            }}
+            disabledAutoFill={false}
             label={'Password'}
             onChange={(e) => setPassword(e.target.value)}
             placeholder={'Password'}
