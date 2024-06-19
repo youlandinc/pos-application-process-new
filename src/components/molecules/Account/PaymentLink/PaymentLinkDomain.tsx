@@ -1,6 +1,5 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 import {
-  Box,
   CircularProgress,
   Icon,
   Stack,

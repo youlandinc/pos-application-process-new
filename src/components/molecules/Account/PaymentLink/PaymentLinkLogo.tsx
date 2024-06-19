@@ -1,14 +1,16 @@
 import { ChangeEvent, DragEvent, FC, useCallback, useState } from 'react';
 import { Icon, Stack, Typography } from '@mui/material';
+import { useSnackbar } from 'notistack';
 
-import { HttpError, TaskFiles } from '@/types';
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { useSessionStorageState } from '@/hooks';
+
+import { StyledButton, StyledLoading } from '@/components/atoms';
+
+import { HttpError } from '@/types';
+import { _updatePaymentLinkLogo } from '@/requests';
 
 import UPLOAD_SVG from '@/svg/upload/upload.svg';
-import { AUTO_HIDE_DURATION } from '@/constants';
-import { useSnackbar } from 'notistack';
-import { StyledButton, StyledLoading } from '@/components/atoms';
-import { useSessionStorageState } from '@/hooks';
-import { _updatePaymentLinkLogo } from '@/requests';
 
 export const PaymentLinkLogo: FC<{ imgSrc: string }> = ({
   imgSrc = '/images/logo/logo_blue.svg',
