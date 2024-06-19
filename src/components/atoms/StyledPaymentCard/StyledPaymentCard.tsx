@@ -179,7 +179,8 @@ export const StyledPaymentCard = forwardRef<
 >(({ hideFooter, secret, cb }, ref) => {
   return (
     <>
-      {secret && stripePromise ? (
+      {/*{secret && stripePromise ? (*/}
+      {stripePromise ? (
         <Elements
           options={{
             locale: 'en',

@@ -3,6 +3,7 @@ import {
   AccountRoleTaskKey,
   AccountUserChangePasswordParams,
   AccountUserProfileParams,
+  DomainVerifyData,
   TaskFiles,
 } from '@/types';
 
@@ -80,4 +81,67 @@ export const _updateRoleTaskDetail = (params: {
   taskForm: any;
 }) => {
   return post('/usercenter/account/info', params);
+};
+
+// payment link
+
+export const _updatePaymentLinkLogo = (files: FormData) => {
+  return post('/usercenter/account/link/logo', files, {
+    headers: { 'content-type': 'multipart/form-data' },
+  });
+};
+
+// payment link custom domain
+// GET       api/domain/record         这个的domain 刷新的接口
+// POST      api/domain/verifyRecord   新增   {"domainName":"", "personal":true}
+// POST      api/domain/liveRecord     获取records   {"domainName":""}
+// POST      api/domain/verify         verify ownership   {"domainName":"", "recordType":"", "recordName":"", "recordData":""}
+
+export const _fetchCustomDomains = () => {
+  return get('/usercenter/api/domain/record');
+};
+
+export const _addOrFetchCustomDomain = (params: { domainName: string }) => {
+  return post('/usercenter/api/domain/verifyRecord', {
+    ...params,
+    personal: true,
+  });
+};
+
+export const _verifyCustomDomain = (params: DomainVerifyData) => {
+  return post('/usercenter/api/domain/verify', params);
+};
+
+export const _fetchLiveRecords = (params: { domainName: string }) => {
+  return post('/usercenter/api/domain/liveRecord', params);
+};
+
+// payment link custom email domain
+// POST      api/customEmail    新增   {"domain":""}
+// POST      api/customEmail/modify    修改邮箱名   {"id":"","username":""}
+// POST      api/customEmail/identities    {"domain":""}
+// POST      api/customEmail/verify   验证 {"domain":""}
+// GET       api/customEmail/broker
+
+export const _fetchCustomEmailDomains = () => {
+  return get('/usercenter/api/customEmail/broker');
+};
+
+export const _addCustomEmailDomain = (params: { domain: string }) => {
+  return post('/usercenter/api/customEmail', { ...params, personal: true });
+};
+
+export const _fetchIdentityCustomEmailDomain = (params: { domain: string }) => {
+  return post('/usercenter/api/customEmail/identities', params);
+};
+
+export const _verifyCustomEmailDomain = (params: { domain: string }) => {
+  return post('/usercenter/api/customEmail/verify', params);
+};
+
+export const _modifyCustomEmailDomain = (params: {
+  id: number;
+  userName: string;
+}) => {
+  return post('/usercenter/api/customEmail/modify', params);
 };
