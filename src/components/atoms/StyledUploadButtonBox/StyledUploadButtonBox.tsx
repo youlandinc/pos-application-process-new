@@ -76,7 +76,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     fileKey,
     templateName,
     templateUrl,
-    accept = 'image/*,.pdf,.doc,.docx',
+    accept = 'image/*,.pdf,.doc,.docx,.csv,.xlsx,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,',
     fileSize = 100,
     uploadText = 'Upload',
     children,
