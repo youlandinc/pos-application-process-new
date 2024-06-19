@@ -11,6 +11,7 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
   onChange,
   variant = 'outlined',
   validate,
+  disabledAutoFill = true,
   ...rest
 }) => {
   const [isClient, setIsClient] = useState<boolean>(false);
@@ -73,6 +74,10 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
           ) : undefined
         }
         // InputLabelProps={{ shrink: true }}
+        inputProps={{
+          ...rest.inputProps,
+          autoComplete: disabledAutoFill ? 'new-password' : '',
+        }}
         onChange={onChange}
         sx={{
           ...StyledTextFieldStyles,

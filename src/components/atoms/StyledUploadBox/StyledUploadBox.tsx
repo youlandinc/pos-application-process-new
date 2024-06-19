@@ -37,7 +37,7 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
     onDelete,
     fileSize = 100, // MB
     uploadText = 'Upload file',
-    accept = 'image/*,.pdf',
+    accept = 'image/*,.pdf,.doc,.docx,.csv,.xlsx,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,',
     loading,
   } = props;
 

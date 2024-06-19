@@ -268,7 +268,7 @@ export const Pipeline: FC = observer(() => {
               textAlign={'center'}
               variant={'body1'}
             >
-              You don&apos;t have any loan yet, apply for a new one above.
+              No loans found
             </Typography>
           </Stack>
         )}

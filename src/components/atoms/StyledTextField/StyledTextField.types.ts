@@ -5,4 +5,5 @@ export interface StyledTextFieldProps
   validate?: undefined | string[];
   variant?: 'outlined';
   sx?: SxProps;
+  disabledAutoFill?: boolean;
 }

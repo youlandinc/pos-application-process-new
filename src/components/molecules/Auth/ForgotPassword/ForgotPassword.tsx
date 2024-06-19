@@ -360,9 +360,6 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
                   0
                 : false
             }
-            inputProps={{
-              autoComplete: 'new-password',
-            }}
             label={'Password'}
             onChange={handledPasswordChange}
             placeholder={'Password'}
@@ -416,9 +413,6 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
           </Transitions>
         </Box>
         <StyledTextFieldPassword
-          inputProps={{
-            autoComplete: 'new-password',
-          }}
           label={'Confirm password'}
           onChange={(e) => {
             if (formError?.confirmedPassword) {

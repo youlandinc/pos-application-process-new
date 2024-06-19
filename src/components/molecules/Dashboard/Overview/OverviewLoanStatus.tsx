@@ -87,7 +87,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                 </Stack>
               ),
               date: loanStatusDetails?.[PipelineLoanStageEnum.rejected]?.date
-                ? `Completed on ${format(
+                ? `${format(
                     parseISO(
                       loanStatusDetails?.[PipelineLoanStageEnum.rejected]?.date,
                     ),
@@ -104,7 +104,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
               description:
                 'Please click the button below to resubmit this loan.',
               date: loanStatusDetails?.[PipelineLoanStageEnum.inactive]?.date
-                ? `Completed on ${format(
+                ? `${format(
                     parseISO(
                       loanStatusDetails?.[PipelineLoanStageEnum.inactive]?.date,
                     ),
@@ -125,7 +125,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
               description:
                 "We're currently reviewing your file to check for eligibility. You'll hear from us soon!",
               date: loanStatusDetails?.[PipelineLoanStageEnum.scenario]?.date
-                ? `Completed on ${format(
+                ? `${format(
                     parseISO(
                       loanStatusDetails?.[PipelineLoanStageEnum.scenario]?.date,
                     ),
@@ -140,7 +140,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                 'We have determined we can move forward with this loan. Please pay for the appraisal, upload documents and complete the necessary tasks.',
               date: loanStatusDetails?.[PipelineLoanStageEnum.initial_approval]
                 ?.date
-                ? `Completed on ${format(
+                ? `${format(
                     parseISO(
                       loanStatusDetails?.[
                         PipelineLoanStageEnum.initial_approval
@@ -157,7 +157,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                 'We have completed the approval process for this loan and are now preparing the documents.These will be sent out as soon as possible.',
               date: loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs]
                 ?.date
-                ? `Completed on ${format(
+                ? `${format(
                     parseISO(
                       loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs]
                         ?.date,
@@ -172,7 +172,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
               description:
                 'The documents for this loan have been sent out to the settlement agent.',
               date: loanStatusDetails?.[PipelineLoanStageEnum.docs_out]?.date
-                ? `Completed on ${format(
+                ? `${format(
                     parseISO(
                       loanStatusDetails?.[PipelineLoanStageEnum.docs_out]?.date,
                     ),
@@ -186,7 +186,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
               description:
                 'Congratulations! This loan has been closed and funded.',
               date: loanStatusDetails?.[PipelineLoanStageEnum.funded]?.date
-                ? `Completed on ${format(
+                ? `${format(
                     parseISO(
                       loanStatusDetails?.[PipelineLoanStageEnum.funded]?.date,
                     ),
