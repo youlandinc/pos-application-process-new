@@ -14,6 +14,7 @@ export const StyledDialog: FC<StyledDialogProps> = ({
   footer,
   sx,
   open,
+  headerSx,
   ...rest
 }) => {
   const handledClass = (name: string) => {
@@ -43,6 +44,7 @@ export const StyledDialog: FC<StyledDialogProps> = ({
         <DialogTitle
           className={handledClass('dialog_header')}
           component={'div'}
+          sx={{ ...headerSx }}
         >
           {header}
         </DialogTitle>

@@ -6,32 +6,32 @@ export default function Document() {
     <Html>
       <Head>
         <link
-          as="style"
+          as="font"
           crossOrigin="anonymous"
           href="/fonts/Poppins-Medium.woff2"
           rel="stylesheet preload"
-          type="font"
+          type="font/woff2"
         />
         <link
-          as="style"
+          as="font"
           crossOrigin="anonymous"
           href="/fonts/Poppins-Regular.woff2"
           rel="stylesheet preload"
-          type="font"
+          type="font/woff2"
         />
         <link
-          as="style"
+          as="font"
           crossOrigin="anonymous"
           href="/fonts/Poppins-SemiBold.woff2"
           rel="stylesheet preload"
-          type="font"
+          type="font/woff2"
         />
         <link
-          as="style"
+          as="font"
           crossOrigin="anonymous"
           href="/fonts/Poppins-Bold.woff2"
           rel="stylesheet preload"
-          type="font"
+          type="font/woff2"
         />
       </Head>
       <body>
