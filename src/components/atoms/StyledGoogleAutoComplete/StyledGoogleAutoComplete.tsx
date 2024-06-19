@@ -223,6 +223,10 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
         <StyledTextField
           {...params}
           fullWidth
+          inputProps={{
+            ...params.inputProps,
+            autoComplete: 'new-password',
+          }}
           label={label || 'Street address'}
           placeholder="Address"
           variant="outlined"
