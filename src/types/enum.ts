@@ -43,17 +43,6 @@ export enum FreeTrialState {
   Expired = 'Expired',
 }
 
-export enum DomainState {
-  CONNECTED = 'CONNECTED',
-  WAITING_VERIFICATION = 'WAITING_VERIFICATION',
-  NOT_LINKED = 'NOT_LINKED',
-}
-
-export enum DomainSource {
-  DEFAULT = 'DEFAULT',
-  CUSTOM = 'CUSTOM',
-}
-
 export enum FeeUnitEnum {
   dollar = 'DOLLAR',
   percent = 'PERCENT',

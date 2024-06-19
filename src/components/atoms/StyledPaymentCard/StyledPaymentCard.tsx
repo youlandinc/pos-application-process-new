@@ -180,6 +180,7 @@ export const StyledPaymentCard = forwardRef<
   return (
     <>
       {secret && stripePromise ? (
+        // {stripePromise ? (
         <Elements
           options={{
             locale: 'en',

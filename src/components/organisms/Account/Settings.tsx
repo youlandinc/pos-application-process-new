@@ -11,6 +11,9 @@ import { AUTO_HIDE_DURATION, userpool } from '@/constants';
 
 import { StyledLoading, StyledTab } from '@/components/atoms';
 import {
+  PaymentLinkDomain,
+  PaymentLinkEmail,
+  PaymentLinkLogo,
   QualificationList,
   SettingsChangeAvatar,
   SettingsChangePassword,
@@ -59,6 +62,12 @@ const initialState: AccountUserProfileParams = {
   phone: '',
 };
 
+interface LinkData {
+  domain: any[];
+  emailDomain: any[];
+  logoUrl: string;
+}
+
 export const AccountSettings: FC = () => {
   const router = useRouter();
   const breakpoints = useBreakpoints();
@@ -68,6 +77,11 @@ export const AccountSettings: FC = () => {
 
   const [store, dispatch] = useReducer(AccountReducer, initialState);
   const [backgroundColor, setBackgroundColor] = useState<string>('');
+  const [link, setLink] = useState<LinkData>({
+    domain: [],
+    emailDomain: [],
+    logoUrl: '',
+  });
 
   const [taskHash, setTaskHash] = useState<AccountRoleTaskHash | undefined>();
 
@@ -77,6 +91,7 @@ export const AccountSettings: FC = () => {
       const {
         data: {
           info,
+          link,
           settings: {
             userInfo: {
               avatar,
@@ -117,6 +132,8 @@ export const AccountSettings: FC = () => {
       setBackgroundColor(backgroundColor || '');
 
       setTaskHash(info?.tasks);
+
+      setLink(link);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -206,6 +223,16 @@ export const AccountSettings: FC = () => {
                       label: computedLabel,
                       content: <QualificationList taskHash={taskHash!} />,
                     },
+                    {
+                      label: 'Custom payment link',
+                      content: (
+                        <Stack gap={{ xs: 3, md: 6 }} mt={3}>
+                          <PaymentLinkLogo imgSrc={link.logoUrl} />
+                          <PaymentLinkDomain data={link.domain} />
+                          <PaymentLinkEmail data={link.emailDomain} />
+                        </Stack>
+                      ),
+                    },
                   ]
                 : [
                     {
@@ -222,6 +249,16 @@ export const AccountSettings: FC = () => {
                             store={store}
                           />
                           <SettingsChangePassword />
+                        </Stack>
+                      ),
+                    },
+                    {
+                      label: 'Custom payment link',
+                      content: (
+                        <Stack gap={{ xs: 3, md: 6 }} mt={3}>
+                          <PaymentLinkLogo imgSrc={link.logoUrl} />
+                          <PaymentLinkDomain data={link.domain} />
+                          <PaymentLinkEmail data={link.emailDomain} />
                         </Stack>
                       ),
                     },
