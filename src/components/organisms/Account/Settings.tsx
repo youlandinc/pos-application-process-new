@@ -130,7 +130,7 @@ export const AccountSettings: FC = () => {
       );
 
       setBackgroundColor(backgroundColor || '');
-      
+
       setTaskHash(
         Object.keys(info?.tasks).length !== 0 ? info?.tasks : undefined,
       );

@@ -180,7 +180,6 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'inherit',
     h1: {
       fontSize: 56,
       lineHeight: 1.5,
@@ -277,14 +276,6 @@ export const theme = createTheme({
       defaultProps: {
         disableRipple: true,
       },
-      // styleOverrides: {
-      //   root: {
-      //     color: '#9095A3',
-      //     '.Mui-selected': {
-      //       color: 'primary.main',
-      //     },
-      //   },
-      // },
     },
   },
 });
