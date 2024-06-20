@@ -180,7 +180,7 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Poppins, "pingfang sc", sans-serif',
+    fontFamily: '"Poppins","Arial",sans-serif',
     h1: {
       fontSize: 56,
       lineHeight: 1.5,
@@ -277,14 +277,6 @@ export const theme = createTheme({
       defaultProps: {
         disableRipple: true,
       },
-      // styleOverrides: {
-      //   root: {
-      //     color: '#9095A3',
-      //     '.Mui-selected': {
-      //       color: 'primary.main',
-      //     },
-      //   },
-      // },
     },
   },
 });

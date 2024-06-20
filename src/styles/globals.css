@@ -4,18 +4,21 @@
   font-weight: 400;
   font-display: swap;
 }
+
 @font-face {
   font-family: Poppins;
   src: url('../../public/fonts/Poppins-Medium.woff2');
   font-weight: 500;
   font-display: swap;
 }
+
 @font-face {
   font-family: Poppins;
   src: url('../../public/fonts/Poppins-SemiBold.woff2');
   font-weight: 600;
   font-display: swap;
 }
+
 @font-face {
   font-family: Poppins;
   src: url('../../public/fonts/Poppins-Bold.woff2');
@@ -29,7 +32,7 @@ body {
   height: 100%;
   padding: 0;
   margin: 0;
-  font-family: 'Poppins', 'Helvetica', 'Arial', 'sans-serif';
+  font-family: 'Poppins', 'Arial', sans-serif;
   box-sizing: border-box;
 }
 
@@ -44,6 +47,7 @@ a {
 
 * {
   box-sizing: border-box;
+  font-family: 'Poppins', 'Arial', sans-serif;
 }
 
 ul {
@@ -73,6 +77,7 @@ ul {
     fill: #e3e3ee;
   }
 }
+
 /* Most browsers */
 @keyframes svg-text-anim {
   40% {
@@ -96,11 +101,13 @@ ul {
   border-radius: 8px;
   border: 1px solid #d2d6e1;
 }
+
 .StripeElement--invalid {
   -webkit-transition: all 150ms ease;
   transition: all 150ms ease;
   border-color: #ff5630;
 }
+
 .StripeElement--focus {
   -webkit-transition: all 150ms ease;
   transition: all 150ms ease;
@@ -112,9 +119,11 @@ ul {
   font-size: 16px;
   margin-top: 16px;
 }
+
 .payment_cardNumber_input > .__PrivateStripeElement {
   height: 100%;
 }
+
 .payment_cardExpiry_input,
 .payment_cardCvc_input {
   width: 100%;
@@ -317,6 +326,7 @@ ul {
 .POS_pr_0 {
   padding-right: 0 !important;
 }
+
 .POS_pr_1 {
   padding-right: var(--POS--gap) !important;
 }
