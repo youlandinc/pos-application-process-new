@@ -180,6 +180,7 @@ export const theme = createTheme({
     },
   },
   typography: {
+    fontFamily: '"Poppins","Arial",sans-serif',
     h1: {
       fontSize: 56,
       lineHeight: 1.5,
