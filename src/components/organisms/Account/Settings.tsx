@@ -130,8 +130,10 @@ export const AccountSettings: FC = () => {
       );
 
       setBackgroundColor(backgroundColor || '');
-
-      setTaskHash(info?.tasks);
+      
+      setTaskHash(
+        Object.keys(info?.tasks).length !== 0 ? info?.tasks : undefined,
+      );
 
       setLink(link);
     } catch (err) {
@@ -249,16 +251,6 @@ export const AccountSettings: FC = () => {
                             store={store}
                           />
                           <SettingsChangePassword />
-                        </Stack>
-                      ),
-                    },
-                    {
-                      label: 'Custom payment link',
-                      content: (
-                        <Stack gap={{ xs: 3, md: 6 }} mt={3}>
-                          <PaymentLinkLogo imgSrc={link.logoUrl} />
-                          <PaymentLinkDomain data={link.domain} />
-                          <PaymentLinkEmail data={link.emailDomain} />
                         </Stack>
                       ),
                     },

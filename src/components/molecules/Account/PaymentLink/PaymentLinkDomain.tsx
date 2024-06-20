@@ -768,6 +768,21 @@ export const PaymentLinkDomain: FC<{
             Change the domain name of the payment link.
           </Typography>
         </Typography>
+        {!['xs', 'sm', 'md'].includes(breakpoints) && (
+          <StyledButton
+            disabled={viewLoading}
+            loading={viewLoading}
+            onClick={onClickOpen}
+            size={'small'}
+            sx={{
+              width: 220,
+              flexShrink: 0,
+            }}
+            variant={'outlined'}
+          >
+            Change custom domain
+          </StyledButton>
+        )}
       </Stack>
 
       {fetchLoading ? (
@@ -777,7 +792,7 @@ export const PaymentLinkDomain: FC<{
             sx={{ width: '100%', color: '#E3E3EE' }}
           />
         </Stack>
-      ) : (
+      ) : ['xs', 'sm', 'md'].includes(breakpoints) ? (
         domainList.map((item) => (
           <Stack
             gap={{ xs: 1.5, lg: 3 }}
@@ -830,21 +845,65 @@ export const PaymentLinkDomain: FC<{
             </Stack>
           </Stack>
         ))
+      ) : (
+        <Stack gap={1.25}>
+          <Stack color={'text.primary'} flexDirection={'row'} gap={1.5}>
+            <Typography flex={3} flexShrink={0} fontSize={14} fontWeight={600}>
+              Domain
+            </Typography>
+            <Typography flex={2} flexShrink={0} fontSize={14} fontWeight={600}>
+              State
+            </Typography>
+          </Stack>
+
+          {domainList.map((item) => (
+            <Stack flexDirection={'row'} gap={1.5} key={`pc_${item.id}`}>
+              <Typography flex={3} flexShrink={0} fontSize={12}>
+                {item.domainName}
+              </Typography>
+
+              <Stack
+                alignItems={'center'}
+                flex={2}
+                flexDirection={'row'}
+                flexShrink={0}
+              >
+                <Icon
+                  component={
+                    item.state === DomainState.CONNECTED
+                      ? ICON_SUCCESS
+                      : ICON_PENDING
+                  }
+                  sx={{
+                    width: 20,
+                    height: 20,
+                    mr: 1,
+                  }}
+                />
+                <Typography fontSize={12}>
+                  {DomainStateHash[item.state]}
+                </Typography>
+              </Stack>
+            </Stack>
+          ))}
+        </Stack>
       )}
 
-      <StyledButton
-        disabled={viewLoading}
-        loading={viewLoading}
-        onClick={onClickOpen}
-        size={'small'}
-        sx={{
-          width: 220,
-          flexShrink: 0,
-        }}
-        variant={'outlined'}
-      >
-        Change custom domain
-      </StyledButton>
+      {['xs', 'sm', 'md'].includes(breakpoints) && (
+        <StyledButton
+          disabled={viewLoading}
+          loading={viewLoading}
+          onClick={onClickOpen}
+          size={'small'}
+          sx={{
+            width: 220,
+            flexShrink: 0,
+          }}
+          variant={'outlined'}
+        >
+          Change custom domain
+        </StyledButton>
+      )}
 
       <StyledDialog
         content={renderStepContent}

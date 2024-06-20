@@ -21,6 +21,7 @@ import {
 
 import {
   DomainSource,
+  DomainState,
   EmailDomainData,
   EmailDomainDetails,
   EmailDomainState,
@@ -637,6 +638,21 @@ export const PaymentLinkEmail: FC<{
             symbol (ex: username@email-domain.com)
           </Typography>
         </Typography>
+        {!['xs', 'sm', 'md'].includes(breakpoints) && (
+          <StyledButton
+            disabled={viewLoading}
+            loading={viewLoading}
+            onClick={onClickOpen}
+            size={'small'}
+            sx={{
+              width: 220,
+              flexShrink: 0,
+            }}
+            variant={'outlined'}
+          >
+            Change email domain
+          </StyledButton>
+        )}
       </Stack>
 
       {fetchLoading ? (
@@ -646,7 +662,7 @@ export const PaymentLinkEmail: FC<{
             sx={{ width: '100%', color: '#E3E3EE' }}
           />
         </Stack>
-      ) : (
+      ) : ['xs', 'sm', 'md'].includes(breakpoints) ? (
         emailDomainList.map((item) => (
           <Stack
             gap={{ xs: 1.5, lg: 3 }}
@@ -666,14 +682,14 @@ export const PaymentLinkEmail: FC<{
               >
                 Email
               </Typography>
-              <Typography fontSize={{ xs: 12, md: 16 }}>
+              <Typography fontSize={{ xs: 12, lg: 16 }}>
                 {item.email || '-'}
               </Typography>
             </Stack>
 
             <Stack alignItems={'center'} flexDirection={'row'}>
               <Typography
-                fontSize={{ xs: 12, md: 16 }}
+                fontSize={{ xs: 12, lg: 16 }}
                 fontWeight={600}
                 width={{ xs: 48, lg: 80 }}
               >
@@ -695,21 +711,61 @@ export const PaymentLinkEmail: FC<{
             </Stack>
           </Stack>
         ))
+      ) : (
+        <Stack gap={1.25}>
+          <Stack color={'text.primary'} flexDirection={'row'} gap={1.5}>
+            <Typography flex={3} flexShrink={0} fontSize={14} fontWeight={600}>
+              Email
+            </Typography>
+            <Typography flex={2} flexShrink={0} fontSize={14} fontWeight={600}>
+              State
+            </Typography>
+          </Stack>
+
+          {emailDomainList.map((item) => (
+            <Stack flexDirection={'row'} gap={1.5} key={`pc_${item.id}`}>
+              <Typography flex={3} flexShrink={0} fontSize={12}>
+                {item.email}
+              </Typography>
+
+              <Stack
+                alignItems={'center'}
+                flex={2}
+                flexDirection={'row'}
+                flexShrink={0}
+              >
+                <Icon
+                  component={DomainStateIconHash[item.validStatus]}
+                  sx={{
+                    width: 20,
+                    height: 20,
+                    mr: 1,
+                  }}
+                />
+                <Typography fontSize={12}>
+                  {DomainStateHash[item.validStatus]}
+                </Typography>
+              </Stack>
+            </Stack>
+          ))}
+        </Stack>
       )}
 
-      <StyledButton
-        disabled={viewLoading}
-        loading={viewLoading}
-        onClick={onClickOpen}
-        size={'small'}
-        sx={{
-          width: 220,
-          flexShrink: 0,
-        }}
-        variant={'outlined'}
-      >
-        Change email domain
-      </StyledButton>
+      {['xs', 'sm', 'md'].includes(breakpoints) && (
+        <StyledButton
+          disabled={viewLoading}
+          loading={viewLoading}
+          onClick={onClickOpen}
+          size={'small'}
+          sx={{
+            width: 220,
+            flexShrink: 0,
+          }}
+          variant={'outlined'}
+        >
+          Change email domain
+        </StyledButton>
+      )}
 
       <StyledDialog
         content={renderStepContent}

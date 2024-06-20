@@ -260,7 +260,9 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
             width={'100%'}
             zIndex={showMask ? 99 : -1}
           >
-            <Icon component={ICON_UPLOAD} sx={{ width: 20, height: 20 }} />
+            {showMask && (
+              <Icon component={ICON_UPLOAD} sx={{ width: 20, height: 20 }} />
+            )}
           </Stack>
         </picture>
 
