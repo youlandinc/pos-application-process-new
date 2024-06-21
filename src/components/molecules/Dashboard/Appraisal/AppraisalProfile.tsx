@@ -137,13 +137,24 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
       if (haveAppraisal) {
         return appraisalFiles.length > 0;
       }
+      if (userType !== UserType.CUSTOMER) {
+        if (isNeedToSend) {
+          if (isNeedToFill) {
+            return true;
+          }
+          return !!firstName && !!lastName && !!phoneNumber;
+        }
+      }
       return !!firstName && !!lastName && !!phoneNumber;
     }, [
       appraisalFiles.length,
       firstName,
       haveAppraisal,
+      isNeedToFill,
+      isNeedToSend,
       lastName,
       phoneNumber,
+      userType,
     ]);
 
     const renderCondition = useMemo(() => {
