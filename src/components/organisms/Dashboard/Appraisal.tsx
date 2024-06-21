@@ -13,6 +13,7 @@ import {
   AppraisalPaymentStatus,
   AppraisalProfile,
   AppraisalProfileData,
+  AppraisalSendLink,
   AppraisalStatus,
   AppraisalStatusProps,
 } from '@/components/molecules';
@@ -34,8 +35,8 @@ export const Appraisal: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [formState, setFormState] = useState<
-    'profile' | 'payment' | 'afterPayment'
-  >('profile');
+    'profile' | 'payment' | 'afterPayment' | 'sendLink'
+  >('sendLink');
 
   const [backToProfileLoading, setBackToProfileLoading] = useState(false);
 
@@ -44,6 +45,8 @@ export const Appraisal: FC = () => {
     haveAppraisal: false,
     appraisalFiles: [],
     isExpedited: false,
+    isNeedToSend: false,
+    isNeedToFill: false,
     firstName: '',
     lastName: '',
     email: '',
@@ -74,17 +77,20 @@ export const Appraisal: FC = () => {
   >();
 
   const updateAppraisalProfileAndGetPaymentDetails = useCallback(
-    async (data: AppraisalProfileData) => {
+    async (params: AppraisalProfileData) => {
       setProfileLoading(true);
       try {
-        await _updateAppraisalData(data);
-        if (!data.haveAppraisal) {
+        await _updateAppraisalData(params);
+        if (!params.haveAppraisal && !params.isNeedToSend) {
           const { data } = await _fetchAppraisalPaymentData({
             loanId: router.query.loanId as string,
           });
           setPaymentDetail(data);
+          setFormState('payment');
+          return;
         }
-        !data.haveAppraisal && setFormState('payment');
+        !params.haveAppraisal &&
+          setFormState(!params.isNeedToSend ? 'payment' : 'sendLink');
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
@@ -138,6 +144,8 @@ export const Appraisal: FC = () => {
           haveAppraisal,
           appraisalFiles,
           isExpedited,
+          isNeedToFill,
+          isNeedToSend,
 
           firstName,
           lastName,
@@ -152,17 +160,13 @@ export const Appraisal: FC = () => {
         },
       } = await _fetchAppraisalData(loanId);
 
-      setFormState(
-        paymentStatus === AppraisalTaskPaymentStatus.undone
-          ? 'profile'
-          : 'afterPayment',
-      );
-
       setProfileData({
         haveAppraisal: haveAppraisal ?? false,
         appraisalFiles: appraisalFiles ?? [],
 
         isExpedited: isExpedited ?? false,
+        isNeedToFill: isNeedToFill ?? false,
+        isNeedToSend: isNeedToSend ?? false,
 
         firstName: firstName ?? '',
         lastName: lastName ?? '',
@@ -174,6 +178,14 @@ export const Appraisal: FC = () => {
       setPaymentStatus(paymentStatus);
       setAppraisalStatus(appraisalStatus);
       setAppraisalDetail(appraisalStatusDetail);
+
+      setFormState(
+        paymentStatus === AppraisalTaskPaymentStatus.undone
+          ? isNeedToSend
+            ? 'sendLink'
+            : 'profile'
+          : 'afterPayment',
+      );
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -217,6 +229,17 @@ export const Appraisal: FC = () => {
               profileData={profileData}
             />
           </Stack>
+        );
+      case 'sendLink':
+        return (
+          <AppraisalSendLink
+            backState={backToProfileLoading}
+            backStep={async () => {
+              setBackToProfileLoading(true);
+              await fetchData();
+              setFormState('profile');
+            }}
+          />
         );
       case 'payment':
         return (

@@ -57,6 +57,17 @@ export const _updateAppraisalData = (params: AppraisalProfileData) => {
   });
 };
 
+export const _fetchAppraisalPaymentLinkInfo = (loanId: string) => {
+  return get(`/pos/appraisal/payment/info/${loanId}`);
+};
+
+export const _sendAppraisalPaymentLink = (params: {
+  loanId: string;
+  email: string;
+}) => {
+  return post('/pos/appraisal/payment/link', params);
+};
+
 export const _fetchAppraisalPaymentData = (params: {
   loanId: string;
   receiptEmail?: string;
