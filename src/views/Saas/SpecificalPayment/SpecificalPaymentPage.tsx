@@ -50,38 +50,24 @@ export const SpecificalPaymentPage = () => {
   }, [paymentStatus]);
 
   const { loading } = useAsync(async () => {
-    const { id, email, orderNo } = POSGetParamsFromUrl(location.href);
-    if (!id || !email) {
+    const { orderNo, source } = POSGetParamsFromUrl(location.href);
+    if (!orderNo) {
       return;
     }
     try {
-      const {
-        data: {
-          clientSecret,
-          propertyAddress,
-          productName,
-          paymentAmount,
-          isExpedited,
-          appraisalFees,
-          expeditedFees,
-          paymentName,
-          // created,
-        },
-      } = await _creatSpecifyPayment({
-        id: parseInt(id),
-        receiptEmail: email,
-        orderNo,
-      });
-      setClientSecret(clientSecret);
-      setProductName(productName);
-      setPropertyAddress(propertyAddress);
+      const { data } = await _creatSpecifyPayment(orderNo, source);
 
-      setAppraisalFees(appraisalFees);
-      setIsExpedited(isExpedited);
-      setExpeditedFees(expeditedFees);
-      setPaymentAmount(paymentAmount);
-
-      setPaymentName(paymentName ?? '');
+      console.log(data);
+      // setClientSecret(clientSecret);
+      // setProductName(productName);
+      // setPropertyAddress(propertyAddress);
+      //
+      // setAppraisalFees(appraisalFees);
+      // setIsExpedited(isExpedited);
+      // setExpeditedFees(expeditedFees);
+      // setPaymentAmount(paymentAmount);
+      //
+      // setPaymentName(paymentName ?? '');
 
       // setCloseDate(
       //   typeof created === 'number'

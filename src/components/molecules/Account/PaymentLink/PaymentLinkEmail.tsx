@@ -21,7 +21,6 @@ import {
 
 import {
   DomainSource,
-  DomainState,
   EmailDomainData,
   EmailDomainDetails,
   EmailDomainState,

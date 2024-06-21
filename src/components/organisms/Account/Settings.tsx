@@ -1,6 +1,5 @@
 import { FC, useMemo, useReducer, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 
@@ -27,6 +26,7 @@ import {
   UserType,
 } from '@/types';
 import { _fetchUerInfoWrapper } from '@/requests';
+import { POSGetParamsFromUrl } from '@/utils';
 
 const AccountReducer = (
   state: AccountUserProfileParams,
@@ -69,7 +69,6 @@ interface LinkData {
 }
 
 export const AccountSettings: FC = () => {
-  const router = useRouter();
   const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -161,6 +160,22 @@ export const AccountSettings: FC = () => {
     }
   }, [userType]);
 
+  const startIndex = useMemo(() => {
+    const {
+      // qualification,
+      customLink,
+    } = POSGetParamsFromUrl(location.href);
+    if (taskHash) {
+      // if (qualification) {
+      //   return 1;
+      // }
+      if (customLink) {
+        return 2;
+      }
+    }
+    return 0;
+  }, [taskHash]);
+
   return loading ? (
     <Stack
       alignItems={'center'}
@@ -190,7 +205,7 @@ export const AccountSettings: FC = () => {
 
         <Stack maxWidth={'100%'} width={'100%'}>
           <StyledTab
-            startIndex={!taskHash ? 0 : router.query.qualification ? 1 : 0}
+            startIndex={startIndex}
             sx={{
               '& .MuiTabs-flexContainer .MuiButtonBase-root': {
                 p: 0,
