@@ -1,54 +1,57 @@
-import { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
-// import { addDays, format } from 'date-fns';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
 
 import {
-  AppraisalStatusEnum,
-  AppraisalTaskPaymentStatus,
-  HttpError,
-} from '@/types';
-
-import {
+  StyledButton,
+  StyledCheckbox,
   StyledHeaderLogo,
   StyledLoading,
   StyledPaymentCard,
   StyledTextField,
+  StyledTextFieldPhone,
 } from '@/components/atoms';
-
-const URL_HASH = {
-  0: false,
-  1: true,
-};
-
-const APPRAISAL_HASH = {
-  [AppraisalStatusEnum.paid_for]: 0,
-  [AppraisalStatusEnum.ordered]: 1,
-  [AppraisalStatusEnum.scheduled]: 2,
-  [AppraisalStatusEnum.completed]: 3,
-  [AppraisalStatusEnum.canceled]: 0,
-  [AppraisalStatusEnum.not_started]: 0,
-};
-
 import {
+  SpecificalAppraisalStatusProps,
   SpecificalPaymentAdditional,
+  SpecificalPaymentAppraisalStatus,
   SpecificalPaymentInfo,
   SpecificalPaymentStatus,
 } from './components';
 
 import { useBreakpoints } from '@/hooks';
 
-import { _creatSpecifyPayment } from '@/requests';
-import { AppraisalStatusProps } from '@/components/molecules';
+import {
+  AppraisalStatusEnum,
+  AppraisalTaskPaymentStatus,
+  HttpError,
+} from '@/types';
+import { _creatSpecifyPayment, _updateSpecifyContactInfo } from '@/requests';
+
+const URL_HASH = {
+  0: false,
+  1: true,
+};
 
 export const SpecificalPaymentPage = () => {
+  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const breakpoints = useBreakpoints();
+
+  const paymentRef = useRef(null);
+  const contactForm = useRef<HTMLFormElement>(null);
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [instructions, setInstructions] = useState('');
 
   const [clientSecret, setClientSecret] = useState('');
   const [propertyAddress, setPropertyAddress] = useState('');
@@ -58,6 +61,8 @@ export const SpecificalPaymentPage = () => {
   const [expeditedFees, setExpeditedFees] = useState(0);
   const [paymentAmount, setPaymentAmount] = useState(0);
   const [paymentName, setPaymentName] = useState('');
+  const [payLoading, setPayLoading] = useState(false);
+  const [checkProcessing, setCheckProcessing] = useState(false);
 
   const [loanId, setLoanId] = useState('');
   const [insideIsAdditional, setInsideIsAdditional] = useState(false);
@@ -65,19 +70,18 @@ export const SpecificalPaymentPage = () => {
 
   const [paymentStatus, setPaymentStatus] =
     useState<AppraisalTaskPaymentStatus>(AppraisalTaskPaymentStatus.undone);
-
-  const [appraisalStage, setAppraisalStage] = useState<AppraisalStatusEnum>(
+  const [appraisalStatus, setAppraisalStatus] = useState<AppraisalStatusEnum>(
     AppraisalStatusEnum.canceled,
   );
-  const [appraisalStatusDetail, setAppraisalStatusDetail] =
-    useState<AppraisalStatusProps['appraisalDetail']>();
-
-  const onButtonClick = useCallback(() => {
-    // if (paymentStatus === 'requires_payment_method') {
-    //   return setPaymentStatus('');
-    // }
-    return (window.location.href = 'https://www.youland.com');
-  }, [paymentStatus]);
+  const [appraisalStatusDetail, setAppraisalStatusDetail] = useState<
+    SpecificalAppraisalStatusProps['appraisalDetail']
+  >({
+    [AppraisalStatusEnum.paid_for]: null,
+    [AppraisalStatusEnum.ordered]: null,
+    [AppraisalStatusEnum.scheduled]: null,
+    [AppraisalStatusEnum.canceled]: null,
+    [AppraisalStatusEnum.completed]: null,
+  });
 
   const { loading } = useAsync(async () => {
     const { isNeedToFill, orderNo, source, isAdditional } = POSGetParamsFromUrl(
@@ -94,37 +98,55 @@ export const SpecificalPaymentPage = () => {
     setInsideIsNeedToFill(URL_HASH[isNeedToFill as unknown as 0 | 1]);
     setInsideIsAdditional(URL_HASH[isAdditional as unknown as 0 | 1]);
 
+    await fetchData();
+  });
+
+  const fetchData = async () => {
+    const { orderNo, source } = POSGetParamsFromUrl(location.href);
     try {
       const {
         data: {
           loanId,
           clientSecret,
           paymentAmount,
-          // borrowerName,
           propertyAddress,
           productName,
           expeditedFees,
           appraisalFees,
           isExpedited,
           paymentName,
+
           paymentStatus,
+          appraisalStatus,
           appraisalStatusDetail,
+
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          instructions,
         },
       } = await _creatSpecifyPayment(orderNo, source);
+
       setClientSecret(clientSecret);
       setProductName(productName);
       setPropertyAddress(propertyAddress);
-      //
       setAppraisalFees(appraisalFees);
       setIsExpedited(isExpedited);
       setExpeditedFees(expeditedFees);
       setPaymentAmount(paymentAmount);
-      //
+
       setPaymentName(paymentName ?? '');
 
-      setPaymentStatus(paymentStatus);
-
+      setPaymentStatus(paymentStatus ?? AppraisalTaskPaymentStatus.undone);
+      setAppraisalStatus(appraisalStatus ?? AppraisalStatusEnum.canceled);
       setAppraisalStatusDetail(appraisalStatusDetail);
+
+      setFirstName(firstName ?? '');
+      setLastName(lastName ?? '');
+      setEmail(email ?? '');
+      setPhoneNumber(phoneNumber ?? '');
+      setInstructions(instructions ?? '');
 
       setLoanId(loanId ?? '');
     } catch (err) {
@@ -136,9 +158,79 @@ export const SpecificalPaymentPage = () => {
         header,
       });
     }
-  });
+  };
 
-  console.log(insideIsNeedToFill, insideIsAdditional);
+  const onButtonClick = async () => {
+    if (paymentStatus === AppraisalTaskPaymentStatus.fail) {
+      setPaymentStatus(AppraisalTaskPaymentStatus.undone);
+      await fetchData();
+      return;
+    }
+    return router.reload();
+  };
+
+  const onSubmitContactForm = useCallback(async () => {
+    const params = {
+      loanId,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      instructions,
+    };
+    try {
+      await _updateSpecifyContactInfo(params);
+      return 'success';
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+      return 'error';
+    }
+  }, [
+    email,
+    enqueueSnackbar,
+    firstName,
+    instructions,
+    lastName,
+    loanId,
+    phoneNumber,
+  ]);
+
+  const onClickToPay = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (insideIsNeedToFill) {
+        const flag = contactForm?.current?.reportValidity();
+        if (!flag) {
+          return;
+        }
+        const res = await onSubmitContactForm();
+        if (res === 'error') {
+          return;
+        }
+      }
+      setPayLoading(true);
+      const paymentRes = await (paymentRef.current as unknown as any).onSubmit(
+        e,
+      );
+      if (paymentRes) {
+        const { status } = paymentRes;
+        if (status === AppraisalTaskPaymentStatus.complete) {
+          setPaymentStatus(status as string as AppraisalTaskPaymentStatus);
+        }
+      }
+
+      setPayLoading(false);
+    },
+    [insideIsNeedToFill, onSubmitContactForm],
+  );
 
   return (
     <Stack
@@ -178,11 +270,23 @@ export const SpecificalPaymentPage = () => {
             <StyledHeaderLogo />
           </Stack>
 
-          {paymentStatus ? (
-            <SpecificalPaymentStatus
-              onButtonClick={onButtonClick}
-              paymentStatus={paymentStatus}
-            />
+          {paymentStatus !== AppraisalTaskPaymentStatus.undone ? (
+            appraisalStatus === AppraisalStatusEnum.not_started ? (
+              <SpecificalPaymentStatus
+                onButtonClick={onButtonClick}
+                paymentStatus={paymentStatus}
+              />
+            ) : (
+              <SpecificalPaymentAppraisalStatus
+                appraisalDetail={appraisalStatusDetail}
+                appraisalStatus={appraisalStatus}
+                email={email}
+                firstName={firstName}
+                instructions={instructions}
+                lastName={lastName}
+                phoneNumber={phoneNumber}
+              />
+            )
           ) : (
             <Stack
               flexDirection={{ xs: 'column', xl: 'row' }}
@@ -198,50 +302,70 @@ export const SpecificalPaymentPage = () => {
                 minWidth={{ xl: 500, xs: 'auto' }}
                 width={'100%'}
               >
-                <Stack
-                  border={'1px solid #E4E7EF'}
-                  borderRadius={2}
-                  flex={1}
-                  gap={3}
-                  minWidth={{ xl: 500, xs: 'auto' }}
-                  order={{ xs: 2, xl: 1 }}
-                  p={3}
-                >
-                  <Typography
-                    color={'text.primary'}
-                    fontSize={{
-                      xs: 18,
-                      md: 24,
-                    }}
-                    variant={'h5'}
+                {insideIsNeedToFill && (
+                  <Stack
+                    border={'1px solid #E4E7EF'}
+                    borderRadius={2}
+                    component={'form'}
+                    flex={1}
+                    gap={3}
+                    minWidth={{ xl: 500, xs: 'auto' }}
+                    order={{ xs: 2, xl: 1 }}
+                    p={3}
+                    ref={contactForm}
                   >
-                    Property inspection contact information
-                  </Typography>
+                    <Typography
+                      color={'text.primary'}
+                      fontSize={{
+                        xs: 18,
+                        md: 24,
+                      }}
+                      variant={'h5'}
+                    >
+                      Property inspection contact information
+                    </Typography>
 
-                  <Stack flexDirection={{ xs: 'column', lg: 'row' }} gap={3}>
+                    <Stack flexDirection={{ xs: 'column', lg: 'row' }} gap={3}>
+                      <StyledTextField
+                        label={'First name'}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        placeholder={'First name'}
+                        required
+                        value={firstName}
+                      />
+                      <StyledTextField
+                        label={'Last name'}
+                        onChange={(e) => setLastName(e.target.value)}
+                        placeholder={'Last name'}
+                        required
+                        value={lastName}
+                      />
+                    </Stack>
+
+                    <Stack flexDirection={{ xs: 'column', lg: 'row' }} gap={3}>
+                      <StyledTextField
+                        label={'Email (optional)'}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder={'Email (optional)'}
+                        value={email}
+                      />
+                      <StyledTextFieldPhone
+                        label={'Phone number'}
+                        onValueChange={({ value }) => setPhoneNumber(value)}
+                        placeholder={'Phone number'}
+                        required
+                        value={phoneNumber}
+                      />
+                    </Stack>
+
                     <StyledTextField
-                      label={'First name'}
-                      placeholder={'First name'}
-                    />
-                    <StyledTextField
-                      label={'Last name'}
-                      placeholder={'Last name'}
+                      label={'Property access instructions (optional)'}
+                      onChange={(e) => setInstructions(e.target.value)}
+                      placeholder={'Property access instructions (optional)'}
+                      value={instructions}
                     />
                   </Stack>
-
-                  <Stack flexDirection={{ xs: 'column', lg: 'row' }} gap={3}>
-                    <StyledTextField label={'Email'} placeholder={'Email'} />
-                    <StyledTextField
-                      label={'Phone number'}
-                      placeholder={'Phone number'}
-                    />
-                  </Stack>
-
-                  <StyledTextField
-                    label={'Property access instructions'}
-                    placeholder={'Property access instructions'}
-                  />
-                </Stack>
+                )}
 
                 <Stack
                   border={'1px solid #E4E7EF'}
@@ -272,13 +396,48 @@ export const SpecificalPaymentPage = () => {
                     To move forward with your loan application, please complete
                     the payment below.
                   </Typography>
+
                   <StyledPaymentCard
-                    // cb={(status) => {
-                    //   setPaymentStatus(status);
-                    // }}
+                    hideFooter
                     mode={'uncheck'}
+                    ref={paymentRef}
                     secret={clientSecret}
                   />
+
+                  <StyledCheckbox
+                    checked={checkProcessing}
+                    label={
+                      <>
+                        <b>Important: </b> By proceeding, you acknowledge that
+                        if your property doesn&apos;t meet the required
+                        standards at the time of the inspection, you&apos;ll be
+                        responsible for the cost of a second appraisal.
+                        Furthermore, certain property types (rural, large
+                        property size) or urgent requests may require additional
+                        payments.
+                      </>
+                    }
+                    onChange={(e) => {
+                      setCheckProcessing(e.target.checked);
+                    }}
+                    sx={{
+                      mr: 1,
+                      mt: 1,
+                      '& .MuiCheckbox-root': {
+                        mt: '-9px',
+                        mr: '-9px',
+                      },
+                    }}
+                  />
+
+                  <StyledButton
+                    disabled={!checkProcessing || payLoading}
+                    loading={payLoading}
+                    onClick={onClickToPay}
+                    sx={{ width: '100%' }}
+                  >
+                    Pay now
+                  </StyledButton>
                 </Stack>
               </Stack>
 
@@ -296,6 +455,7 @@ export const SpecificalPaymentPage = () => {
                   }
                   appraisalFees={appraisalFees}
                   expeditedFees={expeditedFees}
+                  isAdditional={insideIsAdditional}
                   isExpedited={isExpedited}
                   paymentAmount={paymentAmount}
                   paymentName={paymentName}
