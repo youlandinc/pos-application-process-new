@@ -30,6 +30,7 @@ export const StyledTextFieldPhone: FC<StyledTextFieldPhoneProps> = ({
     setText(v.formattedValue);
     onValueChange(v);
   };
+
   return (
     <PatternFormat
       allowEmptyFormatting={true}

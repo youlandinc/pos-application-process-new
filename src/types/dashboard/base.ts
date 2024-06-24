@@ -31,6 +31,7 @@ export interface DashboardPaymentDetailsResponse {
   propertyAddress: string;
   productName: string;
   paymentName: null | string;
+  isAdditional?: boolean;
 }
 
 // documents
