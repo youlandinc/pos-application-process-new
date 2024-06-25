@@ -486,7 +486,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 onChange={(e) => {
                   estimateRate.changeFieldValue(
                     'ficoScore',
-                    e.target.value as string as LoanFicoScoreEnum,
+                    e.target.value as string as any,
                   );
                 }}
                 options={APPLICATION_FICO_SCORE}
