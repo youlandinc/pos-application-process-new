@@ -1,6 +1,5 @@
 import { FC, useMemo } from 'react';
 import { Icon, Stack, Typography } from '@mui/material';
-import { PaymentIntent } from '@stripe/stripe-js';
 
 import { POSFormatUSPhoneToText } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
@@ -10,16 +9,17 @@ import { StyledButton } from '@/components/atoms';
 import PAYMENT_SUCCESS from './payment_success.svg';
 import PAYMENT_PENDING from './payment_pending.svg';
 import PAYMENT_FAIL from './payment_failed.svg';
+import { AppraisalTaskPaymentStatus } from '@/types';
 
 export const SpecificalPaymentStatus: FC<{
-  paymentStatus: PaymentIntent.Status | string;
+  paymentStatus: AppraisalTaskPaymentStatus;
   onButtonClick: () => void;
-}> = ({ paymentStatus = 'requires_payment_method', onButtonClick }) => {
+}> = ({ paymentStatus, onButtonClick }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
 
   const computedObj = useMemo(() => {
     switch (paymentStatus) {
-      case 'succeeded': {
+      case AppraisalTaskPaymentStatus.complete: {
         return {
           icon: PAYMENT_SUCCESS,
           color: '#69C0A5',
@@ -55,9 +55,18 @@ export const SpecificalPaymentStatus: FC<{
               .
             </Typography>
           ),
+          footer: (
+            <StyledButton
+              onClick={onButtonClick}
+              sx={{ width: 'fit-content', m: '36px auto' }}
+              variant={'contained'}
+            >
+              Continue
+            </StyledButton>
+          ),
         };
       }
-      case 'processing': {
+      case AppraisalTaskPaymentStatus.processing: {
         return {
           icon: PAYMENT_PENDING,
           color: '#EEB94D',
@@ -93,9 +102,10 @@ export const SpecificalPaymentStatus: FC<{
               . We can help you with the refund.
             </Typography>
           ),
+          footer: null,
         };
       }
-      case 'requires_payment_method': {
+      case AppraisalTaskPaymentStatus.fail: {
         return {
           icon: PAYMENT_FAIL,
           color: '#DE6449',
@@ -156,10 +166,20 @@ export const SpecificalPaymentStatus: FC<{
               .
             </Typography>
           ),
+          footer: (
+            <StyledButton
+              onClick={onButtonClick}
+              sx={{ width: 'fit-content', m: '36px auto' }}
+              variant={'contained'}
+            >
+              Try again
+            </StyledButton>
+          ),
         };
       }
     }
   }, [
+    onButtonClick,
     paymentStatus,
     saasState?.email,
     saasState?.phone,
@@ -187,15 +207,7 @@ export const SpecificalPaymentStatus: FC<{
 
       {computedObj?.content}
       {computedObj?.contact}
-      <StyledButton
-        onClick={onButtonClick}
-        sx={{ width: 'fit-content', m: '36px auto' }}
-        variant={'contained'}
-      >
-        {paymentStatus === 'requires_payment_method'
-          ? 'Try again'
-          : 'Go back to home page'}
-      </StyledButton>
+      {computedObj?.footer}
     </Stack>
   );
 };

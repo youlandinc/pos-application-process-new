@@ -28,10 +28,10 @@ interface AppraisalDetailsData {
   [AppraisalStatusEnum.completed]: baseData | null;
 }
 
-type ReduceAppraisalStage = `${AppraisalStatusEnum}`;
+type ReduceAppraisalStatus = `${AppraisalStatusEnum}`;
 
-export interface AppraisalStatusProps {
-  appraisalStage: ReduceAppraisalStage;
+export interface SpecificalAppraisalStatusProps {
+  appraisalStatus: ReduceAppraisalStatus;
   appraisalDetail: AppraisalDetailsData;
   firstName: string;
   lastName: string;
@@ -49,8 +49,10 @@ const hash = {
   [AppraisalStatusEnum.not_started]: 0,
 };
 
-export const AppraisalStatus: FC<AppraisalStatusProps> = ({
-  appraisalStage = AppraisalStatusEnum.canceled,
+export const SpecificalPaymentAppraisalStatus: FC<
+  SpecificalAppraisalStatusProps
+> = ({
+  appraisalStatus = AppraisalStatusEnum.canceled,
   appraisalDetail,
   firstName,
   lastName,
@@ -63,7 +65,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
   const computedData = useMemo(
     () => {
       if (
-        appraisalStage === AppraisalStatusEnum.canceled ||
+        appraisalStatus === AppraisalStatusEnum.canceled ||
         appraisalDetail?.[AppraisalStatusEnum.canceled]
       ) {
         return [
@@ -170,7 +172,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
       appraisalDetail?.PAID_FOR?.completeDate,
       appraisalDetail?.SCHEDULED?.completeDate,
       appraisalDetail?.SCHEDULED?.scheduledDate,
-      appraisalStage,
+      appraisalStatus,
     ],
   );
 
@@ -190,7 +192,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
       <Typography
         color={'text.primary'}
         component={'div'}
-        fontSize={{ xs: 20, lg: 24 }}
+        fontSize={{ xs: 20, lg: 30 }}
         textAlign={'left'}
         variant={'h5'}
         width={'100%'}
@@ -260,7 +262,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
       </Typography>
 
       <Stepper
-        activeStep={hash[appraisalStage]}
+        activeStep={hash[appraisalStatus]}
         connector={null}
         orientation={'vertical'}
         sx={{
@@ -269,7 +271,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
       >
         {computedData.map((item, index) => (
           <Step
-            completed={index <= hash[appraisalStage]}
+            completed={index <= hash[appraisalStatus]}
             expanded={true}
             key={`${item.label}-${index}`}
           >
@@ -278,7 +280,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
                 color={
                   computedData.length === 1
                     ? 'error'
-                    : index <= hash[appraisalStage]
+                    : index <= hash[appraisalStatus]
                       ? 'text.primary'
                       : 'text.secondary'
                 }
@@ -289,7 +291,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
             </StepLabel>
             <StepContent>
               <Stack gap={1} mb={4}>
-                {hash[appraisalStage] === index && (
+                {hash[appraisalStatus] === index && (
                   <Typography
                     color={computedData.length === 1 ? 'error' : 'text.primary'}
                     variant={'body3'}
@@ -298,7 +300,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
                   </Typography>
                 )}
 
-                {item.date && hash[appraisalStage] >= index && (
+                {item.date && hash[appraisalStatus] >= index && (
                   <Typography
                     color={
                       computedData.length === 1 ? 'error' : 'text.secondary'

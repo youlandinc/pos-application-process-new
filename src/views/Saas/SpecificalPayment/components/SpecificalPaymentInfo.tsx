@@ -12,11 +12,12 @@ export const SpecificalPaymentInfo: FC<
   propertyAddress,
   productName,
   appraisalFees,
-  //isExpedited,
-  //expeditedFees,
+  isExpedited,
+  expeditedFees,
   paymentAmount,
   additional,
   paymentName,
+  isAdditional,
 }) => {
   return (
     <>
@@ -32,7 +33,7 @@ export const SpecificalPaymentInfo: FC<
           >
             Property address: {propertyAddress}
           </Typography>
-          {!paymentName && (
+          {paymentName && (
             <Typography
               color={'text.primary'}
               fontSize={{ xs: 12, md: 14 }}
@@ -42,7 +43,7 @@ export const SpecificalPaymentInfo: FC<
             </Typography>
           )}
         </Stack>
-        {paymentName ? (
+        {isAdditional ? (
           <Stack
             alignItems={'center'}
             borderBottom={'1px solid #E4E7EF'}
@@ -57,40 +58,43 @@ export const SpecificalPaymentInfo: FC<
             </Typography>
           </Stack>
         ) : (
-          <Stack
-            alignItems={'center'}
-            borderBottom={'1px solid #E4E7EF'}
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            mt={3}
-            pb={1}
-          >
-            <Typography variant={'subtitle2'}>Appraisal fee</Typography>
-            <Typography variant={'body2'}>
-              {POSFormatDollar(appraisalFees)}
-            </Typography>
-          </Stack>
+          <>
+            <Stack
+              alignItems={'center'}
+              borderBottom={'1px solid #E4E7EF'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              mt={3}
+              pb={1.5}
+            >
+              <Typography variant={'subtitle2'}>Appraisal fee</Typography>
+              <Typography variant={'body2'}>
+                {POSFormatDollar(appraisalFees)}
+              </Typography>
+            </Stack>
+
+            {isExpedited && (
+              <Stack
+                alignItems={'center'}
+                borderBottom={'1px solid #E4E7EF'}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                mt={1.5}
+                pb={1.5}
+              >
+                <Typography variant={'subtitle2'}>Expedited</Typography>
+                <Typography variant={'body2'}>
+                  {POSFormatDollar(expeditedFees)}
+                </Typography>
+              </Stack>
+            )}
+          </>
         )}
 
-        {/*{isExpedited && (*/}
-        {/*  <Stack*/}
-        {/*    alignItems={'center'}*/}
-        {/*    borderBottom={'1px solid #E4E7EF'}*/}
-        {/*    flexDirection={'row'}*/}
-        {/*    justifyContent={'space-between'}*/}
-        {/*    mt={3}*/}
-        {/*    pb={1}*/}
-        {/*  >*/}
-        {/*    <Typography variant={'subtitle2'}>Expedited</Typography>*/}
-        {/*    <Typography variant={'body2'}>*/}
-        {/*      {POSFormatDollar(expeditedFees)}*/}
-        {/*    </Typography>*/}
-        {/*  </Stack>*/}
-        {/*)}*/}
         <Typography
           color={'primary.main'}
           fontSize={{ xs: 18, md: 24 }}
-          mt={1}
+          mt={1.5}
           textAlign={'right'}
           variant={'h6'}
         >

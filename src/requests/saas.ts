@@ -50,8 +50,20 @@ export interface ILoanRate {
 }
 
 // payment
-export const _creatSpecifyPayment = (param: ICreateSpecifyPaymentParams) => {
-  return post<ICreatePaymentRes>('/los/loan/approval/createPayment', param);
+export const _creatSpecifyPayment = (orderNo: string, source: string) => {
+  return get(
+    `/pos/appraisal/payment/link/info?orderNo=${orderNo}&&source=${source}`,
+  );
+};
+
+export const _updateSpecifyContactInfo = (params: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  instructions: string;
+}) => {
+  return put('/pos/appraisal/payment/contact/info', params);
 };
 
 // document_portal

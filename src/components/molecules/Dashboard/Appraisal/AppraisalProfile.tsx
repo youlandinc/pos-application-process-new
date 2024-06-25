@@ -1,7 +1,10 @@
 import { FC, useMemo, useState } from 'react';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION, OPTIONS_COMMON_YES_OR_NO } from '@/constants';
 
@@ -9,19 +12,22 @@ import {
   StyledButton,
   StyledButtonGroup,
   StyledFormItem,
+  StyledSwitch,
   StyledTextField,
   StyledTextFieldPhone,
   StyledUploadBox,
   Transitions,
 } from '@/components/atoms';
 
-import { HttpError, LoanAnswerEnum, TaskFiles } from '@/types';
+import { HttpError, LoanAnswerEnum, TaskFiles, UserType } from '@/types';
 import { _deleteFile, _uploadFile } from '@/requests/base';
 
 export interface AppraisalProfileData {
   haveAppraisal: boolean;
   appraisalFiles: TaskFiles[];
   isExpedited: boolean;
+  isNeedToSend: boolean;
+  isNeedToFill: boolean;
   firstName: string;
   lastName: string;
   phoneNumber: string;
@@ -35,236 +41,347 @@ export interface AppraisalProfileProps {
   profileData: AppraisalProfileData;
 }
 
-export const AppraisalProfile: FC<AppraisalProfileProps> = ({
-  nextStep,
-  nextState,
-  profileData,
-}) => {
-  const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
+export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
+  ({ nextStep, nextState, profileData }) => {
+    const { userType } = useMst();
+    const router = useRouter();
+    const { enqueueSnackbar } = useSnackbar();
 
-  const [uploadLoading, setUploadLoading] = useState(false);
+    const [uploadLoading, setUploadLoading] = useState(false);
 
-  const [haveAppraisal, setHaveAppraisal] = useState(profileData.haveAppraisal);
-  const [appraisalFiles, setAppraisalFiles] = useState<TaskFiles[]>(
-    profileData.appraisalFiles,
-  );
+    const [haveAppraisal, setHaveAppraisal] = useState(
+      profileData.haveAppraisal,
+    );
+    const [appraisalFiles, setAppraisalFiles] = useState<TaskFiles[]>(
+      profileData.appraisalFiles,
+    );
 
-  const [isExpedited, setIsExpedited] = useState(profileData.isExpedited);
+    const [isExpedited, setIsExpedited] = useState(profileData.isExpedited);
+    const [isNeedToSend, setIsNeedToSend] = useState(profileData.isNeedToSend);
+    const [isNeedToFill, setIsNeedToFill] = useState(profileData.isNeedToFill);
 
-  const [firstName, setFirstName] = useState(profileData.firstName);
-  const [lastName, setLastName] = useState(profileData.lastName);
-  const [phoneNumber, setPhoneNumber] = useState(profileData.phoneNumber);
-  const [email, setEmail] = useState(profileData.email);
-  const [instructions, setInstructions] = useState(profileData.instructions);
+    const [firstName, setFirstName] = useState(profileData.firstName);
+    const [lastName, setLastName] = useState(profileData.lastName);
+    const [phoneNumber, setPhoneNumber] = useState(profileData.phoneNumber);
+    const [email, setEmail] = useState(profileData.email);
+    const [instructions, setInstructions] = useState(profileData.instructions);
 
-  const handleDelete = async (index: number) => {
-    try {
-      await _deleteFile({
-        fileKey: 'COLLATERAL_DOCS_Appraisal',
-        fileUrl: appraisalFiles[index]?.url,
-        loanId: router.query.loanId as string,
+    const handleDelete = async (index: number) => {
+      try {
+        await _deleteFile({
+          fileKey: 'COLLATERAL_DOCS_Appraisal',
+          fileUrl: appraisalFiles[index]?.url,
+          loanId: router.query.loanId as string,
+        });
+        const temp = JSON.parse(JSON.stringify(appraisalFiles));
+        temp.splice(index, 1);
+        setAppraisalFiles(temp);
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      }
+    };
+
+    const handleSuccess = async (files: FileList) => {
+      setUploadLoading(true);
+
+      const formData = new FormData();
+
+      formData.append('fileKey', 'COLLATERAL_DOCS_Appraisal');
+      Array.from(files, (item) => {
+        formData.append('files', item);
       });
-      const temp = JSON.parse(JSON.stringify(appraisalFiles));
-      temp.splice(index, 1);
-      setAppraisalFiles(temp);
-    } catch (err) {
-      const { header, message, variant } = err as HttpError;
-      enqueueSnackbar(message, {
-        variant: variant || 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-        isSimple: !header,
-        header,
-      });
-    }
-  };
 
-  const handleSuccess = async (files: FileList) => {
-    setUploadLoading(true);
+      try {
+        const { data } = await _uploadFile(
+          formData,
+          router.query.loanId as string,
+        );
+        setAppraisalFiles([...appraisalFiles, ...data]);
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      } finally {
+        setUploadLoading(false);
+      }
+    };
 
-    const formData = new FormData();
+    const handleSave = () => {
+      const postData = {
+        loanId: router.query.loanId,
+        haveAppraisal,
+        appraisalFiles,
+        isExpedited,
+        isNeedToSend,
+        isNeedToFill,
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        instructions,
+      };
+      nextStep(postData);
+    };
 
-    formData.append('fileKey', 'COLLATERAL_DOCS_Appraisal');
-    Array.from(files, (item) => {
-      formData.append('files', item);
-    });
-
-    try {
-      const { data } = await _uploadFile(
-        formData,
-        router.query.loanId as string,
-      );
-      setAppraisalFiles([...appraisalFiles, ...data]);
-    } catch (err) {
-      const { header, message, variant } = err as HttpError;
-      enqueueSnackbar(message, {
-        variant: variant || 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-        isSimple: !header,
-        header,
-      });
-    } finally {
-      setUploadLoading(false);
-    }
-  };
-
-  const handleSave = () => {
-    const postData = {
-      loanId: router.query.loanId,
-      haveAppraisal,
-      appraisalFiles,
-      isExpedited,
+    const isFormDataValid = useMemo(() => {
+      if (haveAppraisal) {
+        return appraisalFiles.length > 0;
+      }
+      if (userType !== UserType.CUSTOMER) {
+        if (isNeedToSend) {
+          if (isNeedToFill) {
+            return true;
+          }
+          return !!firstName && !!lastName && !!phoneNumber;
+        }
+      }
+      return !!firstName && !!lastName && !!phoneNumber;
+    }, [
+      appraisalFiles.length,
       firstName,
+      haveAppraisal,
+      isNeedToFill,
+      isNeedToSend,
       lastName,
       phoneNumber,
-      email,
-      instructions,
-    };
-    nextStep(postData);
-  };
+      userType,
+    ]);
 
-  const isFormDataValid = useMemo(() => {
-    if (haveAppraisal) {
-      return appraisalFiles.length > 0;
-    }
-    return !!firstName && !!lastName && !!phoneNumber;
-  }, [appraisalFiles.length, firstName, haveAppraisal, lastName, phoneNumber]);
+    const renderCondition = useMemo(() => {
+      if (userType === UserType.CUSTOMER) {
+        return true;
+      }
+      if (isNeedToSend) {
+        return !isNeedToFill;
+      }
+      return true;
+    }, [isNeedToFill, isNeedToSend, userType]);
 
-  return (
-    <>
-      <StyledFormItem gap={3} label={'Do you have a recent appraisal?'} sub>
-        <StyledButtonGroup
-          onChange={(e, value) => {
-            if (value === null) {
-              return;
-            }
-            setHaveAppraisal(value === LoanAnswerEnum.yes);
-          }}
-          options={OPTIONS_COMMON_YES_OR_NO}
-          sx={{ width: '100%' }}
-          value={haveAppraisal ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
-        />
-      </StyledFormItem>
-
-      <Transitions
-        style={{
-          display: haveAppraisal ? 'block' : 'none',
-          width: '100%',
-        }}
-      >
-        {haveAppraisal && (
-          <StyledUploadBox
-            fileList={appraisalFiles}
-            loading={uploadLoading}
-            onDelete={handleDelete}
-            onSuccess={handleSuccess}
-          />
-        )}
-      </Transitions>
-
-      <Transitions
-        style={{
-          display: !haveAppraisal ? 'block' : 'none',
-        }}
-      >
-        {!haveAppraisal && (
-          <Stack gap={6} width={'100%'}>
-            <StyledFormItem
-              gap={3}
-              label={'Would you like to expedite your appraisal order?'}
-              sub
-              tip={
-                'An expedited appraisal order will typically be completed within 3-5 business days. An additional fee of $150 will apply.'
+    return (
+      <>
+        <StyledFormItem gap={3} label={'Do you have a recent appraisal?'} sub>
+          <StyledButtonGroup
+            onChange={(e, value) => {
+              if (value === null) {
+                return;
               }
-              tipSx={{ textAlign: 'left', mt: 1.5 }}
-            >
-              <StyledButtonGroup
-                onChange={(e, value) => {
-                  if (value === null) {
-                    return;
-                  }
-                  setIsExpedited(value === LoanAnswerEnum.yes);
-                }}
-                options={OPTIONS_COMMON_YES_OR_NO}
-                sx={{ width: '100%' }}
-                value={isExpedited ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
-              />
-            </StyledFormItem>
+              setHaveAppraisal(value === LoanAnswerEnum.yes);
+            }}
+            options={OPTIONS_COMMON_YES_OR_NO}
+            sx={{ width: '100%' }}
+            value={haveAppraisal ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
+          />
+        </StyledFormItem>
 
-            <StyledFormItem
-              gap={3}
-              label={'Property inspection contact information'}
-              labelSx={{ pb: 3 }}
-              sub
-            >
-              <Stack
-                flexDirection={{ xs: 'column', lg: 'row' }}
-                gap={3}
-                width={'100%'}
-              >
-                <StyledTextField
-                  label={'First name'}
-                  onChange={(e) => {
-                    setFirstName(e.target.value);
-                  }}
-                  placeholder={'First name'}
-                  value={firstName}
-                />
-                <StyledTextField
-                  label={'Last name'}
-                  onChange={(e) => {
-                    setLastName(e.target.value);
-                  }}
-                  placeholder={'Last name'}
-                  value={lastName}
-                />
-              </Stack>
-
-              <Stack
-                flexDirection={{ xs: 'column', lg: 'row' }}
-                gap={3}
-                width={'100%'}
-              >
-                <StyledTextField
-                  label={'Email (optional)'}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                  placeholder={'Email (optional)'}
-                  value={email}
-                />
-                <StyledTextFieldPhone
-                  label={'Phone number'}
-                  onValueChange={({ value }) => setPhoneNumber(value)}
-                  placeholder={'Phone number'}
-                  value={phoneNumber}
-                />
-              </Stack>
-
-              <StyledTextField
-                label={'Property access instructions (optional)'}
-                onChange={(e) => {
-                  setInstructions(e.target.value);
-                }}
-                placeholder={'Property access instructions (optional)'}
-                value={instructions}
-              />
-            </StyledFormItem>
-          </Stack>
-        )}
-      </Transitions>
-
-      <Stack alignItems={'center'} mt={{ xs: 3, lg: 2 }} width={'100%'}>
-        <StyledButton
-          color={'primary'}
-          disabled={nextState || !isFormDataValid}
-          loading={nextState}
-          onClick={handleSave}
-          sx={{ maxWidth: 276, width: '100%' }}
+        <Transitions
+          style={{
+            display: haveAppraisal ? 'block' : 'none',
+            width: '100%',
+          }}
         >
-          {haveAppraisal ? 'Save' : 'Next'}
-        </StyledButton>
-      </Stack>
-    </>
-  );
-};
+          {haveAppraisal && (
+            <StyledUploadBox
+              fileList={appraisalFiles}
+              loading={uploadLoading}
+              onDelete={handleDelete}
+              onSuccess={handleSuccess}
+            />
+          )}
+        </Transitions>
+
+        <Transitions
+          style={{
+            display: !haveAppraisal ? 'block' : 'none',
+          }}
+        >
+          {!haveAppraisal && (
+            <Stack gap={6} width={'100%'}>
+              <StyledFormItem
+                gap={3}
+                label={'Would you like to expedite your appraisal order?'}
+                sub
+                tip={
+                  'An expedited appraisal order will typically be completed within 3-5 business days. An additional fee of $150 will apply.'
+                }
+                tipSx={{ textAlign: 'left', mt: 1.5 }}
+              >
+                <StyledButtonGroup
+                  onChange={(e, value) => {
+                    if (value === null) {
+                      return;
+                    }
+                    setIsExpedited(value === LoanAnswerEnum.yes);
+                  }}
+                  options={OPTIONS_COMMON_YES_OR_NO}
+                  sx={{ width: '100%' }}
+                  value={isExpedited ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
+                />
+              </StyledFormItem>
+
+              {userType !== UserType.CUSTOMER && (
+                <StyledFormItem
+                  gap={3}
+                  label={'Would you like to send the borrower a payment link?'}
+                  sub
+                >
+                  <StyledButtonGroup
+                    onChange={(e, value) => {
+                      if (value === null) {
+                        return;
+                      }
+                      setIsNeedToSend(value === LoanAnswerEnum.yes);
+                    }}
+                    options={OPTIONS_COMMON_YES_OR_NO}
+                    sx={{ width: '100%' }}
+                    value={
+                      isNeedToSend ? LoanAnswerEnum.yes : LoanAnswerEnum.no
+                    }
+                  />
+
+                  <Transitions
+                    style={{
+                      display: isNeedToSend ? 'block' : 'none',
+                    }}
+                  >
+                    {isNeedToSend && (
+                      <Stack gap={3}>
+                        <Typography
+                          color={'text.secondary'}
+                          component={'div'}
+                          fontSize={16}
+                        >
+                          You can customize the logo and domain name of the
+                          payment link in the &quot;
+                          <Typography
+                            color={'#365EC6'}
+                            component={'span'}
+                            fontWeight={600}
+                            onClick={async () => {
+                              await router.push({
+                                pathname: '/account',
+                                query: { customLink: true },
+                              });
+                            }}
+                            sx={{ cursor: 'pointer' }}
+                          >
+                            My Account
+                          </Typography>
+                          &quot; settings.
+                        </Typography>
+                        <Stack alignItems={'center'} flexDirection={'row'}>
+                          <StyledSwitch
+                            checked={isNeedToFill}
+                            onChange={(e) => {
+                              setIsNeedToFill(e.target.checked);
+                            }}
+                          />
+                          <Typography fontSize={14} ml={1} pt={'2px'}>
+                            Ask the borrower to fill in the property inspection
+                            contact information.
+                          </Typography>
+                        </Stack>
+                      </Stack>
+                    )}
+                  </Transitions>
+                </StyledFormItem>
+              )}
+
+              <Transitions
+                style={{
+                  display: renderCondition ? 'block' : 'none',
+                }}
+              >
+                {renderCondition && (
+                  <StyledFormItem
+                    gap={3}
+                    label={'Property inspection contact information'}
+                    labelSx={{ pb: 3 }}
+                    sub
+                  >
+                    <Stack
+                      flexDirection={{ xs: 'column', lg: 'row' }}
+                      gap={3}
+                      width={'100%'}
+                    >
+                      <StyledTextField
+                        label={'First name'}
+                        onChange={(e) => {
+                          setFirstName(e.target.value);
+                        }}
+                        placeholder={'First name'}
+                        required
+                        value={firstName}
+                      />
+                      <StyledTextField
+                        label={'Last name'}
+                        onChange={(e) => {
+                          setLastName(e.target.value);
+                        }}
+                        placeholder={'Last name'}
+                        required
+                        value={lastName}
+                      />
+                    </Stack>
+
+                    <Stack
+                      flexDirection={{ xs: 'column', lg: 'row' }}
+                      gap={3}
+                      width={'100%'}
+                    >
+                      <StyledTextField
+                        label={'Email (optional)'}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                        }}
+                        placeholder={'Email (optional)'}
+                        value={email}
+                      />
+                      <StyledTextFieldPhone
+                        label={'Phone number'}
+                        onValueChange={({ value }) => setPhoneNumber(value)}
+                        placeholder={'Phone number'}
+                        required
+                        value={phoneNumber}
+                      />
+                    </Stack>
+
+                    <StyledTextField
+                      label={'Property access instructions (optional)'}
+                      onChange={(e) => {
+                        setInstructions(e.target.value);
+                      }}
+                      placeholder={'Property access instructions (optional)'}
+                      value={instructions}
+                    />
+                  </StyledFormItem>
+                )}
+              </Transitions>
+            </Stack>
+          )}
+        </Transitions>
+
+        <Stack alignItems={'center'} mt={{ xs: 3, lg: 2 }} width={'100%'}>
+          <StyledButton
+            color={'primary'}
+            disabled={nextState || !isFormDataValid}
+            loading={nextState}
+            onClick={handleSave}
+            sx={{ maxWidth: 276, width: '100%' }}
+          >
+            {haveAppraisal ? 'Save' : 'Next'}
+          </StyledButton>
+        </Stack>
+      </>
+    );
+  },
+);
