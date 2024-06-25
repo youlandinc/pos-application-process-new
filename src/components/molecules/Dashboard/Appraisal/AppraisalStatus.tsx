@@ -190,7 +190,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
       <Typography
         color={'text.primary'}
         component={'div'}
-        fontSize={{ xs: 18, lg: 24 }}
+        fontSize={{ xs: 20, lg: 24 }}
         textAlign={'left'}
         variant={'h5'}
         width={'100%'}
