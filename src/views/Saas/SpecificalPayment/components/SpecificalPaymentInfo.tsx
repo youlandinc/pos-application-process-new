@@ -65,7 +65,7 @@ export const SpecificalPaymentInfo: FC<
               flexDirection={'row'}
               justifyContent={'space-between'}
               mt={3}
-              pb={1}
+              pb={1.5}
             >
               <Typography variant={'subtitle2'}>Appraisal fee</Typography>
               <Typography variant={'body2'}>
@@ -79,8 +79,8 @@ export const SpecificalPaymentInfo: FC<
                 borderBottom={'1px solid #E4E7EF'}
                 flexDirection={'row'}
                 justifyContent={'space-between'}
-                mt={3}
-                pb={1}
+                mt={1.5}
+                pb={1.5}
               >
                 <Typography variant={'subtitle2'}>Expedited</Typography>
                 <Typography variant={'body2'}>
@@ -94,7 +94,7 @@ export const SpecificalPaymentInfo: FC<
         <Typography
           color={'primary.main'}
           fontSize={{ xs: 18, md: 24 }}
-          mt={1}
+          mt={1.5}
           textAlign={'right'}
           variant={'h6'}
         >

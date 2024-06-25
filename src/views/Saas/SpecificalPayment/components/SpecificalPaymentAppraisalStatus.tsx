@@ -183,15 +183,19 @@ export const SpecificalPaymentAppraisalStatus: FC<
       justifyContent={'flex-start'}
       maxWidth={900}
       mx={'auto'}
-      px={{ lg: 3, xs: 0 }}
+      px={{
+        lg: 0,
+        xs: 'clamp(24px,6.4vw,80px)',
+      }}
       width={'100%'}
     >
       <Typography
         color={'text.primary'}
         component={'div'}
         fontSize={{ xs: 20, lg: 30 }}
-        textAlign={'center'}
+        textAlign={'left'}
         variant={'h5'}
+        width={'100%'}
       >
         Property appraisal
         <Typography
@@ -206,57 +210,52 @@ export const SpecificalPaymentAppraisalStatus: FC<
           fontSize={{ xs: 12, lg: 16 }}
           mt={1}
         >
-          The property inspection contact information is as follows:
+          The property inspection contact information
         </Typography>
-        <Typography component={'div'} mt={1}>
+        <Typography component={'ul'} mt={1} pl={1} sx={{ listStyle: 'inside' }}>
           {firstName && (
             <Typography
               color={'text.secondary'}
-              component={'span'}
+              component={'li'}
               fontSize={{ xs: 12, lg: 16 }}
             >
-              First name: {firstName},
+              First name: {firstName}
             </Typography>
           )}
           {lastName && (
             <Typography
               color={'text.secondary'}
-              component={'span'}
+              component={'li'}
               fontSize={{ xs: 12, lg: 16 }}
             >
-              {' '}
-              Last name: {lastName},
+              Last name: {lastName}
             </Typography>
           )}
           {email && (
             <Typography
               color={'text.secondary'}
-              component={'span'}
+              component={'li'}
               fontSize={{ xs: 12, lg: 16 }}
             >
-              {' '}
-              Email: {email},
+              Email: {email}
             </Typography>
           )}
           {phoneNumber && (
             <Typography
               color={'text.secondary'}
-              component={'span'}
+              component={'li'}
               fontSize={{ xs: 12, lg: 16 }}
             >
-              {' '}
               Phone number: {POSFormatUSPhoneToText(phoneNumber)}
-              {instructions ? ',' : '.'}
             </Typography>
           )}
           {instructions && (
             <Typography
               color={'text.secondary'}
-              component={'span'}
+              component={'li'}
               fontSize={{ xs: 12, lg: 16 }}
             >
-              {' '}
-              and Property access instructions: {instructions}.
+              Property access instructions: {instructions}
             </Typography>
           )}
         </Typography>

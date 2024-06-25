@@ -7,6 +7,7 @@ import {
 
 export enum LoanFicoScoreEnum {
   default = '',
+  // no_fico = 'NO_FICO',
   fico_not_available = 'FICO_NOT_AVAILABLE',
   below_600 = 'BELOW_600',
   between_600_649 = 'BETWEEN_600_649',

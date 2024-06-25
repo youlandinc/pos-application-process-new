@@ -10,8 +10,6 @@ import {
 import { format, parseISO } from 'date-fns';
 import { CancelRounded } from '@mui/icons-material';
 
-import { StyledFormItem } from '@/components/atoms';
-
 import { AppraisalStatusEnum } from '@/types';
 import { useSessionStorageState } from '@/hooks';
 import { POSFormatUSPhoneToText } from '@/utils';
@@ -35,6 +33,11 @@ type ReduceAppraisalStage = `${AppraisalStatusEnum}`;
 export interface AppraisalStatusProps {
   appraisalStage: ReduceAppraisalStage;
   appraisalDetail: AppraisalDetailsData;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phoneNumber: string;
+  instructions?: string;
 }
 
 const hash = {
@@ -49,6 +52,11 @@ const hash = {
 export const AppraisalStatus: FC<AppraisalStatusProps> = ({
   appraisalStage = AppraisalStatusEnum.canceled,
   appraisalDetail,
+  firstName,
+  lastName,
+  email,
+  phoneNumber,
+  instructions,
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
 
@@ -167,14 +175,90 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
   );
 
   return (
-    <StyledFormItem
-      label={'Property appraisal'}
+    <Stack
+      alignItems={'center'}
+      gap={{ xs: 3, lg: 6 }}
+      justifyContent={'flex-start'}
       maxWidth={900}
-      tip={'Keep track of your appraisal progress below'}
-      tipSx={{
-        textAlign: 'left',
+      mx={'auto'}
+      px={{
+        lg: 0,
+        xs: 'clamp(24px,6.4vw,80px)',
       }}
+      width={'100%'}
     >
+      <Typography
+        color={'text.primary'}
+        component={'div'}
+        fontSize={{ xs: 18, lg: 24 }}
+        textAlign={'left'}
+        variant={'h5'}
+        width={'100%'}
+      >
+        Property appraisal
+        <Typography
+          color={'text.secondary'}
+          fontSize={{ xs: 12, lg: 16 }}
+          mt={1}
+        >
+          Keep track of your appraisal progress below
+        </Typography>
+        <Typography
+          color={'text.secondary'}
+          fontSize={{ xs: 12, lg: 16 }}
+          mt={1}
+        >
+          The property inspection contact information
+        </Typography>
+        <Typography component={'ul'} mt={1} pl={1} sx={{ listStyle: 'inside' }}>
+          {firstName && (
+            <Typography
+              color={'text.secondary'}
+              component={'li'}
+              fontSize={{ xs: 12, lg: 16 }}
+            >
+              First name: {firstName}
+            </Typography>
+          )}
+          {lastName && (
+            <Typography
+              color={'text.secondary'}
+              component={'li'}
+              fontSize={{ xs: 12, lg: 16 }}
+            >
+              Last name: {lastName}
+            </Typography>
+          )}
+          {email && (
+            <Typography
+              color={'text.secondary'}
+              component={'li'}
+              fontSize={{ xs: 12, lg: 16 }}
+            >
+              Email: {email}
+            </Typography>
+          )}
+          {phoneNumber && (
+            <Typography
+              color={'text.secondary'}
+              component={'li'}
+              fontSize={{ xs: 12, lg: 16 }}
+            >
+              Phone number: {POSFormatUSPhoneToText(phoneNumber)}
+            </Typography>
+          )}
+          {instructions && (
+            <Typography
+              color={'text.secondary'}
+              component={'li'}
+              fontSize={{ xs: 12, lg: 16 }}
+            >
+              Property access instructions: {instructions}
+            </Typography>
+          )}
+        </Typography>
+      </Typography>
+
       <Stepper
         activeStep={hash[appraisalStage]}
         connector={null}
@@ -229,6 +313,6 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
           </Step>
         ))}
       </Stepper>
-    </StyledFormItem>
+    </Stack>
   );
 };

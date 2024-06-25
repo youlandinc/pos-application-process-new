@@ -270,6 +270,11 @@ export const Appraisal: FC = () => {
           <AppraisalStatus
             appraisalDetail={appraisalDetail}
             appraisalStage={appraisalStatus}
+            email={profileData.email}
+            firstName={profileData.firstName}
+            instructions={profileData.instructions}
+            lastName={profileData.lastName}
+            phoneNumber={profileData.phoneNumber}
           />
         );
     }

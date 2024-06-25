@@ -8,6 +8,7 @@ export enum DashboardTaskKey {
   real_investment = 'REAL_INVESTMENT',
   title_escrow = 'TITLE_ESCROW',
   holdback_process = 'HOLDBACK_PROCESS',
+  rehab_info = 'REHAB_INFO',
 }
 
 export interface DashboardTasksResponse {
@@ -17,6 +18,7 @@ export interface DashboardTasksResponse {
   [DashboardTaskKey.real_investment]: boolean;
   [DashboardTaskKey.title_escrow]: boolean;
   [DashboardTaskKey.holdback_process]?: boolean;
+  [DashboardTaskKey.rehab_info]?: boolean;
 }
 
 // appraisal
