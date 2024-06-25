@@ -8,7 +8,7 @@ import {
   Select,
 } from '@mui/material';
 
-import { useSessionStorageState } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 
 import { StyledSelectMultipleProps, StyledSelectMultipleStyle } from './index';
 
@@ -29,6 +29,7 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
 }) => {
   const [selectValue, setSelectValue] = useState(['']);
   const { saasState } = useSessionStorageState('tenantConfig');
+  const breakpoints = useBreakpoints();
 
   const handledChange = (e: any) => {
     const {
@@ -116,6 +117,7 @@ export const StyledSelectMultiple: FC<StyledSelectMultipleProps> = ({
               }, [])
               .join(', ')
           }
+          // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
           value={selectValue}
           {...rest}
         >

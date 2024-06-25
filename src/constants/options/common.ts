@@ -1,7 +1,7 @@
 import {
   AppraisalStatusEnum,
-  DashboardTaskCitizenshipStatus,
   LoanAnswerEnum,
+  LoanCitizenshipEnum,
   UserType,
 } from '@/types';
 import { ReactNode } from 'react';
@@ -62,18 +62,18 @@ export const HASH_COMMON_PERSON = {
 export const OPTIONS_COMMON_CITIZEN_TYPE: Option[] = [
   {
     label: 'US citizen',
-    value: DashboardTaskCitizenshipStatus.us_citizen,
-    key: DashboardTaskCitizenshipStatus.us_citizen,
+    value: LoanCitizenshipEnum.us_citizen,
+    key: LoanCitizenshipEnum.us_citizen,
   },
   {
     label: 'Permanent Resident',
-    value: DashboardTaskCitizenshipStatus.permanent_resident_alien,
-    key: DashboardTaskCitizenshipStatus.permanent_resident_alien,
+    value: LoanCitizenshipEnum.permanent_resident_alien,
+    key: LoanCitizenshipEnum.permanent_resident_alien,
   },
   {
     label: 'Foreign national',
-    value: DashboardTaskCitizenshipStatus.foreign_national,
-    key: DashboardTaskCitizenshipStatus.foreign_national,
+    value: LoanCitizenshipEnum.foreign_national,
+    key: LoanCitizenshipEnum.foreign_national,
   },
 ];
 

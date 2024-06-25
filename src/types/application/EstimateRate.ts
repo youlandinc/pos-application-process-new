@@ -1,4 +1,5 @@
 import {
+  LoanCitizenshipEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
@@ -7,7 +8,7 @@ import {
 
 export enum LoanFicoScoreEnum {
   default = '',
-  // no_fico = 'NO_FICO',
+  no_fico = 'NO_FICO',
   fico_not_available = 'FICO_NOT_AVAILABLE',
   below_600 = 'BELOW_600',
   between_600_649 = 'BETWEEN_600_649',
@@ -31,6 +32,7 @@ export interface EstimateRateFormData {
   loanPurpose: LoanPurposeEnum;
   propertyType: LoanPropertyTypeEnum;
   propertyUnit: LoanPropertyUnitEnum;
+  citizenship: LoanCitizenshipEnum;
   state: string;
   ficoScore: LoanFicoScoreEnum;
   isLiquidity: boolean;

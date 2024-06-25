@@ -4,6 +4,7 @@ import { Box, TextField } from '@mui/material';
 import { Transitions } from '@/components/atoms';
 
 import { StyledTextFieldProps, StyledTextFieldStyles } from './index';
+import { useBreakpoints } from '@/hooks';
 
 export const StyledTextField: FC<StyledTextFieldProps> = ({
   sx,
@@ -14,6 +15,8 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
   disabledAutoFill = true,
   ...rest
 }) => {
+  const breakpoints = useBreakpoints();
+
   const [isClient, setIsClient] = useState<boolean>(false);
 
   useEffect(() => {
@@ -73,12 +76,12 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
             validate
           ) : undefined
         }
-        // InputLabelProps={{ shrink: true }}
         inputProps={{
           ...rest.inputProps,
           autoComplete: disabledAutoFill ? 'new-password' : '',
         }}
         onChange={onChange}
+        // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
         sx={{
           ...StyledTextFieldStyles,
           ...sx,
