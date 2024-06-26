@@ -90,6 +90,7 @@ export const OPTIONS_COMMON_YES_OR_NO: Option[] = [
   },
 ];
 
+// just for payoff amount
 export const OPTIONS_COMMON_YES_OR_NOT_SURE: Option[] = [
   {
     label: 'Yes',

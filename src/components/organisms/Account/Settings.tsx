@@ -2,6 +2,7 @@ import { FC, useMemo, useReducer, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/router';
 
 import { useBreakpoints } from '@/hooks';
 import { useMst } from '@/models/Root';
@@ -69,6 +70,7 @@ interface LinkData {
 }
 
 export const AccountSettings: FC = () => {
+  const router = useRouter();
   const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
 
