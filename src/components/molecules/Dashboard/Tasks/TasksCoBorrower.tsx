@@ -31,10 +31,10 @@ import {
 } from '@/components/atoms';
 
 import {
-  DashboardTaskCitizenshipStatus,
   DashboardTaskKey,
   HttpError,
   LoanAnswerEnum,
+  LoanCitizenshipEnum,
 } from '@/types';
 import {
   _fetchLoanTaskDetail,
@@ -49,10 +49,9 @@ export const TasksCoBorrower: FC = observer(() => {
 
   const [isCoBorrower, setIsCoBorrower] = useState<boolean>(false);
 
-  const [citizenship, setCitizenship] =
-    useState<DashboardTaskCitizenshipStatus>(
-      DashboardTaskCitizenshipStatus.default,
-    );
+  const [citizenship, setCitizenship] = useState<LoanCitizenshipEnum>(
+    LoanCitizenshipEnum.default,
+  );
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [birthDate, setBirthDate] = useState<unknown | Date | null>(null);
@@ -106,7 +105,7 @@ export const TasksCoBorrower: FC = observer(() => {
       setPhoneNumber(phoneNumber ?? '');
       setEmail(email ?? '');
 
-      setCitizenship(citizenship ?? DashboardTaskCitizenshipStatus.default);
+      setCitizenship(citizenship ?? LoanCitizenshipEnum.default);
 
       setSsn(ssn ?? '');
 
@@ -139,7 +138,7 @@ export const TasksCoBorrower: FC = observer(() => {
     if (!citizenship) {
       return false;
     }
-    if (citizenship === DashboardTaskCitizenshipStatus.foreign_national) {
+    if (citizenship === LoanCitizenshipEnum.foreign_national) {
       return baseCondition;
     }
     return baseCondition && !!ssn;
@@ -311,9 +310,7 @@ export const TasksCoBorrower: FC = observer(() => {
               <StyledFormItem gap={3} label={'Citizenship status'} sub>
                 <StyledSelectOption
                   onChange={(value) =>
-                    setCitizenship(
-                      value as string as DashboardTaskCitizenshipStatus,
-                    )
+                    setCitizenship(value as string as LoanCitizenshipEnum)
                   }
                   options={OPTIONS_COMMON_CITIZEN_TYPE}
                   value={citizenship}
@@ -332,15 +329,13 @@ export const TasksCoBorrower: FC = observer(() => {
               <Transitions
                 style={{
                   display:
-                    citizenship !==
-                    DashboardTaskCitizenshipStatus.foreign_national
+                    citizenship !== LoanCitizenshipEnum.foreign_national
                       ? 'flex'
                       : 'none',
                   width: '100%',
                 }}
               >
-                {citizenship !==
-                  DashboardTaskCitizenshipStatus.foreign_national && (
+                {citizenship !== LoanCitizenshipEnum.foreign_national && (
                   <StyledFormItem
                     gap={3}
                     label={'Social security number'}

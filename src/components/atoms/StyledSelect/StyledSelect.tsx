@@ -1,5 +1,5 @@
 import { Transitions } from '@/components/atoms';
-import { useSessionStorageState } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { FC } from 'react';
 import {
   Box,
@@ -26,6 +26,7 @@ export const StyledSelect: FC<StyledSelectProps> = ({
   ...rest
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
+  const breakpoints = useBreakpoints();
 
   return (
     <>
@@ -81,6 +82,7 @@ export const StyledSelect: FC<StyledSelectProps> = ({
             disableScrollLock: true,
           }}
           onChange={onChange}
+          // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
           value={value}
           {...rest}
         >

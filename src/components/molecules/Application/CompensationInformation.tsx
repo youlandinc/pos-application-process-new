@@ -1,11 +1,12 @@
 import { FC, useCallback, useEffect, useMemo } from 'react';
-import { Stack } from '@mui/material';
+import { Grow, Icon, Stack, Typography } from '@mui/material';
+import _uniqueId from 'lodash/uniqueId';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
-import { LoanAnswerEnum, UserType } from '@/types';
+import { AdditionalFee, FeeUnitEnum, LoanAnswerEnum, UserType } from '@/types';
 
 import {
   StyledButton,
@@ -15,6 +16,14 @@ import {
   StyledTextFieldNumber,
   Transitions,
 } from '@/components/atoms';
+
+import ICON_CLOSE from '@/svg/icon/icon_close.svg';
+
+const initialized: AdditionalFee = {
+  fieldName: '',
+  unit: FeeUnitEnum.dollar,
+  value: undefined,
+};
 
 export const CompensationInformation: FC<FormNodeBaseProps> = observer(
   ({ nextState, nextStep, backState, backStep }) => {
@@ -116,6 +125,86 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
               value={compensationInformation.processingFee}
             />
           </Stack>
+
+          <Stack gap={3}>
+            <Stack alignItems={'center'} flexDirection={'row'} gap={3}>
+              <Stack bgcolor={'#D2D6E1'} flex={1} height={2} />
+              <StyledButton
+                color={'info'}
+                onClick={() =>
+                  compensationInformation.addAdditionalFee({
+                    ...initialized,
+                    id: _uniqueId('additional_fee'),
+                  })
+                }
+                sx={{
+                  p: '0 !important',
+                  '&:hover': { backgroundColor: 'transparent' },
+                }}
+                variant={'text'}
+              >
+                + Add new fee
+              </StyledButton>
+            </Stack>
+            {compensationInformation.additionalFees.map((item, index) => (
+              <Grow
+                in={true}
+                key={item.id}
+                style={{ transformOrigin: 'top left' }}
+                timeout={index * 300}
+              >
+                <Stack gap={1.5}>
+                  <Stack
+                    alignItems={'center'}
+                    flexDirection={'row'}
+                    justifyContent={'space-between'}
+                  >
+                    <Typography variant={'subtitle1'}>
+                      Additional fee {index + 1}
+                    </Typography>
+                    <Icon
+                      component={ICON_CLOSE}
+                      onClick={() =>
+                        compensationInformation.removeAdditionalFee(index)
+                      }
+                      sx={{
+                        height: { xs: 20, lg: 24 },
+                        width: { xs: 20, lg: 24 },
+                        cursor: 'pointer',
+                      }}
+                    />
+                  </Stack>
+                  <Stack flexDirection={{ xs: 'column', lg: 'row' }} gap={3}>
+                    <StyledTextField
+                      label={'Fee name'}
+                      onChange={(e) =>
+                        compensationInformation.changeFeeFieldValue(
+                          index,
+                          'fieldName',
+                          e.target.value,
+                        )
+                      }
+                      placeholder={'Fee name'}
+                      value={item.fieldName}
+                    />
+                    <StyledTextFieldNumber
+                      label={'Dollar amount'}
+                      onValueChange={({ floatValue }) =>
+                        compensationInformation.changeFeeFieldValue(
+                          index,
+                          'value',
+                          floatValue,
+                        )
+                      }
+                      placeholder={'Dollar amount'}
+                      prefix={'$'}
+                      value={item.value}
+                    />
+                  </Stack>
+                </Stack>
+              </Grow>
+            ))}
+          </Stack>
         </StyledFormItem>
 
         <StyledFormItem
@@ -180,7 +269,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
           </StyledButton>
           <StyledButton
             color={'primary'}
-            disabled={nextState}
+            disabled={nextState || !compensationInformation.isListValidate}
             id={'application-compensation-information-next-button'}
             loading={nextState}
             onClick={nextStep}
