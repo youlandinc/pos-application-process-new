@@ -269,7 +269,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
                             onClick={async () => {
                               await router.push({
                                 pathname: '/account',
-                                query: { customLink: true },
+                                query: { tab: 2 },
                               });
                             }}
                             sx={{ cursor: 'pointer' }}

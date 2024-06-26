@@ -126,9 +126,7 @@ export const ACH: FC = observer(() => {
       });
       await router.push({
         pathname: '/account',
-        query: {
-          qualification: true,
-        },
+        query: { tab: 1 },
       });
     }
   });
@@ -236,9 +234,7 @@ export const ACH: FC = observer(() => {
       setSaveLoading(false);
       await router.push({
         pathname: '/account',
-        query: {
-          qualification: true,
-        },
+        query: { tab: 1 },
       });
     } catch (err) {
       const { header, message, variant } = err as HttpError;
@@ -406,12 +402,10 @@ export const ACH: FC = observer(() => {
         >
           <StyledButton
             color={'info'}
-            onClick={() =>
-              router.push({
+            onClick={async () =>
+              await router.push({
                 pathname: '/account',
-                query: {
-                  qualification: true,
-                },
+                query: { tab: 1 },
               })
             }
             sx={{

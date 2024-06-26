@@ -88,9 +88,7 @@ export const Agreement: FC = observer(() => {
       });
       await router.push({
         pathname: '/account',
-        query: {
-          qualification: true,
-        },
+        query: { tab: 1 },
       });
     }
   });
@@ -201,9 +199,7 @@ export const Agreement: FC = observer(() => {
       await userpool.refreshToken(userpool.getLastAuthUserId());
       await router.push({
         pathname: '/account',
-        query: {
-          qualification: true,
-        },
+        query: { tab: 1 },
       });
     } catch (err) {
       const { header, message, variant } = err as HttpError;
@@ -334,9 +330,7 @@ export const Agreement: FC = observer(() => {
             onClick={() =>
               router.push({
                 pathname: '/account',
-                query: {
-                  qualification: true,
-                },
+                query: { tab: 1 },
               })
             }
             sx={{
