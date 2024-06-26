@@ -178,7 +178,6 @@ export const SpecificalPaymentPage = () => {
   const onButtonClick = async () => {
     if (paymentStatus === AppraisalTaskPaymentStatus.fail) {
       setPaymentStatus(AppraisalTaskPaymentStatus.undone);
-      await fetchData();
       return;
     }
     return router.reload();
