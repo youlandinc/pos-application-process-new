@@ -128,6 +128,33 @@ export default function MyApp(props: MyAppProps) {
         </ThemeProvider>
       );
     }
+    if (router.pathname.includes('payment')) {
+      return (
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <LocalizationProvider apterLocale={en} dateAdapter={AdapterDateFns}>
+            <SnackbarProvider
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: ['sm', 'xs'].includes(breakpoints)
+                  ? 'center'
+                  : 'right',
+              }}
+              Components={{
+                success: StyledNotification,
+                error: StyledNotification,
+                default: StyledNotification,
+                info: StyledNotification,
+                warning: StyledNotification,
+              }}
+              maxSnack={3}
+            >
+              <Component {...pageProps} />
+            </SnackbarProvider>
+          </LocalizationProvider>
+        </ThemeProvider>
+      );
+    }
     if (loading) {
       return (
         <div
