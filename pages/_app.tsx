@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 
 import Head from 'next/head';
 import { AppProps } from 'next/app';
-import { Router } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import Script from 'next/script';
 
 import { useAsync } from 'react-use';
@@ -54,8 +54,12 @@ export default function MyApp(props: MyAppProps) {
   const { enqueueSnackbar } = useSnackbar();
   const { setItem, saasState } = useSessionStorageState('tenantConfig');
   const breakpoints = useBreakpoints();
+  const router = useRouter();
 
   const { loading } = useAsync(async () => {
+    if (router.pathname.includes('payment')) {
+      return;
+    }
     return await _fetchSaasConfig()
       .then(({ data }) => {
         setItem(data);
