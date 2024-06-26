@@ -20,6 +20,7 @@ import {
   SpecificalPaymentAdditional,
   SpecificalPaymentAppraisalStatus,
   SpecificalPaymentInfo,
+  SpecificalPaymentLogo,
   SpecificalPaymentStatus,
 } from './components';
 
@@ -31,7 +32,6 @@ import {
   HttpError,
 } from '@/types';
 import { _creatSpecifyPayment, _updateSpecifyContactInfo } from '@/requests';
-import { SpecificalPaymentLogo } from '@/views/Saas/SpecificalPayment/components/SpecificalPaymentLogo';
 
 const URL_HASH = {
   0: false,
