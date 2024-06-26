@@ -1,11 +1,4 @@
-import React, {
-  ChangeEvent,
-  DragEvent,
-  FC,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
+import React, { DragEvent, FC, useCallback, useRef, useState } from 'react';
 import { Icon, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
@@ -262,6 +255,7 @@ export const PaymentLinkLogo: FC<{ imgSrc: string }> = ({
               height={{ xs: 'auto', md: '100%' }}
               htmlFor={'file-upload'}
               p={'24px 48px'}
+              sx={{ cursor: 'pointer' }}
               width={'100%'}
               {...dragEvents}
             >

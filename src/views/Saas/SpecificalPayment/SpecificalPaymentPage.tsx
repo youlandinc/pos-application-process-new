@@ -10,7 +10,6 @@ import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
 import {
   StyledButton,
   StyledCheckbox,
-  StyledHeaderLogo,
   StyledLoading,
   StyledPaymentCard,
   StyledTextField,
@@ -32,6 +31,7 @@ import {
   HttpError,
 } from '@/types';
 import { _creatSpecifyPayment, _updateSpecifyContactInfo } from '@/requests';
+import { SpecificalPaymentLogo } from '@/views/Saas/SpecificalPayment/components/SpecificalPaymentLogo';
 
 const URL_HASH = {
   0: false,
@@ -67,6 +67,11 @@ export const SpecificalPaymentPage = () => {
   const [loanId, setLoanId] = useState('');
   const [insideIsAdditional, setInsideIsAdditional] = useState(false);
   const [insideIsNeedToFill, setInsideIsNeedToFill] = useState(false);
+
+  const [logo, setLogo] = useState('');
+  const [organizationName, setOrganizationName] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactPhoneNumber, setContactPhoneNumber] = useState('');
 
   const [paymentStatus, setPaymentStatus] =
     useState<AppraisalTaskPaymentStatus>(AppraisalTaskPaymentStatus.undone);
@@ -125,8 +130,18 @@ export const SpecificalPaymentPage = () => {
           email,
           phoneNumber,
           instructions,
+
+          logo,
+          organizationName,
+          contactEmail,
+          contactPhoneNumber,
         },
       } = await _creatSpecifyPayment(orderNo, source);
+
+      setLogo(logo ?? '');
+      setOrganizationName(organizationName ?? '');
+      setContactEmail(contactEmail ?? '');
+      setContactPhoneNumber(contactPhoneNumber ?? '');
 
       setClientSecret(clientSecret);
       setProductName(productName);
@@ -267,12 +282,17 @@ export const SpecificalPaymentPage = () => {
             }}
             width={'100%'}
           >
-            <StyledHeaderLogo />
+            <SpecificalPaymentLogo
+              logoUrl={logo}
+              organizationName={organizationName}
+            />
           </Stack>
 
           {paymentStatus !== AppraisalTaskPaymentStatus.undone ? (
             appraisalStatus === AppraisalStatusEnum.not_started ? (
               <SpecificalPaymentStatus
+                contactEmail={contactEmail}
+                contactPhoneNumber={contactPhoneNumber}
                 onButtonClick={onButtonClick}
                 paymentStatus={paymentStatus}
               />
