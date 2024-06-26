@@ -162,10 +162,10 @@ export const AccountSettings: FC = () => {
     }
   }, [userType]);
 
-  const startIndex = useMemo(() => {
+  const startIndex = () => {
     const { tab } = POSGetParamsFromUrl(location.href);
     return tab ? parseInt(tab) : 0;
-  }, []);
+  };
 
   return loading ? (
     <Stack
@@ -199,7 +199,7 @@ export const AccountSettings: FC = () => {
             cb={async (index) => {
               await router.push({ query: { tab: index } });
             }}
-            startIndex={startIndex}
+            startIndex={startIndex()}
             sx={{
               '& .MuiTabs-flexContainer .MuiButtonBase-root': {
                 p: 0,
