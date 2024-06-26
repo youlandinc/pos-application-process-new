@@ -47,9 +47,7 @@ export const License: FC = () => {
       });
       await router.push({
         pathname: '/account',
-        query: {
-          qualification: true,
-        },
+        query: { tab: 1 },
       });
     }
   });
@@ -114,9 +112,7 @@ export const License: FC = () => {
       await _updateRoleTaskDetail(params);
       await router.push({
         pathname: '/account/',
-        query: {
-          qualification: true,
-        },
+        query: { tab: 1 },
       });
     } catch (err) {
       const { header, message, variant } = err as HttpError;
@@ -191,9 +187,7 @@ export const License: FC = () => {
             onClick={() =>
               router.push({
                 pathname: '/account',
-                query: {
-                  qualification: true,
-                },
+                query: { tab: 1 },
               })
             }
             sx={{

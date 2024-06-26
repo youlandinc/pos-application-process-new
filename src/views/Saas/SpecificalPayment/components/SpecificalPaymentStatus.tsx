@@ -2,7 +2,6 @@ import { FC, useMemo } from 'react';
 import { Icon, Stack, Typography } from '@mui/material';
 
 import { POSFormatUSPhoneToText } from '@/utils';
-import { useSessionStorageState } from '@/hooks';
 
 import { StyledButton } from '@/components/atoms';
 
@@ -14,9 +13,9 @@ import { AppraisalTaskPaymentStatus } from '@/types';
 export const SpecificalPaymentStatus: FC<{
   paymentStatus: AppraisalTaskPaymentStatus;
   onButtonClick: () => void;
-}> = ({ paymentStatus, onButtonClick }) => {
-  const { saasState } = useSessionStorageState('tenantConfig');
-
+  contactPhoneNumber?: string;
+  contactEmail: string;
+}> = ({ paymentStatus, onButtonClick, contactPhoneNumber, contactEmail }) => {
   const computedObj = useMemo(() => {
     switch (paymentStatus) {
       case AppraisalTaskPaymentStatus.complete: {
@@ -36,23 +35,30 @@ export const SpecificalPaymentStatus: FC<{
             <Typography color={'text.secondary'}>
               If you have any questions or concerns, email us at{' '}
               <a
-                href={`mailto:${saasState?.email || 'borrow@youland.com'}`}
+                href={`mailto:${contactEmail}`}
                 style={{
-                  color: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+                  color: 'hsla(222,42%,55%,1)',
                 }}
               >
-                {saasState?.email || 'borrow@youland.com'}
-              </a>{' '}
-              or call toll-free at{' '}
-              <a
-                href={`tel:${saasState?.phone || '1-833-968-5263'}`}
-                style={{
-                  color: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
-                }}
-              >
-                {POSFormatUSPhoneToText(saasState?.phone || '1-833-968-5263')}
+                {contactEmail}
               </a>
-              .
+              {contactPhoneNumber ? (
+                <>
+                  {' '}
+                  or call toll-free at{' '}
+                  <a
+                    href={`tel:${contactPhoneNumber}`}
+                    style={{
+                      color: 'hsla(222,42%,55%,1)',
+                    }}
+                  >
+                    {POSFormatUSPhoneToText(contactPhoneNumber)}
+                  </a>
+                  .
+                </>
+              ) : (
+                <>.</>
+              )}
             </Typography>
           ),
           footer: (
@@ -81,25 +87,32 @@ export const SpecificalPaymentStatus: FC<{
           contact: (
             <Typography color={'text.secondary'}>
               If money was debited from your account and the transaction is
-              still pending after a hour, you can call us toll-free at{' '}
+              still pending after a hour, you can email us at{' '}
               <a
-                href={`tel:${saasState?.phone || '1-833-968-5263'}`}
+                href={`mailto:${contactEmail}`}
                 style={{
-                  color: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+                  color: 'hsla(222,42%,55%,1)',
                 }}
               >
-                {POSFormatUSPhoneToText(saasState?.phone || '1-833-968-5263')}
-              </a>{' '}
-              or email us at{' '}
-              <a
-                href={`mailto:${saasState?.email || 'borrow@youland.com'}`}
-                style={{
-                  color: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
-                }}
-              >
-                {saasState?.email || 'borrow@youland.com'}
+                {contactEmail}
               </a>
-              . We can help you with the refund.
+              {contactPhoneNumber ? (
+                <>
+                  {' '}
+                  or call toll-free at{' '}
+                  <a
+                    href={`tel:${contactPhoneNumber}`}
+                    style={{
+                      color: 'hsla(222,42%,55%,1)',
+                    }}
+                  >
+                    {POSFormatUSPhoneToText(contactPhoneNumber)}
+                  </a>
+                  .
+                </>
+              ) : (
+                <>.</>
+              )}
             </Typography>
           ),
           footer: null,
@@ -147,23 +160,30 @@ export const SpecificalPaymentStatus: FC<{
             <Typography color={'text.secondary'}>
               Should you require additional assistance, email us at{' '}
               <a
-                href={`mailto:${saasState?.email || 'borrow@youland.com'}`}
+                href={`mailto:${contactEmail}`}
                 style={{
-                  color: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+                  color: 'hsla(222,42%,55%,1)',
                 }}
               >
-                {saasState?.email || 'borrow@youland.com'}
-              </a>{' '}
-              or call toll-free at{' '}
-              <a
-                href={`tel:${saasState?.phone || '1-833-968-5263'}`}
-                style={{
-                  color: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
-                }}
-              >
-                {POSFormatUSPhoneToText(saasState?.phone || '1-833-968-5263')}
+                {contactEmail}
               </a>
-              .
+              {contactPhoneNumber ? (
+                <>
+                  {' '}
+                  or call toll-free at{' '}
+                  <a
+                    href={`tel:${contactPhoneNumber}`}
+                    style={{
+                      color: 'hsla(222,42%,55%,1)',
+                    }}
+                  >
+                    {POSFormatUSPhoneToText(contactPhoneNumber)}
+                  </a>
+                  .
+                </>
+              ) : (
+                <>.</>
+              )}
             </Typography>
           ),
           footer: (
@@ -178,13 +198,7 @@ export const SpecificalPaymentStatus: FC<{
         };
       }
     }
-  }, [
-    onButtonClick,
-    paymentStatus,
-    saasState?.email,
-    saasState?.phone,
-    saasState?.posSettings?.h,
-  ]);
+  }, [contactEmail, contactPhoneNumber, onButtonClick, paymentStatus]);
 
   return (
     <Stack gap={3} margin={'0 auto'} maxWidth={900} p={3}>

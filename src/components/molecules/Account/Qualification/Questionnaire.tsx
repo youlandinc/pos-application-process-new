@@ -100,9 +100,7 @@ export const Questionnaire: FC = observer(() => {
       });
       await router.push({
         pathname: '/account',
-        query: {
-          qualification: true,
-        },
+        query: { tab: 1 },
       });
     }
   });
@@ -182,9 +180,7 @@ export const Questionnaire: FC = observer(() => {
       await _updateRoleTaskDetail(params);
       await router.push({
         pathname: '/account',
-        query: {
-          qualification: true,
-        },
+        query: { tab: 1 },
       });
     } catch (err) {
       const { header, message, variant } = err as HttpError;
@@ -477,9 +473,7 @@ export const Questionnaire: FC = observer(() => {
             onClick={() =>
               router.push({
                 pathname: '/account',
-                query: {
-                  qualification: true,
-                },
+                query: { tab: 1 },
               })
             }
             sx={{

@@ -47,9 +47,7 @@ export const W9Form: FC = () => {
       });
       await router.push({
         pathname: '/account',
-        query: {
-          qualification: true,
-        },
+        query: { tab: 1 },
       });
     }
   });
@@ -113,10 +111,8 @@ export const W9Form: FC = () => {
     try {
       await _updateRoleTaskDetail(params);
       await router.push({
-        pathname: '/account/',
-        query: {
-          qualification: true,
-        },
+        pathname: '/account',
+        query: { tab: 1 },
       });
     } catch (err) {
       const { header, message, variant } = err as HttpError;
@@ -190,9 +186,7 @@ export const W9Form: FC = () => {
             onClick={() =>
               router.push({
                 pathname: '/account',
-                query: {
-                  qualification: true,
-                },
+                query: { tab: 1 },
               })
             }
             sx={{

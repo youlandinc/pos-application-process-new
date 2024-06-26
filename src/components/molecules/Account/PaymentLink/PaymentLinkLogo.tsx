@@ -1,16 +1,17 @@
-import { ChangeEvent, DragEvent, FC, useCallback, useState } from 'react';
+import React, { DragEvent, FC, useCallback, useRef, useState } from 'react';
 import { Icon, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { useSessionStorageState } from '@/hooks';
+import { useSessionStorageState, useSwitch } from '@/hooks';
 
-import { StyledButton, StyledLoading } from '@/components/atoms';
+import { StyledButton, StyledDialog, StyledLoading } from '@/components/atoms';
 
 import { HttpError } from '@/types';
 import { _updatePaymentLinkLogo } from '@/requests';
 
 import UPLOAD_SVG from '@/svg/upload/upload.svg';
+import { Cropper, ReactCropperElement } from 'react-cropper';
 
 export const PaymentLinkLogo: FC<{ imgSrc: string }> = ({
   imgSrc = '/images/logo/logo_blue.svg',
@@ -18,7 +19,18 @@ export const PaymentLinkLogo: FC<{ imgSrc: string }> = ({
   const { enqueueSnackbar } = useSnackbar();
   const { saasState } = useSessionStorageState('tenantConfig');
 
+  const cropperRef = useRef<ReactCropperElement>(null);
+  const uploadTrigger = useRef<HTMLInputElement>(null);
+
+  const [fileUrl, setFileUrl] = useState('');
   const [innerImgSrc, setInnerImgSrc] = useState(imgSrc);
+  const [fileName, setFileName] = useState('');
+
+  const {
+    open: clipOpen,
+    visible: clipVisible,
+    close: clipClose,
+  } = useSwitch(false);
 
   const [isDragging, setIsDragging] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
@@ -66,20 +78,31 @@ export const PaymentLinkLogo: FC<{ imgSrc: string }> = ({
         return;
       }
       stopDefaults(e);
+      if (uploadTrigger.current!.value) {
+        uploadTrigger.current!.value = '';
+      }
       if (e.dataTransfer.files && validatorFileSize(e.dataTransfer.files)) {
-        await handleUpload(e.dataTransfer.files);
+        await handleChange(e.dataTransfer.files);
       }
     },
   };
 
-  const handleUpload = useCallback(
-    async (files: FileList) => {
+  const handleUpload = useCallback(() => {
+    if (!cropperRef.current) {
+      return;
+    }
+
+    const canvas = cropperRef.current.cropper;
+    if (!canvas) {
+      return;
+    }
+
+    canvas.getCroppedCanvas().toBlob(async (blob) => {
       setUploadLoading(true);
       setIsDragging(false);
-
       try {
         const formData = new FormData();
-        formData.append('file', files[0], files[0].name);
+        formData.append('file', blob as File, fileName);
         const { data } = await _updatePaymentLinkLogo(formData);
         setInnerImgSrc(data.url);
       } catch (err) {
@@ -92,20 +115,42 @@ export const PaymentLinkLogo: FC<{ imgSrc: string }> = ({
         });
       } finally {
         setUploadLoading(false);
+        clipClose();
       }
-    },
-    [enqueueSnackbar],
-  );
+    });
+  }, [clipClose, enqueueSnackbar, fileName]);
 
   const handleChange = useCallback(
-    async (event: ChangeEvent<HTMLInputElement>) => {
-      event.preventDefault();
-      if (event.target.files && validatorFileSize(event.target.files)) {
-        await handleUpload(event.target.files);
-        event.target.value = '';
+    async (files: FileList | null) => {
+      if (!files?.[0]) {
+        return;
       }
+      const file = files?.[0];
+      if (file.size > 1024 * 1024 * 10) {
+        enqueueSnackbar('Image size too large', {
+          variant: 'warning',
+        });
+        return;
+      }
+      setFileName(file.name);
+      const url = URL.createObjectURL(file);
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      let blob = new Blob(undefined);
+      reader.onload = (e1) => {
+        const result = e1.target?.result as ArrayBuffer;
+        if (typeof result === 'object') {
+          blob = new Blob([result]);
+        } else {
+          blob = result;
+        }
+        const readerImg = new FileReader();
+        readerImg.readAsDataURL(blob);
+        setFileUrl(url);
+        clipOpen();
+      };
     },
-    [handleUpload, validatorFileSize],
+    [clipOpen, enqueueSnackbar],
   );
 
   return (
@@ -179,7 +224,12 @@ export const PaymentLinkLogo: FC<{ imgSrc: string }> = ({
           accept={'image/*,image/svg+xml'}
           hidden
           id="file-upload"
-          onChange={handleChange}
+          onChange={async (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            await handleChange(e.target.files);
+          }}
+          ref={uploadTrigger}
           type="file"
         />
         <StyledButton
@@ -205,6 +255,7 @@ export const PaymentLinkLogo: FC<{ imgSrc: string }> = ({
               height={{ xs: 'auto', md: '100%' }}
               htmlFor={'file-upload'}
               p={'24px 48px'}
+              sx={{ cursor: 'pointer' }}
               width={'100%'}
               {...dragEvents}
             >
@@ -224,6 +275,58 @@ export const PaymentLinkLogo: FC<{ imgSrc: string }> = ({
           )}
         </StyledButton>
       </Stack>
+
+      <StyledDialog
+        content={
+          <Stack height={400} position={'relative'} width={'100%'}>
+            <Cropper
+              autoCropArea={1}
+              background={true}
+              center
+              dragMode="move"
+              guides={true}
+              preview=".uploadCrop"
+              ref={cropperRef}
+              rotatable={true}
+              src={fileUrl || ''}
+              style={{ width: '100%', position: 'absolute', height: 400 }}
+              viewMode={1}
+              zoomable={true}
+            />
+          </Stack>
+        }
+        footer={
+          <Stack flexDirection={'row'} gap={1.5} pt={3}>
+            <StyledButton
+              color={'info'}
+              onClick={() => {
+                if (uploadTrigger.current!.value) {
+                  uploadTrigger.current!.value = '';
+                }
+                clipClose();
+                setFileUrl('');
+              }}
+              size={'small'}
+              variant={'outlined'}
+            >
+              Cancel
+            </StyledButton>
+            <StyledButton
+              color={'primary'}
+              disabled={uploadLoading}
+              loading={uploadLoading}
+              onClick={handleUpload}
+              size={'small'}
+              sx={{ width: 136 }}
+              variant={'contained'}
+            >
+              Save & Confirm
+            </StyledButton>
+          </Stack>
+        }
+        header={''}
+        open={clipVisible}
+      />
     </Stack>
   );
 };
