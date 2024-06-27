@@ -73,75 +73,90 @@ export const Tasks: FC = () => {
           Your tasks checklist
         </Typography>
 
-        <Stack
-          border={'1px solid #D2D6E1'}
-          borderRadius={2}
-          p={{ xs: '16px 16px 8px 16px', lg: '24px 24px 12px 24px' }}
-          width={'100%'}
-        >
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 16, lg: 18 }}
-            mb={{ xs: 1, lg: 1.5 }}
-            variant={'h7'}
-          >
-            Loan information
-          </Typography>
-
+        {(POSNotUndefined(taskHash?.[DashboardTaskKey.payoff_amount]) ||
+          POSNotUndefined(taskHash?.[DashboardTaskKey.rehab_info])) && (
           <Stack
-            alignItems={'center'}
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            onClick={() =>
-              router.push({
-                pathname: '/dashboard/tasks/payoff-amount',
-                query: { loanId: POSGetParamsFromUrl(location.href).loanId },
-              })
-            }
-            px={{ xs: 2, lg: 3 }}
-            py={{ xs: 1, lg: 1.5 }}
-            sx={{
-              '&:hover': {
-                cursor: 'pointer',
-                borderRadius: 1,
-                bgcolor: 'info.darker',
-              },
-            }}
+            border={'1px solid #D2D6E1'}
+            borderRadius={2}
+            p={{ xs: '16px 16px 8px 16px', lg: '24px 24px 12px 24px' }}
             width={'100%'}
           >
-            <Typography fontSize={{ xs: 12, lg: 16 }}>Payoff amount</Typography>
-            {taskHash?.[DashboardTaskKey.payoff_amount] && (
-              <CheckCircle color={'success'} />
-            )}
-          </Stack>
+            <Typography
+              color={'text.primary'}
+              fontSize={{ xs: 16, lg: 18 }}
+              mb={{ xs: 1, lg: 1.5 }}
+              variant={'h7'}
+            >
+              Loan information
+            </Typography>
 
-          <Stack
-            alignItems={'center'}
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            onClick={() =>
-              router.push({
-                pathname: '/dashboard/tasks/rehab-info',
-                query: { loanId: POSGetParamsFromUrl(location.href).loanId },
-              })
-            }
-            px={{ xs: 2, lg: 3 }}
-            py={{ xs: 1, lg: 1.5 }}
-            sx={{
-              '&:hover': {
-                cursor: 'pointer',
-                borderRadius: 1,
-                bgcolor: 'info.darker',
-              },
-            }}
-            width={'100%'}
-          >
-            <Typography fontSize={{ xs: 12, lg: 16 }}>Rehab info</Typography>
-            {taskHash?.[DashboardTaskKey.rehab_info] && (
-              <CheckCircle color={'success'} />
+            {/*{POSNotUndefined(taskHash?.[DashboardTaskKey.payoff_amount]) && (*/}
+            {/*  <Stack*/}
+            {/*    alignItems={'center'}*/}
+            {/*    flexDirection={'row'}*/}
+            {/*    justifyContent={'space-between'}*/}
+            {/*    onClick={() =>*/}
+            {/*      router.push({*/}
+            {/*        pathname: '/dashboard/tasks/payoff-amount',*/}
+            {/*        query: {*/}
+            {/*          loanId: POSGetParamsFromUrl(location.href).loanId,*/}
+            {/*        },*/}
+            {/*      })*/}
+            {/*    }*/}
+            {/*    px={{ xs: 2, lg: 3 }}*/}
+            {/*    py={{ xs: 1, lg: 1.5 }}*/}
+            {/*    sx={{*/}
+            {/*      '&:hover': {*/}
+            {/*        cursor: 'pointer',*/}
+            {/*        borderRadius: 1,*/}
+            {/*        bgcolor: 'info.darker',*/}
+            {/*      },*/}
+            {/*    }}*/}
+            {/*    width={'100%'}*/}
+            {/*  >*/}
+            {/*    <Typography fontSize={{ xs: 12, lg: 16 }}>*/}
+            {/*      Payoff amount*/}
+            {/*    </Typography>*/}
+            {/*    {taskHash?.[DashboardTaskKey.payoff_amount] && (*/}
+            {/*      <CheckCircle color={'success'} />*/}
+            {/*    )}*/}
+            {/*  </Stack>*/}
+            {/*)}*/}
+
+            {POSNotUndefined(taskHash?.[DashboardTaskKey.rehab_info]) && (
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks/rehab-info',
+                    query: {
+                      loanId: POSGetParamsFromUrl(location.href).loanId,
+                    },
+                  })
+                }
+                px={{ xs: 2, lg: 3 }}
+                py={{ xs: 1, lg: 1.5 }}
+                sx={{
+                  '&:hover': {
+                    cursor: 'pointer',
+                    borderRadius: 1,
+                    bgcolor: 'info.darker',
+                  },
+                }}
+                width={'100%'}
+              >
+                <Typography fontSize={{ xs: 12, lg: 16 }}>
+                  Rehab info
+                </Typography>
+                {taskHash?.[DashboardTaskKey.rehab_info] && (
+                  <CheckCircle color={'success'} />
+                )}
+              </Stack>
             )}
           </Stack>
-        </Stack>
+        )}
 
         <Stack
           border={'1px solid #D2D6E1'}
@@ -362,50 +377,51 @@ export const Tasks: FC = () => {
           </Stack>
         )}
 
-        <Stack
-          border={'1px solid #D2D6E1'}
-          borderRadius={2}
-          p={{ xs: '16px 16px 8px 16px', lg: '24px 24px 12px 24px' }}
-          width={'100%'}
-        >
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 16, lg: 18 }}
-            mb={{ xs: 1, lg: 1.5 }}
-            variant={'h7'}
-          >
-            Broker
-          </Typography>
-
-          <Stack
-            alignItems={'center'}
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            onClick={() =>
-              router.push({
-                pathname: '/dashboard/tasks/referring-broker',
-                query: { loanId: POSGetParamsFromUrl(location.href).loanId },
-              })
-            }
-            px={{ xs: 2, lg: 3 }}
-            py={{ xs: 1, lg: 1.5 }}
-            sx={{
-              '&:hover': {
-                cursor: 'pointer',
-                borderRadius: 1,
-                bgcolor: 'info.darker',
-              },
-            }}
-            width={'100%'}
-          >
-            <Typography fontSize={{ xs: 12, lg: 16 }}>
-              Referring broker
-            </Typography>
-            {taskHash?.[DashboardTaskKey.referring_broker] && (
-              <CheckCircle color={'success'} />
-            )}
-          </Stack>
-        </Stack>
+        {/*  {POSNotUndefined(taskHash?.[DashboardTaskKey.referring_broker]) && (*/}
+        {/*    <Stack*/}
+        {/*      border={'1px solid #D2D6E1'}*/}
+        {/*      borderRadius={2}*/}
+        {/*      p={{ xs: '16px 16px 8px 16px', lg: '24px 24px 12px 24px' }}*/}
+        {/*      width={'100%'}*/}
+        {/*    >*/}
+        {/*      <Typography*/}
+        {/*        color={'text.primary'}*/}
+        {/*        fontSize={{ xs: 16, lg: 18 }}*/}
+        {/*        mb={{ xs: 1, lg: 1.5 }}*/}
+        {/*        variant={'h7'}*/}
+        {/*      >*/}
+        {/*        Broker*/}
+        {/*      </Typography>*/}
+        {/*      <Stack*/}
+        {/*        alignItems={'center'}*/}
+        {/*        flexDirection={'row'}*/}
+        {/*        justifyContent={'space-between'}*/}
+        {/*        onClick={() =>*/}
+        {/*          router.push({*/}
+        {/*            pathname: '/dashboard/tasks/referring-broker',*/}
+        {/*            query: { loanId: POSGetParamsFromUrl(location.href).loanId },*/}
+        {/*          })*/}
+        {/*        }*/}
+        {/*        px={{ xs: 2, lg: 3 }}*/}
+        {/*        py={{ xs: 1, lg: 1.5 }}*/}
+        {/*        sx={{*/}
+        {/*          '&:hover': {*/}
+        {/*            cursor: 'pointer',*/}
+        {/*            borderRadius: 1,*/}
+        {/*            bgcolor: 'info.darker',*/}
+        {/*          },*/}
+        {/*        }}*/}
+        {/*        width={'100%'}*/}
+        {/*      >*/}
+        {/*        <Typography fontSize={{ xs: 12, lg: 16 }}>*/}
+        {/*          Referring broker*/}
+        {/*        </Typography>*/}
+        {/*        {taskHash?.[DashboardTaskKey.referring_broker] && (*/}
+        {/*          <CheckCircle color={'success'} />*/}
+        {/*        )}*/}
+        {/*      </Stack>*/}
+        {/*    </Stack>*/}
+        {/*  )}*/}
       </Stack>
     </Fade>
   );

@@ -1,6 +1,11 @@
 import { FC, useMemo, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
+
+import { POSGetParamsFromUrl } from '@/utils';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 import {
   StyledButton,
@@ -8,22 +13,80 @@ import {
   StyledTextFieldNumber,
 } from '@/components/atoms';
 
+import { DashboardTaskKey, HttpError } from '@/types';
+import {
+  _fetchLoanTaskDetail,
+  _updateLoanTaskDetail,
+} from '@/requests/dashboard';
+
 export const TasksRehabInfo: FC = () => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [loading, setLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
 
   const [arv, setArv] = useState<number | undefined>();
   const [square, setSquare] = useState<number | undefined>();
 
   const isFormDataValid = useMemo(() => {
-    return true;
-  }, []);
+    return !!arv && !!square;
+  }, [arv, square]);
 
   const handleSave = async () => {
-    console.log(123);
+    const postData = {
+      loanId: POSGetParamsFromUrl(location.href).loanId,
+      taskKey: DashboardTaskKey.rehab_info,
+      data: {
+        arv,
+        square,
+      },
+    };
+    setSaveLoading(true);
+    try {
+      await _updateLoanTaskDetail(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { loanId: router.query.loanId },
+      });
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
   };
+
+  const { loading } = useAsync(async () => {
+    const { loanId } = POSGetParamsFromUrl(location.href);
+    if (!loanId) {
+      return;
+    }
+    try {
+      const {
+        data: {
+          data: { arv, square },
+        },
+      } = await _fetchLoanTaskDetail({
+        loanId,
+        taskKey: DashboardTaskKey.rehab_info,
+      });
+      setArv(arv || undefined);
+      setSquare(square || undefined);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    }
+  }, []);
 
   return loading ? (
     <Stack

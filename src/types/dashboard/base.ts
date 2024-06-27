@@ -13,9 +13,9 @@ export enum DashboardTaskKey {
   //
   rehab_info = 'REHAB_INFO',
   //
-  referring_broker = 'REFERRING_BROKER',
-  //
   payoff_amount = 'PAYOFF_AMOUNT',
+  //
+  referring_broker = 'REFERRING_BROKER',
 }
 
 export interface DashboardTasksResponse {
