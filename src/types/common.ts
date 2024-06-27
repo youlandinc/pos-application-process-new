@@ -25,6 +25,7 @@ export enum PipelineLoanStageEnum {
   //scenario = submitted
   scenario = 'SCENARIO',
   initial_approval = 'INITIAL_APPROVAL',
+  pre_approved = 'PRE_APPROVED',
   preparing_docs = 'PREPARING_DOCS',
   docs_out = 'DOCS_OUT',
   funded = 'FUNDED',

@@ -31,6 +31,7 @@ import {
 import { StyledButton, StyledDialog, StyledFormItem } from '@/components/atoms';
 
 import {
+  AdditionalFee,
   HttpError,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
@@ -273,6 +274,13 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 content={POSFormatDollar(data?.processingFee)}
                 title={'Broker processing fee'}
               />
+              {(data?.additionalFees as AdditionalFee[])?.map((fee, index) => (
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(fee.value)}
+                  key={`broker_additional_fee_${index}`}
+                  title={fee.fieldName}
+                />
+              ))}
             </Stack>
           );
         case UserType.LOAN_OFFICER:
@@ -302,6 +310,13 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 content={POSFormatDollar(data?.processingFee)}
                 title={'Loan officer processing fee'}
               />
+              {(data?.additionalFees as AdditionalFee[])?.map((fee, index) => (
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(fee.value)}
+                  key={`officer_additional_fee_${index}`}
+                  title={fee.fieldName}
+                />
+              ))}
             </Stack>
           );
         case UserType.REAL_ESTATE_AGENT:
@@ -322,12 +337,20 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 content={POSFormatDollar(data?.processingFee)}
                 title={'Referral fee'}
               />
+              {(data?.additionalFees as AdditionalFee[])?.map((fee, index) => (
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(fee.value)}
+                  key={`agent_additional_fee_${index}`}
+                  title={fee.fieldName}
+                />
+              ))}
             </Stack>
           );
         default:
           return null;
       }
     }, [
+      data?.additionalFees,
       data?.compensationFee,
       data?.originationFee,
       data?.originationPoints,

@@ -21,6 +21,11 @@ export const OPTIONS_LOAN_STAGE: Option[] = [
     label: 'Initial approval',
   },
   {
+    key: PipelineLoanStageEnum.pre_approved,
+    value: PipelineLoanStageEnum.pre_approved,
+    label: 'Initial approval',
+  },
+  {
     key: PipelineLoanStageEnum.preparing_docs,
     value: PipelineLoanStageEnum.preparing_docs,
     label: 'Preparing docs',

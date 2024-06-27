@@ -23,6 +23,7 @@ import { _resubmitLoan } from '@/requests/dashboard';
 const hash = {
   [PipelineLoanStageEnum.scenario]: 0,
   [PipelineLoanStageEnum.initial_approval]: 1,
+  [PipelineLoanStageEnum.pre_approved]: 1,
   [PipelineLoanStageEnum.preparing_docs]: 2,
   [PipelineLoanStageEnum.docs_out]: 3,
   [PipelineLoanStageEnum.funded]: 4,
@@ -38,6 +39,7 @@ interface baseData {
 interface ILoanStatusDetails {
   [PipelineLoanStageEnum.scenario]: baseData | null;
   [PipelineLoanStageEnum.initial_approval]: baseData | null;
+  [PipelineLoanStageEnum.pre_approved]: baseData | null;
   [PipelineLoanStageEnum.preparing_docs]: baseData | null;
   [PipelineLoanStageEnum.docs_out]: baseData | null;
   [PipelineLoanStageEnum.funded]: baseData | null;
@@ -115,6 +117,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
           ];
         case PipelineLoanStageEnum.scenario:
         case PipelineLoanStageEnum.initial_approval:
+        case PipelineLoanStageEnum.pre_approved:
         case PipelineLoanStageEnum.preparing_docs:
         case PipelineLoanStageEnum.docs_out:
         case PipelineLoanStageEnum.funded:
@@ -206,6 +209,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
       loanStatusDetails?.[PipelineLoanStageEnum.funded],
       loanStatusDetails?.[PipelineLoanStageEnum.inactive],
       loanStatusDetails?.[PipelineLoanStageEnum.initial_approval],
+      loanStatusDetails?.[PipelineLoanStageEnum.pre_approved],
       loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs],
       loanStatusDetails?.[PipelineLoanStageEnum.rejected],
       loanStatusDetails?.[PipelineLoanStageEnum.scenario],
@@ -314,7 +318,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                     ? 0
                     : ['xs', 'sm', 'md', 'lg'].includes(breakpoints)
                       ? 1
-                      : 4.5
+                      : 7
                 }
                 ml={0.5}
               >

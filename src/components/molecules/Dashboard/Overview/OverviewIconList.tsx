@@ -6,10 +6,11 @@ import { useMst } from '@/models/Root';
 import { POSFormatDollar, POSFormatPercent } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
 
+import { UserType } from '@/types';
+
 import LOGO_1 from '@/svg/dashboard/overview_logo_1.svg';
 import LOGO_2 from '@/svg/dashboard/overview_logo_2.svg';
 import LOGO_3 from '@/svg/dashboard/overview_logo_3.svg';
-import { UserType } from '@/types';
 
 interface OverviewIconListProps {
   totalLoanAmount?: number;

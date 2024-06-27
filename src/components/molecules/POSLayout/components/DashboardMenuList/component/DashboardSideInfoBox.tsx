@@ -67,7 +67,7 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
                           whiteSpace: 'break-spaces',
                           lineHeight: 1.5,
                         }}
-                      >{`${info?.propertyAddress.formatAddress} ${
+                      >{`${info?.propertyAddress.formatAddress}${
                         info?.propertyAddress.aptNumber &&
                         `, #${info?.propertyAddress.aptNumber}`
                       }`}</Box>
