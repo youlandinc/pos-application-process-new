@@ -30,6 +30,7 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
             <Skeleton animation={'wave'} height={24} variant="rounded" />
             <Skeleton animation={'wave'} height={36} variant="rounded" />
             <Skeleton animation={'wave'} height={18} variant="rounded" />
+            <Skeleton animation={'wave'} height={18} variant="rounded" />
           </Stack>
         ) : (
           <>
@@ -37,7 +38,6 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
               {info?.loanType}
             </Typography>
             <Box
-              className={'customInfo_list'}
               component={'ul'}
               sx={{
                 width: '100%',
@@ -86,6 +86,7 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
                   )}
                 </Box>
               )}
+
               {/*{borrowerSummaryData?.occupancyType && (*/}
               {/*  <Box*/}
               {/*    color={'text.primary'}*/}

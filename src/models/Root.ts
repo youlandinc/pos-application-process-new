@@ -158,6 +158,7 @@ const initialState = {
     loanType: '',
     loading: false,
     loanId: '',
+    loanNumber: '',
   },
 
   questionnaire: {
