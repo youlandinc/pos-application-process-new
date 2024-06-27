@@ -2,13 +2,20 @@ import { TaskFiles } from '@/types';
 
 // tasks
 export enum DashboardTaskKey {
+  // common
   borrower = 'BORROWER',
   co_borrower = 'CO_BORROWER',
   demographics = 'DEMOGRAPHICS',
   real_investment = 'REAL_INVESTMENT',
   title_escrow = 'TITLE_ESCROW',
+  //
   holdback_process = 'HOLDBACK_PROCESS',
+  //
   rehab_info = 'REHAB_INFO',
+  //
+  payoff_amount = 'PAYOFF_AMOUNT',
+  //
+  referring_broker = 'REFERRING_BROKER',
 }
 
 export interface DashboardTasksResponse {
@@ -19,10 +26,11 @@ export interface DashboardTasksResponse {
   [DashboardTaskKey.title_escrow]: boolean;
   [DashboardTaskKey.holdback_process]?: boolean;
   [DashboardTaskKey.rehab_info]?: boolean;
+  [DashboardTaskKey.referring_broker]?: boolean;
+  [DashboardTaskKey.payoff_amount]?: boolean;
 }
 
 // appraisal
-
 export interface DashboardPaymentDetailsResponse {
   borrowerName?: string;
   clientSecret: string;
