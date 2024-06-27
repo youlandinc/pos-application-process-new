@@ -172,7 +172,7 @@ export default function MyApp(props: MyAppProps) {
         </div>
       );
     }
-  }, [Component, breakpoints, loading, pageProps, saasState]);
+  }, [Component, breakpoints, loading, pageProps, router.pathname, saasState]);
 
   return (
     <>
