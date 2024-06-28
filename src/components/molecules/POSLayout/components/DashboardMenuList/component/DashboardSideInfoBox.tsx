@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { IDashboardInfo } from '@/models/base';
 
 import { OPTIONS_COMMON_STATE } from '@/constants';
-import { POSFlex } from '@/styles';
+import { StyledTooltip } from '@/components/atoms';
 
 interface DashboardSideInfoBoxProps {
   info: IDashboardInfo;
@@ -15,21 +15,20 @@ interface DashboardSideInfoBoxProps {
 export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
   ({ info, loading }) => {
     return (
-      <Box
-        sx={{
-          mt: 3,
-          borderRadius: 2,
-          p: 3,
-          bgcolor: 'primary.lightest',
-          minHeight: 100,
-          width: 240,
-        }}
+      <Stack
+        bgcolor={'primary.lightest'}
+        borderRadius={2}
+        minHeight={100}
+        mt={3}
+        p={3}
+        width={240}
       >
         {loading ? (
           <Stack gap={1}>
             <Skeleton animation={'wave'} height={24} variant="rounded" />
             <Skeleton animation={'wave'} height={36} variant="rounded" />
             <Skeleton animation={'wave'} height={18} variant="rounded" />
+            <Stack bgcolor={'#D2D6E1'} height={'1px'} my={1.5} width={'100%'} />
             <Skeleton animation={'wave'} height={18} variant="rounded" />
           </Stack>
         ) : (
@@ -37,16 +36,16 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
             <Typography mb={1} variant={'subtitle1'}>
               {info?.loanType}
             </Typography>
-            <Box
+            <Stack
               component={'ul'}
+              p={0}
               sx={{
-                width: '100%',
-                p: 0,
                 listStyle: 'none',
               }}
+              width={'100%'}
             >
               {info?.propertyAddress && (
-                <Box
+                <Stack
                   color={'text.primary'}
                   component={'li'}
                   display={'flex'}
@@ -55,12 +54,7 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
                   width={'100%'}
                 >
                   {info?.propertyAddress.formatAddress ? (
-                    <Box
-                      style={{
-                        ...POSFlex('flex-start', 'center', 'column'),
-                        width: '100%',
-                      }}
-                    >
+                    <Stack justifyContent={'center'} width={'100%'}>
                       <Box
                         style={{
                           wordBreak: 'break-all',
@@ -69,14 +63,14 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
                         }}
                       >{`${info?.propertyAddress.formatAddress}${
                         info?.propertyAddress.aptNumber &&
-                        `, #${info?.propertyAddress.aptNumber}`
+                        `, ${info?.propertyAddress.aptNumber}`
                       }`}</Box>
                       <Box>{`${
                         info?.propertyAddress.city &&
                         `${info?.propertyAddress.city}, `
                       } ${info?.propertyAddress.state} ${info?.propertyAddress
                         .postcode}`}</Box>
-                    </Box>
+                    </Stack>
                   ) : (
                     OPTIONS_COMMON_STATE.find(
                       (item) =>
@@ -84,37 +78,24 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
                         (info?.propertyAddress && info?.propertyAddress.state),
                     )?.label || ''
                   )}
-                </Box>
+                </Stack>
               )}
+            </Stack>
 
-              {/*{borrowerSummaryData?.occupancyType && (*/}
-              {/*  <Box*/}
-              {/*    color={'text.primary'}*/}
-              {/*    component={'li'}*/}
-              {/*    display={'flex'}*/}
-              {/*    fontSize={14}*/}
-              {/*    lineHeight={1.5}*/}
-              {/*    width={'100%'}*/}
-              {/*  >*/}
-              {/*    {borrowerSummaryData.occupancyType}*/}
-              {/*  </Box>*/}
-              {/*)}*/}
-              {/*{borrowerSummaryData?.propertyType && (*/}
-              {/*  <Box*/}
-              {/*    color={'text.primary'}*/}
-              {/*    component={'li'}*/}
-              {/*    display={'flex'}*/}
-              {/*    fontSize={14}*/}
-              {/*    lineHeight={1.5}*/}
-              {/*    width={'100%'}*/}
-              {/*  >*/}
-              {/*    {borrowerSummaryData.propertyType}*/}
-              {/*  </Box>*/}
-              {/*)}*/}
-            </Box>
+            <Stack bgcolor={'#D2D6E1'} height={'1px'} my={1.5} width={'100%'} />
+
+            <StyledTooltip title={'Loan number'}>
+              <Typography
+                color={'text.secondary'}
+                fontSize={14}
+                width={'fit-content'}
+              >
+                {info?.loanNumber}
+              </Typography>
+            </StyledTooltip>
           </>
         )}
-      </Box>
+      </Stack>
     );
   },
 );
