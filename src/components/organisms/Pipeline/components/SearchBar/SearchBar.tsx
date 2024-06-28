@@ -4,6 +4,7 @@ import { Close, FilterAltOutlined, SearchOutlined } from '@mui/icons-material';
 
 import {
   APPLICATION_LOAN_CATEGORY,
+  APPLICATION_LOAN_PURPOSE,
   OPTIONS_LOAN_SPECIES,
   OPTIONS_LOAN_STAGE,
 } from '@/constants';
@@ -165,7 +166,7 @@ export const SearchBar: FC<SearchBarProps> = ({
                       onParamsChange('loanPurpose', e);
                       onValueChange(true);
                     }}
-                    options={OPTIONS_LOAN_SPECIES}
+                    options={APPLICATION_LOAN_PURPOSE}
                     value={searchForm.loanPurpose}
                   />
                 </Box>
@@ -278,7 +279,7 @@ export const SearchBar: FC<SearchBarProps> = ({
                 onParamsChange('loanPurpose', e);
                 onValueChange(true);
               }}
-              options={OPTIONS_LOAN_SPECIES}
+              options={APPLICATION_LOAN_PURPOSE}
               value={searchForm.loanPurpose}
             />
           </Box>
