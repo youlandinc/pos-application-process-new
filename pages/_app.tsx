@@ -60,19 +60,18 @@ export default function MyApp(props: MyAppProps) {
     if (router.pathname.includes('payment')) {
       return;
     }
-    return await _fetchSaasConfig()
-      .then(({ data }) => {
-        setItem(data);
-      })
-      .catch((err) => {
-        const { header, message, variant } = err as HttpError;
-        enqueueSnackbar(message, {
-          variant: variant || 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-          isSimple: !header,
-          header,
-        });
+    try {
+      const { data } = await _fetchSaasConfig();
+      setItem(data);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
       });
+    }
   }, []);
 
   useEffect(() => {

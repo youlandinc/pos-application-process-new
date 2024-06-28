@@ -20,6 +20,7 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
   const router = useRouter();
 
   const store = useMst();
+
   const {
     dashboardInfo: { fetchDashboardInfo, loading },
   } = store;
