@@ -329,7 +329,6 @@ export const SpecificalPaymentPage = () => {
                     flex={1}
                     gap={3}
                     minWidth={{ xl: 500, xs: 'auto' }}
-                    order={{ xs: 2, xl: 1 }}
                     p={3}
                     ref={contactForm}
                   >
@@ -386,12 +385,35 @@ export const SpecificalPaymentPage = () => {
                   </Stack>
                 )}
 
+                {!['xl', 'xxl'].includes(breakpoints) && (
+                  <Stack
+                    flexShrink={0}
+                    gap={{ xs: 3, md: 6 }}
+                    width={{ xs: '100%', xl: 530 }}
+                  >
+                    <SpecificalPaymentInfo
+                      additional={
+                        ['xl', 'xxl'].includes(breakpoints) ? (
+                          <SpecificalPaymentAdditional sx={{ ml: 3 }} />
+                        ) : null
+                      }
+                      appraisalFees={appraisalFees}
+                      expeditedFees={expeditedFees}
+                      isAdditional={insideIsAdditional}
+                      isExpedited={isExpedited}
+                      paymentAmount={paymentAmount}
+                      paymentName={paymentName}
+                      productName={productName}
+                      propertyAddress={propertyAddress}
+                    />
+                  </Stack>
+                )}
+
                 <Stack
                   border={'1px solid #E4E7EF'}
                   borderRadius={2}
                   flex={1}
                   gap={{ xs: 1.5, md: 3 }}
-                  order={{ xs: 2, xl: 1 }}
                   p={3}
                 >
                   <Typography
@@ -460,31 +482,32 @@ export const SpecificalPaymentPage = () => {
                 </Stack>
               </Stack>
 
-              <Stack
-                flexShrink={0}
-                gap={{ xs: 3, md: 6 }}
-                order={{ xs: 1, xl: 2 }}
-                width={{ xs: '100%', xl: 530 }}
-              >
-                <SpecificalPaymentInfo
-                  additional={
-                    ['xl', 'xxl'].includes(breakpoints) ? (
-                      <SpecificalPaymentAdditional />
-                    ) : null
-                  }
-                  appraisalFees={appraisalFees}
-                  expeditedFees={expeditedFees}
-                  isAdditional={insideIsAdditional}
-                  isExpedited={isExpedited}
-                  paymentAmount={paymentAmount}
-                  paymentName={paymentName}
-                  productName={productName}
-                  propertyAddress={propertyAddress}
-                />
-              </Stack>
+              {['xl', 'xxl'].includes(breakpoints) && (
+                <Stack
+                  flexShrink={0}
+                  gap={{ xs: 3, md: 6 }}
+                  width={{ xs: '100%', xl: 530 }}
+                >
+                  <SpecificalPaymentInfo
+                    additional={
+                      ['xl', 'xxl'].includes(breakpoints) ? (
+                        <SpecificalPaymentAdditional />
+                      ) : null
+                    }
+                    appraisalFees={appraisalFees}
+                    expeditedFees={expeditedFees}
+                    isAdditional={insideIsAdditional}
+                    isExpedited={isExpedited}
+                    paymentAmount={paymentAmount}
+                    paymentName={paymentName}
+                    productName={productName}
+                    propertyAddress={propertyAddress}
+                  />
+                </Stack>
+              )}
 
               {!['xl', 'xxl'].includes(breakpoints) && (
-                <SpecificalPaymentAdditional sx={{ order: 3 }} />
+                <SpecificalPaymentAdditional />
               )}
             </Stack>
           )}
