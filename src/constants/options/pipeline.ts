@@ -1,8 +1,4 @@
-import {
-  LoanProductCategoryEnum,
-  PipelineLicenseType,
-  PipelineLoanStageEnum,
-} from '@/types';
+import { PipelineLicenseType, PipelineLoanStageEnum } from '@/types';
 
 export const OPTIONS_LOAN_STAGE: Option[] = [
   {

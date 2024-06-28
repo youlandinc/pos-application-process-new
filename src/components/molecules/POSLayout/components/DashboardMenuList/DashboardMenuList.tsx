@@ -16,7 +16,6 @@ import { LayoutSceneTypeEnum, MenuItems } from '@/types';
 import { IDashboardInfo } from '@/models/base/DashboardInfo';
 
 import APPRAISAL_ICON from './Appraisal.svg';
-import { useSessionStorageState } from '@/hooks';
 
 type POSMenuListProps = {
   info: IDashboardInfo;
@@ -60,7 +59,6 @@ const DASHBOARD_MENU_LIST: MenuItems[] = [
 export const DashboardMenuList: FC<POSMenuListProps> = observer(
   ({ info, loading }) => {
     const router = useRouter();
-    const { saasState } = useSessionStorageState('tenantConfig');
 
     const [activeKey, setActiveKey] = useState(() => {
       const results = router.pathname.split('/');
@@ -88,60 +86,58 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
     );
 
     return (
-      saasState && (
-        <>
-          <Box
-            pt={{ md: 6, xs: 2 }}
-            sx={{
-              '& .item': {
-                cursor: 'pointer',
-                '&:hover': {
-                  bgcolor: 'info.darker',
+      <>
+        <Box
+          pt={{ md: 6, xs: 2 }}
+          sx={{
+            '& .item': {
+              cursor: 'pointer',
+              '&:hover': {
+                bgcolor: 'info.darker',
+              },
+              '&.active': {
+                bgcolor: 'primary.lighter',
+                color: 'primary.main',
+                position: 'relative',
+                '&::after': {
+                  content: '""',
+                  height: '100%',
+                  width: 2,
+                  bgcolor: 'primary.main',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
                 },
-                '&.active': {
-                  bgcolor: 'primary.lighter',
-                  color: 'primary.main',
-                  position: 'relative',
-                  '&::after': {
-                    content: '""',
-                    height: '100%',
-                    width: 2,
-                    bgcolor: 'primary.main',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                  },
-                  '& path': {
-                    fill: 'primary.main',
-                  },
-                },
-                '& svg': {
-                  verticalAlign: 'middle',
-                  mr: 1,
+                '& .Appraisal_svg__theme-color': {
+                  fill: (theme) => theme.palette.primary.main,
                 },
               },
-            }}
-          >
-            {DASHBOARD_MENU_LIST.map(({ path, key, label, icon }) => {
-              return (
-                <Box
-                  className={activeKey === key ? 'active item' : 'item'}
-                  color={'text.hover'}
-                  fontSize={16}
-                  key={key}
-                  lineHeight={1.5}
-                  onClick={selectMenu(path, key)}
-                  px={3}
-                  py={1.8}
-                >
-                  {icon} {label}
-                </Box>
-              );
-            })}
-          </Box>
-          <DashboardSideInfoBox info={info} loading={loading} />
-        </>
-      )
+              '& svg': {
+                verticalAlign: 'middle',
+                mr: 1,
+              },
+            },
+          }}
+        >
+          {DASHBOARD_MENU_LIST.map(({ path, key, label, icon }) => {
+            return (
+              <Box
+                className={activeKey === key ? 'active item' : 'item'}
+                color={'text.hover'}
+                fontSize={16}
+                key={key}
+                lineHeight={1.5}
+                onClick={selectMenu(path, key)}
+                px={3}
+                py={1.8}
+              >
+                {icon} {label}
+              </Box>
+            );
+          })}
+        </Box>
+        <DashboardSideInfoBox info={info} loading={loading} />
+      </>
     );
   },
 );
