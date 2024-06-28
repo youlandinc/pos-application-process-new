@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Icon, Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 // import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -26,6 +26,8 @@ import { StyledButton, StyledDialog } from '@/components/atoms';
 
 import { AddressData, HttpError, PipelineLoanStageEnum } from '@/types';
 import { _downloadFile, _fetchFile } from '@/requests/application';
+
+import NOTIFICATION_INFO from '@/components/atoms/StyledNotification/notification_info.svg';
 
 interface OverviewLoanAddressProps {
   propertyAddress?: AddressData;
@@ -50,6 +52,8 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
   const mapRef = useRef<HTMLDivElement>(null);
   const panoramaRef = useRef<HTMLDivElement>(null);
 
+  const [hasBorrowerName, setHasBorrowerName] = useState<boolean>(false);
+
   const {
     open: previewOpen,
     close: previewClose,
@@ -67,10 +71,13 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
         return;
       }
       try {
-        const { data } = await _fetchFile(loanId, fileType);
+        const {
+          data: { hasBorrowerName, letterHtml },
+        } = await _fetchFile(loanId, fileType);
+        setHasBorrowerName(hasBorrowerName);
         previewOpen();
         setTimeout(() => {
-          renderFile(data);
+          renderFile(letterHtml);
         }, 100);
       } catch (err) {
         const { header, message, variant } = err as HttpError;
@@ -242,7 +249,33 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
       {loanDetails}
 
       <StyledDialog
-        content={<Box py={6} ref={pdfFile} />}
+        content={
+          <Stack py={6} width={'100%'}>
+            {!hasBorrowerName && (
+              <Stack px={8}>
+                <Stack
+                  bgcolor={'#F4F7FD'}
+                  borderRadius={2}
+                  boxShadow={'0 2px 2px rgba(227, 227, 227, 1)'}
+                  color={'#636A7C'}
+                  flexDirection={'row'}
+                  fontSize={{ xs: 12, lg: 14 }}
+                  fontWeight={600}
+                  gap={1}
+                  p={'12px 24px'}
+                >
+                  <Icon
+                    component={NOTIFICATION_INFO}
+                    sx={{ mt: { xs: -0.5, lg: -0.25 } }}
+                  />
+                  Complete the &quot;Borrower&quot; task in the dashboard to
+                  include the borrower name in the pre-approval letter.
+                </Stack>
+              </Stack>
+            )}
+            <Box pt={3} ref={pdfFile} />
+          </Stack>
+        }
         disableEscapeKeyDown
         footer={
           <Stack pt={3}>

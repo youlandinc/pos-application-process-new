@@ -55,7 +55,7 @@ export const DashboardInfo = types
         self.propertyType = propertyType || LoanPropertyTypeEnum.default;
         self.propertyUnit = propertyUnit || LoanPropertyUnitEnum.default;
         self.loanId = loanId;
-        self.loanNumber = loanNumber;
+        self.loanNumber = loanNumber ?? '';
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {

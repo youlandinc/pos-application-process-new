@@ -52,19 +52,6 @@ export const OPTIONS_LOAN_STAGE: Option[] = [
   },
 ];
 
-export const OPTIONS_LOAN_SPECIES: Option[] = [
-  {
-    key: LoanProductCategoryEnum.stabilized_bridge,
-    value: LoanProductCategoryEnum.stabilized_bridge,
-    label: 'Bridge',
-  },
-  {
-    key: LoanProductCategoryEnum.fix_and_flip,
-    value: LoanProductCategoryEnum.fix_and_flip,
-    label: 'Fix and Flip',
-  },
-];
-
 export const OPTIONS_LICENSE_TYPE: Option[] = [
   {
     key: PipelineLicenseType.NMLS_LICENSE,
