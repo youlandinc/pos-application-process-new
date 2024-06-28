@@ -6,6 +6,8 @@ import { useMst } from '@/models/Root';
 
 import { usePersistFn } from './index';
 import { AUTO_HIDE_DURATION } from '@/constants';
+import { _fetchUserInfo } from '@/requests';
+import { HttpError } from '@/types';
 // import { LoanSnapshotEnum } from '@/types';
 
 export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
@@ -20,7 +22,7 @@ export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
       variant: 'success',
       autoHideDuration: AUTO_HIDE_DURATION,
     });
-    router.push(jumpPath);
+    return router.push(jumpPath);
   });
   useEffect(() => {
     check();
@@ -28,18 +30,21 @@ export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
 };
 
 export const useCheckIsLogin = (jumpPath = '/auth/login') => {
-  const { session, logoutNotification } = useMst();
+  const {
+    session,
+    // logoutNotification
+  } = useMst();
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
-  const check = usePersistFn(() => {
+  const check = usePersistFn(async () => {
     if (!session) {
-      if (logoutNotification) {
-        enqueueSnackbar("You haven't logged", {
-          variant: 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-        });
-      }
+      // if (logoutNotification) {
+      //   enqueueSnackbar("You haven't logged", {
+      //     variant: 'error',
+      //     autoHideDuration: AUTO_HIDE_DURATION,
+      //   });
+      // }
       if (
         router.pathname === jumpPath ||
         router.pathname === '/' ||
@@ -48,7 +53,24 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
       ) {
         return;
       }
-      router.push(jumpPath);
+      return router.push(jumpPath);
+    }
+
+    try {
+      const {
+        data: { forceChangePassword },
+      } = await _fetchUserInfo();
+      if (forceChangePassword) {
+        return router.push('/auth/reset-password');
+      }
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
     }
   });
 

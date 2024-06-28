@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
 
-import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
+import { AUTO_HIDE_DURATION, OPTIONS_COMMON_YES_OR_NO } from '@/constants';
 
 import {
   StyledButton,
@@ -17,22 +17,31 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-import { LoanAnswerEnum } from '@/types';
+import { DashboardTaskKey, HttpError, LoanAnswerEnum } from '@/types';
 import { Address, IAddress } from '@/models/common/Address';
+import { useAsync } from 'react-use';
+import { POSGetParamsFromUrl } from '@/utils';
+import {
+  _fetchLoanTaskDetail,
+  _updateLoanTaskDetail,
+} from '@/requests/dashboard';
+import { useSnackbar } from 'notistack';
 
 export const TasksReferringBroker: FC = observer(() => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [loading, setLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
 
-  const [isReferringBroker, setIsReferringBroker] = useState<boolean>(false);
+  const [hasReferringBroker, setHasReferringBroker] = useState<boolean>(false);
+
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [brokerLicense, setBrokerLicense] = useState<string>('');
-  const [address] = useState<IAddress>(
+
+  const [mailingAddress] = useState<IAddress>(
     Address.create({
       formatAddress: '',
       state: '',
@@ -45,12 +54,100 @@ export const TasksReferringBroker: FC = observer(() => {
     }),
   );
 
-  const isFormDataValid = useMemo(() => {
-    return true;
+  const { loading } = useAsync(async () => {
+    const { loanId } = POSGetParamsFromUrl(location.href);
+    if (!loanId) {
+      return;
+    }
+    try {
+      const {
+        data: {
+          data: {
+            email,
+            firstName,
+            lastName,
+            phoneNumber,
+            brokerLicense,
+            address,
+            hasReferringBroker,
+          },
+        },
+      } = await _fetchLoanTaskDetail({
+        loanId,
+        taskKey: DashboardTaskKey.referring_broker,
+      });
+
+      setHasReferringBroker(hasReferringBroker ?? false);
+
+      setEmail(email ?? '');
+      setFirstName(firstName ?? '');
+      setLastName(lastName ?? '');
+      setPhoneNumber(phoneNumber ?? '');
+      setBrokerLicense(brokerLicense ?? '');
+
+      address && mailingAddress.injectServerData(address);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    }
   }, []);
 
+  const isFormDataValid = useMemo(() => {
+    if (!hasReferringBroker) {
+      return true;
+    }
+    return (
+      !!email &&
+      !!firstName &&
+      !!lastName &&
+      !!phoneNumber &&
+      mailingAddress.isValid
+    );
+  }, [
+    email,
+    firstName,
+    hasReferringBroker,
+    lastName,
+    mailingAddress.isValid,
+    phoneNumber,
+  ]);
+
   const handleSave = async () => {
-    console.log(123);
+    const postData = {
+      loanId: POSGetParamsFromUrl(location.href).loanId,
+      taskKey: DashboardTaskKey.referring_broker,
+      data: {
+        email,
+        firstName,
+        lastName,
+        phoneNumber,
+        brokerLicense,
+        address: mailingAddress.getPostData(),
+      },
+    };
+    setSaveLoading(true);
+    try {
+      await _updateLoanTaskDetail(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { loanId: router.query.loanId },
+      });
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
   };
 
   return loading ? (
@@ -97,20 +194,20 @@ export const TasksReferringBroker: FC = observer(() => {
               if (value === null) {
                 return;
               }
-              setIsReferringBroker(value === LoanAnswerEnum.yes);
+              setHasReferringBroker(value === LoanAnswerEnum.yes);
             }}
             options={OPTIONS_COMMON_YES_OR_NO}
-            value={isReferringBroker ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
+            value={hasReferringBroker ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
           />
         </StyledFormItem>
 
         <Transitions
           style={{
-            display: isReferringBroker ? 'block' : 'none',
+            display: hasReferringBroker ? 'block' : 'none',
             width: '100%',
           }}
         >
-          {isReferringBroker && (
+          {hasReferringBroker && (
             <Stack gap={6} width={'100%'}>
               <StyledFormItem gap={3} label={'Personal information'} sub>
                 <Stack flexDirection={{ xs: 'column', lg: 'row' }} gap={3}>
@@ -169,7 +266,7 @@ export const TasksReferringBroker: FC = observer(() => {
 
               <StyledFormItem label={'Mailing information (optional)'} sub>
                 <StyledGoogleAutoComplete
-                  address={address}
+                  address={mailingAddress}
                   label={'Mailing address'}
                 />
               </StyledFormItem>

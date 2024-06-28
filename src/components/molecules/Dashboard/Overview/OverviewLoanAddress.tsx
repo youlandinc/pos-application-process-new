@@ -217,7 +217,7 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
           width={'100%'}
         >
           {`${propertyAddress?.address ? `${propertyAddress?.address}, ` : ''}${
-            propertyAddress?.aptNumber ? `#${propertyAddress?.aptNumber}, ` : ''
+            propertyAddress?.aptNumber ? `${propertyAddress?.aptNumber}, ` : ''
           }${propertyAddress?.city ? `${propertyAddress?.city}, ` : ''}${
             propertyAddress?.state ? `${propertyAddress?.state} ` : ''
           }${propertyAddress?.postcode ? `${propertyAddress?.postcode}` : ''}`}

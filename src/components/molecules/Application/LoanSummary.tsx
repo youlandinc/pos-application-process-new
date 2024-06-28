@@ -678,7 +678,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                       : ''
                   }${
                     data.propertyAddress?.aptNumber
-                      ? `#${data.propertyAddress?.aptNumber}`
+                      ? `${data.propertyAddress?.aptNumber}`
                       : ''
                   }${
                     data.propertyAddress?.city
