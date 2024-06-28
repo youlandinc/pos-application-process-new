@@ -16,7 +16,6 @@ import { LayoutSceneTypeEnum, MenuItems } from '@/types';
 import { IDashboardInfo } from '@/models/base/DashboardInfo';
 
 import APPRAISAL_ICON from './Appraisal.svg';
-import { useSessionStorageState } from '@/hooks';
 
 type POSMenuListProps = {
   info: IDashboardInfo;
@@ -60,8 +59,6 @@ const DASHBOARD_MENU_LIST: MenuItems[] = [
 export const DashboardMenuList: FC<POSMenuListProps> = observer(
   ({ info, loading }) => {
     const router = useRouter();
-
-    const { saasState } = useSessionStorageState('tenantConfig');
 
     const [activeKey, setActiveKey] = useState(() => {
       const results = router.pathname.split('/');
@@ -111,8 +108,8 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
                   top: 0,
                   left: 0,
                 },
-                '& path': {
-                  fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+                '& .Appraisal_svg__theme-color': {
+                  fill: (theme) => theme.palette.primary.main,
                 },
               },
               '& svg': {
