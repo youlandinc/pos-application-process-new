@@ -31,11 +31,19 @@ export enum LoanPropertyUnitEnum {
   four_units = 'FOUR_UNITS',
 }
 
+export enum LoanCitizenshipEnum {
+  default = '',
+  us_citizen = 'US_CITIZEN',
+  permanent_resident_alien = 'PERMANENT_RESIDENT_ALIEN',
+  foreign_national = 'FOREIGN_NATIONAL',
+}
+
 export interface StartingQuestionFormData {
   loanType: LoanTypeEnum;
   productCategory: LoanProductCategoryEnum;
   loanPurpose: LoanPurposeEnum;
   propertyType: LoanPropertyTypeEnum;
   propertyUnit: LoanPropertyUnitEnum;
+  citizenship: LoanCitizenshipEnum;
   isOccupyProperty: boolean;
 }

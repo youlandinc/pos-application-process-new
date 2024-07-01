@@ -35,9 +35,9 @@ import {
 import {
   DashboardTaskBorrowerEntityType,
   DashboardTaskBorrowerType,
-  DashboardTaskCitizenshipStatus,
   DashboardTaskKey,
   HttpError,
+  LoanCitizenshipEnum,
 } from '@/types';
 import {
   _fetchLoanTaskDetail,
@@ -53,10 +53,9 @@ export const TasksBorrower: FC = observer(() => {
   const [borrowerType, setBorrowerType] = useState<DashboardTaskBorrowerType>(
     DashboardTaskBorrowerType.default,
   );
-  const [citizenship, setCitizenship] =
-    useState<DashboardTaskCitizenshipStatus>(
-      DashboardTaskCitizenshipStatus.default,
-    );
+  const [citizenship, setCitizenship] = useState<LoanCitizenshipEnum>(
+    LoanCitizenshipEnum.default,
+  );
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [birthDate, setBirthDate] = useState<unknown | Date | null>(null);
@@ -119,7 +118,7 @@ export const TasksBorrower: FC = observer(() => {
         taskKey: DashboardTaskKey.borrower,
       });
       setBorrowerType(borrowerType ?? DashboardTaskBorrowerType.default);
-      setCitizenship(citizenship ?? DashboardTaskCitizenshipStatus.default);
+      setCitizenship(citizenship ?? LoanCitizenshipEnum.default);
       setFirstName(firstName ?? '');
       setLastName(lastName ?? '');
       setBirthDate(birthDate ? new Date(birthDate) : null);
@@ -164,7 +163,7 @@ export const TasksBorrower: FC = observer(() => {
       if (!citizenship) {
         return false;
       }
-      if (citizenship === DashboardTaskCitizenshipStatus.foreign_national) {
+      if (citizenship === LoanCitizenshipEnum.foreign_national) {
         return baseCondition;
       }
       return baseCondition && !!ssn;
@@ -173,7 +172,7 @@ export const TasksBorrower: FC = observer(() => {
       if (!citizenship) {
         return false;
       }
-      if (citizenship === DashboardTaskCitizenshipStatus.foreign_national) {
+      if (citizenship === LoanCitizenshipEnum.foreign_national) {
         return (
           baseCondition &&
           !!entityName &&
@@ -197,7 +196,7 @@ export const TasksBorrower: FC = observer(() => {
       if (!citizenship) {
         return false;
       }
-      if (citizenship === DashboardTaskCitizenshipStatus.foreign_national) {
+      if (citizenship === LoanCitizenshipEnum.foreign_national) {
         return baseCondition && !!trustName && !!signatoryTitle;
       }
       return baseCondition && !!trustName && !!signatoryTitle && !!ssn;
@@ -473,7 +472,7 @@ export const TasksBorrower: FC = observer(() => {
         >
           <StyledSelectOption
             onChange={(value) =>
-              setCitizenship(value as string as DashboardTaskCitizenshipStatus)
+              setCitizenship(value as string as LoanCitizenshipEnum)
             }
             options={OPTIONS_COMMON_CITIZEN_TYPE}
             value={citizenship}
@@ -493,13 +492,13 @@ export const TasksBorrower: FC = observer(() => {
         <Transitions
           style={{
             display:
-              citizenship !== DashboardTaskCitizenshipStatus.foreign_national
+              citizenship !== LoanCitizenshipEnum.foreign_national
                 ? 'flex'
                 : 'none',
             width: '100%',
           }}
         >
-          {citizenship !== DashboardTaskCitizenshipStatus.foreign_national && (
+          {citizenship !== LoanCitizenshipEnum.foreign_national && (
             <StyledFormItem
               gap={3}
               label={'Social security number'}

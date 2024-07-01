@@ -1,6 +1,7 @@
 import { types } from 'mobx-state-tree';
 import {
   EstimateRateFormData,
+  LoanCitizenshipEnum,
   LoanFicoScoreEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
@@ -34,9 +35,16 @@ export const EstimateRate = types
       types.literal(LoanPropertyUnitEnum.three_units),
       types.literal(LoanPropertyUnitEnum.four_units),
     ),
+    citizenship: types.union(
+      types.literal(LoanCitizenshipEnum.default),
+      types.literal(LoanCitizenshipEnum.us_citizen),
+      types.literal(LoanCitizenshipEnum.permanent_resident_alien),
+      types.literal(LoanCitizenshipEnum.foreign_national),
+    ),
     state: types.string,
     ficoScore: types.union(
       types.literal(LoanFicoScoreEnum.default),
+      types.literal(LoanFicoScoreEnum.no_fico),
       types.literal(LoanFicoScoreEnum.fico_not_available),
       types.literal(LoanFicoScoreEnum.below_600),
       types.literal(LoanFicoScoreEnum.between_600_649),
@@ -76,7 +84,10 @@ export const EstimateRate = types
         propertyType: self.propertyType,
         propertyUnit: self.propertyUnit,
         state: self.state,
-        ficoScore: self.ficoScore,
+        ficoScore:
+          self.citizenship === LoanCitizenshipEnum.foreign_national
+            ? LoanFicoScoreEnum.no_fico
+            : self.ficoScore,
         isLiquidity: self.isLiquidity,
         liquidityAmount: self.liquidityAmount,
         rehabCost: self.rehabCost,
@@ -93,6 +104,7 @@ export const EstimateRate = types
         loanTerm: self.loanTerm,
         interestRate: self.interestRate,
         isDutch: self.isDutch,
+        citizenship: self.citizenship,
       };
     },
     injectServerData(data: EstimateRateFormData) {
@@ -117,6 +129,7 @@ export const EstimateRate = types
         loanTerm,
         interestRate,
         isDutch,
+        citizenship,
       } = data;
 
       self.productCategory =
@@ -124,6 +137,7 @@ export const EstimateRate = types
       self.loanPurpose = loanPurpose ?? LoanPurposeEnum.purchase;
       self.propertyType = propertyType ?? LoanPropertyTypeEnum.single_family;
       self.propertyUnit = propertyUnit ?? LoanPropertyUnitEnum.two_units;
+      self.citizenship = citizenship ?? LoanCitizenshipEnum.us_citizen;
       self.state = state ?? 'CA';
       self.ficoScore = ficoScore ?? LoanFicoScoreEnum.between_700_749;
       self.isLiquidity = isLiquidity ?? true;

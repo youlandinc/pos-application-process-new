@@ -23,6 +23,7 @@ import {
   APPLICATION_PROPERTY_TYPE,
   APPLICATION_PROPERTY_UNIT,
   AUTO_HIDE_DURATION,
+  OPTIONS_COMMON_CITIZEN_TYPE,
   OPTIONS_COMMON_STATE,
 } from '@/constants';
 
@@ -38,6 +39,7 @@ import { ProductList } from '@/components/molecules/Common';
 import {
   HttpError,
   LoanAnswerEnum,
+  LoanCitizenshipEnum,
   LoanFicoScoreEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
@@ -426,7 +428,10 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
           estimateRate.propertyType !== LoanPropertyTypeEnum.two_to_four_family
             ? POSFindLabel(APPLICATION_PROPERTY_TYPE, estimateRate.propertyType)
             : POSFindLabel(APPLICATION_PROPERTY_UNIT, estimateRate.propertyUnit)
-        }`}
+        } | ${POSFindLabel(
+          OPTIONS_COMMON_CITIZEN_TYPE,
+          estimateRate.citizenship,
+        )}`}
         tipSx={{
           textAlign: 'left',
           fontSize: { xs: 12, lg: 16 },
@@ -481,18 +486,21 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                 value={estimateRate.state}
               />
-              <StyledSelect
-                label={'Est. FICO score'}
-                onChange={(e) => {
-                  estimateRate.changeFieldValue(
-                    'ficoScore',
-                    e.target.value as string as any,
-                  );
-                }}
-                options={APPLICATION_FICO_SCORE}
-                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                value={estimateRate.ficoScore}
-              />
+              {estimateRate.citizenship !==
+                LoanCitizenshipEnum.foreign_national && (
+                <StyledSelect
+                  label={'Est. FICO score'}
+                  onChange={(e) => {
+                    estimateRate.changeFieldValue(
+                      'ficoScore',
+                      e.target.value as string as LoanFicoScoreEnum,
+                    );
+                  }}
+                  options={APPLICATION_FICO_SCORE}
+                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                  value={estimateRate.ficoScore}
+                />
+              )}
               <StyledSelectTextField
                 fieldLabel={'Liquidity'}
                 fieldValue={estimateRate.liquidityAmount}

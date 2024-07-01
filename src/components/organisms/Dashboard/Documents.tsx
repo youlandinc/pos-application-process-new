@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode, useCallback, useState } from 'react';
 import { Fade, Icon, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
@@ -17,6 +17,7 @@ import {
 } from '@/components/atoms';
 
 import { HttpError } from '@/types';
+import { _downloadFile } from '@/requests/application';
 import { _fetchLoanDocumentData } from '@/requests/dashboard';
 
 import NOTIFICATION_WARNING from '@/components/atoms/StyledNotification/notification_warning.svg';
@@ -33,6 +34,7 @@ export const Documents: FC = () => {
   const [isTips, setIsTips] = useState<boolean>(false);
 
   const { loading } = useAsync(async () => await fetchData(), [location.href]);
+  const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
 
   const fetchData = async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
@@ -87,6 +89,46 @@ export const Documents: FC = () => {
     }
   };
 
+  const onClickToDownloadLetter = useCallback(async () => {
+    const handler = (data: any, fileName?: string) => {
+      // file export
+      if (!data) {
+        return;
+      }
+      const fileUrl = window.URL.createObjectURL(
+        new Blob([data], { type: 'application/octet-stream' }),
+      );
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.download = fileName || 'Pre-approval-letter.pdf';
+      a.href = fileUrl;
+      a.click();
+      if (document.body.contains(a)) {
+        document.body.removeChild(a);
+      }
+    };
+
+    const { loanId } = POSGetParamsFromUrl(location.href);
+    if (!loanId) {
+      return;
+    }
+    setDownloadLoading(true);
+    try {
+      const res = await _downloadFile(loanId);
+      handler(res.data);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setDownloadLoading(false);
+    }
+  }, [enqueueSnackbar]);
+
   return loading ? (
     <Stack
       alignItems={'center'}
@@ -122,6 +164,29 @@ export const Documents: FC = () => {
             We&apos;ve implemented robust security measures to ensure your
             data&apos;s privacy and protection, including advanced encryption,
             privacy compliance, and regular security audits.
+          </Typography>
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={1.5}
+          >
+            Here is your{' '}
+            <Typography
+              color={downloadLoading ? 'text.disabled' : '#365EC6'}
+              component={'span'}
+              fontSize={{ xs: 12, lg: 16 }}
+              fontWeight={600}
+              onClick={async () => {
+                if (downloadLoading) {
+                  return;
+                }
+                await onClickToDownloadLetter();
+              }}
+              sx={{ cursor: downloadLoading ? 'not-allowed' : 'pointer' }}
+            >
+              Pre-approval letter
+            </Typography>
+            . Please upload your documents below.
           </Typography>
         </Typography>
 

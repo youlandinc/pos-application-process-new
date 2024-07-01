@@ -51,6 +51,7 @@ export interface LoanItemCardProps {
     originationFee: number | null;
     originationPoints: number | null;
     processingFee: number | null;
+    loanNumber: string | null;
   };
   userType: UserType | undefined;
   children?: ReactNode;
@@ -76,6 +77,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
     loanStage,
     originationPoints,
     processingFee,
+    loanNumber,
   } = formData;
 
   const [line_1, line_2] = address.split('NEW_LINE');
@@ -303,6 +305,11 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
             content={POSFindLabel(OPTIONS_LOAN_STAGE, loanStage)}
             status={loanStage}
           />
+        </Box>
+
+        <Box className={'product_item'}>
+          <Box>Loan number</Box>
+          <Typography variant={'subtitle1'}>{loanNumber}</Typography>
         </Box>
       </Box>
     </Box>

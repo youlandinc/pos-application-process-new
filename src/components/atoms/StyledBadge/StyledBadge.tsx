@@ -21,6 +21,7 @@ export const StyledBadge: FC<StyledBadgeProps> = ({ content, status }) => {
         case PipelineLoanStageEnum.inactive:
           return 'rgba(176, 176, 176, 0.2)';
         case PipelineLoanStageEnum.initial_approval:
+        case PipelineLoanStageEnum.pre_approved:
           return '#DBF4EF';
         case PipelineLoanStageEnum.preparing_docs:
           return 'rgba(10, 154, 235, 0.2)';
@@ -41,6 +42,7 @@ export const StyledBadge: FC<StyledBadgeProps> = ({ content, status }) => {
         case PipelineLoanStageEnum.inactive:
           return 'rgba(79, 79, 79, 0.5)';
         case PipelineLoanStageEnum.initial_approval:
+        case PipelineLoanStageEnum.pre_approved:
           return '#099D99';
         case PipelineLoanStageEnum.preparing_docs:
           return '#005EA1';

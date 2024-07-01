@@ -97,11 +97,11 @@ export const Overview: FC = () => {
               loanStatus={overviewData?.loanStatus}
               loanStatusDetails={overviewData?.loanStatusDetails}
             />
-            <OverviewLoanDetails {...overviewData} />
           </Stack>
 
           <OverviewLoanAddress
             isCustom={overviewData?.isCustom}
+            loanDetails={<OverviewLoanDetails {...overviewData} />}
             loanStatus={overviewData?.loanStatus}
             propertyAddress={overviewData?.propertyAddress}
           />

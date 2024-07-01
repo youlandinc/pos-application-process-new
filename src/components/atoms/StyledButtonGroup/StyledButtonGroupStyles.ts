@@ -8,8 +8,11 @@ export const StyledButtonGroupStyles = {
     borderRadius: 2,
     borderWidth: '2px',
     boxShadow: 'none',
+    height: 56,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     p: 0,
-    py: 1.5,
     '&.MuiToggleButtonGroup-grouped:not(:first-of-type)': {
       ml: '-2px',
       borderLeft: '2px solid transparent',
@@ -28,8 +31,8 @@ export const StyledButtonGroupStyles = {
         borderColor: 'text.secondary',
       },
     },
-    '&.MuiToggleButton--sizeSmall': {
-      padding: '6px 12px',
+    '&.MuiToggleButton-sizeSmall': {
+      height: 40,
       fontSize: 14,
     },
   },
