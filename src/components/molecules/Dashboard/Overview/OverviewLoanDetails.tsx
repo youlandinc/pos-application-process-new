@@ -117,7 +117,6 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = observer(
     prepaymentPenalty,
     lien,
   }) => {
-    const breakpoints = useBreakpoints();
     const { open, visible, close } = useSwitch();
 
     const { userType } = useMst();

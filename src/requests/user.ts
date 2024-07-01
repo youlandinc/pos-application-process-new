@@ -52,3 +52,8 @@ export const _fetchUserResetPasswordSubmit = (
 ) => {
   return post('/usercenter/api/consumer/resetPassword/user/complete', params);
 };
+
+// force a password change
+export const _forceUpdatePassword = (params: { newPass: string }) => {
+  return post('usercenter/api/consumer/user/firstLogin/resetPassword', params);
+};

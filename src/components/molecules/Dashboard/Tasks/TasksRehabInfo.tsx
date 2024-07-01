@@ -28,6 +28,33 @@ export const TasksRehabInfo: FC = () => {
   const [arv, setArv] = useState<number | undefined>();
   const [square, setSquare] = useState<number | undefined>();
 
+  const { loading } = useAsync(async () => {
+    const { loanId } = POSGetParamsFromUrl(location.href);
+    if (!loanId) {
+      return;
+    }
+    try {
+      const {
+        data: {
+          data: { arv, square },
+        },
+      } = await _fetchLoanTaskDetail({
+        loanId,
+        taskKey: DashboardTaskKey.rehab_info,
+      });
+      setArv(arv || undefined);
+      setSquare(square || undefined);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    }
+  }, []);
+
   const isFormDataValid = useMemo(() => {
     return !!arv && !!square;
   }, [arv, square]);
@@ -60,33 +87,6 @@ export const TasksRehabInfo: FC = () => {
       setSaveLoading(false);
     }
   };
-
-  const { loading } = useAsync(async () => {
-    const { loanId } = POSGetParamsFromUrl(location.href);
-    if (!loanId) {
-      return;
-    }
-    try {
-      const {
-        data: {
-          data: { arv, square },
-        },
-      } = await _fetchLoanTaskDetail({
-        loanId,
-        taskKey: DashboardTaskKey.rehab_info,
-      });
-      setArv(arv || undefined);
-      setSquare(square || undefined);
-    } catch (err) {
-      const { header, message, variant } = err as HttpError;
-      enqueueSnackbar(message, {
-        variant: variant || 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-        isSimple: !header,
-        header,
-      });
-    }
-  }, []);
 
   return loading ? (
     <Stack

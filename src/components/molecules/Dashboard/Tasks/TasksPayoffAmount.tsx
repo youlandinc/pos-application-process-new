@@ -1,6 +1,11 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
+
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { POSGetParamsFromUrl } from '@/utils';
 
 import {
   StyledButton,
@@ -8,20 +13,72 @@ import {
   StyledTextFieldNumber,
 } from '@/components/atoms';
 
+import { DashboardTaskKey, HttpError } from '@/types';
+import {
+  _fetchLoanTaskDetail,
+  _updateLoanTaskDetail,
+} from '@/requests/dashboard';
+
 export const TasksPayoffAmount: FC = () => {
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [loading, setLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
 
   const [payoffAmount, setPayoffAmount] = useState<number | undefined>();
 
-  const isFormDataValid = useMemo(() => {
-    return true;
+  const { loading } = useAsync(async () => {
+    const { loanId } = POSGetParamsFromUrl(location.href);
+    if (!loanId) {
+      return;
+    }
+    try {
+      const {
+        data: {
+          data: { payoffAmount },
+        },
+      } = await _fetchLoanTaskDetail({
+        loanId,
+        taskKey: DashboardTaskKey.payoff_amount,
+      });
+      setPayoffAmount(payoffAmount);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    }
   }, []);
 
   const handleSave = async () => {
-    console.log(123);
+    const postData = {
+      loanId: POSGetParamsFromUrl(location.href).loanId,
+      taskKey: DashboardTaskKey.payoff_amount,
+      data: {
+        payoffAmount,
+      },
+    };
+    setSaveLoading(true);
+    try {
+      await _updateLoanTaskDetail(postData);
+      await router.push({
+        pathname: '/dashboard/tasks',
+        query: { loanId: router.query.loanId },
+      });
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setSaveLoading(false);
+    }
   };
 
   return loading ? (
@@ -91,7 +148,7 @@ export const TasksPayoffAmount: FC = () => {
           </StyledButton>
           <StyledButton
             color={'primary'}
-            disabled={saveLoading || !isFormDataValid}
+            disabled={saveLoading || !payoffAmount}
             loading={saveLoading}
             onClick={handleSave}
             sx={{ flex: 1, width: '100%' }}

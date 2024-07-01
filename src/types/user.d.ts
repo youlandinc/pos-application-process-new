@@ -79,6 +79,7 @@ declare namespace User {
     accessToken: string;
     expiredIn?: number;
     refreshToken: string;
+    forceChangePassword?: boolean;
   }
 
   interface UserResetPasswordParams {
