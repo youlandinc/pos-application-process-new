@@ -39,9 +39,9 @@ export const TasksReferringBroker: FC = observer(() => {
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [brokerLicense, setBrokerLicense] = useState<string>('');
+  const [license, setLicense] = useState<string>('');
 
-  const [mailingAddress] = useState<IAddress>(
+  const [address] = useState<IAddress>(
     Address.create({
       formatAddress: '',
       state: '',
@@ -67,8 +67,8 @@ export const TasksReferringBroker: FC = observer(() => {
             firstName,
             lastName,
             phoneNumber,
-            brokerLicense,
-            address,
+            license,
+            mailingAddress,
             hasReferringBroker,
           },
         },
@@ -83,9 +83,9 @@ export const TasksReferringBroker: FC = observer(() => {
       setFirstName(firstName ?? '');
       setLastName(lastName ?? '');
       setPhoneNumber(phoneNumber ?? '');
-      setBrokerLicense(brokerLicense ?? '');
+      setLicense(license ?? '');
 
-      address && mailingAddress.injectServerData(address);
+      mailingAddress && address.injectServerData(mailingAddress);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -102,18 +102,14 @@ export const TasksReferringBroker: FC = observer(() => {
       return true;
     }
     return (
-      !!email &&
-      !!firstName &&
-      !!lastName &&
-      !!phoneNumber &&
-      mailingAddress.isValid
+      !!email && !!firstName && !!lastName && !!phoneNumber && address.isValid
     );
   }, [
     email,
     firstName,
     hasReferringBroker,
     lastName,
-    mailingAddress.isValid,
+    address.isValid,
     phoneNumber,
   ]);
 
@@ -122,12 +118,13 @@ export const TasksReferringBroker: FC = observer(() => {
       loanId: POSGetParamsFromUrl(location.href).loanId,
       taskKey: DashboardTaskKey.referring_broker,
       data: {
+        hasReferringBroker,
         email,
         firstName,
         lastName,
         phoneNumber,
-        brokerLicense,
-        address: mailingAddress.getPostData(),
+        license,
+        mailingAddress: address.getPostData(),
       },
     };
     setSaveLoading(true);
@@ -257,16 +254,16 @@ export const TasksReferringBroker: FC = observer(() => {
                 </Stack>
 
                 <StyledTextField
-                  label={'Broker license (optional)'}
-                  onChange={(e) => setBrokerLicense(e.target.value)}
-                  placeholder={'Broker license (optional)'}
-                  value={brokerLicense}
+                  label={'License (optional)'}
+                  onChange={(e) => setLicense(e.target.value)}
+                  placeholder={'License (optional)'}
+                  value={license}
                 />
               </StyledFormItem>
 
               <StyledFormItem label={'Mailing information (optional)'} sub>
                 <StyledGoogleAutoComplete
-                  address={mailingAddress}
+                  address={address}
                   label={'Mailing address'}
                 />
               </StyledFormItem>
