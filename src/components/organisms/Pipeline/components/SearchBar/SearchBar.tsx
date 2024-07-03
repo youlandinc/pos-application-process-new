@@ -60,7 +60,7 @@ export const SearchBar: FC<SearchBarProps> = ({
             </Typography>
           </Typography>
         );
-      case UserType.LENDER:
+      case UserType.LOAN_OFFICER:
         return (
           <Typography fontSize={{ xs: 20, lg: 24 }} variant={'h5'}>
             Pipeline{' '}
@@ -70,7 +70,7 @@ export const SearchBar: FC<SearchBarProps> = ({
               fontSize={{ xs: 16, lg: 20 }}
               variant={'h5'}
             >
-              for lenders
+              for loan officers
             </Typography>
           </Typography>
         );
