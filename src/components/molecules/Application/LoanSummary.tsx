@@ -98,10 +98,12 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
       async (fileType: 'letter' | 'summary') => {
         setViewLoading(true);
         try {
-          const { data } = await _fetchFile(applicationForm.loanId!, fileType);
+          const {
+            data: { letterHtml },
+          } = await _fetchFile(applicationForm.loanId!, fileType);
           previewOpen();
           setTimeout(() => {
-            renderFile(data);
+            renderFile(letterHtml);
           }, 100);
         } catch (err) {
           const { header, message, variant } = err as HttpError;
