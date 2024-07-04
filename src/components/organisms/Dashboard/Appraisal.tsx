@@ -165,7 +165,7 @@ export const Appraisal: FC = () => {
         appraisalFiles: appraisalFiles ?? [],
 
         isExpedited: isExpedited ?? false,
-        isNeedToFill: isNeedToFill ?? false,
+        isNeedToFill: isNeedToFill ?? true,
         isNeedToSend: isNeedToSend ?? false,
 
         firstName: firstName ?? '',

@@ -48,7 +48,7 @@ export const Documents: FC = () => {
     }
     try {
       const {
-        data: { docs, isTips },
+        data: { docs, isTips, loanNumber },
       } = await _fetchLoanDocumentData(loanId);
       setIsTips(isTips);
       const tabData = docs.reduce(
@@ -66,6 +66,7 @@ export const Documents: FC = () => {
               {cur.categoryDocs.map((item, index) => (
                 <StyledUploadButtonBox
                   key={`${item.fileKey}_${index}`}
+                  loanNumber={loanNumber}
                   refresh={() => fetchData()}
                   {...item}
                 />
