@@ -98,7 +98,7 @@ export const ResetPassword: FC = observer(() => {
           variant: 'success',
           autoHideDuration: AUTO_HIDE_DURATION,
         });
-        return router.push('/');
+        return router.push('/pipeline');
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
