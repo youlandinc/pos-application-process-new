@@ -715,13 +715,23 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
                 <ContentCopy
                   onClick={async () => {
                     await navigator.clipboard.writeText(
-                      `${
-                        saasState?.organizationName || 'YouLand Inc'
+                      `${saasState?.address?.address}${
+                        saasState?.address.aptNumber
+                          ? `, ${saasState?.address.aptNumber}`
+                          : ''
                       }. ISAOA/ATIMA ${
-                        saasState?.address?.address || '236 Kingfisher Avenue'
-                      }, ${saasState?.address?.city || 'Alameda'}, ${
-                        saasState?.address?.state || 'CA'
-                      } ${saasState?.address?.postcode || '94501'}`,
+                        saasState?.address?.city
+                          ? `${saasState?.address?.city}, `
+                          : ''
+                      }${
+                        saasState?.address?.city
+                          ? `${saasState?.address?.city}, `
+                          : ''
+                      }${
+                        saasState?.address?.postcode
+                          ? `${saasState?.address?.postcode}`
+                          : ''
+                      }`,
                     );
                     enqueueSnackbar('Copied data to clipboard', {
                       variant: 'success',
