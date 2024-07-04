@@ -12,7 +12,7 @@ import {
 } from './index';
 
 import { POSTypeOf } from '@/utils';
-import { useGooglePlacesSearch } from '@/hooks';
+import { useBreakpoints, useGooglePlacesSearch } from '@/hooks';
 import { OPTIONS_COMMON_STATE } from '@/constants';
 
 import { StyledSelect, StyledTextField } from '@/components/atoms';
@@ -172,6 +172,8 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
   label,
   ...rest
 }) => {
+  const breakpoints = useBreakpoints();
+
   const [selfValue, setSelfValue] = useState<PlaceType | null | string>(value);
 
   const { options, loading, getPlaceDetailsRequest, serviceLoaded } =
@@ -223,12 +225,9 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
         <StyledTextField
           {...params}
           fullWidth
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: 'new-password',
-          }}
           label={label || 'Street address'}
           placeholder="Address"
+          // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
           variant="outlined"
         />
       )}

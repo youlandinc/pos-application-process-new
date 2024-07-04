@@ -24,6 +24,7 @@ export const DashboardInfo = types
     loanType: types.maybe(types.string),
     loading: types.boolean,
     loanId: types.maybe(types.string),
+    loanNumber: types.maybe(types.string),
   })
   .actions((self) => ({
     setLoanId(loanId: string) {
@@ -41,13 +42,20 @@ export const DashboardInfo = types
       self.loading = true;
       try {
         const {
-          data: { propertyAddress, loanType, propertyType, propertyUnit },
+          data: {
+            propertyAddress,
+            loanType,
+            propertyType,
+            propertyUnit,
+            loanNumber,
+          },
         } = yield _fetchDashboardInfo(loanId);
         self.propertyAddress.injectServerData(propertyAddress);
         self.loanType = loanType;
         self.propertyType = propertyType || LoanPropertyTypeEnum.default;
         self.propertyUnit = propertyUnit || LoanPropertyUnitEnum.default;
         self.loanId = loanId;
+        self.loanNumber = loanNumber ?? '';
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {

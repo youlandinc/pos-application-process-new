@@ -9,9 +9,11 @@ import {
   APPLICATION_LOAN_PURPOSE,
   APPLICATION_PROPERTY_TYPE,
   APPLICATION_PROPERTY_UNIT,
+  OPTIONS_COMMON_CITIZEN_TYPE,
 } from '@/constants';
 
 import {
+  LoanCitizenshipEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
@@ -150,6 +152,25 @@ export const StartingQuestion: FC<
           </StyledFormItem>
         )}
       </Transitions>
+
+      <StyledFormItem
+        label={"What is the borrower's citizenship status?"}
+        labelSx={{
+          textAlign: { xs: 'left', lg: 'center' },
+        }}
+        width={'100%'}
+      >
+        <StyledSelectOption
+          onChange={(value) => {
+            startingQuestion.changeFieldValue(
+              'citizenship',
+              value as string as LoanCitizenshipEnum,
+            );
+          }}
+          options={OPTIONS_COMMON_CITIZEN_TYPE}
+          value={startingQuestion.citizenship}
+        />
+      </StyledFormItem>
 
       <StyledCheckbox
         checked={startingQuestion.isOccupyProperty}

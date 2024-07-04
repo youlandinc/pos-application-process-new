@@ -132,9 +132,6 @@ export const SettingsChangePassword: FC = () => {
 
       <StyledTextFieldPassword
         disabled={loading}
-        inputProps={{
-          autoComplete: 'new-password',
-        }}
         label={'Current password'}
         onChange={(e) => setOldPassword(e.target.value)}
         placeholder={'Current password'}
@@ -149,9 +146,6 @@ export const SettingsChangePassword: FC = () => {
               ? Object.values(passwordError).filter((item) => !item).length > 0
               : false
           }
-          inputProps={{
-            autoComplete: 'new-password',
-          }}
           label={'New password'}
           onChange={handledPasswordChange}
           placeholder={'New password'}
@@ -206,9 +200,6 @@ export const SettingsChangePassword: FC = () => {
 
       <StyledTextFieldPassword
         disabled={loading}
-        inputProps={{
-          autoComplete: 'new-password',
-        }}
         label={'Confirm new password'}
         onChange={(e) => {
           if (formError?.confirmedPassword) {

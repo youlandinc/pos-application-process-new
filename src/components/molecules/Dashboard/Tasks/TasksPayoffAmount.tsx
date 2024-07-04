@@ -1,11 +1,11 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
 
-import { POSGetParamsFromUrl } from '@/utils';
 import { AUTO_HIDE_DURATION } from '@/constants';
+import { POSGetParamsFromUrl } from '@/utils';
 
 import {
   StyledButton,
@@ -19,14 +19,13 @@ import {
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
 
-export const TasksRehabInfo: FC = () => {
+export const TasksPayoffAmount: FC = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const [saveLoading, setSaveLoading] = useState(false);
 
-  const [arv, setArv] = useState<number | undefined>();
-  const [square, setSquare] = useState<number | undefined>();
+  const [payoffAmount, setPayoffAmount] = useState<number | undefined>();
 
   const { loading } = useAsync(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
@@ -36,14 +35,13 @@ export const TasksRehabInfo: FC = () => {
     try {
       const {
         data: {
-          data: { arv, square },
+          data: { payoffAmount },
         },
       } = await _fetchLoanTaskDetail({
         loanId,
-        taskKey: DashboardTaskKey.rehab_info,
+        taskKey: DashboardTaskKey.payoff_amount,
       });
-      setArv(arv || undefined);
-      setSquare(square || undefined);
+      setPayoffAmount(payoffAmount);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -55,17 +53,12 @@ export const TasksRehabInfo: FC = () => {
     }
   }, []);
 
-  const isFormDataValid = useMemo(() => {
-    return !!arv && !!square;
-  }, [arv, square]);
-
   const handleSave = async () => {
     const postData = {
       loanId: POSGetParamsFromUrl(location.href).loanId,
-      taskKey: DashboardTaskKey.rehab_info,
+      taskKey: DashboardTaskKey.payoff_amount,
       data: {
-        arv,
-        square,
+        payoffAmount,
       },
     };
     setSaveLoading(true);
@@ -115,34 +108,24 @@ export const TasksRehabInfo: FC = () => {
           textAlign={'center'}
           variant={'h5'}
         >
-          Rehab info
+          Payoff amount
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
             variant={'body1'}
           >
-            Please provide some more information about the value of the property
-            as it is now and the planned after-repair square footage.
+            Please provide the full amount due to your lender for the complete
+            repayment of your current loan.
           </Typography>
         </Typography>
 
-        <Stack gap={3} width={'100%'}>
-          <StyledTextFieldNumber
-            label={'After repair value (ARV)'}
-            onValueChange={({ floatValue }) => setArv(floatValue)}
-            placeholder={'After repair value (ARV)'}
-            prefix={'$'}
-            value={arv}
-          />
-
-          <StyledTextFieldNumber
-            label={'After-repair square footage'}
-            onValueChange={({ floatValue }) => setSquare(floatValue)}
-            placeholder={'After-repair square footage'}
-            suffix={' sq ft'}
-            value={square}
-          />
-        </Stack>
+        <StyledTextFieldNumber
+          label={'Payoff amount'}
+          onValueChange={({ floatValue }) => setPayoffAmount(floatValue)}
+          placeholder={'Payoff amount'}
+          prefix={'$'}
+          value={payoffAmount}
+        />
 
         <Stack
           flexDirection={{ xs: 'unset', md: 'row' }}
@@ -165,7 +148,7 @@ export const TasksRehabInfo: FC = () => {
           </StyledButton>
           <StyledButton
             color={'primary'}
-            disabled={saveLoading || !isFormDataValid}
+            disabled={saveLoading || !payoffAmount}
             loading={saveLoading}
             onClick={handleSave}
             sx={{ flex: 1, width: '100%' }}

@@ -29,7 +29,7 @@ export const StyledButtonGroup: FC<StyledButtonGroupProps> = ({
         <ToggleButton
           disableRipple
           key={index}
-          size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
+          // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
           value={item.value}
         >
           {item.label}
