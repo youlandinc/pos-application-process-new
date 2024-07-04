@@ -57,17 +57,18 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
         InputProps={{
           ...rest.InputProps,
           inputComponent: NumericFormatCustom as any,
-          inputProps: {
-            allowNegative,
-            onValueChange,
-            prefix,
-            suffix,
-            value,
-            sx,
-            decimalScale,
-            thousandSeparator,
-            fixedDecimalScale: percentage,
-          },
+        }}
+        inputProps={{
+          allowNegative,
+          onValueChange,
+          prefix,
+          suffix,
+          value,
+          sx,
+          decimalScale,
+          thousandSeparator,
+          fixedDecimalScale: percentage,
+          autoComplete: 'off',
         }}
         name="numberformat"
         //eslint-disable-next-line @typescript-eslint/ban-ts-comment

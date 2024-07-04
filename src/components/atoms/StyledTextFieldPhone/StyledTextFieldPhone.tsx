@@ -37,6 +37,9 @@ export const StyledTextFieldPhone: FC<StyledTextFieldPhoneProps> = ({
       customInput={StyledTextField}
       disabled={disabled}
       format={format}
+      inputProps={{
+        autoComplete: 'off',
+      }}
       mask={mask}
       onValueChange={handledChange}
       sx={{
