@@ -61,6 +61,7 @@ export interface DashboardDocumentsResponse {
     categoryName: string;
   }[];
   isTips: boolean;
+  loanNumber: string;
 }
 
 // teams

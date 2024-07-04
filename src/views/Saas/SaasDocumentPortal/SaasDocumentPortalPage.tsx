@@ -38,6 +38,7 @@ export const SaasDocumentPortalPage: FC = () => {
 
   const [firstLoading, setFirstLoading] = useState<boolean>(true);
   const [loanId, setLoanId] = useState<string>('');
+  const [loanNumber, setLoanNumber] = useState<string>('');
   const [formList, setFormList] = useState<formItem[]>([]);
   const [address, setAddress] = useState<string>('');
 
@@ -54,6 +55,7 @@ export const SaasDocumentPortalPage: FC = () => {
           const { data } = res;
           setFormList(data?.formList);
           setAddress(data?.propertyAddress ?? '');
+          setLoanNumber(data?.loanNumber ?? '');
         })
         .catch((err) => {
           const { header, message, variant } = err as HttpError;
@@ -162,6 +164,7 @@ export const SaasDocumentPortalPage: FC = () => {
                         isFromLOS={true}
                         key={`${item.formId}_${index}`}
                         loanId={loanId}
+                        loanNumber={loanNumber}
                         onDelete={async (deleteIndex) => {
                           if (!item.files[deleteIndex].url) {
                             return;
