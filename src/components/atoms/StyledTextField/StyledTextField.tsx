@@ -76,9 +76,12 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
             validate
           ) : undefined
         }
+        InputProps={{
+          ...rest.InputProps,
+        }}
         inputProps={{
           ...rest.inputProps,
-          autoComplete: disabledAutoFill ? 'new-password' : '',
+          autoComplete: disabledAutoFill ? 'off' : '',
         }}
         onChange={onChange}
         // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}

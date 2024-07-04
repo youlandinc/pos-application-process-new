@@ -209,7 +209,7 @@ export const ResetPassword: FC = observer(() => {
                 textAlign={'center'}
                 variant={'h3'}
               >
-                Reset password
+                Set password
               </Typography>
 
               <Stack>
