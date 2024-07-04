@@ -17,7 +17,7 @@ export const FormData = {
     loanPurpose: LoanPurposeEnum.purchase, // purchase, refinance
     propertyType: LoanPropertyTypeEnum.single_family, //  SINGLE_FAMILY,   TOWNHOUSE,  CONDO,   UNITS24
     propertyUnit: LoanPropertyUnitEnum.two_units, //  TWO_UNITS,   THREE_UNITS,   FOUR_UNITS
-    citizenship: LoanCitizenshipEnum.default, // US_CITIZEN,   PERMANENT_RESIDENT_ALIEN,   FOREIGN_NATIONAL
+    citizenship: LoanCitizenshipEnum.us_citizen, // US_CITIZEN,   PERMANENT_RESIDENT_ALIEN,   FOREIGN_NATIONAL
     isOccupyProperty: false,
   },
   [LoanSnapshotEnum.estimate_rate]: {
