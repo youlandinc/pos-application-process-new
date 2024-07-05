@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Collapse, Stack, Typography } from '@mui/material';
+import { Box, Collapse, Icon, Stack, Typography } from '@mui/material';
 import { CloseOutlined, KeyboardArrowUp } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 
@@ -39,6 +39,7 @@ import {
   UserType,
 } from '@/types';
 import { _downloadFile, _fetchFile } from '@/requests/application';
+import NOTIFICATION_INFO from '@/components/atoms/StyledNotification/notification_info.svg';
 
 export const LoanSummary: FC<FormNodeBaseProps> = observer(
   ({ nextStep, nextState, backState, backStep, data }) => {
@@ -53,6 +54,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
     } = useSwitch(false);
     const [collapsed, setCollapsed] = useState<boolean>(false);
     const [viewLoading, setViewLoading] = useState<boolean>(false);
+    const [hasBorrowerName, setHasBorrowerName] = useState<boolean>(false);
 
     const pdfFile = useRef(null);
     const { renderFile } = useRenderPdf(pdfFile);
@@ -99,8 +101,9 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
         setViewLoading(true);
         try {
           const {
-            data: { letterHtml },
+            data: { letterHtml, hasBorrowerName },
           } = await _fetchFile(applicationForm.loanId!, fileType);
+          setHasBorrowerName(hasBorrowerName);
           previewOpen();
           setTimeout(() => {
             renderFile(letterHtml);
@@ -763,7 +766,34 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
         </Stack>
 
         <StyledDialog
-          content={<Box py={6} ref={pdfFile} />}
+          content={
+            <Stack py={6} width={'100%'}>
+              {!hasBorrowerName && (
+                <Stack px={8}>
+                  <Stack
+                    bgcolor={'#F4F7FD'}
+                    borderRadius={2}
+                    boxShadow={'0 2px 2px rgba(227, 227, 227, 1)'}
+                    color={'#636A7C'}
+                    flexDirection={'row'}
+                    fontSize={{ xs: 12, lg: 14 }}
+                    fontWeight={600}
+                    gap={1}
+                    p={'12px 24px'}
+                  >
+                    <Icon
+                      component={NOTIFICATION_INFO}
+                      sx={{ mt: { xs: -0.5, lg: -0.25 } }}
+                    />
+                    If you want to add the borrower&apos;s name, you can
+                    complete the borrower&apos;s information task after
+                    submitting the loan.
+                  </Stack>
+                </Stack>
+              )}
+              <Box pt={3} ref={pdfFile} />
+            </Stack>
+          }
           disableEscapeKeyDown
           footer={
             <Stack pt={3}>
