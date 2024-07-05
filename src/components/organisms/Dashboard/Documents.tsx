@@ -182,12 +182,19 @@ export const Documents: FC = () => {
                   return;
                 }
                 await onClickToDownloadLetter();
+                // todo
+                // await router.push({
+                //   pathname: '/dashboard/overview',
+                //   query: {
+                //     loanId: router.query.loanId,
+                //   },
+                // });
               }}
               sx={{ cursor: downloadLoading ? 'not-allowed' : 'pointer' }}
             >
               Pre-approval letter
             </Typography>
-            . Please upload your documents below.
+            .
           </Typography>
         </Typography>
 

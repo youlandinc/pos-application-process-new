@@ -24,6 +24,7 @@ import { theme } from '@/theme';
 import 'normalize.css';
 import 'reset.css';
 import '@/styles/globals.css';
+import 'cropperjs/dist/cropper.css';
 
 import { Provider, rootStore } from '@/models/Root';
 

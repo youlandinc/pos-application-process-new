@@ -56,6 +56,4 @@ export * from './StyledUploadButtonBox';
 
 export * from './StyledNotification';
 
-export * from './StyledAvatarUpload';
-
 export * from './StyledSwitch';

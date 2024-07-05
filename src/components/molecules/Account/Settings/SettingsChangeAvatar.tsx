@@ -55,17 +55,19 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
       return await _uploadUserInfoAvatar(formData)
         .then(async ({ data }) => {
           if (Array.isArray(data)) {
-            await _updateUserInfoAvatar({ avatar: data[0].url });
+            const { url } = data[0];
+            const result = url.split('?')[0];
+            await _updateUserInfoAvatar({ avatar: result });
 
             dispatch({
               type: 'change',
-              payload: { field: 'avatar', value: data[0].url },
+              payload: { field: 'avatar', value: result },
             });
 
             userpool.setLastAuthUserInfo(
               userpool.getLastAuthUserId(),
               'avatar',
-              data[0].url,
+              result,
             );
           }
 
