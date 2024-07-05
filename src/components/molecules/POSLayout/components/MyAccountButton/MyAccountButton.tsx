@@ -25,7 +25,7 @@ import { userpool } from '@/constants';
 
 import { MyAccountButtonProps, MyAccountStyles } from './index';
 
-import { StyledAvatarUploadRef, StyledButton } from '@/components/atoms';
+import { StyledButton } from '@/components/atoms';
 
 const MENU_LIST = [
   { label: 'Account', url: '/account' },
@@ -60,8 +60,6 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ store }) => {
 
   const anchorRef = useRef<HTMLButtonElement>(null);
 
-  const avatarRef = useRef<StyledAvatarUploadRef>(null);
-
   const router = useRouter();
 
   const breakpoint = useBreakpoints();
@@ -82,10 +80,6 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ store }) => {
   const handledMenuItemClick = useCallback(
     async (e: MouseEvent<HTMLElement>, url: string) => {
       e.preventDefault();
-      if (url === 'change_avatar') {
-        avatarRef.current?.open();
-        return;
-      }
       if (url === 'sign_out') {
         handledClose(e);
         store.logout();
