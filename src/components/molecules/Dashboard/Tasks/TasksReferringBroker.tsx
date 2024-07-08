@@ -35,8 +35,7 @@ export const TasksReferringBroker: FC = observer(() => {
 
   const [hasReferringBroker, setHasReferringBroker] = useState<boolean>(false);
 
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
+  const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [license, setLicense] = useState<string>('');
@@ -64,8 +63,7 @@ export const TasksReferringBroker: FC = observer(() => {
         data: {
           data: {
             email,
-            firstName,
-            lastName,
+            companyName,
             phoneNumber,
             license,
             mailingAddress,
@@ -80,8 +78,7 @@ export const TasksReferringBroker: FC = observer(() => {
       setHasReferringBroker(hasReferringBroker ?? false);
 
       setEmail(email ?? '');
-      setFirstName(firstName ?? '');
-      setLastName(lastName ?? '');
+      setCompanyName(companyName ?? '');
       setPhoneNumber(phoneNumber ?? '');
       setLicense(license ?? '');
 
@@ -101,17 +98,8 @@ export const TasksReferringBroker: FC = observer(() => {
     if (!hasReferringBroker) {
       return true;
     }
-    return (
-      !!email && !!firstName && !!lastName && !!phoneNumber && address.isValid
-    );
-  }, [
-    email,
-    firstName,
-    hasReferringBroker,
-    lastName,
-    address.isValid,
-    phoneNumber,
-  ]);
+    return !!email && !!companyName && !!phoneNumber && address.isValid;
+  }, [email, companyName, hasReferringBroker, address.isValid, phoneNumber]);
 
   const handleSave = async () => {
     const postData = {
@@ -120,8 +108,7 @@ export const TasksReferringBroker: FC = observer(() => {
       data: {
         hasReferringBroker,
         email,
-        firstName,
-        lastName,
+        companyName,
         phoneNumber,
         license,
         mailingAddress: address.getPostData(),
@@ -207,34 +194,15 @@ export const TasksReferringBroker: FC = observer(() => {
           {hasReferringBroker && (
             <Stack gap={6} width={'100%'}>
               <StyledFormItem gap={3} label={'Personal information'} sub>
-                <Stack flexDirection={{ xs: 'column', lg: 'row' }} gap={3}>
-                  <StyledTextField
-                    label={'First name'}
-                    onChange={(e) => {
-                      const value = (e.target.value as string)?.replace(
-                        /^./,
-                        (match) => match?.toUpperCase(),
-                      );
-                      setFirstName(value);
-                    }}
-                    placeholder={'First name'}
-                    required
-                    value={firstName}
-                  />
-                  <StyledTextField
-                    label={'Last name'}
-                    onChange={(e) => {
-                      const value = (e.target.value as string)?.replace(
-                        /^./,
-                        (match) => match.toUpperCase(),
-                      );
-                      setLastName(value);
-                    }}
-                    placeholder={'Last name'}
-                    required
-                    value={lastName}
-                  />
-                </Stack>
+                <StyledTextField
+                  label={'Company name'}
+                  onChange={(e) => {
+                    setCompanyName(e.target.value);
+                  }}
+                  placeholder={'Company name'}
+                  required
+                  value={companyName}
+                />
 
                 <Stack flexDirection={{ xs: 'column', lg: 'row' }} gap={3}>
                   <StyledTextField
