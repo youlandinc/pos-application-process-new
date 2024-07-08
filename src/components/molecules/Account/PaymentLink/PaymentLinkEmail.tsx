@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   CircularProgress,
   Icon,
@@ -455,7 +455,8 @@ export const PaymentLinkEmail: FC<{
       case 0:
         return (
           <StyledButton
-            disabled={stepButtonLoading}
+            disabled={stepButtonLoading || !domain}
+            id={`account-custom-payment-link-email-button-confirm-${activeStep}`}
             loading={stepButtonLoading}
             onClick={async () => {
               if (domain.trim() === '') {
@@ -493,6 +494,7 @@ export const PaymentLinkEmail: FC<{
         return (
           <StyledButton
             disabled={stepButtonLoading}
+            id={`account-custom-payment-link-email-button-confirm-${activeStep}`}
             loading={stepButtonLoading}
             onClick={async () => {
               if (emailDomainList.length <= 1) {
@@ -539,6 +541,7 @@ export const PaymentLinkEmail: FC<{
         return (
           <StyledButton
             disabled={stepButtonLoading || !userName}
+            id={`account-custom-payment-link-email-button-confirm-${activeStep}`}
             loading={stepButtonLoading}
             onClick={async () => {
               const target = emailDomainList.find(
@@ -591,6 +594,43 @@ export const PaymentLinkEmail: FC<{
     stepButtonLoading,
     userName,
   ]);
+
+  const keydownEvent = useCallback(
+    (e: KeyboardEvent) => {
+      const confirmButton: (HTMLElement & { disabled?: boolean }) | null =
+        document.getElementById(
+          `account-custom-payment-link-email-button-confirm-${activeStep}`,
+        );
+      const cancelButton: (HTMLElement & { disabled?: boolean }) | null =
+        document.getElementById(
+          `account-custom-payment-link-email-button-cancel-${activeStep}`,
+        );
+
+      if (!confirmButton) {
+        return;
+      }
+
+      if (e.key === 'Enter') {
+        if (!confirmButton.disabled) {
+          confirmButton.click();
+        }
+      }
+
+      if (e.key === 'Escape') {
+        if (cancelButton) {
+          cancelButton.click();
+        }
+      }
+    },
+    [activeStep],
+  );
+
+  useEffect(() => {
+    document.addEventListener('keydown', keydownEvent, false);
+    return () => {
+      document.removeEventListener('keydown', keydownEvent, false);
+    };
+  }, [keydownEvent]);
 
   return (
     <Stack
@@ -780,6 +820,7 @@ export const PaymentLinkEmail: FC<{
           >
             <StyledButton
               color={'info'}
+              id={`account-custom-payment-link-email-button-cancel-${activeStep}`}
               onClick={() => {
                 close();
                 setTimeout(() => {
