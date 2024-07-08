@@ -31,6 +31,7 @@ export const TasksInvestmentExperience: FC = () => {
   const [investmentFiles, setInvestmentFiles] = useState<TaskFiles[]>([]);
   const [templateName, setTemplateName] = useState('');
   const [templateUrl, setTemplateUrl] = useState('');
+  const [firstLoad, setFirstLoad] = useState(true);
 
   const fetchInitData = async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
@@ -48,7 +49,9 @@ export const TasksInvestmentExperience: FC = () => {
       const { investmentFiles, templateName, templateUrl } = data;
 
       setInvestmentFiles(investmentFiles ?? []);
-      setPropertiesNum(data?.propertiesNum ?? propertiesNum);
+      setPropertiesNum(
+        firstLoad ? data?.propertiesNum ?? propertiesNum : propertiesNum,
+      );
       setTemplateName(templateName);
       setTemplateUrl(templateUrl);
     } catch (err) {
@@ -64,6 +67,8 @@ export const TasksInvestmentExperience: FC = () => {
             query: { loanId: router.query.loanId },
           }),
       });
+    } finally {
+      setFirstLoad(false);
     }
   };
 
