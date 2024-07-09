@@ -193,7 +193,7 @@ export const TasksReferringBroker: FC = observer(() => {
         >
           {hasReferringBroker && (
             <Stack gap={6} width={'100%'}>
-              <StyledFormItem gap={3} label={'Personal information'} sub>
+              <StyledFormItem gap={3} label={'Broker information'} sub>
                 <StyledTextField
                   label={'Company name'}
                   onChange={(e) => {
