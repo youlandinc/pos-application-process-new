@@ -5,7 +5,7 @@ import { useSnackbar } from 'notistack';
 import { useMst } from '@/models/Root';
 
 import { usePersistFn } from './index';
-import { AUTO_HIDE_DURATION } from '@/constants';
+import { AUTO_HIDE_DURATION, userpool } from '@/constants';
 import { _fetchUserInfo } from '@/requests';
 import { HttpError } from '@/types';
 // import { LoanSnapshotEnum } from '@/types';
@@ -58,11 +58,24 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
 
     try {
       const {
-        data: { forceChangePassword },
+        data: {
+          forceChangePassword,
+          userInfo: { avatar, firstName, lastName, backgroundColor },
+        },
       } = await _fetchUserInfo();
       if (forceChangePassword) {
         return router.push('/auth/reset-password');
       }
+      const lastAuthId = userpool.getLastAuthUserId();
+
+      userpool.setLastAuthUserInfo(lastAuthId, 'avatar', avatar ?? '');
+      userpool.setLastAuthUserInfo(lastAuthId, 'firstName', firstName ?? '');
+      userpool.setLastAuthUserInfo(lastAuthId, 'lastName', lastName ?? '');
+      userpool.setLastAuthUserInfo(
+        lastAuthId,
+        'background',
+        backgroundColor ?? '',
+      );
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
