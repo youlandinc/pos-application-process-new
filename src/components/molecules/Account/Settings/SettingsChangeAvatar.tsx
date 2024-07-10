@@ -56,12 +56,13 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
         .then(async ({ data }) => {
           if (Array.isArray(data)) {
             const { url } = data[0];
+
             const result = url.split('?')[0];
             await _updateUserInfoAvatar({ avatar: result });
 
             dispatch({
               type: 'change',
-              payload: { field: 'avatar', value: result },
+              payload: { field: 'avatar', value: url },
             });
 
             userpool.setLastAuthUserInfo(
