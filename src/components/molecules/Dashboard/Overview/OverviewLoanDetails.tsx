@@ -67,6 +67,12 @@ interface OverviewLoanDetailsProps {
   processingFee?: number;
   additionalFees: AdditionalFee[];
   //
+  referCompensationFee?: number;
+  referOriginationFee?: number;
+  referOriginationPoints?: number;
+  referProcessingFee?: number;
+  referAdditionalFees: AdditionalFee[];
+  //
   propertyType: LoanPropertyTypeEnum;
   propertyUnit?: LoanPropertyUnitEnum;
   occupancy: string;
@@ -110,6 +116,12 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = observer(
     originationPoints,
     processingFee,
     additionalFees,
+    //
+    referCompensationFee,
+    referOriginationFee,
+    referOriginationPoints,
+    referProcessingFee,
+    referAdditionalFees,
     //
     propertyType,
     propertyUnit,
@@ -232,75 +244,145 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = observer(
       switch (userType) {
         case UserType.BROKER:
           return (
-            <Stack
-              border={'1px solid #D2D6E1'}
-              borderRadius={2}
-              gap={{ xs: 1.5, lg: 3 }}
-              p={{ xs: 1.5, lg: 3 }}
-              width={'100%'}
-            >
-              <LoanDetailsCardRow
-                content={POSFormatDollar(compensationFee)}
-                isHeader={true}
-                title={'Total broker compensation'}
-              />
-              <LoanDetailsCardRow
-                content={`${POSFormatDollar(
-                  originationFee,
-                )} (${POSFormatPercent(
-                  originationPoints,
-                  POSGetDecimalPlaces(originationPoints),
-                )})`}
-                title={'Broker origination fee'}
-              />
-              <LoanDetailsCardRow
-                content={POSFormatDollar(processingFee)}
-                title={'Broker processing fee'}
-              />
-              {additionalFees.map((fee, index) => (
+            <>
+              <Stack
+                border={'1px solid #D2D6E1'}
+                borderRadius={2}
+                gap={{ xs: 1.5, lg: 3 }}
+                p={{ xs: 1.5, lg: 3 }}
+                width={'100%'}
+              >
                 <LoanDetailsCardRow
-                  content={POSFormatDollar(fee.value)}
-                  key={`broker_additionalFees_${index}`}
-                  title={fee.fieldName}
+                  content={POSFormatDollar(compensationFee)}
+                  isHeader={true}
+                  title={'Total broker compensation'}
                 />
-              ))}
-            </Stack>
+                <LoanDetailsCardRow
+                  content={`${POSFormatDollar(
+                    originationFee,
+                  )} (${POSFormatPercent(
+                    originationPoints,
+                    POSGetDecimalPlaces(originationPoints),
+                  )})`}
+                  title={'Broker origination fee'}
+                />
+                <LoanDetailsCardRow
+                  content={POSFormatDollar(processingFee)}
+                  title={'Broker processing fee'}
+                />
+                {additionalFees?.map((fee, index) => (
+                  <LoanDetailsCardRow
+                    content={POSFormatDollar(fee.value)}
+                    key={`broker_additionalFees_${index}`}
+                    title={fee.fieldName}
+                  />
+                ))}
+              </Stack>
+              <Stack
+                border={'1px solid #D2D6E1'}
+                borderRadius={2}
+                gap={{ xs: 1.5, lg: 3 }}
+                p={{ xs: 1.5, lg: 3 }}
+                width={'100%'}
+              >
+                <LoanDetailsCardRow
+                  content={POSFormatDollar(referCompensationFee)}
+                  isHeader={true}
+                  title={'Total referring broker compensation'}
+                />
+                <LoanDetailsCardRow
+                  content={`${POSFormatDollar(
+                    referOriginationFee,
+                  )} (${POSFormatPercent(
+                    referOriginationPoints,
+                    POSGetDecimalPlaces(referOriginationPoints),
+                  )})`}
+                  title={'Referring broker origination fee'}
+                />
+                <LoanDetailsCardRow
+                  content={POSFormatDollar(referProcessingFee)}
+                  title={'Referring broker processing fee'}
+                />
+                {referAdditionalFees?.map((fee, index) => (
+                  <LoanDetailsCardRow
+                    content={POSFormatDollar(fee.value)}
+                    key={`refer_broker_additionalFees_${index}`}
+                    title={fee.fieldName}
+                  />
+                ))}
+              </Stack>
+            </>
           );
         case UserType.LOAN_OFFICER:
           return (
-            <Stack
-              border={'1px solid #D2D6E1'}
-              borderRadius={2}
-              gap={{ xs: 1.5, lg: 3 }}
-              p={{ xs: 1.5, lg: 3 }}
-              width={'100%'}
-            >
-              <LoanDetailsCardRow
-                content={POSFormatDollar(compensationFee)}
-                isHeader={true}
-                title={'Total loan officer compensation'}
-              />
-              <LoanDetailsCardRow
-                content={`${POSFormatDollar(
-                  originationFee,
-                )} (${POSFormatPercent(
-                  originationPoints,
-                  POSGetDecimalPlaces(originationPoints),
-                )})`}
-                title={'Loan officer origination fee'}
-              />
-              <LoanDetailsCardRow
-                content={POSFormatDollar(processingFee)}
-                title={'Loan officer processing fee'}
-              />
-              {additionalFees.map((fee, index) => (
+            <>
+              <Stack
+                border={'1px solid #D2D6E1'}
+                borderRadius={2}
+                gap={{ xs: 1.5, lg: 3 }}
+                p={{ xs: 1.5, lg: 3 }}
+                width={'100%'}
+              >
                 <LoanDetailsCardRow
-                  content={POSFormatDollar(fee.value)}
-                  key={`officer_additionalFees_${index}`}
-                  title={fee.fieldName}
+                  content={POSFormatDollar(compensationFee)}
+                  isHeader={true}
+                  title={'Total loan officer compensation'}
                 />
-              ))}
-            </Stack>
+                <LoanDetailsCardRow
+                  content={`${POSFormatDollar(
+                    originationFee,
+                  )} (${POSFormatPercent(
+                    originationPoints,
+                    POSGetDecimalPlaces(originationPoints),
+                  )})`}
+                  title={'Loan officer origination fee'}
+                />
+                <LoanDetailsCardRow
+                  content={POSFormatDollar(processingFee)}
+                  title={'Loan officer processing fee'}
+                />
+                {additionalFees?.map((fee, index) => (
+                  <LoanDetailsCardRow
+                    content={POSFormatDollar(fee.value)}
+                    key={`officer_additionalFees_${index}`}
+                    title={fee.fieldName}
+                  />
+                ))}
+              </Stack>
+              <Stack
+                border={'1px solid #D2D6E1'}
+                borderRadius={2}
+                gap={{ xs: 1.5, lg: 3 }}
+                p={{ xs: 1.5, lg: 3 }}
+                width={'100%'}
+              >
+                <LoanDetailsCardRow
+                  content={POSFormatDollar(referCompensationFee)}
+                  isHeader={true}
+                  title={'Total referring broker compensation'}
+                />
+                <LoanDetailsCardRow
+                  content={`${POSFormatDollar(
+                    referOriginationFee,
+                  )} (${POSFormatPercent(
+                    referOriginationPoints,
+                    POSGetDecimalPlaces(referOriginationPoints),
+                  )})`}
+                  title={'Referring broker origination fee'}
+                />
+                <LoanDetailsCardRow
+                  content={POSFormatDollar(referProcessingFee)}
+                  title={'Referring broker processing fee'}
+                />
+                {referAdditionalFees?.map((fee, index) => (
+                  <LoanDetailsCardRow
+                    content={POSFormatDollar(fee.value)}
+                    key={`refer_officer_additionalFees_${index}`}
+                    title={fee.fieldName}
+                  />
+                ))}
+              </Stack>
+            </>
           );
         case UserType.REAL_ESTATE_AGENT:
           return (
@@ -321,10 +403,43 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = observer(
                   content={POSFormatDollar(processingFee)}
                   title={'Referral fee'}
                 />
-                {additionalFees.map((fee, index) => (
+                {additionalFees?.map((fee, index) => (
                   <LoanDetailsCardRow
                     content={POSFormatDollar(fee.value)}
                     key={`agent_additionalFees_${index}`}
+                    title={fee.fieldName}
+                  />
+                ))}
+              </Stack>
+              <Stack
+                border={'1px solid #D2D6E1'}
+                borderRadius={2}
+                gap={{ xs: 1.5, lg: 3 }}
+                p={{ xs: 1.5, lg: 3 }}
+                width={'100%'}
+              >
+                <LoanDetailsCardRow
+                  content={POSFormatDollar(referCompensationFee)}
+                  isHeader={true}
+                  title={'Total referring broker compensation'}
+                />
+                <LoanDetailsCardRow
+                  content={`${POSFormatDollar(
+                    referOriginationFee,
+                  )} (${POSFormatPercent(
+                    referOriginationPoints,
+                    POSGetDecimalPlaces(referOriginationPoints),
+                  )})`}
+                  title={'Referring broker origination fee'}
+                />
+                <LoanDetailsCardRow
+                  content={POSFormatDollar(referProcessingFee)}
+                  title={'Referring broker processing fee'}
+                />
+                {referAdditionalFees?.map((fee, index) => (
+                  <LoanDetailsCardRow
+                    content={POSFormatDollar(fee.value)}
+                    key={`refer_broker_additionalFees_${index}`}
                     title={fee.fieldName}
                   />
                 ))}
@@ -342,6 +457,11 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = observer(
       originationFee,
       originationPoints,
       processingFee,
+      referAdditionalFees,
+      referCompensationFee,
+      referOriginationFee,
+      referOriginationPoints,
+      referProcessingFee,
       userType,
     ]);
 

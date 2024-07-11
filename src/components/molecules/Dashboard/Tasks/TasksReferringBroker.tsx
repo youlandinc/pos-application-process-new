@@ -1,9 +1,14 @@
 import { FC, useMemo, useState } from 'react';
-import { Fade, Stack, Typography } from '@mui/material';
+import { Fade, Grow, Icon, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useAsync } from 'react-use';
+import { useSnackbar } from 'notistack';
+import _uniqueId from 'lodash/uniqueId';
 
 import { observer } from 'mobx-react-lite';
+import { Address, IAddress } from '@/models/common/Address';
 
+import { POSGetParamsFromUrl } from '@/utils';
 import { AUTO_HIDE_DURATION, OPTIONS_COMMON_YES_OR_NO } from '@/constants';
 
 import {
@@ -13,19 +18,30 @@ import {
   StyledGoogleAutoComplete,
   StyledLoading,
   StyledTextField,
+  StyledTextFieldNumber,
   StyledTextFieldPhone,
   Transitions,
 } from '@/components/atoms';
 
-import { DashboardTaskKey, HttpError, LoanAnswerEnum } from '@/types';
-import { Address, IAddress } from '@/models/common/Address';
-import { useAsync } from 'react-use';
-import { POSGetParamsFromUrl } from '@/utils';
+import {
+  AdditionalFee,
+  DashboardTaskKey,
+  FeeUnitEnum,
+  HttpError,
+  LoanAnswerEnum,
+} from '@/types';
 import {
   _fetchLoanTaskDetail,
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
-import { useSnackbar } from 'notistack';
+
+import ICON_CLOSE from '@/svg/icon/icon_close.svg';
+
+const initialized: AdditionalFee = {
+  fieldName: '',
+  unit: FeeUnitEnum.dollar,
+  value: undefined,
+};
 
 export const TasksReferringBroker: FC = observer(() => {
   const router = useRouter();
@@ -53,6 +69,16 @@ export const TasksReferringBroker: FC = observer(() => {
     }),
   );
 
+  const [referOriginationPoints, setReferOriginationPoints] = useState<
+    number | undefined
+  >();
+  const [referProcessingFee, setReferProcessingFee] = useState<
+    number | undefined
+  >();
+  const [referAdditionalFees, setReferAdditionalFees] = useState<
+    AdditionalFee[]
+  >([]);
+
   const { loading } = useAsync(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
     if (!loanId) {
@@ -68,6 +94,9 @@ export const TasksReferringBroker: FC = observer(() => {
             license,
             mailingAddress,
             hasReferringBroker,
+            referAdditionalFees,
+            referProcessingFee,
+            referOriginationPoints,
           },
         },
       } = await _fetchLoanTaskDetail({
@@ -82,6 +111,14 @@ export const TasksReferringBroker: FC = observer(() => {
       setPhoneNumber(phoneNumber ?? '');
       setLicense(license ?? '');
 
+      setReferProcessingFee(referProcessingFee);
+      setReferOriginationPoints(
+        referOriginationPoints
+          ? (referOriginationPoints * 1000000) / 10000
+          : undefined,
+      );
+      setReferAdditionalFees(referAdditionalFees ?? []);
+
       mailingAddress && address.injectServerData(mailingAddress);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
@@ -95,11 +132,26 @@ export const TasksReferringBroker: FC = observer(() => {
   }, []);
 
   const isFormDataValid = useMemo(() => {
+    const baseResult =
+      !!email && !!companyName && !!phoneNumber && address.isValid;
     if (!hasReferringBroker) {
       return true;
     }
-    return !!email && !!companyName && !!phoneNumber && address.isValid;
-  }, [email, companyName, hasReferringBroker, address.isValid, phoneNumber]);
+    if (referAdditionalFees.length > 0) {
+      return (
+        referAdditionalFees.every((item) => !!item.fieldName && !!item.value) &&
+        baseResult
+      );
+    }
+    return baseResult;
+  }, [
+    email,
+    companyName,
+    phoneNumber,
+    address.isValid,
+    hasReferringBroker,
+    referAdditionalFees,
+  ]);
 
   const handleSave = async () => {
     const postData = {
@@ -112,6 +164,11 @@ export const TasksReferringBroker: FC = observer(() => {
         phoneNumber,
         license,
         mailingAddress: address.getPostData(),
+        referAdditionalFees,
+        referProcessingFee,
+        referOriginationPoints: referOriginationPoints
+          ? referOriginationPoints / 100
+          : 0,
       },
     };
     setSaveLoading(true);
@@ -234,6 +291,125 @@ export const TasksReferringBroker: FC = observer(() => {
                   address={address}
                   label={'Mailing address'}
                 />
+              </StyledFormItem>
+
+              <StyledFormItem
+                label={'Referring broker compensation (optional)'}
+                sub
+              >
+                <Stack flexDirection={{ xs: 'column', lg: 'row' }} gap={3}>
+                  <StyledTextFieldNumber
+                    label={'Referring broker origination fee'}
+                    onValueChange={({ floatValue }) =>
+                      setReferOriginationPoints(floatValue)
+                    }
+                    percentage={true}
+                    placeholder={'Referring broker origination fee'}
+                    suffix={'%'}
+                    thousandSeparator={false}
+                    value={referOriginationPoints}
+                  />
+                  <StyledTextFieldNumber
+                    label={'Referring broker processing fee'}
+                    onValueChange={({ floatValue }) =>
+                      setReferProcessingFee(floatValue)
+                    }
+                    placeholder={'Referring broker processing fee'}
+                    prefix={'$'}
+                    value={referProcessingFee}
+                  />
+                </Stack>
+
+                <Stack gap={3} mt={3}>
+                  <Stack alignItems={'center'} flexDirection={'row'} gap={3}>
+                    <Stack bgcolor={'#D2D6E1'} flex={1} height={2} />
+                    <StyledButton
+                      color={'info'}
+                      onClick={() =>
+                        setReferAdditionalFees([
+                          ...referAdditionalFees,
+                          {
+                            ...initialized,
+                            id: _uniqueId('refer_additional_fee'),
+                          },
+                        ])
+                      }
+                      sx={{
+                        p: '0 !important',
+                        '&:hover': { backgroundColor: 'transparent' },
+                      }}
+                      variant={'text'}
+                    >
+                      + Add new fee
+                    </StyledButton>
+                  </Stack>
+                  {referAdditionalFees.map((item, index) => (
+                    <Grow
+                      in={true}
+                      key={item.id}
+                      style={{ transformOrigin: 'top left' }}
+                      timeout={index * 300}
+                    >
+                      <Stack gap={1.5}>
+                        <Stack
+                          alignItems={'center'}
+                          flexDirection={'row'}
+                          justifyContent={'space-between'}
+                        >
+                          <Typography variant={'subtitle1'}>
+                            Additional fee {index + 1}
+                          </Typography>
+                          <Icon
+                            component={ICON_CLOSE}
+                            onClick={() => {
+                              const temp = JSON.parse(
+                                JSON.stringify(referAdditionalFees),
+                              );
+                              temp.splice(index, 1);
+                              setReferAdditionalFees(temp);
+                            }}
+                            sx={{
+                              height: { xs: 20, lg: 24 },
+                              width: { xs: 20, lg: 24 },
+                              cursor: 'pointer',
+                            }}
+                          />
+                        </Stack>
+
+                        <Stack
+                          flexDirection={{ xs: 'column', lg: 'row' }}
+                          gap={3}
+                        >
+                          <StyledTextField
+                            label={'Fee name'}
+                            onChange={(e) => {
+                              const temp = JSON.parse(
+                                JSON.stringify(referAdditionalFees),
+                              );
+                              temp[index].fieldName = e.target.value;
+                              setReferAdditionalFees(temp);
+                            }}
+                            placeholder={'Fee name'}
+                            value={item.fieldName}
+                          />
+                          <StyledTextFieldNumber
+                            label={'Dollar amount'}
+                            onValueChange={({ floatValue }) => {
+                              const temp = JSON.parse(
+                                JSON.stringify(referAdditionalFees),
+                              );
+                              temp[index].value = floatValue;
+                              setReferAdditionalFees(temp);
+                            }}
+                            placeholder={'Dollar amount'}
+                            prefix={'$'}
+                            value={item.value}
+                          />
+                        </Stack>
+                      </Stack>
+                    </Grow>
+                  ))}
+                </Stack>
               </StyledFormItem>
             </Stack>
           )}
