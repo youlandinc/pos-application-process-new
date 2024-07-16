@@ -28,48 +28,50 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
         if (!place.formatted_address) {
           return;
         }
+
         stateValidate && setStateValidate(false);
 
-        const record: { [key: string]: string } = {};
+        const addressComponents = place.address_components || [];
+        const geometry = place.geometry?.location;
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        place.address_components.forEach((com) => {
-          const type = com.types;
-          if (!type) {
+        const componentMap: { [key: string]: string } = {};
+
+        addressComponents.forEach((component: any) => {
+          const { types, long_name, short_name } = component;
+          if (!types || types.length === 0) {
             return;
           }
-          if (type.length === 2) {
-            record[type[0]] = com.long_name;
-          }
-          switch (type[0]) {
-            case 'administrative_area_level_1': {
-              address.changeFieldValue('state', com.short_name);
-              return;
-            }
-            case 'route': {
-              address.changeFieldValue('street', com.long_name);
-              return;
-            }
-            case 'postal_code': {
-              address.changeFieldValue('postcode', com.long_name);
-              return;
-            }
+
+          componentMap[types[0]] = long_name;
+
+          switch (types[0]) {
+            case 'administrative_area_level_1':
+              address.changeFieldValue('state', short_name);
+              break;
+            case 'route':
+              address.changeFieldValue('street', long_name);
+              break;
+            case 'postal_code':
+              address.changeFieldValue('postcode', long_name);
+              break;
           }
         });
-        address.changeFieldValue('lat', place.geometry.location.lat());
-        address.changeFieldValue('lng', place.geometry.location.lng());
-        if (record.locality) {
-          address.changeFieldValue('city', record.locality);
-          return;
+
+        if (geometry) {
+          address.changeFieldValue('lat', geometry.lat());
+          address.changeFieldValue('lng', geometry.lng());
         }
-        if (record.neighborhood) {
-          address.changeFieldValue('city', record.neighborhood);
-          return;
-        }
-        if (record.administrative_area_level_2) {
-          address.changeFieldValue('city', record.administrative_area_level_2);
-          return;
+
+        const cityFields = [
+          'locality',
+          'neighborhood',
+          'administrative_area_level_2',
+        ];
+        for (const field of cityFields) {
+          if (componentMap[field]) {
+            address.changeFieldValue('city', componentMap[field]);
+            break;
+          }
         }
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
