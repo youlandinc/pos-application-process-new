@@ -30,20 +30,21 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
         }
         stateValidate && setStateValidate(false);
 
+        const record: { [key: string]: string } = {};
+
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         place.address_components.forEach((com) => {
-          const type = com.types[0];
+          const type = com.types;
           if (!type) {
             return;
           }
-          switch (type) {
+          if (type.length === 2) {
+            record[type[0]] = com.long_name;
+          }
+          switch (type[0]) {
             case 'administrative_area_level_1': {
               address.changeFieldValue('state', com.short_name);
-              return;
-            }
-            case 'locality': {
-              address.changeFieldValue('city', com.long_name);
               return;
             }
             case 'route': {
@@ -58,6 +59,18 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
         });
         address.changeFieldValue('lat', place.geometry.location.lat());
         address.changeFieldValue('lng', place.geometry.location.lng());
+        if (record.locality) {
+          address.changeFieldValue('city', record.locality);
+          return;
+        }
+        if (record.neighborhood) {
+          address.changeFieldValue('city', record.neighborhood);
+          return;
+        }
+        if (record.administrative_area_level_2) {
+          address.changeFieldValue('city', record.administrative_area_level_2);
+          return;
+        }
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [stateValidate],
