@@ -40,19 +40,6 @@ export const POSFormatPercent = (
   );
 };
 
-export const POSFormatLocalPercent = (
-  percentageValue: number | undefined,
-  radix = 3,
-): string => {
-  if (!percentageValue) {
-    return '0%';
-  }
-  return percentageValue.toLocaleString('en-US', {
-    style: 'percent',
-    minimumFractionDigits: Number.isInteger(percentageValue) ? radix : 3,
-  });
-};
-
 export const POSFormatDate = (
   date: string | Date,
   timeFormat = 'yyyy-MM-dd HH:mm:ss O',
