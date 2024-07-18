@@ -63,7 +63,10 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
       };
 
       const params = {
-        ...store,
+        firstName: store.firstName,
+        lastName: store.lastName,
+        email: store.email,
+        phone: store.phone,
         birthDay: dateValid(store.birthDay)
           ? format(store.birthDay as Date, 'yyyy-MM-dd')
           : null,
@@ -79,7 +82,6 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
               birthDay,
               email,
               phone,
-              avatar,
               backgroundColor,
             },
           },
@@ -88,7 +90,6 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
         dispatch({
           type: 'init',
           payload: {
-            avatar: avatar || '',
             firstName: firstName || '',
             lastName: lastName || '',
             birthDay: birthDay ? new Date(birthDay) : null,
