@@ -19,7 +19,7 @@ export const _updateUserInfoAvatar = (param: {
   return post('/usercenter/api/user/modifyUserInfo', param);
 };
 
-export const _updateUserInfo = (params: AccountUserProfileParams) => {
+export const _updateUserInfo = (params: Partial<AccountUserProfileParams>) => {
   return post('/usercenter/api/user/modifyUserInfo', params);
 };
 
