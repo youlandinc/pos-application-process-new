@@ -91,6 +91,7 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
             variant: 'error',
             onClose: () => {
               clipClose();
+              setLoading(false);
             },
           });
         });
