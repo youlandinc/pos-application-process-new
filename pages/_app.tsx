@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { Router, useRouter } from 'next/router';
 import Script from 'next/script';
+import localFont from 'next/font/local';
 
 import { useAsync } from 'react-use';
 import en from 'date-fns/locale/en-US';
@@ -32,7 +33,6 @@ import { _fetchSaasConfig } from '@/requests/saas';
 import { HttpError } from '@/types';
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
-
 import {
   ProviderDetectActive,
   ProviderPersistData,
@@ -49,6 +49,28 @@ interface MyAppProps extends AppProps {
 
 const handledRouteStart = () => NProgress.start();
 const handledRouteDone = () => NProgress.done();
+
+const POS_FONT = localFont({
+  src: [
+    {
+      path: '../public/fonts/Poppins-Regular.woff2',
+      weight: '400',
+    },
+    {
+      path: '../public/fonts/Poppins-Medium.woff2',
+      weight: '500',
+    },
+    {
+      path: '../public/fonts/Poppins-SemiBold.woff2',
+      weight: '600',
+    },
+    {
+      path: '../public/fonts/Poppins-Bold.woff2',
+      weight: '700',
+    },
+  ],
+  display: 'swap',
+});
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
@@ -122,7 +144,7 @@ export default function MyApp(props: MyAppProps) {
               }}
               maxSnack={3}
             >
-              <Component {...pageProps} />
+              <Component className={POS_FONT.className} {...pageProps} />
             </SnackbarProvider>
           </LocalizationProvider>
         </ThemeProvider>
@@ -149,7 +171,7 @@ export default function MyApp(props: MyAppProps) {
               }}
               maxSnack={3}
             >
-              <Component {...pageProps} />
+              <Component className={POS_FONT.className} {...pageProps} />
             </SnackbarProvider>
           </LocalizationProvider>
         </ThemeProvider>
