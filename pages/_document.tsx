@@ -4,36 +4,7 @@ import { getInitColorSchemeScript } from '@mui/material/styles';
 export default function Document() {
   return (
     <Html>
-      <Head>
-        <link
-          as="font"
-          crossOrigin="anonymous"
-          href="/fonts/Poppins-Medium.woff2"
-          rel="stylesheet preload"
-          type="font/woff2"
-        />
-        <link
-          as="font"
-          crossOrigin="anonymous"
-          href="/fonts/Poppins-Regular.woff2"
-          rel="stylesheet preload"
-          type="font/woff2"
-        />
-        <link
-          as="font"
-          crossOrigin="anonymous"
-          href="/fonts/Poppins-SemiBold.woff2"
-          rel="stylesheet preload"
-          type="font/woff2"
-        />
-        <link
-          as="font"
-          crossOrigin="anonymous"
-          href="/fonts/Poppins-Bold.woff2"
-          rel="stylesheet preload"
-          type="font/woff2"
-        />
-      </Head>
+      <Head></Head>
       <body>
         {getInitColorSchemeScript()}
         <Main />
