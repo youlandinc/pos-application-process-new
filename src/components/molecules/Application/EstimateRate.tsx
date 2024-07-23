@@ -83,7 +83,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
             (estimateRate?.refinanceLoanAmount ?? 0)
           ) {
             return [
-              'Payoff amount must be equal to or less than the refinance loan amount',
+              // 'Payoff amount must be equal to or less than the refinance loan amount',
             ];
           }
         }
