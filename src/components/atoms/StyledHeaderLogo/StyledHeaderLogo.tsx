@@ -51,7 +51,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
           <img
             alt=""
             height={'auto'}
-            src={saasState?.logoUrl.split('?')[0] || logoUrl}
+            src={saasState?.logoUrl || logoUrl}
             style={{
               position: 'absolute',
               top: ['sm', 'xs', 'md', 'lg'].includes(breakpoints) ? '50%' : 46,
