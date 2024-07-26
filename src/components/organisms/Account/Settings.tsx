@@ -61,6 +61,7 @@ const initialState: AccountUserProfileParams = {
   birthDay: '',
   email: '',
   phone: '',
+  companyName: '',
 };
 
 interface LinkData {
@@ -83,6 +84,7 @@ export const AccountSettings: FC = () => {
     emailDomain: [],
     logoUrl: '',
   });
+  const [accountType, setAccountType] = useState<UserType>(UserType.CUSTOMER);
 
   const [taskHash, setTaskHash] = useState<AccountRoleTaskHash | undefined>();
 
@@ -94,6 +96,7 @@ export const AccountSettings: FC = () => {
           info,
           link,
           settings: {
+            accountType,
             userInfo: {
               avatar,
               backgroundColor,
@@ -102,6 +105,7 @@ export const AccountSettings: FC = () => {
               birthDay,
               email,
               phone,
+              companyName,
             },
           },
         },
@@ -116,8 +120,11 @@ export const AccountSettings: FC = () => {
           birthDay: birthDay ? new Date(birthDay) : null,
           email: email || '',
           phone: phone || '',
+          companyName: companyName || '',
         },
       });
+
+      setAccountType(accountType);
 
       const lastAuthId = userpool.getLastAuthUserId();
 
@@ -223,6 +230,7 @@ export const AccountSettings: FC = () => {
                             store={store}
                           />
                           <SettingsChangeProfile
+                            accountType={accountType}
                             dispatch={dispatch}
                             store={store}
                           />
@@ -256,6 +264,7 @@ export const AccountSettings: FC = () => {
                             store={store}
                           />
                           <SettingsChangeProfile
+                            accountType={accountType}
                             dispatch={dispatch}
                             store={store}
                           />
