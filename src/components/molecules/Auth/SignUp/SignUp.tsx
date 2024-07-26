@@ -61,12 +61,13 @@ export const SignUp: FC<SignUpProps> = observer(
     const store = useMst();
     const { detectUserActiveService } = store;
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [userType, setUserType] = useState<keyof typeof UserType>();
+    const [companyName, setCompanyName] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
-    const [userType, setUserType] = useState<keyof typeof UserType>();
     const [loading, setLoading] = useState<boolean>(false);
     const [formError, setFormError] = useState<
       Partial<Record<keyof typeof SignUpSchema, string[]>> | undefined
@@ -128,6 +129,7 @@ export const SignUp: FC<SignUpProps> = observer(
           emailParam: {
             email,
             firstName,
+            companyName,
             lastName,
             password: userpool.encode(password),
             userType:
@@ -153,6 +155,7 @@ export const SignUp: FC<SignUpProps> = observer(
         }
       },
       [
+        companyName,
         confirmedPassword,
         email,
         enqueueSnackbar,
@@ -288,11 +291,17 @@ export const SignUp: FC<SignUpProps> = observer(
           return true;
         }
       }
+      const condition =
+        userType === UserType.LOAN_OFFICER || userType === UserType.BROKER;
+      const result = condition ? companyName : true;
       if (saasState?.serviceTypeEnum === 'SAAS') {
-        return !email || !password || !confirmedPassword || !userType;
+        return (
+          !email || !password || !confirmedPassword || !userType || !result
+        );
       }
       return !email || !password || !confirmedPassword;
     }, [
+      companyName,
       confirmedPassword,
       email,
       password,
@@ -349,6 +358,29 @@ export const SignUp: FC<SignUpProps> = observer(
               value={userType}
             />
           )}
+
+          <Transitions
+            style={{
+              width: '100%',
+              display:
+                userType === UserType.BROKER ||
+                userType === UserType.LOAN_OFFICER
+                  ? 'block'
+                  : 'none',
+            }}
+          >
+            {(userType === UserType.BROKER ||
+              userType === UserType.LOAN_OFFICER) && (
+              <StyledTextField
+                disabled={loading}
+                label={'Company name'}
+                onChange={(e) => setCompanyName(e.target.value)}
+                placeholder={'Company name'}
+                required
+                value={companyName}
+              />
+            )}
+          </Transitions>
 
           <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
             <StyledTextField
@@ -449,6 +481,7 @@ export const SignUp: FC<SignUpProps> = observer(
         </Box>
       );
     }, [
+      companyName,
       confirmedPassword,
       email,
       firstName,

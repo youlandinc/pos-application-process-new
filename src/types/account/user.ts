@@ -10,4 +10,5 @@ export interface AccountUserProfileParams {
   birthDay: string | null | Date;
   email: string;
   phone: string;
+  companyName: string;
 }
