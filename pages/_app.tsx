@@ -114,6 +114,9 @@ export default function MyApp(props: MyAppProps) {
         palette: {
           primary: {
             main: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
+            slightly_lighter: `hsla(${
+              saasState?.posSettings?.h ?? 222
+            },42%,55%,.8)`,
             dark: `hsla(${saasState?.posSettings?.h ?? 222},43%,50%,1)`,
             darker: `hsla(${saasState?.posSettings?.h ?? 222},38%,30%,1)`,
             darkest: `hsla(${saasState?.posSettings?.h ?? 222},28%,18%,1)`,

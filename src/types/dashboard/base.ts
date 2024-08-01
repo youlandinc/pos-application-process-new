@@ -44,6 +44,12 @@ export interface DashboardPaymentDetailsResponse {
   isAdditional?: boolean;
 }
 
+export enum DashboardDocumentStatus {
+  flag = 'FLAG',
+  approve = 'APPROVE',
+  in_review = 'IN_REVIEW',
+}
+
 // documents
 export interface DashboardDocumentsResponse {
   docs: {
@@ -55,6 +61,7 @@ export interface DashboardDocumentsResponse {
       id: number;
       templateName: string;
       templateUrl: string;
+      status: DashboardDocumentStatus;
     }[];
     collapse: boolean;
     categoryKey: string;
@@ -62,6 +69,20 @@ export interface DashboardDocumentsResponse {
   }[];
   isTips: boolean;
   loanNumber: string;
+}
+
+export interface DashboardDocumentComment {
+  firstName: string;
+  lastName: string;
+  name: string;
+  avatar: string;
+  backgroundColor: string;
+  note: string;
+  operationTime: string | null;
+}
+
+export interface DashboardDocumentCommentsResponse {
+  content: DashboardDocumentComment[];
 }
 
 // teams
