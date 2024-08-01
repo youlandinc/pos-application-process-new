@@ -14,17 +14,19 @@ import {
   StyledTextFieldPhone,
 } from '@/components/atoms';
 
-import { AccountUserProfileParams, HttpError } from '@/types';
+import { AccountUserProfileParams, HttpError, UserType } from '@/types';
 import { _updateUserInfo } from '@/requests';
 
 interface SettingsChangeProfileProps {
   store: AccountUserProfileParams;
   dispatch: any;
+  accountType: UserType;
 }
 
 export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
   store,
   dispatch,
+  accountType,
 }) => {
   const { enqueueSnackbar } = useSnackbar();
 
@@ -67,6 +69,7 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
         lastName: store.lastName,
         email: store.email,
         phone: store.phone,
+        companyName: store.companyName,
         birthDay: dateValid(store.birthDay)
           ? format(store.birthDay as Date, 'yyyy-MM-dd')
           : null,
@@ -83,6 +86,7 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
               email,
               phone,
               backgroundColor,
+              companyName,
             },
           },
         } = await _updateUserInfo(params);
@@ -95,6 +99,7 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
             birthDay: birthDay ? new Date(birthDay) : null,
             email: email || '',
             phone: phone || '',
+            companyName: companyName || '',
           },
         });
 
@@ -181,21 +186,42 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
         />
       </Stack>
 
-      <StyledDatePicker
-        disabled={loading}
-        disableFuture={false}
-        label={'Date of birth'}
-        onChange={(value) => {
-          dispatch({
-            type: 'change',
-            payload: {
-              field: 'birthDay',
-              value,
-            },
-          });
-        }}
-        value={store.birthDay}
-      />
+      <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={{ xs: 2, md: 3 }}>
+        {(accountType === UserType.BROKER ||
+          accountType === UserType.LOAN_OFFICER) && (
+          <StyledTextField
+            disabled={loading}
+            label={'Company name'}
+            onChange={(e) => {
+              dispatch({
+                type: 'change',
+                payload: {
+                  field: 'companyName',
+                  value: e.target.value,
+                },
+              });
+            }}
+            placeholder={'Company name'}
+            required
+            value={store.companyName}
+          />
+        )}
+        <StyledDatePicker
+          disabled={loading}
+          disableFuture={false}
+          label={'Date of birth'}
+          onChange={(value) => {
+            dispatch({
+              type: 'change',
+              payload: {
+                field: 'birthDay',
+                value,
+              },
+            });
+          }}
+          value={store.birthDay}
+        />
+      </Stack>
 
       <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={{ xs: 2, md: 3 }}>
         <StyledTextFieldPhone
