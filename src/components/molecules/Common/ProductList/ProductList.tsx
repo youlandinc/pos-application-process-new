@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 
-import { useBreakpoints } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 
 import { StyledLoading } from '@/components/atoms';
 
@@ -15,6 +15,8 @@ import {
 } from './index';
 
 import { ProductItemProps } from '@/types';
+import { useMst } from '@/models/Root';
+import { User } from '@/types/user';
 
 interface ProductListProps {
   errorList: Array<string | any>;
@@ -26,6 +28,23 @@ interface ProductListProps {
 export const ProductList: FC<ProductListProps> = observer(
   ({ errorList, productList, loading, totalLoanAmount }) => {
     const breakpoints = useBreakpoints();
+    const { saasState } = useSessionStorageState('tenantConfig');
+    const { userType } = useMst();
+
+    const isShowCustom = useMemo(() => {
+      if (!saasState?.posSettings?.customLoanTerms) {
+        return true;
+      }
+      const hash = (
+        saasState?.posSettings?.customLoanTerms as User.POSBorrowerTypes[]
+      ).reduce((acc, cur) => {
+        if (cur) {
+          acc[cur.key] = cur.allowed;
+        }
+        return acc;
+      }, {} as any);
+      return hash[userType!];
+    }, [saasState?.posSettings?.customLoanTerms, userType]);
 
     return (
       <>
@@ -65,7 +84,9 @@ export const ProductList: FC<ProductListProps> = observer(
                     {productList.map((item, index) => (
                       <ProductItem key={`${item.id}-${index}`} {...item} />
                     ))}
-                    <ProductCustomItem totalLoanAmount={totalLoanAmount} />
+                    {isShowCustom && (
+                      <ProductCustomItem totalLoanAmount={totalLoanAmount} />
+                    )}
                   </Stack>
 
                   <Typography
@@ -101,7 +122,9 @@ export const ProductList: FC<ProductListProps> = observer(
                 <>
                   <ProductMessageList errorList={errorList} />
                   {/*<ProductNoResultContact />*/}
-                  <ProductCustomItem totalLoanAmount={totalLoanAmount} />
+                  {isShowCustom && (
+                    <ProductCustomItem totalLoanAmount={totalLoanAmount} />
+                  )}
                 </>
               )}
             </Stack>

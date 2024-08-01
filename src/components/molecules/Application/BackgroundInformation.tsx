@@ -55,7 +55,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
         width={'100%'}
       >
         <StyledFormItem
-          label={'Has the borrower had a bankruptcy within the past 24 months?'}
+          label={'Has the borrower had a bankruptcy within the past 7 years?'}
           maxWidth={600}
           sub
         >
@@ -73,7 +73,7 @@ export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
         </StyledFormItem>
 
         <StyledFormItem
-          label={'Is the borrower delinquent on their mortgage account?'}
+          label={'Is the borrower delinquent on any mortgage account?'}
           maxWidth={600}
           sub
         >
