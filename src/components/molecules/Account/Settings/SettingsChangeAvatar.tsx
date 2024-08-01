@@ -13,6 +13,7 @@ import { AccountUserProfileParams } from '@/types';
 import { _updateUserInfoAvatar, _uploadUserInfoAvatar } from '@/requests';
 
 import ICON_UPLOAD from '@/components/molecules/Account/Settings/icon_upload.svg';
+import { POSGetRoundedCanvas } from '@/utils';
 
 interface SettingsChangeAvatarProps {
   store: AccountUserProfileParams;
@@ -107,7 +108,9 @@ export const SettingsChangeAvatar: FC<SettingsChangeAvatarProps> = ({
     if (!canvas) {
       return;
     }
-    canvas.getCroppedCanvas().toBlob(async (blob) => {
+    const image = await canvas.getCroppedCanvas();
+    const roundedImage = await POSGetRoundedCanvas(image, 120, 120);
+    await roundedImage.toBlob(async (blob) => {
       const formData = new FormData();
       formData.append('files', blob as File, fileName);
       await uploadAvatar(formData);
