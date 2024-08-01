@@ -28,7 +28,7 @@ export const Documents: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [tabData, setTabData] = useState<
-    { label: string; content: ReactNode }[]
+    { label: string | ReactNode; content: ReactNode }[]
   >([]);
 
   const [isTips, setIsTips] = useState<boolean>(false);
@@ -56,11 +56,32 @@ export const Documents: FC = () => {
           if (!cur?.categoryName) {
             return acc;
           }
-          const temp: { label: string; content: ReactNode } = {
+          const temp: { label: string | ReactNode; content: ReactNode } = {
             label: '',
             content: undefined,
           };
-          temp.label = cur.categoryName;
+          temp.label = (
+            <Typography
+              component={'div'}
+              fontWeight={600}
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+            >
+              {cur.categoryName}{' '}
+              <Stack
+                alignItems={'center'}
+                borderRadius={1}
+                className={'total_number'}
+                color={'#ffffff'}
+                fontSize={12}
+                fontWeight={600}
+                height={20}
+                justifyContent={'center'}
+                px={1}
+              >
+                {cur.categoryDocs.length}
+              </Stack>
+            </Typography>
+          );
           temp.content = (
             <Stack gap={3} my={3}>
               {cur.categoryDocs.map((item, index) => (
@@ -76,7 +97,7 @@ export const Documents: FC = () => {
           acc.push(temp);
           return acc;
         },
-        [] as { label: string; content: ReactNode }[],
+        [] as { label: string | ReactNode; content: ReactNode }[],
       );
       setTabData(tabData);
     } catch (err) {
@@ -149,7 +170,7 @@ export const Documents: FC = () => {
         mt={{ xs: -3, lg: 0 }}
         mx={{ lg: 'auto', xs: 0 }}
         px={{ lg: 3, xs: 0 }}
-        width={'100%'}
+        width={{ lg: 'calc(100% - 280px)', xs: '100%' }}
       >
         <Typography
           textAlign={'center'}

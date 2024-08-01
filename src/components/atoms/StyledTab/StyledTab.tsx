@@ -15,7 +15,7 @@ type TabPanelProps = {
 
 type StyledTabProps = {
   tabsData: {
-    label: string;
+    label: string | ReactNode;
     content: ReactNode;
   }[];
   sx?: SxProps;
@@ -68,6 +68,14 @@ export const StyledTab: FC<StyledTabProps> = ({
             mx: { xs: 1, lg: 3 },
             mb: 1.25,
             fontWeight: 600,
+            '& .total_number': {
+              backgroundColor: 'text.disabled',
+            },
+            '&.Mui-selected': {
+              '& .total_number': {
+                backgroundColor: 'primary.slightly_lighter',
+              },
+            },
           },
           mb: 3,
           minHeight: 0,

@@ -1,9 +1,10 @@
-import {
+import React, {
   ChangeEvent,
   FC,
   ReactNode,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
@@ -18,29 +19,42 @@ import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 
 import { useBreakpoints, useSessionStorageState, useSwitch } from '@/hooks';
+
+import { AUTO_HIDE_DURATION } from '@/constants';
+import {
+  getFilesWebkitDataTransferItems,
+  POSFormatDate,
+  POSGetParamsFromUrl,
+  renameFile,
+} from '@/utils';
+import { SUploadData } from '@/models/common/UploadFile';
+import {
+  DashboardDocumentComment,
+  DashboardDocumentStatus,
+  HttpError,
+} from '@/types';
+
+import { _deleteFile, _uploadFile } from '@/requests/base';
+import { _fetchLoanDocumentComments } from '@/requests/dashboard';
 import { _downloadBrokerFile } from '@/requests';
 
 import {
   StyledButton,
   StyledDialog,
+  StyledLoading,
   StyledTooltip,
   Transitions,
 } from '@/components/atoms';
-import { AUTO_HIDE_DURATION } from '@/constants';
-
-import { SUploadData } from '@/models/common/UploadFile';
-import { _deleteFile, _uploadFile } from '@/requests/base';
-import { HttpError } from '@/types';
-import {
-  getFilesWebkitDataTransferItems,
-  POSFormatDate,
-  renameFile,
-} from '@/utils';
+import { StyledHistoryItem } from './StyledHistoryItem';
 
 import ICON_IMAGE from './icon_image.svg';
 import ICON_FILE from './icon_file.svg';
+import ICON_HISTORY from './icon_history.svg';
+import ICON_REFRESH from './icon_refresh.svg';
+import ICON_NO_HISTORY from './icon_no_history.svg';
 
 interface StyledUploadButtonBoxProps {
+  id?: number | string;
   files: SUploadData[];
   fileName: string;
   fileKey: string;
@@ -65,13 +79,14 @@ interface StyledUploadButtonBoxProps {
   // popup insurance
   popup?: string;
   isFromLOS?: boolean;
+  isShowHistory?: boolean;
 }
 
 export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
   props,
 ) => {
   const {
-    //id,
+    id,
     files,
     fileName,
     fileKey,
@@ -83,12 +98,14 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     uploadText = 'Upload',
     children,
     popup,
+    status,
     deleteOnly = false,
     // loanId,
     isFromLOS = false,
     refresh,
     onDelete,
     onUpload,
+    isShowHistory = true,
   } = props;
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -101,6 +118,11 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     visible: popUpVisible,
     close: popupClose,
   } = useSwitch(false);
+  const {
+    open: historyOpen,
+    visible: historyVisible,
+    close: historyClose,
+  } = useSwitch(false);
 
   const [deleteIndex, setDeleteIndex] = useState<number>(-1);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
@@ -109,6 +131,20 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   const [fileList, setFileList] = useState(files);
+
+  const [fetchHistoryLoading, setFetchHistoryLoading] = useState(false);
+  const [refreshHistoryLoading, setRefreshHistoryLoading] = useState(false);
+  const [histories, setHistories] = useState<DashboardDocumentComment[]>([
+    //{
+    //  firstName: 'John',
+    //  lastName: 'Doe',
+    //  name: 'John Doe',
+    //  avatar: '',
+    //  backgroundColor: '#FFC107',
+    //  note: 'This is a note',
+    //  operationTime: '2024-07-31T07:11:06.603414Z',
+    //},
+  ]);
 
   const [isDragging, setIsDragging] = useState(false);
 
@@ -260,6 +296,98 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
     router.query.loanId,
   ]);
 
+  const renderStatus = useMemo(() => {
+    if (fileList.length === 0) {
+      return null;
+    }
+
+    const result = {
+      bgColor: '',
+      text: '',
+    };
+
+    switch (status) {
+      case DashboardDocumentStatus.approve:
+        result.bgColor = '#4CAF50';
+        result.text = 'Approved';
+        break;
+      case DashboardDocumentStatus.in_review:
+        result.bgColor = '#A1A4AF';
+        result.text = 'In review';
+        break;
+      case DashboardDocumentStatus.flag:
+        result.bgColor = '#DE6449';
+        result.text = 'Flagged';
+        break;
+      default:
+        return null;
+    }
+
+    return (
+      <Stack
+        alignItems={'center'}
+        bgcolor={result.bgColor}
+        borderRadius={1}
+        color={'#ffffff'}
+        flexShrink={0}
+        fontSize={12}
+        height={24}
+        justifyContent={'center'}
+        width={72}
+      >
+        {result.text}
+      </Stack>
+    );
+  }, [fileList.length, status]);
+
+  const onClickShowHistory = useCallback(
+    async (condition: 'inside' | 'outside') => {
+      if (fetchHistoryLoading || refreshHistoryLoading) {
+        return;
+      }
+      const { loanId } = POSGetParamsFromUrl(window.location.href);
+      if (!loanId) {
+        return;
+      }
+      const postData = {
+        loanId,
+        fileId: id as number | string,
+      };
+      condition === 'outside'
+        ? setFetchHistoryLoading(true)
+        : setRefreshHistoryLoading(true);
+      try {
+        const {
+          data: { content },
+        } = await _fetchLoanDocumentComments(postData);
+        setHistories(content);
+        if (!historyVisible) {
+          historyOpen();
+        }
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      } finally {
+        condition === 'outside'
+          ? setFetchHistoryLoading(false)
+          : setRefreshHistoryLoading(false);
+      }
+    },
+    [
+      enqueueSnackbar,
+      fetchHistoryLoading,
+      historyOpen,
+      historyVisible,
+      id,
+      refreshHistoryLoading,
+    ],
+  );
+
   useEffect(() => {
     setFileList(files);
   }, [files]);
@@ -283,27 +411,34 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
       onDrop={async (e) => {
         e.preventDefault();
 
-        const fileList = await getFilesWebkitDataTransferItems(
-          e.dataTransfer.items,
-        );
+        try {
+          const fileList = await getFilesWebkitDataTransferItems(
+            e.dataTransfer.items,
+          );
 
-        //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        const reducedFileList = fileList
           //eslint-disable-next-line @typescript-eslint/ban-ts-comment
           //@ts-ignore
-          .filter((item) => item.name !== '.DS_Store')
-          //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
-          .map((file) => {
-            if (file?.name === file?.filepath) {
-              return file;
-            }
+          const reducedFileList = fileList
+            //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            .filter((item) => item.name !== '.DS_Store')
+            //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            .map((file) => {
+              if (file?.name === file?.filepath) {
+                return file;
+              }
 
-            return renameFile(file, file.filepath);
-          });
+              return renameFile(file, file.filepath);
+            });
 
-        await handleUpload(reducedFileList);
+          await handleUpload(reducedFileList);
+        } catch (err) {
+          //eslint-disable-next-line no-console
+          console.log(err);
+        } finally {
+          setIsDragging(false);
+        }
       }}
       px={3}
       py={2}
@@ -325,22 +460,29 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         <Stack
           alignItems={{ md: 'unset', xs: 'center' }}
           maxWidth={'100%'}
-          px={1.5}
-          width={{ md: 'calc(100% - 76px)', xs: '100%' }}
+          width={{ md: 'calc(100% - 124px)', xs: '100%' }}
         >
-          <Typography
-            sx={{
-              flexWrap: 'wrap',
-              fontSize: { xs: 16, md: 18 },
-              fontWeight: 600,
-              lineHeight: 1.5,
-              textAlign: { xs: 'center', md: 'left' },
-              wordBreak: 'break-word',
-              color: 'text.primary',
-            }}
-          >
-            {fileName}
-          </Typography>
+          <Stack flexDirection={'row'} gap={1.5} width={'100%'}>
+            <StyledTooltip title={fileName}>
+              <Typography
+                sx={{
+                  fontSize: { xs: 16, md: 18 },
+                  fontWeight: 600,
+                  lineHeight: 1.5,
+                  textAlign: 'left',
+                  wordBreak: 'break-word',
+                  color: 'text.primary',
+                  width: '100%',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {fileName}
+              </Typography>
+            </StyledTooltip>
+            {renderStatus}
+          </Stack>
 
           {isFromLOS
             ? popup === 'COLLATERAL_DOCS_Evidence_of_insurance' && (
@@ -387,33 +529,58 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
           )}
         </Stack>
 
-        <StyledButton
-          color={'primary'}
-          component={'label'}
-          disabled={innerLoading}
-          loading={innerLoading}
-          size={'small'}
-          sx={{
-            minWidth: 76,
-            width: 76,
-            height: 36,
-            borderWidth: '2px !important',
-          }}
-          variant={'outlined'}
+        <Stack
+          alignItems={'center'}
+          flex={1}
+          flexDirection={'row'}
+          gap={1.5}
+          justifyContent={'flex-end'}
+          width={'100%'}
         >
-          <input
-            accept={accept}
-            hidden
-            multiple
-            onChange={handleChange}
-            style={{
-              width: '100%',
+          {isShowHistory &&
+            (fetchHistoryLoading ? (
+              <StyledLoading
+                size={24}
+                sx={{
+                  color: '#E3E3EE',
+                }}
+              />
+            ) : (
+              <Icon
+                component={ICON_HISTORY}
+                onClick={() => onClickShowHistory('outside')}
+                sx={{ cursor: 'pointer' }}
+              />
+            ))}
+          <StyledButton
+            color={'primary'}
+            component={'label'}
+            disabled={innerLoading}
+            loading={innerLoading}
+            size={'small'}
+            sx={{
+              minWidth: 76,
+              width: 76,
+              height: 36,
+              borderWidth: '2px !important',
             }}
-            type="file"
-          />
-          {uploadText}
-        </StyledButton>
+            variant={'outlined'}
+          >
+            <input
+              accept={accept}
+              hidden
+              multiple
+              onChange={handleChange}
+              style={{
+                width: '100%',
+              }}
+              type="file"
+            />
+            {uploadText}
+          </StyledButton>
+        </Stack>
       </Stack>
+
       {fileList.length !== 0 && (
         <Box maxWidth={'100%'} mt={0.5} width={'100%'}>
           <Transitions>
@@ -820,6 +987,100 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         open={popUpVisible}
         PaperProps={{
           sx: { maxWidth: '800px !important' },
+        }}
+      />
+
+      <StyledDialog
+        content={
+          <>
+            {!refreshHistoryLoading ? (
+              histories?.length && history.length > 0 ? (
+                histories?.map((item, index) => (
+                  <StyledHistoryItem key={`history-item-${index}`} {...item} />
+                ))
+              ) : (
+                <Stack
+                  alignItems={'center'}
+                  gap={3}
+                  height={'100%'}
+                  justifyContent={'center'}
+                  width={'100%'}
+                >
+                  <Icon
+                    component={ICON_NO_HISTORY}
+                    sx={{ width: 206, height: 120 }}
+                  />
+                  <Typography color={'text.secondary'} variant={'h6'}>
+                    No notes added yet
+                  </Typography>
+                </Stack>
+              )
+            ) : (
+              <Stack
+                alignItems={'center'}
+                height={'100%'}
+                justifyContent={'center'}
+                width={'100%'}
+              >
+                <StyledLoading
+                  size={48}
+                  sx={{
+                    color: '#E3E3EE',
+                  }}
+                />
+              </Stack>
+            )}
+          </>
+        }
+        footer={
+          <Stack flexDirection={'row'} gap={1} pt={2}>
+            <StyledButton
+              autoFocus
+              color={'info'}
+              onClick={historyClose}
+              size={'small'}
+              sx={{ width: 80 }}
+              variant={'outlined'}
+            >
+              Close
+            </StyledButton>
+          </Stack>
+        }
+        header={
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+            pb={2}
+          >
+            <Typography component={'div'} variant={'subtitle1'}>
+              Notes
+              <Typography
+                color={'text.secondary'}
+                component={'span'}
+                ml={1.5}
+                variant={'body2'}
+              >
+                {fileName}
+              </Typography>
+            </Typography>
+
+            <Icon
+              component={ICON_REFRESH}
+              onClick={() => onClickShowHistory('inside')}
+              sx={{
+                cursor: 'pointer',
+                '& > path': {
+                  fill: refreshHistoryLoading ? '#BABCBE' : '#231F20',
+                },
+              }}
+            />
+          </Stack>
+        }
+        onClose={historyClose}
+        open={historyVisible}
+        PaperProps={{
+          sx: { maxWidth: '800px !important', height: 600 },
         }}
       />
     </Box>

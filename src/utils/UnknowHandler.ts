@@ -9,7 +9,10 @@ export const renameFile = (originalFile: File, newName: string) => {
 
 export const getFilesWebkitDataTransferItems = (dataTransferItems) => {
   function traverseFileTreePromise(item, path = '') {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
+      if (!item) {
+        reject('No item');
+      }
       if (item.isFile) {
         item.file((file: any) => {
           file.filepath = path + file.name; //save full path
@@ -32,9 +35,13 @@ export const getFilesWebkitDataTransferItems = (dataTransferItems) => {
   }
 
   const files: any[] = [];
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const entriesPromises = [];
     for (const it of dataTransferItems) {
+      if (it.kind === 'string') {
+        reject('No file');
+        break;
+      }
       entriesPromises.push(traverseFileTreePromise(it.webkitGetAsEntry()));
     }
     Promise.all(entriesPromises).then(() => {
