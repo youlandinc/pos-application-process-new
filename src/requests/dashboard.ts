@@ -1,5 +1,6 @@
 import { get, post, put } from '@/requests/axios';
 import {
+  DashboardDocumentCommentsResponse,
   DashboardDocumentsResponse,
   DashboardPaymentDetailsResponse,
   DashboardTaskKey,
@@ -86,6 +87,18 @@ export const _restartAppraisalPaymentProcess = (loanId: string) => {
 // documents
 export const _fetchLoanDocumentData = (loanId: string) => {
   return get<DashboardDocumentsResponse>(`/pos/task/docs/${loanId}`);
+};
+
+export const _fetchLoanDocumentComments = (params: {
+  loanId: string;
+  fileId: number | string;
+}) => {
+  return post<DashboardDocumentCommentsResponse>('/pos/task/pageNote', {
+    size: 1000,
+    page: 0,
+    type: 'NEW_NOTE',
+    ...params,
+  });
 };
 
 // team

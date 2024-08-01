@@ -207,6 +207,7 @@ export const TasksInvestmentExperience: FC = () => {
                 fileKey={DashboardTaskKey.real_investment}
                 fileName={'Track record'}
                 files={investmentFiles}
+                isShowHistory={false}
                 refresh={fetchInitData}
                 templateName={templateName}
                 templateUrl={templateUrl}

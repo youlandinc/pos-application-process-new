@@ -2,6 +2,8 @@ export * from './Provider';
 
 export * from './Transitions';
 
+export * from './StyledAvatar';
+
 export * from './StyledProgressRing';
 export * from './StyledProgressBlock';
 export * from './StyledProgressLine';

@@ -21,11 +21,9 @@ import { useRouter } from 'next/router';
 
 import { useBreakpoints } from '@/hooks';
 
-import { userpool } from '@/constants';
-
 import { MyAccountButtonProps, MyAccountStyles } from './index';
 
-import { StyledButton } from '@/components/atoms';
+import { StyledAvatar, StyledButton } from '@/components/atoms';
 
 const MENU_LIST = [
   { label: 'Account', url: '/account' },
@@ -33,29 +31,6 @@ const MENU_LIST = [
 ];
 
 export const MyAccountButton: FC<MyAccountButtonProps> = ({ store }) => {
-  const lastAuthUserId = userpool.getLastAuthUserId();
-
-  const avatar = userpool.getLastAuthUserInfo(lastAuthUserId, 'avatar');
-  const backgroundColor = userpool.getLastAuthUserInfo(
-    lastAuthUserId,
-    'background',
-  );
-
-  const computedName = useMemo(() => {
-    const firstName = userpool
-      .getLastAuthUserInfo(lastAuthUserId, 'firstName')
-      ?.charAt(0)
-      .toUpperCase();
-    const lastName = userpool
-      .getLastAuthUserInfo(lastAuthUserId, 'lastName')
-      ?.charAt(0)
-      .toUpperCase();
-    if (!firstName && !lastName) {
-      return false;
-    }
-    return `${firstName}${lastName}`;
-  }, [lastAuthUserId]);
-
   const [popperVisible, setPopperVisible] = useState(false);
 
   const anchorRef = useRef<HTMLButtonElement>(null);
@@ -157,63 +132,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = ({ store }) => {
                     py={1.5}
                     sx={{ cursor: 'default' }}
                   >
-                    {avatar ? (
-                      <picture
-                        style={{
-                          display: 'block',
-                          position: 'relative',
-                          height: 48,
-                          width: 48,
-                          borderRadius: '50%',
-                          overflow: 'hidden',
-                        }}
-                      >
-                        <img
-                          alt=""
-                          src={avatar}
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                          }}
-                        />
-                      </picture>
-                    ) : computedName ? (
-                      <Stack
-                        alignItems={'center'}
-                        borderRadius={'50%'}
-                        color={'#ffffff'}
-                        fontSize={16}
-                        fontWeight={600}
-                        height={48}
-                        justifyContent={'center'}
-                        pt={0.25}
-                        sx={{ background: backgroundColor }}
-                        width={48}
-                      >
-                        {computedName}
-                      </Stack>
-                    ) : (
-                      <picture
-                        style={{
-                          display: 'block',
-                          position: 'relative',
-                          height: 48,
-                          width: 48,
-                          borderRadius: '50%',
-                          overflow: 'hidden',
-                          border: '1px solid #D2D6E1',
-                        }}
-                      >
-                        <img
-                          alt=""
-                          src={'/images/placeholder_avatar.png'}
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                          }}
-                        />
-                      </picture>
-                    )}
+                    <StyledAvatar />
                   </Stack>
                   {renderMenuList}
                 </MenuList>
