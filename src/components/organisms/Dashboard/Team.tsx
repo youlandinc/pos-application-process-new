@@ -91,8 +91,8 @@ export const Team = () => {
             mt={1.5}
             textAlign={'center'}
           >
-            Our team of loan management specialists is here to fix issues and
-            provide expert advice.
+            Our dedicated team of loan management specialists is here to provide
+            you with personalized solutions and expert advice.
           </Typography>
         </Typography>
 
