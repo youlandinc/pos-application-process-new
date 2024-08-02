@@ -27,9 +27,14 @@ export const StyledButtonGroup: FC<StyledButtonGroupProps> = ({
     >
       {options?.map((item, index) => (
         <ToggleButton
+          // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
           disableRipple
           key={index}
-          // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
+          sx={{
+            '&.MuiToggleButtonGroup-grouped': {
+              borderRadius: '8px',
+            },
+          }}
           value={item.value}
         >
           {item.label}

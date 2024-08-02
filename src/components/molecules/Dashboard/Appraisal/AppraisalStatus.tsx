@@ -85,7 +85,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
                       ?.completeDate,
                   ),
                   "MMMM dd, yyyy 'at' h:mm a",
-                )}.`
+                )}`
               : '',
           },
         ];
@@ -102,7 +102,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
                   appraisalDetail?.[AppraisalStatusEnum.paid_for]?.completeDate,
                 ),
                 "MMMM dd, yyyy 'at' h:mm a",
-              )}.`
+              )}`
             : '',
         },
         {
@@ -116,7 +116,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
                   appraisalDetail?.[AppraisalStatusEnum.ordered]?.completeDate,
                 ),
                 "MMMM dd, yyyy 'at' h:mm a",
-              )}.`
+              )}`
             : '',
         },
         {
@@ -130,7 +130,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
                       ?.scheduledDate,
                   ),
                   "MMMM dd, yyyy 'at' h:mm a",
-                )}. `
+                )}`
               : ''
           }Following the inspection, the appraiser will proceed with the necessary assessments to finalize the appraisal report. We will notify you once the appraisal is complete.`,
           date: appraisalDetail?.[AppraisalStatusEnum.scheduled]?.completeDate
@@ -140,7 +140,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
                     ?.completeDate,
                 ),
                 "MMMM dd, yyyy 'at' h:mm a",
-              )}.`
+              )}`
             : '',
         },
         {
@@ -155,7 +155,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
                     ?.completeDate,
                 ),
                 "MMMM dd, yyyy 'at' h:mm a",
-              )}.`
+              )}`
             : '',
         },
       ];
