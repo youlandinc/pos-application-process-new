@@ -94,7 +94,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                       loanStatusDetails?.[PipelineLoanStageEnum.rejected]?.date,
                     ),
                     "MMMM dd, yyyy 'at' h:mm a",
-                  )}.`
+                  )}`
                 : '',
             },
           ];
@@ -111,7 +111,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                       loanStatusDetails?.[PipelineLoanStageEnum.inactive]?.date,
                     ),
                     "MMMM dd, yyyy 'at' h:mm a",
-                  )}.`
+                  )}`
                 : '',
             },
           ];
@@ -133,7 +133,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                       loanStatusDetails?.[PipelineLoanStageEnum.scenario]?.date,
                     ),
                     "MMMM dd, yyyy 'at' h:mm a",
-                  )}.`
+                  )}`
                 : '',
             },
             {
@@ -150,7 +150,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                       ]?.date,
                     ),
                     "MMMM dd, yyyy 'at' h:mm a",
-                  )}.`
+                  )}`
                 : '',
             },
             {
@@ -166,7 +166,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                         ?.date,
                     ),
                     "MMMM dd, yyyy 'at' h:mm a",
-                  )}.`
+                  )}`
                 : '',
             },
             {
@@ -180,7 +180,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                       loanStatusDetails?.[PipelineLoanStageEnum.docs_out]?.date,
                     ),
                     "MMMM dd, yyyy 'at' h:mm a",
-                  )}.`
+                  )}`
                 : '',
             },
             {
@@ -194,7 +194,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                       loanStatusDetails?.[PipelineLoanStageEnum.funded]?.date,
                     ),
                     "MMMM dd, yyyy 'at' h:mm a",
-                  )}.`
+                  )}`
                 : '',
             },
           ];
