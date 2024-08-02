@@ -5,7 +5,6 @@ export const StyledButtonGroupStyles = {
     fontWeight: 600,
     fontSize: 16,
     color: 'text.primary',
-    borderRadius: 2,
     borderWidth: '2px',
     boxShadow: 'none',
     height: 56,
