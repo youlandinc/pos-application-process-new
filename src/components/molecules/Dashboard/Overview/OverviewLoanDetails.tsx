@@ -660,6 +660,7 @@ export const OverviewLoanDetails: FC<OverviewLoanDetailsProps> = observer(
           }
           maxWidth={560}
           minWidth={327}
+          onClose={close}
           open={visible}
         />
       </Stack>
