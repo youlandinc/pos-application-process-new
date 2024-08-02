@@ -458,9 +458,8 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
         width={'100%'}
       >
         <Stack
-          alignItems={{ md: 'unset', xs: 'center' }}
           maxWidth={'100%'}
-          width={{ md: 'calc(100% - 124px)', xs: '100%' }}
+          width={{ md: 'calc(100% - 204px)', xs: '100%' }}
         >
           <Stack flexDirection={'row'} gap={1.5} width={'100%'}>
             <StyledTooltip title={fileName}>
@@ -481,11 +480,12 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
                 {fileName}
               </Typography>
             </StyledTooltip>
-            {renderStatus}
+            {['xs', 'sm'].includes(breakpoints) && renderStatus}
           </Stack>
 
           {isFromLOS
-            ? popup === 'COLLATERAL_DOCS_Evidence_of_insurance' && (
+            ? popup === 'COLLATERAL_DOCS_Evidence_of_insurance' &&
+              !['xs', 'sm'].includes(breakpoints) && (
                 <Typography
                   color={'primary.main'}
                   onClick={popupOpen}
@@ -499,7 +499,8 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
                   View requirements
                 </Typography>
               )
-            : fileKey === 'COLLATERAL_DOCS_Evidence_of_insurance' && (
+            : fileKey === 'COLLATERAL_DOCS_Evidence_of_insurance' &&
+              !['xs', 'sm'].includes(breakpoints) && (
                 <Typography
                   color={'primary.main'}
                   onClick={popupOpen}
@@ -513,7 +514,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
                   View requirements
                 </Typography>
               )}
-          {templateName && (
+          {templateName && !['xs', 'sm'].includes(breakpoints) && (
             <Typography
               color={'primary.main'}
               onClick={() => window.open(templateUrl)}
@@ -537,6 +538,60 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = (
           justifyContent={'flex-end'}
           width={'100%'}
         >
+          {!['xs', 'sm'].includes(breakpoints) && renderStatus}
+
+          {isFromLOS
+            ? popup === 'COLLATERAL_DOCS_Evidence_of_insurance' &&
+              ['xs', 'sm'].includes(breakpoints) && (
+                <Typography
+                  color={'primary.main'}
+                  onClick={popupOpen}
+                  sx={{
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    width: 'fit-content',
+                    mr: 'auto',
+                    alignSelf: 'flex-start',
+                  }}
+                  variant={'body1'}
+                >
+                  View requirements
+                </Typography>
+              )
+            : fileKey === 'COLLATERAL_DOCS_Evidence_of_insurance' &&
+              ['xs', 'sm'].includes(breakpoints) && (
+                <Typography
+                  color={'primary.main'}
+                  onClick={popupOpen}
+                  sx={{
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    width: 'fit-content',
+                    mr: 'auto',
+                    alignSelf: 'flex-start',
+                  }}
+                  variant={'body1'}
+                >
+                  View requirements
+                </Typography>
+              )}
+          {templateName && ['xs', 'sm'].includes(breakpoints) && (
+            <Typography
+              color={'primary.main'}
+              onClick={() => window.open(templateUrl)}
+              sx={{
+                textDecoration: 'underline',
+                cursor: 'pointer',
+                width: 'fit-content',
+                mr: 'auto',
+                alignSelf: 'flex-start',
+              }}
+              variant={'body1'}
+            >
+              {templateName}
+            </Typography>
+          )}
+
           {isShowHistory &&
             (fetchHistoryLoading ? (
               <StyledLoading
