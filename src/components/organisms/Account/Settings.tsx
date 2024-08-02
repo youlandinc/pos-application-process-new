@@ -1,11 +1,16 @@
-import { FC, useMemo, useReducer, useState } from 'react';
+import {
+  FC,
+  //useMemo,
+  useReducer,
+  useState,
+} from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 
 import { useBreakpoints } from '@/hooks';
-import { useMst } from '@/models/Root';
+//import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION, userpool } from '@/constants';
 
@@ -14,7 +19,7 @@ import {
   PaymentLinkDomain,
   PaymentLinkEmail,
   PaymentLinkLogo,
-  QualificationList,
+  //QualificationList,
   SettingsChangeAvatar,
   SettingsChangePassword,
   SettingsChangeProfile,
@@ -75,7 +80,7 @@ export const AccountSettings: FC = () => {
   const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { userType } = useMst();
+  //const { userType } = useMst();
 
   const [store, dispatch] = useReducer(AccountReducer, initialState);
   const [backgroundColor, setBackgroundColor] = useState<string>('');
@@ -155,19 +160,19 @@ export const AccountSettings: FC = () => {
     }
   }, [dispatch]);
 
-  const computedLabel = useMemo(() => {
-    switch (userType) {
-      case UserType.REAL_ESTATE_AGENT:
-        return 'Real estate agent info';
-      case UserType.BROKER:
-        return 'Broker info';
-      case UserType.LOAN_OFFICER:
-        return 'Loan officer info';
-      case UserType.CUSTOMER:
-      default:
-        return '';
-    }
-  }, [userType]);
+  //const computedLabel = useMemo(() => {
+  //  switch (userType) {
+  //    case UserType.REAL_ESTATE_AGENT:
+  //      return 'Real estate agent info';
+  //    case UserType.BROKER:
+  //      return 'Broker info';
+  //    case UserType.LOAN_OFFICER:
+  //      return 'Loan officer info';
+  //    case UserType.CUSTOMER:
+  //    default:
+  //      return '';
+  //  }
+  //}, [userType]);
 
   const startIndex = () => {
     const { tab } = POSGetParamsFromUrl(location.href);
@@ -238,10 +243,10 @@ export const AccountSettings: FC = () => {
                         </Stack>
                       ),
                     },
-                    {
-                      label: computedLabel,
-                      content: <QualificationList taskHash={taskHash!} />,
-                    },
+                    //{
+                    //  label: computedLabel,
+                    //  content: <QualificationList taskHash={taskHash!} />,
+                    //},
                     {
                       label: 'Custom payment link',
                       content: (
