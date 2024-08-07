@@ -1,4 +1,4 @@
-import { FC, ReactNode, useCallback, useState } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { Fade, Icon, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
@@ -9,6 +9,9 @@ import { useBreakpoints } from '@/hooks';
 import { POSGetParamsFromUrl } from '@/utils';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
+
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
 import {
   StyledLoading,
@@ -22,7 +25,9 @@ import { _fetchLoanDocumentData } from '@/requests/dashboard';
 
 import NOTIFICATION_WARNING from '@/components/atoms/StyledNotification/notification_warning.svg';
 
-export const Documents: FC = () => {
+export const Documents: FC = observer(() => {
+  const { notificationDocuments } = useMst();
+
   const router = useRouter();
   const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
@@ -32,6 +37,7 @@ export const Documents: FC = () => {
   >([]);
 
   const [isTips, setIsTips] = useState<boolean>(false);
+  const [startTabIndex, setStartTabIndex] = useState<number>(0);
 
   const { loading } = useAsync(async () => await fetchData(), [location.href]);
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
@@ -52,9 +58,12 @@ export const Documents: FC = () => {
       } = await _fetchLoanDocumentData(loanId);
       setIsTips(isTips);
       const tabData = docs.reduce(
-        (acc, cur) => {
+        (acc, cur, index) => {
           if (!cur?.categoryName) {
             return acc;
+          }
+          if (cur.categoryKey === notificationDocuments.categoryKey) {
+            setStartTabIndex(index);
           }
           const temp: { label: string | ReactNode; content: ReactNode } = {
             label: '',
@@ -151,6 +160,25 @@ export const Documents: FC = () => {
     }
   }, [enqueueSnackbar]);
 
+  useEffect(
+    () => {
+      if (
+        !notificationDocuments.categoryKey ||
+        !notificationDocuments.fileId ||
+        !notificationDocuments.fileName
+      ) {
+        return;
+      }
+      fetchData();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      notificationDocuments.categoryKey,
+      notificationDocuments.fileId,
+      notificationDocuments.fileName,
+    ],
+  );
+
   return loading ? (
     <Stack
       alignItems={'center'}
@@ -239,6 +267,7 @@ export const Documents: FC = () => {
 
         <Stack maxWidth={'100%'} width={'100%'}>
           <StyledTab
+            startIndex={startTabIndex}
             sx={{ m: '0 auto', maxWidth: '100%' }}
             tabsData={tabData}
           />
@@ -246,4 +275,4 @@ export const Documents: FC = () => {
       </Stack>
     </Fade>
   );
-};
+});

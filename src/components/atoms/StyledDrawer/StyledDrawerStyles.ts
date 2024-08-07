@@ -17,6 +17,7 @@ export const StyledDrawerStyles = {
         xs: 1.5,
       },
       maxHeight: 92,
+      zIndex: 9999,
     },
     '& .drawer_footer': {
       // minHeight: 60,
@@ -31,10 +32,12 @@ export const StyledDrawerStyles = {
         md: 3,
         xs: 1.5,
       },
+      zIndex: 9999,
     },
     '& .drawer_content': {
       flexGrow: 1,
       bgcolor: 'background.white',
+      overflow: 'auto',
     },
 
     '& .MuiPaper-root': {

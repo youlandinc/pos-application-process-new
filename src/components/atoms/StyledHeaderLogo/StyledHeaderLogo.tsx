@@ -29,7 +29,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
               color: 'primary.main',
               height: { md: 56, xs: 40 },
               justifyContent: 'flex-end',
-              width: { xs: 160, xl: 225 },
+              width: { xs: 120, lg: 160, xl: 225 },
             }}
           >
             {saasState?.organizationName}
@@ -66,9 +66,11 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
               maxHeight: ['sm', 'xs', 'md', 'lg'].includes(breakpoints)
                 ? 36
                 : 68,
-              maxWidth: ['sm', 'xs', 'md', 'lg'].includes(breakpoints)
-                ? 160
-                : 225,
+              maxWidth: ['sm', 'xs'].includes(breakpoints)
+                ? 120
+                : ['md', 'lg'].includes(breakpoints)
+                  ? 160
+                  : 225,
             }}
           />
         </picture>
@@ -83,7 +85,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
           color: 'primary.main',
           height: '100%',
           justifyContent: 'center',
-          width: { xs: 160, xl: 225 },
+          width: { xs: 120, lg: 160, xl: 225 },
         }}
       >
         {saasState?.organizationName}

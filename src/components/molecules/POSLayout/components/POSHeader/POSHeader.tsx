@@ -1,11 +1,6 @@
 import { FC, useCallback, useMemo, useState } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
-import {
-  CloseOutlined,
-  DehazeOutlined,
-  PostAddOutlined,
-  WidgetsOutlined,
-} from '@mui/icons-material';
+import { Box, Icon, Stack, Typography } from '@mui/material';
+import { CloseOutlined, DehazeOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
@@ -31,6 +26,10 @@ import {
 import { ForgotPassword, Login, SignUp } from '@/components/molecules';
 
 import { LayoutSceneTypeEnum, LoanSnapshotEnum } from '@/types';
+
+import ICON_REFER_FRIEND from './icon_refer_friend.svg';
+import ICON_VIEW_ALL_LOANS from './icon_view_all_loans.svg';
+import ICON_START_NEW_LOAN from './icon_start_new_loan.svg';
 
 export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   const router = useRouter();
@@ -88,7 +87,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 size={'small'}
                 sx={{
                   '&.MuiButton-sizeSmall': {
-                    p: { md: '7px 14px', xs: '0' },
+                    p: { lg: '7px 14px', xs: '0' },
                     fontSize: 14,
                     width: 'fit-content',
                     mr: 3,
@@ -111,7 +110,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 size={'small'}
                 sx={{
                   '&.MuiButton-sizeSmall': {
-                    p: { md: '7px 14px', xs: '0' },
+                    p: { lg: '7px 14px', xs: '0' },
                     fontSize: 14,
                     width: 'fit-content',
                     minWidth: 'auto',
@@ -127,135 +126,252 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             </Box>
           )
         ) : (
-          <Box>
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            gap={{ xs: 2, lg: 1.5 }}
+          >
             <StyledButton
               color={'info'}
-              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+              isIconButton={['xs', 'sm'].includes(breakpoint)}
               onClick={() => router.push('/pipeline')}
+              size={'small'}
               sx={{
-                marginRight: { xs: '1.25vw', md: 3 },
+                borderWidth: '1px !important',
+                fontWeight: '400 !important',
+                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
               }}
               variant={'outlined'}
             >
-              <WidgetsOutlined
-                className={
-                  !['xs', 'sm', 'md'].includes(breakpoint)
-                    ? 'POS_icon_left'
-                    : ''
-                }
+              <Icon
+                component={ICON_VIEW_ALL_LOANS}
+                sx={{
+                  width: 24,
+                  height: 24,
+                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                }}
               />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
+              {!['xs', 'sm'].includes(breakpoint) && 'View all loans'}
+            </StyledButton>
+            <StyledButton
+              color={'info'}
+              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              onClick={() =>
+                (location.href = 'https://youland.com/refer-a-friend/')
+              }
+              size={'small'}
+              sx={{
+                mr: { xs: 0, lg: 2.5 },
+                borderWidth: '1px !important',
+                fontWeight: '400 !important',
+                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
+              }}
+              variant={'outlined'}
+            >
+              <Icon
+                component={ICON_REFER_FRIEND}
+                sx={{
+                  width: 24,
+                  height: 24,
+                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                }}
+              />
+              {!['xs', 'sm'].includes(breakpoint) && 'Refer a friend'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
-          </Box>
+          </Stack>
         );
       case LayoutSceneTypeEnum.dashboard:
         return (
-          <Box>
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            gap={{ xs: 2, lg: 1.5 }}
+          >
             <StyledButton
               color={'info'}
-              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+              isIconButton={['xs', 'sm'].includes(breakpoint)}
               onClick={() => router.push('/pipeline')}
+              size={'small'}
               sx={{
-                marginRight: { xs: '1.25vw', md: 3 },
+                borderWidth: '1px !important',
+                fontWeight: '400 !important',
+                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
               }}
               variant={'outlined'}
             >
-              <WidgetsOutlined
-                className={
-                  !['xs', 'sm', 'md'].includes(breakpoint)
-                    ? 'POS_icon_left'
-                    : ''
-                }
+              <Icon
+                component={ICON_VIEW_ALL_LOANS}
+                sx={{
+                  width: 24,
+                  height: 24,
+                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                }}
               />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
+              {!['xs', 'sm'].includes(breakpoint) && 'View all loans'}
             </StyledButton>
             <StyledButton
               color={'info'}
-              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+              isIconButton={['xs', 'sm'].includes(breakpoint)}
               onClick={() => router.push('/')}
+              size={'small'}
               sx={{
-                marginRight: { xs: '1.25vw', md: 3 },
+                borderWidth: '1px !important',
+                fontWeight: '400 !important',
+                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
               }}
               variant={'outlined'}
             >
-              <PostAddOutlined
-                className={
-                  !['xs', 'sm', 'md'].includes(breakpoint)
-                    ? 'POS_icon_left'
-                    : ''
-                }
+              <Icon
+                component={ICON_START_NEW_LOAN}
+                sx={{
+                  width: 24,
+                  height: 24,
+                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                }}
               />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
+              {!['xs', 'sm'].includes(breakpoint) && 'Start new loan'}
+            </StyledButton>
+            <StyledButton
+              color={'info'}
+              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              onClick={() =>
+                (location.href = 'https://youland.com/refer-a-friend/')
+              }
+              size={'small'}
+              sx={{
+                mr: { xs: 0, lg: 2.5 },
+                borderWidth: '1px !important',
+                fontWeight: '400 !important',
+                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
+              }}
+              variant={'outlined'}
+            >
+              <Icon
+                component={ICON_REFER_FRIEND}
+                sx={{
+                  width: 24,
+                  height: 24,
+                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                }}
+              />
+              {!['xs', 'sm'].includes(breakpoint) && 'Refer a friend'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
-          </Box>
+          </Stack>
         );
       case LayoutSceneTypeEnum.account:
         return (
-          <Box>
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            gap={{ xs: 2, lg: 1.5 }}
+          >
             <StyledButton
               color={'info'}
-              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
-              onClick={() => router.push('/pipeline')}
+              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              onClick={() => router.push('/')}
+              size={'small'}
               sx={{
-                marginRight: { xs: '1.25vw', md: 3 },
+                borderWidth: '1px !important',
+                fontWeight: '400 !important',
+                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
               }}
               variant={'outlined'}
             >
-              <WidgetsOutlined
-                className={
-                  !['xs', 'sm', 'md'].includes(breakpoint)
-                    ? 'POS_icon_left'
-                    : ''
-                }
+              <Icon
+                component={ICON_START_NEW_LOAN}
+                sx={{
+                  width: 24,
+                  height: 24,
+                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                }}
               />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
+              {!['xs', 'sm'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
             <StyledButton
               color={'info'}
-              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
-              onClick={() => router.push('/')}
+              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              onClick={() =>
+                (location.href = 'https://youland.com/refer-a-friend/')
+              }
+              size={'small'}
               sx={{
-                marginRight: { xs: '1.25vw', md: 3 },
+                mr: { xs: 0, lg: 2.5 },
+                borderWidth: '1px !important',
+                fontWeight: '400 !important',
+                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
               }}
               variant={'outlined'}
             >
-              <PostAddOutlined
-                className={
-                  !['xs', 'sm', 'md'].includes(breakpoint)
-                    ? 'POS_icon_left'
-                    : ''
-                }
+              <Icon
+                component={ICON_REFER_FRIEND}
+                sx={{
+                  width: 24,
+                  height: 24,
+                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                }}
               />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
+              {!['xs', 'sm'].includes(breakpoint) && 'Refer a friend'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
-          </Box>
+          </Stack>
         );
-
       case LayoutSceneTypeEnum.pipeline_without_all: {
         return (
-          <Box>
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            gap={{ xs: 2, lg: 1.5 }}
+          >
             <StyledButton
-              className={'POS_mr_3'}
               color={'info'}
               //disabled={!applicable}
-              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+              isIconButton={['xs', 'sm'].includes(breakpoint)}
               onClick={() => router.push('/')}
+              size={'small'}
+              sx={{
+                borderWidth: '1px !important',
+                fontWeight: '400 !important',
+              }}
               variant={'outlined'}
             >
-              <PostAddOutlined
-                className={
-                  !['xs', 'sm', 'md'].includes(breakpoint)
-                    ? 'POS_icon_left'
-                    : ''
-                }
+              <Icon
+                component={ICON_START_NEW_LOAN}
+                sx={{
+                  width: 24,
+                  height: 24,
+                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                }}
               />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
+              {!['xs', 'sm'].includes(breakpoint) && 'Start new loan'}
+            </StyledButton>
+            <StyledButton
+              color={'info'}
+              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              onClick={() =>
+                (location.href = 'https://youland.com/refer-a-friend/')
+              }
+              size={'small'}
+              sx={{
+                mr: { xs: 0, lg: 2.5 },
+                borderWidth: '1px !important',
+                fontWeight: '400 !important',
+              }}
+              variant={'outlined'}
+            >
+              <Icon
+                component={ICON_REFER_FRIEND}
+                sx={{
+                  width: 24,
+                  height: 24,
+                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                }}
+              />
+              {!['xs', 'sm'].includes(breakpoint) && 'Refer a friend'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
-          </Box>
+          </Stack>
         );
       }
     }
@@ -453,7 +569,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     >
       <Box sx={POSHeaderStyles}>
         {scene === LayoutSceneTypeEnum.dashboard ? (
-          ['xs', 'sm', 'md'].includes(breakpoint) ? (
+          ['xs', 'sm'].includes(breakpoint) ? (
             <StyledButton isIconButton onClick={sideOpen}>
               <DehazeOutlined />
             </StyledButton>
