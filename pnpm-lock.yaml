@@ -101,9 +101,6 @@ importers:
       react-easy-infinite-scroll-hook:
         specifier: ^2.1.4
         version: 2.1.4(react@18.2.0)
-      react-infinite-scroll-component:
-        specifier: ^6.1.0
-        version: 6.1.0(react@18.2.0)
       react-is:
         specifier: 18.2.0
         version: 18.2.0
@@ -2905,11 +2902,6 @@ packages:
   react-fast-compare@3.2.1:
     resolution: {integrity: sha512-xTYf9zFim2pEif/Fw16dBiXpe0hoy5PxcD8+OwBnTtNLfIm3g6WxhKNurY+6OmdH1u6Ta/W/Vl6vjbYP1MFnDg==}
 
-  react-infinite-scroll-component@6.1.0:
-    resolution: {integrity: sha512-SQu5nCqy8DxQWpnUVLx7V7b7LcA37aM7tvoWjTLZp1dk6EJibM5/4EJKzOnl07/BsM1Y40sKLuqjCwwH/xV0TQ==}
-    peerDependencies:
-      react: '>=16.0.0'
-
   react-intersection-observer@8.34.0:
     resolution: {integrity: sha512-TYKh52Zc0Uptp5/b4N91XydfSGKubEhgZRtcg1rhTKABXijc4Sdr1uTp5lJ8TN27jwUsdXxjHXtHa0kPj704sw==}
     peerDependencies:
@@ -3278,10 +3270,6 @@ packages:
     engines: {node: '>=8'}
     peerDependencies:
       react: '>=16.3'
-
-  throttle-debounce@2.3.0:
-    resolution: {integrity: sha512-H7oLPV0P7+jgvrk+6mwwwBDmxTaxnu9HMXmloNLXwnNO0ZxZ31Orah2n8lU1eMPvsaowP2CX+USCgyovXfdOFQ==}
-    engines: {node: '>=8'}
 
   throttle-debounce@3.0.1:
     resolution: {integrity: sha512-dTEWWNu6JmeVXY0ZYoPuH5cRIwc0MeGbJwah9KUNYSJwommQpCzTySTpEe8Gs1J23aeWEuAobe4Ag7EHVt/LOg==}
@@ -6546,11 +6534,6 @@ snapshots:
 
   react-fast-compare@3.2.1: {}
 
-  react-infinite-scroll-component@6.1.0(react@18.2.0):
-    dependencies:
-      react: 18.2.0
-      throttle-debounce: 2.3.0
-
   react-intersection-observer@8.34.0(react@18.2.0):
     dependencies:
       react: 18.2.0
@@ -6954,8 +6937,6 @@ snapshots:
       react: 18.2.0
       react-display-name: 0.2.5
       tiny-warning: 1.0.3
-
-  throttle-debounce@2.3.0: {}
 
   throttle-debounce@3.0.1: {}
 
