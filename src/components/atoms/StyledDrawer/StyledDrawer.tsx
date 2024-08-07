@@ -12,6 +12,7 @@ export const StyledDrawer: FC<StyledDrawerProps> = ({
   width = '100%',
   sx,
   open,
+  contentId,
   ...rest
 }) => {
   return (
@@ -29,7 +30,11 @@ export const StyledDrawer: FC<StyledDrawerProps> = ({
       {...rest}
     >
       {header && <Box className={'drawer_header'}>{header}</Box>}
-      {content && <Box className={'drawer_content'}>{content} </Box>}
+      {content && (
+        <Box className={'drawer_content'} id={contentId}>
+          {content}
+        </Box>
+      )}
       {footer && <Box className={'drawer_footer'}>{footer} </Box>}
     </Drawer>
   );

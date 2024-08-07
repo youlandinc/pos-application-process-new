@@ -8,139 +8,485 @@ import React, {
   useState,
 } from 'react';
 import {
+  Badge,
   ClickAwayListener,
   Grow,
+  Icon,
   MenuItem,
   MenuList,
   Paper,
   Popper,
   Stack,
+  Typography,
 } from '@mui/material';
-import { ExpandMoreOutlined, PermIdentityOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
+
+import { observer } from 'mobx-react-lite';
 
 import { useBreakpoints } from '@/hooks';
 
-import { MyAccountButtonProps, MyAccountStyles } from './index';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
-import { StyledAvatar, StyledButton } from '@/components/atoms';
+import { StyledAvatar, StyledDrawer, StyledLoading } from '@/components/atoms';
+import { MyAccountButtonProps, MyAccountStyles } from './index';
+import { MessageItem } from './MessageItem';
+
+import {
+  NotificationMessageItem,
+  NotificationMessageLabel,
+} from '@/types/account/notification';
+import { HttpError } from '@/types';
+import { _fetchMessage, _readMessage } from '@/requests';
+
+import ICON_NOTIFICATION from './icon_notification.svg';
 
 const MENU_LIST = [
   { label: 'Account', url: '/account' },
   { label: 'Sign out', url: 'sign_out' },
 ];
 
-export const MyAccountButton: FC<MyAccountButtonProps> = ({ store }) => {
-  const [popperVisible, setPopperVisible] = useState(false);
+const MESSAGE_LABEL = [
+  { label: 'All', value: NotificationMessageLabel.all },
+  { label: 'Unread', value: NotificationMessageLabel.unread },
+];
 
-  const anchorRef = useRef<HTMLButtonElement>(null);
+export const MyAccountButton: FC<MyAccountButtonProps> = observer(
+  ({ store }) => {
+    const router = useRouter();
+    const breakpoint = useBreakpoints();
+    const { enqueueSnackbar } = useSnackbar();
 
-  const router = useRouter();
+    const anchorRef = useRef<HTMLDivElement>(null);
+    const [userMenuVisible, setUserMenuVisible] = useState(false);
 
-  const breakpoint = useBreakpoints();
+    const messageBoxRef = useRef<HTMLDivElement>(null);
+    const [messageBoxVisible, setMessageBoxVisible] = useState(false);
+    const [messageFetchLoading, setMessageFetchLoading] = useState(false);
+    const [messageFetchMoreLoading, setMessageFetchMoreLoading] =
+      useState(false);
+    const [messageClickLoading, setMessageClickLoading] = useState(false);
+    const [messageList, setMessageList] = useState<NotificationMessageItem[]>(
+      [],
+    );
+    const [totalElements, setTotalElements] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+    const [pagination, setPagination] = useState({
+      page: 0,
+      size: 20,
+      status: NotificationMessageLabel.all,
+    });
 
-  const handledClose = useCallback((event: Event | SyntheticEvent) => {
-    if (
-      anchorRef.current &&
-      anchorRef.current.contains(event.target as HTMLElement)
-    ) {
-      return;
-    }
+    const onClickOpenUserMenu = useCallback(
+      () => setUserMenuVisible((open) => !open),
+      [],
+    );
+    const onClickCloseUserMenu = useCallback(
+      (event: Event | SyntheticEvent) => {
+        if (
+          anchorRef.current &&
+          anchorRef.current.contains(event.target as HTMLElement)
+        ) {
+          return;
+        }
+        setUserMenuVisible(false);
+      },
+      [],
+    );
+    const onClickUserMenuItem = useCallback(
+      async (e: MouseEvent<HTMLElement>, url: string) => {
+        e.preventDefault();
+        if (url === 'sign_out') {
+          onClickCloseUserMenu(e);
+          store.logout();
+          return;
+        }
+        onClickCloseUserMenu(e);
+        await router.push(url);
+      },
+      [onClickCloseUserMenu, router, store],
+    );
+    const renderMenuList = useMemo(() => {
+      return MENU_LIST.map((item, index) => (
+        <MenuItem
+          disableRipple
+          key={`${item.label}_${index}`}
+          onClick={(e) => onClickUserMenuItem(e, item.url)}
+          sx={{ ...MyAccountStyles.menu_item, justifyContent: 'center' }}
+        >
+          {item.label}
+        </MenuItem>
+      ));
+    }, [onClickUserMenuItem]);
 
-    setPopperVisible(false);
-  }, []);
+    const resetMessageStatus = useCallback(() => {
+      setMessageBoxVisible(false);
+      setPagination({
+        size: 20,
+        page: 0,
+        status: NotificationMessageLabel.all,
+      });
+      setMessageList([]);
+      setHasMore(false);
+    }, []);
+    const onClickOpenMessageBox = useCallback(async () => {
+      setMessageBoxVisible((open) => !open);
 
-  const handledClick = useCallback(() => setPopperVisible((open) => !open), []);
-
-  const handledMenuItemClick = useCallback(
-    async (e: MouseEvent<HTMLElement>, url: string) => {
-      e.preventDefault();
-      if (url === 'sign_out') {
-        handledClose(e);
-        store.logout();
+      setMessageFetchLoading(true);
+      try {
+        const { data } = await _fetchMessage(pagination);
+        setMessageList(data.content);
+        setTotalElements(data.totalElements);
+        setHasMore(data.totalElements > 20);
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      } finally {
+        setMessageFetchLoading(false);
+      }
+    }, [enqueueSnackbar, pagination]);
+    const onClickCloseMessageBox = useCallback(
+      (event: Event | SyntheticEvent) => {
+        if (
+          anchorRef.current &&
+          anchorRef.current.contains(event.target as HTMLElement)
+        ) {
+          return;
+        }
+        resetMessageStatus();
+      },
+      [resetMessageStatus],
+    );
+    const onClickChangeLabel = useCallback(
+      async (key: NotificationMessageLabel) => {
+        if (pagination.status === key) {
+          return;
+        }
+        const postData = {
+          status: key,
+          size: 20,
+          page: 0,
+        };
+        setMessageList([]);
+        setHasMore(false);
+        setPagination(postData);
+        setMessageFetchLoading(true);
+        try {
+          const { data } = await _fetchMessage(postData);
+          setMessageList(data.content);
+          setTotalElements(data.totalElements);
+          setHasMore(data.totalElements > 20);
+        } catch (err) {
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
+          });
+        } finally {
+          setMessageFetchLoading(false);
+        }
+      },
+      [enqueueSnackbar, pagination.status],
+    );
+    const fetchMoreMessage = useCallback(async () => {
+      if (messageList.length >= totalElements) {
+        setHasMore(false);
         return;
       }
-      handledClose(e);
-      await router.push(url);
-    },
-    [handledClose, router, store],
-  );
+      const postData = {
+        status: pagination.status,
+        page: pagination.page + 1,
+        size: 20,
+      };
+      setPagination(postData);
+      setMessageFetchMoreLoading(true);
 
-  const renderMenuList = useMemo(() => {
-    return MENU_LIST.map((item, index) => (
-      <MenuItem
-        disableRipple
-        key={`${item.label}_${index}`}
-        onClick={(e) => handledMenuItemClick(e, item.url)}
-        sx={{ ...MyAccountStyles.menu_item, justifyContent: 'center' }}
-      >
-        {item.label}
-      </MenuItem>
-    ));
-  }, [handledMenuItemClick]);
+      try {
+        const { data } = await _fetchMessage(postData);
+        const newData = [...messageList, ...data.content];
+        setMessageList(newData);
+        setHasMore(newData.length < data.totalElements);
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      } finally {
+        setMessageFetchMoreLoading(false);
+      }
+    }, [
+      enqueueSnackbar,
+      messageList,
+      pagination.page,
+      pagination.status,
+      totalElements,
+    ]);
 
-  return (
-    <>
-      <StyledButton
-        color={'info'}
-        isIconButton={['sm', 'xs', 'md'].includes(breakpoint)}
-        onClick={handledClick}
-        ref={anchorRef}
-        variant={'outlined'}
+    const onClickMessageItemCb = useCallback(
+      async (messageId: string) => {
+        setMessageClickLoading(true);
+        try {
+          await _readMessage(messageId);
+        } catch (err) {
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
+          });
+        } finally {
+          setMessageClickLoading(false);
+          resetMessageStatus();
+        }
+      },
+      [enqueueSnackbar, resetMessageStatus],
+    );
+
+    const scrollRef = useInfiniteScroll<HTMLDivElement>({
+      next: fetchMoreMessage,
+      rowCount: messageList.length,
+      hasMore: { up: false, down: hasMore },
+      scrollThreshold: 0.3,
+    });
+
+    return (
+      <Stack
+        alignItems={'center'}
+        flexDirection={'row'}
+        gap={{ xs: 2.5, lg: 3.5 }}
       >
-        {!['sm', 'xs', 'md'].includes(breakpoint) ? (
-          <>
-            My account
-            <ExpandMoreOutlined
-              className={'POS_icon_right'}
-              sx={
-                popperVisible
-                  ? {
-                      transform: 'rotate(-.5turn)',
-                      transformOrigin: 'center',
-                      transition: 'all .3s',
-                    }
-                  : { transition: 'all .3s' }
-              }
-            />
-          </>
-        ) : (
-          <PermIdentityOutlined />
-        )}
-      </StyledButton>
-      <Popper
-        anchorEl={anchorRef.current}
-        disablePortal
-        open={popperVisible}
-        placement={'bottom'}
-        sx={{ position: 'relative', zIndex: 1000 }}
-        transition
-      >
-        {({ TransitionProps }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin: 'top',
+        <Badge
+          badgeContent={store.totalNotification}
+          onClick={onClickOpenMessageBox}
+          ref={messageBoxRef}
+          sx={{
+            cursor: 'pointer',
+            '& .MuiBadge-badge': {
+              color: '#ffffff',
+              bgcolor: '#FF5630',
+              //fontFamily: 'monospace',
+              lineHeight: '18px',
+              fontSize: 12,
+              transform: 'scale(1) translate(45%, -50%)',
+            },
+          }}
+        >
+          <Icon
+            component={ICON_NOTIFICATION}
+            sx={{
+              width: 24,
+              height: 24,
             }}
-            timeout={popperVisible ? 300 : 0}
-          >
-            <Paper>
-              <ClickAwayListener onClickAway={handledClose}>
-                <MenuList sx={{ mt: 2, width: 170, p: 0 }}>
+          />
+        </Badge>
+
+        <Stack
+          onClick={onClickOpenUserMenu}
+          ref={anchorRef}
+          sx={{ cursor: 'pointer' }}
+        >
+          <StyledAvatar
+            height={['xs', 'sm', 'md'].includes(breakpoint) ? 24 : 32}
+            width={['xs', 'sm', 'md'].includes(breakpoint) ? 24 : 32}
+          />
+        </Stack>
+        <Popper
+          anchorEl={anchorRef.current}
+          disablePortal
+          open={userMenuVisible}
+          placement={'bottom-start'}
+          sx={{ position: 'relative', zIndex: 1000 }}
+          transition
+        >
+          {({ TransitionProps }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin: 'top',
+              }}
+              timeout={userMenuVisible ? 300 : 0}
+            >
+              <Paper
+                sx={{
+                  boxShadow: '0px 1px 5px 0px rgba(145,145,145,0.25)',
+                  borderRadius: 2,
+                }}
+              >
+                <ClickAwayListener onClickAway={onClickCloseUserMenu}>
+                  <MenuList sx={{ mt: 2, width: 120, p: 0 }}>
+                    {renderMenuList}
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+
+        {['xs', 'sm'].includes(breakpoint) ? (
+          <StyledDrawer
+            anchor={'right'}
+            content={
+              <Stack
+                height={'100%'}
+                overflow={'auto'}
+                ref={scrollRef}
+                width={'100%'}
+              >
+                {messageFetchLoading ? (
                   <Stack
                     alignItems={'center'}
-                    py={1.5}
-                    sx={{ cursor: 'default' }}
+                    flex={1}
+                    height={600}
+                    justifyContent={'center'}
+                    width={'100%'}
                   >
-                    <StyledAvatar />
+                    <StyledLoading sx={{ color: 'text.grey', mb: 3 }} />
                   </Stack>
-                  {renderMenuList}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
+                ) : (
+                  messageList.map((item, index) => (
+                    <MessageItem
+                      cb={() => onClickMessageItemCb(item.messageId)}
+                      clickLoading={messageClickLoading}
+                      key={`message-item-${index}`}
+                      {...item}
+                    />
+                  ))
+                )}
+              </Stack>
+            }
+            header={
+              <Stack flexDirection={'row'} gap={3} px={3} py={1}>
+                {MESSAGE_LABEL.map((item, index) => (
+                  <Typography
+                    color={
+                      pagination.status === item.value
+                        ? '#636A7C'
+                        : 'text.secondary'
+                    }
+                    fontSize={14}
+                    fontWeight={pagination.status === item.value ? 600 : 400}
+                    key={`message-box-label-${item.label}-${index}`}
+                    onClick={() => onClickChangeLabel(item.value)}
+                    sx={{
+                      cursor:
+                        pagination.status === item.value
+                          ? 'default'
+                          : 'pointer',
+                    }}
+                  >
+                    {item.label}
+                  </Typography>
+                ))}
+              </Stack>
+            }
+            onClose={onClickCloseMessageBox}
+            open={messageBoxVisible}
+            sx={{
+              '& .drawer_header': {
+                p: '0 !important',
+              },
+            }}
+            width={'85vw'}
+          />
+        ) : (
+          <Popper
+            anchorEl={messageBoxRef.current}
+            disablePortal
+            open={messageBoxVisible}
+            placement={'bottom-start'}
+            sx={{ position: 'relative', zIndex: 1000 }}
+            transition
+          >
+            {({ TransitionProps }) => (
+              <Grow
+                {...TransitionProps}
+                style={{
+                  transformOrigin: 'top',
+                }}
+                timeout={userMenuVisible ? 300 : 0}
+              >
+                <Paper
+                  sx={{
+                    boxShadow: '0px 1px 5px 0px rgba(145,145,145,0.25)',
+                    borderRadius: 2,
+                  }}
+                >
+                  <ClickAwayListener onClickAway={onClickCloseMessageBox}>
+                    <Stack height={650} mt={2} width={450}>
+                      <Stack flexDirection={'row'} gap={3} px={3} py={1}>
+                        {MESSAGE_LABEL.map((item, index) => (
+                          <Typography
+                            color={
+                              pagination.status === item.value
+                                ? '#636A7C'
+                                : 'text.secondary'
+                            }
+                            fontSize={14}
+                            fontWeight={
+                              pagination.status === item.value ? 600 : 400
+                            }
+                            key={`message-box-label-${item.label}-${index}`}
+                            onClick={() => onClickChangeLabel(item.value)}
+                            sx={{
+                              cursor:
+                                pagination.status === item.value
+                                  ? 'default'
+                                  : 'pointer',
+                            }}
+                          >
+                            {item.label}
+                          </Typography>
+                        ))}
+                      </Stack>
+
+                      <Stack
+                        height={'100%'}
+                        overflow={'auto'}
+                        ref={scrollRef}
+                        width={'100%'}
+                      >
+                        {messageFetchLoading ? (
+                          <Stack
+                            alignItems={'center'}
+                            flex={1}
+                            height={600}
+                            justifyContent={'center'}
+                            width={'100%'}
+                          >
+                            <StyledLoading sx={{ color: 'text.grey', mb: 3 }} />
+                          </Stack>
+                        ) : (
+                          messageList.map((item, index) => (
+                            <MessageItem
+                              cb={() => onClickMessageItemCb(item.messageId)}
+                              clickLoading={messageClickLoading}
+                              key={`message-item-${index}`}
+                              {...item}
+                            />
+                          ))
+                        )}
+                        {/*{messageFetchMoreLoading && <div>Loading...</div>}*/}
+                      </Stack>
+                    </Stack>
+                  </ClickAwayListener>
+                </Paper>
+              </Grow>
+            )}
+          </Popper>
         )}
-      </Popper>
-    </>
-  );
-};
+      </Stack>
+    );
+  },
+);

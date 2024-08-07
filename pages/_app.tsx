@@ -79,6 +79,35 @@ export default function MyApp(props: MyAppProps) {
   const breakpoints = useBreakpoints();
   const router = useRouter();
 
+  useEffect(
+    () => {
+      if (!rootStore?.session?.accessToken?.jwtToken) {
+        return;
+      }
+      const eventSource = new EventSource(
+        `https://dev-pos-api.youland.com/notification/api/sse/notification?token=${
+          rootStore.session!.accessToken.jwtToken
+        }`,
+      );
+
+      eventSource.onmessage = (e) => {
+        if (e.data === 'heartbeat') {
+          return;
+        }
+        const data = JSON.parse(e.data);
+        if (data.messageType === 'COUNT') {
+          rootStore.setTotalNotification(data.count);
+        }
+      };
+
+      return () => {
+        eventSource.close();
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [rootStore?.session?.accessToken.jwtToken],
+  );
+
   const { loading } = useAsync(async () => {
     if (router.pathname.includes('payment')) {
       return;
