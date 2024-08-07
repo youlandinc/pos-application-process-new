@@ -183,7 +183,6 @@ export const MyAccountButton: FC<MyAccountButtonProps> = observer(
           const { data } = await _fetchMessage(postData);
           setMessageList(data.content);
           setTotalElements(data.totalElements);
-          console.log(data.totalElements > 20, '20');
           setHasMore(data.totalElements > 20);
         } catch (err) {
           const { header, message, variant } = err as HttpError;
@@ -200,7 +199,6 @@ export const MyAccountButton: FC<MyAccountButtonProps> = observer(
       [enqueueSnackbar, pagination.status],
     );
     const fetchMoreMessage = useCallback(async () => {
-      console.log(123);
       if (messageList.length >= totalElements) {
         setHasMore(false);
         return;
