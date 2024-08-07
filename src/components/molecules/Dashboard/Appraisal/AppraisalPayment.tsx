@@ -59,6 +59,9 @@ export const AppraisalPayment = forwardRef<
             inspection, you&apos;ll be responsible for the cost of a second
             appraisal. Furthermore, certain property types (rural, large
             property size) or urgent requests may require additional payments.
+            Please note that paying for and ordering the appraisal does not
+            guarantee funding of the loan. We advise that you wait until your
+            loan is approved before placing the order.
           </>
         }
         onChange={(e) => {
