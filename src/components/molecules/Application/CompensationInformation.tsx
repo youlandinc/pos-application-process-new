@@ -239,6 +239,9 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
           >
             {compensationInformation.isAdditional && (
               <StyledTextField
+                inputProps={{
+                  maxLength: 300,
+                }}
                 label={'Additional information'}
                 multiline
                 onChange={(e) =>

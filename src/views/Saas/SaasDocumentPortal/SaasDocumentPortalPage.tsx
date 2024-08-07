@@ -161,7 +161,9 @@ export const SaasDocumentPortalPage: FC = () => {
                         fileKey={item.formId}
                         fileName={item.formName}
                         files={item.files || []}
+                        id={item.formId}
                         isFromLOS={true}
+                        isShowHistory={false}
                         key={`${item.formId}_${index}`}
                         loanId={loanId}
                         loanNumber={loanNumber}

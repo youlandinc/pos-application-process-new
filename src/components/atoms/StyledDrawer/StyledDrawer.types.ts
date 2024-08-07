@@ -8,6 +8,7 @@ export interface StyledDrawerProps
   > {
   header?: ReactNode;
   content: ReactNode;
+  contentId?: string;
   footer?: ReactNode;
   maxWidth?: CSSProperties['maxWidth'] | Omit<SxProps, 'maxWidth'>;
   minWidth?: CSSProperties['minWidth'] | Omit<SxProps, 'minWidth'>;

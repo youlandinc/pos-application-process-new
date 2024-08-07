@@ -32,6 +32,15 @@ export const SpecificalPaymentAdditional: FC<{ sx?: SxProps }> = ({
           water heater. Make sure these are in place to avoid issues.
         </Typography>
       </Stack>
+
+      <Stack gap={1}>
+        <Typography variant={'body3'}>Disclaimer:</Typography>
+        <Typography variant={'body3'}>
+          Please note that paying for and ordering the appraisal does not
+          guarantee funding of the loan. We advise that you wait until your loan
+          is approved before placing the order.
+        </Typography>
+      </Stack>
     </Stack>
   );
 };

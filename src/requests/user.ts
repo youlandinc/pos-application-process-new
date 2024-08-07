@@ -57,3 +57,16 @@ export const _fetchUserResetPasswordSubmit = (
 export const _forceUpdatePassword = (params: { newPass: string }) => {
   return post('usercenter/api/consumer/user/firstLogin/resetPassword', params);
 };
+
+// sse notification
+export const _fetchMessage = (params: {
+  status: string;
+  page: number;
+  size: number;
+}) => {
+  return post('/notification/api/update/page', params);
+};
+
+export const _readMessage = (messageId: string) => {
+  return get(`/notification/api/update/read/${messageId}`);
+};

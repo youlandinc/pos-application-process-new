@@ -27,6 +27,12 @@ import { Questionnaire } from './account/Questionnaire';
 export const RootModel = {
   persistDataLoaded: types.boolean,
   loadedGoogle: types.boolean,
+  totalNotification: types.number,
+  notificationDocuments: types.model({
+    categoryKey: types.maybe(types.string),
+    fileId: types.maybe(types.number),
+    fileName: types.maybe(types.string),
+  }),
 
   applicationForm: ApplicationForm,
   dashboardInfo: DashboardInfo,
@@ -116,6 +122,18 @@ const RootStore = types.model(RootModel).actions((self) => {
     setLogoutNotification(val: boolean) {
       self.logoutNotification = val;
     },
+    setTotalNotification(val: number) {
+      self.totalNotification = val;
+    },
+    setNotificationDocument(val: {
+      categoryKey: string;
+      fileId: number;
+      fileName: string;
+    }) {
+      self.notificationDocuments.categoryKey = val.categoryKey;
+      self.notificationDocuments.fileId = val.fileId;
+      self.notificationDocuments.fileName = val.fileName;
+    },
     logout() {
       if (Router.pathname === '/auth/login') {
         return;
@@ -134,6 +152,13 @@ const RootStore = types.model(RootModel).actions((self) => {
 });
 
 const initialState = {
+  totalNotification: 0,
+  notificationDocuments: {
+    categoryKey: '',
+    fileId: 0,
+    fileName: '',
+  },
+
   loadedGoogle: false,
   persistDataLoaded: false,
 
