@@ -366,7 +366,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = observer(
                         {...item}
                       />
                     ))}
-                    {!hasMore && (
+                    {!hasMore && pagination.page > 0 && (
                       <Stack
                         alignItems={'center'}
                         justifyContent={'center'}
@@ -526,7 +526,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = observer(
                                 {...item}
                               />
                             ))}
-                            {!hasMore && (
+                            {!hasMore && pagination.page > 0 && (
                               <Stack
                                 alignItems={'center'}
                                 justifyContent={'center'}
