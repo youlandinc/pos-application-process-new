@@ -355,7 +355,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = observer(
                   >
                     <StyledLoading sx={{ color: 'text.grey', mb: 3 }} />
                   </Stack>
-                ) : (
+                ) : messageList.length > 0 ? (
                   messageList.map((item, index) => (
                     <MessageItem
                       cb={() => onClickMessageItemCb(item.messageId)}
@@ -364,6 +364,28 @@ export const MyAccountButton: FC<MyAccountButtonProps> = observer(
                       {...item}
                     />
                   ))
+                ) : (
+                  <Stack
+                    alignItems={'center'}
+                    height={'100%'}
+                    justifyContent={'center'}
+                    pb={6}
+                    width={'100%'}
+                  >
+                    <Icon
+                      component={ICON_NO_HISTORY}
+                      sx={{ width: 206, height: 120 }}
+                    />
+                    <Typography
+                      color={'text.secondary'}
+                      mt={3}
+                      px={3}
+                      textAlign={'center'}
+                      variant={'h7'}
+                    >
+                      You don&apos;t have any notifications
+                    </Typography>
+                  </Stack>
                 )}
               </Stack>
             }
@@ -492,6 +514,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = observer(
                             <Typography
                               color={'text.secondary'}
                               mt={3}
+                              textAlign={'center'}
                               variant={'h6'}
                             >
                               You don&apos;t have any notifications
