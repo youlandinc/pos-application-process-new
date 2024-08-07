@@ -133,13 +133,15 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           >
             <StyledButton
               color={'info'}
-              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/pipeline')}
               size={'small'}
               sx={{
                 borderWidth: '1px !important',
                 fontWeight: '400 !important',
-                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
+                p: ['xs', 'sm', 'md'].includes(breakpoint)
+                  ? '0 !important'
+                  : '',
               }}
               variant={'outlined'}
             >
@@ -148,14 +150,14 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 sx={{
                   width: 24,
                   height: 24,
-                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
                 }}
               />
-              {!['xs', 'sm'].includes(breakpoint) && 'View all loans'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
             </StyledButton>
             <StyledButton
               color={'info'}
-              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() =>
                 (location.href = 'https://youland.com/refer-a-friend/')
               }
@@ -164,7 +166,9 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 mr: { xs: 0, lg: 2.5 },
                 borderWidth: '1px !important',
                 fontWeight: '400 !important',
-                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
+                p: ['xs', 'sm', 'md'].includes(breakpoint)
+                  ? '0 !important'
+                  : '',
               }}
               variant={'outlined'}
             >
@@ -173,10 +177,10 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 sx={{
                   width: 24,
                   height: 24,
-                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
                 }}
               />
-              {!['xs', 'sm'].includes(breakpoint) && 'Refer a friend'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
           </Stack>
@@ -190,13 +194,15 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           >
             <StyledButton
               color={'info'}
-              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/pipeline')}
               size={'small'}
               sx={{
                 borderWidth: '1px !important',
                 fontWeight: '400 !important',
-                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
+                p: ['xs', 'sm', 'md'].includes(breakpoint)
+                  ? '0 !important'
+                  : '',
               }}
               variant={'outlined'}
             >
@@ -205,20 +211,22 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 sx={{
                   width: 24,
                   height: 24,
-                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
                 }}
               />
-              {!['xs', 'sm'].includes(breakpoint) && 'View all loans'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
             </StyledButton>
             <StyledButton
               color={'info'}
-              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/')}
               size={'small'}
               sx={{
                 borderWidth: '1px !important',
                 fontWeight: '400 !important',
-                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
+                p: ['xs', 'sm', 'md'].includes(breakpoint)
+                  ? '0 !important'
+                  : '',
               }}
               variant={'outlined'}
             >
@@ -227,14 +235,14 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 sx={{
                   width: 24,
                   height: 24,
-                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
                 }}
               />
-              {!['xs', 'sm'].includes(breakpoint) && 'Start new loan'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
             <StyledButton
               color={'info'}
-              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() =>
                 (location.href = 'https://youland.com/refer-a-friend/')
               }
@@ -243,7 +251,9 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 mr: { xs: 0, lg: 2.5 },
                 borderWidth: '1px !important',
                 fontWeight: '400 !important',
-                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
+                p: ['xs', 'sm', 'md'].includes(breakpoint)
+                  ? '0 !important'
+                  : '',
               }}
               variant={'outlined'}
             >
@@ -252,10 +262,10 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 sx={{
                   width: 24,
                   height: 24,
-                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
                 }}
               />
-              {!['xs', 'sm'].includes(breakpoint) && 'Refer a friend'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
           </Stack>
@@ -269,13 +279,39 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           >
             <StyledButton
               color={'info'}
-              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+              onClick={() => router.push('/pipeline')}
+              size={'small'}
+              sx={{
+                borderWidth: '1px !important',
+                fontWeight: '400 !important',
+                p: ['xs', 'sm', 'md'].includes(breakpoint)
+                  ? '0 !important'
+                  : '',
+              }}
+              variant={'outlined'}
+            >
+              <Icon
+                component={ICON_VIEW_ALL_LOANS}
+                sx={{
+                  width: 24,
+                  height: 24,
+                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
+                }}
+              />
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
+            </StyledButton>
+            <StyledButton
+              color={'info'}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/')}
               size={'small'}
               sx={{
                 borderWidth: '1px !important',
                 fontWeight: '400 !important',
-                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
+                p: ['xs', 'sm', 'md'].includes(breakpoint)
+                  ? '0 !important'
+                  : '',
               }}
               variant={'outlined'}
             >
@@ -284,14 +320,14 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 sx={{
                   width: 24,
                   height: 24,
-                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
                 }}
               />
-              {!['xs', 'sm'].includes(breakpoint) && 'Start new loan'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
             <StyledButton
               color={'info'}
-              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() =>
                 (location.href = 'https://youland.com/refer-a-friend/')
               }
@@ -300,7 +336,9 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 mr: { xs: 0, lg: 2.5 },
                 borderWidth: '1px !important',
                 fontWeight: '400 !important',
-                p: ['xs', 'sm'].includes(breakpoint) ? '0 !important' : '',
+                p: ['xs', 'sm', 'md'].includes(breakpoint)
+                  ? '0 !important'
+                  : '',
               }}
               variant={'outlined'}
             >
@@ -309,10 +347,10 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 sx={{
                   width: 24,
                   height: 24,
-                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
                 }}
               />
-              {!['xs', 'sm'].includes(breakpoint) && 'Refer a friend'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
           </Stack>
@@ -327,7 +365,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             <StyledButton
               color={'info'}
               //disabled={!applicable}
-              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/')}
               size={'small'}
               sx={{
@@ -341,14 +379,14 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 sx={{
                   width: 24,
                   height: 24,
-                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
                 }}
               />
-              {!['xs', 'sm'].includes(breakpoint) && 'Start new loan'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
             <StyledButton
               color={'info'}
-              isIconButton={['xs', 'sm'].includes(breakpoint)}
+              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() =>
                 (location.href = 'https://youland.com/refer-a-friend/')
               }
@@ -365,10 +403,10 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 sx={{
                   width: 24,
                   height: 24,
-                  mr: !['xs', 'sm'].includes(breakpoint) ? 1 : 0,
+                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
                 }}
               />
-              {!['xs', 'sm'].includes(breakpoint) && 'Refer a friend'}
+              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
             </StyledButton>
             <MyAccountButton scene={scene} store={store} />
           </Stack>

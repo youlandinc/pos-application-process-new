@@ -41,6 +41,7 @@ import { HttpError } from '@/types';
 import { _fetchMessage, _readMessage } from '@/requests';
 
 import ICON_NOTIFICATION from './icon_notification.svg';
+import ICON_NO_MORE from './icon_no_more.svg';
 import ICON_NO_HISTORY from '@/components/atoms/StyledUploadButtonBox/icon_no_history.svg';
 
 const MENU_LIST = [
@@ -356,14 +357,38 @@ export const MyAccountButton: FC<MyAccountButtonProps> = observer(
                     <StyledLoading sx={{ color: 'text.grey', mb: 3 }} />
                   </Stack>
                 ) : messageList.length > 0 ? (
-                  messageList.map((item, index) => (
-                    <MessageItem
-                      cb={() => onClickMessageItemCb(item.messageId)}
-                      clickLoading={messageClickLoading}
-                      key={`message-item-${index}`}
-                      {...item}
-                    />
-                  ))
+                  <>
+                    {messageList.map((item, index) => (
+                      <MessageItem
+                        cb={() => onClickMessageItemCb(item.messageId)}
+                        clickLoading={messageClickLoading}
+                        key={`message-item-${index}`}
+                        {...item}
+                      />
+                    ))}
+                    {!hasMore && (
+                      <Stack
+                        alignItems={'center'}
+                        justifyContent={'center'}
+                        pb={3}
+                        pt={2}
+                      >
+                        <Icon
+                          component={ICON_NO_MORE}
+                          sx={{ width: 24, height: 24 }}
+                        />
+                        <Typography
+                          color={'text.secondary'}
+                          mt={1.5}
+                          px={3}
+                          textAlign={'center'}
+                          variant={'body3'}
+                        >
+                          You&apos;ve reached the end of your notifications.
+                        </Typography>
+                      </Stack>
+                    )}
+                  </>
                 ) : (
                   <Stack
                     alignItems={'center'}
@@ -378,10 +403,11 @@ export const MyAccountButton: FC<MyAccountButtonProps> = observer(
                     />
                     <Typography
                       color={'text.secondary'}
+                      fontSize={12}
+                      fontWeight={600}
                       mt={3}
                       px={3}
                       textAlign={'center'}
-                      variant={'h7'}
                     >
                       You don&apos;t have any notifications
                     </Typography>
@@ -491,14 +517,39 @@ export const MyAccountButton: FC<MyAccountButtonProps> = observer(
                             <StyledLoading sx={{ color: 'text.grey', mb: 3 }} />
                           </Stack>
                         ) : messageList.length > 0 ? (
-                          messageList.map((item, index) => (
-                            <MessageItem
-                              cb={() => onClickMessageItemCb(item.messageId)}
-                              clickLoading={messageClickLoading}
-                              key={`message-item-${index}`}
-                              {...item}
-                            />
-                          ))
+                          <>
+                            {messageList.map((item, index) => (
+                              <MessageItem
+                                cb={() => onClickMessageItemCb(item.messageId)}
+                                clickLoading={messageClickLoading}
+                                key={`message-item-${index}`}
+                                {...item}
+                              />
+                            ))}
+                            {!hasMore && (
+                              <Stack
+                                alignItems={'center'}
+                                justifyContent={'center'}
+                                pb={3}
+                                pt={2}
+                              >
+                                <Icon
+                                  component={ICON_NO_MORE}
+                                  sx={{ width: 24, height: 24 }}
+                                />
+                                <Typography
+                                  color={'text.secondary'}
+                                  mt={1.5}
+                                  px={3}
+                                  textAlign={'center'}
+                                  variant={'body3'}
+                                >
+                                  You&apos;ve reached the end of your
+                                  notifications.
+                                </Typography>
+                              </Stack>
+                            )}
+                          </>
                         ) : (
                           <Stack
                             alignItems={'center'}
@@ -513,9 +564,10 @@ export const MyAccountButton: FC<MyAccountButtonProps> = observer(
                             />
                             <Typography
                               color={'text.secondary'}
+                              fontSize={12}
+                              fontWeight={600}
                               mt={3}
                               textAlign={'center'}
-                              variant={'h6'}
                             >
                               You don&apos;t have any notifications
                             </Typography>
