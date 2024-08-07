@@ -41,6 +41,7 @@ import { HttpError } from '@/types';
 import { _fetchMessage, _readMessage } from '@/requests';
 
 import ICON_NOTIFICATION from './icon_notification.svg';
+import ICON_NO_HISTORY from '@/components/atoms/StyledUploadButtonBox/icon_no_history.svg';
 
 const MENU_LIST = [
   { label: 'Account', url: '/account' },
@@ -467,7 +468,7 @@ export const MyAccountButton: FC<MyAccountButtonProps> = observer(
                           >
                             <StyledLoading sx={{ color: 'text.grey', mb: 3 }} />
                           </Stack>
-                        ) : (
+                        ) : messageList.length > 0 ? (
                           messageList.map((item, index) => (
                             <MessageItem
                               cb={() => onClickMessageItemCb(item.messageId)}
@@ -476,6 +477,26 @@ export const MyAccountButton: FC<MyAccountButtonProps> = observer(
                               {...item}
                             />
                           ))
+                        ) : (
+                          <Stack
+                            alignItems={'center'}
+                            height={'100%'}
+                            justifyContent={'center'}
+                            pb={6}
+                            width={'100%'}
+                          >
+                            <Icon
+                              component={ICON_NO_HISTORY}
+                              sx={{ width: 206, height: 120 }}
+                            />
+                            <Typography
+                              color={'text.secondary'}
+                              mt={3}
+                              variant={'h6'}
+                            >
+                              You don&apos;t have any notifications
+                            </Typography>
+                          </Stack>
                         )}
                         {/*{messageFetchMoreLoading && <div>Loading...</div>}*/}
                       </Stack>

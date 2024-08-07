@@ -1088,7 +1088,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                       sx={{ width: 206, height: 120 }}
                     />
                     <Typography color={'text.secondary'} variant={'h6'}>
-                      No notes added yet
+                      No comments added yet
                     </Typography>
                   </Stack>
                 )
