@@ -159,37 +159,36 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
             </StyledButton>
-            {saasState?.tenantId === '1000052022092800000102' ||
-              (saasState?.tenantId === '1000052023020700000112' && (
-                <StyledButton
-                  color={'info'}
-                  isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
-                  onClick={() =>
-                    (location.href = 'https://youland.com/refer-a-friend/')
-                  }
-                  size={'small'}
+            {(saasState?.tenantId === '1000052022092800000102' ||
+              saasState?.tenantId === '1000052023020700000112') && (
+              <StyledButton
+                color={'info'}
+                isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+                onClick={() =>
+                  (location.href = 'https://youland.com/refer-a-friend/')
+                }
+                size={'small'}
+                sx={{
+                  mr: { xs: 0, lg: 2.5 },
+                  borderWidth: '1px !important',
+                  fontWeight: '400 !important',
+                  p: ['xs', 'sm', 'md'].includes(breakpoint)
+                    ? '0 !important'
+                    : '',
+                }}
+                variant={'outlined'}
+              >
+                <Icon
+                  component={ICON_REFER_FRIEND}
                   sx={{
-                    mr: { xs: 0, lg: 2.5 },
-                    borderWidth: '1px !important',
-                    fontWeight: '400 !important',
-                    p: ['xs', 'sm', 'md'].includes(breakpoint)
-                      ? '0 !important'
-                      : '',
+                    width: 24,
+                    height: 24,
+                    mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
                   }}
-                  variant={'outlined'}
-                >
-                  <Icon
-                    component={ICON_REFER_FRIEND}
-                    sx={{
-                      width: 24,
-                      height: 24,
-                      mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
-                    }}
-                  />
-                  {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
-                </StyledButton>
-              ))}
-
+                />
+                {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
+              </StyledButton>
+            )}
             <MyAccountButton scene={scene} store={store} />
           </Stack>
         );
@@ -248,36 +247,36 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
-            {saasState?.tenantId === '1000052022092800000102' ||
-              (saasState?.tenantId === '1000052023020700000112' && (
-                <StyledButton
-                  color={'info'}
-                  isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
-                  onClick={() =>
-                    (location.href = 'https://youland.com/refer-a-friend/')
-                  }
-                  size={'small'}
+            {(saasState?.tenantId === '1000052022092800000102' ||
+              saasState?.tenantId === '1000052023020700000112') && (
+              <StyledButton
+                color={'info'}
+                isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+                onClick={() =>
+                  (location.href = 'https://youland.com/refer-a-friend/')
+                }
+                size={'small'}
+                sx={{
+                  mr: { xs: 0, lg: 2.5 },
+                  borderWidth: '1px !important',
+                  fontWeight: '400 !important',
+                  p: ['xs', 'sm', 'md'].includes(breakpoint)
+                    ? '0 !important'
+                    : '',
+                }}
+                variant={'outlined'}
+              >
+                <Icon
+                  component={ICON_REFER_FRIEND}
                   sx={{
-                    mr: { xs: 0, lg: 2.5 },
-                    borderWidth: '1px !important',
-                    fontWeight: '400 !important',
-                    p: ['xs', 'sm', 'md'].includes(breakpoint)
-                      ? '0 !important'
-                      : '',
+                    width: 24,
+                    height: 24,
+                    mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
                   }}
-                  variant={'outlined'}
-                >
-                  <Icon
-                    component={ICON_REFER_FRIEND}
-                    sx={{
-                      width: 24,
-                      height: 24,
-                      mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
-                    }}
-                  />
-                  {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
-                </StyledButton>
-              ))}
+                />
+                {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
+              </StyledButton>
+            )}
             <MyAccountButton scene={scene} store={store} />
           </Stack>
         );
@@ -336,36 +335,36 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
-            {saasState?.tenantId === '1000052022092800000102' ||
-              (saasState?.tenantId === '1000052023020700000112' && (
-                <StyledButton
-                  color={'info'}
-                  isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
-                  onClick={() =>
-                    (location.href = 'https://youland.com/refer-a-friend/')
-                  }
-                  size={'small'}
+            {(saasState?.tenantId === '1000052022092800000102' ||
+              saasState?.tenantId === '1000052023020700000112') && (
+              <StyledButton
+                color={'info'}
+                isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+                onClick={() =>
+                  (location.href = 'https://youland.com/refer-a-friend/')
+                }
+                size={'small'}
+                sx={{
+                  mr: { xs: 0, lg: 2.5 },
+                  borderWidth: '1px !important',
+                  fontWeight: '400 !important',
+                  p: ['xs', 'sm', 'md'].includes(breakpoint)
+                    ? '0 !important'
+                    : '',
+                }}
+                variant={'outlined'}
+              >
+                <Icon
+                  component={ICON_REFER_FRIEND}
                   sx={{
-                    mr: { xs: 0, lg: 2.5 },
-                    borderWidth: '1px !important',
-                    fontWeight: '400 !important',
-                    p: ['xs', 'sm', 'md'].includes(breakpoint)
-                      ? '0 !important'
-                      : '',
+                    width: 24,
+                    height: 24,
+                    mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
                   }}
-                  variant={'outlined'}
-                >
-                  <Icon
-                    component={ICON_REFER_FRIEND}
-                    sx={{
-                      width: 24,
-                      height: 24,
-                      mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
-                    }}
-                  />
-                  {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
-                </StyledButton>
-              ))}
+                />
+                {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
+              </StyledButton>
+            )}
             <MyAccountButton scene={scene} store={store} />
           </Stack>
         );
@@ -398,36 +397,36 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
-            {saasState?.tenantId === '1000052022092800000102' ||
-              (saasState?.tenantId === '1000052023020700000112' && (
-                <StyledButton
-                  color={'info'}
-                  isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
-                  onClick={() =>
-                    (location.href = 'https://youland.com/refer-a-friend/')
-                  }
-                  size={'small'}
+            {(saasState?.tenantId === '1000052022092800000102' ||
+              saasState?.tenantId === '1000052023020700000112') && (
+              <StyledButton
+                color={'info'}
+                isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+                onClick={() =>
+                  (location.href = 'https://youland.com/refer-a-friend/')
+                }
+                size={'small'}
+                sx={{
+                  mr: { xs: 0, lg: 2.5 },
+                  borderWidth: '1px !important',
+                  fontWeight: '400 !important',
+                  p: ['xs', 'sm', 'md'].includes(breakpoint)
+                    ? '0 !important'
+                    : '',
+                }}
+                variant={'outlined'}
+              >
+                <Icon
+                  component={ICON_REFER_FRIEND}
                   sx={{
-                    mr: { xs: 0, lg: 2.5 },
-                    borderWidth: '1px !important',
-                    fontWeight: '400 !important',
-                    p: ['xs', 'sm', 'md'].includes(breakpoint)
-                      ? '0 !important'
-                      : '',
+                    width: 24,
+                    height: 24,
+                    mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
                   }}
-                  variant={'outlined'}
-                >
-                  <Icon
-                    component={ICON_REFER_FRIEND}
-                    sx={{
-                      width: 24,
-                      height: 24,
-                      mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
-                    }}
-                  />
-                  {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
-                </StyledButton>
-              ))}
+                />
+                {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
+              </StyledButton>
+            )}
             <MyAccountButton scene={scene} store={store} />
           </Stack>
         );
