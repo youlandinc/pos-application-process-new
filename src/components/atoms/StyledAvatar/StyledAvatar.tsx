@@ -55,7 +55,7 @@ export const StyledAvatar: FC<StyledAvatarProps> = ({
       .toUpperCase();
     const insideLastName = (
       isSelf
-        ? userpool.getLastAuthUserInfo(lastAuthUserId, 'firstName')
+        ? userpool.getLastAuthUserInfo(lastAuthUserId, 'lastName')
         : lastName
     )
       ?.charAt(0)
@@ -63,7 +63,7 @@ export const StyledAvatar: FC<StyledAvatarProps> = ({
 
     result.name = `${insideFirstName}${insideLastName}`;
 
-    if (!firstName && !lastName) {
+    if (!firstName && !lastName && !isSelf) {
       result.name = name || '';
     }
 
