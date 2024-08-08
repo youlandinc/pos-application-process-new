@@ -25,7 +25,11 @@ import {
 } from '@/components/atoms';
 import { ForgotPassword, Login, SignUp } from '@/components/molecules';
 
-import { LayoutSceneTypeEnum, LoanSnapshotEnum } from '@/types';
+import {
+  LayoutSceneTypeEnum,
+  LoanSnapshotEnum,
+  ServiceTypeEnum,
+} from '@/types';
 
 import ICON_REFER_FRIEND from './icon_refer_friend.svg';
 import ICON_VIEW_ALL_LOANS from './icon_view_all_loans.svg';
@@ -155,33 +159,36 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
             </StyledButton>
-            <StyledButton
-              color={'info'}
-              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
-              onClick={() =>
-                (location.href = 'https://youland.com/refer-a-friend/')
-              }
-              size={'small'}
-              sx={{
-                mr: { xs: 0, lg: 2.5 },
-                borderWidth: '1px !important',
-                fontWeight: '400 !important',
-                p: ['xs', 'sm', 'md'].includes(breakpoint)
-                  ? '0 !important'
-                  : '',
-              }}
-              variant={'outlined'}
-            >
-              <Icon
-                component={ICON_REFER_FRIEND}
+            {saasState?.serviceTypeEnum === ServiceTypeEnum.SAAS && (
+              <StyledButton
+                color={'info'}
+                isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+                onClick={() =>
+                  (location.href = 'https://youland.com/refer-a-friend/')
+                }
+                size={'small'}
                 sx={{
-                  width: 24,
-                  height: 24,
-                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
+                  mr: { xs: 0, lg: 2.5 },
+                  borderWidth: '1px !important',
+                  fontWeight: '400 !important',
+                  p: ['xs', 'sm', 'md'].includes(breakpoint)
+                    ? '0 !important'
+                    : '',
                 }}
-              />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
-            </StyledButton>
+                variant={'outlined'}
+              >
+                <Icon
+                  component={ICON_REFER_FRIEND}
+                  sx={{
+                    width: 24,
+                    height: 24,
+                    mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
+                  }}
+                />
+                {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
+              </StyledButton>
+            )}
+
             <MyAccountButton scene={scene} store={store} />
           </Stack>
         );
@@ -240,33 +247,35 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
-            <StyledButton
-              color={'info'}
-              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
-              onClick={() =>
-                (location.href = 'https://youland.com/refer-a-friend/')
-              }
-              size={'small'}
-              sx={{
-                mr: { xs: 0, lg: 2.5 },
-                borderWidth: '1px !important',
-                fontWeight: '400 !important',
-                p: ['xs', 'sm', 'md'].includes(breakpoint)
-                  ? '0 !important'
-                  : '',
-              }}
-              variant={'outlined'}
-            >
-              <Icon
-                component={ICON_REFER_FRIEND}
+            {saasState?.serviceTypeEnum === ServiceTypeEnum.SAAS && (
+              <StyledButton
+                color={'info'}
+                isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+                onClick={() =>
+                  (location.href = 'https://youland.com/refer-a-friend/')
+                }
+                size={'small'}
                 sx={{
-                  width: 24,
-                  height: 24,
-                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
+                  mr: { xs: 0, lg: 2.5 },
+                  borderWidth: '1px !important',
+                  fontWeight: '400 !important',
+                  p: ['xs', 'sm', 'md'].includes(breakpoint)
+                    ? '0 !important'
+                    : '',
                 }}
-              />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
-            </StyledButton>
+                variant={'outlined'}
+              >
+                <Icon
+                  component={ICON_REFER_FRIEND}
+                  sx={{
+                    width: 24,
+                    height: 24,
+                    mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
+                  }}
+                />
+                {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
+              </StyledButton>
+            )}
             <MyAccountButton scene={scene} store={store} />
           </Stack>
         );
@@ -325,33 +334,35 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
-            <StyledButton
-              color={'info'}
-              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
-              onClick={() =>
-                (location.href = 'https://youland.com/refer-a-friend/')
-              }
-              size={'small'}
-              sx={{
-                mr: { xs: 0, lg: 2.5 },
-                borderWidth: '1px !important',
-                fontWeight: '400 !important',
-                p: ['xs', 'sm', 'md'].includes(breakpoint)
-                  ? '0 !important'
-                  : '',
-              }}
-              variant={'outlined'}
-            >
-              <Icon
-                component={ICON_REFER_FRIEND}
+            {saasState?.serviceTypeEnum === ServiceTypeEnum.SAAS && (
+              <StyledButton
+                color={'info'}
+                isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+                onClick={() =>
+                  (location.href = 'https://youland.com/refer-a-friend/')
+                }
+                size={'small'}
                 sx={{
-                  width: 24,
-                  height: 24,
-                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
+                  mr: { xs: 0, lg: 2.5 },
+                  borderWidth: '1px !important',
+                  fontWeight: '400 !important',
+                  p: ['xs', 'sm', 'md'].includes(breakpoint)
+                    ? '0 !important'
+                    : '',
                 }}
-              />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
-            </StyledButton>
+                variant={'outlined'}
+              >
+                <Icon
+                  component={ICON_REFER_FRIEND}
+                  sx={{
+                    width: 24,
+                    height: 24,
+                    mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
+                  }}
+                />
+                {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
+              </StyledButton>
+            )}
             <MyAccountButton scene={scene} store={store} />
           </Stack>
         );
@@ -384,30 +395,35 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
-            <StyledButton
-              color={'info'}
-              isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
-              onClick={() =>
-                (location.href = 'https://youland.com/refer-a-friend/')
-              }
-              size={'small'}
-              sx={{
-                mr: { xs: 0, lg: 2.5 },
-                borderWidth: '1px !important',
-                fontWeight: '400 !important',
-              }}
-              variant={'outlined'}
-            >
-              <Icon
-                component={ICON_REFER_FRIEND}
+            {saasState?.serviceTypeEnum === ServiceTypeEnum.SAAS && (
+              <StyledButton
+                color={'info'}
+                isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
+                onClick={() =>
+                  (location.href = 'https://youland.com/refer-a-friend/')
+                }
+                size={'small'}
                 sx={{
-                  width: 24,
-                  height: 24,
-                  mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
+                  mr: { xs: 0, lg: 2.5 },
+                  borderWidth: '1px !important',
+                  fontWeight: '400 !important',
+                  p: ['xs', 'sm', 'md'].includes(breakpoint)
+                    ? '0 !important'
+                    : '',
                 }}
-              />
-              {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
-            </StyledButton>
+                variant={'outlined'}
+              >
+                <Icon
+                  component={ICON_REFER_FRIEND}
+                  sx={{
+                    width: 24,
+                    height: 24,
+                    mr: !['xs', 'sm', 'md'].includes(breakpoint) ? 1 : 0,
+                  }}
+                />
+                {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
+              </StyledButton>
+            )}
             <MyAccountButton scene={scene} store={store} />
           </Stack>
         );
@@ -418,6 +434,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     hasSession,
     applicationForm.snapshot,
     breakpoint,
+    saasState?.serviceTypeEnum,
     store,
     open,
     router,
