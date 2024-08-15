@@ -627,7 +627,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     >
       <Box sx={POSHeaderStyles}>
         {scene === LayoutSceneTypeEnum.dashboard ? (
-          ['xs', 'sm'].includes(breakpoint) ? (
+          ['xs', 'sm', 'md'].includes(breakpoint) ? (
             <StyledButton isIconButton onClick={sideOpen}>
               <DehazeOutlined />
             </StyledButton>
@@ -648,6 +648,11 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
         onClose={handledClose}
         open={visible}
         scroll={'body'}
+        sx={{
+          '& .MuiPaper-root': {
+            maxWidth: '600px !important',
+          },
+        }}
       />
     </Stack>
   );
