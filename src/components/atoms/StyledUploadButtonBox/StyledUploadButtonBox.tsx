@@ -956,17 +956,15 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                   <ContentCopy
                     onClick={async () => {
                       await navigator.clipboard.writeText(
-                        `${saasState?.address?.address}${
+                        `${saasState?.organizationName || 'YouLand Inc'}. ISAOA/ATIMA
+${saasState?.address?.address}${
                           saasState?.address.aptNumber
                             ? `, ${saasState?.address.aptNumber}`
                             : ''
-                        }. ISAOA/ATIMA ${
-                          saasState?.address?.city
-                            ? `${saasState?.address?.city}, `
-                            : ''
-                        }${
-                          saasState?.address?.city
-                            ? `${saasState?.address?.city}, `
+                        }.
+${saasState?.address?.city ? `${saasState?.address?.city}, ` : ''}${
+                          saasState?.address?.state
+                            ? `${saasState?.address?.state}, `
                             : ''
                         }${
                           saasState?.address?.postcode
@@ -994,8 +992,8 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                       ? `${saasState?.address?.city}, `
                       : ''
                   }${
-                    saasState?.address?.city
-                      ? `${saasState?.address?.city}, `
+                    saasState?.address?.state
+                      ? `${saasState?.address?.state}, `
                       : ''
                   }${
                     saasState?.address?.postcode
