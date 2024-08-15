@@ -25,11 +25,7 @@ import {
 } from '@/components/atoms';
 import { ForgotPassword, Login, SignUp } from '@/components/molecules';
 
-import {
-  LayoutSceneTypeEnum,
-  LoanSnapshotEnum,
-  ServiceTypeEnum,
-} from '@/types';
+import { LayoutSceneTypeEnum, LoanSnapshotEnum } from '@/types';
 
 import ICON_REFER_FRIEND from './icon_refer_friend.svg';
 import ICON_VIEW_ALL_LOANS from './icon_view_all_loans.svg';
