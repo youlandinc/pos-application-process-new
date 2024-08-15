@@ -17,7 +17,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "jsxImportSource": "@emotion/react",
     "incremental": true,
     "noEmitOnError": true,
     "noImplicitAny": true,
@@ -28,6 +27,9 @@
       ]
     }
   },
+  "types": [
+    "@emotion/react/types/css-prop"
+  ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",

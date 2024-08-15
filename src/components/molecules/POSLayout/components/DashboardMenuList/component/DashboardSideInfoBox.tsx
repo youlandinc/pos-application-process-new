@@ -68,8 +68,9 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
                       <Box>{`${
                         info?.propertyAddress.city &&
                         `${info?.propertyAddress.city}, `
-                      } ${info?.propertyAddress.state} ${info?.propertyAddress
-                        .postcode}`}</Box>
+                      } ${info?.propertyAddress.state} ${
+                        info?.propertyAddress.postcode
+                      }`}</Box>
                     </Stack>
                   ) : (
                     OPTIONS_COMMON_STATE.find(
