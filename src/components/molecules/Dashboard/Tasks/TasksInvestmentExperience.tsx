@@ -50,7 +50,7 @@ export const TasksInvestmentExperience: FC = () => {
 
       setInvestmentFiles(investmentFiles ?? []);
       setPropertiesNum(
-        firstLoad ? data?.propertiesNum ?? propertiesNum : propertiesNum,
+        firstLoad ? (data?.propertiesNum ?? propertiesNum) : propertiesNum,
       );
       setTemplateName(templateName);
       setTemplateUrl(templateUrl);
