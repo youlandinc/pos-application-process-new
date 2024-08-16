@@ -14,7 +14,7 @@ export const APPLICATION_LOAN_CATEGORY: Option[] = [
     value: LoanProductCategoryEnum.stabilized_bridge,
   },
   {
-    label: 'Fix & Flip',
+    label: 'Fix and Flip',
     key: LoanProductCategoryEnum.fix_and_flip,
     value: LoanProductCategoryEnum.fix_and_flip,
   },
