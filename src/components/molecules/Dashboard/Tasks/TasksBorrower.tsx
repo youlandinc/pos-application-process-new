@@ -297,6 +297,7 @@ export const TasksBorrower: FC = observer(() => {
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
             variant={'body1'}
           >
             Please enter the borrower&apos;s details below so we may begin

@@ -358,7 +358,7 @@ export const TasksDemographics: FC = () => {
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
-            mt={1.5}
+            mt={1}
             sx={{ display: 'flex', flexDirection: 'column' }}
             variant={'body1'}
           >

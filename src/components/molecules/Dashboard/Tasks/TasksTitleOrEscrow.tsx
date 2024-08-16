@@ -318,6 +318,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
             sx={{ display: 'flex', flexDirection: 'column' }}
             variant={'body1'}
           >

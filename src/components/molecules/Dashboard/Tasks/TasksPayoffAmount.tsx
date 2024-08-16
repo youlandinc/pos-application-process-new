@@ -112,6 +112,7 @@ export const TasksPayoffAmount: FC = () => {
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
             variant={'body1'}
           >
             Please provide the full amount due to your lender for the complete
