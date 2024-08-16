@@ -140,6 +140,7 @@ export const TasksInvestmentExperience: FC = () => {
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
             variant={'body1'}
           >
             List your previous real estate investments, including rentals and

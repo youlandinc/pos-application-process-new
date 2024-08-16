@@ -119,6 +119,7 @@ export const TasksRehabInfo: FC = () => {
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
             variant={'body1'}
           >
             Please provide some more information about the value of the property
@@ -139,7 +140,7 @@ export const TasksRehabInfo: FC = () => {
             label={'After-repair square footage'}
             onValueChange={({ floatValue }) => setSquare(floatValue)}
             placeholder={'After-repair square footage'}
-            suffix={' sq ft'}
+            suffix={' Sq ft'}
             value={square}
           />
         </Stack>

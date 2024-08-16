@@ -117,36 +117,50 @@ export const TasksHoldbackProcess: FC = () => {
           fontSize={{ xs: 20, lg: 24 }}
           textAlign={'center'}
           variant={'h5'}
+        ></Typography>
+
+        <Typography
+          color={'text.primary'}
+          fontSize={{ xs: 20, lg: 24 }}
+          textAlign={'center'}
+          variant={'h5'}
         >
-          Agreements
+          Construction holdback process
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
+            variant={'body1'}
+          >
+            Please review and accept{' '}
+            {
+              //sass
+              saasState?.organizationName || ' YouLand'
+            }
+            &apos;s construction holdback process, which outlines how funds will
+            be disbursed during your project&apos;s construction phase.
+            {/*{`Review and accept $'s construction holdback process`}*/}
+          </Typography>
         </Typography>
 
-        <StyledFormItem
-          gap={3}
-          label={`Review and accept ${
-            //sass
-            saasState?.organizationName || ' YouLand'
-          }'s construction holdback process`}
+        <Stack
+          border={'1px solid #DEDEDE'}
+          borderRadius={2}
+          boxShadow={'0px 3px 10px 0px #DEDEDE'}
+          p={10}
+          ref={pdfFile}
           width={'100%'}
-        >
-          <Stack
-            border={'1px solid #DEDEDE'}
-            borderRadius={2}
-            boxShadow={'0px 3px 10px 0px #DEDEDE'}
-            p={10}
-            ref={pdfFile}
-            width={'100%'}
-          />
-        </StyledFormItem>
+        />
 
         <Typography
           color={'text.secondary'}
           fontSize={{ xs: 12, lg: 16 }}
           variant={'body1'}
         >
-          By clicking the below button, I hereby agree to the above{' '}
+          By clicking the <b style={{ fontWeight: 500 }}>Save</b> button below,
+          I hereby agree to the above{' '}
           {saasState?.organizationName || ' YouLand'}&apos;s construction
-          holdback process (on behalf of the borrower).
+          holdback process.
         </Typography>
 
         <Stack
