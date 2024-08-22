@@ -1,4 +1,4 @@
-import { get, post } from './axios';
+import { get, post, put } from './axios';
 import { User } from '@/types/user';
 import {
   ForgotPasswordFetchCodeRequestParams,
@@ -64,9 +64,9 @@ export const _fetchMessage = (params: {
   page: number;
   size: number;
 }) => {
-  return post('/notification/api/update/page', params);
+  return post('/pos/notification/page', params);
 };
 
-export const _readMessage = (messageId: string) => {
-  return get(`/notification/api/update/read/${messageId}`);
+export const _readMessage = (params: { messageId: string }) => {
+  return put('/notification/api/update/read', params);
 };
