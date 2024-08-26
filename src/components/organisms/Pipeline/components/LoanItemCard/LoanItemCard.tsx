@@ -163,7 +163,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
                 variant={'subtitle1'}
                 width={'100%'}
               >
-                {line_1}
+                {line_1},
               </Typography>
               <Typography
                 overflow={'hidden'}
