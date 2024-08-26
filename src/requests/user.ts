@@ -68,5 +68,5 @@ export const _fetchMessage = (params: {
 };
 
 export const _readMessage = (params: { messageId: string }) => {
-  return put('/pos/notification/api/update/read', params);
+  return put('/pos/notification/read', params);
 };
