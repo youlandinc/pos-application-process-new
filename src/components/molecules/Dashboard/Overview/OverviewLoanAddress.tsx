@@ -216,7 +216,7 @@ export const OverviewLoanAddress: FC<OverviewLoanAddressProps> = ({
           variant={['xs', 'sm', 'md'].includes(breakpoints) ? 'h7' : 'h6'}
           width={'100%'}
         >
-          {`${propertyAddress?.address ? `${propertyAddress?.address}, ` : ''}${
+          {`${propertyAddress?.address ? `${propertyAddress?.address} ` : ''}${
             propertyAddress?.aptNumber ? `${propertyAddress?.aptNumber}, ` : ''
           }${propertyAddress?.city ? `${propertyAddress?.city}, ` : ''}${
             propertyAddress?.state ? `${propertyAddress?.state} ` : ''

@@ -8,11 +8,7 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSGetParamsFromUrl } from '@/utils';
 import { useRenderPdf, useSessionStorageState } from '@/hooks';
 
-import {
-  StyledButton,
-  StyledFormItem,
-  StyledLoading,
-} from '@/components/atoms';
+import { StyledButton, StyledLoading } from '@/components/atoms';
 
 import { DashboardTaskKey, HttpError } from '@/types';
 import {
