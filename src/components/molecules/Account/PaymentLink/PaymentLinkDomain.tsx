@@ -177,8 +177,8 @@ export const PaymentLinkDomain: FC<{
               variant={'body2'}
             >
               Enter the domain name you want people to see when they access your
-              Point of Sale system. This could be a domain name like{' '}
-              <b>domain.com</b> or a subdomain like <b>app.domain.com</b>.
+              Point of Sale system. This is usually a subdomain like{' '}
+              <b>app.domain.com</b>.
             </Typography>
             <StyledTextField
               label={'Domain'}
