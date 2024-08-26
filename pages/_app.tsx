@@ -85,7 +85,7 @@ export default function MyApp(props: MyAppProps) {
         return;
       }
       const eventSource = new EventSource(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/notification/sse/connect?token=${
+        `${process.env.NEXT_PUBLIC_BASE_URL}/pos/notification/sse/connect?token=${
           rootStore.session!.accessToken.jwtToken
         }`,
       );
