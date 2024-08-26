@@ -61,16 +61,32 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
                           whiteSpace: 'break-spaces',
                           lineHeight: 1.5,
                         }}
-                      >{`${info?.propertyAddress.formatAddress}${
-                        info?.propertyAddress.aptNumber &&
-                        `, ${info?.propertyAddress.aptNumber}`
-                      }`}</Box>
-                      <Box>{`${
-                        info?.propertyAddress.city &&
-                        `${info?.propertyAddress.city}, `
-                      } ${info?.propertyAddress.state} ${
-                        info?.propertyAddress.postcode
-                      }`}</Box>
+                      >
+                        {`${
+                          info.propertyAddress?.formatAddress
+                            ? `${info.propertyAddress?.formatAddress} `
+                            : ''
+                        }${
+                          info.propertyAddress?.aptNumber
+                            ? `${info.propertyAddress?.aptNumber}, `
+                            : ''
+                        }`}
+                      </Box>
+                      <Box>
+                        {`${
+                          info.propertyAddress?.city
+                            ? `${info.propertyAddress?.city}, `
+                            : ''
+                        }${
+                          info.propertyAddress?.state
+                            ? `${info.propertyAddress?.state} `
+                            : ''
+                        }${
+                          info.propertyAddress?.postcode
+                            ? `${info.propertyAddress?.postcode}`
+                            : ''
+                        }`}
+                      </Box>
                     </Stack>
                   ) : (
                     OPTIONS_COMMON_STATE.find(

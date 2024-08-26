@@ -236,7 +236,7 @@ export const MyAccountButton: FC<{
     async (messageId: string) => {
       setMessageClickLoading(true);
       try {
-        await _readMessage(messageId);
+        await _readMessage({ messageId });
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
