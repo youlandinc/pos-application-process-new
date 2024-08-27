@@ -38,7 +38,7 @@ export const MessageItem: FC<MessageItemProps> = ({
   const onClickToReadMessageAndRedirect = useCallback(async () => {
     const { loanId: insideId } = POSGetParamsFromUrl(location.href);
 
-    if (clickLoading || !insideId) {
+    if (clickLoading) {
       return;
     }
     store.setNotificationDocument({
