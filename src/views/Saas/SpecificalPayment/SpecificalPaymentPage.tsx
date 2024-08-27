@@ -1,20 +1,44 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
-import { useAsync } from 'react-use';
-
-import { AUTO_HIDE_DURATION } from '@/constants';
-import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
-
 import {
   StyledButton,
-  StyledCheckbox,
+  StyledGoogleAutoComplete,
   StyledLoading,
-  StyledPaymentCard,
   StyledTextField,
   StyledTextFieldPhone,
 } from '@/components/atoms';
+
+import { AUTO_HIDE_DURATION } from '@/constants';
+
+import { useBreakpoints } from '@/hooks';
+import { IAddress } from '@/models/common/Address';
+import {
+  _creatSpecifyPayment,
+  _getPaymentSignature,
+  _updateSpecifyContactInfo,
+} from '@/requests';
+
+import {
+  AppraisalStatusEnum,
+  AppraisalTaskPaymentStatus,
+  HttpError,
+} from '@/types';
+import {
+  createPaymentIframe,
+  POSGetParamsFromUrl,
+  POSNotUndefined,
+} from '@/utils';
+import {
+  Box,
+  Stack,
+  Step,
+  StepButton,
+  StepLabel,
+  Stepper,
+  Typography,
+} from '@mui/material';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useAsync, useAsyncFn } from 'react-use';
 import {
   SpecificalAppraisalStatusProps,
   SpecificalPaymentAdditional,
@@ -24,18 +48,20 @@ import {
   SpecificalPaymentStatus,
 } from './components';
 
-import { useBreakpoints } from '@/hooks';
-
-import {
-  AppraisalStatusEnum,
-  AppraisalTaskPaymentStatus,
-  HttpError,
-} from '@/types';
-import { _creatSpecifyPayment, _updateSpecifyContactInfo } from '@/requests';
-
 const URL_HASH = {
   0: false,
   1: true,
+};
+
+const STEP_LABELS = ['Fill in billing information', 'Payment'];
+
+const defaultAddress = {
+  formatAddress: '',
+  city: '',
+  state: '',
+  postcode: '',
+  aptNumber: '',
+  street: '',
 };
 
 export const SpecificalPaymentPage = () => {
@@ -44,8 +70,11 @@ export const SpecificalPaymentPage = () => {
 
   const breakpoints = useBreakpoints();
 
-  const paymentRef = useRef(null);
+  // const paymentRef = useRef(null);
   const contactForm = useRef<HTMLFormElement>(null);
+  const billingForm = useRef<HTMLFormElement>(null);
+  const paymentContentRef = useRef<HTMLDivElement | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -53,7 +82,12 @@ export const SpecificalPaymentPage = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [instructions, setInstructions] = useState('');
 
-  const [clientSecret, setClientSecret] = useState('');
+  const [billingFirstName, setBillingFirstName] = useState('');
+  const [billingLastName, setBillingLastName] = useState('');
+  const [billingEmail, setBillingEmail] = useState('');
+  const [billingPhoneNumber, setBillingPhoneNumber] = useState('');
+
+  // const [clientSecret, setClientSecret] = useState('');
   const [propertyAddress, setPropertyAddress] = useState('');
   const [productName, setProductName] = useState('');
   const [appraisalFees, setAppraisalFees] = useState(0);
@@ -61,8 +95,9 @@ export const SpecificalPaymentPage = () => {
   const [expeditedFees, setExpeditedFees] = useState(0);
   const [paymentAmount, setPaymentAmount] = useState(0);
   const [paymentName, setPaymentName] = useState('');
-  const [payLoading, setPayLoading] = useState(false);
-  const [checkProcessing, setCheckProcessing] = useState(false);
+  // const [payLoading, setPayLoading] = useState(false);
+  // const [checkProcessing, setCheckProcessing] = useState(false);
+  // const [isSameInfo, setIsSameInfo] = useState(false);
 
   const [loanId, setLoanId] = useState('');
   const [insideIsAdditional, setInsideIsAdditional] = useState(false);
@@ -72,6 +107,7 @@ export const SpecificalPaymentPage = () => {
   const [organizationName, setOrganizationName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhoneNumber, setContactPhoneNumber] = useState('');
+  // const [signatureData, setSignatureData] = useState<Record<string, any>>({});
 
   const [paymentStatus, setPaymentStatus] =
     useState<AppraisalTaskPaymentStatus>(AppraisalTaskPaymentStatus.undone);
@@ -88,6 +124,23 @@ export const SpecificalPaymentPage = () => {
     [AppraisalStatusEnum.completed]: null,
   });
 
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [addressInfo, setAddressInfo] = useState(defaultAddress);
+
+  const nextDisabled = [
+    billingFirstName,
+    billingLastName,
+    addressInfo.formatAddress,
+    addressInfo.city,
+    addressInfo.state,
+    addressInfo.postcode,
+    billingEmail,
+    billingPhoneNumber,
+    firstName,
+    lastName,
+    phoneNumber,
+  ].some((item) => item === '');
+
   const { loading } = useAsync(async () => {
     const { isNeedToFill, orderNo, source, isAdditional } = POSGetParamsFromUrl(
       location.href,
@@ -102,7 +155,6 @@ export const SpecificalPaymentPage = () => {
     }
     setInsideIsNeedToFill(URL_HASH[isNeedToFill as unknown as 0 | 1]);
     setInsideIsAdditional(URL_HASH[isAdditional as unknown as 0 | 1]);
-
     await fetchData();
   });
 
@@ -112,7 +164,7 @@ export const SpecificalPaymentPage = () => {
       const {
         data: {
           loanId,
-          clientSecret,
+          // clientSecret,
           paymentAmount,
           propertyAddress,
           productName,
@@ -143,7 +195,7 @@ export const SpecificalPaymentPage = () => {
       setContactEmail(contactEmail ?? '');
       setContactPhoneNumber(contactPhoneNumber ?? '');
 
-      setClientSecret(clientSecret);
+      // setClientSecret(clientSecret);
       setProductName(productName);
       setPropertyAddress(propertyAddress);
       setAppraisalFees(appraisalFees);
@@ -174,6 +226,69 @@ export const SpecificalPaymentPage = () => {
       });
     }
   };
+
+  const [state, getPaymentSignature] = useAsyncFn(async () => {
+    const flag = billingForm?.current?.reportValidity();
+    if (!flag) {
+      return;
+    }
+    // console.log(flag);
+    const { orderNo } = POSGetParamsFromUrl(location.href);
+    await onClickToPay();
+    await _getPaymentSignature({
+      bizOrderNo: orderNo,
+      billTo: {
+        firstName: 'mike',
+        lastName: 'joyy',
+        address1: '850 Collins Avenue 306',
+        locality: 'Miami Beach',
+        administrativeArea: 'FL',
+        postalCode: '33139',
+        county: '',
+        country: 'US',
+        district: '',
+        email: 'mike2yeqiu@outlook.com',
+        phoneNumber: '18458214366',
+        /* firstName: billingFirstName,
+          lastName: billingLastName,
+          address1: addressInfo.formatAddress,
+          locality: addressInfo.city,
+          administrativeArea: addressInfo.state,
+          postalCode: addressInfo.postcode,
+          county: '',
+          country: 'US',
+          district: '',
+          email: billingEmail,
+          phoneNumber: billingPhoneNumber,*/
+      },
+    })
+      .then((res) => {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        createPaymentIframe(
+          res.data,
+          paymentContentRef.current as HTMLDivElement,
+        );
+        timeoutRef.current = setInterval(() => {
+          freshStatus();
+        }, 2000);
+        return res;
+      })
+      .catch((err) => {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      });
+  }, [
+    addressInfo,
+    billingFirstName,
+    billingLastName,
+    billingEmail,
+    billingPhoneNumber,
+  ]);
 
   const onButtonClick = async () => {
     if (paymentStatus === AppraisalTaskPaymentStatus.fail) {
@@ -216,9 +331,9 @@ export const SpecificalPaymentPage = () => {
   ]);
 
   const onClickToPay = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
-      e.stopPropagation();
+    async (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e?.preventDefault();
+      e?.stopPropagation();
 
       if (insideIsNeedToFill) {
         const flag = contactForm?.current?.reportValidity();
@@ -230,21 +345,53 @@ export const SpecificalPaymentPage = () => {
           return;
         }
       }
-      setPayLoading(true);
-      const paymentRes = await (paymentRef.current as unknown as any).onSubmit(
-        e,
-      );
-      if (paymentRes) {
-        const { status } = paymentRes;
-        if (status === AppraisalTaskPaymentStatus.complete) {
-          setPaymentStatus(status as string as AppraisalTaskPaymentStatus);
-        }
-      }
+      // setPayLoading(true);
+      // const paymentRes = await (paymentRef.current as unknown as any).onSubmit(
+      //   e,
+      // );
+      // if (paymentRes) {
+      //   const { status } = paymentRes;
+      //   if (status === AppraisalTaskPaymentStatus.complete) {
+      //     setPaymentStatus(status as string as AppraisalTaskPaymentStatus);
+      //   }
+      // }
 
-      setPayLoading(false);
+      // setPayLoading(false);
     },
     [insideIsNeedToFill, onSubmitContactForm],
   );
+
+  const freshStatus = useCallback(async () => {
+    const { orderNo, source } = POSGetParamsFromUrl(location.href);
+    try {
+      const {
+        data: { paymentStatus, appraisalStatus, appraisalStatusDetail },
+      } = await _creatSpecifyPayment(orderNo, source);
+      if (paymentStatus === AppraisalTaskPaymentStatus.complete) {
+        setPaymentStatus(paymentStatus ?? AppraisalTaskPaymentStatus.undone);
+        setAppraisalStatus(appraisalStatus ?? AppraisalStatusEnum.canceled);
+        setAppraisalStatusDetail(appraisalStatusDetail);
+        clearInterval(timeoutRef.current as NodeJS.Timeout);
+      }
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    }
+  }, [enqueueSnackbar]);
+
+  useEffect(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    return () => {
+      clearInterval(timeoutRef.current);
+    };
+  }, []);
 
   return (
     <Stack
@@ -316,170 +463,268 @@ export const SpecificalPaymentPage = () => {
               }}
               width={'100%'}
             >
-              <Stack
-                gap={{ xs: 3, md: 6 }}
-                minWidth={{ xl: 500, xs: 'auto' }}
-                width={'100%'}
-              >
-                {insideIsNeedToFill && (
-                  <Stack
-                    border={'1px solid #E4E7EF'}
-                    borderRadius={2}
-                    component={'form'}
-                    flex={1}
-                    gap={3}
-                    minWidth={{ xl: 500, xs: 'auto' }}
-                    p={3}
-                    ref={contactForm}
-                  >
-                    <Typography
-                      color={'text.primary'}
-                      fontSize={{
-                        xs: 18,
-                        md: 24,
-                      }}
-                      variant={'h5'}
-                    >
-                      Property inspection contact information
-                    </Typography>
-
-                    <Stack flexDirection={{ xs: 'column', lg: 'row' }} gap={3}>
-                      <StyledTextField
-                        label={'First name'}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        placeholder={'First name'}
-                        required
-                        value={firstName}
-                      />
-                      <StyledTextField
-                        label={'Last name'}
-                        onChange={(e) => setLastName(e.target.value)}
-                        placeholder={'Last name'}
-                        required
-                        value={lastName}
-                      />
-                    </Stack>
-
-                    <Stack flexDirection={{ xs: 'column', lg: 'row' }} gap={3}>
-                      <StyledTextField
-                        label={'Email (optional)'}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder={'Email (optional)'}
-                        value={email}
-                      />
-                      <StyledTextFieldPhone
-                        label={'Phone number'}
-                        onValueChange={({ value }) => setPhoneNumber(value)}
-                        placeholder={'Phone number'}
-                        required
-                        value={phoneNumber}
-                      />
-                    </Stack>
-
-                    <StyledTextField
-                      label={'Property access instructions (optional)'}
-                      onChange={(e) => setInstructions(e.target.value)}
-                      placeholder={'Property access instructions (optional)'}
-                      value={instructions}
-                    />
-                  </Stack>
-                )}
-
-                {!['xl', 'xxl'].includes(breakpoints) && (
-                  <Stack
-                    flexShrink={0}
-                    gap={{ xs: 3, md: 6 }}
-                    width={{ xs: '100%', xl: 530 }}
-                  >
-                    <SpecificalPaymentInfo
-                      additional={
-                        ['xl', 'xxl'].includes(breakpoints) ? (
-                          <SpecificalPaymentAdditional sx={{ ml: 3 }} />
-                        ) : null
-                      }
-                      appraisalFees={appraisalFees}
-                      expeditedFees={expeditedFees}
-                      isAdditional={insideIsAdditional}
-                      isExpedited={isExpedited}
-                      paymentAmount={paymentAmount}
-                      paymentName={paymentName}
-                      productName={productName}
-                      propertyAddress={propertyAddress}
-                    />
-                  </Stack>
-                )}
-
-                <Stack
-                  border={'1px solid #E4E7EF'}
-                  borderRadius={2}
-                  flex={1}
-                  gap={{ xs: 1.5, md: 3 }}
-                  p={3}
+              <Stack gap={3} minWidth={{ xl: 500, xs: 'auto' }} width={'100%'}>
+                <Stepper
+                  activeStep={activeStep}
+                  connector={
+                    <Box
+                      borderBottom={'1px dashed #ccc'}
+                      height={0}
+                      width={80}
+                    ></Box>
+                  }
                 >
-                  <Typography
-                    color={'text.primary'}
-                    fontSize={{
-                      xs: 18,
-                      md: 24,
-                    }}
-                    variant={'h5'}
-                  >
-                    Complete your appraisal payment
-                  </Typography>
+                  {STEP_LABELS.map((label, index) => {
+                    return (
+                      <Step key={label}>
+                        <StepButton
+                          onClick={() => {
+                            setActiveStep(index);
+                          }}
+                        >
+                          <StepLabel>{label}</StepLabel>
+                        </StepButton>
+                      </Step>
+                    );
+                  })}
+                </Stepper>
+                {activeStep === 0 ? (
+                  <>
+                    {insideIsNeedToFill && (
+                      <Stack
+                        border={'1px solid #E4E7EF'}
+                        borderRadius={2}
+                        component={'form'}
+                        flex={1}
+                        gap={3}
+                        minWidth={{ xl: 500, xs: 'auto' }}
+                        p={3}
+                        ref={billingForm}
+                      >
+                        <Typography
+                          color={'text.primary'}
+                          variant={'subtitle2'}
+                        >
+                          Billing information
+                        </Typography>
 
-                  <Typography
-                    fontSize={{
-                      xs: 12,
-                      md: 14,
-                    }}
-                    variant={'body2'}
-                  >
-                    To move forward with your loan application, please complete
-                    the payment below.
-                  </Typography>
+                        <Stack
+                          flexDirection={{ xs: 'column', lg: 'row' }}
+                          gap={3}
+                        >
+                          <StyledTextField
+                            label={'First name'}
+                            onChange={(e) =>
+                              setBillingFirstName(e.target.value)
+                            }
+                            placeholder={'First name'}
+                            required
+                            value={billingFirstName}
+                          />
+                          <StyledTextField
+                            label={'Last name'}
+                            onChange={(e) => setBillingLastName(e.target.value)}
+                            placeholder={'Last name'}
+                            required
+                            value={billingLastName}
+                          />
+                        </Stack>
 
-                  <StyledPaymentCard
-                    hideFooter
-                    mode={'uncheck'}
-                    ref={paymentRef}
-                    secret={clientSecret}
-                  />
-
-                  <StyledCheckbox
-                    checked={checkProcessing}
+                        <Stack
+                          flexDirection={{ xs: 'column', lg: 'row' }}
+                          gap={3}
+                        >
+                          <StyledTextField
+                            label={'Email'}
+                            onChange={(e) => setBillingEmail(e.target.value)}
+                            placeholder={'Email'}
+                            required
+                            type={'email'}
+                            value={billingEmail}
+                          />
+                          <StyledTextFieldPhone
+                            label={'Phone number'}
+                            onValueChange={({ value }) =>
+                              setBillingPhoneNumber(value)
+                            }
+                            placeholder={'Phone number'}
+                            required
+                            value={billingPhoneNumber}
+                          />
+                        </Stack>
+                        <Stack gap={3}>
+                          <Typography
+                            color={'text.primary'}
+                            variant={'subtitle2'}
+                          >
+                            Current address
+                          </Typography>
+                          <StyledGoogleAutoComplete
+                            address={
+                              {
+                                formatAddress: addressInfo.formatAddress,
+                                state: addressInfo.state,
+                                street: addressInfo.street,
+                                aptNumber: addressInfo.aptNumber,
+                                city: addressInfo.city,
+                                postcode: addressInfo.postcode,
+                                errors: {},
+                                isValid: false,
+                                changeFieldValue: (key: string, value: any) => {
+                                  setAddressInfo((prevState) => {
+                                    return {
+                                      ...prevState,
+                                      [key]: value,
+                                    };
+                                  });
+                                },
+                                reset: () => {
+                                  setAddressInfo(defaultAddress);
+                                },
+                              } as IAddress
+                            }
+                            label={'Address'}
+                          />
+                        </Stack>
+                      </Stack>
+                    )}
+                    <Stack
+                      border={'1px solid #E4E7EF'}
+                      borderRadius={2}
+                      component={'form'}
+                      flex={1}
+                      gap={3}
+                      minWidth={{ xl: 500, xs: 'auto' }}
+                      p={3}
+                      ref={contactForm}
+                    >
+                      <Typography color={'text.primary'} variant={'subtitle2'}>
+                        Property inspection contact information
+                      </Typography>
+                      {/*    <StyledCheckbox
+                    checked={isSameInfo}
                     label={
-                      <>
-                        <b>Important: </b> By proceeding, you acknowledge that
-                        if your property doesn&apos;t meet the required
-                        standards at the time of the inspection, you&apos;ll be
-                        responsible for the cost of a second appraisal.
-                        Furthermore, certain property types (rural, large
-                        property size) or urgent requests may require additional
-                        payments.
-                      </>
+                      'The property inspection contact information is the same as above'
                     }
                     onChange={(e) => {
-                      setCheckProcessing(e.target.checked);
+                      setIsSameInfo(e.target.checked);
                     }}
-                    sx={{
-                      mr: 1,
-                      mt: 1,
-                      '& .MuiCheckbox-root': {
-                        mt: '-9px',
-                        mr: '-9px',
-                      },
-                    }}
-                  />
+                  />*/}
+                      <Stack
+                        flexDirection={{ xs: 'column', lg: 'row' }}
+                        gap={3}
+                      >
+                        <StyledTextField
+                          label={'First name'}
+                          onChange={(e) => setFirstName(e.target.value)}
+                          placeholder={'First name'}
+                          required
+                          value={firstName}
+                        />
+                        <StyledTextField
+                          label={'Last name'}
+                          onChange={(e) => setLastName(e.target.value)}
+                          placeholder={'Last name'}
+                          required
+                          value={lastName}
+                        />
+                      </Stack>
 
-                  <StyledButton
-                    disabled={!checkProcessing || payLoading}
-                    loading={payLoading}
-                    onClick={onClickToPay}
-                    sx={{ width: '100%' }}
-                  >
-                    Pay now
-                  </StyledButton>
-                </Stack>
+                      <Stack
+                        flexDirection={{ xs: 'column', lg: 'row' }}
+                        gap={3}
+                      >
+                        <StyledTextField
+                          label={'Email (optional)'}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder={'Email (optional)'}
+                          value={email}
+                        />
+                        <StyledTextFieldPhone
+                          label={'Phone number'}
+                          onValueChange={({ value }) => setPhoneNumber(value)}
+                          placeholder={'Phone number'}
+                          required
+                          value={phoneNumber}
+                        />
+                      </Stack>
+
+                      <StyledTextField
+                        label={'Property access instructions (optional)'}
+                        onChange={(e) => setInstructions(e.target.value)}
+                        placeholder={'Property access instructions (optional)'}
+                        value={instructions}
+                      />
+                    </Stack>
+
+                    {!['xl', 'xxl'].includes(breakpoints) && (
+                      <Stack
+                        flexShrink={0}
+                        gap={{ xs: 3, md: 6 }}
+                        width={{ xs: '100%', xl: 530 }}
+                      >
+                        <SpecificalPaymentInfo
+                          additional={
+                            ['xl', 'xxl'].includes(breakpoints) ? (
+                              <SpecificalPaymentAdditional sx={{ ml: 3 }} />
+                            ) : null
+                          }
+                          appraisalFees={appraisalFees}
+                          expeditedFees={expeditedFees}
+                          isAdditional={insideIsAdditional}
+                          isExpedited={isExpedited}
+                          paymentAmount={paymentAmount}
+                          paymentName={paymentName}
+                          productName={productName}
+                          propertyAddress={propertyAddress}
+                        />
+                      </Stack>
+                    )}
+                    <Stack
+                      alignItems={{
+                        xs: 'center',
+                        lg: 'flex-start',
+                      }}
+                      direction={{
+                        xs: 'column',
+                        lg: 'row',
+                      }}
+                      gap={3}
+                    >
+                      <Typography variant={'body3'}>
+                        <strong>Important:</strong> By proceeding, you
+                        acknowledge that the payment amount may be adjusted due
+                        to extenuating property factors such as size or
+                        location. Additionally, if your property does not meet
+                        the required standards during inspection, you will be
+                        responsible for the cost of a second appraisal. Please
+                        be aware that paying for and ordering an appraisal does
+                        not guarantee loan approval. We recommend waiting for
+                        loan approval before placing the order.
+                      </Typography>
+                      <StyledButton
+                        disabled={nextDisabled || state.loading}
+                        loading={state.loading}
+                        onClick={async () => {
+                          await getPaymentSignature();
+                        }}
+                        sx={{
+                          width: 240,
+                          flexShrink: 0,
+                        }}
+                        variant={'contained'}
+                      >
+                        Next
+                      </StyledButton>
+                    </Stack>
+                  </>
+                ) : null}
+                <Box
+                  height={activeStep === 1 ? 'auto' : 0}
+                  overflow={'hidden'}
+                  position={'relative'}
+                  ref={paymentContentRef}
+                ></Box>
               </Stack>
 
               {['xl', 'xxl'].includes(breakpoints) && (
