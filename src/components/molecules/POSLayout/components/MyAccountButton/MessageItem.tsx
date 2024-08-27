@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { StyledAvatar } from '@/components/atoms';
 import { NotificationMessageItem } from '@/types/account/notification';
 import { useMst } from '@/models/Root';
+import { POSGetParamsFromUrl } from '@/utils';
 
 type MessageItemProps = NotificationMessageItem & {
   cb?: () => Promise<void>;
@@ -35,7 +36,9 @@ export const MessageItem: FC<MessageItemProps> = ({
   }, [firstName, lastName, name]);
 
   const onClickToReadMessageAndRedirect = useCallback(async () => {
-    if (clickLoading) {
+    const { loanId: insideId } = POSGetParamsFromUrl(location.href);
+
+    if (clickLoading || !insideId) {
       return;
     }
     store.setNotificationDocument({
@@ -45,7 +48,7 @@ export const MessageItem: FC<MessageItemProps> = ({
     });
 
     await cb?.();
-    if (router.pathname === '/dashboard/documents') {
+    if (router.pathname === '/dashboard/documents' && insideId === loanId) {
       return;
     }
     await router.push({
