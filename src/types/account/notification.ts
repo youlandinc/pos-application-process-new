@@ -10,7 +10,7 @@ export interface NotificationMessageItem {
   messageId: string;
   dateFromNow: string;
   variables: {
-    loanId: number;
+    loanId: number | string;
     categoryKey: string;
     fileId: number;
     fileName: string;
