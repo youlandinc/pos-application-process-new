@@ -6,10 +6,10 @@ validate.validators.date = (
   options: { minAge?: number; message: string },
 ) => {
   if (!value) {
-    return '^Date should not be empty';
+    return '^Cannot be empty';
   }
-  if (!isValid(value)) {
-    return '^Date is invalid';
+  if (!isValid(new Date(value))) {
+    return '^Invalid date';
   }
   if (
     options.minAge &&
@@ -18,7 +18,7 @@ validate.validators.date = (
     return options.message || '^Borrower must be at least 18 years old';
   }
   if (1 === compareAsc(new Date(1900, 1, 1), new Date(value))) {
-    return '^Date is too early';
+    return '^Cannot be before 1900';
   }
 };
 
@@ -32,13 +32,23 @@ validate.validators.ssn = (value: string) => {
 
 validate.validators.AmericanPhoneNumber = (value: string) => {
   if (!value) {
-    return;
+    return '^Cannot be empty';
   }
   const regex = /^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/;
   if (regex.test(value)) {
     return;
   }
   return '^Invalid phone number';
+};
+
+validate.validators.formEmail = (value: string) => {
+  if (!value) {
+    return '^Cannot be empty';
+  }
+  if (value.match(/^\w+@\w+\.\w+$/i)) {
+    return;
+  }
+  return '^Invalid email';
 };
 
 export default validate;

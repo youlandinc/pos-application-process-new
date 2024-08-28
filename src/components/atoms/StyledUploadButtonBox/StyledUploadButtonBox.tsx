@@ -85,30 +85,28 @@ interface StyledUploadButtonBoxProps {
 }
 
 export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
-  (props) => {
-    const {
-      id,
-      files,
-      fileName,
-      fileKey,
-      templateName,
-      templateUrl,
-      loanNumber,
-      accept = 'image/*,.pdf,.doc,.docx,.csv,.xlsx,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,',
-      fileSize = 100,
-      uploadText = 'Upload',
-      children,
-      popup,
-      status,
-      deleteOnly = false,
-      // loanId,
-      isFromLOS = false,
-      refresh,
-      onDelete,
-      onUpload,
-      isShowHistory = true,
-    } = props;
-
+  ({
+    id,
+    files,
+    fileName,
+    fileKey,
+    templateName,
+    templateUrl,
+    loanNumber,
+    accept = 'image/*,.pdf,.doc,.docx,.csv,.xlsx,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,',
+    fileSize = 100,
+    uploadText = 'Upload',
+    children,
+    popup,
+    status,
+    deleteOnly = false,
+    // loanId,
+    isFromLOS = false,
+    refresh,
+    onDelete,
+    onUpload,
+    isShowHistory = true,
+  }) => {
     const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
 

@@ -6,6 +6,7 @@ export interface StyledGoogleAutoCompleteProps {
   disabled?: boolean;
   label?: string;
   stateError?: boolean;
+  addressError?: Record<string, string[]> | undefined;
 }
 
 export interface _StyledGoogleAutoCompleteProps {
@@ -16,6 +17,7 @@ export interface _StyledGoogleAutoCompleteProps {
   disabled?: boolean;
   value: PlaceType | string;
   label?: string;
+  validate?: undefined | string[];
 }
 
 interface MainTextMatchedSubstrings {

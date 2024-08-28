@@ -44,6 +44,7 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
                       sx={{
                         display: 'block',
                         m: 0,
+                        pl: 0.5,
                         '&:first-of-type': {
                           mt: 0.5,
                         },
@@ -64,6 +65,7 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
                 sx={{
                   display: 'block',
                   m: 0,
+                  pl: 0.5,
                   '&:first-of-type': {
                     mt: 0.5,
                   },

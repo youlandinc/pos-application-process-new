@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { format, isDate, isValid } from 'date-fns';
 import { useAsync } from 'react-use';
@@ -43,12 +43,22 @@ import {
   _fetchLoanTaskDetail,
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
+import { TaskBorrowerSchema } from '@/constants/schema/taskBorrower';
+import { validate } from 'validate.js';
+import { AddressSchema } from '@/constants/schema/Address';
 
 export const TasksBorrower: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const [saveLoading, setSaveLoading] = useState(false);
+
+  const [addressError, setAddressError] = useState<
+    Record<string, string[]> | undefined
+  >();
+  const [formMessage, setFormError] = useState<
+    Record<string, string[]> | undefined
+  >();
 
   const [borrowerType, setBorrowerType] = useState<DashboardTaskBorrowerType>(
     DashboardTaskBorrowerType.default,
@@ -117,8 +127,8 @@ export const TasksBorrower: FC = observer(() => {
         loanId,
         taskKey: DashboardTaskKey.borrower,
       });
-      setBorrowerType(borrowerType ?? DashboardTaskBorrowerType.default);
-      setCitizenship(citizenship ?? LoanCitizenshipEnum.default);
+      setBorrowerType(borrowerType ?? DashboardTaskBorrowerType.individual);
+      setCitizenship(citizenship ?? LoanCitizenshipEnum.us_citizen);
       setFirstName(firstName ?? '');
       setLastName(lastName ?? '');
       setBirthDate(birthDate ? new Date(birthDate) : null);
@@ -145,79 +155,6 @@ export const TasksBorrower: FC = observer(() => {
       });
     }
   }, []);
-
-  const isFormDataValid = useMemo(() => {
-    if (!borrowerType) {
-      return false;
-    }
-    const dateCondition = isValid(birthDate) && isDate(birthDate);
-    const baseCondition =
-      !!firstName &&
-      !!lastName &&
-      !!phoneNumber &&
-      !!email &&
-      address.isValid &&
-      dateCondition;
-
-    if (borrowerType === DashboardTaskBorrowerType.individual) {
-      if (!citizenship) {
-        return false;
-      }
-      if (citizenship === LoanCitizenshipEnum.foreign_national) {
-        return baseCondition;
-      }
-      return baseCondition && !!ssn;
-    }
-    if (borrowerType === DashboardTaskBorrowerType.entity) {
-      if (!citizenship) {
-        return false;
-      }
-      if (citizenship === LoanCitizenshipEnum.foreign_national) {
-        return (
-          baseCondition &&
-          !!entityName &&
-          !!entityType &&
-          !!entityId &&
-          !!entityState &&
-          !!signatoryTitle
-        );
-      }
-      return (
-        baseCondition &&
-        !!entityName &&
-        !!entityType &&
-        !!entityId &&
-        !!entityState &&
-        !!signatoryTitle &&
-        !!ssn
-      );
-    }
-    if (borrowerType === DashboardTaskBorrowerType.trust) {
-      if (!citizenship) {
-        return false;
-      }
-      if (citizenship === LoanCitizenshipEnum.foreign_national) {
-        return baseCondition && !!trustName && !!signatoryTitle;
-      }
-      return baseCondition && !!trustName && !!signatoryTitle && !!ssn;
-    }
-  }, [
-    address.isValid,
-    birthDate,
-    borrowerType,
-    citizenship,
-    email,
-    entityId,
-    entityName,
-    entityState,
-    entityType,
-    firstName,
-    lastName,
-    phoneNumber,
-    signatoryTitle,
-    ssn,
-    trustName,
-  ]);
 
   const handleSave = async () => {
     const postData = {
@@ -246,6 +183,19 @@ export const TasksBorrower: FC = observer(() => {
         entityState,
       },
     };
+
+    const validateForm = await validate(postData.data, TaskBorrowerSchema);
+    const validateAddress = await validate(
+      address.getPostData(),
+      AddressSchema,
+    );
+    console.log(validateForm, validateAddress);
+    if (validateForm || validateAddress) {
+      setFormError(validateForm);
+      setAddressError(validateAddress);
+      return;
+    }
+
     setSaveLoading(true);
     try {
       await _updateLoanTaskDetail(postData);
@@ -333,30 +283,72 @@ export const TasksBorrower: FC = observer(() => {
             >
               <StyledTextField
                 label={'Entity name'}
-                onChange={(e) => setEntityName(e.target.value)}
+                onChange={(e) => {
+                  if (formMessage?.entityName) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.entityName;
+                      }
+                      return prev;
+                    });
+                  }
+                  setEntityName(e.target.value);
+                }}
                 placeholder={'Entity name'}
+                validate={formMessage?.entityName}
                 value={entityName}
               />
               <StyledSelect
                 label={'Entity type'}
                 onChange={(e) => {
+                  if (formMessage?.entityType) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.entityType;
+                      }
+                      return prev;
+                    });
+                  }
                   setEntityType(
                     e.target.value as string as DashboardTaskBorrowerEntityType,
                   );
                 }}
                 options={OPTIONS_TASK_ENTITY_TYPE}
+                validate={formMessage?.entityType}
                 value={entityType}
               />
               <StyledTextField
                 label={'Secretary of State ID'}
-                onChange={(e) => setEntityId(e.target.value)}
+                onChange={(e) => {
+                  if (formMessage?.entityId) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.entityId;
+                      }
+                      return prev;
+                    });
+                  }
+                  setEntityId(e.target.value);
+                }}
                 placeholder={'Secretary of State ID'}
+                validate={formMessage?.entityId}
                 value={entityId}
               />
               <StyledSelect
                 label={'Formation State'}
-                onChange={(e) => setEntityState(e.target.value as string)}
+                onChange={(e) => {
+                  if (formMessage?.entityState) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.entityState;
+                      }
+                      return prev;
+                    });
+                  }
+                  setEntityState(e.target.value as string);
+                }}
                 options={OPTIONS_COMMON_STATE}
+                validate={formMessage?.entityState}
                 value={entityState}
               />
             </StyledFormItem>
@@ -381,8 +373,19 @@ export const TasksBorrower: FC = observer(() => {
             >
               <StyledTextField
                 label={'Trust name'}
-                onChange={(e) => setTrustName(e.target.value)}
+                onChange={(e) => {
+                  if (formMessage?.trustName) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.trustName;
+                      }
+                      return prev;
+                    });
+                  }
+                  setTrustName(e.target.value);
+                }}
                 placeholder={'Trust name'}
+                validate={formMessage?.trustName}
                 value={trustName}
               />
             </StyledFormItem>
@@ -408,14 +411,36 @@ export const TasksBorrower: FC = observer(() => {
           >
             <StyledTextField
               label={'First name'}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={(e) => {
+                if (formMessage?.firstName) {
+                  setFormError((prev) => {
+                    if (prev) {
+                      delete prev.firstName;
+                    }
+                    return prev;
+                  });
+                }
+                setFirstName(e.target.value);
+              }}
               placeholder={'First name'}
+              validate={formMessage?.firstName}
               value={firstName}
             />
             <StyledTextField
               label={'Last name'}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={(e) => {
+                if (formMessage?.lastName) {
+                  setFormError((prev) => {
+                    if (prev) {
+                      delete prev.lastName;
+                    }
+                    return prev;
+                  });
+                }
+                setLastName(e.target.value);
+              }}
               placeholder={'Last name'}
+              validate={formMessage?.lastName}
               value={lastName}
             />
           </Stack>
@@ -429,18 +454,38 @@ export const TasksBorrower: FC = observer(() => {
               borrowerType === DashboardTaskBorrowerType.entity) && (
               <StyledTextField
                 label={'Authorized signatory title'}
-                onChange={(e) => setSignatoryTitle(e.target.value)}
+                onChange={(e) => {
+                  if (formMessage?.signatoryTitle) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.signatoryTitle;
+                      }
+                      return prev;
+                    });
+                  }
+                  setSignatoryTitle(e.target.value);
+                }}
                 placeholder={'Authorized signatory title'}
+                validate={formMessage?.signatoryTitle}
                 value={signatoryTitle}
               />
             )}
 
             <StyledDatePicker
-              disableFuture={false}
+              disableFuture={true}
               label={'Date of birth'}
               onChange={(value) => {
+                if (formMessage?.birthDate) {
+                  setFormError((prev) => {
+                    if (prev) {
+                      delete prev.birthDate;
+                    }
+                    return prev;
+                  });
+                }
                 setBirthDate(value as Date);
               }}
+              validate={formMessage?.birthDate}
               value={birthDate}
             />
           </Stack>
@@ -452,14 +497,36 @@ export const TasksBorrower: FC = observer(() => {
           >
             <StyledTextFieldPhone
               label={'Phone number'}
-              onValueChange={({ value }) => setPhoneNumber(value)}
+              onValueChange={({ value }) => {
+                if (formMessage?.phoneNumber) {
+                  setFormError((prev) => {
+                    if (prev) {
+                      delete prev.phoneNumber;
+                    }
+                    return prev;
+                  });
+                }
+                setPhoneNumber(value);
+              }}
               placeholder={'Phone number'}
+              validate={formMessage?.phoneNumber}
               value={phoneNumber}
             />
             <StyledTextField
               label={'Email'}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                if (formMessage?.email) {
+                  setFormError((prev) => {
+                    if (prev) {
+                      delete prev.email;
+                    }
+                    return prev;
+                  });
+                }
+                setEmail(e.target.value);
+              }}
               placeholder={'Email'}
+              validate={formMessage?.email}
               value={email}
             />
           </Stack>
@@ -487,7 +554,10 @@ export const TasksBorrower: FC = observer(() => {
           mt={{ xs: 3, lg: 5 }}
           sub
         >
-          <StyledGoogleAutoComplete address={address} />
+          <StyledGoogleAutoComplete
+            address={address}
+            addressError={addressError}
+          />
         </StyledFormItem>
 
         <Transitions
@@ -508,7 +578,19 @@ export const TasksBorrower: FC = observer(() => {
             >
               <StyledTextFieldSocialNumber
                 label={'Social security number'}
-                onValueChange={(v) => setSsn(v)}
+                onValueChange={(v) => {
+                  if (formMessage?.ssn) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.ssn;
+                        1;
+                      }
+                      return prev;
+                    });
+                  }
+                  setSsn(v);
+                }}
+                validate={formMessage?.ssn}
                 value={ssn}
               />
             </StyledFormItem>
@@ -536,7 +618,7 @@ export const TasksBorrower: FC = observer(() => {
           </StyledButton>
           <StyledButton
             color={'primary'}
-            disabled={saveLoading || !isFormDataValid}
+            disabled={saveLoading}
             loading={saveLoading}
             onClick={handleSave}
             sx={{ flex: 1, width: '100%' }}
@@ -548,3 +630,76 @@ export const TasksBorrower: FC = observer(() => {
     </Fade>
   );
 });
+
+//const isFormDataValid = useMemo(() => {
+//  if (!borrowerType) {
+//    return false;
+//  }
+//  const dateCondition = isValid(birthDate) && isDate(birthDate);
+//  const baseCondition =
+//      !!firstName &&
+//      !!lastName &&
+//      !!phoneNumber &&
+//      !!email &&
+//      address.isValid &&
+//      dateCondition;
+//
+//  if (borrowerType === DashboardTaskBorrowerType.individual) {
+//    if (!citizenship) {
+//      return false;
+//    }
+//    if (citizenship === LoanCitizenshipEnum.foreign_national) {
+//      return baseCondition;
+//    }
+//    return baseCondition && !!ssn;
+//  }
+//  if (borrowerType === DashboardTaskBorrowerType.entity) {
+//    if (!citizenship) {
+//      return false;
+//    }
+//    if (citizenship === LoanCitizenshipEnum.foreign_national) {
+//      return (
+//          baseCondition &&
+//          !!entityName &&
+//          !!entityType &&
+//          !!entityId &&
+//          !!entityState &&
+//          !!signatoryTitle
+//      );
+//    }
+//    return (
+//        baseCondition &&
+//        !!entityName &&
+//        !!entityType &&
+//        !!entityId &&
+//        !!entityState &&
+//        !!signatoryTitle &&
+//        !!ssn
+//    );
+//  }
+//  if (borrowerType === DashboardTaskBorrowerType.trust) {
+//    if (!citizenship) {
+//      return false;
+//    }
+//    if (citizenship === LoanCitizenshipEnum.foreign_national) {
+//      return baseCondition && !!trustName && !!signatoryTitle;
+//    }
+//    return baseCondition && !!trustName && !!signatoryTitle && !!ssn;
+//  }
+//}, [
+//  address.isValid,
+//  birthDate,
+//  borrowerType,
+//  citizenship,
+//  email,
+//  entityId,
+//  entityName,
+//  entityState,
+//  entityType,
+//  firstName,
+//  lastName,
+//  phoneNumber,
+//  signatoryTitle,
+//  ssn,
+//  trustName,
+//]);
