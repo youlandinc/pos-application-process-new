@@ -4,6 +4,7 @@ import { format, isDate, isValid } from 'date-fns';
 import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import { validate } from 'validate.js';
 
 import { observer } from 'mobx-react-lite';
 
@@ -11,11 +12,13 @@ import { Address, IAddress } from '@/models/common/Address';
 
 import { POSGetParamsFromUrl } from '@/utils';
 import {
+  AddressSchema,
   AUTO_HIDE_DURATION,
   OPTIONS_COMMON_CITIZEN_TYPE,
   OPTIONS_COMMON_STATE,
   OPTIONS_TASK_BORROWER_TYPE,
   OPTIONS_TASK_ENTITY_TYPE,
+  TaskBorrowerSchema,
 } from '@/constants';
 
 import {
@@ -43,9 +46,6 @@ import {
   _fetchLoanTaskDetail,
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
-import { TaskBorrowerSchema } from '@/constants/schema/taskBorrower';
-import { validate } from 'validate.js';
-import { AddressSchema } from '@/constants/schema/Address';
 
 export const TasksBorrower: FC = observer(() => {
   const router = useRouter();
