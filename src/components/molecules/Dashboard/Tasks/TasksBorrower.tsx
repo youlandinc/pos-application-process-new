@@ -189,7 +189,6 @@ export const TasksBorrower: FC = observer(() => {
       address.getPostData(),
       AddressSchema,
     );
-    console.log(validateForm, validateAddress);
     if (validateForm || validateAddress) {
       setFormError(validateForm);
       setAddressError(validateAddress);
