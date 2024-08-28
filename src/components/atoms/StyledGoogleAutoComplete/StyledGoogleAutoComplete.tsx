@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Autocomplete, Box, Grid, Stack, Typography } from '@mui/material';
 import { LocationOnOutlined } from '@mui/icons-material';
 import parse from 'autosuggest-highlight/parse';
@@ -18,164 +18,240 @@ import { OPTIONS_COMMON_STATE } from '@/constants';
 import { StyledSelect, StyledTextField } from '@/components/atoms';
 
 export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
-  observer(({ address, fullAddress = true, disabled, label, stateError }) => {
-    const { formatAddress } = address;
+  observer(
+    ({
+      address,
+      fullAddress = true,
+      disabled,
+      label,
+      stateError,
+      addressError,
+    }) => {
+      const { formatAddress } = address;
 
-    const [stateValidate, setStateValidate] = useState(stateError);
+      const [stateValidate, setStateValidate] = useState(stateError);
 
-    const handledPlaceSelect = useCallback(
-      (place: any) => {
-        if (!place.formatted_address) {
-          return;
-        }
+      const [addressErrorValidate, setAddressErrorValidate] = useState<
+        Record<string, string[]> | undefined
+      >(addressError);
 
-        stateValidate && setStateValidate(false);
-
-        const addressComponents = place.address_components || [];
-        const geometry = place.geometry?.location;
-
-        const componentMap: { [key: string]: string } = {};
-
-        addressComponents.forEach((component: any) => {
-          const { types, long_name, short_name } = component;
-          if (!types || types.length === 0) {
+      const handledPlaceSelect = useCallback(
+        (place: any) => {
+          if (!place.formatted_address) {
             return;
           }
 
-          componentMap[types[0]] = long_name;
+          stateValidate && setStateValidate(false);
 
-          switch (types[0]) {
-            case 'administrative_area_level_1':
-              address.changeFieldValue('state', short_name);
-              break;
-            case 'route':
-              address.changeFieldValue('street', long_name);
-              break;
-            case 'postal_code':
-              address.changeFieldValue('postcode', long_name);
-              break;
+          const addressComponents = place.address_components || [];
+          const geometry = place.geometry?.location;
+
+          const componentMap: { [key: string]: string } = {};
+
+          addressComponents.forEach((component: any) => {
+            const { types, long_name, short_name } = component;
+            if (!types || types.length === 0) {
+              return;
+            }
+
+            componentMap[types[0]] = long_name;
+
+            switch (types[0]) {
+              case 'administrative_area_level_1':
+                if (addressErrorValidate?.state) {
+                  setAddressErrorValidate((prev) => {
+                    if (prev) {
+                      delete prev.state;
+                    }
+                    return prev;
+                  });
+                }
+                address.changeFieldValue('state', short_name);
+                break;
+              case 'route':
+                address.changeFieldValue('street', long_name);
+                break;
+              case 'postal_code':
+                if (addressErrorValidate?.postcode) {
+                  setAddressErrorValidate((prev) => {
+                    if (prev) {
+                      delete prev.postcode;
+                    }
+                    return prev;
+                  });
+                }
+                address.changeFieldValue('postcode', long_name);
+                break;
+            }
+          });
+
+          if (geometry) {
+            address.changeFieldValue('lat', geometry.lat());
+            address.changeFieldValue('lng', geometry.lng());
           }
-        });
 
-        if (geometry) {
-          address.changeFieldValue('lat', geometry.lat());
-          address.changeFieldValue('lng', geometry.lng());
-        }
-
-        const cityFields = [
-          'locality',
-          'neighborhood',
-          'administrative_area_level_2',
-        ];
-        for (const field of cityFields) {
-          if (componentMap[field]) {
-            address.changeFieldValue('city', componentMap[field]);
-            break;
+          const cityFields = [
+            'locality',
+            'neighborhood',
+            'administrative_area_level_2',
+          ];
+          for (const field of cityFields) {
+            if (componentMap[field]) {
+              if (addressErrorValidate?.city) {
+                setAddressErrorValidate((prev) => {
+                  if (prev) {
+                    delete prev.city;
+                  }
+                  return prev;
+                });
+              }
+              address.changeFieldValue('city', componentMap[field]);
+              break;
+            }
           }
-        }
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [stateValidate],
-    );
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [stateValidate, addressErrorValidate],
+      );
 
-    return (
-      <Stack width={'100%'}>
-        {fullAddress ? (
-          <Stack width={'100%'}>
+      useEffect(() => {
+        setAddressErrorValidate(addressError);
+      }, [addressError]);
+
+      return (
+        <Stack width={'100%'}>
+          {fullAddress ? (
             <Stack width={'100%'}>
+              <Stack width={'100%'}>
+                <_StyledGoogleAutoComplete
+                  disabled={disabled}
+                  fullAddress={fullAddress}
+                  handledPlaceSelect={handledPlaceSelect}
+                  inputValue={formatAddress}
+                  label={label}
+                  onInputChange={(e, val) => {
+                    if (addressErrorValidate?.address) {
+                      setAddressErrorValidate((prev) => {
+                        if (prev) {
+                          delete prev.address;
+                        }
+                        return prev;
+                      });
+                    }
+                    if (!val) {
+                      address.reset();
+                      return;
+                    }
+                    address.changeFieldValue('formatAddress', val);
+                  }}
+                  validate={addressErrorValidate?.address}
+                  value={formatAddress}
+                />
+              </Stack>
+              <Stack
+                alignItems={'flex-start'}
+                flexDirection={{ lg: 'row', xs: 'column' }}
+                gap={3}
+                justifyContent={'flex-start'}
+                mt={3}
+                width={'100%'}
+              >
+                <StyledTextField
+                  disabled={disabled}
+                  label={'City'}
+                  onChange={(e) => {
+                    if (addressErrorValidate?.city) {
+                      setAddressErrorValidate((prev) => {
+                        if (prev) {
+                          delete prev.city;
+                        }
+                        return prev;
+                      });
+                    }
+                    address.changeFieldValue('city', e.target.value);
+                  }}
+                  placeholder={'City'}
+                  sx={{ flex: 1 }}
+                  validate={addressErrorValidate?.city}
+                  value={address.city}
+                />
+                <StyledSelect
+                  disabled={disabled}
+                  label={'State'}
+                  onChange={(e) => {
+                    if (addressErrorValidate?.state) {
+                      setAddressErrorValidate((prev) => {
+                        if (prev) {
+                          delete prev.state;
+                        }
+                        return prev;
+                      });
+                    }
+                    address.changeFieldValue('state', e.target.value as string);
+                  }}
+                  options={OPTIONS_COMMON_STATE}
+                  sx={{ flex: 1 }}
+                  validate={stateError ? [' '] : addressErrorValidate?.state}
+                  value={address.state}
+                />
+              </Stack>
+              <Stack
+                alignItems={'flex-start'}
+                flexDirection={{ lg: 'row', xs: 'column' }}
+                gap={3}
+                justifyContent={'flex-start'}
+                mt={3}
+                width={'100%'}
+              >
+                <StyledTextField
+                  disabled={disabled}
+                  label={'Apt/Unit'}
+                  onChange={(e) =>
+                    address.changeFieldValue('aptNumber', e.target.value)
+                  }
+                  placeholder={'Apt/Unit'}
+                  sx={{ flex: 1 }}
+                  value={address.aptNumber}
+                />
+                <StyledTextField
+                  disabled={disabled}
+                  label={'Zip code'}
+                  onChange={(e) => {
+                    if (addressErrorValidate?.postcode) {
+                      setAddressErrorValidate((prev) => {
+                        if (prev) {
+                          delete prev.postcode;
+                        }
+                        return prev;
+                      });
+                    }
+                    address.changeFieldValue('postcode', e.target.value);
+                  }}
+                  placeholder={'Zip code'}
+                  sx={{ flex: 1 }}
+                  validate={addressErrorValidate?.postcode}
+                  value={address.postcode}
+                />
+              </Stack>
+            </Stack>
+          ) : (
+            <Stack>
               <_StyledGoogleAutoComplete
                 disabled={disabled}
                 fullAddress={fullAddress}
                 handledPlaceSelect={handledPlaceSelect}
                 inputValue={formatAddress}
-                label={label}
-                onInputChange={(e, val) => {
-                  if (!val) {
-                    address.reset();
-                    return;
-                  }
-                  address.changeFieldValue('formatAddress', val);
-                }}
+                onInputChange={(e, val) =>
+                  address.changeFieldValue('formatAddress', val)
+                }
                 value={formatAddress}
               />
             </Stack>
-            <Stack
-              alignItems={'center'}
-              flexDirection={{ lg: 'row', xs: 'column' }}
-              gap={3}
-              justifyContent={'flex-start'}
-              mt={3}
-              width={'100%'}
-            >
-              <StyledTextField
-                disabled={disabled}
-                label={'City'}
-                onChange={(e) =>
-                  address.changeFieldValue('city', e.target.value)
-                }
-                placeholder={'City'}
-                sx={{ flex: 1 }}
-                value={address.city}
-              />
-              <StyledSelect
-                disabled={disabled}
-                label={'State'}
-                onChange={(e) => {
-                  address.changeFieldValue('state', e.target.value as string);
-                }}
-                options={OPTIONS_COMMON_STATE}
-                sx={{ flex: 1 }}
-                validate={stateError ? [' '] : undefined}
-                value={address.state}
-              />
-            </Stack>
-            <Stack
-              alignItems={'center'}
-              flexDirection={{ lg: 'row', xs: 'column' }}
-              gap={3}
-              justifyContent={'flex-start'}
-              mt={3}
-              width={'100%'}
-            >
-              <StyledTextField
-                disabled={disabled}
-                label={'Apt/Unit'}
-                onChange={(e) =>
-                  address.changeFieldValue('aptNumber', e.target.value)
-                }
-                placeholder={'Apt/Unit'}
-                sx={{ flex: 1 }}
-                value={address.aptNumber}
-              />
-              <StyledTextField
-                disabled={disabled}
-                label={'Zip code'}
-                onChange={(e) =>
-                  address.changeFieldValue('postcode', e.target.value)
-                }
-                placeholder={'Zip code'}
-                sx={{ flex: 1 }}
-                value={address.postcode}
-              />
-            </Stack>
-          </Stack>
-        ) : (
-          <Stack>
-            <_StyledGoogleAutoComplete
-              disabled={disabled}
-              fullAddress={fullAddress}
-              handledPlaceSelect={handledPlaceSelect}
-              inputValue={formatAddress}
-              onInputChange={(e, val) =>
-                address.changeFieldValue('formatAddress', val)
-              }
-              value={formatAddress}
-            />
-          </Stack>
-        )}
-      </Stack>
-    );
-  });
+          )}
+        </Stack>
+      );
+    },
+  );
 
 const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
   inputValue,
@@ -185,6 +261,7 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
   value,
   disabled,
   label,
+  validate,
   ...rest
 }) => {
   const breakpoints = useBreakpoints();
@@ -242,8 +319,9 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
           fullWidth
           label={label || 'Street address'}
           placeholder="Address"
-          // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
+          validate={validate}
           variant="outlined"
+          // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
         />
       )}
       renderOption={(props, option) => {

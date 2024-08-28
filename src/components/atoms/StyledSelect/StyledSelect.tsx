@@ -102,7 +102,12 @@ export const StyledSelect: FC<StyledSelectProps> = ({
                     <Box
                       component={'span'}
                       key={item + '_' + index}
-                      sx={{ display: 'block', m: 0 }}
+                      sx={{
+                        display: 'block',
+                        m: 0,
+                        pl: 0.5,
+                        '&:first-of-type': { mt: 0.5 },
+                      }}
                     >
                       {item}
                     </Box>
