@@ -85,6 +85,14 @@ export const StyledTextFieldSocialNumber: FC<
         sx={{
           ...StyledTextFieldStyles,
           ...sx,
+          '& .MuiFormHelperText-root': {
+            display: 'block',
+            m: 0,
+            pl: 0.5,
+            '&:first-of-type': {
+              mt: 0.5,
+            },
+          },
         }}
         value={text}
         variant={'outlined'}

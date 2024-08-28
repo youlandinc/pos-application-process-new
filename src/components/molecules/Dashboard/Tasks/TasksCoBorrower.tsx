@@ -1,9 +1,10 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { format, isDate, isValid } from 'date-fns';
 import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import { validate } from 'validate.js';
 
 import { observer } from 'mobx-react-lite';
 
@@ -11,9 +12,11 @@ import { Address, IAddress } from '@/models/common/Address';
 
 import { POSGetParamsFromUrl } from '@/utils';
 import {
+  AddressSchema,
   AUTO_HIDE_DURATION,
   OPTIONS_COMMON_CITIZEN_TYPE,
   OPTIONS_COMMON_YES_OR_NO,
+  TaskCoBorrowerSchema,
 } from '@/constants';
 
 import {
@@ -46,6 +49,13 @@ export const TasksCoBorrower: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [saveLoading, setSaveLoading] = useState(false);
+
+  const [addressError, setAddressError] = useState<
+    Record<string, string[]> | undefined
+  >();
+  const [formMessage, setFormError] = useState<
+    Record<string, string[]> | undefined
+  >();
 
   const [isCoBorrower, setIsCoBorrower] = useState<boolean>(false);
 
@@ -105,7 +115,7 @@ export const TasksCoBorrower: FC = observer(() => {
       setPhoneNumber(phoneNumber ?? '');
       setEmail(email ?? '');
 
-      setCitizenship(citizenship ?? LoanCitizenshipEnum.default);
+      setCitizenship(citizenship ?? LoanCitizenshipEnum.us_citizen);
 
       setSsn(ssn ?? '');
 
@@ -120,39 +130,6 @@ export const TasksCoBorrower: FC = observer(() => {
       });
     }
   }, []);
-
-  const isFormDataValid = useMemo(() => {
-    if (!isCoBorrower) {
-      return true;
-    }
-
-    const dateCondition = isValid(birthDate) && isDate(birthDate);
-    const baseCondition =
-      !!firstName &&
-      !!lastName &&
-      !!phoneNumber &&
-      !!email &&
-      address.isValid &&
-      dateCondition;
-
-    if (!citizenship) {
-      return false;
-    }
-    if (citizenship === LoanCitizenshipEnum.foreign_national) {
-      return baseCondition;
-    }
-    return baseCondition && !!ssn;
-  }, [
-    address.isValid,
-    birthDate,
-    citizenship,
-    email,
-    firstName,
-    isCoBorrower,
-    lastName,
-    phoneNumber,
-    ssn,
-  ]);
 
   const handleSave = async () => {
     const postData = {
@@ -173,6 +150,19 @@ export const TasksCoBorrower: FC = observer(() => {
         addressInfo: address.getPostData(),
       },
     };
+
+    if (isCoBorrower) {
+      const validateForm = await validate(postData.data, TaskCoBorrowerSchema);
+      const validateAddress = await validate(
+        address.getPostData(),
+        AddressSchema,
+      );
+      if (validateForm || validateAddress) {
+        setFormError(validateForm);
+        setAddressError(validateAddress);
+        return;
+      }
+    }
 
     setSaveLoading(true);
     try {
@@ -267,14 +257,36 @@ export const TasksCoBorrower: FC = observer(() => {
                 >
                   <StyledTextField
                     label={'First name'}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    onChange={(e) => {
+                      if (formMessage?.firstName) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.firstName;
+                          }
+                          return prev;
+                        });
+                      }
+                      setFirstName(e.target.value);
+                    }}
                     placeholder={'First name'}
+                    validate={formMessage?.firstName}
                     value={firstName}
                   />
                   <StyledTextField
                     label={'Last name'}
-                    onChange={(e) => setLastName(e.target.value)}
+                    onChange={(e) => {
+                      if (formMessage?.lastName) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.lastName;
+                          }
+                          return prev;
+                        });
+                      }
+                      setLastName(e.target.value);
+                    }}
                     placeholder={'Last name'}
+                    validate={formMessage?.lastName}
                     value={lastName}
                   />
                 </Stack>
@@ -283,8 +295,17 @@ export const TasksCoBorrower: FC = observer(() => {
                   disableFuture={false}
                   label={'Date of birth'}
                   onChange={(value) => {
+                    if (formMessage?.birthDate) {
+                      setFormError((prev) => {
+                        if (prev) {
+                          delete prev.birthDate;
+                        }
+                        return prev;
+                      });
+                    }
                     setBirthDate(value as Date);
                   }}
+                  validate={formMessage?.birthDate}
                   value={birthDate}
                 />
 
@@ -295,14 +316,36 @@ export const TasksCoBorrower: FC = observer(() => {
                 >
                   <StyledTextFieldPhone
                     label={'Phone number'}
-                    onValueChange={({ value }) => setPhoneNumber(value)}
+                    onValueChange={({ value }) => {
+                      if (formMessage?.phoneNumber) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.phoneNumber;
+                          }
+                          return prev;
+                        });
+                      }
+                      setPhoneNumber(value);
+                    }}
                     placeholder={'Phone number'}
+                    validate={formMessage?.phoneNumber}
                     value={phoneNumber}
                   />
                   <StyledTextField
                     label={'Email'}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      if (formMessage?.email) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.email;
+                          }
+                          return prev;
+                        });
+                      }
+                      setEmail(e.target.value);
+                    }}
                     placeholder={'Email'}
+                    validate={formMessage?.email}
                     value={email}
                   />
                 </Stack>
@@ -324,7 +367,10 @@ export const TasksCoBorrower: FC = observer(() => {
                 labelSx={{ pb: 3 }}
                 sub
               >
-                <StyledGoogleAutoComplete address={address} />
+                <StyledGoogleAutoComplete
+                  address={address}
+                  addressError={addressError}
+                />
               </StyledFormItem>
 
               <Transitions
@@ -345,7 +391,18 @@ export const TasksCoBorrower: FC = observer(() => {
                   >
                     <StyledTextFieldSocialNumber
                       label={'Social security number'}
-                      onValueChange={(v) => setSsn(v)}
+                      onValueChange={(v) => {
+                        if (formMessage?.ssn) {
+                          setFormError((prev) => {
+                            if (prev) {
+                              delete prev.ssn;
+                            }
+                            return prev;
+                          });
+                        }
+                        setSsn(v);
+                      }}
+                      validate={formMessage?.ssn}
                       value={ssn}
                     />
                   </StyledFormItem>
@@ -376,7 +433,7 @@ export const TasksCoBorrower: FC = observer(() => {
           </StyledButton>
           <StyledButton
             color={'primary'}
-            disabled={saveLoading || !isFormDataValid}
+            disabled={saveLoading}
             loading={saveLoading}
             onClick={handleSave}
             sx={{ flex: 1, width: '100%' }}
@@ -388,3 +445,36 @@ export const TasksCoBorrower: FC = observer(() => {
     </Fade>
   );
 });
+
+//const isFormDataValid = useMemo(() => {
+//  if (!isCoBorrower) {
+//    return true;
+//  }
+//
+//  const dateCondition = isValid(birthDate) && isDate(birthDate);
+//  const baseCondition =
+//      !!firstName &&
+//      !!lastName &&
+//      !!phoneNumber &&
+//      !!email &&
+//      address.isValid &&
+//      dateCondition;
+//
+//  if (!citizenship) {
+//    return false;
+//  }
+//  if (citizenship === LoanCitizenshipEnum.foreign_national) {
+//    return baseCondition;
+//  }
+//  return baseCondition && !!ssn;
+//}, [
+//  address.isValid,
+//  birthDate,
+//  citizenship,
+//  email,
+//  firstName,
+//  isCoBorrower,
+//  lastName,
+//  phoneNumber,
+//  ssn,
+//]);

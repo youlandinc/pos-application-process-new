@@ -80,3 +80,27 @@ export const POSGetRoundedCanvas = (
   context.fill();
   return canvas;
 };
+
+export const createPaymentIframe = (
+  signatureData: Record<string, any>,
+  dom: HTMLElement,
+) => {
+  const iframe = document.createElement('iframe');
+  iframe.style.cssText =
+    'border: none; margin-top: -72px;width:100%;height: 1030px;';
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = process.env.NEXT_PUBLIC_PAYMENT_URL as string;
+  Object.keys(signatureData).forEach((item) => {
+    const input = document.createElement('input');
+    input.name = item;
+    input.type = 'hidden';
+    input.value = signatureData[item];
+    form.appendChild(input);
+  });
+
+  dom.innerHTML = '';
+  dom.appendChild(iframe);
+  iframe.contentWindow?.document.body.appendChild(form);
+  form.submit();
+};

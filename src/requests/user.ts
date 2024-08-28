@@ -64,9 +64,9 @@ export const _fetchMessage = (params: {
   page: number;
   size: number;
 }) => {
-  return post('/pos/notification/page', params);
+  return post('/notification/api/update/page', params);
 };
 
-export const _readMessage = (params: { messageId: string }) => {
-  return put('/pos/notification/read', params);
+export const _readMessage = (messageId: string) => {
+  return get(`/notification/api/update/read/${messageId}`);
 };

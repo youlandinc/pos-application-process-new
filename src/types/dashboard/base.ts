@@ -42,6 +42,7 @@ export interface DashboardPaymentDetailsResponse {
   productName: string;
   paymentName: null | string;
   isAdditional?: boolean;
+  orderNo: string;
 }
 
 export enum DashboardDocumentStatus {

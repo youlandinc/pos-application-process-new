@@ -16,6 +16,23 @@ export interface ICreateSpecifyPaymentParams {
   orderNo: string | undefined;
 }
 
+export interface IGetPaymentSignatureParams {
+  bizOrderNo: string;
+  billTo: {
+    firstName: string;
+    lastName: string;
+    address1: string;
+    locality: string;
+    administrativeArea: string;
+    postalCode: string;
+    county: string;
+    country: string;
+    district: string;
+    email: string;
+    phoneNumber: string;
+  };
+}
+
 export interface ICreatePaymentRes {
   loanApprovalId: number;
   clientSecret: string;
@@ -54,6 +71,10 @@ export const _creatSpecifyPayment = (orderNo: string, source: string) => {
   return get(
     `/pos/appraisal/payment/link/info?orderNo=${orderNo}&&source=${source}`,
   );
+};
+
+export const _getPaymentSignature = (params: IGetPaymentSignatureParams) => {
+  return post('/pos/appraisal/payment/fetchSignature', params);
 };
 
 export const _updateSpecifyContactInfo = (params: {
