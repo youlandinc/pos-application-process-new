@@ -22,7 +22,7 @@ export const SpecificalPaymentInfo: FC<
   return (
     <>
       <Stack border={'1px solid #E4E7EF'} borderRadius={2} p={3} width={'100%'}>
-        <Typography fontSize={{ xs: 18, md: 24 }} variant={'h5'}>
+        <Typography fontSize={{ xs: 16, md: 20 }} variant={'h5'}>
           Order summary
         </Typography>
         <Stack gap={1} mt={1}>
