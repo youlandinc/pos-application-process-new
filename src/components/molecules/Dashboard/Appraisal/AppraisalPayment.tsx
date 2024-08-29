@@ -190,7 +190,7 @@ export const AppraisalPayment = forwardRef<
               p={3}
               ref={billingForm}
             >
-              <Typography color={'text.primary'} variant={'subtitle2'}>
+              <Typography color={'text.primary'} variant={'subtitle1'}>
                 Billing information
               </Typography>
 
@@ -229,7 +229,7 @@ export const AppraisalPayment = forwardRef<
                 />
               </Stack>
               <Stack gap={3}>
-                <Typography color={'text.primary'} variant={'subtitle2'}>
+                <Typography color={'text.primary'} variant={'subtitle1'}>
                   Current address
                 </Typography>
                 <StyledGoogleAutoComplete
@@ -271,7 +271,7 @@ export const AppraisalPayment = forwardRef<
         ></Box>
       </Stack>
 
-      <Typography variant={'body3'}>
+      <Typography mt={'-34px'} variant={'body3'}>
         <strong>Important:</strong> By proceeding, you acknowledge that the
         payment amount may be adjusted due to extenuating property factors such
         as size or location. Additionally, if your property does not meet the

@@ -277,6 +277,12 @@ export const SpecificalPaymentPage = () => {
     billingLastName,
     billingEmail,
     billingPhoneNumber,
+    email,
+    firstName,
+    instructions,
+    lastName,
+    loanId,
+    phoneNumber,
   ]);
 
   const onButtonClick = async () => {
@@ -469,6 +475,11 @@ export const SpecificalPaymentPage = () => {
                         <StepButton
                           onClick={() => {
                             setActiveStep(index);
+                            if (index === 0) {
+                              clearInterval(
+                                timeoutRef.current as NodeJS.Timeout,
+                              );
+                            }
                           }}
                         >
                           <StepLabel>{label}</StepLabel>
@@ -479,6 +490,97 @@ export const SpecificalPaymentPage = () => {
                 </Stepper>
                 {activeStep === 0 ? (
                   <>
+                    <Stack
+                      border={'1px solid #E4E7EF'}
+                      borderRadius={2}
+                      component={'form'}
+                      flex={1}
+                      gap={3}
+                      minWidth={{ xl: 500, xs: 'auto' }}
+                      p={3}
+                      ref={billingForm}
+                    >
+                      <Typography color={'text.primary'} variant={'subtitle2'}>
+                        Billing information
+                      </Typography>
+
+                      <Stack
+                        flexDirection={{ xs: 'column', lg: 'row' }}
+                        gap={3}
+                      >
+                        <StyledTextField
+                          label={'First name'}
+                          onChange={(e) => setBillingFirstName(e.target.value)}
+                          placeholder={'First name'}
+                          required
+                          value={billingFirstName}
+                        />
+                        <StyledTextField
+                          label={'Last name'}
+                          onChange={(e) => setBillingLastName(e.target.value)}
+                          placeholder={'Last name'}
+                          required
+                          value={billingLastName}
+                        />
+                      </Stack>
+
+                      <Stack
+                        flexDirection={{ xs: 'column', lg: 'row' }}
+                        gap={3}
+                      >
+                        <StyledTextField
+                          label={'Email'}
+                          onChange={(e) => setBillingEmail(e.target.value)}
+                          placeholder={'Email'}
+                          required
+                          type={'email'}
+                          value={billingEmail}
+                        />
+                        <StyledTextFieldPhone
+                          label={'Phone number'}
+                          onValueChange={({ value }) =>
+                            setBillingPhoneNumber(value)
+                          }
+                          placeholder={'Phone number'}
+                          required
+                          value={billingPhoneNumber}
+                        />
+                      </Stack>
+                      <Stack gap={3}>
+                        <Typography
+                          color={'text.primary'}
+                          variant={'subtitle2'}
+                        >
+                          Current address
+                        </Typography>
+                        <StyledGoogleAutoComplete
+                          address={
+                            {
+                              formatAddress: addressInfo.formatAddress,
+                              state: addressInfo.state,
+                              street: addressInfo.street,
+                              aptNumber: addressInfo.aptNumber,
+                              city: addressInfo.city,
+                              postcode: addressInfo.postcode,
+                              errors: {},
+                              isValid: false,
+                              changeFieldValue: (key: string, value: any) => {
+                                setAddressInfo((prevState) => {
+                                  return {
+                                    ...prevState,
+                                    [key]: value,
+                                  };
+                                });
+                              },
+                              reset: () => {
+                                setAddressInfo(defaultAddress);
+                              },
+                            } as IAddress
+                          }
+                          label={'Address'}
+                        />
+                      </Stack>
+                    </Stack>
                     {insideIsNeedToFill && (
                       <Stack
                         border={'1px solid #E4E7EF'}
@@ -488,109 +590,15 @@ export const SpecificalPaymentPage = () => {
                         gap={3}
                         minWidth={{ xl: 500, xs: 'auto' }}
                         p={3}
-                        ref={billingForm}
+                        ref={contactForm}
                       >
                         <Typography
                           color={'text.primary'}
                           variant={'subtitle2'}
                         >
-                          Billing information
+                          Property inspection contact information
                         </Typography>
-
-                        <Stack
-                          flexDirection={{ xs: 'column', lg: 'row' }}
-                          gap={3}
-                        >
-                          <StyledTextField
-                            label={'First name'}
-                            onChange={(e) =>
-                              setBillingFirstName(e.target.value)
-                            }
-                            placeholder={'First name'}
-                            required
-                            value={billingFirstName}
-                          />
-                          <StyledTextField
-                            label={'Last name'}
-                            onChange={(e) => setBillingLastName(e.target.value)}
-                            placeholder={'Last name'}
-                            required
-                            value={billingLastName}
-                          />
-                        </Stack>
-
-                        <Stack
-                          flexDirection={{ xs: 'column', lg: 'row' }}
-                          gap={3}
-                        >
-                          <StyledTextField
-                            label={'Email'}
-                            onChange={(e) => setBillingEmail(e.target.value)}
-                            placeholder={'Email'}
-                            required
-                            type={'email'}
-                            value={billingEmail}
-                          />
-                          <StyledTextFieldPhone
-                            label={'Phone number'}
-                            onValueChange={({ value }) =>
-                              setBillingPhoneNumber(value)
-                            }
-                            placeholder={'Phone number'}
-                            required
-                            value={billingPhoneNumber}
-                          />
-                        </Stack>
-                        <Stack gap={3}>
-                          <Typography
-                            color={'text.primary'}
-                            variant={'subtitle2'}
-                          >
-                            Current address
-                          </Typography>
-                          <StyledGoogleAutoComplete
-                            address={
-                              {
-                                formatAddress: addressInfo.formatAddress,
-                                state: addressInfo.state,
-                                street: addressInfo.street,
-                                aptNumber: addressInfo.aptNumber,
-                                city: addressInfo.city,
-                                postcode: addressInfo.postcode,
-                                errors: {},
-                                isValid: false,
-                                changeFieldValue: (key: string, value: any) => {
-                                  setAddressInfo((prevState) => {
-                                    return {
-                                      ...prevState,
-                                      [key]: value,
-                                    };
-                                  });
-                                },
-                                reset: () => {
-                                  setAddressInfo(defaultAddress);
-                                },
-                              } as IAddress
-                            }
-                            label={'Address'}
-                          />
-                        </Stack>
-                      </Stack>
-                    )}
-                    <Stack
-                      border={'1px solid #E4E7EF'}
-                      borderRadius={2}
-                      component={'form'}
-                      flex={1}
-                      gap={3}
-                      minWidth={{ xl: 500, xs: 'auto' }}
-                      p={3}
-                      ref={contactForm}
-                    >
-                      <Typography color={'text.primary'} variant={'subtitle2'}>
-                        Property inspection contact information
-                      </Typography>
-                      {/*    <StyledCheckbox
+                        {/*    <StyledCheckbox
                     checked={isSameInfo}
                     label={
                       'The property inspection contact information is the same as above'
@@ -599,52 +607,55 @@ export const SpecificalPaymentPage = () => {
                       setIsSameInfo(e.target.checked);
                     }}
                   />*/}
-                      <Stack
-                        flexDirection={{ xs: 'column', lg: 'row' }}
-                        gap={3}
-                      >
+                        <Stack
+                          flexDirection={{ xs: 'column', lg: 'row' }}
+                          gap={3}
+                        >
+                          <StyledTextField
+                            label={'First name'}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            placeholder={'First name'}
+                            required
+                            value={firstName}
+                          />
+                          <StyledTextField
+                            label={'Last name'}
+                            onChange={(e) => setLastName(e.target.value)}
+                            placeholder={'Last name'}
+                            required
+                            value={lastName}
+                          />
+                        </Stack>
+
+                        <Stack
+                          flexDirection={{ xs: 'column', lg: 'row' }}
+                          gap={3}
+                        >
+                          <StyledTextField
+                            label={'Email (optional)'}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder={'Email (optional)'}
+                            value={email}
+                          />
+                          <StyledTextFieldPhone
+                            label={'Phone number'}
+                            onValueChange={({ value }) => setPhoneNumber(value)}
+                            placeholder={'Phone number'}
+                            required
+                            value={phoneNumber}
+                          />
+                        </Stack>
+
                         <StyledTextField
-                          label={'First name'}
-                          onChange={(e) => setFirstName(e.target.value)}
-                          placeholder={'First name'}
-                          required
-                          value={firstName}
-                        />
-                        <StyledTextField
-                          label={'Last name'}
-                          onChange={(e) => setLastName(e.target.value)}
-                          placeholder={'Last name'}
-                          required
-                          value={lastName}
+                          label={'Property access instructions (optional)'}
+                          onChange={(e) => setInstructions(e.target.value)}
+                          placeholder={
+                            'Property access instructions (optional)'
+                          }
+                          value={instructions}
                         />
                       </Stack>
-
-                      <Stack
-                        flexDirection={{ xs: 'column', lg: 'row' }}
-                        gap={3}
-                      >
-                        <StyledTextField
-                          label={'Email (optional)'}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder={'Email (optional)'}
-                          value={email}
-                        />
-                        <StyledTextFieldPhone
-                          label={'Phone number'}
-                          onValueChange={({ value }) => setPhoneNumber(value)}
-                          placeholder={'Phone number'}
-                          required
-                          value={phoneNumber}
-                        />
-                      </Stack>
-
-                      <StyledTextField
-                        label={'Property access instructions (optional)'}
-                        onChange={(e) => setInstructions(e.target.value)}
-                        placeholder={'Property access instructions (optional)'}
-                        value={instructions}
-                      />
-                    </Stack>
+                    )}
 
                     {!['xl', 'xxl'].includes(breakpoints) && (
                       <Stack
