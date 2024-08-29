@@ -86,8 +86,7 @@ export const createPaymentIframe = (
   dom: HTMLElement,
 ) => {
   const iframe = document.createElement('iframe');
-  iframe.style.cssText =
-    'border: none; margin-top: -72px;width:100%;height: 1030px;';
+  iframe.style.cssText = 'border: none; width:100%;height: 470px;';
   const form = document.createElement('form');
   form.method = 'POST';
   form.action = process.env.NEXT_PUBLIC_PAYMENT_URL as string;
