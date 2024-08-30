@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { format, isDate, isValid } from 'date-fns';
 import { useAsync } from 'react-use';
@@ -12,10 +12,12 @@ import { Address, IAddress, SAddress } from '@/models/common/Address';
 import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
 import {
+  AddressSchema,
   AUTO_HIDE_DURATION,
   OPTIONS_COMMON_YES_OR_NO,
   OPTIONS_TASK_INSTRUCTIONS,
   OPTIONS_TASK_MANAGING_LOAN_CLOSING,
+  TaskTitleOrEscrowSchema,
 } from '@/constants';
 
 import {
@@ -43,6 +45,7 @@ import {
   _fetchLoanTaskDetail,
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
+import { validate } from 'validate.js';
 
 const initialValues: {
   firstName: string;
@@ -90,6 +93,13 @@ export const TasksTitleOrEscrow: FC = observer(() => {
 
   const [saveLoading, setSaveLoading] = useState(false);
 
+  const [addressError, setAddressError] = useState<
+    { [key: string]: Record<string, string[]> & string[] } | undefined
+  >();
+  const [formError, setFormError] = useState<
+    { [key: string]: Record<string, string[]> & string[] } | undefined
+  >();
+
   const [contactForm, setContactForm] = useState(initialValues);
   const [manageForm, setManageForm] = useState(initialValues);
 
@@ -102,12 +112,12 @@ export const TasksTitleOrEscrow: FC = observer(() => {
 
   const [isLoanClosing, setIsLoanClosing] = useState<boolean | undefined>();
   const [escrowNumber, setEscrowNumber] = useState<undefined | number>();
-  const [instructions, setInstructions] = useState<
-    DashboardTaskInstructions | undefined
-  >();
-  const [whoIsManaging, setWhoIsManaging] = useState<
-    DashboardTaskLoanClosing | undefined
-  >();
+  const [instructions, setInstructions] = useState<DashboardTaskInstructions>(
+    DashboardTaskInstructions.title_officer,
+  );
+  const [whoIsManaging, setWhoIsManaging] = useState<DashboardTaskLoanClosing>(
+    DashboardTaskLoanClosing.escrow_company,
+  );
 
   const { loading } = useAsync(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
@@ -146,9 +156,11 @@ export const TasksTitleOrEscrow: FC = observer(() => {
       setManageForm(manageForm);
 
       setIsLoanClosing(isLoanClosing ?? true);
-      setEscrowNumber(escrowNumber ?? undefined);
-      setInstructions(instructions ?? '');
-      setWhoIsManaging(whoIsManaging ?? '');
+      setEscrowNumber(escrowNumber || undefined);
+      setInstructions(instructions ?? DashboardTaskInstructions.title_officer);
+      setWhoIsManaging(
+        whoIsManaging ?? DashboardTaskLoanClosing.escrow_company,
+      );
 
       clientContactAddress.injectServerData(contactAddress ?? resetAddress);
       clientManageAddress.injectServerData(manageAddress ?? resetAddress);
@@ -167,62 +179,6 @@ export const TasksTitleOrEscrow: FC = observer(() => {
       });
     }
   }, []);
-
-  const isFormDataValid = useMemo(() => {
-    const dateValid = (date: any) => {
-      return isValid(date) && isDate(date);
-    };
-
-    const conditionA = () => {
-      return (
-        !!contactForm.firstName &&
-        !!contactForm.lastName &&
-        !!contactForm.email &&
-        !!contactForm.phoneNumber &&
-        !!contactForm.companyName &&
-        !!contactForm.titleOrderNumber &&
-        dateValid(contactForm.contractDate) &&
-        clientContactAddress.checkAddressValid
-      );
-    };
-    const conditionB = () => {
-      return (
-        !!manageForm.firstName &&
-        !!manageForm.lastName &&
-        !!manageForm.email &&
-        !!manageForm.phoneNumber &&
-        !!manageForm.companyName &&
-        !!manageForm.titleOrderNumber &&
-        clientManageAddress.checkAddressValid
-      );
-    };
-    if (!POSNotUndefined(isLoanClosing)) {
-      return false;
-    }
-    return isLoanClosing
-      ? conditionA() && !!instructions && !!escrowNumber
-      : conditionA() && conditionB() && !!whoIsManaging && !!instructions;
-  }, [
-    clientContactAddress.checkAddressValid,
-    contactForm.companyName,
-    contactForm.contractDate,
-    contactForm.email,
-    contactForm.firstName,
-    contactForm.lastName,
-    contactForm.phoneNumber,
-    contactForm.titleOrderNumber,
-    escrowNumber,
-    instructions,
-    isLoanClosing,
-    clientManageAddress.checkAddressValid,
-    manageForm.companyName,
-    manageForm.email,
-    manageForm.firstName,
-    manageForm.lastName,
-    manageForm.phoneNumber,
-    manageForm.titleOrderNumber,
-    whoIsManaging,
-  ]);
 
   const handleSave = async () => {
     const dateValid = (date: any) => {
@@ -266,6 +222,56 @@ export const TasksTitleOrEscrow: FC = observer(() => {
       taskKey: DashboardTaskKey.title_escrow,
       data,
     };
+
+    const validateContactForm = await validate(
+      postData.data.contactForm,
+      TaskTitleOrEscrowSchema.contractFrom,
+    );
+    const validateContactAddress = await validate(
+      clientContactAddress.getPostData(),
+      AddressSchema,
+    );
+    const validateManageForm = await validate(
+      postData.data.manageForm,
+      TaskTitleOrEscrowSchema.manageForm,
+    );
+    const validateManageAddress = await validate(
+      clientManageAddress.getPostData(),
+      AddressSchema,
+    );
+
+    const resultFormError = {};
+
+    const resultAddressError = {};
+
+    validateContactForm &&
+      Object.assign(resultFormError, { contactForm: validateContactForm });
+
+    validateContactAddress &&
+      Object.assign(resultAddressError, {
+        contactAddress: validateContactAddress,
+      });
+
+    if (!isLoanClosing) {
+      validateManageForm &&
+        Object.assign(resultFormError, { manageForm: validateManageForm });
+      validateManageAddress &&
+        Object.assign(resultAddressError, {
+          manageAddress: validateManageAddress,
+        });
+    } else {
+      !POSNotUndefined(escrowNumber) &&
+        Object.assign(resultFormError, { escrowNumber: ['Cannot be empty'] });
+    }
+
+    if (
+      Object.keys(resultFormError).length > 0 ||
+      Object.keys(resultAddressError).length > 0
+    ) {
+      setFormError(resultFormError);
+      setAddressError(resultAddressError);
+      return;
+    }
 
     setSaveLoading(true);
     try {
@@ -340,33 +346,61 @@ export const TasksTitleOrEscrow: FC = observer(() => {
         >
           <StyledTextField
             label={'Company name'}
-            onChange={(e) =>
+            onChange={(e) => {
+              if (formError?.contactForm?.companyName) {
+                setFormError((prev) => {
+                  if (prev) {
+                    delete prev.contactForm.companyName;
+                  }
+                  return prev;
+                });
+              }
               setContactForm({
                 ...contactForm,
                 companyName: e.target.value,
-              })
-            }
+              });
+            }}
+            validate={formError?.contactForm?.companyName}
             value={contactForm.companyName}
           />
           <StyledTextField
             label={'Title order number'}
-            onChange={(e) =>
+            onChange={(e) => {
+              if (formError?.contactForm?.titleOrderNumber) {
+                setFormError((prev) => {
+                  if (prev) {
+                    delete prev.contactForm.titleOrderNumber;
+                  }
+                  return prev;
+                });
+              }
               setContactForm({
                 ...contactForm,
                 titleOrderNumber: e.target.value,
-              })
-            }
+              });
+            }}
+            validate={formError?.contactForm?.titleOrderNumber}
             value={contactForm.titleOrderNumber}
           />
           <StyledDatePicker
             label={'Title effective date'}
             onChange={(date) => {
+              if (formError?.contactForm?.contractDate) {
+                setFormError((prev) => {
+                  if (prev) {
+                    delete prev.contactForm.contractDate;
+                  }
+                  return prev;
+                });
+              }
               setContactForm({ ...contactForm, contractDate: date });
             }}
+            validate={formError?.contactForm?.contractDate}
             value={contactForm.contractDate}
           />
           <StyledGoogleAutoComplete
             address={clientContactAddress}
+            addressError={addressError?.contactAddress}
             label={'Company address'}
           />
         </StyledFormItem>
@@ -408,22 +442,40 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                 >
                   <StyledTextField
                     label={"Signee's first name"}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      if (formError?.contactForm?.firstName) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.contactForm.firstName;
+                          }
+                          return prev;
+                        });
+                      }
                       setContactForm({
                         ...contactForm,
                         firstName: e.target.value,
-                      })
-                    }
+                      });
+                    }}
+                    validate={formError?.contactForm?.firstName}
                     value={contactForm.firstName}
                   />
                   <StyledTextField
                     label={"Signee's last name"}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      if (formError?.contactForm?.lastName) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.contactForm.lastName;
+                          }
+                          return prev;
+                        });
+                      }
                       setContactForm({
                         ...contactForm,
                         lastName: e.target.value,
-                      })
-                    }
+                      });
+                    }}
+                    validate={formError?.contactForm?.lastName}
                     value={contactForm.lastName}
                   />
                 </Stack>
@@ -437,21 +489,39 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                   <StyledTextFieldPhone
                     label={"Signee's phone number"}
                     onValueChange={({ value }) => {
+                      if (formError?.contactForm?.phoneNumber) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.contactForm.phoneNumber;
+                          }
+                          return prev;
+                        });
+                      }
                       setContactForm({
                         ...contactForm,
                         phoneNumber: value,
                       });
                     }}
+                    validate={formError?.contactForm?.phoneNumber}
                     value={contactForm.phoneNumber}
                   />
                   <StyledTextField
                     label={"Signee's email address"}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      if (formError?.contactForm?.email) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.contactForm.email;
+                          }
+                          return prev;
+                        });
+                      }
                       setContactForm({
                         ...contactForm,
                         email: e.target.value,
-                      })
-                    }
+                      });
+                    }}
+                    validate={formError?.contactForm?.email}
                     value={contactForm.email}
                   />
                 </Stack>
@@ -471,6 +541,22 @@ export const TasksTitleOrEscrow: FC = observer(() => {
               if (value === null) {
                 return;
               }
+              setFormError((prev) => {
+                if (prev?.manageForm) {
+                  delete prev.manageForm;
+                }
+                if (prev?.escrowNumber) {
+                  delete prev.escrowNumber;
+                }
+                return prev;
+              });
+              setAddressError((prev) => {
+                if (prev?.manageAddress) {
+                  delete prev.manageAddress;
+                }
+                return prev;
+              });
+
               setIsLoanClosing(value === LoanAnswerEnum.yes);
             }}
             options={OPTIONS_COMMON_YES_OR_NO}
@@ -513,22 +599,40 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                 >
                   <StyledTextField
                     label={'Contact first name'}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      if (formError?.manageForm?.firstName) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.manageForm.firstName;
+                          }
+                          return prev;
+                        });
+                      }
                       setManageForm({
                         ...manageForm,
                         firstName: e.target.value,
-                      })
-                    }
+                      });
+                    }}
+                    validate={formError?.manageForm?.firstName}
                     value={manageForm.firstName}
                   />
                   <StyledTextField
                     label={'Contact last name'}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      if (formError?.manageForm?.lastName) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.manageForm.lastName;
+                          }
+                          return prev;
+                        });
+                      }
                       setManageForm({
                         ...manageForm,
                         lastName: e.target.value,
-                      })
-                    }
+                      });
+                    }}
+                    validate={formError?.manageForm?.lastName}
                     value={manageForm.lastName}
                   />
                 </Stack>
@@ -541,18 +645,36 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                   <StyledTextFieldPhone
                     label={'Phone number'}
                     onValueChange={({ value }) => {
+                      if (formError?.manageForm?.phoneNumber) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.manageForm.phoneNumber;
+                          }
+                          return prev;
+                        });
+                      }
                       setManageForm({ ...manageForm, phoneNumber: value });
                     }}
+                    validate={formError?.manageForm?.phoneNumber}
                     value={manageForm.phoneNumber}
                   />
                   <StyledTextField
                     label={'Email'}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      if (formError?.manageForm?.email) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.manageForm.email;
+                          }
+                          return prev;
+                        });
+                      }
                       setManageForm({
                         ...manageForm,
                         email: e.target.value,
-                      })
-                    }
+                      });
+                    }}
+                    validate={formError?.manageForm?.email}
                     value={manageForm.email}
                   />
                 </Stack>
@@ -564,12 +686,21 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                 >
                   <StyledTextField
                     label={'Company name'}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      if (formError?.manageForm?.companyName) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.manageForm.companyName;
+                          }
+                          return prev;
+                        });
+                      }
                       setManageForm({
                         ...manageForm,
                         companyName: e.target.value,
-                      })
-                    }
+                      });
+                    }}
+                    validate={formError?.manageForm?.companyName}
                     value={manageForm.companyName}
                   />
                   <StyledTextField
@@ -578,18 +709,28 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                         ? 'Escrow number'
                         : 'Closing attorney file No.'
                     }
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      if (formError?.manageForm?.titleOrderNumber) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.manageForm.titleOrderNumber;
+                          }
+                          return prev;
+                        });
+                      }
                       setManageForm({
                         ...manageForm,
                         titleOrderNumber: e.target.value,
-                      })
-                    }
+                      });
+                    }}
+                    validate={formError?.manageForm?.titleOrderNumber}
                     value={manageForm.titleOrderNumber}
                   />
                 </Stack>
 
                 <StyledGoogleAutoComplete
                   address={clientManageAddress}
+                  addressError={addressError?.manageAddress}
                   label={'Company address'}
                 />
               </StyledFormItem>
@@ -598,10 +739,19 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                 <StyledTextFieldNumber
                   decimalScale={0}
                   label={'Escrow number'}
-                  onValueChange={({ floatValue }) =>
-                    setEscrowNumber(floatValue)
-                  }
+                  onValueChange={({ floatValue }) => {
+                    if (formError?.escrowNumber) {
+                      setFormError((prev) => {
+                        if (prev) {
+                          delete prev.escrowNumber;
+                        }
+                        return prev;
+                      });
+                    }
+                    setEscrowNumber(floatValue);
+                  }}
                   thousandSeparator={false}
+                  validate={formError?.escrowNumber}
                   value={escrowNumber}
                 />
               </Stack>
@@ -630,7 +780,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
           </StyledButton>
           <StyledButton
             color={'primary'}
-            disabled={saveLoading || !isFormDataValid}
+            disabled={saveLoading}
             loading={saveLoading}
             onClick={handleSave}
             sx={{ flex: 1, width: '100%' }}
@@ -642,3 +792,59 @@ export const TasksTitleOrEscrow: FC = observer(() => {
     </Fade>
   );
 });
+
+//const isFormDataValid = useMemo(() => {
+//  const dateValid = (date: any) => {
+//    return isValid(date) && isDate(date);
+//  };
+//
+//  const conditionA = () => {
+//    return (
+//        !!contactForm.firstName &&
+//        !!contactForm.lastName &&
+//        !!contactForm.email &&
+//        !!contactForm.phoneNumber &&
+//        !!contactForm.companyName &&
+//        !!contactForm.titleOrderNumber &&
+//        dateValid(contactForm.contractDate) &&
+//        clientContactAddress.checkAddressValid
+//    );
+//  };
+//  const conditionB = () => {
+//    return (
+//        !!manageForm.firstName &&
+//        !!manageForm.lastName &&
+//        !!manageForm.email &&
+//        !!manageForm.phoneNumber &&
+//        !!manageForm.companyName &&
+//        !!manageForm.titleOrderNumber &&
+//        clientManageAddress.checkAddressValid
+//    );
+//  };
+//  if (!POSNotUndefined(isLoanClosing)) {
+//    return false;
+//  }
+//  return isLoanClosing
+//      ? conditionA() && !!instructions && !!escrowNumber
+//      : conditionA() && conditionB() && !!whoIsManaging && !!instructions;
+//}, [
+//  clientContactAddress.checkAddressValid,
+//  contactForm.companyName,
+//  contactForm.contractDate,
+//  contactForm.email,
+//  contactForm.firstName,
+//  contactForm.lastName,
+//  contactForm.phoneNumber,
+//  contactForm.titleOrderNumber,
+//  escrowNumber,
+//  instructions,
+//  isLoanClosing,
+//  clientManageAddress.checkAddressValid,
+//  manageForm.companyName,
+//  manageForm.email,
+//  manageForm.firstName,
+//  manageForm.lastName,
+//  manageForm.phoneNumber,
+//  manageForm.titleOrderNumber,
+//  whoIsManaging,
+//]);
