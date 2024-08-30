@@ -56,7 +56,7 @@ export const TasksBorrower: FC = observer(() => {
   const [addressError, setAddressError] = useState<
     Record<string, string[]> | undefined
   >();
-  const [formMessage, setFormError] = useState<
+  const [formError, setFormError] = useState<
     Record<string, string[]> | undefined
   >();
 
@@ -283,7 +283,7 @@ export const TasksBorrower: FC = observer(() => {
               <StyledTextField
                 label={'Entity name'}
                 onChange={(e) => {
-                  if (formMessage?.entityName) {
+                  if (formError?.entityName) {
                     setFormError((prev) => {
                       if (prev) {
                         delete prev.entityName;
@@ -294,13 +294,13 @@ export const TasksBorrower: FC = observer(() => {
                   setEntityName(e.target.value);
                 }}
                 placeholder={'Entity name'}
-                validate={formMessage?.entityName}
+                validate={formError?.entityName}
                 value={entityName}
               />
               <StyledSelect
                 label={'Entity type'}
                 onChange={(e) => {
-                  if (formMessage?.entityType) {
+                  if (formError?.entityType) {
                     setFormError((prev) => {
                       if (prev) {
                         delete prev.entityType;
@@ -313,13 +313,13 @@ export const TasksBorrower: FC = observer(() => {
                   );
                 }}
                 options={OPTIONS_TASK_ENTITY_TYPE}
-                validate={formMessage?.entityType}
+                validate={formError?.entityType}
                 value={entityType}
               />
               <StyledTextField
                 label={'Secretary of State ID'}
                 onChange={(e) => {
-                  if (formMessage?.entityId) {
+                  if (formError?.entityId) {
                     setFormError((prev) => {
                       if (prev) {
                         delete prev.entityId;
@@ -330,13 +330,13 @@ export const TasksBorrower: FC = observer(() => {
                   setEntityId(e.target.value);
                 }}
                 placeholder={'Secretary of State ID'}
-                validate={formMessage?.entityId}
+                validate={formError?.entityId}
                 value={entityId}
               />
               <StyledSelect
                 label={'Formation State'}
                 onChange={(e) => {
-                  if (formMessage?.entityState) {
+                  if (formError?.entityState) {
                     setFormError((prev) => {
                       if (prev) {
                         delete prev.entityState;
@@ -347,7 +347,7 @@ export const TasksBorrower: FC = observer(() => {
                   setEntityState(e.target.value as string);
                 }}
                 options={OPTIONS_COMMON_STATE}
-                validate={formMessage?.entityState}
+                validate={formError?.entityState}
                 value={entityState}
               />
             </StyledFormItem>
@@ -373,7 +373,7 @@ export const TasksBorrower: FC = observer(() => {
               <StyledTextField
                 label={'Trust name'}
                 onChange={(e) => {
-                  if (formMessage?.trustName) {
+                  if (formError?.trustName) {
                     setFormError((prev) => {
                       if (prev) {
                         delete prev.trustName;
@@ -384,7 +384,7 @@ export const TasksBorrower: FC = observer(() => {
                   setTrustName(e.target.value);
                 }}
                 placeholder={'Trust name'}
-                validate={formMessage?.trustName}
+                validate={formError?.trustName}
                 value={trustName}
               />
             </StyledFormItem>
@@ -411,7 +411,7 @@ export const TasksBorrower: FC = observer(() => {
             <StyledTextField
               label={'First name'}
               onChange={(e) => {
-                if (formMessage?.firstName) {
+                if (formError?.firstName) {
                   setFormError((prev) => {
                     if (prev) {
                       delete prev.firstName;
@@ -422,13 +422,13 @@ export const TasksBorrower: FC = observer(() => {
                 setFirstName(e.target.value);
               }}
               placeholder={'First name'}
-              validate={formMessage?.firstName}
+              validate={formError?.firstName}
               value={firstName}
             />
             <StyledTextField
               label={'Last name'}
               onChange={(e) => {
-                if (formMessage?.lastName) {
+                if (formError?.lastName) {
                   setFormError((prev) => {
                     if (prev) {
                       delete prev.lastName;
@@ -439,7 +439,7 @@ export const TasksBorrower: FC = observer(() => {
                 setLastName(e.target.value);
               }}
               placeholder={'Last name'}
-              validate={formMessage?.lastName}
+              validate={formError?.lastName}
               value={lastName}
             />
           </Stack>
@@ -454,7 +454,7 @@ export const TasksBorrower: FC = observer(() => {
               <StyledTextField
                 label={'Authorized signatory title'}
                 onChange={(e) => {
-                  if (formMessage?.signatoryTitle) {
+                  if (formError?.signatoryTitle) {
                     setFormError((prev) => {
                       if (prev) {
                         delete prev.signatoryTitle;
@@ -465,7 +465,7 @@ export const TasksBorrower: FC = observer(() => {
                   setSignatoryTitle(e.target.value);
                 }}
                 placeholder={'Authorized signatory title'}
-                validate={formMessage?.signatoryTitle}
+                validate={formError?.signatoryTitle}
                 value={signatoryTitle}
               />
             )}
@@ -474,7 +474,7 @@ export const TasksBorrower: FC = observer(() => {
               disableFuture={true}
               label={'Date of birth'}
               onChange={(value) => {
-                if (formMessage?.birthDate) {
+                if (formError?.birthDate) {
                   setFormError((prev) => {
                     if (prev) {
                       delete prev.birthDate;
@@ -484,7 +484,7 @@ export const TasksBorrower: FC = observer(() => {
                 }
                 setBirthDate(value as Date);
               }}
-              validate={formMessage?.birthDate}
+              validate={formError?.birthDate}
               value={birthDate}
             />
           </Stack>
@@ -497,7 +497,7 @@ export const TasksBorrower: FC = observer(() => {
             <StyledTextFieldPhone
               label={'Phone number'}
               onValueChange={({ value }) => {
-                if (formMessage?.phoneNumber) {
+                if (formError?.phoneNumber) {
                   setFormError((prev) => {
                     if (prev) {
                       delete prev.phoneNumber;
@@ -508,13 +508,13 @@ export const TasksBorrower: FC = observer(() => {
                 setPhoneNumber(value);
               }}
               placeholder={'Phone number'}
-              validate={formMessage?.phoneNumber}
+              validate={formError?.phoneNumber}
               value={phoneNumber}
             />
             <StyledTextField
               label={'Email'}
               onChange={(e) => {
-                if (formMessage?.email) {
+                if (formError?.email) {
                   setFormError((prev) => {
                     if (prev) {
                       delete prev.email;
@@ -525,7 +525,7 @@ export const TasksBorrower: FC = observer(() => {
                 setEmail(e.target.value);
               }}
               placeholder={'Email'}
-              validate={formMessage?.email}
+              validate={formError?.email}
               value={email}
             />
           </Stack>
@@ -578,18 +578,17 @@ export const TasksBorrower: FC = observer(() => {
               <StyledTextFieldSocialNumber
                 label={'Social security number'}
                 onValueChange={(v) => {
-                  if (formMessage?.ssn) {
+                  if (formError?.ssn) {
                     setFormError((prev) => {
                       if (prev) {
                         delete prev.ssn;
-                        1;
                       }
                       return prev;
                     });
                   }
                   setSsn(v);
                 }}
-                validate={formMessage?.ssn}
+                validate={formError?.ssn}
                 value={ssn}
               />
             </StyledFormItem>

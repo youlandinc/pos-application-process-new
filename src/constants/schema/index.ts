@@ -12,3 +12,5 @@ export * from './address';
 
 export * from './taskBorrower';
 export * from './taskCoBorrower';
+export * from './taskTitleOrEscrow';
+export * from './taskReferringBroker';
