@@ -26,7 +26,7 @@ import {
 } from '@/types';
 import {
   _fetchAppraisalData,
-  //_fetchAppraisalPaymentData,
+  _fetchAppraisalPaymentData,
   _updateAppraisalData,
 } from '@/requests/dashboard';
 
@@ -71,7 +71,7 @@ export const Appraisal: FC = () => {
   });
 
   const appraisalPaymentRef = useRef(null);
-  const [paymentLoading, setPaymentLoading] = useState(false);
+  // const [paymentLoading, setPaymentLoading] = useState(false);
   const [paymentDetail, setPaymentDetail] = useState<
     DashboardPaymentDetailsResponse | undefined
   >();
@@ -81,20 +81,16 @@ export const Appraisal: FC = () => {
       setProfileLoading(true);
       try {
         await _updateAppraisalData(params);
-        enqueueSnackbar('Successfully saved', {
-          variant: 'success',
-          autoHideDuration: AUTO_HIDE_DURATION,
-        });
-        //if (!params.haveAppraisal && !params.isNeedToSend) {
-        //  const { data } = await _fetchAppraisalPaymentData({
-        //    loanId: router.query.loanId as string,
-        //  });
-        //setPaymentDetail(data);
-        //setFormState('payment');
-        //return;
-        //}
-        //!params.haveAppraisal &&
-        //setFormState(!params.isNeedToSend ? 'payment' : 'sendLink');
+        if (!params.haveAppraisal && !params.isNeedToSend) {
+          const { data } = await _fetchAppraisalPaymentData({
+            loanId: router.query.loanId as string,
+          });
+          setPaymentDetail(data);
+          setFormState('payment');
+          return;
+        }
+        !params.haveAppraisal &&
+          setFormState(!params.isNeedToSend ? 'payment' : 'sendLink');
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
@@ -108,29 +104,39 @@ export const Appraisal: FC = () => {
         setBackToProfileLoading(false);
       }
     },
-    [enqueueSnackbar],
+    [enqueueSnackbar, router.query.loanId],
   );
 
-  const handlePayment = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      setPaymentLoading(true);
+  const handlePayment = useCallback(async () => {
+    const { loanId } = POSGetParamsFromUrl(location.href);
+    if (!loanId) {
+      enqueueSnackbar('Invalid loan ID', {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+      });
+      return;
+    }
+    try {
+      const {
+        data: { paymentStatus, appraisalStatus, appraisalStatusDetail },
+      } = await _fetchAppraisalData(loanId);
 
-      const paymentRes = await (
-        appraisalPaymentRef.current as unknown as any
-      ).onSubmit(e);
-
-      if (paymentRes) {
-        const { status } = paymentRes;
-        if (status === AppraisalTaskPaymentStatus.complete) {
-          setPaymentStatus(status as string as AppraisalTaskPaymentStatus);
-          setFormState('afterPayment');
-        }
+      if (paymentStatus === AppraisalTaskPaymentStatus.complete) {
+        setFormState('afterPayment');
+        setPaymentStatus(paymentStatus);
+        setAppraisalStatus(appraisalStatus);
+        setAppraisalDetail(appraisalStatusDetail);
       }
-
-      setPaymentLoading(false);
-    },
-    [],
-  );
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    }
+  }, [enqueueSnackbar]);
 
   const fetchData = useCallback(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
@@ -203,99 +209,99 @@ export const Appraisal: FC = () => {
 
   const { loading } = useAsync(fetchData, [location.href]);
 
-  //const renderFormNode = useMemo(() => {
-  //  switch (formState) {
-  //    case 'profile':
-  //      return (
-  //        <Stack
-  //          alignItems={'center'}
-  //          gap={{ xs: 3, lg: 6 }}
-  //          justifyContent={'flex-start'}
-  //          maxWidth={648}
-  //          mx={'auto'}
-  //          px={{ lg: 3, xs: 0 }}
-  //          width={'100%'}
-  //        >
-  //          <Typography
-  //            color={'text.primary'}
-  //            fontSize={{ xs: 20, lg: 24 }}
-  //            textAlign={'center'}
-  //            variant={'h5'}
-  //          >
-  //            Appraisal
-  //          </Typography>
-  //
-  //          <AppraisalProfile
-  //            nextState={profileLoading}
-  //            nextStep={async (postData) => {
-  //              await updateAppraisalProfileAndGetPaymentDetails(postData);
-  //            }}
-  //            profileData={profileData}
-  //          />
-  //        </Stack>
-  //      );
-  //    case 'sendLink':
-  //      return (
-  //        <AppraisalSendLink
-  //          backState={backToProfileLoading}
-  //          backStep={async () => {
-  //            setBackToProfileLoading(true);
-  //            await fetchData();
-  //            setFormState('profile');
-  //          }}
-  //        />
-  //      );
-  //    case 'payment':
-  //      return (
-  //        <Fade in={!profileLoading}>
-  //          <Box>
-  //            <AppraisalPayment
-  //              backState={backToProfileLoading}
-  //              backStep={async () => {
-  //                setBackToProfileLoading(true);
-  //                await fetchData();
-  //                setFormState('profile');
-  //              }}
-  //              nextState={paymentLoading}
-  //              nextStep={async (e) => {
-  //                await handlePayment(e);
-  //              }}
-  //              paymentDetail={paymentDetail}
-  //              ref={appraisalPaymentRef}
-  //            />
-  //          </Box>
-  //        </Fade>
-  //      );
-  //    case 'afterPayment':
-  //      if (appraisalStatus === AppraisalStatusEnum.not_started) {
-  //        return <AppraisalPaymentStatus paymentStatus={paymentStatus} />;
-  //      }
-  //      return (
-  //        <AppraisalStatus
-  //          appraisalDetail={appraisalDetail}
-  //          appraisalStage={appraisalStatus}
-  //          email={profileData.email}
-  //          firstName={profileData.firstName}
-  //          instructions={profileData.instructions}
-  //          lastName={profileData.lastName}
-  //          phoneNumber={profileData.phoneNumber}
-  //        />
-  //      );
-  //  }
-  //}, [
-  //  formState,
-  //  profileLoading,
-  //  profileData,
-  //  backToProfileLoading,
-  //  paymentLoading,
-  //  paymentDetail,
-  //  appraisalStatus,
-  //  appraisalDetail,
-  //  updateAppraisalProfileAndGetPaymentDetails,
-  //  fetchData,
-  //  handlePayment,
-  //  paymentStatus,
-  //]);
+  const renderFormNode = useMemo(() => {
+    switch (formState) {
+      case 'profile':
+        return (
+          <Stack
+            alignItems={'center'}
+            gap={{ xs: 3, lg: 6 }}
+            justifyContent={'flex-start'}
+            maxWidth={648}
+            mx={'auto'}
+            px={{ lg: 3, xs: 0 }}
+            width={'100%'}
+          >
+            <Typography
+              color={'text.primary'}
+              fontSize={{ xs: 20, lg: 24 }}
+              textAlign={'center'}
+              variant={'h5'}
+            >
+              Appraisal
+            </Typography>
+
+            <AppraisalProfile
+              nextState={profileLoading}
+              nextStep={async (postData) => {
+                await updateAppraisalProfileAndGetPaymentDetails(postData);
+              }}
+              profileData={profileData}
+            />
+          </Stack>
+        );
+      case 'sendLink':
+        return (
+          <AppraisalSendLink
+            backState={backToProfileLoading}
+            backStep={async () => {
+              setBackToProfileLoading(true);
+              await fetchData();
+              setFormState('profile');
+            }}
+          />
+        );
+      case 'payment':
+        return (
+          <Fade in={!profileLoading}>
+            <Box>
+              <AppraisalPayment
+                backState={backToProfileLoading}
+                backStep={async () => {
+                  setBackToProfileLoading(true);
+                  await fetchData();
+                  setFormState('profile');
+                }}
+                callback={handlePayment}
+                nextState={false}
+                nextStep={async () => {
+                  return;
+                }}
+                paymentDetail={paymentDetail}
+                ref={appraisalPaymentRef}
+              />
+            </Box>
+          </Fade>
+        );
+      case 'afterPayment':
+        if (appraisalStatus === AppraisalStatusEnum.not_started) {
+          return <AppraisalPaymentStatus paymentStatus={paymentStatus} />;
+        }
+        return (
+          <AppraisalStatus
+            appraisalDetail={appraisalDetail}
+            appraisalStage={appraisalStatus}
+            email={profileData.email}
+            firstName={profileData.firstName}
+            instructions={profileData.instructions}
+            lastName={profileData.lastName}
+            phoneNumber={profileData.phoneNumber}
+          />
+        );
+    }
+  }, [
+    formState,
+    profileLoading,
+    profileData,
+    backToProfileLoading,
+    paymentDetail,
+    appraisalStatus,
+    appraisalDetail,
+    updateAppraisalProfileAndGetPaymentDetails,
+    fetchData,
+    handlePayment,
+    paymentStatus,
+  ]);
 
   return loading ? (
     <Stack
@@ -317,34 +323,7 @@ export const Appraisal: FC = () => {
         px={{ lg: 3, xs: 0 }}
         width={'100%'}
       >
-        {/*{renderFormNode}*/}
-
-        <Stack
-          alignItems={'center'}
-          gap={{ xs: 3, lg: 6 }}
-          justifyContent={'flex-start'}
-          maxWidth={648}
-          mx={'auto'}
-          px={{ lg: 3, xs: 0 }}
-          width={'100%'}
-        >
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            textAlign={'center'}
-            variant={'h5'}
-          >
-            Appraisal
-          </Typography>
-
-          <AppraisalProfile
-            nextState={profileLoading}
-            nextStep={async (postData) => {
-              await updateAppraisalProfileAndGetPaymentDetails(postData);
-            }}
-            profileData={profileData}
-          />
-        </Stack>
+        {renderFormNode}
       </Stack>
     </Fade>
   );
