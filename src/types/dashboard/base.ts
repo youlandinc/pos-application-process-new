@@ -67,6 +67,7 @@ export interface DashboardDocumentsResponse {
     collapse: boolean;
     categoryKey: string;
     categoryName: string;
+    redDotFlag: boolean;
   }[];
   isTips: boolean;
   loanNumber: string;
