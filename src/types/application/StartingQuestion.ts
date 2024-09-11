@@ -44,6 +44,5 @@ export interface StartingQuestionFormData {
   loanPurpose: LoanPurposeEnum;
   propertyType: LoanPropertyTypeEnum;
   propertyUnit: LoanPropertyUnitEnum;
-  citizenship: LoanCitizenshipEnum;
   isOccupyProperty: boolean;
 }
