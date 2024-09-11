@@ -761,7 +761,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
             onClick={nextStep}
             sx={{ width: 'calc(50% - 12px)' }}
           >
-            Submit {!['xs', 'sm', 'md'].includes(breakpoints) && 'application'}
+            Submit {!['xs', 'sm', 'md'].includes(breakpoints) && 'for review'}
           </StyledButton>
         </Stack>
 
