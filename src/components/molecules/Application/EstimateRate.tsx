@@ -1,5 +1,6 @@
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { Skeleton, Stack, Typography } from '@mui/material';
+import { InputAdornment, Skeleton, Stack, Typography } from '@mui/material';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 
@@ -33,6 +34,7 @@ import {
   StyledSelect,
   StyledSelectTextField,
   StyledTextFieldNumber,
+  StyledTooltip,
 } from '@/components/atoms';
 import { ProductList } from '@/components/molecules/Common';
 
@@ -468,6 +470,53 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
 
         {(!POSNotUndefined(expanded) || expanded) && (
           <Stack gap={3} width={'100%'}>
+            <Stack
+              alignItems={{ xs: 'flex-start', lg: 'stretch' }}
+              flexDirection={{ xs: 'column', lg: 'row' }}
+              gap={3}
+              ml={-0.5}
+            >
+              <StyledSelect
+                label={'Citizenship'}
+                onChange={(e) => {
+                  estimateRate.changeFieldValue(
+                    'citizenship',
+                    e.target.value as string as LoanCitizenshipEnum,
+                  );
+                }}
+                options={OPTIONS_COMMON_CITIZEN_TYPE}
+                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                value={estimateRate.citizenship}
+              />
+
+              <StyledTextFieldNumber
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <StyledTooltip
+                        title={
+                          'Number of flips completed and held rental properties'
+                        }
+                      >
+                        <HelpOutlineIcon
+                          sx={{
+                            width: 20,
+                            height: 20,
+                            color: 'info.dark',
+                          }}
+                        />
+                      </StyledTooltip>
+                    </InputAdornment>
+                  ),
+                }}
+                label={'Num. of prior experiences'}
+                onValueChange={({ floatValue }) => {
+                  estimateRate.changeFieldValue('priorExperience', floatValue);
+                }}
+                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                value={estimateRate.priorExperience}
+              />
+            </Stack>
             <Stack
               alignItems={{ xs: 'flex-start', lg: 'stretch' }}
               flexDirection={{ xs: 'column', lg: 'row' }}

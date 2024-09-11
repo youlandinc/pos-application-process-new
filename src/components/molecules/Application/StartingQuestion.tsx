@@ -153,25 +153,6 @@ export const StartingQuestion: FC<
         )}
       </Transitions>
 
-      <StyledFormItem
-        label={"What is the borrower's citizenship status?"}
-        labelSx={{
-          textAlign: { xs: 'left', lg: 'center' },
-        }}
-        width={'100%'}
-      >
-        <StyledSelectOption
-          onChange={(value) => {
-            startingQuestion.changeFieldValue(
-              'citizenship',
-              value as string as LoanCitizenshipEnum,
-            );
-          }}
-          options={OPTIONS_COMMON_CITIZEN_TYPE}
-          value={startingQuestion.citizenship}
-        />
-      </StyledFormItem>
-
       <StyledCheckbox
         checked={startingQuestion.isOccupyProperty}
         label={

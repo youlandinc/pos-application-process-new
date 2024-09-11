@@ -1,6 +1,5 @@
 import { types } from 'mobx-state-tree';
 import {
-  LoanCitizenshipEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
@@ -39,12 +38,6 @@ export const ApplicationStartingQuestion = types
       types.literal(LoanPropertyUnitEnum.three_units),
       types.literal(LoanPropertyUnitEnum.four_units),
     ),
-    citizenship: types.union(
-      types.literal(LoanCitizenshipEnum.default),
-      types.literal(LoanCitizenshipEnum.us_citizen),
-      types.literal(LoanCitizenshipEnum.permanent_resident_alien),
-      types.literal(LoanCitizenshipEnum.foreign_national),
-    ),
     isOccupyProperty: types.boolean,
   })
   .actions((self) => ({
@@ -62,17 +55,13 @@ export const ApplicationStartingQuestion = types
         propertyType: self.propertyType,
         propertyUnit: self.propertyUnit,
         isOccupyProperty: self.isOccupyProperty,
-        citizenship: self.citizenship,
       };
     },
   }))
   .views((self) => ({
     get isValid() {
       const baseCondition =
-        !!self.loanType &&
-        !!self.citizenship &&
-        !!self.productCategory &&
-        self.isOccupyProperty;
+        !!self.loanType && !!self.productCategory && self.isOccupyProperty;
 
       if (!self.propertyType) {
         return false;
@@ -90,7 +79,6 @@ export const ApplicationStartingQuestion = types
         propertyType,
         propertyUnit,
         isOccupyProperty,
-        citizenship,
       } = data;
 
       self.loanType = loanType ?? LoanTypeEnum.bridge;
@@ -99,7 +87,6 @@ export const ApplicationStartingQuestion = types
       self.loanPurpose = loanPurpose ?? LoanPurposeEnum.purchase;
       self.propertyType = propertyType ?? LoanPropertyTypeEnum.single_family;
       self.propertyUnit = propertyUnit ?? LoanPropertyUnitEnum.two_units;
-      self.citizenship = citizenship ?? LoanCitizenshipEnum.us_citizen;
       self.isOccupyProperty = isOccupyProperty;
     },
   }));

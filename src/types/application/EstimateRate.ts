@@ -33,6 +33,7 @@ export interface EstimateRateFormData {
   propertyType: LoanPropertyTypeEnum;
   propertyUnit: LoanPropertyUnitEnum;
   citizenship: LoanCitizenshipEnum;
+  priorExperience: number;
   state: string;
   ficoScore: LoanFicoScoreEnum;
   isLiquidity: boolean;
