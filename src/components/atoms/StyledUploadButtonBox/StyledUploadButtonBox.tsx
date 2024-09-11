@@ -18,6 +18,9 @@ import {
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 
+import { useMst } from '@/models/Root';
+import { observer } from 'mobx-react-lite';
+
 import { useBreakpoints, useSessionStorageState, useSwitch } from '@/hooks';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
@@ -52,8 +55,6 @@ import ICON_FILE from './icon_file.svg';
 import ICON_HISTORY from './icon_history.svg';
 import ICON_REFRESH from './icon_refresh.svg';
 import ICON_NO_HISTORY from './icon_no_history.svg';
-import { useMst } from '@/models/Root';
-import { observer } from 'mobx-react-lite';
 
 interface StyledUploadButtonBoxProps {
   id?: number | string;
@@ -82,6 +83,7 @@ interface StyledUploadButtonBoxProps {
   popup?: string;
   isFromLOS?: boolean;
   isShowHistory?: boolean;
+  redDotFlag?: boolean;
 }
 
 export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
@@ -106,6 +108,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
     onDelete,
     onUpload,
     isShowHistory = true,
+    redDotFlag = false,
   }) => {
     const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
@@ -378,6 +381,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
           condition === 'outside'
             ? setFetchHistoryLoading(false)
             : setRefreshHistoryLoading(false);
+          await refresh?.();
         }
       },
       [
@@ -386,6 +390,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
         historyOpen,
         historyVisible,
         id,
+        refresh,
         refreshHistoryLoading,
       ],
     );
@@ -617,11 +622,31 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                   }}
                 />
               ) : (
-                <Icon
-                  component={ICON_HISTORY}
-                  onClick={() => onClickShowHistory('outside')}
-                  sx={{ cursor: 'pointer' }}
-                />
+                <Stack
+                  alignItems={'center'}
+                  height={24}
+                  justifyContent={'center'}
+                  position={'relative'}
+                  sx={{
+                    '&:after': {
+                      content: '""',
+                      position: 'absolute',
+                      top: -2,
+                      right: -2,
+                      width: 10,
+                      height: 10,
+                      borderRadius: '50%',
+                      backgroundColor: redDotFlag ? '#FF5630' : 'transparent',
+                    },
+                  }}
+                  width={24}
+                >
+                  <Icon
+                    component={ICON_HISTORY}
+                    onClick={() => onClickShowHistory('outside')}
+                    sx={{ cursor: 'pointer' }}
+                  />
+                </Stack>
               ))}
             <StyledButton
               color={'primary'}
