@@ -510,7 +510,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
               {/*      </InputAdornment>*/}
               {/*    ),*/}
               {/*  }}*/}
-              {/*  label={'Num. of prior experiences'}*/}
+              {/*  label={'# of prior flips'}*/}
               {/*  onValueChange={({ floatValue }) => {*/}
               {/*    estimateRate.changeFieldValue('priorExperience', floatValue);*/}
               {/*  }}*/}
