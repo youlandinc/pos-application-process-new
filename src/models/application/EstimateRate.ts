@@ -41,6 +41,7 @@ export const EstimateRate = types
       types.literal(LoanCitizenshipEnum.permanent_resident_alien),
       types.literal(LoanCitizenshipEnum.foreign_national),
     ),
+    priorExperience: types.maybe(types.number),
     state: types.string,
     ficoScore: types.union(
       types.literal(LoanFicoScoreEnum.default),
@@ -105,6 +106,7 @@ export const EstimateRate = types
         interestRate: self.interestRate,
         isDutch: self.isDutch,
         citizenship: self.citizenship,
+        priorExperience: self.priorExperience,
       };
     },
     injectServerData(data: EstimateRateFormData) {
@@ -130,6 +132,7 @@ export const EstimateRate = types
         interestRate,
         isDutch,
         citizenship,
+        priorExperience,
       } = data;
 
       self.productCategory =
@@ -138,6 +141,7 @@ export const EstimateRate = types
       self.propertyType = propertyType ?? LoanPropertyTypeEnum.single_family;
       self.propertyUnit = propertyUnit ?? LoanPropertyUnitEnum.two_units;
       self.citizenship = citizenship ?? LoanCitizenshipEnum.us_citizen;
+      self.priorExperience = priorExperience ?? 0;
       self.state = state ?? 'CA';
       self.ficoScore = ficoScore ?? LoanFicoScoreEnum.between_700_749;
       self.isLiquidity = isLiquidity ?? true;

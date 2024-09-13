@@ -38,7 +38,11 @@ import {
   NotificationMessageLabel,
 } from '@/types/account/notification';
 import { HttpError, LayoutSceneTypeEnum } from '@/types';
-import { _fetchMessage, _readMessage } from '@/requests';
+import {
+  _fetchMessage,
+  _readAllMessage,
+  //_readMessage
+} from '@/requests';
 
 import ICON_NOTIFICATION from './icon_notification.svg';
 import ICON_NO_MORE from './icon_no_more.svg';
@@ -233,10 +237,16 @@ export const MyAccountButton: FC<{
   ]);
 
   const onClickMessageItemCb = useCallback(
-    async (messageId: string) => {
+    async (item: NotificationMessageItem) => {
+      const { variables } = item;
+      const { fileId } = variables;
+      if (!fileId) {
+        return;
+      }
       setMessageClickLoading(true);
+
       try {
-        await _readMessage({ messageId });
+        await _readAllMessage({ fileId });
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
@@ -357,7 +367,7 @@ export const MyAccountButton: FC<{
                 <>
                   {messageList.map((item, index) => (
                     <MessageItem
-                      cb={() => onClickMessageItemCb(item.messageId)}
+                      cb={() => onClickMessageItemCb(item)}
                       clickLoading={messageClickLoading}
                       key={`message-item-${index}`}
                       {...item}
@@ -515,7 +525,7 @@ export const MyAccountButton: FC<{
                         <>
                           {messageList.map((item, index) => (
                             <MessageItem
-                              cb={() => onClickMessageItemCb(item.messageId)}
+                              cb={() => onClickMessageItemCb(item)}
                               clickLoading={messageClickLoading}
                               key={`message-item-${index}`}
                               {...item}
