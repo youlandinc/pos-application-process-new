@@ -252,7 +252,7 @@ export default function MyApp(props: MyAppProps) {
         onLoad={() => {
           rootStore.setLoadedGoogle();
         }}
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbKnoaYuPycOQD4uQdPrc1nESFEVRH5&libraries=places,streetView,maps"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbKnoaYuPycOQD4uQdPrc1nESFEVRH5-g&libraries=places,streetView,maps"
         //strategy={'beforeInteractive'}
         type="text/javascript"
       />
