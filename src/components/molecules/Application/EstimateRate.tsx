@@ -411,6 +411,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         estimateRate?.refinanceLoanAmount,
         estimateRate?.isPayoff,
         estimateRate?.payoffAmount,
+        estimateRate?.citizenship,
         session,
       ],
     );
