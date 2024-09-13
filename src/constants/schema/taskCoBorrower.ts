@@ -1,3 +1,5 @@
+import { DashboardTaskCitizenshipStatus } from '@/types';
+
 export const TaskCoBorrowerSchema: Record<any, any> = {
   firstName: {
     presence: {
@@ -22,7 +24,14 @@ export const TaskCoBorrowerSchema: Record<any, any> = {
   email: {
     formEmail: {},
   },
-  ssn: {
-    ssn: true,
+  ssn: (value: any, attributes: any) => {
+    if (
+      attributes.citizenship !== DashboardTaskCitizenshipStatus.foreign_national
+    ) {
+      return {
+        ssn: true,
+      };
+    }
+    return undefined;
   },
 };
