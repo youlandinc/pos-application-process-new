@@ -431,10 +431,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
           estimateRate.propertyType !== LoanPropertyTypeEnum.two_to_four_family
             ? POSFindLabel(APPLICATION_PROPERTY_TYPE, estimateRate.propertyType)
             : POSFindLabel(APPLICATION_PROPERTY_UNIT, estimateRate.propertyUnit)
-        } | ${POSFindLabel(
-          OPTIONS_COMMON_CITIZEN_TYPE,
-          estimateRate.citizenship,
-        )}`}
+        }`}
         tipSx={{
           textAlign: 'left',
           fontSize: { xs: 12, lg: 16 },
