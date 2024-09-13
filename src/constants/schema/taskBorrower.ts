@@ -1,4 +1,7 @@
-import { DashboardTaskBorrowerType } from '@/types';
+import {
+  DashboardTaskBorrowerType,
+  DashboardTaskCitizenshipStatus,
+} from '@/types';
 
 export const TaskBorrowerSchema: Record<any, any> = {
   firstName: {
@@ -24,8 +27,15 @@ export const TaskBorrowerSchema: Record<any, any> = {
   email: {
     formEmail: {},
   },
-  ssn: {
-    ssn: true,
+  ssn: (value: any, attributes: any) => {
+    if (
+      attributes.citizenship !== DashboardTaskCitizenshipStatus.foreign_national
+    ) {
+      return {
+        ssn: true,
+      };
+    }
+    return undefined;
   },
   signatoryTitle: (value: any, attributes: any) => {
     if (attributes.borrowerType === DashboardTaskBorrowerType.individual) {
