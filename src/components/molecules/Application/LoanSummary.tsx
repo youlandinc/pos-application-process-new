@@ -545,6 +545,8 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               {/*/>*/}
             </Stack>
 
+            {renderCompensationFee}
+
             <Stack
               border={'1px solid #D2D6E1'}
               borderRadius={2}
@@ -722,8 +724,6 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               {/*</StyledButton>*/}
             </Stack>
 
-            {renderCompensationFee}
-
             <Typography
               color={'text.secondary'}
               fontSize={{ xs: 12, lg: 16 }}
@@ -732,37 +732,29 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               <b>Disclaimer: </b>The estimates are subject to change and do not
               include 3rd party settlement fees required to close your loan.
             </Typography>
-          </Stack>
-        </Stack>
 
-        <Stack
-          flexDirection={'row'}
-          gap={3}
-          maxWidth={600}
-          mt={{ xs: 3, lg: 10 }}
-          mx={'auto'}
-          width={'100%'}
-        >
-          <StyledButton
-            color={'info'}
-            disabled={backState}
-            loading={backState}
-            onClick={backStep}
-            sx={{ width: 'calc(50% - 12px)' }}
-            variant={'text'}
-          >
-            Back
-          </StyledButton>
-          <StyledButton
-            color={'primary'}
-            disabled={nextState}
-            id={'application-loan-summary-next-button'}
-            loading={nextState}
-            onClick={nextStep}
-            sx={{ width: 'calc(50% - 12px)' }}
-          >
-            Submit {!['xs', 'sm', 'md'].includes(breakpoints) && 'for review'}
-          </StyledButton>
+            <Stack gap={3} mx={'auto'} width={'100%'}>
+              <StyledButton
+                color={'primary'}
+                disabled={nextState}
+                id={'application-loan-summary-next-button'}
+                loading={nextState}
+                onClick={nextStep}
+              >
+                Submit{' '}
+                {!['xs', 'sm', 'md'].includes(breakpoints) && 'for review'}
+              </StyledButton>
+              <StyledButton
+                color={'info'}
+                disabled={backState}
+                loading={backState}
+                onClick={backStep}
+                variant={'text'}
+              >
+                Back
+              </StyledButton>
+            </Stack>
+          </Stack>
         </Stack>
 
         <StyledDialog
