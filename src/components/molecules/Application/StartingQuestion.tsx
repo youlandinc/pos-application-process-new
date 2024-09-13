@@ -9,11 +9,9 @@ import {
   APPLICATION_LOAN_PURPOSE,
   APPLICATION_PROPERTY_TYPE,
   APPLICATION_PROPERTY_UNIT,
-  OPTIONS_COMMON_CITIZEN_TYPE,
 } from '@/constants';
 
 import {
-  LoanCitizenshipEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
