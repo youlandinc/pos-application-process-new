@@ -489,33 +489,33 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 value={estimateRate.citizenship}
               />
 
-              <StyledTextFieldNumber
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <StyledTooltip
-                        title={
-                          'Number of flips completed and held rental properties'
-                        }
-                      >
-                        <HelpOutlineIcon
-                          sx={{
-                            width: 20,
-                            height: 20,
-                            color: 'info.dark',
-                          }}
-                        />
-                      </StyledTooltip>
-                    </InputAdornment>
-                  ),
-                }}
-                label={'Num. of prior experiences'}
-                onValueChange={({ floatValue }) => {
-                  estimateRate.changeFieldValue('priorExperience', floatValue);
-                }}
-                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                value={estimateRate.priorExperience}
-              />
+              {/*<StyledTextFieldNumber*/}
+              {/*  InputProps={{*/}
+              {/*    endAdornment: (*/}
+              {/*      <InputAdornment position="end">*/}
+              {/*        <StyledTooltip*/}
+              {/*          title={*/}
+              {/*            'Number of flips completed and held rental properties'*/}
+              {/*          }*/}
+              {/*        >*/}
+              {/*          <HelpOutlineIcon*/}
+              {/*            sx={{*/}
+              {/*              width: 20,*/}
+              {/*              height: 20,*/}
+              {/*              color: 'info.dark',*/}
+              {/*            }}*/}
+              {/*          />*/}
+              {/*        </StyledTooltip>*/}
+              {/*      </InputAdornment>*/}
+              {/*    ),*/}
+              {/*  }}*/}
+              {/*  label={'Num. of prior experiences'}*/}
+              {/*  onValueChange={({ floatValue }) => {*/}
+              {/*    estimateRate.changeFieldValue('priorExperience', floatValue);*/}
+              {/*  }}*/}
+              {/*  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}*/}
+              {/*  value={estimateRate.priorExperience}*/}
+              {/*/>*/}
             </Stack>
             <Stack
               alignItems={{ xs: 'flex-start', lg: 'stretch' }}
