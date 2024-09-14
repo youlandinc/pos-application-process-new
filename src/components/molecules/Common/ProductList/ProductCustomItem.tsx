@@ -61,10 +61,7 @@ export const ProductCustomItem: FC<{
     ) {
       return 0;
     }
-    return (
-      ((estimateRate.interestRate / 100) * totalLoanAmount) /
-      estimateRate.loanTerm
-    );
+    return ((estimateRate.interestRate / 100) * totalLoanAmount) / 12;
   }, [estimateRate?.interestRate, estimateRate?.loanTerm, totalLoanAmount]);
 
   return (
