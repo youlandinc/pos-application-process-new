@@ -974,12 +974,12 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                 </Typography>
                 <Stack flexDirection={'row'} gap={1} mt={1.5}>
                   <Typography variant={'body3'}>
-                    {saasState?.organizationName || 'YouLand Inc'}. ISAOA/ATIMA
+                    {saasState?.organizationName || 'YouLand Inc.'} ISAOA/ATIMA
                   </Typography>
                   <ContentCopy
                     onClick={async () => {
                       await navigator.clipboard.writeText(
-                        `${saasState?.organizationName || 'YouLand Inc'}. ISAOA/ATIMA
+                        `${saasState?.organizationName || 'YouLand Inc.'} ISAOA/ATIMA
 ${saasState?.address?.address}${
                           saasState?.address.aptNumber
                             ? `, ${saasState?.address.aptNumber}`
