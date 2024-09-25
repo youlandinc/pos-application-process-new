@@ -1,4 +1,4 @@
-export * from './StyledPaymentCard';
-
-export * from './StyledPaymentCard.types';
-export * from './StyledPaymentCardStyles';
+//export * from './StyledPaymentCard';
+//
+//export * from './StyledPaymentCard.types';
+//export * from './StyledPaymentCardStyles';

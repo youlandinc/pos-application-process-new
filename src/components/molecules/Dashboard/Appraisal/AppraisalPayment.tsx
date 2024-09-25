@@ -15,7 +15,7 @@ import {
   StyledButton,
   StyledFormItem,
   StyledGoogleAutoComplete,
-  StyledPaymentCardRef,
+  //StyledPaymentCardRef,
   StyledTextField,
   StyledTextFieldPhone,
 } from '@/components/atoms';
@@ -49,7 +49,8 @@ const defaultAddress = {
 };
 
 export const AppraisalPayment = forwardRef<
-  StyledPaymentCardRef,
+  //StyledPaymentCardRef,
+  any,
   PaymentTableProps
 >(({ paymentDetail, backStep, backState, callback }, ref) => {
   // const [checkProcessing, setCheckProcessing] = useState(false);
