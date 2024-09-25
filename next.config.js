@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 module.exports = {
-  env: {
-    STRIPE_PUBLISH_KEY: process.env.STRIPE_PUBLISH_KEY,
-  },
+  env: {},
   reactStrictMode: false,
   trailingSlash: true,
   webpack(config) {
