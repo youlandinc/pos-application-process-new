@@ -66,7 +66,7 @@ export const OPTIONS_COMMON_CITIZEN_TYPE: Option[] = [
     key: LoanCitizenshipEnum.us_citizen,
   },
   {
-    label: 'Permanent Resident',
+    label: 'Permanent resident',
     value: LoanCitizenshipEnum.permanent_resident_alien,
     key: LoanCitizenshipEnum.permanent_resident_alien,
   },

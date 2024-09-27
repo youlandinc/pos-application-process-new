@@ -94,42 +94,6 @@ ul {
   }
 }
 
-/*for stripe.js components reset style*/
-.StripeElement {
-  display: block;
-  padding: 16px 24px;
-  border-radius: 8px;
-  border: 1px solid #d2d6e1;
-}
-
-.StripeElement--invalid {
-  -webkit-transition: all 150ms ease;
-  transition: all 150ms ease;
-  border-color: #ff5630;
-}
-
-.StripeElement--focus {
-  -webkit-transition: all 150ms ease;
-  transition: all 150ms ease;
-  border-color: #202939;
-}
-
-.payment_cardNumber_input {
-  width: 100%;
-  font-size: 16px;
-  margin-top: 16px;
-}
-
-.payment_cardNumber_input > .__PrivateStripeElement {
-  height: 100%;
-}
-
-.payment_cardExpiry_input,
-.payment_cardCvc_input {
-  width: 100%;
-  margin-top: 16px;
-}
-
 /*opt style*/
 
 .OPT_TextField_inputStyle_container {
@@ -451,10 +415,4 @@ ul {
   width: 24px;
   height: 24px;
   margin-left: 8px;
-}
-
-.STRIPE_PAYMENT_ELEMENT,
-.STRIPE_ADDRESS_ELEMENT {
-  border: none !important;
-  padding: 0 !important;
 }
