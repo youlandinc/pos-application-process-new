@@ -193,6 +193,37 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       estimateRate?.refinanceLoanAmount,
     ]);
 
+    const ARLVT = useMemo(() => {
+      if (
+        ![
+          LoanProductCategoryEnum.fix_and_flip,
+          LoanProductCategoryEnum.ground_up_construction,
+        ].includes(estimateRate.productCategory)
+      ) {
+        return 0;
+      }
+      return estimateRate.loanPurpose === LoanPurposeEnum.purchase
+        ? estimateRate.purchasePrice
+          ? ((estimateRate.purchaseLoanAmount ?? 0) +
+              (estimateRate.rehabCost ?? 0)) /
+            (estimateRate?.arv ?? 0)
+          : 0
+        : estimateRate.propertyValue
+          ? ((estimateRate.refinanceLoanAmount ?? 0) +
+              (estimateRate.rehabCost ?? 0)) /
+            (estimateRate?.arv ?? 0)
+          : 0;
+    }, [
+      estimateRate.arv,
+      estimateRate.loanPurpose,
+      estimateRate.productCategory,
+      estimateRate.propertyValue,
+      estimateRate.purchaseLoanAmount,
+      estimateRate.purchasePrice,
+      estimateRate.refinanceLoanAmount,
+      estimateRate.rehabCost,
+    ]);
+
     const LTC = useMemo(() => {
       if (
         estimateRate.productCategory !==
@@ -707,7 +738,9 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                         variant={'body3'}
                       >
                         After-repair loan to value:{' '}
-                        <b>{POSFormatPercent(LTV, POSGetDecimalPlaces(LTV))}</b>
+                        <b>
+                          {POSFormatPercent(ARLVT, POSGetDecimalPlaces(ARLVT))}
+                        </b>
                       </Typography>
 
                       <Typography
@@ -842,7 +875,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                       variant={'body3'}
                     >
                       After-repair loan to value:{' '}
-                      <b>{POSFormatPercent(LTV, 1)}</b>
+                      <b>{POSFormatPercent(ARLVT, 1)}</b>
                     </Typography>
 
                     <Typography
