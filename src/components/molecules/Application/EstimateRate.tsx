@@ -193,6 +193,33 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       estimateRate?.refinanceLoanAmount,
     ]);
 
+    const ARLTV = useMemo(() => {
+      if (
+        ![
+          LoanProductCategoryEnum.fix_and_flip,
+          LoanProductCategoryEnum.ground_up_construction,
+        ].includes(estimateRate.productCategory)
+      ) {
+        return 0;
+      }
+      const dividend =
+        estimateRate.loanPurpose === LoanPurposeEnum.purchase
+          ? (estimateRate?.purchaseLoanAmount ?? 0) +
+            (estimateRate?.rehabCost ?? 0)
+          : (estimateRate?.refinanceLoanAmount ?? 0) +
+            (estimateRate?.rehabCost ?? 0);
+      const divisor = estimateRate?.arv ?? 0;
+      const quotient = dividend / divisor;
+      return !isNaN(quotient) && isFinite(quotient) ? quotient : 0;
+    }, [
+      estimateRate?.arv,
+      estimateRate.loanPurpose,
+      estimateRate.productCategory,
+      estimateRate.purchaseLoanAmount,
+      estimateRate.refinanceLoanAmount,
+      estimateRate.rehabCost,
+    ]);
+
     const LTC = useMemo(() => {
       if (
         estimateRate.productCategory !==
@@ -707,7 +734,9 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                         variant={'body3'}
                       >
                         After-repair loan to value:{' '}
-                        <b>{POSFormatPercent(LTV, POSGetDecimalPlaces(LTV))}</b>
+                        <b>
+                          {POSFormatPercent(ARLTV, POSGetDecimalPlaces(ARLTV))}
+                        </b>
                       </Typography>
 
                       <Typography
@@ -842,7 +871,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                       variant={'body3'}
                     >
                       After-repair loan to value:{' '}
-                      <b>{POSFormatPercent(LTV, 1)}</b>
+                      <b>{POSFormatPercent(ARLTV, 1)}</b>
                     </Typography>
 
                     <Typography
