@@ -126,8 +126,7 @@ export const SpecificalPaymentPage = () => {
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [addressInfo, setAddressInfo] = useState(defaultAddress);
-
-  const nextDisabled = [
+  const basicInfo = [
     billingFirstName,
     billingLastName,
     addressInfo.formatAddress,
@@ -136,10 +135,12 @@ export const SpecificalPaymentPage = () => {
     addressInfo.postcode,
     billingEmail,
     billingPhoneNumber,
-    firstName,
-    lastName,
-    phoneNumber,
-  ].some((item) => item === '');
+  ];
+  const propertyConcatInfo = [firstName, lastName, phoneNumber];
+
+  const nextDisabled = (
+    insideIsNeedToFill ? basicInfo.concat(propertyConcatInfo) : basicInfo
+  ).some((item) => item === '');
 
   const { loading } = useAsync(async () => {
     const { isNeedToFill, orderNo, source, isAdditional } = POSGetParamsFromUrl(
