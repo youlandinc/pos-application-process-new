@@ -193,7 +193,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       estimateRate?.refinanceLoanAmount,
     ]);
 
-    const ARLVT = useMemo(() => {
+    const ARLTV = useMemo(() => {
       if (
         ![
           LoanProductCategoryEnum.fix_and_flip,
@@ -202,24 +202,20 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       ) {
         return 0;
       }
-      return estimateRate.loanPurpose === LoanPurposeEnum.purchase
-        ? estimateRate.purchasePrice
-          ? ((estimateRate.purchaseLoanAmount ?? 0) +
-              (estimateRate.rehabCost ?? 0)) /
-            (estimateRate?.arv ?? 0)
-          : 0
-        : estimateRate.propertyValue
-          ? ((estimateRate.refinanceLoanAmount ?? 0) +
-              (estimateRate.rehabCost ?? 0)) /
-            (estimateRate?.arv ?? 0)
-          : 0;
+      const dividend =
+        estimateRate.loanPurpose === LoanPurposeEnum.purchase
+          ? (estimateRate?.purchaseLoanAmount ?? 0) +
+            (estimateRate?.rehabCost ?? 0)
+          : (estimateRate?.refinanceLoanAmount ?? 0) +
+            (estimateRate?.rehabCost ?? 0);
+      const divisor = estimateRate?.arv ?? 0;
+      const quotient = dividend / divisor;
+      return !isNaN(quotient) && isFinite(quotient) ? quotient : 0;
     }, [
-      estimateRate.arv,
+      estimateRate?.arv,
       estimateRate.loanPurpose,
       estimateRate.productCategory,
-      estimateRate.propertyValue,
       estimateRate.purchaseLoanAmount,
-      estimateRate.purchasePrice,
       estimateRate.refinanceLoanAmount,
       estimateRate.rehabCost,
     ]);
@@ -739,7 +735,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                       >
                         After-repair loan to value:{' '}
                         <b>
-                          {POSFormatPercent(ARLVT, POSGetDecimalPlaces(ARLVT))}
+                          {POSFormatPercent(ARLTV, POSGetDecimalPlaces(ARLTV))}
                         </b>
                       </Typography>
 
@@ -875,7 +871,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                       variant={'body3'}
                     >
                       After-repair loan to value:{' '}
-                      <b>{POSFormatPercent(ARLVT, 1)}</b>
+                      <b>{POSFormatPercent(ARLTV, 1)}</b>
                     </Typography>
 
                     <Typography
