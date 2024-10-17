@@ -227,34 +227,34 @@ export const Tasks: FC = () => {
             )}
           </Stack>
 
-          <Stack
-            alignItems={'center'}
-            flexDirection={'row'}
-            justifyContent={'space-between'}
-            onClick={() =>
-              router.push({
-                pathname: '/dashboard/tasks/real-estate-investment-experience',
-                query: { loanId: POSGetParamsFromUrl(location.href).loanId },
-              })
-            }
-            px={{ xs: 2, lg: 3 }}
-            py={{ xs: 1, lg: 1.5 }}
-            sx={{
-              '&:hover': {
-                cursor: 'pointer',
-                borderRadius: 1,
-                bgcolor: 'info.darker',
-              },
-            }}
-            width={'100%'}
-          >
-            <Typography fontSize={{ xs: 12, lg: 16 }}>
-              Real estate investment experience
-            </Typography>
-            {taskHash?.[DashboardTaskKey.real_investment] && (
-              <CheckCircle color={'success'} />
-            )}
-          </Stack>
+          {/*<Stack*/}
+          {/*  alignItems={'center'}*/}
+          {/*  flexDirection={'row'}*/}
+          {/*  justifyContent={'space-between'}*/}
+          {/*  onClick={() =>*/}
+          {/*    router.push({*/}
+          {/*      pathname: '/dashboard/tasks/real-estate-investment-experience',*/}
+          {/*      query: { loanId: POSGetParamsFromUrl(location.href).loanId },*/}
+          {/*    })*/}
+          {/*  }*/}
+          {/*  px={{ xs: 2, lg: 3 }}*/}
+          {/*  py={{ xs: 1, lg: 1.5 }}*/}
+          {/*  sx={{*/}
+          {/*    '&:hover': {*/}
+          {/*      cursor: 'pointer',*/}
+          {/*      borderRadius: 1,*/}
+          {/*      bgcolor: 'info.darker',*/}
+          {/*    },*/}
+          {/*  }}*/}
+          {/*  width={'100%'}*/}
+          {/*>*/}
+          {/*  <Typography fontSize={{ xs: 12, lg: 16 }}>*/}
+          {/*    Real estate investment experience*/}
+          {/*  </Typography>*/}
+          {/*  {taskHash?.[DashboardTaskKey.real_investment] && (*/}
+          {/*    <CheckCircle color={'success'} />*/}
+          {/*  )}*/}
+          {/*</Stack>*/}
 
           <Stack
             alignItems={'center'}
