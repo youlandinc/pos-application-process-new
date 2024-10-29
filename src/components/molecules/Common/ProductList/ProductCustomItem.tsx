@@ -8,7 +8,11 @@ import { useMst } from '@/models/Root';
 import { useBreakpoints, useStoreData } from '@/hooks';
 
 import { POSFormatDollar } from '@/utils';
-import { LoanProductCategoryEnum, LoanSnapshotEnum } from '@/types';
+import {
+  LoanProductCategoryEnum,
+  LoanPurposeEnum,
+  LoanSnapshotEnum,
+} from '@/types';
 
 import {
   StyledButton,
@@ -18,7 +22,8 @@ import {
 
 export const ProductCustomItem: FC<{
   totalLoanAmount?: number;
-}> = observer(({ totalLoanAmount }) => {
+  totalLoanAmountWithoutDutch?: number;
+}> = observer(({ totalLoanAmount, totalLoanAmountWithoutDutch }) => {
   const { applicationForm } = useMst();
   const { estimateRate } = applicationForm;
 
@@ -53,7 +58,49 @@ export const ProductCustomItem: FC<{
     await updateFrom(postData);
   };
 
+  const computedLoanAmount = useMemo(() => {
+    return estimateRate?.isDutch
+      ? totalLoanAmount
+      : totalLoanAmountWithoutDutch;
+  }, [estimateRate?.isDutch, totalLoanAmount, totalLoanAmountWithoutDutch]);
+
   const monthlyPayment = useMemo(() => {
+    if (
+      !estimateRate?.interestRate ||
+      !estimateRate?.loanTerm ||
+      !computedLoanAmount
+    ) {
+      return 0;
+    }
+    return ((estimateRate.interestRate / 100) * computedLoanAmount) / 12;
+  }, [estimateRate.interestRate, estimateRate?.loanTerm, computedLoanAmount]);
+
+  const initialMonthlyPayment = useMemo(() => {
+    if (!estimateRate?.interestRate || !estimateRate?.loanTerm) {
+      return 0;
+    }
+    const futureConstructionFunding =
+      estimateRate?.loanPurpose === LoanPurposeEnum.purchase
+        ? (estimateRate?.purchaseConstructionCosts ?? 0)
+        : (estimateRate?.refinanceConstructionCosts ?? 0);
+    const initialDisbursement = totalLoanAmount || 0;
+
+    const dividend =
+      ((initialDisbursement - futureConstructionFunding) *
+        estimateRate?.interestRate) /
+      100;
+    const divisor = 12;
+
+    return dividend / divisor;
+  }, [
+    estimateRate?.interestRate,
+    estimateRate?.loanPurpose,
+    estimateRate?.loanTerm,
+    estimateRate?.purchaseConstructionCosts,
+    estimateRate?.refinanceConstructionCosts,
+    totalLoanAmount,
+  ]);
+  const fullyDrawnMonthlyPayment = useMemo(() => {
     if (
       !estimateRate?.interestRate ||
       !estimateRate?.loanTerm ||
@@ -61,8 +108,146 @@ export const ProductCustomItem: FC<{
     ) {
       return 0;
     }
-    return ((estimateRate.interestRate / 100) * totalLoanAmount) / 12;
-  }, [estimateRate?.interestRate, estimateRate?.loanTerm, totalLoanAmount]);
+    return (totalLoanAmount * (estimateRate.interestRate / 100)) / 12;
+  }, [estimateRate.interestRate, estimateRate?.loanTerm, totalLoanAmount]);
+
+  const renderTail = useMemo(() => {
+    switch (estimateRate.productCategory) {
+      case LoanProductCategoryEnum.stabilized_bridge:
+        return (
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+          >
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              fontSize={16}
+              gap={1}
+            >
+              Monthly payment
+            </Stack>
+
+            <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
+              {POSFormatDollar(monthlyPayment)}
+            </Typography>
+          </Stack>
+        );
+      case LoanProductCategoryEnum.fix_and_flip:
+        return (
+          <Stack
+            alignItems={'center'}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+          >
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              fontSize={16}
+              gap={1}
+            >
+              Monthly payment{' '}
+              <StyledTooltip
+                title={
+                  'The interest calculation is based on a non-dutch basis and does not include the rehab loan amount.'
+                }
+              >
+                <InfoOutlined
+                  sx={{
+                    width: 16,
+                    height: 16,
+                    color: 'info.dark',
+                    mb: 0.25,
+                  }}
+                />
+              </StyledTooltip>
+            </Stack>
+
+            <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
+              {POSFormatDollar(monthlyPayment)}
+            </Typography>
+          </Stack>
+        );
+      case LoanProductCategoryEnum.ground_up_construction:
+        return (
+          <>
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+            >
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                fontSize={16}
+                gap={1}
+              >
+                Est. initial monthly payment{' '}
+                <StyledTooltip
+                  title={
+                    'The estimated monthly payment based on the initial loan disbursement amount.'
+                  }
+                >
+                  <InfoOutlined
+                    sx={{
+                      width: 16,
+                      height: 16,
+                      color: 'info.dark',
+                      mb: 0.25,
+                    }}
+                  />
+                </StyledTooltip>
+              </Stack>
+
+              <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
+                {POSFormatDollar(initialMonthlyPayment)}
+              </Typography>
+            </Stack>
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              height={40}
+              justifyContent={'space-between'}
+            >
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                fontSize={16}
+                gap={1}
+              >
+                Est. fully drawn monthly payment{' '}
+                <StyledTooltip
+                  title={
+                    'The estimated monthly payment once the full loan amount, including future construction funding, has been disbursed.'
+                  }
+                >
+                  <InfoOutlined
+                    sx={{
+                      width: 16,
+                      height: 16,
+                      color: 'info.dark',
+                      mb: 0.25,
+                    }}
+                  />
+                </StyledTooltip>
+              </Stack>
+
+              <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
+                {POSFormatDollar(fullyDrawnMonthlyPayment)}
+              </Typography>
+            </Stack>
+          </>
+        );
+      default:
+        return <></>;
+    }
+  }, [
+    estimateRate.productCategory,
+    fullyDrawnMonthlyPayment,
+    initialMonthlyPayment,
+    monthlyPayment,
+  ]);
 
   return (
     <Stack
@@ -141,7 +326,6 @@ export const ProductCustomItem: FC<{
               onValueChange={({ floatValue }) =>
                 estimateRate.changeFieldValue('interestRate', floatValue)
               }
-              percentage={true}
               placeholder={'Interest rate'}
               size={'small'}
               suffix={'%'}
@@ -149,42 +333,8 @@ export const ProductCustomItem: FC<{
               value={estimateRate.interestRate}
             />
           </Stack>
-          <Stack
-            alignItems={'center'}
-            flexDirection={'row'}
-            height={40}
-            justifyContent={'space-between'}
-          >
-            <Stack
-              alignItems={'center'}
-              flexDirection={'row'}
-              fontSize={16}
-              gap={1}
-            >
-              Monthly payment{' '}
-              {estimateRate.productCategory ===
-                LoanProductCategoryEnum.fix_and_flip && (
-                <StyledTooltip
-                  title={
-                    'The interest calculation is based on a non-dutch basis and does not include the rehab loan amount.'
-                  }
-                >
-                  <InfoOutlined
-                    sx={{
-                      width: 16,
-                      height: 16,
-                      color: 'info.dark',
-                      mb: 0.25,
-                    }}
-                  />
-                </StyledTooltip>
-              )}
-            </Stack>
 
-            <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
-              {POSFormatDollar(monthlyPayment)}
-            </Typography>
-          </Stack>
+          {renderTail}
 
           <StyledButton
             color={'primary'}

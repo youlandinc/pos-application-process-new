@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { InputAdornment, Skeleton, Stack, Typography } from '@mui/material';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { HelpOutline, InfoOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 
@@ -886,7 +886,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                               'Your total loan amount as a % of your purchase price and estimated construction costs.'
                             }
                           >
-                            <HelpOutlineIcon
+                            <InfoOutlined
                               sx={{
                                 width: 20,
                                 height: 20,
@@ -940,7 +940,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                               'Estimated value of the property after construction.'
                             }
                           >
-                            <HelpOutlineIcon
+                            <InfoOutlined
                               sx={{
                                 width: 20,
                                 height: 20,
@@ -1026,7 +1026,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                             'Your total loan amount as a % of your purchase price and estimated construction costs.'
                           }
                         >
-                          <HelpOutlineIcon
+                          <InfoOutlined
                             sx={{
                               width: 20,
                               height: 20,
@@ -1094,7 +1094,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                             'Estimated value of the property after construction.'
                           }
                         >
-                          <HelpOutlineIcon
+                          <InfoOutlined
                             sx={{
                               width: 20,
                               height: 20,
@@ -1428,7 +1428,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                           'Number of flips completed and held rental properties'
                         }
                       >
-                        <HelpOutlineIcon
+                        <HelpOutline
                           sx={{
                             width: 20,
                             height: 20,
@@ -1577,11 +1577,8 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
             errorList={errorList}
             loading={loading}
             productList={productList}
-            totalLoanAmount={
-              estimateRate.isDutch
-                ? totalLoanAmount
-                : totalLoanAmountWithoutDutch
-            }
+            totalLoanAmount={totalLoanAmount}
+            totalLoanAmountWithoutDutch={totalLoanAmountWithoutDutch}
           />
         </Stack>
 
