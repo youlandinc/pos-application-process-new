@@ -64,8 +64,8 @@ export const MyAccountButton: FC<{
   store: IRoot;
 }> = observer(({ store }) => {
   const router = useRouter();
-  const breakpoint = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
+  const breakpoint = useBreakpoints();
 
   const anchorRef = useRef<HTMLDivElement>(null);
   const [userMenuVisible, setUserMenuVisible] = useState(false);
@@ -311,6 +311,7 @@ export const MyAccountButton: FC<{
           width={['xs', 'sm', 'md'].includes(breakpoint) ? 24 : 32}
         />
       </Stack>
+
       <Popper
         anchorEl={anchorRef.current}
         disablePortal
