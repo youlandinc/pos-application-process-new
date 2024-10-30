@@ -125,6 +125,7 @@ export const ProductCustomItem: FC<{
               flexDirection={'row'}
               fontSize={16}
               gap={1}
+              height={40}
             >
               Monthly payment
             </Stack>
@@ -139,15 +140,11 @@ export const ProductCustomItem: FC<{
           <Stack
             alignItems={'center'}
             flexDirection={'row'}
+            height={40}
             justifyContent={'space-between'}
           >
-            <Stack
-              alignItems={'center'}
-              flexDirection={'row'}
-              fontSize={16}
-              gap={1}
-            >
-              Monthly payment{' '}
+            <Typography variant={'body1'} width={'fit-content'}>
+              Monthly payment
               <StyledTooltip
                 title={
                   'The interest calculation is based on a non-dutch basis and does not include the rehab loan amount.'
@@ -155,14 +152,15 @@ export const ProductCustomItem: FC<{
               >
                 <InfoOutlined
                   sx={{
+                    color: 'info.dark',
+                    verticalAlign: 'middle',
                     width: 16,
                     height: 16,
-                    color: 'info.dark',
-                    mb: 0.25,
+                    ml: 1,
                   }}
                 />
               </StyledTooltip>
-            </Stack>
+            </Typography>
 
             <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
               {POSFormatDollar(monthlyPayment)}
@@ -175,15 +173,11 @@ export const ProductCustomItem: FC<{
             <Stack
               alignItems={'center'}
               flexDirection={'row'}
+              height={40}
               justifyContent={'space-between'}
             >
-              <Stack
-                alignItems={'center'}
-                flexDirection={'row'}
-                fontSize={16}
-                gap={1}
-              >
-                Est. initial monthly payment{' '}
+              <Typography variant={'body1'} width={'fit-content'}>
+                Est. initial monthly payment
                 <StyledTooltip
                   title={
                     'The estimated monthly payment based on the initial loan disbursement amount.'
@@ -191,14 +185,15 @@ export const ProductCustomItem: FC<{
                 >
                   <InfoOutlined
                     sx={{
+                      color: 'info.dark',
+                      verticalAlign: 'middle',
                       width: 16,
                       height: 16,
-                      color: 'info.dark',
-                      mb: 0.25,
+                      ml: 1,
                     }}
                   />
                 </StyledTooltip>
-              </Stack>
+              </Typography>
 
               <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
                 {POSFormatDollar(initialMonthlyPayment)}
@@ -210,13 +205,8 @@ export const ProductCustomItem: FC<{
               height={40}
               justifyContent={'space-between'}
             >
-              <Stack
-                alignItems={'center'}
-                flexDirection={'row'}
-                fontSize={16}
-                gap={1}
-              >
-                Est. fully drawn monthly payment{' '}
+              <Typography variant={'body1'} width={'fit-content'}>
+                Est. fully drawn monthly payment
                 <StyledTooltip
                   title={
                     'The estimated monthly payment once the full loan amount, including future construction funding, has been disbursed.'
@@ -224,14 +214,15 @@ export const ProductCustomItem: FC<{
                 >
                   <InfoOutlined
                     sx={{
+                      color: 'info.dark',
+                      verticalAlign: 'middle',
                       width: 16,
                       height: 16,
-                      color: 'info.dark',
-                      mb: 0.25,
+                      ml: 1,
                     }}
                   />
                 </StyledTooltip>
-              </Stack>
+              </Typography>
 
               <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
                 {POSFormatDollar(fullyDrawnMonthlyPayment)}

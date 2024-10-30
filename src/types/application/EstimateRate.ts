@@ -25,6 +25,8 @@ export interface ProductItemProps {
   monthlyPayment: number;
   selected: boolean;
   lowest: boolean;
+  initialMonthlyPayment?: number;
+  fullyDrawnMonthlyPayment?: number;
 }
 
 export interface EstimateRateFormData {

@@ -310,20 +310,19 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
     }, [
       data?.arLtv,
       data?.arv,
+      data?.futureConstructionFunding,
       data?.improvementsSinceAcquisition,
+      data?.initialDisbursement,
       data?.loanPurpose,
       data?.ltc,
       data?.ltv,
       data?.payoffAmount,
       data?.productCategory,
       data?.propertyValue,
-      data?.purchaseConstructionCosts,
       data?.purchaseLoanAmount,
       data?.purchasePrice,
-      data?.refinanceConstructionCosts,
       data?.refinanceLoanAmount,
       data?.rehabCost,
-      data?.totalLoanAmount,
     ]);
 
     const renderCompensationFee = useMemo(() => {
