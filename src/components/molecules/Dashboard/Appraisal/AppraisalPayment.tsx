@@ -1,5 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState } from 'react';
-import { useAsyncFn } from 'react-use';
+import { FC, MouseEvent, useEffect, useRef, useState } from 'react';
 import {
   Box,
   Stack,
@@ -9,31 +8,31 @@ import {
   Stepper,
   Typography,
 } from '@mui/material';
+import { useAsyncFn } from 'react-use';
 import { enqueueSnackbar } from 'notistack';
+
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { createPaymentIframe } from '@/utils';
 
 import {
   StyledButton,
   StyledFormItem,
   StyledGoogleAutoComplete,
-  //StyledPaymentCardRef,
   StyledTextField,
   StyledTextFieldPhone,
 } from '@/components/atoms';
 import { SpecificalPaymentInfo } from '@/views/Saas/SpecificalPayment/components';
 
-import { AUTO_HIDE_DURATION } from '@/constants';
 import { IAddress } from '@/models/common/Address';
 import { _getPaymentSignature } from '@/requests';
 import { DashboardPaymentDetailsResponse, HttpError } from '@/types';
-
-import { createPaymentIframe } from '@/utils';
 
 interface PaymentTableProps {
   paymentDetail: DashboardPaymentDetailsResponse | undefined;
   backStep: () => void;
   backState: boolean;
   nextState: boolean;
-  nextStep: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  nextStep: (e: MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   callback?: () => void;
 }
 
@@ -48,14 +47,15 @@ const defaultAddress = {
   street: '',
 };
 
-export const AppraisalPayment = forwardRef<
-  //StyledPaymentCardRef,
-  any,
-  PaymentTableProps
->(({ paymentDetail, backStep, backState, callback }, ref) => {
+export const AppraisalPayment: FC<PaymentTableProps> = ({
+  paymentDetail,
+  backStep,
+  backState,
+  callback,
+}) => {
   // const [checkProcessing, setCheckProcessing] = useState(false);
 
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
   const [addressInfo, setAddressInfo] = useState(defaultAddress);
 
   const billingForm = useRef<HTMLFormElement | null>(null);
@@ -322,4 +322,4 @@ export const AppraisalPayment = forwardRef<
       </Stack>
     </StyledFormItem>
   );
-});
+};
