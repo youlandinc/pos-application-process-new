@@ -242,13 +242,11 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
             return (
               <>
                 <LoanSummaryCardRow
-                  content={POSFormatDollar(
-                    data?.totalLoanAmount - data?.purchaseConstructionCosts,
-                  )}
+                  content={POSFormatDollar(data?.initialDisbursement)}
                   title={'Initial disbursement'}
                 />
                 <LoanSummaryCardRow
-                  content={POSFormatDollar(data?.purchaseConstructionCosts)}
+                  content={POSFormatDollar(data?.futureConstructionFunding)}
                   title={'Future construction funding'}
                 />
                 <LoanSummaryCardRow
@@ -275,13 +273,11 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
           return (
             <>
               <LoanSummaryCardRow
-                content={POSFormatDollar(
-                  data?.totalLoanAmount - data?.refinanceConstructionCosts,
-                )}
+                content={POSFormatDollar(data?.initialDisbursement)}
                 title={'Initial disbursement'}
               />
               <LoanSummaryCardRow
-                content={POSFormatDollar(data?.refinanceConstructionCosts)}
+                content={POSFormatDollar(data?.futureConstructionFunding)}
                 title={'Future construction funding'}
               />
               <LoanSummaryCardRow
@@ -574,6 +570,13 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 isHeader={true}
                 title={'Monthly payment'}
               />
+              {data?.productCategory ===
+                LoanProductCategoryEnum.ground_up_construction && (
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.fullDrawnMonthlyPayment)}
+                  title={'Full monthly payment'}
+                />
+              )}
             </Stack>
 
             <Stack
@@ -588,6 +591,18 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 isHeader={true}
                 title={'Cash required at closing'}
               />
+              {data?.productCategory ===
+                LoanProductCategoryEnum.ground_up_construction &&
+                data?.loanPurpose === LoanPurposeEnum.purchase && (
+                  <LoanSummaryCardRow
+                    content={POSFormatDollar(
+                      data?.purchaseConstructionCosts +
+                        data?.purchasePrice -
+                        data?.totalLoanAmount,
+                    )}
+                    title={'Down payment'}
+                  />
+                )}
               <LoanSummaryCardRow
                 content={`${POSFormatDollar(
                   data?.lenderOriginationFee,

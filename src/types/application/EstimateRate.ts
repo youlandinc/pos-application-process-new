@@ -55,4 +55,8 @@ export interface EstimateRateFormData {
   constructionProjectsExited: number;
   purchaseConstructionCosts: number;
   refinanceConstructionCosts: number;
+  // summary
+  initialDisbursement?: number;
+  fullDrawnMonthlyPayment?: number;
+  futureConstructionFunding?: number;
 }
