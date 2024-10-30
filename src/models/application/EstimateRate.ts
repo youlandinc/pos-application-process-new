@@ -70,6 +70,11 @@ export const EstimateRate = types
     loanTerm: types.maybe(types.number),
     interestRate: types.maybe(types.number),
     isDutch: types.maybe(types.boolean),
+    improvementsSinceAcquisition: types.maybe(types.number),
+    constructionProjectsExited: types.maybe(types.number),
+    purchaseConstructionCosts: types.maybe(types.number),
+    refinanceConstructionCosts: types.maybe(types.number),
+    ltc: types.maybe(types.number),
   })
   .actions((self) => ({
     changeFieldValue<T extends keyof typeof self>(
@@ -107,6 +112,11 @@ export const EstimateRate = types
         isDutch: self.isDutch,
         citizenship: self.citizenship,
         priorExperience: self.priorExperience,
+        improvementsSinceAcquisition: self.improvementsSinceAcquisition,
+        constructionProjectsExited: self.constructionProjectsExited,
+        purchaseConstructionCosts: self.purchaseConstructionCosts,
+        refinanceConstructionCosts: self.refinanceConstructionCosts,
+        ltc: Math.floor((self.ltc as number) * 1000000) / 100000000,
       };
     },
     injectServerData(data: EstimateRateFormData) {
@@ -133,6 +143,11 @@ export const EstimateRate = types
         isDutch,
         citizenship,
         priorExperience,
+        improvementsSinceAcquisition,
+        constructionProjectsExited,
+        purchaseConstructionCosts,
+        refinanceConstructionCosts,
+        ltc,
       } = data;
 
       self.productCategory =
@@ -158,5 +173,11 @@ export const EstimateRate = types
       self.loanTerm = isCustom ? loanTerm : undefined;
       self.interestRate = isCustom ? interestRate * 100 : undefined;
       self.isDutch = isDutch ?? false;
+      self.improvementsSinceAcquisition =
+        improvementsSinceAcquisition ?? undefined;
+      self.constructionProjectsExited = constructionProjectsExited ?? undefined;
+      self.purchaseConstructionCosts = purchaseConstructionCosts ?? undefined;
+      self.refinanceConstructionCosts = refinanceConstructionCosts ?? undefined;
+      self.ltc = ltc * 100 ?? undefined;
     },
   }));

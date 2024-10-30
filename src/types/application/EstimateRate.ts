@@ -25,6 +25,8 @@ export interface ProductItemProps {
   monthlyPayment: number;
   selected: boolean;
   lowest: boolean;
+  initialMonthlyPayment?: number;
+  fullyDrawnMonthlyPayment?: number;
 }
 
 export interface EstimateRateFormData {
@@ -40,6 +42,7 @@ export interface EstimateRateFormData {
   liquidityAmount: number;
   rehabCost: number;
   arv: number;
+  ltc: number;
   purchasePrice: number;
   purchaseLoanAmount: number;
   propertyValue: number;
@@ -50,4 +53,12 @@ export interface EstimateRateFormData {
   loanTerm: number;
   interestRate: number;
   isDutch: boolean;
+  improvementsSinceAcquisition: number;
+  constructionProjectsExited: number;
+  purchaseConstructionCosts: number;
+  refinanceConstructionCosts: number;
+  // summary
+  initialDisbursement?: number;
+  fullDrawnMonthlyPayment?: number;
+  futureConstructionFunding?: number;
 }

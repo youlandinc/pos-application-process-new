@@ -70,8 +70,6 @@ export const Appraisal: FC = () => {
     [AppraisalStatusEnum.completed]: null,
   });
 
-  const appraisalPaymentRef = useRef(null);
-  // const [paymentLoading, setPaymentLoading] = useState(false);
   const [paymentDetail, setPaymentDetail] = useState<
     DashboardPaymentDetailsResponse | undefined
   >();
@@ -268,7 +266,6 @@ export const Appraisal: FC = () => {
                   return;
                 }}
                 paymentDetail={paymentDetail}
-                ref={appraisalPaymentRef}
               />
             </Box>
           </Fade>
