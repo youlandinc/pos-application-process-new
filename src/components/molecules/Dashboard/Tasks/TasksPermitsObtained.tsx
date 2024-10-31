@@ -97,7 +97,6 @@ export const TasksPermitsObtained: FC = () => {
 
   const isFormDataValid = useMemo(() => {
     return (
-      permitsFiles.length > 0 &&
       isPermitReadyOrRTI !== LoanAnswerEnum.default &&
       anticipateHavingBuildPermits !== undefined
     );
