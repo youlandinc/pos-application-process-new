@@ -47,3 +47,9 @@ export enum FeeUnitEnum {
   dollar = 'DOLLAR',
   percent = 'PERCENT',
 }
+
+export enum LandTypeEnum {
+  raw_land = 'RAW_LAND',
+  some_utilities = 'SOME_UTILITIES',
+  all_utilities = 'ALL_UTILITIES',
+}

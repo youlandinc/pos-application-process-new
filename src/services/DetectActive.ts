@@ -70,6 +70,8 @@ export class DetectActiveService {
       userpool.setLastAuthUserToken('idToken', username, accessToken);
       userpool.setLastAuthUserToken('accessToken', username, accessToken);
     } catch (err) {
+      //eslint-disable-next-line no-console
+      console.log(err);
       this._logout();
       return;
     }

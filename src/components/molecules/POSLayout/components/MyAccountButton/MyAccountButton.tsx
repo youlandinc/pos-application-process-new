@@ -73,7 +73,11 @@ export const MyAccountButton: FC<{
   const messageBoxRef = useRef<HTMLDivElement>(null);
   const [messageBoxVisible, setMessageBoxVisible] = useState(false);
   const [messageFetchLoading, setMessageFetchLoading] = useState(false);
-  const [messageFetchMoreLoading, setMessageFetchMoreLoading] = useState(false);
+  const [
+    ,
+    //messageFetchMoreLoading
+    setMessageFetchMoreLoading,
+  ] = useState(false);
   const [messageClickLoading, setMessageClickLoading] = useState(false);
   const [messageList, setMessageList] = useState<NotificationMessageItem[]>([]);
   const [totalElements, setTotalElements] = useState(0);

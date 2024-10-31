@@ -155,6 +155,72 @@ export const Tasks: FC = () => {
                 )}
               </Stack>
             )}
+
+            {POSNotUndefined(taskHash?.[DashboardTaskKey.entitlements]) && (
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks/entitlements',
+                    query: {
+                      loanId: POSGetParamsFromUrl(location.href).loanId,
+                    },
+                  })
+                }
+                px={{ xs: 2, lg: 3 }}
+                py={{ xs: 1, lg: 1.5 }}
+                sx={{
+                  '&:hover': {
+                    cursor: 'pointer',
+                    borderRadius: 1,
+                    bgcolor: 'info.darker',
+                  },
+                }}
+                width={'100%'}
+              >
+                <Typography fontSize={{ xs: 12, lg: 16 }}>
+                  Entitlements
+                </Typography>
+                {taskHash?.[DashboardTaskKey.entitlements] && (
+                  <CheckCircle color={'success'} />
+                )}
+              </Stack>
+            )}
+
+            {POSNotUndefined(taskHash?.[DashboardTaskKey.permits_obtained]) && (
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks/permits-obtained',
+                    query: {
+                      loanId: POSGetParamsFromUrl(location.href).loanId,
+                    },
+                  })
+                }
+                px={{ xs: 2, lg: 3 }}
+                py={{ xs: 1, lg: 1.5 }}
+                sx={{
+                  '&:hover': {
+                    cursor: 'pointer',
+                    borderRadius: 1,
+                    bgcolor: 'info.darker',
+                  },
+                }}
+                width={'100%'}
+              >
+                <Typography fontSize={{ xs: 12, lg: 16 }}>
+                  Permits obtained
+                </Typography>
+                {taskHash?.[DashboardTaskKey.permits_obtained] && (
+                  <CheckCircle color={'success'} />
+                )}
+              </Stack>
+            )}
           </Stack>
         )}
 
@@ -346,34 +412,39 @@ export const Tasks: FC = () => {
             >
               Agreements
             </Typography>
-            <Stack
-              alignItems={'center'}
-              flexDirection={'row'}
-              justifyContent={'space-between'}
-              onClick={() =>
-                router.push({
-                  pathname: '/dashboard/tasks/construction-holdback-process',
-                  query: { loanId: POSGetParamsFromUrl(location.href).loanId },
-                })
-              }
-              px={{ xs: 2, lg: 3 }}
-              py={{ xs: 1, lg: 1.5 }}
-              sx={{
-                '&:hover': {
-                  cursor: 'pointer',
-                  borderRadius: 1,
-                  bgcolor: 'info.darker',
-                },
-              }}
-              width={'100%'}
-            >
-              <Typography fontSize={{ xs: 12, lg: 16 }}>
-                Construction holdback process
-              </Typography>
-              {taskHash?.[DashboardTaskKey.holdback_process] && (
-                <CheckCircle color={'success'} />
-              )}
-            </Stack>
+
+            {POSNotUndefined(taskHash?.[DashboardTaskKey.holdback_process]) && (
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks/construction-holdback-process',
+                    query: {
+                      loanId: POSGetParamsFromUrl(location.href).loanId,
+                    },
+                  })
+                }
+                px={{ xs: 2, lg: 3 }}
+                py={{ xs: 1, lg: 1.5 }}
+                sx={{
+                  '&:hover': {
+                    cursor: 'pointer',
+                    borderRadius: 1,
+                    bgcolor: 'info.darker',
+                  },
+                }}
+                width={'100%'}
+              >
+                <Typography fontSize={{ xs: 12, lg: 16 }}>
+                  Construction holdback process
+                </Typography>
+                {taskHash?.[DashboardTaskKey.holdback_process] && (
+                  <CheckCircle color={'success'} />
+                )}
+              </Stack>
+            )}
           </Stack>
         )}
 
