@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useRef, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Box, Fade, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';

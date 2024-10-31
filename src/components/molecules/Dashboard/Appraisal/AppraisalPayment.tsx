@@ -114,6 +114,7 @@ export const AppraisalPayment: FC<PaymentTableProps> = ({
           );
           fresh();
         } catch (e) {
+          // eslint-disable-next-line no-console
           console.log(e);
         }
       })

@@ -19,7 +19,7 @@ export const APPLICATION_LOAN_CATEGORY: Option[] = [
     value: LoanProductCategoryEnum.fix_and_flip,
   },
   {
-    label: 'Ground-up Construction',
+    label: 'Ground Up Construction',
     key: LoanProductCategoryEnum.ground_up_construction,
     value: LoanProductCategoryEnum.ground_up_construction,
   },

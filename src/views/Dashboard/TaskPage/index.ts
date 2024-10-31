@@ -1,5 +1,7 @@
 export * from './TasksPayoffAmountPage';
 export * from './TasksRehabInfoPage';
+export * from './TasksEntitlementsPage';
+export * from './TasksPermitsObtainedPage';
 
 export * from './TasksBorrowerPage';
 export * from './TasksCoBorrowerPage';
