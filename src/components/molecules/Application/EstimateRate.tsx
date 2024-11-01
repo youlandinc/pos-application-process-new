@@ -1030,23 +1030,6 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   thousandSeparator={false}
                   value={estimateRate.ltc}
                 />
-
-                {!condition && (
-                  <Stack flex={1} mt={0.5}>
-                    <Typography
-                      color={'text.secondary'}
-                      sx={{
-                        '& > b': {
-                          color: 'primary.main',
-                          fontWeight: 600,
-                        },
-                      }}
-                      variant={'body3'}
-                    >
-                      Loan to value: <b>{POSFormatPercent(LTV, 1)}</b>
-                    </Typography>
-                  </Stack>
-                )}
               </Stack>
 
               <Stack
