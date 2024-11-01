@@ -567,7 +567,12 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               <LoanSummaryCardRow
                 content={POSFormatDollar(data?.monthlyPayment, 2)}
                 isHeader={true}
-                title={'Monthly payment'}
+                title={
+                  data?.productCategory ===
+                  LoanProductCategoryEnum.ground_up_construction
+                    ? 'Initial monthly payment'
+                    : 'Monthly payment'
+                }
               />
               {data?.productCategory ===
                 LoanProductCategoryEnum.ground_up_construction && (
