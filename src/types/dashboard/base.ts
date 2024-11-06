@@ -19,6 +19,7 @@ export enum DashboardTaskKey {
   // ground_up
   permits_obtained = 'PERMITS_OBTAINED',
   entitlements = 'ENTITLEMENTS',
+  square_footage = 'SQUARE_FOOTAGE',
 }
 
 export interface DashboardTasksResponse {
@@ -33,6 +34,7 @@ export interface DashboardTasksResponse {
   [DashboardTaskKey.payoff_amount]?: boolean;
   [DashboardTaskKey.permits_obtained]?: boolean;
   [DashboardTaskKey.entitlements]?: boolean;
+  [DashboardTaskKey.square_footage]?: boolean;
 }
 
 // appraisal

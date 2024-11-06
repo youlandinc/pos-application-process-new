@@ -100,7 +100,7 @@ export const TasksPermitsObtained: FC = () => {
       isPermitReadyOrRTI !== LoanAnswerEnum.default &&
       anticipateHavingBuildPermits !== undefined
     );
-  }, [anticipateHavingBuildPermits, isPermitReadyOrRTI, permitsFiles.length]);
+  }, [anticipateHavingBuildPermits, isPermitReadyOrRTI]);
 
   const handleSave = async () => {
     const postData = {

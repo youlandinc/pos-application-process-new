@@ -13,3 +13,5 @@ export * from './TasksTitleOrEscrowPage';
 export * from './TasksHoldbackProcessPage';
 
 export * from './TasksReferringBrokerPage';
+
+export * from './TasksSquareFootagePage';
