@@ -74,7 +74,10 @@ export const Tasks: FC = () => {
         </Typography>
 
         {(POSNotUndefined(taskHash?.[DashboardTaskKey.payoff_amount]) ||
-          POSNotUndefined(taskHash?.[DashboardTaskKey.rehab_info])) && (
+          POSNotUndefined(taskHash?.[DashboardTaskKey.rehab_info]) ||
+          POSNotUndefined(taskHash?.[DashboardTaskKey.entitlements]) ||
+          POSNotUndefined(taskHash?.[DashboardTaskKey.permits_obtained]) ||
+          POSNotUndefined(taskHash?.[DashboardTaskKey.square_footage])) && (
           <Stack
             border={'1px solid #D2D6E1'}
             borderRadius={2}
@@ -151,6 +154,39 @@ export const Tasks: FC = () => {
                   Rehab info
                 </Typography>
                 {taskHash?.[DashboardTaskKey.rehab_info] && (
+                  <CheckCircle color={'success'} />
+                )}
+              </Stack>
+            )}
+
+            {POSNotUndefined(taskHash?.[DashboardTaskKey.square_footage]) && (
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks/square-footage',
+                    query: {
+                      loanId: POSGetParamsFromUrl(location.href).loanId,
+                    },
+                  })
+                }
+                px={{ xs: 2, lg: 3 }}
+                py={{ xs: 1, lg: 1.5 }}
+                sx={{
+                  '&:hover': {
+                    cursor: 'pointer',
+                    borderRadius: 1,
+                    bgcolor: 'info.darker',
+                  },
+                }}
+                width={'100%'}
+              >
+                <Typography fontSize={{ xs: 12, lg: 16 }}>
+                  Square footage
+                </Typography>
+                {taskHash?.[DashboardTaskKey.square_footage] && (
                   <CheckCircle color={'success'} />
                 )}
               </Stack>
