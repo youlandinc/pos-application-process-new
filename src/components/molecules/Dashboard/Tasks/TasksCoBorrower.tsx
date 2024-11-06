@@ -10,6 +10,7 @@ import { observer } from 'mobx-react-lite';
 
 import { Address, IAddress } from '@/models/common/Address';
 
+import { useBreakpoints } from '@/hooks';
 import { POSGetParamsFromUrl } from '@/utils';
 import {
   AddressSchema,
@@ -32,6 +33,7 @@ import {
   StyledTextFieldSocialNumber,
   Transitions,
 } from '@/components/atoms';
+import { TasksRightMenu } from '@/components/molecules';
 
 import {
   DashboardTaskKey,
@@ -47,6 +49,8 @@ import {
 export const TasksCoBorrower: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+
+  const breakpoints = useBreakpoints();
 
   const [saveLoading, setSaveLoading] = useState(false);
 
@@ -196,251 +200,255 @@ export const TasksCoBorrower: FC = observer(() => {
     </Stack>
   ) : (
     <Fade in={!loading}>
-      <Stack
-        alignItems={'center'}
-        gap={3}
-        justifyContent={'flex-start'}
-        maxWidth={648}
-        mx={'auto'}
-        px={{ lg: 3, xs: 0 }}
-        width={'100%'}
-      >
-        <Typography
-          color={'text.primary'}
-          fontSize={{ xs: 20, lg: 24 }}
-          textAlign={'center'}
-          variant={'h5'}
+      <Stack flexDirection={'row'} width={'100%'}>
+        <Stack
+          alignItems={'center'}
+          gap={3}
+          justifyContent={'flex-start'}
+          maxWidth={600}
+          mx={'auto'}
+          px={{ lg: 3, xs: 0 }}
+          width={'100%'}
         >
-          Co-borrower information
           <Typography
-            color={'text.secondary'}
-            fontSize={{ xs: 12, lg: 16 }}
-            mt={1}
-            variant={'body1'}
+            color={'text.primary'}
+            fontSize={{ xs: 20, lg: 24 }}
+            textAlign={'center'}
+            variant={'h5'}
           >
-            Credit and background checks will apply to the co-borrower as well.
+            Co-borrower information
+            <Typography
+              color={'text.secondary'}
+              fontSize={{ xs: 12, lg: 16 }}
+              mt={1}
+              variant={'body1'}
+            >
+              Credit and background checks will apply to the co-borrower as
+              well.
+            </Typography>
           </Typography>
-        </Typography>
 
-        <StyledFormItem gap={3} label={'Is there a co-borrower?'} sub>
-          <StyledButtonGroup
-            onChange={(e, value) => {
-              if (value === null) {
-                return;
-              }
-              setIsCoBorrower(value === LoanAnswerEnum.yes);
+          <StyledFormItem gap={3} label={'Is there a co-borrower?'} sub>
+            <StyledButtonGroup
+              onChange={(e, value) => {
+                if (value === null) {
+                  return;
+                }
+                setIsCoBorrower(value === LoanAnswerEnum.yes);
+              }}
+              options={OPTIONS_COMMON_YES_OR_NO}
+              sx={{ width: '100%' }}
+              value={isCoBorrower ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
+            />
+          </StyledFormItem>
+
+          <Transitions
+            style={{
+              display: isCoBorrower ? 'block' : 'none',
+              width: '100%',
             }}
-            options={OPTIONS_COMMON_YES_OR_NO}
-            sx={{ width: '100%' }}
-            value={isCoBorrower ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
-          />
-        </StyledFormItem>
-
-        <Transitions
-          style={{
-            display: isCoBorrower ? 'block' : 'none',
-            width: '100%',
-          }}
-        >
-          {isCoBorrower && (
-            <Stack gap={6} mt={3} width={'100%'}>
-              <StyledFormItem
-                gap={3}
-                label={'Personal information'}
-                labelSx={{ pb: 3 }}
-                sub
-              >
-                <Stack
-                  flexDirection={{ xs: 'column', lg: 'row' }}
+          >
+            {isCoBorrower && (
+              <Stack gap={6} mt={3} width={'100%'}>
+                <StyledFormItem
                   gap={3}
-                  width={'100%'}
+                  label={'Personal information'}
+                  labelSx={{ pb: 3 }}
+                  sub
                 >
-                  <StyledTextField
-                    label={'First name'}
-                    onChange={(e) => {
-                      if (formMessage?.firstName) {
-                        setFormError((prev) => {
-                          if (prev) {
-                            delete prev.firstName;
-                          }
-                          return prev;
-                        });
-                      }
-                      setFirstName(e.target.value);
-                    }}
-                    placeholder={'First name'}
-                    validate={formMessage?.firstName}
-                    value={firstName}
-                  />
-                  <StyledTextField
-                    label={'Last name'}
-                    onChange={(e) => {
-                      if (formMessage?.lastName) {
-                        setFormError((prev) => {
-                          if (prev) {
-                            delete prev.lastName;
-                          }
-                          return prev;
-                        });
-                      }
-                      setLastName(e.target.value);
-                    }}
-                    placeholder={'Last name'}
-                    validate={formMessage?.lastName}
-                    value={lastName}
-                  />
-                </Stack>
-
-                <StyledDatePicker
-                  disableFuture={false}
-                  label={'Date of birth'}
-                  onChange={(value) => {
-                    if (formMessage?.birthDate) {
-                      setFormError((prev) => {
-                        if (prev) {
-                          delete prev.birthDate;
-                        }
-                        return prev;
-                      });
-                    }
-                    setBirthDate(value as Date);
-                  }}
-                  validate={formMessage?.birthDate}
-                  value={birthDate}
-                />
-
-                <Stack
-                  flexDirection={{ xs: 'column', lg: 'row' }}
-                  gap={3}
-                  width={'100%'}
-                >
-                  <StyledTextFieldPhone
-                    label={'Phone number'}
-                    onValueChange={({ value }) => {
-                      if (formMessage?.phoneNumber) {
-                        setFormError((prev) => {
-                          if (prev) {
-                            delete prev.phoneNumber;
-                          }
-                          return prev;
-                        });
-                      }
-                      setPhoneNumber(value);
-                    }}
-                    placeholder={'Phone number'}
-                    validate={formMessage?.phoneNumber}
-                    value={phoneNumber}
-                  />
-                  <StyledTextField
-                    label={'Email'}
-                    onChange={(e) => {
-                      if (formMessage?.email) {
-                        setFormError((prev) => {
-                          if (prev) {
-                            delete prev.email;
-                          }
-                          return prev;
-                        });
-                      }
-                      setEmail(e.target.value);
-                    }}
-                    placeholder={'Email'}
-                    validate={formMessage?.email}
-                    value={email}
-                  />
-                </Stack>
-              </StyledFormItem>
-
-              <StyledFormItem gap={3} label={'Citizenship status'} sub>
-                <StyledSelectOption
-                  onChange={(value) =>
-                    setCitizenship(value as string as LoanCitizenshipEnum)
-                  }
-                  options={OPTIONS_COMMON_CITIZEN_TYPE}
-                  value={citizenship}
-                />
-              </StyledFormItem>
-
-              <StyledFormItem
-                gap={3}
-                label={'Current address'}
-                labelSx={{ pb: 3 }}
-                sub
-              >
-                <StyledGoogleAutoComplete
-                  address={address}
-                  addressError={addressError}
-                />
-              </StyledFormItem>
-
-              <Transitions
-                style={{
-                  display:
-                    citizenship !== LoanCitizenshipEnum.foreign_national
-                      ? 'flex'
-                      : 'none',
-                  width: '100%',
-                }}
-              >
-                {citizenship !== LoanCitizenshipEnum.foreign_national && (
-                  <StyledFormItem
+                  <Stack
+                    flexDirection={{ xs: 'column', lg: 'row' }}
                     gap={3}
-                    label={'Social security number'}
-                    labelSx={{ pb: 3 }}
-                    sub
+                    width={'100%'}
                   >
-                    <StyledTextFieldSocialNumber
-                      label={'Social security number'}
-                      onValueChange={(v) => {
-                        if (formMessage?.ssn) {
+                    <StyledTextField
+                      label={'First name'}
+                      onChange={(e) => {
+                        if (formMessage?.firstName) {
                           setFormError((prev) => {
                             if (prev) {
-                              delete prev.ssn;
+                              delete prev.firstName;
                             }
                             return prev;
                           });
                         }
-                        setSsn(v);
+                        setFirstName(e.target.value);
                       }}
-                      validate={formMessage?.ssn}
-                      value={ssn}
+                      placeholder={'First name'}
+                      validate={formMessage?.firstName}
+                      value={firstName}
                     />
-                  </StyledFormItem>
-                )}
-              </Transitions>
-            </Stack>
-          )}
-        </Transitions>
+                    <StyledTextField
+                      label={'Last name'}
+                      onChange={(e) => {
+                        if (formMessage?.lastName) {
+                          setFormError((prev) => {
+                            if (prev) {
+                              delete prev.lastName;
+                            }
+                            return prev;
+                          });
+                        }
+                        setLastName(e.target.value);
+                      }}
+                      placeholder={'Last name'}
+                      validate={formMessage?.lastName}
+                      value={lastName}
+                    />
+                  </Stack>
 
-        <Stack
-          flexDirection={{ xs: 'unset', md: 'row' }}
-          gap={3}
-          maxWidth={648}
-          width={'100%'}
-        >
-          <StyledButton
-            color={'info'}
-            onClick={async () => {
-              await router.push({
-                pathname: '/dashboard/tasks',
-                query: { loanId: router.query.loanId },
-              });
-            }}
-            sx={{ flex: 1, width: '100%' }}
-            variant={'text'}
+                  <StyledDatePicker
+                    disableFuture={false}
+                    label={'Date of birth'}
+                    onChange={(value) => {
+                      if (formMessage?.birthDate) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.birthDate;
+                          }
+                          return prev;
+                        });
+                      }
+                      setBirthDate(value as Date);
+                    }}
+                    validate={formMessage?.birthDate}
+                    value={birthDate}
+                  />
+
+                  <Stack
+                    flexDirection={{ xs: 'column', lg: 'row' }}
+                    gap={3}
+                    width={'100%'}
+                  >
+                    <StyledTextFieldPhone
+                      label={'Phone number'}
+                      onValueChange={({ value }) => {
+                        if (formMessage?.phoneNumber) {
+                          setFormError((prev) => {
+                            if (prev) {
+                              delete prev.phoneNumber;
+                            }
+                            return prev;
+                          });
+                        }
+                        setPhoneNumber(value);
+                      }}
+                      placeholder={'Phone number'}
+                      validate={formMessage?.phoneNumber}
+                      value={phoneNumber}
+                    />
+                    <StyledTextField
+                      label={'Email'}
+                      onChange={(e) => {
+                        if (formMessage?.email) {
+                          setFormError((prev) => {
+                            if (prev) {
+                              delete prev.email;
+                            }
+                            return prev;
+                          });
+                        }
+                        setEmail(e.target.value);
+                      }}
+                      placeholder={'Email'}
+                      validate={formMessage?.email}
+                      value={email}
+                    />
+                  </Stack>
+                </StyledFormItem>
+
+                <StyledFormItem gap={3} label={'Citizenship status'} sub>
+                  <StyledSelectOption
+                    onChange={(value) =>
+                      setCitizenship(value as string as LoanCitizenshipEnum)
+                    }
+                    options={OPTIONS_COMMON_CITIZEN_TYPE}
+                    value={citizenship}
+                  />
+                </StyledFormItem>
+
+                <StyledFormItem
+                  gap={3}
+                  label={'Current address'}
+                  labelSx={{ pb: 3 }}
+                  sub
+                >
+                  <StyledGoogleAutoComplete
+                    address={address}
+                    addressError={addressError}
+                  />
+                </StyledFormItem>
+
+                <Transitions
+                  style={{
+                    display:
+                      citizenship !== LoanCitizenshipEnum.foreign_national
+                        ? 'flex'
+                        : 'none',
+                    width: '100%',
+                  }}
+                >
+                  {citizenship !== LoanCitizenshipEnum.foreign_national && (
+                    <StyledFormItem
+                      gap={3}
+                      label={'Social security number'}
+                      labelSx={{ pb: 3 }}
+                      sub
+                    >
+                      <StyledTextFieldSocialNumber
+                        label={'Social security number'}
+                        onValueChange={(v) => {
+                          if (formMessage?.ssn) {
+                            setFormError((prev) => {
+                              if (prev) {
+                                delete prev.ssn;
+                              }
+                              return prev;
+                            });
+                          }
+                          setSsn(v);
+                        }}
+                        validate={formMessage?.ssn}
+                        value={ssn}
+                      />
+                    </StyledFormItem>
+                  )}
+                </Transitions>
+              </Stack>
+            )}
+          </Transitions>
+
+          <Stack
+            flexDirection={{ xs: 'unset', md: 'row' }}
+            gap={3}
+            maxWidth={648}
+            width={'100%'}
           >
-            Back
-          </StyledButton>
-          <StyledButton
-            color={'primary'}
-            disabled={saveLoading}
-            loading={saveLoading}
-            onClick={handleSave}
-            sx={{ flex: 1, width: '100%' }}
-          >
-            Save
-          </StyledButton>
+            <StyledButton
+              color={'info'}
+              onClick={async () => {
+                await router.push({
+                  pathname: '/dashboard/tasks',
+                  query: { loanId: router.query.loanId },
+                });
+              }}
+              sx={{ flex: 1, width: '100%' }}
+              variant={'text'}
+            >
+              Back
+            </StyledButton>
+            <StyledButton
+              color={'primary'}
+              disabled={saveLoading}
+              loading={saveLoading}
+              onClick={handleSave}
+              sx={{ flex: 1, width: '100%' }}
+            >
+              Save
+            </StyledButton>
+          </Stack>
         </Stack>
+        {['xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
       </Stack>
     </Fade>
   );

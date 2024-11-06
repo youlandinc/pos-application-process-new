@@ -15,3 +15,5 @@ export * from './TasksHoldbackProcess';
 export * from './TasksReferringBroker';
 
 export * from './TasksSquareFootage';
+
+export * from './TasksRightMenu';
