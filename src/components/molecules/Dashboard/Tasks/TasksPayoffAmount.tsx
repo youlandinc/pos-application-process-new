@@ -6,6 +6,7 @@ import { useSnackbar } from 'notistack';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSGetParamsFromUrl } from '@/utils';
+import { useBreakpoints } from '@/hooks';
 
 import {
   StyledButton,
@@ -18,10 +19,13 @@ import {
   _fetchLoanTaskDetail,
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
+import { TasksRightMenu } from '@/components/molecules';
 
 export const TasksPayoffAmount: FC = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+
+  const breakpoints = useBreakpoints();
 
   const [saveLoading, setSaveLoading] = useState(false);
 
@@ -93,70 +97,73 @@ export const TasksPayoffAmount: FC = () => {
     </Stack>
   ) : (
     <Fade in={!loading}>
-      <Stack
-        alignItems={'center'}
-        gap={6}
-        justifyContent={'flex-start'}
-        maxWidth={648}
-        mx={{ lg: 'auto', xs: 0 }}
-        px={{ lg: 3, xs: 0 }}
-        width={'100%'}
-      >
-        <Typography
-          color={'text.primary'}
-          fontSize={{ xs: 20, lg: 24 }}
-          textAlign={'center'}
-          variant={'h5'}
-        >
-          Payoff amount
-          <Typography
-            color={'text.secondary'}
-            fontSize={{ xs: 12, lg: 16 }}
-            mt={1}
-            variant={'body1'}
-          >
-            Please provide the full amount due to your lender for the complete
-            repayment of your current loan.
-          </Typography>
-        </Typography>
-
-        <StyledTextFieldNumber
-          label={'Payoff amount'}
-          onValueChange={({ floatValue }) => setPayoffAmount(floatValue)}
-          placeholder={'Payoff amount'}
-          prefix={'$'}
-          value={payoffAmount}
-        />
-
+      <Stack flexDirection={'row'} width={'100%'}>
         <Stack
-          flexDirection={{ xs: 'unset', md: 'row' }}
-          gap={3}
-          maxWidth={600}
+          alignItems={'center'}
+          gap={6}
+          justifyContent={'flex-start'}
+          maxWidth={648}
+          mx={{ lg: 'auto', xs: 0 }}
+          px={{ lg: 3, xs: 0 }}
           width={'100%'}
         >
-          <StyledButton
-            color={'info'}
-            onClick={async () => {
-              await router.push({
-                pathname: '/dashboard/tasks',
-                query: { loanId: router.query.loanId },
-              });
-            }}
-            sx={{ flex: 1, width: '100%' }}
-            variant={'text'}
+          <Typography
+            color={'text.primary'}
+            fontSize={{ xs: 20, lg: 24 }}
+            textAlign={'center'}
+            variant={'h5'}
           >
-            Back
-          </StyledButton>
-          <StyledButton
-            color={'primary'}
-            disabled={saveLoading || !payoffAmount}
-            loading={saveLoading}
-            onClick={handleSave}
-            sx={{ flex: 1, width: '100%' }}
+            Payoff amount
+            <Typography
+              color={'text.secondary'}
+              fontSize={{ xs: 12, lg: 16 }}
+              mt={1}
+              variant={'body1'}
+            >
+              Please provide the full amount due to your lender for the complete
+              repayment of your current loan.
+            </Typography>
+          </Typography>
+
+          <StyledTextFieldNumber
+            label={'Payoff amount'}
+            onValueChange={({ floatValue }) => setPayoffAmount(floatValue)}
+            placeholder={'Payoff amount'}
+            prefix={'$'}
+            value={payoffAmount}
+          />
+
+          <Stack
+            flexDirection={{ xs: 'unset', md: 'row' }}
+            gap={3}
+            maxWidth={600}
+            width={'100%'}
           >
-            Save
-          </StyledButton>
+            <StyledButton
+              color={'info'}
+              onClick={async () => {
+                await router.push({
+                  pathname: '/dashboard/tasks',
+                  query: { loanId: router.query.loanId },
+                });
+              }}
+              sx={{ flex: 1, width: '100%' }}
+              variant={'text'}
+            >
+              Back
+            </StyledButton>
+            <StyledButton
+              color={'primary'}
+              disabled={saveLoading || !payoffAmount}
+              loading={saveLoading}
+              onClick={handleSave}
+              sx={{ flex: 1, width: '100%' }}
+            >
+              Save
+            </StyledButton>
+          </Stack>
         </Stack>
+        {['xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
       </Stack>
     </Fade>
   );
