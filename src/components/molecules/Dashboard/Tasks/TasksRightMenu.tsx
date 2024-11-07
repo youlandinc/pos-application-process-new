@@ -56,19 +56,33 @@ export const TasksRightMenu: FC = observer(() => {
   const menuItemSx = useCallback(
     (key: string) => {
       return {
-        px: 0.75,
+        pl: 1.5,
+        pr: 0.75,
         py: 0.5,
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        bgcolor:
-          router.pathname === `/dashboard/tasks/${key}` ? '#F0F4FF' : 'inherit',
         width: '100%',
+        borderRadius: 1,
         '&:hover': {
           cursor: 'pointer',
-          borderRadius: 1,
           bgcolor: 'hsla(240, 10%, 96%, 1)',
         },
+        bgcolor:
+          router.pathname === `/dashboard/tasks/${key}` ? '#F0F4FF' : 'inherit',
+      };
+    },
+    [router.pathname],
+  );
+
+  const menuItemNameSx = useCallback(
+    (key: string) => {
+      return {
+        color:
+          router.pathname === `/dashboard/tasks/${key}`
+            ? '#2B52B6'
+            : 'text.primary',
+        fontSize: 13,
       };
     },
     [router.pathname],
@@ -76,9 +90,18 @@ export const TasksRightMenu: FC = observer(() => {
 
   return (
     <Fade in={!loading && taskMap.size !== 0}>
-      <Stack flexShrink={0} gap={1} pr={1.5} py={1.5} width={240}>
+      <Stack
+        bgcolor={'#F8F9FC'}
+        borderRadius={2}
+        flexShrink={0}
+        gap={1}
+        height={'fit-content'}
+        px={1.5}
+        py={1.5}
+        width={280}
+      >
         <Typography pl={0.75} variant={'subtitle2'}>
-          Tasks
+          Go to task
         </Typography>
 
         {(taskMap.has(DashboardTaskKey.payoff_amount) ||
@@ -107,14 +130,7 @@ export const TasksRightMenu: FC = observer(() => {
                     onClick={() => onClickToRedirect('payoff-amount')}
                     sx={() => menuItemSx('payoff-amount')}
                   >
-                    <Typography
-                      color={
-                        router.pathname === '/dashboard/tasks/payoff-amount'
-                          ? '#2B52B6'
-                          : 'text.primary'
-                      }
-                      variant={'body3'}
-                    >
+                    <Typography sx={() => menuItemNameSx('payoff-amount')}>
                       Payoff amount
                     </Typography>
                     {taskMap.get(DashboardTaskKey.payoff_amount) && (
@@ -128,14 +144,7 @@ export const TasksRightMenu: FC = observer(() => {
                     onClick={() => onClickToRedirect('rehab-info')}
                     sx={() => menuItemSx('rehab-info')}
                   >
-                    <Typography
-                      color={
-                        router.pathname === '/dashboard/tasks/rehab-info'
-                          ? '#2B52B6'
-                          : 'text.primary'
-                      }
-                      variant={'body3'}
-                    >
+                    <Typography sx={() => menuItemNameSx('rehab-info')}>
                       Rehab info
                     </Typography>
                     {taskMap.get(DashboardTaskKey.rehab_info) && (
@@ -149,14 +158,7 @@ export const TasksRightMenu: FC = observer(() => {
                     onClick={() => onClickToRedirect('square-footage')}
                     sx={() => menuItemSx('square-footage')}
                   >
-                    <Typography
-                      color={
-                        router.pathname === '/dashboard/tasks/square-footage'
-                          ? '#2B52B6'
-                          : 'text.primary'
-                      }
-                      variant={'body3'}
-                    >
+                    <Typography sx={() => menuItemNameSx('square-footage')}>
                       Square footage
                     </Typography>
                     {taskMap.get(DashboardTaskKey.square_footage) && (
@@ -168,16 +170,9 @@ export const TasksRightMenu: FC = observer(() => {
                 {taskMap.has(DashboardTaskKey.entitlements) && (
                   <Stack
                     onClick={() => onClickToRedirect('entitlements')}
-                    sx={() => menuItemSx('/dashboard/tasks/entitlements')}
+                    sx={() => menuItemSx('entitlements')}
                   >
-                    <Typography
-                      color={
-                        router.pathname === '/dashboard/tasks/entitlements'
-                          ? '#2B52B6'
-                          : 'text.primary'
-                      }
-                      variant={'body3'}
-                    >
+                    <Typography sx={() => menuItemNameSx('entitlements')}>
                       Entitlements
                     </Typography>
                     {taskMap.get(DashboardTaskKey.entitlements) && (
@@ -191,14 +186,7 @@ export const TasksRightMenu: FC = observer(() => {
                     onClick={() => onClickToRedirect('permits-obtained')}
                     sx={() => menuItemSx('permits-obtained')}
                   >
-                    <Typography
-                      color={
-                        router.pathname === '/dashboard/tasks/permits-obtained'
-                          ? '#2B52B6'
-                          : 'text.primary'
-                      }
-                      variant={'body3'}
-                    >
+                    <Typography sx={() => menuItemNameSx('permits-obtained')}>
                       Permits obtained
                     </Typography>
                     {taskMap.get(DashboardTaskKey.permits_obtained) && (
@@ -231,7 +219,9 @@ export const TasksRightMenu: FC = observer(() => {
                 onClick={() => onClickToRedirect('borrower')}
                 sx={() => menuItemSx('borrower')}
               >
-                <Typography variant={'body3'}>Borrower</Typography>
+                <Typography sx={() => menuItemNameSx('borrower')}>
+                  Borrower
+                </Typography>
                 {taskMap.get(DashboardTaskKey.borrower) && (
                   <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
                 )}
@@ -241,7 +231,9 @@ export const TasksRightMenu: FC = observer(() => {
                 onClick={() => onClickToRedirect('co-borrower')}
                 sx={() => menuItemSx('co-borrower')}
               >
-                <Typography variant={'body3'}>Co-borrower</Typography>
+                <Typography sx={() => menuItemNameSx('co-borrower')}>
+                  Co-borrower
+                </Typography>
                 {taskMap.get(DashboardTaskKey.co_borrower) && (
                   <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
                 )}
@@ -251,7 +243,9 @@ export const TasksRightMenu: FC = observer(() => {
                 onClick={() => onClickToRedirect('demographics-information')}
                 sx={() => menuItemSx('demographics-information')}
               >
-                <Typography variant={'body3'}>
+                <Typography
+                  sx={() => menuItemNameSx('demographics-information')}
+                >
                   Demographic information
                 </Typography>
                 {taskMap.get(DashboardTaskKey.demographics) && (
@@ -282,7 +276,9 @@ export const TasksRightMenu: FC = observer(() => {
                 onClick={() => onClickToRedirect('title-or-escrow-company')}
                 sx={() => menuItemSx('title-or-escrow-company')}
               >
-                <Typography variant={'body3'}>
+                <Typography
+                  sx={() => menuItemNameSx('title-or-escrow-company')}
+                >
                   Title / Escrow (optional)
                 </Typography>
                 {taskMap.get(DashboardTaskKey.title_escrow) && (
@@ -316,7 +312,9 @@ export const TasksRightMenu: FC = observer(() => {
                   }
                   sx={() => menuItemSx('construction-holdback-process')}
                 >
-                  <Typography variant={'body3'}>
+                  <Typography
+                    sx={() => menuItemNameSx('construction-holdback-process')}
+                  >
                     Construction holdback
                   </Typography>
                   {taskMap.get(DashboardTaskKey.holdback_process) && (
@@ -329,7 +327,7 @@ export const TasksRightMenu: FC = observer(() => {
         )}
 
         {taskMap.has(DashboardTaskKey.referring_broker) && (
-          <Stack pb={1}>
+          <Stack>
             <Stack
               alignItems={'center'}
               flexDirection={'row'}
@@ -349,7 +347,9 @@ export const TasksRightMenu: FC = observer(() => {
                   onClick={() => onClickToRedirect('referring-broker')}
                   sx={() => menuItemSx('referring-broker')}
                 >
-                  <Typography variant={'body3'}>Referring broker</Typography>
+                  <Typography sx={() => menuItemNameSx('referring-broker')}>
+                    Referring broker
+                  </Typography>
                   {taskMap.get(DashboardTaskKey.referring_broker) && (
                     <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
                   )}

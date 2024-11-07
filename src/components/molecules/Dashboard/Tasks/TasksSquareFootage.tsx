@@ -124,14 +124,14 @@ export const TasksSquareFootage: FC = () => {
               mt={1}
               variant={'body1'}
             >
-              Please provide the current square footage of the property.
+              Please provide the square footage of the planned property
             </Typography>
           </Typography>
 
           <StyledTextFieldNumber
             label={'Square footage'}
             onValueChange={({ floatValue }) => setSquareFootage(floatValue)}
-            placeholder={'After-repair square footage'}
+            placeholder={'Square footage (ex: 1000 sq ft)'}
             suffix={' Sq ft'}
             value={squareFootage}
           />
