@@ -125,7 +125,7 @@ export const TasksInvestmentExperience: FC = () => {
     </Stack>
   ) : (
     <Fade in={!loading}>
-      <Stack flexDirection={'row'} width={'100%'}>
+      <Stack flexDirection={'row'} justifyContent={'center'} width={'100%'}>
         <Stack
           alignItems={'center'}
           gap={6}

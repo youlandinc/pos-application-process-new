@@ -100,8 +100,8 @@ export const TasksRightMenu: FC = observer(() => {
         py={1.5}
         width={280}
       >
-        <Typography pl={0.75} variant={'subtitle2'}>
-          Go to task
+        <Typography mb={0.5} pl={0.75} variant={'subtitle2'}>
+          Jump to task
         </Typography>
 
         {(taskMap.has(DashboardTaskKey.payoff_amount) ||
