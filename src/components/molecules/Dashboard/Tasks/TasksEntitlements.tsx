@@ -308,6 +308,8 @@ export const TasksEntitlements: FC = () => {
                       </Typography>
                       <StyledTextField
                         label={'Addresses and project descriptions'}
+                        minRows={2}
+                        multiline
                         onChange={(e) =>
                           setLsppAddressAndProjectDes(e.target.value)
                         }
