@@ -28,8 +28,8 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
               lineHeight: 1.5,
               color: 'primary.main',
               height: { md: 56, xs: 40 },
-              justifyContent: 'flex-end',
               width: { xs: 120, lg: 160, xl: 225 },
+              mt: 3,
             }}
           >
             {saasState?.organizationName}
@@ -83,9 +83,9 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
           fontWeight: 600,
           lineHeight: 1.5,
           color: 'primary.main',
-          height: '100%',
-          justifyContent: 'center',
+          height: { md: 56, xs: 40 },
           width: { xs: 120, lg: 160, xl: 225 },
+          mt: 3,
         }}
       >
         {saasState?.organizationName}

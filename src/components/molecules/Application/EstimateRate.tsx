@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { InputAdornment, Skeleton, Stack, Typography } from '@mui/material';
-import { HelpOutline, InfoOutlined } from '@mui/icons-material';
+import { InfoOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 
@@ -987,16 +987,16 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 />
 
                 <StyledTextFieldNumber
-                  label={'Remaining construction costs'}
-                  onValueChange={({ floatValue }) => {
+                  label={'Improvements since acquisition'}
+                  onValueChange={({ floatValue }) =>
                     estimateRate.changeFieldValue(
-                      'refinanceConstructionCosts',
+                      'improvementsSinceAcquisition',
                       floatValue,
-                    );
-                  }}
+                    )
+                  }
                   prefix={'$'}
                   sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  value={estimateRate.refinanceConstructionCosts}
+                  value={estimateRate.improvementsSinceAcquisition}
                 />
 
                 <StyledTextFieldNumber
@@ -1039,16 +1039,16 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 ml={-0.5}
               >
                 <StyledTextFieldNumber
-                  label={'Improvements since acquisition'}
-                  onValueChange={({ floatValue }) =>
+                  label={'Remaining construction costs'}
+                  onValueChange={({ floatValue }) => {
                     estimateRate.changeFieldValue(
-                      'improvementsSinceAcquisition',
+                      'refinanceConstructionCosts',
                       floatValue,
-                    )
-                  }
+                    );
+                  }}
                   prefix={'$'}
                   sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  value={estimateRate.improvementsSinceAcquisition}
+                  value={estimateRate.refinanceConstructionCosts}
                 />
 
                 <StyledTextFieldNumber
@@ -1395,7 +1395,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                           'Number of flips completed and held rental properties'
                         }
                       >
-                        <HelpOutline
+                        <InfoOutlined
                           sx={{
                             width: 20,
                             height: 20,
@@ -1406,7 +1406,12 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     </InputAdornment>
                   ),
                 }}
-                label={'# of prior flips'}
+                label={
+                  estimateRate.productCategory !==
+                  LoanProductCategoryEnum.ground_up_construction
+                    ? '# of prior flips'
+                    : '# of construction projects exited'
+                }
                 onValueChange={({ floatValue }) => {
                   estimateRate.changeFieldValue('priorExperience', floatValue);
                 }}
