@@ -45,7 +45,8 @@ validate.validators.formEmail = (value: string) => {
   if (!value) {
     return '^Cannot be empty';
   }
-  if (value.match(/^\w+@\w+\.\w+$/i)) {
+
+  if (value.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
     return;
   }
   return '^Invalid email';
