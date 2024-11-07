@@ -64,7 +64,7 @@ export const DashboardSideInfoBox: FC<DashboardSideInfoBoxProps> = observer(
                       >
                         {`${
                           info.propertyAddress?.formatAddress
-                            ? `${info.propertyAddress?.formatAddress} `
+                            ? `${info.propertyAddress?.formatAddress}, `
                             : ''
                         }${
                           info.propertyAddress?.aptNumber

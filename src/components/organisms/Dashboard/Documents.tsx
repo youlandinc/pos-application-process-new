@@ -222,7 +222,7 @@ export const Documents: FC = observer(() => {
           >
             Here is your{' '}
             <Typography
-              color={downloadLoading ? 'text.disabled' : '#365EC6'}
+              color={downloadLoading ? 'text.disabled' : 'primary.main'}
               component={'span'}
               fontSize={{ xs: 12, lg: 16 }}
               fontWeight={600}
