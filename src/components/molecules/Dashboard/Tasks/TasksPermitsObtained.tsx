@@ -229,7 +229,7 @@ export const TasksPermitsObtained: FC = () => {
               'image/*,.pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             }
             fileKey={DashboardTaskKey.permits_obtained}
-            fileName={'Permits obtained'}
+            fileName={'Upload permits obtained'}
             files={permitsFiles}
             isShowHistory={false}
             refresh={fetchInitData}
