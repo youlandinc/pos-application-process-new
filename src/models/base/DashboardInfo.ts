@@ -1,9 +1,12 @@
-import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
-import { Address } from '@/models/common/Address';
-import { HttpError, LoanPropertyTypeEnum, LoanPropertyUnitEnum } from '@/types';
-import { AUTO_HIDE_DURATION } from '@/constants';
+import Router from 'next/router';
 import { enqueueSnackbar } from 'notistack';
-import { _fetchDashboardInfo } from '@/requests/dashboard';
+import { flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
+
+import { AUTO_HIDE_DURATION } from '@/constants';
+import { Address } from '@/models/common/Address';
+
+import { HttpError, LoanPropertyTypeEnum, LoanPropertyUnitEnum } from '@/types';
+import { _fetchDashboardInfo, _fetchLoanTaskList } from '@/requests/dashboard';
 
 export const DashboardInfo = types
   .model({
@@ -25,6 +28,7 @@ export const DashboardInfo = types
     loading: types.boolean,
     loanId: types.maybe(types.string),
     loanNumber: types.maybe(types.string),
+    taskMap: types.map(types.boolean),
   })
   .actions((self) => ({
     setLoanId(loanId: string) {
@@ -69,8 +73,31 @@ export const DashboardInfo = types
         self.loading = false;
       }
     });
+    const fetchTaskMap = flow(function* (loanId: string) {
+      if (!loanId) {
+        yield Router.push('/pipeline');
+        enqueueSnackbar('Invalid loan ID', {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
+        return;
+      }
+      try {
+        const { data } = yield _fetchLoanTaskList(loanId);
+        self.taskMap = data;
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      }
+    });
     return {
       fetchDashboardInfo,
+      fetchTaskMap,
     };
   });
 
