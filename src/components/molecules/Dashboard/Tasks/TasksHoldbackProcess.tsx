@@ -4,9 +4,12 @@ import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
-import { AUTO_HIDE_DURATION } from '@/constants';
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
 import { POSGetParamsFromUrl } from '@/utils';
 import { useBreakpoints, useRenderPdf, useSessionStorageState } from '@/hooks';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { StyledButton, StyledLoading } from '@/components/atoms';
 import { TasksRightMenu } from '@/components/molecules';
@@ -17,12 +20,14 @@ import {
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
 
-export const TasksHoldbackProcess: FC = () => {
+export const TasksHoldbackProcess: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+  const {
+    dashboardInfo: { jumpToNextTask },
+  } = useMst();
 
   const breakpoints = useBreakpoints();
-
   const { saasState } = useSessionStorageState('tenantConfig');
 
   const pdfFile = useRef(null);
@@ -73,10 +78,7 @@ export const TasksHoldbackProcess: FC = () => {
     setSaveLoading(true);
     try {
       await _updateLoanTaskDetail(postData);
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { loanId: router.query.loanId },
-      });
+      await jumpToNextTask(DashboardTaskKey.holdback_process);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -197,4 +199,4 @@ export const TasksHoldbackProcess: FC = () => {
       </Stack>
     </Fade>
   );
-};
+});

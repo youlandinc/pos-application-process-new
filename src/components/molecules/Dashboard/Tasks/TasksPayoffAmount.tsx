@@ -4,6 +4,9 @@ import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSGetParamsFromUrl } from '@/utils';
 import { useBreakpoints } from '@/hooks';
@@ -13,17 +16,20 @@ import {
   StyledLoading,
   StyledTextFieldNumber,
 } from '@/components/atoms';
+import { TasksRightMenu } from '@/components/molecules';
 
 import { DashboardTaskKey, HttpError } from '@/types';
 import {
   _fetchLoanTaskDetail,
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
-import { TasksRightMenu } from '@/components/molecules';
 
-export const TasksPayoffAmount: FC = () => {
+export const TasksPayoffAmount: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+  const {
+    dashboardInfo: { jumpToNextTask },
+  } = useMst();
 
   const breakpoints = useBreakpoints();
 
@@ -68,10 +74,7 @@ export const TasksPayoffAmount: FC = () => {
     setSaveLoading(true);
     try {
       await _updateLoanTaskDetail(postData);
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { loanId: router.query.loanId },
-      });
+      await jumpToNextTask(DashboardTaskKey.payoff_amount);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -167,4 +170,4 @@ export const TasksPayoffAmount: FC = () => {
       </Stack>
     </Fade>
   );
-};
+});

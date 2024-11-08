@@ -4,8 +4,10 @@ import { format, isDate, isValid } from 'date-fns';
 import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import { validate } from 'validate.js';
 
 import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
 import { Address, IAddress, SAddress } from '@/models/common/Address';
 
@@ -34,6 +36,7 @@ import {
   StyledTextFieldPhone,
   Transitions,
 } from '@/components/atoms';
+import { TasksRightMenu } from '@/components/molecules';
 
 import {
   DashboardTaskInstructions,
@@ -46,8 +49,6 @@ import {
   _fetchLoanTaskDetail,
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
-import { validate } from 'validate.js';
-import { TasksRightMenu } from '@/components/molecules';
 
 const initialValues: {
   firstName: string;
@@ -91,8 +92,12 @@ const resetAddress = {
 export const TasksTitleOrEscrow: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  const { saasState } = useSessionStorageState('tenantConfig');
+  const {
+    dashboardInfo: { jumpToNextTask },
+  } = useMst();
+
   const breakpoints = useBreakpoints();
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [saveLoading, setSaveLoading] = useState(false);
 
@@ -279,10 +284,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
     setSaveLoading(true);
     try {
       await _updateLoanTaskDetail(postData);
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { loanId: router.query.loanId },
-      });
+      await jumpToNextTask(DashboardTaskKey.title_escrow);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {

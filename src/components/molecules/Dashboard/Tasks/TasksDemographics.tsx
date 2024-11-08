@@ -3,6 +3,7 @@ import { Box, Fade, Stack, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { useBreakpoints } from '@/hooks';
@@ -23,10 +24,15 @@ import {
   _fetchLoanTaskDetail,
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
+import { observer } from 'mobx-react-lite';
 
-export const TasksDemographics: FC = () => {
+export const TasksDemographics: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+  const {
+    dashboardInfo: { jumpToNextTask },
+  } = useMst();
+
   const breakpoints = useBreakpoints();
 
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
@@ -314,10 +320,7 @@ export const TasksDemographics: FC = () => {
     setSaveLoading(true);
     try {
       await _updateLoanTaskDetail(postData);
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { loanId: router.query.loanId },
-      });
+      await jumpToNextTask(DashboardTaskKey.demographics);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -815,4 +818,4 @@ export const TasksDemographics: FC = () => {
       </Stack>
     </Fade>
   );
-};
+});

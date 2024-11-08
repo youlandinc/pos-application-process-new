@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import Router from 'next/router';
 
-import { Instance, types } from 'mobx-state-tree';
+import { Instance, types, unprotect } from 'mobx-state-tree';
 
 import {
   ApplicationForm,
@@ -205,6 +205,8 @@ const initialState = {
 };
 
 export const rootStore = RootStore.create(initialState);
+
+unprotect(rootStore);
 
 export type IRoot = Instance<typeof RootStore>;
 const RootStoreContext = createContext<null | IRoot>(null);

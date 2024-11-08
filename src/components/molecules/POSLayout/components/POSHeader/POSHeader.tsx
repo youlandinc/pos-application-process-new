@@ -273,7 +273,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
               </StyledButton>
             )}
-            <MyAccountButton scene={scene} store={store} />
+            {/*<MyAccountButton scene={scene} store={store} />*/}
           </Stack>
         );
       case LayoutSceneTypeEnum.account:
