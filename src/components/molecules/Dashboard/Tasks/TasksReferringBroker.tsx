@@ -6,6 +6,7 @@ import { useSnackbar } from 'notistack';
 import _uniqueId from 'lodash/uniqueId';
 
 import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 import { Address, IAddress } from '@/models/common/Address';
 
 import { useBreakpoints } from '@/hooks';
@@ -23,6 +24,7 @@ import {
   StyledTextFieldPhone,
   Transitions,
 } from '@/components/atoms';
+import { TasksRightMenu } from '@/components/molecules';
 
 import {
   AdditionalFee,
@@ -37,7 +39,6 @@ import {
 } from '@/requests/dashboard';
 
 import ICON_CLOSE from '@/svg/icon/icon_close.svg';
-import { TasksRightMenu } from '@/components/molecules';
 
 const initialized: AdditionalFee = {
   fieldName: '',
@@ -48,6 +49,9 @@ const initialized: AdditionalFee = {
 export const TasksReferringBroker: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+  const {
+    dashboardInfo: { jumpToNextTask },
+  } = useMst();
 
   const breakpoints = useBreakpoints();
 
@@ -178,10 +182,7 @@ export const TasksReferringBroker: FC = observer(() => {
     setSaveLoading(true);
     try {
       await _updateLoanTaskDetail(postData);
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { loanId: router.query.loanId },
-      });
+      await jumpToNextTask(DashboardTaskKey.referring_broker);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {

@@ -4,26 +4,32 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
 
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
+import { AUTO_HIDE_DURATION } from '@/constants';
 import { useBreakpoints } from '@/hooks';
 import { POSGetParamsFromUrl } from '@/utils';
-import { AUTO_HIDE_DURATION } from '@/constants';
 
 import {
   StyledButton,
   StyledLoading,
   StyledTextFieldNumber,
 } from '@/components/atoms';
+import { TasksRightMenu } from '@/components/molecules';
 
 import { DashboardTaskKey, HttpError } from '@/types';
 import {
   _fetchLoanTaskDetail,
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
-import { TasksRightMenu } from '@/components/molecules';
 
-export const TasksRehabInfo: FC = () => {
+export const TasksRehabInfo: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+  const {
+    dashboardInfo: { jumpToNextTask },
+  } = useMst();
 
   const breakpoints = useBreakpoints();
 
@@ -75,10 +81,7 @@ export const TasksRehabInfo: FC = () => {
     setSaveLoading(true);
     try {
       await _updateLoanTaskDetail(postData);
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { loanId: router.query.loanId },
-      });
+      await jumpToNextTask(DashboardTaskKey.rehab_info);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -184,4 +187,4 @@ export const TasksRehabInfo: FC = () => {
       </Stack>
     </Fade>
   );
-};
+});

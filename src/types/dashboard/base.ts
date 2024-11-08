@@ -2,39 +2,41 @@ import { TaskFiles } from '@/types';
 
 // tasks
 export enum DashboardTaskKey {
-  // common
+  // loan information
+  payoff_amount = 'PAYOFF_AMOUNT',
+  rehab_info = 'REHAB_INFO',
+  square_footage = 'SQUARE_FOOTAGE',
+  entitlements = 'ENTITLEMENTS',
+  permits_obtained = 'PERMITS_OBTAINED',
+  // borrower information
   borrower = 'BORROWER',
   co_borrower = 'CO_BORROWER',
   demographics = 'DEMOGRAPHICS',
-  real_investment = 'REAL_INVESTMENT',
+  // third party information
   title_escrow = 'TITLE_ESCROW',
-  //
+  // Agreements
   holdback_process = 'HOLDBACK_PROCESS',
-  //
-  rehab_info = 'REHAB_INFO',
-  //
-  payoff_amount = 'PAYOFF_AMOUNT',
-  //
+  // broker
   referring_broker = 'REFERRING_BROKER',
-  // ground_up
-  permits_obtained = 'PERMITS_OBTAINED',
-  entitlements = 'ENTITLEMENTS',
-  square_footage = 'SQUARE_FOOTAGE',
 }
 
 export interface DashboardTasksResponse {
+  // loan information
+  [DashboardTaskKey.payoff_amount]?: boolean;
+  [DashboardTaskKey.rehab_info]?: boolean;
+  [DashboardTaskKey.square_footage]?: boolean;
+  [DashboardTaskKey.entitlements]?: boolean;
+  [DashboardTaskKey.permits_obtained]?: boolean;
+  // borrower information
   [DashboardTaskKey.borrower]: boolean;
   [DashboardTaskKey.co_borrower]: boolean;
   [DashboardTaskKey.demographics]: boolean;
-  [DashboardTaskKey.real_investment]: boolean;
+  // third party information
   [DashboardTaskKey.title_escrow]: boolean;
+  // Agreements
   [DashboardTaskKey.holdback_process]?: boolean;
-  [DashboardTaskKey.rehab_info]?: boolean;
+  // broker
   [DashboardTaskKey.referring_broker]?: boolean;
-  [DashboardTaskKey.payoff_amount]?: boolean;
-  [DashboardTaskKey.permits_obtained]?: boolean;
-  [DashboardTaskKey.entitlements]?: boolean;
-  [DashboardTaskKey.square_footage]?: boolean;
 }
 
 // appraisal
