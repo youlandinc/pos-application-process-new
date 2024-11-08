@@ -373,7 +373,6 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
           >
             <StyledButton
               color={'info'}
-              //disabled={!applicable}
               isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
               onClick={() => router.push('/')}
               size={'small'}

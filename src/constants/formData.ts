@@ -50,6 +50,12 @@ export const FormData = {
     interestRate: 0,
     // dutch / no dutch
     isDutch: false,
+    // ground-up
+    improvementsSinceAcquisition: 0,
+    constructionProjectsExited: 0,
+    purchaseConstructionCosts: 0,
+    refinanceConstructionCosts: 0,
+    ltc: 0,
   },
   [LoanSnapshotEnum.loan_address]: {
     formatAddress: '',

@@ -64,8 +64,8 @@ export const MyAccountButton: FC<{
   store: IRoot;
 }> = observer(({ store }) => {
   const router = useRouter();
-  const breakpoint = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
+  const breakpoint = useBreakpoints();
 
   const anchorRef = useRef<HTMLDivElement>(null);
   const [userMenuVisible, setUserMenuVisible] = useState(false);
@@ -73,7 +73,11 @@ export const MyAccountButton: FC<{
   const messageBoxRef = useRef<HTMLDivElement>(null);
   const [messageBoxVisible, setMessageBoxVisible] = useState(false);
   const [messageFetchLoading, setMessageFetchLoading] = useState(false);
-  const [messageFetchMoreLoading, setMessageFetchMoreLoading] = useState(false);
+  const [
+    ,
+    //messageFetchMoreLoading
+    setMessageFetchMoreLoading,
+  ] = useState(false);
   const [messageClickLoading, setMessageClickLoading] = useState(false);
   const [messageList, setMessageList] = useState<NotificationMessageItem[]>([]);
   const [totalElements, setTotalElements] = useState(0);
@@ -311,6 +315,7 @@ export const MyAccountButton: FC<{
           width={['xs', 'sm', 'md'].includes(breakpoint) ? 24 : 32}
         />
       </Stack>
+
       <Popper
         anchorEl={anchorRef.current}
         disablePortal

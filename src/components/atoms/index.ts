@@ -44,8 +44,6 @@ export * from './StyledSelectTextField';
 
 export * from './StyledGoogleAutoComplete';
 
-//export * from './StyledPaymentCard';
-
 export * from './StyledDatePicker';
 export * from './StyledDateRange';
 

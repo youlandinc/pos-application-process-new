@@ -16,6 +16,10 @@ export enum DashboardTaskKey {
   payoff_amount = 'PAYOFF_AMOUNT',
   //
   referring_broker = 'REFERRING_BROKER',
+  // ground_up
+  permits_obtained = 'PERMITS_OBTAINED',
+  entitlements = 'ENTITLEMENTS',
+  square_footage = 'SQUARE_FOOTAGE',
 }
 
 export interface DashboardTasksResponse {
@@ -28,6 +32,9 @@ export interface DashboardTasksResponse {
   [DashboardTaskKey.rehab_info]?: boolean;
   [DashboardTaskKey.referring_broker]?: boolean;
   [DashboardTaskKey.payoff_amount]?: boolean;
+  [DashboardTaskKey.permits_obtained]?: boolean;
+  [DashboardTaskKey.entitlements]?: boolean;
+  [DashboardTaskKey.square_footage]?: boolean;
 }
 
 // appraisal

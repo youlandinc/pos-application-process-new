@@ -3,6 +3,7 @@ import {
   DashboardTaskBorrowerType,
   DashboardTaskInstructions,
   DashboardTaskLoanClosing,
+  LandTypeEnum,
 } from '@/types';
 
 export const OPTIONS_TASK_BORROWER_TYPE: Option[] = [
@@ -79,5 +80,23 @@ export const OPTIONS_TASK_MANAGING_LOAN_CLOSING: Option[] = [
     key: DashboardTaskLoanClosing.closing_attorney,
     value: DashboardTaskLoanClosing.closing_attorney,
     label: 'Closing attorney',
+  },
+];
+
+export const OPTIONS_TASK_LAND_TYPE: Option[] = [
+  {
+    key: LandTypeEnum.raw_land,
+    value: LandTypeEnum.raw_land,
+    label: 'Raw land',
+  },
+  {
+    key: LandTypeEnum.some_utilities,
+    value: LandTypeEnum.some_utilities,
+    label: 'Some utilities',
+  },
+  {
+    key: LandTypeEnum.all_utilities,
+    value: LandTypeEnum.all_utilities,
+    label: 'All utilities',
   },
 ];

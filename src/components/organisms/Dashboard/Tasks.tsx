@@ -1,50 +1,31 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { CheckCircle } from '@mui/icons-material';
 import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
 
 import { useBreakpoints } from '@/hooks';
 
-import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
-import { AUTO_HIDE_DURATION } from '@/constants';
+import { POSGetParamsFromUrl } from '@/utils';
 
 import { StyledLoading } from '@/components/atoms';
 
-import { DashboardTaskKey, DashboardTasksResponse, HttpError } from '@/types';
-import { _fetchLoanTaskList } from '@/requests/dashboard';
+import { DashboardTaskKey } from '@/types';
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
-export const Tasks: FC = () => {
+export const Tasks: FC = observer(() => {
   const breakpoints = useBreakpoints();
   const router = useRouter();
-  const { enqueueSnackbar } = useSnackbar();
 
-  const [taskHash, setTaskHash] = useState<DashboardTasksResponse>();
+  const {
+    dashboardInfo: { taskMap, fetchTaskMap },
+  } = useMst();
 
-  const { loading } = useAsync(async () => {
-    const { loanId } = POSGetParamsFromUrl(location.href);
-    if (!loanId) {
-      await router.push('/pipeline');
-      enqueueSnackbar('Invalid loan ID', {
-        variant: 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-      });
-      return;
-    }
-    try {
-      const { data } = await _fetchLoanTaskList(loanId);
-      setTaskHash(data);
-    } catch (err) {
-      const { header, message, variant } = err as HttpError;
-      enqueueSnackbar(message, {
-        variant: variant || 'error',
-        autoHideDuration: AUTO_HIDE_DURATION,
-        isSimple: !header,
-        header,
-      });
-    }
-  }, [location.href]);
+  const { loading } = useAsync(
+    async () => fetchTaskMap(POSGetParamsFromUrl(location.href)?.loanId),
+    [location.href],
+  );
 
   return loading ? (
     <Stack
@@ -73,8 +54,11 @@ export const Tasks: FC = () => {
           Your tasks checklist
         </Typography>
 
-        {(POSNotUndefined(taskHash?.[DashboardTaskKey.payoff_amount]) ||
-          POSNotUndefined(taskHash?.[DashboardTaskKey.rehab_info])) && (
+        {(taskMap.has(DashboardTaskKey.payoff_amount) ||
+          taskMap.has(DashboardTaskKey.rehab_info) ||
+          taskMap.has(DashboardTaskKey.entitlements) ||
+          taskMap.has(DashboardTaskKey.permits_obtained) ||
+          taskMap.has(DashboardTaskKey.square_footage)) && (
           <Stack
             border={'1px solid #D2D6E1'}
             borderRadius={2}
@@ -90,7 +74,7 @@ export const Tasks: FC = () => {
               Loan information
             </Typography>
 
-            {POSNotUndefined(taskHash?.[DashboardTaskKey.payoff_amount]) && (
+            {taskMap.has(DashboardTaskKey.payoff_amount) && (
               <Stack
                 alignItems={'center'}
                 flexDirection={'row'}
@@ -117,13 +101,13 @@ export const Tasks: FC = () => {
                 <Typography fontSize={{ xs: 12, lg: 16 }}>
                   Payoff amount
                 </Typography>
-                {taskHash?.[DashboardTaskKey.payoff_amount] && (
+                {taskMap.get(DashboardTaskKey.payoff_amount) && (
                   <CheckCircle color={'success'} />
                 )}
               </Stack>
             )}
 
-            {POSNotUndefined(taskHash?.[DashboardTaskKey.rehab_info]) && (
+            {taskMap.has(DashboardTaskKey.rehab_info) && (
               <Stack
                 alignItems={'center'}
                 flexDirection={'row'}
@@ -150,7 +134,106 @@ export const Tasks: FC = () => {
                 <Typography fontSize={{ xs: 12, lg: 16 }}>
                   Rehab info
                 </Typography>
-                {taskHash?.[DashboardTaskKey.rehab_info] && (
+                {taskMap.get(DashboardTaskKey.rehab_info) && (
+                  <CheckCircle color={'success'} />
+                )}
+              </Stack>
+            )}
+
+            {taskMap.has(DashboardTaskKey.square_footage) && (
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks/square-footage',
+                    query: {
+                      loanId: POSGetParamsFromUrl(location.href).loanId,
+                    },
+                  })
+                }
+                px={{ xs: 2, lg: 3 }}
+                py={{ xs: 1, lg: 1.5 }}
+                sx={{
+                  '&:hover': {
+                    cursor: 'pointer',
+                    borderRadius: 1,
+                    bgcolor: 'info.darker',
+                  },
+                }}
+                width={'100%'}
+              >
+                <Typography fontSize={{ xs: 12, lg: 16 }}>
+                  Square footage
+                </Typography>
+                {taskMap.get(DashboardTaskKey.square_footage) && (
+                  <CheckCircle color={'success'} />
+                )}
+              </Stack>
+            )}
+
+            {taskMap.has(DashboardTaskKey.entitlements) && (
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks/entitlements',
+                    query: {
+                      loanId: POSGetParamsFromUrl(location.href).loanId,
+                    },
+                  })
+                }
+                px={{ xs: 2, lg: 3 }}
+                py={{ xs: 1, lg: 1.5 }}
+                sx={{
+                  '&:hover': {
+                    cursor: 'pointer',
+                    borderRadius: 1,
+                    bgcolor: 'info.darker',
+                  },
+                }}
+                width={'100%'}
+              >
+                <Typography fontSize={{ xs: 12, lg: 16 }}>
+                  Entitlements
+                </Typography>
+                {taskMap.get(DashboardTaskKey.entitlements) && (
+                  <CheckCircle color={'success'} />
+                )}
+              </Stack>
+            )}
+
+            {taskMap.has(DashboardTaskKey.permits_obtained) && (
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                justifyContent={'space-between'}
+                onClick={() =>
+                  router.push({
+                    pathname: '/dashboard/tasks/permits-obtained',
+                    query: {
+                      loanId: POSGetParamsFromUrl(location.href).loanId,
+                    },
+                  })
+                }
+                px={{ xs: 2, lg: 3 }}
+                py={{ xs: 1, lg: 1.5 }}
+                sx={{
+                  '&:hover': {
+                    cursor: 'pointer',
+                    borderRadius: 1,
+                    bgcolor: 'info.darker',
+                  },
+                }}
+                width={'100%'}
+              >
+                <Typography fontSize={{ xs: 12, lg: 16 }}>
+                  Permits obtained
+                </Typography>
+                {taskMap.get(DashboardTaskKey.permits_obtained) && (
                   <CheckCircle color={'success'} />
                 )}
               </Stack>
@@ -195,7 +278,7 @@ export const Tasks: FC = () => {
             width={'100%'}
           >
             <Typography fontSize={{ xs: 12, lg: 16 }}>Borrower</Typography>
-            {taskHash?.[DashboardTaskKey.borrower] && (
+            {taskMap.get(DashboardTaskKey.borrower) && (
               <CheckCircle color={'success'} />
             )}
           </Stack>
@@ -222,39 +305,10 @@ export const Tasks: FC = () => {
             width={'100%'}
           >
             <Typography fontSize={{ xs: 12, lg: 16 }}>Co-borrower</Typography>
-            {taskHash?.[DashboardTaskKey.co_borrower] && (
+            {taskMap.get(DashboardTaskKey.co_borrower) && (
               <CheckCircle color={'success'} />
             )}
           </Stack>
-
-          {/*<Stack*/}
-          {/*  alignItems={'center'}*/}
-          {/*  flexDirection={'row'}*/}
-          {/*  justifyContent={'space-between'}*/}
-          {/*  onClick={() =>*/}
-          {/*    router.push({*/}
-          {/*      pathname: '/dashboard/tasks/real-estate-investment-experience',*/}
-          {/*      query: { loanId: POSGetParamsFromUrl(location.href).loanId },*/}
-          {/*    })*/}
-          {/*  }*/}
-          {/*  px={{ xs: 2, lg: 3 }}*/}
-          {/*  py={{ xs: 1, lg: 1.5 }}*/}
-          {/*  sx={{*/}
-          {/*    '&:hover': {*/}
-          {/*      cursor: 'pointer',*/}
-          {/*      borderRadius: 1,*/}
-          {/*      bgcolor: 'info.darker',*/}
-          {/*    },*/}
-          {/*  }}*/}
-          {/*  width={'100%'}*/}
-          {/*>*/}
-          {/*  <Typography fontSize={{ xs: 12, lg: 16 }}>*/}
-          {/*    Real estate investment experience*/}
-          {/*  </Typography>*/}
-          {/*  {taskHash?.[DashboardTaskKey.real_investment] && (*/}
-          {/*    <CheckCircle color={'success'} />*/}
-          {/*  )}*/}
-          {/*</Stack>*/}
 
           <Stack
             alignItems={'center'}
@@ -280,7 +334,7 @@ export const Tasks: FC = () => {
             <Typography fontSize={{ xs: 12, lg: 16 }}>
               Demographic information
             </Typography>
-            {taskHash?.[DashboardTaskKey.demographics] && (
+            {taskMap.get(DashboardTaskKey.demographics) && (
               <CheckCircle color={'success'} />
             )}
           </Stack>
@@ -325,13 +379,13 @@ export const Tasks: FC = () => {
             <Typography fontSize={{ xs: 12, lg: 16 }}>
               Title / Escrow company (optional)
             </Typography>
-            {taskHash?.[DashboardTaskKey.title_escrow] && (
+            {taskMap.get(DashboardTaskKey.title_escrow) && (
               <CheckCircle color={'success'} />
             )}
           </Stack>
         </Stack>
 
-        {POSNotUndefined(taskHash?.[DashboardTaskKey.holdback_process]) && (
+        {taskMap.has(DashboardTaskKey.holdback_process) && (
           <Stack
             border={'1px solid #D2D6E1'}
             borderRadius={2}
@@ -346,6 +400,7 @@ export const Tasks: FC = () => {
             >
               Agreements
             </Typography>
+
             <Stack
               alignItems={'center'}
               flexDirection={'row'}
@@ -353,7 +408,9 @@ export const Tasks: FC = () => {
               onClick={() =>
                 router.push({
                   pathname: '/dashboard/tasks/construction-holdback-process',
-                  query: { loanId: POSGetParamsFromUrl(location.href).loanId },
+                  query: {
+                    loanId: POSGetParamsFromUrl(location.href).loanId,
+                  },
                 })
               }
               px={{ xs: 2, lg: 3 }}
@@ -370,14 +427,14 @@ export const Tasks: FC = () => {
               <Typography fontSize={{ xs: 12, lg: 16 }}>
                 Construction holdback process
               </Typography>
-              {taskHash?.[DashboardTaskKey.holdback_process] && (
+              {taskMap.get(DashboardTaskKey.holdback_process) && (
                 <CheckCircle color={'success'} />
               )}
             </Stack>
           </Stack>
         )}
 
-        {POSNotUndefined(taskHash?.[DashboardTaskKey.referring_broker]) && (
+        {taskMap.has(DashboardTaskKey.referring_broker) && (
           <Stack
             border={'1px solid #D2D6E1'}
             borderRadius={2}
@@ -416,7 +473,7 @@ export const Tasks: FC = () => {
               <Typography fontSize={{ xs: 12, lg: 16 }}>
                 Referring broker
               </Typography>
-              {taskHash?.[DashboardTaskKey.referring_broker] && (
+              {taskMap.get(DashboardTaskKey.referring_broker) && (
                 <CheckCircle color={'success'} />
               )}
             </Stack>
@@ -425,4 +482,4 @@ export const Tasks: FC = () => {
       </Stack>
     </Fade>
   );
-};
+});

@@ -1,12 +1,12 @@
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
 
-import { AUTO_HIDE_DURATION } from '@/constants';
-import { POSGetParamsFromUrl } from '@/utils';
 import { useBreakpoints } from '@/hooks';
+import { POSGetParamsFromUrl } from '@/utils';
+import { AUTO_HIDE_DURATION } from '@/constants';
 
 import {
   StyledButton,
@@ -21,7 +21,7 @@ import {
 } from '@/requests/dashboard';
 import { TasksRightMenu } from '@/components/molecules';
 
-export const TasksPayoffAmount: FC = () => {
+export const TasksSquareFootage: FC = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -29,7 +29,7 @@ export const TasksPayoffAmount: FC = () => {
 
   const [saveLoading, setSaveLoading] = useState(false);
 
-  const [payoffAmount, setPayoffAmount] = useState<number | undefined>();
+  const [squareFootage, setSquareFootage] = useState<number | undefined>();
 
   const { loading } = useAsync(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
@@ -39,13 +39,13 @@ export const TasksPayoffAmount: FC = () => {
     try {
       const {
         data: {
-          data: { payoffAmount },
+          data: { squareFootage },
         },
       } = await _fetchLoanTaskDetail({
         loanId,
-        taskKey: DashboardTaskKey.payoff_amount,
+        taskKey: DashboardTaskKey.square_footage,
       });
-      setPayoffAmount(payoffAmount);
+      setSquareFootage(squareFootage || undefined);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -57,12 +57,16 @@ export const TasksPayoffAmount: FC = () => {
     }
   }, []);
 
+  const isFormDataValid = useMemo(() => {
+    return !!squareFootage;
+  }, [squareFootage]);
+
   const handleSave = async () => {
     const postData = {
       loanId: POSGetParamsFromUrl(location.href).loanId,
-      taskKey: DashboardTaskKey.payoff_amount,
+      taskKey: DashboardTaskKey.square_footage,
       data: {
-        payoffAmount,
+        squareFootage,
       },
     };
     setSaveLoading(true);
@@ -113,24 +117,23 @@ export const TasksPayoffAmount: FC = () => {
             textAlign={'center'}
             variant={'h5'}
           >
-            Payoff amount
+            Square footage
             <Typography
               color={'text.secondary'}
               fontSize={{ xs: 12, lg: 16 }}
               mt={1}
               variant={'body1'}
             >
-              Please provide the full amount due to your lender for the complete
-              repayment of your current loan.
+              Please provide the square footage of the planned property
             </Typography>
           </Typography>
 
           <StyledTextFieldNumber
-            label={'Payoff amount'}
-            onValueChange={({ floatValue }) => setPayoffAmount(floatValue)}
-            placeholder={'Payoff amount'}
-            prefix={'$'}
-            value={payoffAmount}
+            label={'Square footage'}
+            onValueChange={({ floatValue }) => setSquareFootage(floatValue)}
+            placeholder={'Square footage (ex: 1000 sq ft)'}
+            suffix={' Sq ft'}
+            value={squareFootage}
           />
 
           <Stack
@@ -154,7 +157,7 @@ export const TasksPayoffAmount: FC = () => {
             </StyledButton>
             <StyledButton
               color={'primary'}
-              disabled={saveLoading || !payoffAmount}
+              disabled={saveLoading || !isFormDataValid}
               loading={saveLoading}
               onClick={handleSave}
               sx={{ flex: 1, width: '100%' }}

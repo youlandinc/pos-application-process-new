@@ -11,7 +11,7 @@ const EXPIRED_TIME = 1000 * 60 * 60 * 3;
 
 export class DetectActiveService {
   private _userData: User.UserSignInRequest;
-  private _refreshSessionTimerRef: NodeJS.Timer | undefined;
+  private _refreshSessionTimerRef: NodeJS.Timer | undefined | any;
   private _isActive = false;
   private readonly _clearDebouncedUpdate: () => void;
   private readonly _debouncedUpdate: () => void;
@@ -70,6 +70,8 @@ export class DetectActiveService {
       userpool.setLastAuthUserToken('idToken', username, accessToken);
       userpool.setLastAuthUserToken('accessToken', username, accessToken);
     } catch (err) {
+      //eslint-disable-next-line no-console
+      console.log(err);
       this._logout();
       return;
     }

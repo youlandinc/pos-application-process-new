@@ -23,10 +23,17 @@ interface ProductListProps {
   productList: Array<ProductItemProps | any>;
   loading: boolean;
   totalLoanAmount?: number;
+  totalLoanAmountWithoutDutch?: number;
 }
 
 export const ProductList: FC<ProductListProps> = observer(
-  ({ errorList, productList, loading, totalLoanAmount }) => {
+  ({
+    errorList,
+    productList,
+    loading,
+    totalLoanAmount,
+    totalLoanAmountWithoutDutch,
+  }) => {
     const breakpoints = useBreakpoints();
     const { saasState } = useSessionStorageState('tenantConfig');
     const { userType } = useMst();
@@ -85,7 +92,12 @@ export const ProductList: FC<ProductListProps> = observer(
                       <ProductItem key={`${item.id}-${index}`} {...item} />
                     ))}
                     {isShowCustom && (
-                      <ProductCustomItem totalLoanAmount={totalLoanAmount} />
+                      <ProductCustomItem
+                        totalLoanAmount={totalLoanAmount}
+                        totalLoanAmountWithoutDutch={
+                          totalLoanAmountWithoutDutch
+                        }
+                      />
                     )}
                   </Stack>
 
@@ -123,7 +135,10 @@ export const ProductList: FC<ProductListProps> = observer(
                   <ProductMessageList errorList={errorList} />
                   {/*<ProductNoResultContact />*/}
                   {isShowCustom && (
-                    <ProductCustomItem totalLoanAmount={totalLoanAmount} />
+                    <ProductCustomItem
+                      totalLoanAmount={totalLoanAmount}
+                      totalLoanAmountWithoutDutch={totalLoanAmountWithoutDutch}
+                    />
                   )}
                 </>
               )}

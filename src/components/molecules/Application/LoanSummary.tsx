@@ -126,25 +126,28 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
     const renderLoanAmount = useMemo(() => {
       switch (data?.productCategory) {
         case LoanProductCategoryEnum.stabilized_bridge:
-          return data?.loanPurpose === LoanPurposeEnum.purchase ? (
-            <>
-              <LoanSummaryCardRow
-                content={POSFormatDollar(data?.purchasePrice)}
-                title={'Purchase price'}
-              />
-              <LoanSummaryCardRow
-                content={POSFormatDollar(data?.purchaseLoanAmount)}
-                title={'Purchase loan amount'}
-              />
-              <LoanSummaryCardRow
-                content={POSFormatPercent(
-                  data?.ltv,
-                  POSGetDecimalPlaces(data?.ltv),
-                )}
-                title={'Loan to value'}
-              />
-            </>
-          ) : (
+          if (data?.loanPurpose === LoanPurposeEnum.purchase) {
+            return (
+              <>
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.purchasePrice)}
+                  title={'Purchase price'}
+                />
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.purchaseLoanAmount)}
+                  title={'Purchase loan amount'}
+                />
+                <LoanSummaryCardRow
+                  content={POSFormatPercent(
+                    data?.ltv,
+                    POSGetDecimalPlaces(data?.ltv),
+                  )}
+                  title={'Loan to value'}
+                />
+              </>
+            );
+          }
+          return (
             <>
               <LoanSummaryCardRow
                 content={POSFormatDollar(data?.propertyValue)}
@@ -168,36 +171,39 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
             </>
           );
         case LoanProductCategoryEnum.fix_and_flip:
-          return data?.loanPurpose === LoanPurposeEnum.purchase ? (
-            <>
-              <LoanSummaryCardRow
-                content={POSFormatDollar(data?.purchasePrice)}
-                title={'Purchase price'}
-              />
-              <LoanSummaryCardRow
-                content={POSFormatDollar(data?.purchaseLoanAmount)}
-                title={'Purchase loan amount'}
-              />
-              <LoanSummaryCardRow
-                content={POSFormatDollar(data?.rehabCost)}
-                title={'Est. cost of rehab'}
-              />
-              <LoanSummaryCardRow
-                content={POSFormatPercent(
-                  data?.ltc,
-                  POSGetDecimalPlaces(data?.ltc),
-                )}
-                title={'Loan to cost'}
-              />
-              <LoanSummaryCardRow
-                content={POSFormatPercent(
-                  data?.arLtv,
-                  POSGetDecimalPlaces(data?.arLtv),
-                )}
-                title={'After-repair loan to value'}
-              />
-            </>
-          ) : (
+          if (data?.loanPurpose === LoanPurposeEnum.purchase) {
+            return (
+              <>
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.purchasePrice)}
+                  title={'Purchase price'}
+                />
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.purchaseLoanAmount)}
+                  title={'Purchase loan amount'}
+                />
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.rehabCost)}
+                  title={'Est. cost of rehab'}
+                />
+                <LoanSummaryCardRow
+                  content={POSFormatPercent(
+                    data?.ltc,
+                    POSGetDecimalPlaces(data?.ltc),
+                  )}
+                  title={'Loan to cost'}
+                />
+                <LoanSummaryCardRow
+                  content={POSFormatPercent(
+                    data?.arLtv,
+                    POSGetDecimalPlaces(data?.arLtv),
+                  )}
+                  title={'After-repair loan to value'}
+                />
+              </>
+            );
+          }
+          return (
             <>
               <LoanSummaryCardRow
                 content={POSFormatDollar(data?.propertyValue)}
@@ -231,11 +237,82 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               />
             </>
           );
+        case LoanProductCategoryEnum.ground_up_construction:
+          if (data?.loanPurpose === LoanPurposeEnum.purchase) {
+            return (
+              <>
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.initialDisbursement)}
+                  title={'Initial disbursement'}
+                />
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.futureConstructionFunding)}
+                  title={'Future construction funding'}
+                />
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.arv)}
+                  title={'Completed/After-repair value (ARV)'}
+                />
+                <LoanSummaryCardRow
+                  content={POSFormatPercent(
+                    data?.ltc,
+                    POSGetDecimalPlaces(data?.ltc),
+                  )}
+                  title={'Loan to total cost'}
+                />
+                <LoanSummaryCardRow
+                  content={POSFormatPercent(
+                    data?.arLtv,
+                    POSGetDecimalPlaces(data?.arLtv),
+                  )}
+                  title={'Completed/After repair LTV'}
+                />
+              </>
+            );
+          }
+          return (
+            <>
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.initialDisbursement)}
+                title={'Initial disbursement'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.futureConstructionFunding)}
+                title={'Future construction funding'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.arv)}
+                title={'Completed/After-repair value (ARV)'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.improvementsSinceAcquisition)}
+                title={'Improvements since purchase'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatPercent(
+                  data?.ltc,
+                  POSGetDecimalPlaces(data?.ltc),
+                )}
+                title={'Loan to total cost'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatPercent(
+                  data?.arLtv,
+                  POSGetDecimalPlaces(data?.arLtv),
+                )}
+                title={'Completed/After repair LTV'}
+              />
+            </>
+          );
         default:
           return null;
       }
     }, [
       data?.arLtv,
+      data?.arv,
+      data?.futureConstructionFunding,
+      data?.improvementsSinceAcquisition,
+      data?.initialDisbursement,
       data?.loanPurpose,
       data?.ltc,
       data?.ltv,
@@ -490,8 +567,20 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               <LoanSummaryCardRow
                 content={POSFormatDollar(data?.monthlyPayment, 2)}
                 isHeader={true}
-                title={'Monthly payment'}
+                title={
+                  data?.productCategory ===
+                  LoanProductCategoryEnum.ground_up_construction
+                    ? 'Initial monthly payment'
+                    : 'Monthly payment'
+                }
               />
+              {data?.productCategory ===
+                LoanProductCategoryEnum.ground_up_construction && (
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.fullDrawnMonthlyPayment)}
+                  title={'Full monthly payment'}
+                />
+              )}
             </Stack>
 
             <Stack
@@ -506,6 +595,18 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 isHeader={true}
                 title={'Cash required at closing'}
               />
+              {data?.productCategory ===
+                LoanProductCategoryEnum.ground_up_construction &&
+                data?.loanPurpose === LoanPurposeEnum.purchase && (
+                  <LoanSummaryCardRow
+                    content={POSFormatDollar(
+                      data?.purchaseConstructionCosts +
+                        data?.purchasePrice -
+                        data?.totalLoanAmount,
+                    )}
+                    title={'Down payment'}
+                  />
+                )}
               <LoanSummaryCardRow
                 content={`${POSFormatDollar(
                   data?.lenderOriginationFee,

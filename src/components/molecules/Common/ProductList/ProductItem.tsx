@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
 
@@ -17,7 +17,14 @@ import {
 import { StyledButton, StyledTooltip } from '@/components/atoms';
 
 export const ProductItem: FC<ProductItemProps> = observer(
-  ({ loanTerm, interestRate, monthlyPayment, lowest }) => {
+  ({
+    loanTerm,
+    interestRate,
+    monthlyPayment,
+    lowest,
+    initialMonthlyPayment,
+    fullyDrawnMonthlyPayment,
+  }) => {
     const { applicationForm } = useMst();
     const { estimateRate } = applicationForm;
 
@@ -39,6 +46,134 @@ export const ProductItem: FC<ProductItemProps> = observer(
       };
       await updateFrom(postData);
     };
+
+    const renderTail = useMemo(() => {
+      switch (estimateRate.productCategory) {
+        case LoanProductCategoryEnum.stabilized_bridge:
+          return (
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              height={40}
+              justifyContent={'space-between'}
+            >
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                fontSize={16}
+                gap={1}
+              >
+                Monthly payment
+              </Stack>
+              <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
+                {POSFormatDollar(monthlyPayment)}
+              </Typography>
+            </Stack>
+          );
+        case LoanProductCategoryEnum.fix_and_flip:
+          return (
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              height={40}
+              justifyContent={'space-between'}
+            >
+              <Typography variant={'body1'} width={'fit-content'}>
+                Monthly payment
+                <StyledTooltip
+                  title={
+                    'The interest calculation is based on a non-dutch basis and does not include the rehab loan amount.'
+                  }
+                >
+                  <InfoOutlined
+                    sx={{
+                      color: 'info.dark',
+                      verticalAlign: 'middle',
+                      width: 16,
+                      height: 16,
+                      ml: 1,
+                    }}
+                  />
+                </StyledTooltip>
+              </Typography>
+
+              <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
+                {POSFormatDollar(monthlyPayment)}
+              </Typography>
+            </Stack>
+          );
+        case LoanProductCategoryEnum.ground_up_construction:
+          return (
+            <>
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                height={40}
+                justifyContent={'space-between'}
+              >
+                <Typography variant={'body1'} width={'fit-content'}>
+                  Est. initial monthly payment
+                  <StyledTooltip
+                    title={
+                      'The estimated monthly payment based on the initial loan disbursement amount.'
+                    }
+                  >
+                    <InfoOutlined
+                      sx={{
+                        color: 'info.dark',
+                        verticalAlign: 'middle',
+                        width: 16,
+                        height: 16,
+                        ml: 1,
+                      }}
+                    />
+                  </StyledTooltip>
+                </Typography>
+
+                <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
+                  {POSFormatDollar(initialMonthlyPayment)}
+                </Typography>
+              </Stack>
+              <Stack
+                alignItems={'center'}
+                flexDirection={'row'}
+                height={40}
+                justifyContent={'space-between'}
+              >
+                <Typography variant={'body1'} width={'fit-content'}>
+                  Est. fully drawn monthly payment
+                  <StyledTooltip
+                    title={
+                      'The estimated monthly payment once the full loan amount, including future construction funding, has been disbursed.'
+                    }
+                  >
+                    <InfoOutlined
+                      sx={{
+                        color: 'info.dark',
+                        verticalAlign: 'middle',
+                        width: 16,
+                        height: 16,
+                        ml: 1,
+                      }}
+                    />
+                  </StyledTooltip>
+                </Typography>
+
+                <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
+                  {POSFormatDollar(fullyDrawnMonthlyPayment)}
+                </Typography>
+              </Stack>
+            </>
+          );
+        default:
+          return <></>;
+      }
+    }, [
+      estimateRate.productCategory,
+      fullyDrawnMonthlyPayment,
+      initialMonthlyPayment,
+      monthlyPayment,
+    ]);
 
     return (
       <Stack
@@ -100,41 +235,7 @@ export const ProductItem: FC<ProductItemProps> = observer(
           </Typography>
         </Stack>
 
-        <Stack
-          alignItems={'center'}
-          flexDirection={'row'}
-          height={40}
-          justifyContent={'space-between'}
-        >
-          <Stack
-            alignItems={'center'}
-            flexDirection={'row'}
-            fontSize={16}
-            gap={1}
-          >
-            Monthly payment{' '}
-            {estimateRate.productCategory ===
-              LoanProductCategoryEnum.fix_and_flip && (
-              <StyledTooltip
-                title={
-                  'The interest calculation is based on a non-dutch basis and does not include the rehab loan amount.'
-                }
-              >
-                <InfoOutlined
-                  sx={{
-                    width: 16,
-                    height: 16,
-                    color: 'info.dark',
-                    mb: 0.25,
-                  }}
-                />
-              </StyledTooltip>
-            )}
-          </Stack>
-          <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
-            {POSFormatDollar(monthlyPayment)}
-          </Typography>
-        </Stack>
+        {renderTail}
 
         <StyledButton
           color={'primary'}

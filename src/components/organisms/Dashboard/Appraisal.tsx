@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useRef, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Box, Fade, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -70,8 +70,6 @@ export const Appraisal: FC = () => {
     [AppraisalStatusEnum.completed]: null,
   });
 
-  const appraisalPaymentRef = useRef(null);
-  // const [paymentLoading, setPaymentLoading] = useState(false);
   const [paymentDetail, setPaymentDetail] = useState<
     DashboardPaymentDetailsResponse | undefined
   >();
@@ -268,7 +266,6 @@ export const Appraisal: FC = () => {
                   return;
                 }}
                 paymentDetail={paymentDetail}
-                ref={appraisalPaymentRef}
               />
             </Box>
           </Fade>

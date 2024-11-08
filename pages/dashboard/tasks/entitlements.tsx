@@ -12,27 +12,27 @@ const DynamicDashboardPage = dynamic(
   },
 );
 
-const DynamicTasksInvestmentExperiencePage = dynamic(
+const DynamicTasksEntitlementsPage = dynamic(
   () =>
-    import('@/views/Dashboard/TaskPage/TasksInvestmentExperiencePage').then(
-      (mod) => mod.TasksInvestmentExperiencePage,
+    import('@/views/Dashboard/TaskPage/TasksEntitlementsPage').then(
+      (mod) => mod.TasksEntitlementsPage,
     ),
   {
     ssr: true,
   },
 );
 
-const DashboardTaskRealEstateInvestmentExperience: FC = observer(() => {
+const DashboardTaskEntitlements: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Tasks - Borrower</title>
+        <title>Tasks - Entitlements</title>
       </Head>
       <DynamicDashboardPage>
-        <DynamicTasksInvestmentExperiencePage />
+        <DynamicTasksEntitlementsPage />
       </DynamicDashboardPage>
     </>
   );
 });
 
-export default DashboardTaskRealEstateInvestmentExperience;
+export default DashboardTaskEntitlements;

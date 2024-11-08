@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from 'react';
+import { FC, useCallback, useEffect, useMemo } from 'react';
 import { Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
@@ -58,6 +58,18 @@ export const StartingQuestion: FC<
     };
   }, [keydownEvent]);
 
+  const propertyTypeOptions = useMemo(() => {
+    if (
+      startingQuestion.productCategory ===
+      LoanProductCategoryEnum.ground_up_construction
+    ) {
+      return APPLICATION_PROPERTY_TYPE.filter(
+        (item) => item.value !== LoanPropertyTypeEnum.condo,
+      );
+    }
+    return APPLICATION_PROPERTY_TYPE;
+  }, [startingQuestion.productCategory]);
+
   return (
     <Stack gap={{ xs: 6, lg: 10 }} m={'0 auto'} maxWidth={600} width={'100%'}>
       <StyledFormItem
@@ -112,7 +124,7 @@ export const StartingQuestion: FC<
               value as string as LoanPropertyTypeEnum,
             );
           }}
-          options={APPLICATION_PROPERTY_TYPE}
+          options={propertyTypeOptions}
           value={startingQuestion.propertyType}
         />
       </StyledFormItem>
