@@ -39,6 +39,7 @@ import {
 } from '@/requests/dashboard';
 
 import ICON_CLOSE from '@/svg/icon/icon_close.svg';
+import { getSnapshot } from 'mobx-state-tree';
 
 const initialized: AdditionalFee = {
   fieldName: '',
@@ -50,8 +51,10 @@ export const TasksReferringBroker: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const {
-    dashboardInfo: { jumpToNextTask },
+    dashboardInfo: { jumpToNextTask, taskOrder },
   } = useMst();
+
+  console.log(getSnapshot(taskOrder));
 
   const breakpoints = useBreakpoints();
 

@@ -13,6 +13,11 @@ import {
 } from '@/types';
 import { _fetchDashboardInfo, _fetchLoanTaskList } from '@/requests/dashboard';
 
+interface TaskItem {
+  key: DashboardTaskKey;
+  value: number;
+}
+
 const DEFAULT_ORDER: { [key in DashboardTaskKey]: number } = {
   [DashboardTaskKey.payoff_amount]: 1,
   [DashboardTaskKey.rehab_info]: 2,
@@ -25,17 +30,6 @@ const DEFAULT_ORDER: { [key in DashboardTaskKey]: number } = {
   [DashboardTaskKey.title_escrow]: 9,
   [DashboardTaskKey.holdback_process]: 10,
   [DashboardTaskKey.referring_broker]: 11,
-};
-
-const FIND_NEXT = (
-  order: { key: DashboardTaskKey; value: number }[],
-  key: DashboardTaskKey,
-) => {
-  const index = order.findIndex((item) => item.key === key);
-  if (index === order.length - 1 && order.length >= 2) {
-    return order[0]?.key;
-  }
-  return order[index + 1]?.key;
 };
 
 export const DashboardInfo = types
@@ -67,24 +61,40 @@ export const DashboardInfo = types
     ),
   })
   .actions((self) => ({
+    updateTaskOrder() {
+      return Object.entries(DEFAULT_ORDER)
+        .filter(
+          ([key]) =>
+            self.taskMap.has(key as DashboardTaskKey) &&
+            !self.taskMap.get(key as DashboardTaskKey),
+        )
+        .map(([key, value]) => ({ key: key as DashboardTaskKey, value }))
+        .sort((a, b) => a.value - b.value);
+    },
+    findNextTask(
+      taskOrder: TaskItem[],
+      currentKey: DashboardTaskKey,
+    ): DashboardTaskKey | undefined {
+      const index = taskOrder.findIndex((item) => item.key === currentKey);
+      return taskOrder[index + 1]?.key;
+    },
     setLoanId(loanId: string) {
       self.loanId = loanId;
     },
     setLoading(loading: boolean) {
       self.loading = loading;
     },
-    async jumpToNextTask(taskKey: DashboardTaskKey) {
-      const nextTaskKey = FIND_NEXT(self.taskOrder, taskKey);
+    async jumpToNextTask(taskKey: DashboardTaskKey): Promise<void> {
+      self.taskMap.set(taskKey, true);
+      self.taskOrder = cast(this.updateTaskOrder());
+
+      const nextTaskKey = this.findNextTask(self.taskOrder, taskKey);
+
       if (nextTaskKey) {
         await Router.push({
           pathname: TASK_URL_HASH[nextTaskKey],
           query: { loanId: self.loanId },
         });
-        self.taskMap.set(taskKey, true);
-        const targetIndex = self.taskOrder.findIndex(
-          (item) => item.key === taskKey,
-        );
-        self.taskOrder.splice(targetIndex, 1);
       } else {
         await Router.push({
           pathname: '/dashboard/tasks',
@@ -128,6 +138,7 @@ export const DashboardInfo = types
         self.loading = false;
       }
     });
+
     const fetchTaskMap = flow(function* (loanId: string) {
       if (!loanId) {
         yield Router.push('/pipeline');
@@ -137,20 +148,13 @@ export const DashboardInfo = types
         });
         return;
       }
+
       self.setLoanId(loanId);
+
       try {
         const { data } = yield _fetchLoanTaskList(loanId);
         self.taskMap = data;
-        const temp = new Map(Object.entries(data));
-
-        const taskOrder = (
-          Object.entries(DEFAULT_ORDER) as [DashboardTaskKey, number][]
-        )
-          .filter(([key]) => temp.has(key) && !temp.get(key))
-          .map(([key, value]) => ({ key, value }))
-          .sort((a, b) => a.value - b.value);
-
-        self.taskOrder = cast(taskOrder);
+        self.taskOrder = cast(self.updateTaskOrder());
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
@@ -161,6 +165,7 @@ export const DashboardInfo = types
         });
       }
     });
+
     return {
       fetchDashboardInfo,
       fetchTaskMap,
