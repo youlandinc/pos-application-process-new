@@ -7,7 +7,7 @@ import { useSnackbar } from 'notistack';
 import { validate } from 'validate.js';
 
 import { observer } from 'mobx-react-lite';
-
+import { useMst } from '@/models/Root';
 import { Address, IAddress } from '@/models/common/Address';
 
 import { useBreakpoints } from '@/hooks';
@@ -49,6 +49,9 @@ import {
 export const TasksCoBorrower: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+  const {
+    dashboardInfo: { jumpToNextTask },
+  } = useMst();
 
   const breakpoints = useBreakpoints();
 
@@ -171,10 +174,7 @@ export const TasksCoBorrower: FC = observer(() => {
     setSaveLoading(true);
     try {
       await _updateLoanTaskDetail(postData);
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { loanId: router.query.loanId },
-      });
+      await jumpToNextTask(DashboardTaskKey.co_borrower);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {

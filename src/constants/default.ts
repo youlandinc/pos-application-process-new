@@ -1,4 +1,4 @@
-import { LoanSnapshotEnum } from '@/types';
+import { DashboardTaskKey, LoanSnapshotEnum } from '@/types';
 
 export const REQUEST_TIMEOUT = 30000;
 
@@ -22,4 +22,19 @@ export const URL_HASH: Record<string, any> = {
   [LoanSnapshotEnum.background_information]: '/background-information',
   [LoanSnapshotEnum.compensation_page]: '/compensation-information',
   [LoanSnapshotEnum.loan_summary]: '/loan-summary',
+};
+
+export const TASK_URL_HASH: Record<string, any> = {
+  [DashboardTaskKey.payoff_amount]: '/dashboard/tasks/payoff-amount',
+  [DashboardTaskKey.rehab_info]: '/dashboard/tasks/rehab-info',
+  [DashboardTaskKey.square_footage]: '/dashboard/tasks/square-footage',
+  [DashboardTaskKey.entitlements]: '/dashboard/tasks/entitlements',
+  [DashboardTaskKey.permits_obtained]: '/dashboard/tasks/permits-obtained',
+  [DashboardTaskKey.borrower]: '/dashboard/tasks/borrower',
+  [DashboardTaskKey.co_borrower]: '/dashboard/tasks/co-borrower',
+  [DashboardTaskKey.demographics]: '/dashboard/tasks/demographics-information',
+  [DashboardTaskKey.title_escrow]: '/dashboard/tasks/title-or-escrow-company',
+  [DashboardTaskKey.holdback_process]:
+    '/dashboard/tasks/construction-holdback-process',
+  [DashboardTaskKey.referring_broker]: '/dashboard/tasks/referring-broker',
 };

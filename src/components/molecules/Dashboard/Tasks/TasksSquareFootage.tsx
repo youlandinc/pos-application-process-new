@@ -4,6 +4,9 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
 
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
 import { useBreakpoints } from '@/hooks';
 import { POSGetParamsFromUrl } from '@/utils';
 import { AUTO_HIDE_DURATION } from '@/constants';
@@ -21,9 +24,12 @@ import {
 } from '@/requests/dashboard';
 import { TasksRightMenu } from '@/components/molecules';
 
-export const TasksSquareFootage: FC = () => {
+export const TasksSquareFootage: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+  const {
+    dashboardInfo: { jumpToNextTask },
+  } = useMst();
 
   const breakpoints = useBreakpoints();
 
@@ -72,10 +78,7 @@ export const TasksSquareFootage: FC = () => {
     setSaveLoading(true);
     try {
       await _updateLoanTaskDetail(postData);
-      await router.push({
-        pathname: '/dashboard/tasks',
-        query: { loanId: router.query.loanId },
-      });
+      await jumpToNextTask(DashboardTaskKey.square_footage);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -170,4 +173,4 @@ export const TasksSquareFootage: FC = () => {
       </Stack>
     </Fade>
   );
-};
+});

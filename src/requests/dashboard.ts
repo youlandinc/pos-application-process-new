@@ -28,7 +28,7 @@ export const _resubmitLoan = (params: {
 
 // tasks
 export const _fetchLoanTaskList = (loanId: string) => {
-  return get(`/pos/task/${loanId}`);
+  return get<{ [key in DashboardTaskKey]: boolean }>(`/pos/task/${loanId}`);
 };
 
 export const _fetchLoanTaskDetail = (params: {

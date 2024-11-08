@@ -4,6 +4,9 @@ import { CheckCircle } from '@mui/icons-material';
 import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
 import { useBreakpoints } from '@/hooks';
 
 import { POSGetParamsFromUrl } from '@/utils';
@@ -11,8 +14,6 @@ import { POSGetParamsFromUrl } from '@/utils';
 import { StyledLoading } from '@/components/atoms';
 
 import { DashboardTaskKey } from '@/types';
-import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
 
 export const Tasks: FC = observer(() => {
   const breakpoints = useBreakpoints();
@@ -22,10 +23,12 @@ export const Tasks: FC = observer(() => {
     dashboardInfo: { taskMap, fetchTaskMap },
   } = useMst();
 
-  const { loading } = useAsync(
-    async () => fetchTaskMap(POSGetParamsFromUrl(location.href)?.loanId),
-    [location.href],
-  );
+  const { loading } = useAsync(async () => {
+    if (!router.query.loanId) {
+      return;
+    }
+    await fetchTaskMap(router.query.loanId as string);
+  }, [router.query]);
 
   return loading ? (
     <Stack
