@@ -27,7 +27,7 @@ import {
 } from '@/components/atoms';
 
 export const StartingQuestion: FC<
-    FormNodeBaseProps & { createLoading: boolean }
+  FormNodeBaseProps & { createLoading: boolean }
 > = observer(({ nextStep, nextState, createLoading }) => {
   const {
     applicationForm: { startingQuestion },
