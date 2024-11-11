@@ -98,6 +98,14 @@ export const TasksRightMenu: FC = observer(() => {
         height={'fit-content'}
         px={1.5}
         py={1.5}
+        sx={{
+          '& .sub_menu': {
+            '&:not(:last-of-type)': {
+              pb: 1,
+              borderBottom: '1px solid #D2D6E1',
+            },
+          },
+        }}
         width={280}
       >
         <Typography mb={0.5} pl={0.75} variant={'subtitle2'}>
@@ -109,7 +117,7 @@ export const TasksRightMenu: FC = observer(() => {
           taskMap.has(DashboardTaskKey.entitlements) ||
           taskMap.has(DashboardTaskKey.permits_obtained) ||
           taskMap.has(DashboardTaskKey.square_footage)) && (
-          <Stack borderBottom={'1px solid #D2D6E1'} pb={1}>
+          <Stack className={'sub_menu'}>
             <Stack
               alignItems={'center'}
               flexDirection={'row'}
@@ -199,7 +207,7 @@ export const TasksRightMenu: FC = observer(() => {
           </Stack>
         )}
 
-        <Stack borderBottom={'1px solid #D2D6E1'} pb={1}>
+        <Stack className={'sub_menu'}>
           <Stack
             alignItems={'center'}
             flexDirection={'row'}
@@ -256,7 +264,7 @@ export const TasksRightMenu: FC = observer(() => {
           </Collapse>
         </Stack>
 
-        <Stack borderBottom={'1px solid #D2D6E1'} pb={1}>
+        <Stack className={'sub_menu'}>
           <Stack
             alignItems={'center'}
             flexDirection={'row'}
@@ -290,7 +298,7 @@ export const TasksRightMenu: FC = observer(() => {
         </Stack>
 
         {taskMap.has(DashboardTaskKey.holdback_process) && (
-          <Stack borderBottom={'1px solid #D2D6E1'} pb={1}>
+          <Stack className={'sub_menu'}>
             <Stack
               alignItems={'center'}
               flexDirection={'row'}
@@ -327,7 +335,7 @@ export const TasksRightMenu: FC = observer(() => {
         )}
 
         {taskMap.has(DashboardTaskKey.referring_broker) && (
-          <Stack>
+          <Stack className={'sub_menu'}>
             <Stack
               alignItems={'center'}
               flexDirection={'row'}
