@@ -878,9 +878,9 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                       component={NOTIFICATION_INFO}
                       sx={{ mt: { xs: -0.5, lg: -0.25 } }}
                     />
-                    If you want to add the borrower&apos;s name, you can
-                    complete the borrower&apos;s information task after
-                    submitting the loan.
+                    If you want to add the borrower&apos;s name to the
+                    pre-approval letter, you can complete the borrower&apos;s
+                    information task after submitting the loan.
                   </Stack>
                 </Stack>
               )}
