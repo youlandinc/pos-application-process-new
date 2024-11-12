@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from 'react';
-import { Box, Icon } from '@mui/material';
+import { Box, Icon, Stack } from '@mui/material';
 import {
   AccountBalanceOutlined,
   FolderOpenOutlined,
@@ -10,18 +10,20 @@ import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
 
-import { DashboardSideInfoBox } from './component';
+import { useBreakpoints } from '@/hooks';
+
+import { DashboardSideInfoBox } from './index';
 
 import { LayoutSceneTypeEnum, MenuItems } from '@/types';
 import { IDashboardInfo } from '@/models/base/DashboardInfo';
 
 import APPRAISAL_ICON from './Appraisal.svg';
 
-type POSMenuListProps = {
+interface POSMenuListProps {
   info: IDashboardInfo;
   scene?: LayoutSceneTypeEnum;
   loading?: boolean;
-};
+}
 
 const DASHBOARD_MENU_LIST: MenuItems[] = [
   {
@@ -57,8 +59,10 @@ const DASHBOARD_MENU_LIST: MenuItems[] = [
 ];
 
 export const DashboardMenuList: FC<POSMenuListProps> = observer(
-  ({ info, loading }) => {
+  ({ loading, info }) => {
     const router = useRouter();
+
+    const breakpoint = useBreakpoints();
 
     const [activeKey, setActiveKey] = useState(() => {
       const results = router.pathname.split('/');
@@ -86,20 +90,17 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
     );
 
     return (
-      <>
-        <Box
-          pt={{ md: 6, xs: 2 }}
-          sx={{
-            '& .item': {
-              cursor: 'pointer',
-              '&:hover': {
-                bgcolor: 'info.darker',
-              },
-              '&.active': {
-                bgcolor: 'primary.lighter',
-                color: 'primary.main',
-                position: 'relative',
-                '&::after': {
+      <Stack
+        alignItems={'flex-end'}
+        flexDirection={{ xs: 'column', lg: 'row' }}
+        height={{ xs: 'auto', lg: 40 }}
+      >
+        <Stack
+          flexDirection={{ xs: 'column', lg: 'row' }}
+          sx={(theme) => {
+            const fillColor = theme.palette.primary.main;
+            const pseudo = ['xs', 'sm', 'md'].includes(breakpoint)
+              ? {
                   content: '""',
                   height: '100%',
                   width: 2,
@@ -107,17 +108,40 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
                   position: 'absolute',
                   top: 0,
                   left: 0,
+                }
+              : {
+                  content: '""',
+                  height: 2,
+                  width: '100%',
+                  bgcolor: 'primary.main',
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                };
+
+            return {
+              '& .item': {
+                cursor: 'pointer',
+                '&:hover': {
+                  bgcolor: 'info.darker',
                 },
-                '& .Appraisal_svg__theme-color': {
-                  fill: (theme) => theme.palette.primary.main,
+                '&.active': {
+                  bgcolor: 'primary.lighter',
+                  color: 'primary.main',
+                  position: 'relative',
+                  '&::after': pseudo,
+                  '& .Appraisal_svg__theme-color': {
+                    fill: fillColor,
+                  },
+                },
+                '& svg': {
+                  verticalAlign: 'middle',
+                  mr: 1,
                 },
               },
-              '& svg': {
-                verticalAlign: 'middle',
-                mr: 1,
-              },
-            },
+            };
           }}
+          width={'100%'}
         >
           {DASHBOARD_MENU_LIST.map(({ path, key, label, icon }) => {
             return (
@@ -129,15 +153,18 @@ export const DashboardMenuList: FC<POSMenuListProps> = observer(
                 lineHeight={1.5}
                 onClick={selectMenu(path, key)}
                 px={3}
-                py={1.8}
+                py={{ xs: 1.8, lg: 1 }}
               >
-                {icon} {label}
+                {['xs', 'sm', 'md', 'xxl'].includes(breakpoint) && icon}
+                {label}
               </Box>
             );
           })}
-        </Box>
-        <DashboardSideInfoBox info={info} loading={loading} />
-      </>
+        </Stack>
+        {!['xs', 'sm', 'md'].includes(breakpoint) && (
+          <DashboardSideInfoBox info={info} loading={loading} />
+        )}
+      </Stack>
     );
   },
 );

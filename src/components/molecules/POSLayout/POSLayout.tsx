@@ -5,18 +5,14 @@ import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useBreakpoints, useCheckIsLogin } from '@/hooks';
+import { useCheckIsLogin } from '@/hooks';
 
 import { POSLayoutProps } from './index';
 import { POSHeader } from './components/POSHeader';
-import { DashboardMenuList } from './components/DashboardMenuList';
-
-import { LayoutSceneTypeEnum } from '@/types';
 
 import { StyledBoxWrap } from '@/components/atoms';
 
 export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
-  const breakpoint = useBreakpoints();
   const router = useRouter();
 
   const store = useMst();
@@ -40,30 +36,8 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
 
   return (
     <Box sx={{ height: '100%' }}>
-      <POSHeader scene={scene} store={store} />
-      <StyledBoxWrap
-        sx={{
-          display:
-            scene === LayoutSceneTypeEnum.dashboard ||
-            scene === LayoutSceneTypeEnum.account
-              ? 'flex'
-              : 'block',
-          flexDirection:
-            scene === LayoutSceneTypeEnum.dashboard ? 'row' : 'column',
-        }}
-      >
-        {scene === LayoutSceneTypeEnum.dashboard &&
-          ['lg', 'xl', 'xxl'].includes(breakpoint) && (
-            <Box sx={{ minWidth: 280 }}>
-              <DashboardMenuList
-                info={store.dashboardInfo}
-                loading={loading}
-                scene={scene}
-              />
-            </Box>
-          )}
-        {children}
-      </StyledBoxWrap>
+      <POSHeader loading={loading} scene={scene} store={store} />
+      <StyledBoxWrap>{children}</StyledBoxWrap>
     </Box>
   );
 });
