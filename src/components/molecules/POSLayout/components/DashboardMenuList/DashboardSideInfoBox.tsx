@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Box, Skeleton, Stack, Typography } from '@mui/material';
+import { Skeleton, Stack, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 
 import { IDashboardInfo } from '@/models/base';
