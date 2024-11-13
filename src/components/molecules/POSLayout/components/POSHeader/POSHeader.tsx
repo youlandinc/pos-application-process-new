@@ -542,7 +542,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
             />
           ),
           footer: (
-            <Box className="POS_tc POS_mt_3">
+            <Stack alignItems={'center'} mt={3} width={'100%'}>
               <Typography component={'div'} variant={'body2'}>
                 Already have an account?{' '}
                 <Typography
@@ -558,7 +558,11 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                   Log in
                 </Typography>
               </Typography>
-              <Typography sx={{ color: 'info.main', mt: 3 }} variant={'body2'}>
+              <Typography
+                component={'div'}
+                sx={{ color: 'info.main', mt: 3 }}
+                variant={'body2'}
+              >
                 By signing up, you agree to our{' '}
                 <Typography
                   component={'span'}
@@ -575,11 +579,16 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                   }}
                   variant={'body2'}
                 >
-                  Term of Use{' '}
+                  Terms of Use{' '}
                 </Typography>
-                and to receive
-                {' ' + saasState?.organizationName || ' YouLand'} emails &
-                updates and acknowledge that you read our{' '}
+                and acknowledge
+              </Typography>
+              <Typography
+                color={'text.secondary'}
+                component={'div'}
+                variant={'body2'}
+              >
+                that you&apos;ve read our{' '}
                 <Typography
                   component={'span'}
                   onClick={() =>
@@ -600,7 +609,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 </Typography>
                 .
               </Typography>
-            </Box>
+            </Stack>
           ),
         };
     }

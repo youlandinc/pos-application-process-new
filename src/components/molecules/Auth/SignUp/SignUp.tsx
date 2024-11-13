@@ -553,6 +553,7 @@ export const SignUp: FC<SignUpProps> = observer(
                   </Typography>
 
                   {FormBody}
+
                   <Box className="form_foot">
                     <Typography variant="body2">
                       Already have an account?{' '}
@@ -570,8 +571,9 @@ export const SignUp: FC<SignUpProps> = observer(
                       </Typography>
                     </Typography>
                     <Typography
+                      component={'div'}
                       sx={{ color: 'info.main', mt: 3 }}
-                      variant="body2"
+                      variant={'body2'}
                     >
                       By signing up, you agree to our{' '}
                       <Typography
@@ -590,11 +592,16 @@ export const SignUp: FC<SignUpProps> = observer(
                         }}
                         variant={'body2'}
                       >
-                        Term of Use{' '}
+                        Terms of Use{' '}
                       </Typography>
-                      and to receive
-                      {' ' + saasState?.organizationName || ' YouLand'} emails &
-                      updates and acknowledge that you read our{' '}
+                      and acknowledge
+                    </Typography>
+                    <Typography
+                      color={'text.secondary'}
+                      component={'div'}
+                      variant={'body2'}
+                    >
+                      that you&apos;ve read our{' '}
                       <Typography
                         component={'span'}
                         onClick={() =>
