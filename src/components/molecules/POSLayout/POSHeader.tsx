@@ -432,7 +432,6 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
     applicationForm.snapshot,
     breakpoint,
     saasState?.tenantId,
-    store,
     open,
     router,
   ]);
