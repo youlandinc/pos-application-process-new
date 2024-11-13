@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -7,10 +7,16 @@ import { useMst } from '@/models/Root';
 
 import { useCheckIsLogin } from '@/hooks';
 
-import { POSLayoutProps } from './index';
-import { POSHeader } from './components/POSHeader';
-
 import { StyledBoxWrap } from '@/components/atoms';
+
+import { POSHeader } from './index';
+
+import { LayoutSceneTypeEnum } from '@/types';
+
+export interface POSLayoutProps {
+  children?: ReactNode;
+  scene: LayoutSceneTypeEnum;
+}
 
 export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
   const router = useRouter();
@@ -36,7 +42,7 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
 
   return (
     <Box sx={{ height: '100%' }}>
-      <POSHeader loading={loading} scene={scene} store={store} />
+      <POSHeader loading={loading} scene={scene} />
       <StyledBoxWrap>{children}</StyledBoxWrap>
     </Box>
   );

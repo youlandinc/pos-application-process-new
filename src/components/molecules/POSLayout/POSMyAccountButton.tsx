@@ -24,14 +24,14 @@ import { useSnackbar } from 'notistack';
 import useInfiniteScroll from 'react-easy-infinite-scroll-hook';
 
 import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
 import { useBreakpoints } from '@/hooks';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { StyledAvatar, StyledDrawer, StyledLoading } from '@/components/atoms';
-import { MyAccountStyles } from './index';
-import { MessageItem } from './MessageItem';
+import { POSMessageItem } from './POSMessageItem';
 
 import {
   NotificationMessageItem,
@@ -44,10 +44,9 @@ import {
   //_readMessage
 } from '@/requests';
 
-import ICON_NOTIFICATION from './icon_notification.svg';
-import ICON_NO_MORE from './icon_no_more.svg';
+import ICON_NOTIFICATION from './assets/icon_notification.svg';
+import ICON_NO_MORE from './assets/icon_no_more.svg';
 import ICON_NO_HISTORY from '@/components/atoms/StyledUploadButtonBox/icon_no_history.svg';
-import { IRoot } from '@/models/Root';
 
 const MENU_LIST = [
   { label: 'Account', url: '/account' },
@@ -59,12 +58,15 @@ const MESSAGE_LABEL = [
   { label: 'Unread', value: NotificationMessageLabel.unread },
 ];
 
-export const MyAccountButton: FC<{
-  scene: LayoutSceneTypeEnum;
-  store: IRoot;
-}> = observer(({ store }) => {
+export interface POSMyAccountButtonProps {
+  scene?: LayoutSceneTypeEnum;
+}
+
+export const POSMyAccountButton: FC<POSMyAccountButtonProps> = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+
+  const store = useMst();
   const breakpoint = useBreakpoints();
 
   const anchorRef = useRef<HTMLDivElement>(null);
@@ -120,7 +122,16 @@ export const MyAccountButton: FC<{
         disableRipple
         key={`${item.label}_${index}`}
         onClick={(e) => onClickUserMenuItem(e, item.url)}
-        sx={{ ...MyAccountStyles.menu_item, justifyContent: 'center' }}
+        sx={{
+          p: 1.5,
+          width: '100%',
+          fontSize: 14,
+          color: 'text.primary',
+          justifyContent: 'center',
+          '&:hover': {
+            bgcolor: 'info.darker',
+          },
+        }}
       >
         {item.label}
       </MenuItem>
@@ -371,7 +382,7 @@ export const MyAccountButton: FC<{
               ) : messageList.length > 0 ? (
                 <>
                   {messageList.map((item, index) => (
-                    <MessageItem
+                    <POSMessageItem
                       cb={() => onClickMessageItemCb(item)}
                       clickLoading={messageClickLoading}
                       key={`message-item-${index}`}
@@ -529,7 +540,7 @@ export const MyAccountButton: FC<{
                       ) : messageList.length > 0 ? (
                         <>
                           {messageList.map((item, index) => (
-                            <MessageItem
+                            <POSMessageItem
                               cb={() => onClickMessageItemCb(item)}
                               clickLoading={messageClickLoading}
                               key={`message-item-${index}`}
