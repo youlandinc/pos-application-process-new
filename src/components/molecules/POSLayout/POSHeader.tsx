@@ -1,6 +1,6 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
-import { CloseOutlined, DehazeOutlined } from '@mui/icons-material';
+import { CloseOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
@@ -38,14 +38,9 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
   const router = useRouter();
   const store = useMst();
 
-  const { visible, open, close } = useSwitch(false);
-  const {
-    visible: closeVisible,
-    open: sideOpen,
-    close: sideClose,
-  } = useSwitch();
-  const { saasState } = useSessionStorageState('tenantConfig');
   const breakpoint = useBreakpoints();
+  const { visible, open, close } = useSwitch(false);
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const { session, applicationForm } = store;
 
@@ -644,15 +639,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
             xs: '100%',
           }}
         >
-          {scene === LayoutSceneTypeEnum.dashboard ? (
-            ['xs', 'sm', 'md'].includes(breakpoint) ? (
-              <DehazeOutlined onClick={sideOpen} sx={{ cursor: 'pointer' }} />
-            ) : (
-              <StyledHeaderLogo />
-            )
-          ) : (
-            <StyledHeaderLogo />
-          )}
+          <StyledHeaderLogo />
           <Box sx={{ ml: 'auto' }}>{renderButton}</Box>
         </Stack>
         <StyledDialog

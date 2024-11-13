@@ -11,12 +11,15 @@ import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { OPTIONS_COMMON_STATE } from '@/constants';
 import { useBreakpoints } from '@/hooks';
+
+import { POSMenuSelect } from './index';
 
 import { LayoutSceneTypeEnum, MenuItems } from '@/types';
 
 import ICON_APPRAISAL from './assets/icon_appraisal.svg';
-import { OPTIONS_COMMON_STATE } from '@/constants';
+import ICON_LOAN_TERMS from './assets/icon_loan_terms.svg';
 
 interface POSMenuListProps {
   scene?: LayoutSceneTypeEnum;
@@ -28,31 +31,91 @@ const DASHBOARD_MENU_LIST: MenuItems[] = [
     label: 'Overview',
     path: 'overview',
     key: 'overview',
-    icon: <AccountBalanceOutlined />,
+    icon: (
+      <AccountBalanceOutlined
+        sx={{
+          '& path': {
+            fill: '#636A7C',
+          },
+        }}
+      />
+    ),
   },
   {
     label: 'Tasks',
     path: 'tasks',
     key: 'tasks',
-    icon: <GradingOutlined />,
+    icon: (
+      <GradingOutlined
+        sx={{
+          width: 20,
+          height: 20,
+          '& path': {
+            fill: '#636A7C',
+          },
+        }}
+      />
+    ),
+  },
+  {
+    label: 'Terms',
+    path: 'terms',
+    key: 'terms',
+    icon: (
+      <Icon
+        component={ICON_LOAN_TERMS}
+        sx={{
+          width: 20,
+          height: 20,
+        }}
+      />
+    ),
   },
   {
     label: 'Appraisal',
     path: 'appraisal',
     key: 'appraisal',
-    icon: <Icon component={ICON_APPRAISAL} />,
+    icon: (
+      <Icon
+        component={ICON_APPRAISAL}
+        sx={{
+          width: 20,
+          height: 20,
+        }}
+      />
+    ),
   },
   {
     label: 'Documents',
     path: 'documents',
     key: 'documents',
-    icon: <FolderOpenOutlined />,
+    icon: (
+      <FolderOpenOutlined
+        sx={{
+          width: 20,
+          height: 20,
+          '& path': {
+            fill: '#636A7C',
+          },
+        }}
+      />
+    ),
   },
   {
     label: 'Team',
     path: 'team',
     key: 'team',
-    icon: <PeopleAltOutlined />,
+    icon: (
+      <PeopleAltOutlined
+        sx={{
+          width: 20,
+          height: 20,
+          '& path': {
+            fill: '#636A7C',
+          },
+        }}
+      />
+    ),
   },
 ];
 
@@ -60,10 +123,9 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ loading }) => {
   const router = useRouter();
   const { dashboardInfo } = useMst();
 
-  const [firstRender, setFirstRender] = useState(true);
-
   const breakpoint = useBreakpoints();
 
+  const [firstRender, setFirstRender] = useState(true);
   const [activeKey, setActiveKey] = useState(() => {
     const results = router.pathname.split('/');
     const result = results[results.length - 1];
@@ -94,133 +156,147 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ loading }) => {
   }, [dashboardInfo?.propertyAddress]);
 
   return (
-    <Stack
-      alignItems={'flex-end'}
-      flexDirection={{ xs: 'column', lg: 'row' }}
-      height={{ xs: 'auto', lg: 40 }}
-    >
-      <Stack
-        flexDirection={{ xs: 'column', lg: 'row' }}
-        sx={(theme) => {
-          const fillColor = theme.palette.primary.main;
-          const pseudo = ['xs', 'sm', 'md'].includes(breakpoint)
-            ? {
-                content: '""',
-                height: '100%',
-                width: 2,
-                bgcolor: 'primary.main',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-              }
-            : {
-                content: '""',
-                height: 2,
-                width: '100%',
-                bgcolor: 'primary.main',
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-              };
+    <Stack flexDirection={{ xs: 'column', lg: 'row' }} gap={1.5}>
+      {!['xs', 'sm', 'md'].includes(breakpoint) ? (
+        <Stack
+          flexDirection={'row'}
+          sx={(theme) => {
+            const fillColor = theme.palette.primary.main;
+            const pseudo = ['xs', 'sm', 'md'].includes(breakpoint)
+              ? {
+                  content: '""',
+                  height: '100%',
+                  width: 2,
+                  bgcolor: 'primary.main',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                }
+              : {
+                  content: '""',
+                  height: 2,
+                  width: '100%',
+                  bgcolor: 'primary.main',
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                };
 
-          return {
-            '& .item': {
-              cursor: 'pointer',
-              '&:hover': {
-                bgcolor: 'info.darker',
-              },
-              '&.active': {
-                bgcolor: 'primary.lighter',
-                color: 'primary.main',
-                position: 'relative',
-                '&::after': pseudo,
-                '& .Appraisal_svg__theme-color': {
-                  fill: fillColor,
+            return {
+              '& .item': {
+                cursor: 'pointer',
+                '&:hover': {
+                  bgcolor: 'info.darker',
+                },
+                '&.active': {
+                  bgcolor: 'primary.lighter',
+                  color: 'primary.main',
+                  position: 'relative',
+                  '&::after': pseudo,
+                  '& .icon_appraisal_svg__theme-color, & svg > path, & .icon_loan_terms_svg__theme-color':
+                    {
+                      fill: fillColor,
+                    },
+                },
+                '& svg': {
+                  verticalAlign: 'middle',
+                  mr: 0.5,
                 },
               },
-              '& svg': {
-                verticalAlign: 'middle',
-                mr: 1,
-              },
-            },
-          };
-        }}
-        width={'100%'}
-      >
-        {DASHBOARD_MENU_LIST.map(({ path, key, label, icon }) => {
-          return (
-            <Box
-              className={activeKey === key ? 'active item' : 'item'}
-              color={'text.hover'}
-              fontSize={16}
-              key={key}
-              lineHeight={1.5}
-              onClick={selectMenu(path, key)}
-              px={3}
-              py={{ xs: 1.8, lg: 1 }}
-            >
-              {['xs', 'sm', 'md', 'xxl'].includes(breakpoint) && icon}
-              {label}
-            </Box>
-          );
-        })}
-      </Stack>
-      {!['xs', 'sm', 'md'].includes(breakpoint) && (
-        <Stack flexShrink={0} height={40} width={'fit-content'}>
-          {loading || firstRender ? (
-            <Stack alignItems={'flex-end'} width={320}>
-              <Skeleton animation={'wave'} height={18} width={'100%'} />
-              <Skeleton animation={'wave'} height={18} width={200} />
-            </Stack>
-          ) : (
-            <>
-              <Typography
-                color={'text.primary'}
-                textAlign={{ xs: 'left', lg: 'right' }}
-                variant={'body2'}
-              >
-                {dashboardInfo?.propertyAddress &&
-                  (dashboardInfo?.propertyAddress.formatAddress
-                    ? `${
-                        dashboardInfo.propertyAddress?.formatAddress
-                          ? `${dashboardInfo.propertyAddress?.formatAddress}, `
-                          : ''
-                      }${
-                        dashboardInfo.propertyAddress?.aptNumber
-                          ? `${dashboardInfo.propertyAddress?.aptNumber}, `
-                          : ''
-                      } ${
-                        dashboardInfo.propertyAddress?.city
-                          ? `${dashboardInfo.propertyAddress?.city}, `
-                          : ''
-                      }${
-                        dashboardInfo.propertyAddress?.state
-                          ? `${dashboardInfo.propertyAddress?.state} `
-                          : ''
-                      }${
-                        dashboardInfo.propertyAddress?.postcode
-                          ? `${dashboardInfo.propertyAddress?.postcode}`
-                          : ''
-                      }`
-                    : OPTIONS_COMMON_STATE.find(
-                        (item) =>
-                          item.value ===
-                          (dashboardInfo?.propertyAddress &&
-                            dashboardInfo?.propertyAddress.state),
-                      )?.label || '')}
-              </Typography>
-
-              <Typography
-                color={'text.secondary'}
+            };
+          }}
+          width={'100%'}
+        >
+          {DASHBOARD_MENU_LIST.map(({ path, key, label, icon }) => {
+            return (
+              <Box
+                className={activeKey === key ? 'active item' : 'item'}
+                color={'text.hover'}
                 fontSize={14}
-                textAlign={{ xs: 'left', lg: 'right' }}
+                key={key}
+                lineHeight={1.5}
+                onClick={selectMenu(path, key)}
+                px={{ xs: 1.5, xl: 2, xxl: 3 }}
+                py={1}
+                sx={{
+                  borderTopLeftRadius: 2,
+                  borderTopRightRadius: 2,
+                }}
               >
-                Loan number: {dashboardInfo?.loanNumber}
-              </Typography>
-            </>
-          )}
+                {['xs', 'sm', 'md', 'xl', 'xxl'].includes(breakpoint) && icon}
+                {label}
+              </Box>
+            );
+          })}
         </Stack>
+      ) : (
+        <POSMenuSelect
+          onChange={(path, key) => selectMenu(path, key)()}
+          options={DASHBOARD_MENU_LIST}
+          value={activeKey}
+        />
       )}
+
+      {/*dashboard info*/}
+      <Stack
+        flexShrink={0}
+        height={40}
+        order={{ xs: 1, lg: 2 }}
+        width={'fit-content'}
+      >
+        {loading || firstRender ? (
+          <Stack alignItems={'flex-end'} width={320}>
+            <Skeleton animation={'wave'} height={18} width={'100%'} />
+            <Skeleton animation={'wave'} height={18} width={200} />
+          </Stack>
+        ) : (
+          <>
+            <Typography
+              color={'text.primary'}
+              textAlign={{ xs: 'left', lg: 'right' }}
+              variant={'body2'}
+            >
+              {dashboardInfo?.propertyAddress &&
+                (dashboardInfo?.propertyAddress.formatAddress
+                  ? `${
+                      dashboardInfo.propertyAddress?.formatAddress
+                        ? `${dashboardInfo.propertyAddress?.formatAddress}, `
+                        : ''
+                    }${
+                      dashboardInfo.propertyAddress?.aptNumber
+                        ? `${dashboardInfo.propertyAddress?.aptNumber}, `
+                        : ''
+                    } ${
+                      dashboardInfo.propertyAddress?.city
+                        ? `${dashboardInfo.propertyAddress?.city}, `
+                        : ''
+                    }${
+                      dashboardInfo.propertyAddress?.state
+                        ? `${dashboardInfo.propertyAddress?.state} `
+                        : ''
+                    }${
+                      dashboardInfo.propertyAddress?.postcode
+                        ? `${dashboardInfo.propertyAddress?.postcode}`
+                        : ''
+                    }`
+                  : OPTIONS_COMMON_STATE.find(
+                      (item) =>
+                        item.value ===
+                        (dashboardInfo?.propertyAddress &&
+                          dashboardInfo?.propertyAddress.state),
+                    )?.label || '')}
+            </Typography>
+
+            <Typography
+              color={'text.secondary'}
+              fontSize={14}
+              textAlign={{ xs: 'left', lg: 'right' }}
+            >
+              Loan number: {dashboardInfo?.loanNumber}
+            </Typography>
+          </>
+        )}
+      </Stack>
     </Stack>
   );
 });
