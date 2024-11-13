@@ -74,10 +74,16 @@ export const Auth: FC<FormNodeBaseProps> = observer(
                     }}
                     variant={'body2'}
                   >
-                    Term of Use{' '}
+                    Terms of Use{' '}
                   </Typography>
-                  and to receive YouLand emails & updates and acknowledge that
-                  you read our{' '}
+                  and acknowledge
+                </Typography>
+                <Typography
+                  color={'text.secondary'}
+                  component={'div'}
+                  variant={'body2'}
+                >
+                  that you&apos;ve read our{' '}
                   <Typography
                     component={'span'}
                     onClick={() =>
