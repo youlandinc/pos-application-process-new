@@ -17,7 +17,12 @@ import { useBreakpoints } from '@/hooks';
 
 import { StyledButton } from '@/components/atoms';
 
-import { HttpError, LoanSnapshotEnum, PipelineLoanStageEnum } from '@/types';
+import {
+  DashboardOverviewResponse,
+  HttpError,
+  LoanSnapshotEnum,
+  PipelineLoanStageEnum,
+} from '@/types';
 import { _resubmitLoan } from '@/requests/dashboard';
 
 const hash = {
@@ -32,27 +37,10 @@ const hash = {
   [PipelineLoanStageEnum.not_submitted]: -1,
 };
 
-interface baseData {
-  date?: string;
-}
-
-interface ILoanStatusDetails {
-  [PipelineLoanStageEnum.scenario]: baseData | null;
-  [PipelineLoanStageEnum.initial_approval]: baseData | null;
-  [PipelineLoanStageEnum.pre_approved]: baseData | null;
-  [PipelineLoanStageEnum.preparing_docs]: baseData | null;
-  [PipelineLoanStageEnum.docs_out]: baseData | null;
-  [PipelineLoanStageEnum.funded]: baseData | null;
-  [PipelineLoanStageEnum.rejected]: (baseData & { reason?: string }) | null;
-  [PipelineLoanStageEnum.inactive]: baseData | null;
-}
-
-type ILoanStage = `${PipelineLoanStageEnum}`;
-
-interface OverviewLoanStatusProps {
-  loanStatus: ILoanStage;
-  loanStatusDetails: ILoanStatusDetails;
-}
+export type OverviewLoanStatusProps = {
+  loanStatus: DashboardOverviewResponse['data']['loanStatus'];
+  loanStatusDetails: DashboardOverviewResponse['data']['loanStatusDetails'];
+};
 
 export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
   loanStatus = PipelineLoanStageEnum.scenario,
@@ -155,7 +143,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
             },
             {
               icon: null,
-              label: 'Preparing loan documents',
+              label: 'Final approval',
               description:
                 'We have completed the approval process for this loan and are now preparing the documents.These will be sent out as soon as possible.',
               date: loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs]

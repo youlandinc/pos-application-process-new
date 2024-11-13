@@ -183,6 +183,7 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ loading }) => {
                 };
 
             return {
+              height: 'auto',
               '& .item': {
                 cursor: 'pointer',
                 '&:hover': {
@@ -240,7 +241,7 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ loading }) => {
       {/*dashboard info*/}
       <Stack
         flexShrink={0}
-        height={40}
+        height={{ xs: 'fit-content', lg: 42 }}
         order={{ xs: 1, lg: 2 }}
         width={'fit-content'}
       >

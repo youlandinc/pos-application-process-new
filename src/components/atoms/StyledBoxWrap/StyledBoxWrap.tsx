@@ -10,7 +10,7 @@ export const StyledBoxWrap: FC<StyledBoxWrapProps> = ({ sx, children }) => {
     <Box sx={{ ...POSFlex('center', 'center', 'row') }}>
       <Box
         sx={{
-          minHeight: 'calc(100vh - 92px)',
+          minHeight: { xs: 'calc(100vh - 134px)', lg: 'calc(100vh - 152px)' },
           width: {
             xxl: 1440,
             xl: 1240,

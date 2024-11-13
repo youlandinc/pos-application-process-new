@@ -84,6 +84,10 @@ export const DashboardInfo = types
     setLoading(loading: boolean) {
       self.loading = loading;
     },
+    setLoanTasks(taskMap: any) {
+      self.taskMap = taskMap;
+      self.taskOrder = cast(this.updateTaskOrder());
+    },
     async jumpToNextTask(taskKey: DashboardTaskKey): Promise<void> {
       self.taskMap.set(taskKey, true);
       self.taskOrder = cast(this.updateTaskOrder());

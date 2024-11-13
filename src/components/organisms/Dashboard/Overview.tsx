@@ -9,22 +9,36 @@ import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSGetParamsFromUrl } from '@/utils';
 
-import { StyledLoading } from '@/components/atoms';
+import { StyledButton, StyledLoading } from '@/components/atoms';
 import {
-  OverviewIconList,
-  OverviewLoanAddress,
-  OverviewLoanDetails,
+  OverviewChecklist,
+  OverviewEstDate,
   OverviewLoanStatus,
 } from '@/components/molecules';
 
-import { HttpError } from '@/types';
+import {
+  DashboardOverviewResponse,
+  HttpError,
+  PipelineLoanStageEnum,
+} from '@/types';
 import { _fetchLoanDetail } from '@/requests/dashboard';
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
-export const Overview: FC = () => {
+export const Overview: FC = observer(() => {
   const breakpoints = useBreakpoints();
   const router = useRouter();
+  const { dashboardInfo } = useMst();
+
   const { enqueueSnackbar } = useSnackbar();
   const { saasState } = useSessionStorageState('tenantConfig');
+
+  const [loanStatus, setLoanStatus] = useState<
+    DashboardOverviewResponse['data']['loanStatus']
+  >(PipelineLoanStageEnum.scenario);
+
+  const [loanStatusDetails, setLoanStatusDetails] =
+    useState<DashboardOverviewResponse['data']['loanStatusDetails']>();
 
   const { loading } = useAsync(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
@@ -38,9 +52,13 @@ export const Overview: FC = () => {
     }
     try {
       const {
-        data: { data },
+        data: {
+          data: { loanStatus, loanStatusDetails, loanTasks, estDate },
+        },
       } = await _fetchLoanDetail(loanId);
-      setOverviewData(data);
+      setLoanStatus(loanStatus);
+      setLoanStatusDetails(loanStatusDetails);
+      dashboardInfo.setLoanTasks(loanTasks);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -51,8 +69,6 @@ export const Overview: FC = () => {
       });
     }
   }, [location?.href]);
-
-  const [overviewData, setOverviewData] = useState<any>(null);
 
   return loading ? (
     <Stack
@@ -67,62 +83,43 @@ export const Overview: FC = () => {
   ) : (
     <Fade in={!loading}>
       <Stack
-        gap={3}
+        flexDirection={'row'}
+        gap={6}
         justifyContent={'flex-start'}
         mx={{ lg: 'auto', xs: 0 }}
-        px={{ lg: 3, xs: 0 }}
         width={'100%'}
       >
-        <Typography
-          textAlign={'center'}
-          variant={['xs', 'sm', 'md'].includes(breakpoints) ? 'h6' : 'h5'}
-        >
-          Your loan overview
-        </Typography>
-
-        <OverviewIconList
-          compensationFee={overviewData?.compensationFee}
-          interestRate={overviewData?.interestRate}
-          monthlyPayment={overviewData?.monthlyPayment}
-          totalLoanAmount={overviewData?.totalLoanAmount}
-        />
-
-        <Stack
-          flexDirection={{ xs: 'column', xl: 'row' }}
-          gap={3}
-          width={'100%'}
-        >
-          <Stack gap={3} width={{ xs: '100%', xl: 'calc(67% - 12px)' }}>
-            <OverviewLoanStatus
-              loanStatus={overviewData?.loanStatus}
-              loanStatusDetails={overviewData?.loanStatusDetails}
-            />
+        <Stack flex={1.5} flexShrink={0} gap={6}>
+          <Stack gap={1.5}>
+            <Typography fontSize={{ xs: 20, md: 24 }}>
+              Congratulations
+            </Typography>
+            <Typography variant={'body2'}>
+              We&apos;ve put together a list of steps for you to take to move
+              ahead with this loan. We&apos;ll be able to work on the loan once
+              you&apos;ve completed all of your steps.
+            </Typography>
+            <Typography variant={'body2'}>
+              Not sure where to start? Click the button below and we’ll choose
+              the best step for you to work on.
+            </Typography>
+            <StyledButton size={'small'} sx={{ width: 100 }}>
+              Next step
+            </StyledButton>
           </Stack>
 
-          <OverviewLoanAddress
-            isCustom={overviewData?.isCustom}
-            loanDetails={<OverviewLoanDetails {...overviewData} />}
-            loanStatus={overviewData?.loanStatus}
-            propertyAddress={overviewData?.propertyAddress}
-          />
+          <OverviewChecklist />
         </Stack>
 
-        <Stack gap={1.25}>
-          <Typography color={'text.secondary'} variant={'body3'}>
-            Disclaimer
-          </Typography>
-          <Typography color={'text.secondary'} variant={'body3'}>
-            The total loan amount is an estimate, and may be subject to change.
-            The amount also does not include third party settlement costs that
-            may be required to close your loan. For more details on those
-            potential costs, please contact your settlement agent.
-          </Typography>
-          <Typography color={'text.secondary'} variant={'body3'}>
-            Rates displayed are subject to change and are not to be considered
-            an extension or offer of credit by {saasState?.organizationName}.
-          </Typography>
+        <Stack flex={1} flexShrink={0} width={'100%'}>
+          <OverviewLoanStatus
+            loanStatus={loanStatus}
+            loanStatusDetails={loanStatusDetails!}
+          />
+
+          <OverviewEstDate />
         </Stack>
       </Stack>
     </Fade>
   );
-};
+});
