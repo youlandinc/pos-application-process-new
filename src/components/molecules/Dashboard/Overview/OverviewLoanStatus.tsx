@@ -208,9 +208,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
 
   return (
     <Stack borderRadius={2} gap={1.5} width={'100%'}>
-      <Typography color={'text.primary'} variant={'h6'}>
-        Loan status
-      </Typography>
+      <Typography fontSize={{ xs: 16, md: 20 }}>Loan status</Typography>
 
       <Stepper
         activeStep={hash[loanStatus]}
@@ -299,18 +297,9 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
               <Stack
                 flexDirection={{ xs: 'column', xl: 'row' }}
                 gap={{ xs: 1.5, xl: 3 }}
-                mb={
-                  index === computedData.length - 1
-                    ? 0
-                    : ['xs', 'sm', 'md', 'lg'].includes(breakpoints)
-                      ? item.date
-                        ? activeIndex === index
-                          ? 1.75
-                          : 4
-                        : 4
-                      : 3
-                }
+                minHeight={24}
                 ml={0.5}
+                my={1}
               >
                 {hash[loanStatus] === index && (
                   <Typography

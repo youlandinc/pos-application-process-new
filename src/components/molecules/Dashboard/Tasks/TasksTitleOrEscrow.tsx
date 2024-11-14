@@ -322,11 +322,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
           maxWidth={900}
           width={'100%'}
         >
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            variant={'h5'}
-          >
+          <Typography fontSize={{ xs: 20, lg: 24 }}>
             Title company (optional)
             <Typography
               color={'text.secondary'}
@@ -349,6 +345,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
             label={'Provide contact details for the title company'}
             labelSx={{ pb: 3 }}
             maxWidth={600}
+            mt={-3}
             sub
           >
             <StyledTextField
@@ -417,18 +414,16 @@ export const TasksTitleOrEscrow: FC = observer(() => {
             label={
               'Who is signing the closing instructions on behalf of the title company?'
             }
-            maxWidth={600}
             sub
           >
-            <Stack maxWidth={600} width={'100%'}>
-              <StyledSelectOption
-                onChange={(value) =>
-                  setInstructions(value as string as DashboardTaskInstructions)
-                }
-                options={OPTIONS_TASK_INSTRUCTIONS}
-                value={instructions}
-              />
-            </Stack>
+            <StyledSelectOption
+              onChange={(value) =>
+                setInstructions(value as string as DashboardTaskInstructions)
+              }
+              options={OPTIONS_TASK_INSTRUCTIONS}
+              sx={{ maxWidth: 600 }}
+              value={instructions}
+            />
 
             <Transitions
               style={{
@@ -769,35 +764,15 @@ export const TasksTitleOrEscrow: FC = observer(() => {
             ) : null}
           </Transitions>
 
-          <Stack
-            flexDirection={{ xs: 'unset', md: 'row' }}
-            gap={3}
-            maxWidth={600}
-            width={'100%'}
+          <StyledButton
+            color={'primary'}
+            disabled={saveLoading}
+            loading={saveLoading}
+            onClick={handleSave}
+            sx={{ width: 200 }}
           >
-            <StyledButton
-              color={'info'}
-              onClick={async () => {
-                await router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { loanId: router.query.loanId },
-                });
-              }}
-              sx={{ flex: 1, width: '100%' }}
-              variant={'text'}
-            >
-              Back
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disabled={saveLoading}
-              loading={saveLoading}
-              onClick={handleSave}
-              sx={{ flex: 1, width: '100%' }}
-            >
-              Save
-            </StyledButton>
-          </Stack>
+            Save and continue
+          </StyledButton>
         </Stack>
 
         {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}

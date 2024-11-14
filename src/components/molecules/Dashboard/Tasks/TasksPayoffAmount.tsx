@@ -1,6 +1,5 @@
 import { FC, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 
@@ -25,7 +24,6 @@ import {
 } from '@/requests/dashboard';
 
 export const TasksPayoffAmount: FC = observer(() => {
-  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const {
     dashboardInfo: { jumpToNextTask },
@@ -107,16 +105,12 @@ export const TasksPayoffAmount: FC = observer(() => {
         width={'100%'}
       >
         <Stack
-          gap={{ xs: 6, lg: 8 }}
+          gap={3}
           justifyContent={'flex-start'}
           maxWidth={900}
           width={'100%'}
         >
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            variant={'h5'}
-          >
+          <Typography fontSize={{ xs: 20, lg: 24 }}>
             Payoff amount
             <Typography
               color={'text.secondary'}
@@ -138,35 +132,15 @@ export const TasksPayoffAmount: FC = observer(() => {
             value={payoffAmount}
           />
 
-          <Stack
-            flexDirection={{ xs: 'unset', md: 'row' }}
-            gap={3}
-            maxWidth={600}
-            width={'100%'}
+          <StyledButton
+            color={'primary'}
+            disabled={saveLoading || !payoffAmount}
+            loading={saveLoading}
+            onClick={handleSave}
+            sx={{ width: 200, mt: { xs: 3, lg: 5 } }}
           >
-            <StyledButton
-              color={'info'}
-              onClick={async () => {
-                await router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { loanId: router.query.loanId },
-                });
-              }}
-              sx={{ flex: 1, width: '100%' }}
-              variant={'text'}
-            >
-              Back
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disabled={saveLoading || !payoffAmount}
-              loading={saveLoading}
-              onClick={handleSave}
-              sx={{ flex: 1, width: '100%' }}
-            >
-              Save
-            </StyledButton>
-          </Stack>
+            Save and continue
+          </StyledButton>
         </Stack>
 
         {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}

@@ -116,11 +116,7 @@ export const TasksHoldbackProcess: FC = observer(() => {
           maxWidth={900}
           width={'100%'}
         >
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            variant={'h5'}
-          >
+          <Typography fontSize={{ xs: 20, lg: 24 }}>
             Construction holdback process
             <Typography
               color={'text.secondary'}
@@ -143,6 +139,7 @@ export const TasksHoldbackProcess: FC = observer(() => {
             border={'1px solid #DEDEDE'}
             borderRadius={2}
             boxShadow={'0px 3px 10px 0px #DEDEDE'}
+            mt={-3}
             p={10}
             ref={pdfFile}
             width={'100%'}
@@ -160,35 +157,15 @@ export const TasksHoldbackProcess: FC = observer(() => {
             holdback process.
           </Typography>
 
-          <Stack
-            flexDirection={{ xs: 'unset', md: 'row' }}
-            gap={3}
-            maxWidth={600}
-            width={'100%'}
+          <StyledButton
+            color={'primary'}
+            disabled={saveLoading}
+            loading={saveLoading}
+            onClick={handleSave}
+            sx={{ width: 200 }}
           >
-            <StyledButton
-              color={'info'}
-              onClick={async () => {
-                await router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { loanId: router.query.loanId },
-                });
-              }}
-              sx={{ flex: 1, maxWidth: 276, width: '100%' }}
-              variant={'text'}
-            >
-              Back
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disabled={saveLoading}
-              loading={saveLoading}
-              onClick={handleSave}
-              sx={{ flex: 1, maxWidth: 276, width: '100%' }}
-            >
-              Save
-            </StyledButton>
-          </Stack>
+            Save and continue
+          </StyledButton>
         </Stack>
 
         {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}

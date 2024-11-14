@@ -105,23 +105,15 @@ export const AppraisalSendLink: FC<{
   ) : (
     <Fade in={!loading}>
       <Stack
-        alignItems={'center'}
-        gap={{ xs: 3, lg: 6 }}
-        height={'100%'}
+        gap={{ xs: 6, lg: 8 }}
         justifyContent={'flex-start'}
-        maxWidth={648}
-        mx={'auto'}
-        px={{ lg: 3, xs: 0 }}
+        maxWidth={600}
         width={'100%'}
       >
-        <Typography
-          color={'text.primary'}
-          fontSize={{ xs: 20, lg: 24 }}
-          textAlign={'center'}
-          variant={'h5'}
-        >
+        <Typography color={'text.primary'} fontSize={{ xs: 20, lg: 24 }}>
           Appraisal
         </Typography>
+
         <Stack gap={1.5} width={'100%'}>
           <Stack
             border={'1px solid #E4E7EF'}
@@ -132,10 +124,6 @@ export const AppraisalSendLink: FC<{
             <Typography fontSize={{ xs: 16, lg: 20 }} fontWeight={600}>
               Waiting for payment
             </Typography>
-
-            {/*<Typography fontSize={14} mt={{ xs: 0.5, lg: 1.5 }}>*/}
-            {/*  Property address: {propertyAddress}*/}
-            {/*</Typography>*/}
 
             <Stack
               borderBottom={'1px solid #D2D6E1'}

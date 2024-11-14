@@ -4,6 +4,8 @@ import { Icon, Stack, Typography } from '@mui/material';
 import { POSFormatUSPhoneToText } from '@/utils';
 import { TeamMemberData } from '@/types';
 
+import { useBreakpoints } from '@/hooks';
+
 interface TeamMemberCardItemProps {
   data: TeamMemberData;
 }
@@ -14,49 +16,26 @@ import TEAM_EMAIL from '@/svg/dashboard/team_email.svg';
 export const TeamMemberCardItem: FC<TeamMemberCardItemProps> = ({
   data: { name, avatar, email, phone, title, position },
 }) => {
+  const breakpoint = useBreakpoints();
+
   return (
     <Stack
       border={'1px solid'}
       borderColor={'background.border_default'}
       borderRadius={2}
-      gap={1.5}
-      p={3}
+      gap={{ xs: 1, md: 1.5 }}
+      p={{ xs: 2, lg: 3 }}
       width={'100%'}
     >
       <Stack
-        alignItems={{
-          xs: 'center',
-          md: 'unset',
-        }}
         flexDirection={{ xs: 'column', md: 'row' }}
-        gap={{ xs: 1.5, md: 2.5 }}
+        gap={1.25}
         width={'100%'}
       >
-        <picture
-          style={{
-            width: '64px',
-            height: '64px',
-          }}
-        >
-          <img
-            alt={'avatar'}
-            src={avatar || '/images/placeholder_avatar.png'}
-            style={{
-              width: '100%',
-              height: '100%',
-              borderRadius: '50%',
-            }}
-          />
-        </picture>
-
         <Stack
-          alignItems={{
-            xs: 'center',
-            md: 'unset',
-          }}
-          gap={1.25}
           height={{ xs: 'auto', md: 64 }}
-          justifyContent={'center'}
+          justifyContent={{ xs: 'unset', md: 'center' }}
+          order={{ xs: 2, md: 1 }}
         >
           <Typography
             color={'text.primary'}
@@ -74,26 +53,34 @@ export const TeamMemberCardItem: FC<TeamMemberCardItemProps> = ({
             </Typography>
           )}
         </Stack>
+
+        <picture
+          style={{
+            width: ['xs', 'sm'].includes(breakpoint) ? 48 : 64,
+            height: ['xs', 'sm'].includes(breakpoint) ? 48 : 64,
+            marginLeft: ['xs', 'sm'].includes(breakpoint) ? 0 : 'auto',
+            order: ['xs', 'sm'].includes(breakpoint) ? 1 : 2,
+          }}
+        >
+          <img
+            alt={'avatar'}
+            src={avatar || '/images/placeholder_avatar.png'}
+            style={{
+              width: '100%',
+              height: '100%',
+              borderRadius: '50%',
+            }}
+          />
+        </picture>
       </Stack>
 
       {position && (
-        <Typography
-          fontSize={{ xs: 12, md: 14, xl: 16 }}
-          mt={1}
-          textAlign={{
-            xs: 'center',
-            md: 'unset',
-          }}
-        >
+        <Typography fontSize={{ xs: 12, md: 14, xl: 16 }}>
           {position}
         </Typography>
       )}
 
       <Stack
-        alignItems={{
-          xs: 'center',
-          md: 'unset',
-        }}
         flexDirection={{ xs: 'column', md: 'row' }}
         fontSize={{ xs: 12, md: 14 }}
         gap={{ xs: 0.5, xl: 3 }}

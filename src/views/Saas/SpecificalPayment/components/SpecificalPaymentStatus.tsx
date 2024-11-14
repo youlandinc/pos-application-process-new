@@ -201,21 +201,15 @@ export const SpecificalPaymentStatus: FC<{
   }, [contactEmail, contactPhoneNumber, onButtonClick, paymentStatus]);
 
   return (
-    <Stack gap={3} margin={'0 auto'} maxWidth={900} p={3}>
+    <Stack gap={3} maxWidth={900} p={3}>
       <Icon
         component={computedObj?.icon}
         sx={{
           width: 269,
           height: 240,
-          m: '0 auto',
         }}
       />
-      <Typography
-        color={computedObj?.color}
-        mt={3}
-        textAlign={'center'}
-        variant={'h5'}
-      >
+      <Typography color={computedObj?.color} mt={3} variant={'h5'}>
         Payment {computedObj?.status}
       </Typography>
 

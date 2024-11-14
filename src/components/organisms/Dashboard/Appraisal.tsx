@@ -212,20 +212,12 @@ export const Appraisal: FC = () => {
       case 'profile':
         return (
           <Stack
-            alignItems={'center'}
             gap={{ xs: 3, lg: 6 }}
             justifyContent={'flex-start'}
-            maxWidth={648}
             mx={'auto'}
-            px={{ lg: 3, xs: 0 }}
             width={'100%'}
           >
-            <Typography
-              color={'text.primary'}
-              fontSize={{ xs: 20, lg: 24 }}
-              textAlign={'center'}
-              variant={'h5'}
-            >
+            <Typography color={'text.primary'} fontSize={{ xs: 20, lg: 24 }}>
               Appraisal
             </Typography>
 
@@ -316,8 +308,6 @@ export const Appraisal: FC = () => {
         gap={{ xs: 3, lg: 6 }}
         justifyContent={'flex-start'}
         maxWidth={900}
-        mx={{ lg: 'auto', xs: 0 }}
-        px={{ lg: 3, xs: 0 }}
         width={'100%'}
       >
         {renderFormNode}

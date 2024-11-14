@@ -1,8 +1,10 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Box, Fade, Stack, Typography } from '@mui/material';
-import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
+import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
+
+import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
@@ -24,7 +26,6 @@ import {
   _fetchLoanTaskDetail,
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
-import { observer } from 'mobx-react-lite';
 
 export const TasksDemographics: FC = observer(() => {
   const router = useRouter();
@@ -358,11 +359,7 @@ export const TasksDemographics: FC = observer(() => {
           maxWidth={900}
           width={'100%'}
         >
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            variant={'h5'}
-          >
+          <Typography fontSize={{ xs: 20, lg: 24 }}>
             Demographic information
             <Typography
               color={'text.secondary'}
@@ -384,6 +381,7 @@ export const TasksDemographics: FC = observer(() => {
             gap={3}
             label={'What is your ethnicity?'}
             maxWidth={600}
+            mt={-3}
             sub
           >
             <Stack gap={1.5} width={'100%'}>
@@ -785,35 +783,15 @@ export const TasksDemographics: FC = observer(() => {
             </Stack>
           </StyledFormItem>
 
-          <Stack
-            flexDirection={{ xs: 'unset', md: 'row' }}
-            gap={3}
-            maxWidth={600}
-            width={'100%'}
+          <StyledButton
+            color={'primary'}
+            disabled={saveLoading || !isFormDataValid}
+            loading={saveLoading}
+            onClick={handleSave}
+            sx={{ width: 200 }}
           >
-            <StyledButton
-              color={'info'}
-              onClick={async () => {
-                await router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { loanId: router.query.loanId },
-                });
-              }}
-              sx={{ flex: 1, width: '100%' }}
-              variant={'text'}
-            >
-              Back
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disabled={saveLoading || !isFormDataValid}
-              loading={saveLoading}
-              onClick={handleSave}
-              sx={{ flex: 1, width: '100%' }}
-            >
-              Save
-            </StyledButton>
-          </Stack>
+            Save and continue
+          </StyledButton>
         </Stack>
 
         {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}

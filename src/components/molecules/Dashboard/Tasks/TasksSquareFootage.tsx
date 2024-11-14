@@ -1,6 +1,5 @@
 import { FC, useMemo, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
 
@@ -25,7 +24,6 @@ import {
 import { TasksRightMenu } from '@/components/molecules';
 
 export const TasksSquareFootage: FC = observer(() => {
-  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const {
     dashboardInfo: { jumpToNextTask },
@@ -111,16 +109,12 @@ export const TasksSquareFootage: FC = observer(() => {
         width={'100%'}
       >
         <Stack
-          gap={{ xs: 6, lg: 8 }}
+          gap={3}
           justifyContent={'flex-start'}
           maxWidth={900}
           width={'100%'}
         >
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            variant={'h5'}
-          >
+          <Typography fontSize={{ xs: 20, lg: 24 }}>
             Square footage
             <Typography
               color={'text.secondary'}
@@ -141,35 +135,15 @@ export const TasksSquareFootage: FC = observer(() => {
             value={squareFootage}
           />
 
-          <Stack
-            flexDirection={{ xs: 'unset', md: 'row' }}
-            gap={3}
-            maxWidth={600}
-            width={'100%'}
+          <StyledButton
+            color={'primary'}
+            disabled={saveLoading || !isFormDataValid}
+            loading={saveLoading}
+            onClick={handleSave}
+            sx={{ mt: { xs: 3, lg: 5 }, width: 200 }}
           >
-            <StyledButton
-              color={'info'}
-              onClick={async () => {
-                await router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { loanId: router.query.loanId },
-                });
-              }}
-              sx={{ flex: 1, width: '100%' }}
-              variant={'text'}
-            >
-              Back
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disabled={saveLoading || !isFormDataValid}
-              loading={saveLoading}
-              onClick={handleSave}
-              sx={{ flex: 1, width: '100%' }}
-            >
-              Save
-            </StyledButton>
-          </Stack>
+            Save and continue
+          </StyledButton>
         </Stack>
 
         {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}

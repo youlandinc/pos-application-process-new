@@ -1,6 +1,5 @@
 import { FC, useMemo, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
 
@@ -25,7 +24,6 @@ import {
 } from '@/requests/dashboard';
 
 export const TasksRehabInfo: FC = observer(() => {
-  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const {
     dashboardInfo: { jumpToNextTask },
@@ -119,11 +117,7 @@ export const TasksRehabInfo: FC = observer(() => {
           maxWidth={900}
           width={'100%'}
         >
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            variant={'h5'}
-          >
+          <Typography fontSize={{ xs: 20, lg: 24 }}>
             Rehab info
             <Typography
               color={'text.secondary'}
@@ -136,7 +130,7 @@ export const TasksRehabInfo: FC = observer(() => {
             </Typography>
           </Typography>
 
-          <Stack gap={3} maxWidth={600} width={'100%'}>
+          <Stack gap={3} maxWidth={600} mt={-3} width={'100%'}>
             <StyledTextFieldNumber
               label={'After repair value (ARV)'}
               onValueChange={({ floatValue }) => setArv(floatValue)}
@@ -154,35 +148,15 @@ export const TasksRehabInfo: FC = observer(() => {
             />
           </Stack>
 
-          <Stack
-            flexDirection={{ xs: 'unset', md: 'row' }}
-            gap={3}
-            maxWidth={600}
-            width={'100%'}
+          <StyledButton
+            color={'primary'}
+            disabled={saveLoading || !isFormDataValid}
+            loading={saveLoading}
+            onClick={handleSave}
+            sx={{ flex: 1, width: '100%' }}
           >
-            <StyledButton
-              color={'info'}
-              onClick={async () => {
-                await router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { loanId: router.query.loanId },
-                });
-              }}
-              sx={{ flex: 1, width: '100%' }}
-              variant={'text'}
-            >
-              Back
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disabled={saveLoading || !isFormDataValid}
-              loading={saveLoading}
-              onClick={handleSave}
-              sx={{ flex: 1, width: '100%' }}
-            >
-              Save
-            </StyledButton>
-          </Stack>
+            Save and continue
+          </StyledButton>
         </Stack>
 
         {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}

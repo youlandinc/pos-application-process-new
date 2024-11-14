@@ -106,3 +106,8 @@ export const _fetchLoanDocumentComments = (params: {
 export const _fetchTeamMembers = (loanId: string) => {
   return get<DashboardTeamResponse>(`/pos/loan/officer/${loanId}`);
 };
+
+//terms
+export const _fetchLoanTermsData = (loanId: string) => {
+  return get(`/pos/loan/process/terms/${loanId}`);
+};

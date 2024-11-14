@@ -180,12 +180,16 @@ export const TasksEntitlements: FC = observer(() => {
           maxWidth={900}
           width={'100%'}
         >
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            variant={'h5'}
-          >
+          <Typography fontSize={{ xs: 20, lg: 24 }}>
             Entitlements
+            <Typography
+              color={'text.secondary'}
+              fontSize={{ xs: 12, lg: 16 }}
+              mt={1}
+              variant={'body1'}
+            >
+              Please provide details on zoning, lot splits, and site plans
+            </Typography>
           </Typography>
 
           {/*first*/}
@@ -194,6 +198,7 @@ export const TasksEntitlements: FC = observer(() => {
             label={
               'Is your planned property allowed by current zoning standards?'
             }
+            mt={-3}
             sub
           >
             <StyledButtonGroup
@@ -378,35 +383,15 @@ export const TasksEntitlements: FC = observer(() => {
             )}
           </Transitions>
 
-          <Stack
-            flexDirection={{ xs: 'unset', md: 'row' }}
-            gap={3}
-            maxWidth={600}
-            width={'100%'}
+          <StyledButton
+            color={'primary'}
+            disabled={saveLoading || !isFormDataValid}
+            loading={saveLoading}
+            onClick={handleSave}
+            sx={{ width: 200 }}
           >
-            <StyledButton
-              color={'info'}
-              onClick={async () => {
-                await router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { loanId: router.query.loanId },
-                });
-              }}
-              sx={{ flex: 1, width: '100%' }}
-              variant={'text'}
-            >
-              Back
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disabled={saveLoading || !isFormDataValid}
-              loading={saveLoading}
-              onClick={handleSave}
-              sx={{ flex: 1, width: '100%' }}
-            >
-              Save
-            </StyledButton>
-          </Stack>
+            Save and continue
+          </StyledButton>
         </Stack>
 
         {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}

@@ -204,13 +204,7 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
             </Typography>
           ),
           footer: (
-            <Stack
-              alignItems={'center'}
-              gap={3}
-              maxWidth={600}
-              mt={3}
-              width={'100%'}
-            >
+            <Stack gap={3} maxWidth={600} mt={3} width={'100%'}>
               <StyledButton
                 onClick={async () => {
                   await _restartAppraisalPaymentProcess(
@@ -218,7 +212,7 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
                   );
                   router.reload();
                 }}
-                sx={{ flex: 1, maxWidth: 276, width: '100%' }}
+                sx={{ flex: 1, maxWidth: 180, width: '100%' }}
               >
                 Try again
               </StyledButton>
@@ -236,28 +230,15 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
   ]);
 
   return (
-    <Stack
-      alignItems={'center'}
-      gap={3}
-      margin={'0 auto'}
-      maxWidth={900}
-      p={3}
-      width={'100%'}
-    >
+    <Stack gap={3} maxWidth={900} p={3} width={'100%'}>
       <Icon
         component={computedObj?.icon}
         sx={{
-          width: 269,
-          height: 240,
-          m: '0 auto',
+          width: 200,
+          height: 179,
         }}
       />
-      <Typography
-        color={computedObj?.color}
-        mt={3}
-        textAlign={'center'}
-        variant={'h4'}
-      >
+      <Typography color={computedObj?.color} mt={3} variant={'h5'}>
         Payment {computedObj?.status}
       </Typography>
       {computedObj?.content}

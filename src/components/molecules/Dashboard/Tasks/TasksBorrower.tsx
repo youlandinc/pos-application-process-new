@@ -2,7 +2,6 @@ import { FC, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { format, isDate, isValid } from 'date-fns';
 import { useAsync } from 'react-use';
-import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { validate } from 'validate.js';
 
@@ -50,7 +49,6 @@ import {
 } from '@/requests/dashboard';
 
 export const TasksBorrower: FC = observer(() => {
-  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const {
     dashboardInfo: { jumpToNextTask },
@@ -243,11 +241,7 @@ export const TasksBorrower: FC = observer(() => {
           maxWidth={900}
           width={'100%'}
         >
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            variant={'h5'}
-          >
+          <Typography fontSize={{ xs: 20, lg: 24 }}>
             Borrower information
             <Typography
               color={'text.secondary'}
@@ -260,12 +254,13 @@ export const TasksBorrower: FC = observer(() => {
             </Typography>
           </Typography>
 
-          <StyledFormItem gap={3} label={'Borrower type'} maxWidth={600} sub>
+          <StyledFormItem gap={3} label={'Borrower type'} mt={-3} sub>
             <StyledSelectOption
               onChange={(value) => {
                 setBorrowerType(value as string as DashboardTaskBorrowerType);
               }}
               options={OPTIONS_TASK_BORROWER_TYPE}
+              sx={{ maxWidth: 600 }}
               value={borrowerType}
             />
           </StyledFormItem>
@@ -280,12 +275,7 @@ export const TasksBorrower: FC = observer(() => {
             }}
           >
             {borrowerType === DashboardTaskBorrowerType.entity && (
-              <StyledFormItem
-                gap={3}
-                label={'Entity information'}
-                maxWidth={600}
-                sub
-              >
+              <StyledFormItem gap={3} label={'Entity information'} sub>
                 <StyledTextField
                   label={'Entity name'}
                   onChange={(e) => {
@@ -300,6 +290,7 @@ export const TasksBorrower: FC = observer(() => {
                     setEntityName(e.target.value);
                   }}
                   placeholder={'Entity name'}
+                  sx={{ maxWidth: 600 }}
                   validate={formError?.entityName}
                   value={entityName}
                 />
@@ -320,6 +311,7 @@ export const TasksBorrower: FC = observer(() => {
                     );
                   }}
                   options={OPTIONS_TASK_ENTITY_TYPE}
+                  sx={{ maxWidth: 600 }}
                   validate={formError?.entityType}
                   value={entityType}
                 />
@@ -337,6 +329,7 @@ export const TasksBorrower: FC = observer(() => {
                     setEntityId(e.target.value);
                   }}
                   placeholder={'Secretary of State ID'}
+                  sx={{ maxWidth: 600 }}
                   validate={formError?.entityId}
                   value={entityId}
                 />
@@ -354,6 +347,7 @@ export const TasksBorrower: FC = observer(() => {
                     setEntityState(e.target.value as string);
                   }}
                   options={OPTIONS_COMMON_STATE}
+                  sx={{ maxWidth: 600 }}
                   validate={formError?.entityState}
                   value={entityState}
                 />
@@ -371,12 +365,7 @@ export const TasksBorrower: FC = observer(() => {
             }}
           >
             {borrowerType === DashboardTaskBorrowerType.trust && (
-              <StyledFormItem
-                gap={3}
-                label={'Trust information'}
-                maxWidth={600}
-                sub
-              >
+              <StyledFormItem gap={3} label={'Trust information'} sub>
                 <StyledTextField
                   label={'Trust name'}
                   onChange={(e) => {
@@ -391,6 +380,7 @@ export const TasksBorrower: FC = observer(() => {
                     setTrustName(e.target.value);
                   }}
                   placeholder={'Trust name'}
+                  sx={{ maxWidth: 600 }}
                   validate={formError?.trustName}
                   value={trustName}
                 />
@@ -407,12 +397,12 @@ export const TasksBorrower: FC = observer(() => {
                 : 'Authorized signatory information'
             }
             labelSx={{ pb: 3 }}
-            maxWidth={600}
             sub
           >
             <Stack
               flexDirection={{ xs: 'column', lg: 'row' }}
               gap={3}
+              maxWidth={600}
               width={'100%'}
             >
               <StyledTextField
@@ -454,6 +444,7 @@ export const TasksBorrower: FC = observer(() => {
             <Stack
               flexDirection={{ xs: 'column', lg: 'row' }}
               gap={3}
+              maxWidth={600}
               width={'100%'}
             >
               {(borrowerType === DashboardTaskBorrowerType.trust ||
@@ -539,17 +530,13 @@ export const TasksBorrower: FC = observer(() => {
             </Stack>
           </StyledFormItem>
 
-          <StyledFormItem
-            gap={3}
-            label={'Citizenship status'}
-            maxWidth={600}
-            sub
-          >
+          <StyledFormItem gap={3} label={'Citizenship status'} sub>
             <StyledSelectOption
               onChange={(value) =>
                 setCitizenship(value as string as LoanCitizenshipEnum)
               }
               options={OPTIONS_COMMON_CITIZEN_TYPE}
+              sx={{ maxWidth: 600 }}
               value={citizenship}
             />
           </StyledFormItem>
@@ -577,12 +564,7 @@ export const TasksBorrower: FC = observer(() => {
             }}
           >
             {citizenship !== LoanCitizenshipEnum.foreign_national && (
-              <StyledFormItem
-                gap={3}
-                label={'Social security number'}
-                maxWidth={600}
-                sub
-              >
+              <StyledFormItem gap={3} label={'Social security number'} sub>
                 <StyledTextFieldSocialNumber
                   label={'Social security number'}
                   onValueChange={(v) => {
@@ -596,6 +578,7 @@ export const TasksBorrower: FC = observer(() => {
                     }
                     setSsn(v);
                   }}
+                  sx={{ maxWidth: 600 }}
                   validate={formError?.ssn}
                   value={ssn}
                 />
@@ -603,34 +586,15 @@ export const TasksBorrower: FC = observer(() => {
             )}
           </Transitions>
 
-          <Stack
-            flexDirection={{ xs: 'unset', md: 'row' }}
-            gap={3}
-            width={'100%'}
+          <StyledButton
+            color={'primary'}
+            disabled={saveLoading}
+            loading={saveLoading}
+            onClick={handleSave}
+            sx={{ width: 200 }}
           >
-            <StyledButton
-              color={'info'}
-              onClick={async () => {
-                await router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { loanId: router.query.loanId },
-                });
-              }}
-              sx={{ flex: 1, width: '100%' }}
-              variant={'text'}
-            >
-              Back
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disabled={saveLoading}
-              loading={saveLoading}
-              onClick={handleSave}
-              sx={{ flex: 1, width: '100%' }}
-            >
-              Save
-            </StyledButton>
-          </Stack>
+            Save and continue
+          </StyledButton>
         </Stack>
 
         {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}

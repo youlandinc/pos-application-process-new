@@ -176,30 +176,23 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
 
   return (
     <Stack
-      alignItems={'center'}
-      gap={{ xs: 3, lg: 6 }}
+      gap={{ xs: 6, lg: 8 }}
       justifyContent={'flex-start'}
       maxWidth={900}
       mx={'auto'}
-      px={{
-        lg: 0,
-        xs: 'clamp(24px,6.4vw,80px)',
-      }}
       width={'100%'}
     >
       <Typography
         color={'text.primary'}
         component={'div'}
         fontSize={{ xs: 20, lg: 24 }}
-        textAlign={'left'}
-        variant={'h5'}
         width={'100%'}
       >
         Property appraisal
         <Typography
           color={'text.secondary'}
           fontSize={{ xs: 12, lg: 16 }}
-          mt={1}
+          mt={3}
         >
           Keep track of your appraisal progress below
         </Typography>
@@ -288,7 +281,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
               </Typography>
             </StepLabel>
             <StepContent>
-              <Stack gap={1} mb={4}>
+              <Stack gap={1} minHeight={18} my={1}>
                 {hash[appraisalStage] === index && (
                   <Typography
                     color={computedData.length === 1 ? 'error' : 'text.primary'}

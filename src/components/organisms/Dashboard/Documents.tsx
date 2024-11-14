@@ -4,8 +4,6 @@ import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 
-import { useBreakpoints } from '@/hooks';
-
 import { POSGetParamsFromUrl } from '@/utils';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
@@ -29,7 +27,6 @@ export const Documents: FC = observer(() => {
   const { notificationDocuments } = useMst();
 
   const router = useRouter();
-  const breakpoints = useBreakpoints();
   const { enqueueSnackbar } = useSnackbar();
 
   const [tabData, setTabData] = useState<
@@ -191,25 +188,13 @@ export const Documents: FC = observer(() => {
     </Stack>
   ) : (
     <Fade in={!loading}>
-      <Stack
-        gap={3}
-        justifyContent={'flex-start'}
-        maxWidth={900}
-        mt={{ xs: -3, lg: 0 }}
-        mx={{ lg: 'auto', xs: 0 }}
-        px={{ lg: 3, xs: 0 }}
-        width={{ lg: 'calc(100% - 280px)', xs: '100%' }}
-      >
-        <Typography
-          textAlign={'center'}
-          variant={['xs', 'sm', 'md'].includes(breakpoints) ? 'h6' : 'h5'}
-        >
+      <Stack gap={{ xs: 6, lg: 8 }} maxWidth={900} width={'100%'}>
+        <Typography component={'div'} fontSize={{ xs: 20, md: 24 }}>
           Documents
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
-            mt={{ xs: 1, lg: 0 }}
-            textAlign={'center'}
+            mt={3}
           >
             We&apos;ve implemented robust security measures to ensure your
             data&apos;s privacy and protection, including advanced encryption,
@@ -245,30 +230,30 @@ export const Documents: FC = observer(() => {
             </Typography>
             .
           </Typography>
+          {isTips && (
+            <Stack
+              bgcolor={'rgba(255, 249, 234, 1)'}
+              borderRadius={2}
+              boxShadow={'0 2px 2px rgba(227, 227, 227, 1)'}
+              color={'rgba(229, 154, 0, 1)'}
+              flexDirection={'row'}
+              fontSize={{ xs: 12, lg: 14 }}
+              fontWeight={600}
+              gap={1}
+              mt={3}
+              p={'12px 16px'}
+            >
+              <Icon component={NOTIFICATION_WARNING} sx={{ mt: -0.25 }} />
+              Complete the &quot;Borrower&quot; task first to filter out the
+              unnecessary documents below.
+            </Stack>
+          )}
         </Typography>
-
-        {isTips && (
-          <Stack
-            bgcolor={'rgba(255, 249, 234, 1)'}
-            borderRadius={2}
-            boxShadow={'0 2px 2px rgba(227, 227, 227, 1)'}
-            color={'rgba(229, 154, 0, 1)'}
-            flexDirection={'row'}
-            fontSize={{ xs: 12, lg: 14 }}
-            fontWeight={600}
-            gap={1}
-            p={'12px 16px'}
-          >
-            <Icon component={NOTIFICATION_WARNING} sx={{ mt: -0.25 }} />
-            Complete the &quot;Borrower&quot; task first to filter out the
-            unnecessary documents below.
-          </Stack>
-        )}
 
         <Stack maxWidth={'100%'} width={'100%'}>
           <StyledTab
             startIndex={startTabIndex}
-            sx={{ m: '0 auto', maxWidth: '100%' }}
+            sx={{ maxWidth: '100%', m: 0 }}
             tabsData={tabData}
           />
         </Stack>

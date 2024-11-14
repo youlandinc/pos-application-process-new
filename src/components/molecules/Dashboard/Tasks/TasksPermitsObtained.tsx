@@ -1,6 +1,5 @@
 import { FC, useMemo, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 
@@ -39,7 +38,6 @@ import {
 } from '@/types';
 
 export const TasksPermitsObtained: FC = observer(() => {
-  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const {
     dashboardInfo: { jumpToNextTask },
@@ -164,11 +162,7 @@ export const TasksPermitsObtained: FC = observer(() => {
           maxWidth={900}
           width={'100%'}
         >
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            variant={'h5'}
-          >
+          <Typography fontSize={{ xs: 20, lg: 24 }}>
             Upload all permits obtained
             <Typography
               color={'text.secondary'}
@@ -186,7 +180,7 @@ export const TasksPermitsObtained: FC = observer(() => {
             label={
               'Is the property currently raw land or has it received some or all utility improvements?'
             }
-            maxWidth={600}
+            mt={-3}
             sub
           >
             <StyledSelectOption
@@ -194,16 +188,12 @@ export const TasksPermitsObtained: FC = observer(() => {
                 setLandType(value as LandTypeEnum);
               }}
               options={OPTIONS_TASK_LAND_TYPE}
+              sx={{ maxWidth: 600 }}
               value={landType}
             />
           </StyledFormItem>
 
-          <StyledFormItem
-            gap={3}
-            label={'Are you permit ready /RTI?'}
-            maxWidth={600}
-            sub
-          >
+          <StyledFormItem gap={3} label={'Are you permit ready /RTI?'} sub>
             <StyledButtonGroup
               onChange={(_, v) => {
                 if (v === null) {
@@ -212,6 +202,7 @@ export const TasksPermitsObtained: FC = observer(() => {
                 setIsPermitReadyOrRTI(v);
               }}
               options={OPTIONS_COMMON_YES_OR_NO}
+              sx={{ maxWidth: 600 }}
               value={isPermitReadyOrRTI}
             />
           </StyledFormItem>
@@ -221,7 +212,6 @@ export const TasksPermitsObtained: FC = observer(() => {
             label={
               'How many months until you anticipate having building permits?'
             }
-            maxWidth={600}
             sub
           >
             <StyledTextFieldNumber
@@ -230,6 +220,7 @@ export const TasksPermitsObtained: FC = observer(() => {
                 setAnticipateHavingBuildPermits(floatValue)
               }
               placeholder={'Months until permit'}
+              sx={{ maxWidth: 600 }}
               thousandSeparator={false}
               value={anticipateHavingBuildPermits}
             />
@@ -250,35 +241,15 @@ export const TasksPermitsObtained: FC = observer(() => {
             />
           </Stack>
 
-          <Stack
-            flexDirection={{ xs: 'unset', md: 'row' }}
-            gap={3}
-            maxWidth={600}
-            width={'100%'}
+          <StyledButton
+            color={'primary'}
+            disabled={saveLoading || !isFormDataValid}
+            loading={saveLoading}
+            onClick={handleSave}
+            sx={{ width: 200 }}
           >
-            <StyledButton
-              color={'info'}
-              onClick={async () => {
-                await router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { loanId: router.query.loanId },
-                });
-              }}
-              sx={{ flex: 1, width: '100%' }}
-              variant={'text'}
-            >
-              Back
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disabled={saveLoading || !isFormDataValid}
-              loading={saveLoading}
-              onClick={handleSave}
-              sx={{ flex: 1, width: '100%' }}
-            >
-              Save
-            </StyledButton>
-          </Stack>
+            Save and continue
+          </StyledButton>
         </Stack>
 
         {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
