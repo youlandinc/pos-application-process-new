@@ -2,7 +2,6 @@ import { FC, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 import { format, isDate, isValid } from 'date-fns';
 import { useAsync } from 'react-use';
-import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { validate } from 'validate.js';
 
@@ -47,7 +46,6 @@ import {
 } from '@/requests/dashboard';
 
 export const TasksCoBorrower: FC = observer(() => {
-  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const {
     dashboardInfo: { jumpToNextTask },

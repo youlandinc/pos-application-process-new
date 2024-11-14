@@ -1,6 +1,5 @@
 import { FC, useMemo, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 
@@ -28,7 +27,6 @@ import {
 import { DashboardTaskKey, HttpError, LoanAnswerEnum } from '@/types';
 
 export const TasksEntitlements: FC = observer(() => {
-  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const {
     dashboardInfo: { jumpToNextTask },

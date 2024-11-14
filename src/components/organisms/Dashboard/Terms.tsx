@@ -158,8 +158,6 @@ export const Terms: FC = observer(() => {
     [router?.query?.loanId, enqueueSnackbar, previewOpen, renderFile],
   );
 
-  console.log(data);
-
   const renderLoanAmount = useMemo(() => {
     switch (data?.productCategory) {
       case LoanProductCategoryEnum.stabilized_bridge:

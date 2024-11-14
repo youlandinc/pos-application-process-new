@@ -1,6 +1,5 @@
 import { FC, useMemo, useState } from 'react';
 import { Fade, Grow, Icon, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import _uniqueId from 'lodash/uniqueId';
@@ -47,7 +46,6 @@ const initialized: AdditionalFee = {
 };
 
 export const TasksReferringBroker: FC = observer(() => {
-  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const {
     dashboardInfo: { jumpToNextTask },
