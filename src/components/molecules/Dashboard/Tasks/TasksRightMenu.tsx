@@ -96,6 +96,7 @@ export const TasksRightMenu: FC = observer(() => {
         flexShrink={0}
         gap={1}
         height={'fit-content'}
+        position={'sticky'}
         px={1.5}
         py={1.5}
         sx={{
@@ -106,6 +107,7 @@ export const TasksRightMenu: FC = observer(() => {
             },
           },
         }}
+        top={92}
         width={280}
       >
         <Typography mb={0.5} pl={0.75} variant={'subtitle2'}>

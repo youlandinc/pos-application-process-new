@@ -168,20 +168,21 @@ export const TasksEntitlements: FC = observer(() => {
     </Stack>
   ) : (
     <Fade in={!loading}>
-      <Stack flexDirection={'row'} justifyContent={'center'} width={'100%'}>
+      <Stack
+        flexDirection={'row'}
+        gap={3}
+        justifyContent={'space-between'}
+        width={'100%'}
+      >
         <Stack
-          alignItems={'center'}
-          gap={6}
+          gap={{ xs: 6, lg: 8 }}
           justifyContent={'flex-start'}
-          maxWidth={648}
-          mx={{ lg: 'auto', xs: 0 }}
-          px={{ lg: 3, xs: 0 }}
+          maxWidth={900}
           width={'100%'}
         >
           <Typography
             color={'text.primary'}
             fontSize={{ xs: 20, lg: 24 }}
-            textAlign={'center'}
             variant={'h5'}
           >
             Entitlements
@@ -203,12 +204,12 @@ export const TasksEntitlements: FC = observer(() => {
                 setZoningStandards(value);
               }}
               options={OPTIONS_COMMON_YES_OR_NO}
+              sx={{ maxWidth: 600 }}
               value={zoningStandards}
             />
 
             <Transitions
               style={{
-                maxWidth: 900,
                 width: '100%',
                 display:
                   zoningStandards === LoanAnswerEnum.no ? 'block' : 'none',
@@ -222,9 +223,9 @@ export const TasksEntitlements: FC = observer(() => {
                     obtained approvals for a similar zoning variance.
                   </Typography>
                   <StyledTextField
-                    label={'Addresses and project descriptions'}
                     onChange={(e) => setZsAddressAndProjectDes(e.target.value)}
                     placeholder={'Addresses and project descriptions'}
+                    sx={{ maxWidth: 600 }}
                     value={zsAddressAndProjectDes}
                   />
                 </Stack>
@@ -242,13 +243,13 @@ export const TasksEntitlements: FC = observer(() => {
                 setIsSplitTheLot(value);
               }}
               options={OPTIONS_COMMON_YES_OR_NO}
+              sx={{ maxWidth: 600 }}
               value={isSplitTheLot}
             />
           </StyledFormItem>
 
           <Transitions
             style={{
-              maxWidth: 900,
               width: '100%',
               display: isSplitTheLot === LoanAnswerEnum.yes ? 'block' : 'none',
             }}
@@ -269,6 +270,7 @@ export const TasksEntitlements: FC = observer(() => {
                     setIsAllowedLotSplits(value);
                   }}
                   options={OPTIONS_COMMON_YES_OR_NO}
+                  sx={{ maxWidth: 600 }}
                   value={isAllowedLotSplits}
                 />
               </StyledFormItem>
@@ -280,7 +282,7 @@ export const TasksEntitlements: FC = observer(() => {
                   label={
                     'Have your plans to lot split been proposed to the relevant municipality?'
                   }
-                  mt={3}
+                  mt={{ xs: 3, lg: 5 }}
                   sub
                 >
                   <StyledButtonGroup
@@ -291,11 +293,11 @@ export const TasksEntitlements: FC = observer(() => {
                       setLotSplitsPlansProposed(value);
                     }}
                     options={OPTIONS_COMMON_YES_OR_NO}
+                    sx={{ maxWidth: 600 }}
                     value={lotSplitsPlansProposed}
                   />
                   <Transitions
                     style={{
-                      maxWidth: 900,
                       width: '100%',
                       display:
                         lotSplitsPlansProposed === LoanAnswerEnum.no
@@ -303,20 +305,20 @@ export const TasksEntitlements: FC = observer(() => {
                           : 'none',
                     }}
                   >
-                    <Stack gap={3}>
+                    <Stack gap={3} width={'100%'}>
                       <Typography color={'text.secondary'}>
                         Please provide addresses and project descriptions for
                         projects in the subject&apos;s municipality where you
                         have obtained approvals for a lot split.
                       </Typography>
                       <StyledTextField
-                        label={'Addresses and project descriptions'}
                         minRows={2}
                         multiline
                         onChange={(e) =>
                           setLsppAddressAndProjectDes(e.target.value)
                         }
                         placeholder={'Addresses and project descriptions'}
+                        sx={{ maxWidth: 600 }}
                         value={lsppAddressAndProjectDes}
                       />
                     </Stack>
@@ -339,13 +341,13 @@ export const TasksEntitlements: FC = observer(() => {
                 setSitSpecificPlansProject(value);
               }}
               options={OPTIONS_COMMON_YES_OR_NO}
+              sx={{ maxWidth: 600 }}
               value={sitSpecificPlansProject}
             />
           </StyledFormItem>
 
           <Transitions
             style={{
-              maxWidth: 900,
               width: '100%',
               display:
                 sitSpecificPlansProject === LoanAnswerEnum.no
@@ -369,6 +371,7 @@ export const TasksEntitlements: FC = observer(() => {
                     setIsProvideSimilarPlans(value);
                   }}
                   options={OPTIONS_COMMON_YES_OR_NO}
+                  sx={{ maxWidth: 600 }}
                   value={isProvideSimilarPlans}
                 />
               </StyledFormItem>
@@ -405,7 +408,8 @@ export const TasksEntitlements: FC = observer(() => {
             </StyledButton>
           </Stack>
         </Stack>
-        {['xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+
+        {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
       </Stack>
     </Fade>
   );

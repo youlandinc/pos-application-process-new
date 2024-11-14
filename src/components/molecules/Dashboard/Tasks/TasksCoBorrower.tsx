@@ -200,20 +200,21 @@ export const TasksCoBorrower: FC = observer(() => {
     </Stack>
   ) : (
     <Fade in={!loading}>
-      <Stack flexDirection={'row'} justifyContent={'center'} width={'100%'}>
+      <Stack
+        flexDirection={'row'}
+        gap={3}
+        justifyContent={'space-between'}
+        width={'100%'}
+      >
         <Stack
-          alignItems={'center'}
-          gap={3}
+          gap={{ xs: 6, lg: 8 }}
           justifyContent={'flex-start'}
-          maxWidth={600}
-          mx={'auto'}
-          px={{ lg: 3, xs: 0 }}
+          maxWidth={900}
           width={'100%'}
         >
           <Typography
             color={'text.primary'}
             fontSize={{ xs: 20, lg: 24 }}
-            textAlign={'center'}
             variant={'h5'}
           >
             Co-borrower information
@@ -228,7 +229,12 @@ export const TasksCoBorrower: FC = observer(() => {
             </Typography>
           </Typography>
 
-          <StyledFormItem gap={3} label={'Is there a co-borrower?'} sub>
+          <StyledFormItem
+            gap={3}
+            label={'Is there a co-borrower?'}
+            maxWidth={600}
+            sub
+          >
             <StyledButtonGroup
               onChange={(e, value) => {
                 if (value === null) {
@@ -249,7 +255,7 @@ export const TasksCoBorrower: FC = observer(() => {
             }}
           >
             {isCoBorrower && (
-              <Stack gap={6} mt={3} width={'100%'}>
+              <Stack gap={{ xs: 6, lg: 8 }} maxWidth={600} width={'100%'}>
                 <StyledFormItem
                   gap={3}
                   label={'Personal information'}
@@ -421,7 +427,7 @@ export const TasksCoBorrower: FC = observer(() => {
           <Stack
             flexDirection={{ xs: 'unset', md: 'row' }}
             gap={3}
-            maxWidth={648}
+            maxWidth={600}
             width={'100%'}
           >
             <StyledButton
@@ -448,7 +454,8 @@ export const TasksCoBorrower: FC = observer(() => {
             </StyledButton>
           </Stack>
         </Stack>
-        {['xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+
+        {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
       </Stack>
     </Fade>
   );

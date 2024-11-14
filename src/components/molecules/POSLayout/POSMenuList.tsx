@@ -142,13 +142,18 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ loading }) => {
           return;
         }
         setActiveKey(key);
-        await router.push({
-          pathname: `/dashboard/${path}`,
-          query: { loanId: router.query.loanId },
-        });
+        if (path === 'tasks') {
+          await dashboardInfo.fetchTaskMap(router.query.loanId as string);
+          await dashboardInfo.jumpToNextTask();
+        } else {
+          await router.push({
+            pathname: `/dashboard/${path}`,
+            query: { loanId: router.query.loanId },
+          });
+        }
       };
     },
-    [activeKey, router],
+    [activeKey, dashboardInfo, router],
   );
 
   useEffect(() => {

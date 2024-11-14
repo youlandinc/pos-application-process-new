@@ -104,27 +104,21 @@ export const TasksHoldbackProcess: FC = observer(() => {
     </Stack>
   ) : (
     <Fade in={!loading}>
-      <Stack flexDirection={'row'} justifyContent={'center'} width={'100%'}>
+      <Stack
+        flexDirection={'row'}
+        gap={3}
+        justifyContent={'space-between'}
+        width={'100%'}
+      >
         <Stack
-          alignItems={'center'}
-          gap={6}
+          gap={{ xs: 6, lg: 8 }}
           justifyContent={'flex-start'}
           maxWidth={900}
-          mx={{ lg: 'auto', xs: 0 }}
-          px={{ lg: 3, xs: 0 }}
           width={'100%'}
         >
           <Typography
             color={'text.primary'}
             fontSize={{ xs: 20, lg: 24 }}
-            textAlign={'center'}
-            variant={'h5'}
-          ></Typography>
-
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            textAlign={'center'}
             variant={'h5'}
           >
             Construction holdback process
@@ -157,6 +151,7 @@ export const TasksHoldbackProcess: FC = observer(() => {
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
+            mt={{ xs: 0, lg: -2 }}
             variant={'body1'}
           >
             By clicking the <b style={{ fontWeight: 500 }}>Save</b> button
@@ -195,7 +190,8 @@ export const TasksHoldbackProcess: FC = observer(() => {
             </StyledButton>
           </Stack>
         </Stack>
-        {['xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+
+        {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
       </Stack>
     </Fade>
   );

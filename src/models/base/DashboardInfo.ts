@@ -61,6 +61,12 @@ export const DashboardInfo = types
     ),
   })
   .actions((self) => ({
+    findFirst() {
+      return Object.entries(DEFAULT_ORDER)
+        .filter(([key]) => self.taskMap.has(key as DashboardTaskKey))
+        .map(([key, value]) => ({ key: key as DashboardTaskKey, value }))
+        .sort((a, b) => a.value - b.value)[0]?.key;
+    },
     updateTaskOrder() {
       return Object.entries(DEFAULT_ORDER)
         .filter(
@@ -88,25 +94,45 @@ export const DashboardInfo = types
       self.taskMap = taskMap;
       self.taskOrder = cast(this.updateTaskOrder());
     },
-    async jumpToNextTask(taskKey?: DashboardTaskKey): Promise<void> {
-      if (taskKey) {
-        self.taskMap.set(taskKey, true);
-        self.taskOrder = cast(this.updateTaskOrder());
+    async jumpToNextTask(
+      taskKey?: DashboardTaskKey,
+      isAuto = true,
+    ): Promise<void> {
+      if (isAuto) {
+        if (taskKey) {
+          self.taskMap.set(taskKey, true);
+          self.taskOrder = cast(this.updateTaskOrder());
+        }
+
+        const condition = Array.from(self.taskMap.values()).every(
+          (value) => value,
+        );
+
+        const firstTaskKey = this.findFirst();
+        const nextTaskKey = this.findNextTask(self.taskOrder, taskKey);
+        if (condition && Router.pathname !== '/dashboard/overview') {
+          await Router.push({
+            pathname: '/dashboard/overview',
+            query: { loanId: self.loanId },
+          });
+        } else {
+          await Router.push({
+            pathname: TASK_URL_HASH[nextTaskKey || firstTaskKey],
+            query: { loanId: self.loanId },
+          });
+        }
+        return;
       }
 
-      const nextTaskKey = this.findNextTask(self.taskOrder, taskKey);
-
-      if (nextTaskKey) {
-        await Router.push({
-          pathname: TASK_URL_HASH[nextTaskKey],
-          query: { loanId: self.loanId },
-        });
-      } else {
-        await Router.push({
-          pathname: '/dashboard/tasks',
-          query: { loanId: self.loanId },
-        });
-      }
+      const order = Object.entries(DEFAULT_ORDER)
+        .filter(([key]) => self.taskMap.has(key as DashboardTaskKey))
+        .map(([key, value]) => ({ key: key as DashboardTaskKey, value }))
+        .sort((a, b) => a.value - b.value);
+      const nextTaskKey = this.findNextTask(order, taskKey);
+      await Router.push({
+        pathname: TASK_URL_HASH[nextTaskKey!],
+        query: { loanId: self.loanId },
+      });
     },
   }))
   .actions((self) => {

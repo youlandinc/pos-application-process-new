@@ -208,20 +208,21 @@ export const TasksReferringBroker: FC = observer(() => {
     </Stack>
   ) : (
     <Fade in={!loading}>
-      <Stack flexDirection={'row'} justifyContent={'center'} width={'100%'}>
+      <Stack
+        flexDirection={'row'}
+        gap={3}
+        justifyContent={'space-between'}
+        width={'100%'}
+      >
         <Stack
-          alignItems={'center'}
-          gap={6}
+          gap={{ xs: 6, lg: 8 }}
           justifyContent={'flex-start'}
-          maxWidth={648}
-          mx={{ lg: 'auto', xs: 0 }}
-          px={{ lg: 3, xs: 0 }}
+          maxWidth={900}
           width={'100%'}
         >
           <Typography
             color={'text.primary'}
             fontSize={{ xs: 20, lg: 24 }}
-            textAlign={'center'}
             variant={'h5'}
           >
             Referring broker
@@ -236,7 +237,11 @@ export const TasksReferringBroker: FC = observer(() => {
             </Typography>
           </Typography>
 
-          <StyledFormItem label={'Is there a referring broker?'} sub>
+          <StyledFormItem
+            label={'Is there a referring broker?'}
+            maxWidth={600}
+            sub
+          >
             <StyledButtonGroup
               onChange={(e, value) => {
                 if (value === null) {
@@ -258,7 +263,7 @@ export const TasksReferringBroker: FC = observer(() => {
             }}
           >
             {hasReferringBroker && (
-              <Stack gap={6} width={'100%'}>
+              <Stack gap={{ xs: 6, lg: 8 }} maxWidth={600} width={'100%'}>
                 <StyledFormItem gap={3} label={'Broker information'} sub>
                   <StyledTextField
                     label={'Company name'}
@@ -454,7 +459,8 @@ export const TasksReferringBroker: FC = observer(() => {
             </StyledButton>
           </Stack>
         </Stack>
-        {['xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+
+        {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
       </Stack>
     </Fade>
   );

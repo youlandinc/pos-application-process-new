@@ -152,20 +152,21 @@ export const TasksPermitsObtained: FC = observer(() => {
     </Stack>
   ) : (
     <Fade in={!loading}>
-      <Stack flexDirection={'row'} justifyContent={'center'} width={'100%'}>
+      <Stack
+        flexDirection={'row'}
+        gap={3}
+        justifyContent={'space-between'}
+        width={'100%'}
+      >
         <Stack
-          alignItems={'center'}
-          gap={6}
+          gap={{ xs: 6, lg: 8 }}
           justifyContent={'flex-start'}
-          maxWidth={648}
-          mx={{ lg: 'auto', xs: 0 }}
-          px={{ lg: 3, xs: 0 }}
+          maxWidth={900}
           width={'100%'}
         >
           <Typography
             color={'text.primary'}
             fontSize={{ xs: 20, lg: 24 }}
-            textAlign={'center'}
             variant={'h5'}
           >
             Upload all permits obtained
@@ -185,6 +186,7 @@ export const TasksPermitsObtained: FC = observer(() => {
             label={
               'Is the property currently raw land or has it received some or all utility improvements?'
             }
+            maxWidth={600}
             sub
           >
             <StyledSelectOption
@@ -196,7 +198,12 @@ export const TasksPermitsObtained: FC = observer(() => {
             />
           </StyledFormItem>
 
-          <StyledFormItem gap={3} label={'Are you permit ready /RTI?'} sub>
+          <StyledFormItem
+            gap={3}
+            label={'Are you permit ready /RTI?'}
+            maxWidth={600}
+            sub
+          >
             <StyledButtonGroup
               onChange={(_, v) => {
                 if (v === null) {
@@ -214,6 +221,7 @@ export const TasksPermitsObtained: FC = observer(() => {
             label={
               'How many months until you anticipate having building permits?'
             }
+            maxWidth={600}
             sub
           >
             <StyledTextFieldNumber
@@ -227,18 +235,20 @@ export const TasksPermitsObtained: FC = observer(() => {
             />
           </StyledFormItem>
 
-          <StyledUploadButtonBox
-            accept={
-              'image/*,.pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            }
-            fileKey={DashboardTaskKey.permits_obtained}
-            fileName={'Upload permits obtained'}
-            files={permitsFiles}
-            isShowHistory={false}
-            refresh={fetchInitData}
-            templateName={templateName}
-            templateUrl={templateUrl}
-          />
+          <Stack maxWidth={600}>
+            <StyledUploadButtonBox
+              accept={
+                'image/*,.pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+              }
+              fileKey={DashboardTaskKey.permits_obtained}
+              fileName={'Upload permits obtained'}
+              files={permitsFiles}
+              isShowHistory={false}
+              refresh={fetchInitData}
+              templateName={templateName}
+              templateUrl={templateUrl}
+            />
+          </Stack>
 
           <Stack
             flexDirection={{ xs: 'unset', md: 'row' }}
@@ -270,7 +280,8 @@ export const TasksPermitsObtained: FC = observer(() => {
             </StyledButton>
           </Stack>
         </Stack>
-        {['xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+
+        {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
       </Stack>
     </Fade>
   );

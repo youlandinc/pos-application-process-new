@@ -303,12 +303,12 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                   index === computedData.length - 1
                     ? 0
                     : ['xs', 'sm', 'md', 'lg'].includes(breakpoints)
-                      ? 1
-                      : item.date
+                      ? item.date
                         ? activeIndex === index
                           ? 1.75
                           : 4
                         : 4
+                      : 3
                 }
                 ml={0.5}
               >

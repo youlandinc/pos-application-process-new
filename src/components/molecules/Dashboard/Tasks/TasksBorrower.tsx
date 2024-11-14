@@ -231,21 +231,21 @@ export const TasksBorrower: FC = observer(() => {
     </Stack>
   ) : (
     <Fade in={!loading}>
-      <Stack flexDirection={'row'} justifyContent={'center'} width={'100%'}>
+      <Stack
+        flexDirection={'row'}
+        gap={3}
+        justifyContent={'space-between'}
+        width={'100%'}
+      >
         <Stack
-          alignItems={'center'}
-          flexShrink={0}
-          gap={3}
+          gap={{ xs: 6, lg: 8 }}
           justifyContent={'flex-start'}
-          maxWidth={600}
-          mx={'auto'}
-          px={{ lg: 3, xs: 0 }}
+          maxWidth={900}
           width={'100%'}
         >
           <Typography
             color={'text.primary'}
             fontSize={{ xs: 20, lg: 24 }}
-            textAlign={'center'}
             variant={'h5'}
           >
             Borrower information
@@ -260,7 +260,7 @@ export const TasksBorrower: FC = observer(() => {
             </Typography>
           </Typography>
 
-          <StyledFormItem gap={3} label={'Borrower type'} sub>
+          <StyledFormItem gap={3} label={'Borrower type'} maxWidth={600} sub>
             <StyledSelectOption
               onChange={(value) => {
                 setBorrowerType(value as string as DashboardTaskBorrowerType);
@@ -283,7 +283,7 @@ export const TasksBorrower: FC = observer(() => {
               <StyledFormItem
                 gap={3}
                 label={'Entity information'}
-                mt={{ xs: 3, lg: 5 }}
+                maxWidth={600}
                 sub
               >
                 <StyledTextField
@@ -374,7 +374,7 @@ export const TasksBorrower: FC = observer(() => {
               <StyledFormItem
                 gap={3}
                 label={'Trust information'}
-                mt={{ xs: 3, lg: 5 }}
+                maxWidth={600}
                 sub
               >
                 <StyledTextField
@@ -407,7 +407,7 @@ export const TasksBorrower: FC = observer(() => {
                 : 'Authorized signatory information'
             }
             labelSx={{ pb: 3 }}
-            mt={{ xs: 3, lg: 5 }}
+            maxWidth={600}
             sub
           >
             <Stack
@@ -499,6 +499,7 @@ export const TasksBorrower: FC = observer(() => {
             <Stack
               flexDirection={{ xs: 'column', lg: 'row' }}
               gap={3}
+              maxWidth={600}
               width={'100%'}
             >
               <StyledTextFieldPhone
@@ -541,7 +542,7 @@ export const TasksBorrower: FC = observer(() => {
           <StyledFormItem
             gap={3}
             label={'Citizenship status'}
-            mt={{ xs: 3, lg: 5 }}
+            maxWidth={600}
             sub
           >
             <StyledSelectOption
@@ -557,7 +558,7 @@ export const TasksBorrower: FC = observer(() => {
             gap={3}
             label={'Current address'}
             labelSx={{ pb: 3 }}
-            mt={{ xs: 3, lg: 5 }}
+            maxWidth={600}
             sub
           >
             <StyledGoogleAutoComplete
@@ -579,7 +580,7 @@ export const TasksBorrower: FC = observer(() => {
               <StyledFormItem
                 gap={3}
                 label={'Social security number'}
-                mt={{ xs: 3, lg: 5 }}
+                maxWidth={600}
                 sub
               >
                 <StyledTextFieldSocialNumber
@@ -605,7 +606,6 @@ export const TasksBorrower: FC = observer(() => {
           <Stack
             flexDirection={{ xs: 'unset', md: 'row' }}
             gap={3}
-            mt={{ xs: 3, lg: 5 }}
             width={'100%'}
           >
             <StyledButton
@@ -633,7 +633,7 @@ export const TasksBorrower: FC = observer(() => {
           </Stack>
         </Stack>
 
-        {['xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+        {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
       </Stack>
     </Fade>
   );

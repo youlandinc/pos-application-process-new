@@ -1,7 +1,11 @@
 import { FC } from 'react';
 import { Stack, Typography } from '@mui/material';
+import { format } from 'date-fns';
 
 export const OverviewEstDate: FC<{ estDate: string }> = ({ estDate }) => {
+  const month = format(new Date(estDate), 'MMM');
+  const day = format(new Date(estDate), 'dd');
+
   return (
     <Stack gap={1.5} width={'100%'}>
       <Typography fontSize={{ xs: 16, md: 20 }}>Date</Typography>
@@ -15,7 +19,7 @@ export const OverviewEstDate: FC<{ estDate: string }> = ({ estDate }) => {
             fontSize={12}
             justifyContent={'center'}
           >
-            Nov
+            {month}
           </Stack>
           <Stack
             alignItems={'center'}
@@ -24,13 +28,15 @@ export const OverviewEstDate: FC<{ estDate: string }> = ({ estDate }) => {
             fontWeight={600}
             justifyContent={'center'}
           >
-            09
+            {day}
           </Stack>
         </Stack>
 
         <Stack justifyContent={'center'}>
           <Typography variant={'body2'}>Est. funding date</Typography>
-          <Typography variant={'body2'}>November 08 2024</Typography>
+          <Typography variant={'body2'}>
+            {format(new Date(estDate), 'MMMM dd yyyy')}
+          </Typography>
         </Stack>
       </Stack>
       <Typography color={'text.secondary'} variant={'body2'}>

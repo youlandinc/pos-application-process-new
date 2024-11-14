@@ -96,80 +96,90 @@ export const OverviewChecklist: FC = observer(() => {
             </Typography>
 
             <Stack gap={1} mt={0.5} width={'100%'}>
-              <Stack
-                onClick={() => onClickToRedirect('payoff-amount')}
-                sx={menuItemSx}
-              >
-                <Icon
-                  component={
-                    taskMap.get(DashboardTaskKey.payoff_amount)
-                      ? ICON_COMPLETED
-                      : ICON_UNCOMPLETED
-                  }
-                  sx={menuItemIconSx}
-                />
-                <Typography sx={menuItemNameSx}>Payoff amount</Typography>
-              </Stack>
+              {taskMap.has(DashboardTaskKey.payoff_amount) && (
+                <Stack
+                  onClick={() => onClickToRedirect('payoff-amount')}
+                  sx={menuItemSx}
+                >
+                  <Icon
+                    component={
+                      taskMap.get(DashboardTaskKey.payoff_amount)
+                        ? ICON_COMPLETED
+                        : ICON_UNCOMPLETED
+                    }
+                    sx={menuItemIconSx}
+                  />
+                  <Typography sx={menuItemNameSx}>Payoff amount</Typography>
+                </Stack>
+              )}
 
-              <Stack
-                onClick={() => onClickToRedirect('rehab-info')}
-                sx={menuItemSx}
-              >
-                <Icon
-                  component={
-                    taskMap.get(DashboardTaskKey.rehab_info)
-                      ? ICON_COMPLETED
-                      : ICON_UNCOMPLETED
-                  }
-                  sx={menuItemIconSx}
-                />
-                <Typography sx={menuItemNameSx}>Rehab info</Typography>
-              </Stack>
+              {taskMap.has(DashboardTaskKey.rehab_info) && (
+                <Stack
+                  onClick={() => onClickToRedirect('rehab-info')}
+                  sx={menuItemSx}
+                >
+                  <Icon
+                    component={
+                      taskMap.get(DashboardTaskKey.rehab_info)
+                        ? ICON_COMPLETED
+                        : ICON_UNCOMPLETED
+                    }
+                    sx={menuItemIconSx}
+                  />
+                  <Typography sx={menuItemNameSx}>Rehab info</Typography>
+                </Stack>
+              )}
 
-              <Stack
-                onClick={() => onClickToRedirect('square-footage')}
-                sx={menuItemSx}
-              >
-                <Icon
-                  component={
-                    taskMap.get(DashboardTaskKey.square_footage)
-                      ? ICON_COMPLETED
-                      : ICON_UNCOMPLETED
-                  }
-                  sx={menuItemIconSx}
-                />
-                <Typography sx={menuItemNameSx}>Square footage</Typography>
-              </Stack>
+              {taskMap.has(DashboardTaskKey.square_footage) && (
+                <Stack
+                  onClick={() => onClickToRedirect('square-footage')}
+                  sx={menuItemSx}
+                >
+                  <Icon
+                    component={
+                      taskMap.get(DashboardTaskKey.square_footage)
+                        ? ICON_COMPLETED
+                        : ICON_UNCOMPLETED
+                    }
+                    sx={menuItemIconSx}
+                  />
+                  <Typography sx={menuItemNameSx}>Square footage</Typography>
+                </Stack>
+              )}
 
-              <Stack
-                onClick={() => onClickToRedirect('entitlements')}
-                sx={menuItemSx}
-              >
-                <Icon
-                  component={
-                    taskMap.get(DashboardTaskKey.entitlements)
-                      ? ICON_COMPLETED
-                      : ICON_UNCOMPLETED
-                  }
-                  sx={menuItemIconSx}
-                />
-                <Typography sx={menuItemNameSx}>Entitlements</Typography>
-              </Stack>
+              {taskMap.has(DashboardTaskKey.entitlements) && (
+                <Stack
+                  onClick={() => onClickToRedirect('entitlements')}
+                  sx={menuItemSx}
+                >
+                  <Icon
+                    component={
+                      taskMap.get(DashboardTaskKey.entitlements)
+                        ? ICON_COMPLETED
+                        : ICON_UNCOMPLETED
+                    }
+                    sx={menuItemIconSx}
+                  />
+                  <Typography sx={menuItemNameSx}>Entitlements</Typography>
+                </Stack>
+              )}
 
-              <Stack
-                onClick={() => onClickToRedirect('permits-obtained')}
-                sx={menuItemSx}
-              >
-                <Icon
-                  component={
-                    taskMap.get(DashboardTaskKey.permits_obtained)
-                      ? ICON_COMPLETED
-                      : ICON_UNCOMPLETED
-                  }
-                  sx={menuItemIconSx}
-                />
-                <Typography sx={menuItemNameSx}>Permits obtained</Typography>
-              </Stack>
+              {taskMap.has(DashboardTaskKey.permits_obtained) && (
+                <Stack
+                  onClick={() => onClickToRedirect('permits-obtained')}
+                  sx={menuItemSx}
+                >
+                  <Icon
+                    component={
+                      taskMap.get(DashboardTaskKey.permits_obtained)
+                        ? ICON_COMPLETED
+                        : ICON_UNCOMPLETED
+                    }
+                    sx={menuItemIconSx}
+                  />
+                  <Typography sx={menuItemNameSx}>Permits obtained</Typography>
+                </Stack>
+              )}
             </Stack>
           </Stack>
         )}
