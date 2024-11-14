@@ -204,15 +204,10 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
     ],
   );
 
+  const [activeIndex, setActiveIndex] = useState(-1);
+
   return (
-    <Stack
-      border={'1px solid #D2D6E1'}
-      borderRadius={2}
-      flex={1}
-      gap={3}
-      p={3}
-      width={'100%'}
-    >
+    <Stack borderRadius={2} gap={1.5} width={'100%'}>
       <Typography color={'text.primary'} variant={'h6'}>
         Loan status
       </Typography>
@@ -221,16 +216,19 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
         activeStep={hash[loanStatus]}
         connector={null}
         orientation={'vertical'}
-        sx={{
-          width: '100%',
-          pl: 1,
-        }}
+        sx={{ width: '100%' }}
       >
         {computedData.map((item, index) => (
           <Step
             completed={index <= hash[loanStatus]}
             expanded={true}
             key={`${item.label}-${index}`}
+            onMouseEnter={() => {
+              setActiveIndex(index);
+            }}
+            onMouseLeave={() => {
+              setActiveIndex(-1);
+            }}
           >
             <StepLabel icon={item.icon}>
               <Stack
@@ -306,7 +304,11 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                     ? 0
                     : ['xs', 'sm', 'md', 'lg'].includes(breakpoints)
                       ? 1
-                      : 7
+                      : item.date
+                        ? activeIndex === index
+                          ? 1.75
+                          : 4
+                        : 4
                 }
                 ml={0.5}
               >
@@ -365,15 +367,18 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                   </Typography>
                 )}
 
-                {item.date && hash[loanStatus] >= index && (
-                  <Typography
-                    color={'text.secondary'}
-                    ml={{ xs: 'unset', xl: 'auto' }}
-                    variant={'body3'}
-                  >
-                    {item.date}
-                  </Typography>
-                )}
+                {item.date &&
+                  hash[loanStatus] >= index &&
+                  (['xs', 'sm', 'md', 'lg'].includes(breakpoints) ||
+                    activeIndex === index) && (
+                    <Typography
+                      color={'text.secondary'}
+                      ml={{ xs: 'unset', xl: 'auto' }}
+                      variant={'body3'}
+                    >
+                      {item.date}
+                    </Typography>
+                  )}
               </Stack>
             </StepContent>
           </Step>

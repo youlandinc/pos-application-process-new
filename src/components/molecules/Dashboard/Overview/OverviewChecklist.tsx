@@ -50,31 +50,32 @@ export const OverviewChecklist: FC = observer(() => {
   const menuItemNameSx = useMemo(() => {
     return {
       color: 'inherit',
-      fontSize: 13,
+      fontSize: 14,
     };
   }, []);
 
   const menuItemIconSx = useMemo(() => {
     return {
-      width: 20,
-      height: 20,
+      width: 24,
+      height: 24,
       '& path': {
-        fill: (theme: Theme) => theme.palette.primary.contrastBackground,
+        fill: (theme: Theme) => theme.palette.primary.main,
       },
     };
   }, []);
 
   return (
-    <Stack flex={1}>
-      <Typography fontSize={{ xs: 20, md: 24 }}>Congratulations</Typography>
+    <Stack width={'100%'}>
+      <Typography fontSize={{ xs: 16, md: 20 }}>
+        Your tasks checklist
+      </Typography>
 
       <Stack
-        flex={1}
         gap={1}
         sx={{
           '& .sub_menu': {
             '&:first-of-type': {
-              mt: 1.5,
+              mt: 2.5,
             },
             '&:not(:last-of-type)': {
               pb: 1,
@@ -82,6 +83,7 @@ export const OverviewChecklist: FC = observer(() => {
             },
           },
         }}
+        width={'100%'}
       >
         {(taskMap.has(DashboardTaskKey.payoff_amount) ||
           taskMap.has(DashboardTaskKey.rehab_info) ||

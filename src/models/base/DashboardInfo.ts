@@ -73,7 +73,7 @@ export const DashboardInfo = types
     },
     findNextTask(
       taskOrder: TaskItem[],
-      currentKey: DashboardTaskKey,
+      currentKey?: DashboardTaskKey,
     ): DashboardTaskKey | undefined {
       const index = taskOrder.findIndex((item) => item.key === currentKey);
       return taskOrder[index + 1]?.key;
@@ -88,9 +88,11 @@ export const DashboardInfo = types
       self.taskMap = taskMap;
       self.taskOrder = cast(this.updateTaskOrder());
     },
-    async jumpToNextTask(taskKey: DashboardTaskKey): Promise<void> {
-      self.taskMap.set(taskKey, true);
-      self.taskOrder = cast(this.updateTaskOrder());
+    async jumpToNextTask(taskKey?: DashboardTaskKey): Promise<void> {
+      if (taskKey) {
+        self.taskMap.set(taskKey, true);
+        self.taskOrder = cast(this.updateTaskOrder());
+      }
 
       const nextTaskKey = this.findNextTask(self.taskOrder, taskKey);
 

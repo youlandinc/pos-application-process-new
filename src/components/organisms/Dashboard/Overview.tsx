@@ -4,7 +4,8 @@ import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 
-import { useBreakpoints, useSessionStorageState } from '@/hooks';
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSGetParamsFromUrl } from '@/utils';
@@ -22,23 +23,19 @@ import {
   PipelineLoanStageEnum,
 } from '@/types';
 import { _fetchLoanDetail } from '@/requests/dashboard';
-import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
 
 export const Overview: FC = observer(() => {
-  const breakpoints = useBreakpoints();
   const router = useRouter();
   const { dashboardInfo } = useMst();
 
   const { enqueueSnackbar } = useSnackbar();
-  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [loanStatus, setLoanStatus] = useState<
     DashboardOverviewResponse['data']['loanStatus']
   >(PipelineLoanStageEnum.scenario);
-
   const [loanStatusDetails, setLoanStatusDetails] =
     useState<DashboardOverviewResponse['data']['loanStatusDetails']>();
+  const [estDate, setEstDate] = useState('');
 
   const { loading } = useAsync(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
@@ -50,6 +47,9 @@ export const Overview: FC = observer(() => {
       });
       return;
     }
+    if (!dashboardInfo) {
+      return;
+    }
     try {
       const {
         data: {
@@ -59,6 +59,7 @@ export const Overview: FC = observer(() => {
       setLoanStatus(loanStatus);
       setLoanStatusDetails(loanStatusDetails);
       dashboardInfo.setLoanTasks(loanTasks);
+      setEstDate(estDate);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
@@ -68,7 +69,7 @@ export const Overview: FC = observer(() => {
         header,
       });
     }
-  }, [location?.href]);
+  }, [location?.href, dashboardInfo]);
 
   return loading ? (
     <Stack
@@ -83,18 +84,18 @@ export const Overview: FC = observer(() => {
   ) : (
     <Fade in={!loading}>
       <Stack
-        flexDirection={'row'}
+        flexDirection={{ xs: 'column', lg: 'row' }}
         gap={6}
         justifyContent={'flex-start'}
         mx={{ lg: 'auto', xs: 0 }}
         width={'100%'}
       >
-        <Stack flex={1.5} flexShrink={0} gap={6}>
+        <Stack flex={1.5} flexShrink={0} gap={{ xs: 6, lg: 9 }}>
           <Stack gap={1.5}>
             <Typography fontSize={{ xs: 20, md: 24 }}>
               Congratulations
             </Typography>
-            <Typography variant={'body2'}>
+            <Typography mt={1.5} variant={'body2'}>
               We&apos;ve put together a list of steps for you to take to move
               ahead with this loan. We&apos;ll be able to work on the loan once
               you&apos;ve completed all of your steps.
@@ -103,7 +104,13 @@ export const Overview: FC = observer(() => {
               Not sure where to start? Click the button below and we’ll choose
               the best step for you to work on.
             </Typography>
-            <StyledButton size={'small'} sx={{ width: 100 }}>
+            <StyledButton
+              onClick={async () => {
+                await dashboardInfo.jumpToNextTask();
+              }}
+              size={'small'}
+              sx={{ width: 100, mt: 3 }}
+            >
               Next step
             </StyledButton>
           </Stack>
@@ -111,13 +118,13 @@ export const Overview: FC = observer(() => {
           <OverviewChecklist />
         </Stack>
 
-        <Stack flex={1} flexShrink={0} width={'100%'}>
+        <Stack flex={1} flexShrink={0} gap={{ xs: 6, lg: 9 }} width={'100%'}>
           <OverviewLoanStatus
             loanStatus={loanStatus}
             loanStatusDetails={loanStatusDetails!}
           />
 
-          <OverviewEstDate />
+          <OverviewEstDate estDate={estDate} />
         </Stack>
       </Stack>
     </Fade>
