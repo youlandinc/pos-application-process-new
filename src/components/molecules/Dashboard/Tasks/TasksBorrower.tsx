@@ -9,7 +9,6 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 import { Address, IAddress } from '@/models/common/Address';
 
-import { useBreakpoints } from '@/hooks';
 import { POSGetParamsFromUrl } from '@/utils';
 import {
   AddressSchema,
@@ -34,7 +33,6 @@ import {
   StyledTextFieldSocialNumber,
   Transitions,
 } from '@/components/atoms';
-import { TasksRightMenu } from '@/components/molecules';
 
 import {
   DashboardTaskBorrowerEntityType,
@@ -53,8 +51,6 @@ export const TasksBorrower: FC = observer(() => {
   const {
     dashboardInfo: { jumpToNextTask },
   } = useMst();
-
-  const breakpoints = useBreakpoints();
 
   const [saveLoading, setSaveLoading] = useState(false);
 
@@ -222,7 +218,7 @@ export const TasksBorrower: FC = observer(() => {
       alignItems={'center'}
       justifyContent={'center'}
       margin={'auto 0'}
-      minHeight={'calc(667px - 46px)'}
+      minHeight={'calc(667px - 194px)'}
       width={'100%'}
     >
       <StyledLoading sx={{ color: 'text.grey' }} />
@@ -230,374 +226,364 @@ export const TasksBorrower: FC = observer(() => {
   ) : (
     <Fade in={!loading}>
       <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
+        gap={{ xs: 6, lg: 8 }}
+        justifyContent={'flex-start'}
+        maxWidth={900}
         width={'100%'}
       >
-        <Stack
-          gap={{ xs: 6, lg: 8 }}
-          justifyContent={'flex-start'}
-          maxWidth={900}
-          width={'100%'}
-        >
-          <Typography fontSize={{ xs: 20, lg: 24 }}>
-            Borrower information
-            <Typography
-              color={'text.secondary'}
-              fontSize={{ xs: 12, lg: 16 }}
-              mt={1}
-              variant={'body1'}
-            >
-              Please enter the borrower&apos;s details below so we may begin
-              processing your loan documents.
-            </Typography>
+        <Typography fontSize={{ xs: 20, lg: 24 }}>
+          Borrower information
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
+            variant={'body1'}
+          >
+            Please enter the borrower&apos;s details below so we may begin
+            processing your loan documents.
           </Typography>
+        </Typography>
 
-          <StyledFormItem gap={3} label={'Borrower type'} mt={-3} sub>
-            <StyledSelectOption
-              onChange={(value) => {
-                setBorrowerType(value as string as DashboardTaskBorrowerType);
-              }}
-              options={OPTIONS_TASK_BORROWER_TYPE}
-              sx={{ maxWidth: 600 }}
-              value={borrowerType}
-            />
-          </StyledFormItem>
-
-          <Transitions
-            style={{
-              display:
-                borrowerType === DashboardTaskBorrowerType.entity
-                  ? 'flex'
-                  : 'none',
-              width: '100%',
+        <StyledFormItem gap={3} label={'Borrower type'} mt={-3} sub>
+          <StyledSelectOption
+            onChange={(value) => {
+              setBorrowerType(value as string as DashboardTaskBorrowerType);
             }}
-          >
-            {borrowerType === DashboardTaskBorrowerType.entity && (
-              <StyledFormItem gap={3} label={'Entity information'} sub>
-                <StyledTextField
-                  label={'Entity name'}
-                  onChange={(e) => {
-                    if (formError?.entityName) {
-                      setFormError((prev) => {
-                        if (prev) {
-                          delete prev.entityName;
-                        }
-                        return prev;
-                      });
-                    }
-                    setEntityName(e.target.value);
-                  }}
-                  placeholder={'Entity name'}
-                  sx={{ maxWidth: 600 }}
-                  validate={formError?.entityName}
-                  value={entityName}
-                />
-                <StyledSelect
-                  label={'Entity type'}
-                  onChange={(e) => {
-                    if (formError?.entityType) {
-                      setFormError((prev) => {
-                        if (prev) {
-                          delete prev.entityType;
-                        }
-                        return prev;
-                      });
-                    }
-                    setEntityType(
-                      e.target
-                        .value as string as DashboardTaskBorrowerEntityType,
-                    );
-                  }}
-                  options={OPTIONS_TASK_ENTITY_TYPE}
-                  sx={{ maxWidth: 600 }}
-                  validate={formError?.entityType}
-                  value={entityType}
-                />
-                <StyledTextField
-                  label={'Secretary of State ID'}
-                  onChange={(e) => {
-                    if (formError?.entityId) {
-                      setFormError((prev) => {
-                        if (prev) {
-                          delete prev.entityId;
-                        }
-                        return prev;
-                      });
-                    }
-                    setEntityId(e.target.value);
-                  }}
-                  placeholder={'Secretary of State ID'}
-                  sx={{ maxWidth: 600 }}
-                  validate={formError?.entityId}
-                  value={entityId}
-                />
-                <StyledSelect
-                  label={'Formation State'}
-                  onChange={(e) => {
-                    if (formError?.entityState) {
-                      setFormError((prev) => {
-                        if (prev) {
-                          delete prev.entityState;
-                        }
-                        return prev;
-                      });
-                    }
-                    setEntityState(e.target.value as string);
-                  }}
-                  options={OPTIONS_COMMON_STATE}
-                  sx={{ maxWidth: 600 }}
-                  validate={formError?.entityState}
-                  value={entityState}
-                />
-              </StyledFormItem>
-            )}
-          </Transitions>
+            options={OPTIONS_TASK_BORROWER_TYPE}
+            sx={{ maxWidth: 600 }}
+            value={borrowerType}
+          />
+        </StyledFormItem>
 
-          <Transitions
-            style={{
-              display:
-                borrowerType === DashboardTaskBorrowerType.trust
-                  ? 'flex'
-                  : 'none',
-              width: '100%',
-            }}
-          >
-            {borrowerType === DashboardTaskBorrowerType.trust && (
-              <StyledFormItem gap={3} label={'Trust information'} sub>
-                <StyledTextField
-                  label={'Trust name'}
-                  onChange={(e) => {
-                    if (formError?.trustName) {
-                      setFormError((prev) => {
-                        if (prev) {
-                          delete prev.trustName;
-                        }
-                        return prev;
-                      });
-                    }
-                    setTrustName(e.target.value);
-                  }}
-                  placeholder={'Trust name'}
-                  sx={{ maxWidth: 600 }}
-                  validate={formError?.trustName}
-                  value={trustName}
-                />
-              </StyledFormItem>
-            )}
-          </Transitions>
+        <Transitions
+          style={{
+            display:
+              borrowerType === DashboardTaskBorrowerType.entity
+                ? 'flex'
+                : 'none',
+            width: '100%',
+          }}
+        >
+          {borrowerType === DashboardTaskBorrowerType.entity && (
+            <StyledFormItem gap={3} label={'Entity information'} sub>
+              <StyledTextField
+                label={'Entity name'}
+                onChange={(e) => {
+                  if (formError?.entityName) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.entityName;
+                      }
+                      return prev;
+                    });
+                  }
+                  setEntityName(e.target.value);
+                }}
+                placeholder={'Entity name'}
+                sx={{ maxWidth: 600 }}
+                validate={formError?.entityName}
+                value={entityName}
+              />
+              <StyledSelect
+                label={'Entity type'}
+                onChange={(e) => {
+                  if (formError?.entityType) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.entityType;
+                      }
+                      return prev;
+                    });
+                  }
+                  setEntityType(
+                    e.target.value as string as DashboardTaskBorrowerEntityType,
+                  );
+                }}
+                options={OPTIONS_TASK_ENTITY_TYPE}
+                sx={{ maxWidth: 600 }}
+                validate={formError?.entityType}
+                value={entityType}
+              />
+              <StyledTextField
+                label={'Secretary of State ID'}
+                onChange={(e) => {
+                  if (formError?.entityId) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.entityId;
+                      }
+                      return prev;
+                    });
+                  }
+                  setEntityId(e.target.value);
+                }}
+                placeholder={'Secretary of State ID'}
+                sx={{ maxWidth: 600 }}
+                validate={formError?.entityId}
+                value={entityId}
+              />
+              <StyledSelect
+                label={'Formation State'}
+                onChange={(e) => {
+                  if (formError?.entityState) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.entityState;
+                      }
+                      return prev;
+                    });
+                  }
+                  setEntityState(e.target.value as string);
+                }}
+                options={OPTIONS_COMMON_STATE}
+                sx={{ maxWidth: 600 }}
+                validate={formError?.entityState}
+                value={entityState}
+              />
+            </StyledFormItem>
+          )}
+        </Transitions>
 
-          <StyledFormItem
+        <Transitions
+          style={{
+            display:
+              borrowerType === DashboardTaskBorrowerType.trust
+                ? 'flex'
+                : 'none',
+            width: '100%',
+          }}
+        >
+          {borrowerType === DashboardTaskBorrowerType.trust && (
+            <StyledFormItem gap={3} label={'Trust information'} sub>
+              <StyledTextField
+                label={'Trust name'}
+                onChange={(e) => {
+                  if (formError?.trustName) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.trustName;
+                      }
+                      return prev;
+                    });
+                  }
+                  setTrustName(e.target.value);
+                }}
+                placeholder={'Trust name'}
+                sx={{ maxWidth: 600 }}
+                validate={formError?.trustName}
+                value={trustName}
+              />
+            </StyledFormItem>
+          )}
+        </Transitions>
+
+        <StyledFormItem
+          gap={3}
+          label={
+            borrowerType === DashboardTaskBorrowerType.individual ||
+            borrowerType === DashboardTaskBorrowerType.default
+              ? 'Personal information'
+              : 'Authorized signatory information'
+          }
+          labelSx={{ pb: 3 }}
+          sub
+        >
+          <Stack
+            flexDirection={{ xs: 'column', lg: 'row' }}
             gap={3}
-            label={
-              borrowerType === DashboardTaskBorrowerType.individual ||
-              borrowerType === DashboardTaskBorrowerType.default
-                ? 'Personal information'
-                : 'Authorized signatory information'
-            }
-            labelSx={{ pb: 3 }}
-            sub
-          >
-            <Stack
-              flexDirection={{ xs: 'column', lg: 'row' }}
-              gap={3}
-              maxWidth={600}
-              width={'100%'}
-            >
-              <StyledTextField
-                label={'First name'}
-                onChange={(e) => {
-                  if (formError?.firstName) {
-                    setFormError((prev) => {
-                      if (prev) {
-                        delete prev.firstName;
-                      }
-                      return prev;
-                    });
-                  }
-                  setFirstName(e.target.value);
-                }}
-                placeholder={'First name'}
-                validate={formError?.firstName}
-                value={firstName}
-              />
-              <StyledTextField
-                label={'Last name'}
-                onChange={(e) => {
-                  if (formError?.lastName) {
-                    setFormError((prev) => {
-                      if (prev) {
-                        delete prev.lastName;
-                      }
-                      return prev;
-                    });
-                  }
-                  setLastName(e.target.value);
-                }}
-                placeholder={'Last name'}
-                validate={formError?.lastName}
-                value={lastName}
-              />
-            </Stack>
-
-            <Stack
-              flexDirection={{ xs: 'column', lg: 'row' }}
-              gap={3}
-              maxWidth={600}
-              width={'100%'}
-            >
-              {(borrowerType === DashboardTaskBorrowerType.trust ||
-                borrowerType === DashboardTaskBorrowerType.entity) && (
-                <StyledTextField
-                  label={'Authorized signatory title'}
-                  onChange={(e) => {
-                    if (formError?.signatoryTitle) {
-                      setFormError((prev) => {
-                        if (prev) {
-                          delete prev.signatoryTitle;
-                        }
-                        return prev;
-                      });
-                    }
-                    setSignatoryTitle(e.target.value);
-                  }}
-                  placeholder={'Authorized signatory title'}
-                  validate={formError?.signatoryTitle}
-                  value={signatoryTitle}
-                />
-              )}
-
-              <StyledDatePicker
-                disableFuture={true}
-                label={'Date of birth'}
-                onChange={(value) => {
-                  if (formError?.birthDate) {
-                    setFormError((prev) => {
-                      if (prev) {
-                        delete prev.birthDate;
-                      }
-                      return prev;
-                    });
-                  }
-                  setBirthDate(value as Date);
-                }}
-                validate={formError?.birthDate}
-                value={birthDate}
-              />
-            </Stack>
-
-            <Stack
-              flexDirection={{ xs: 'column', lg: 'row' }}
-              gap={3}
-              maxWidth={600}
-              width={'100%'}
-            >
-              <StyledTextFieldPhone
-                label={'Phone number'}
-                onValueChange={({ value }) => {
-                  if (formError?.phoneNumber) {
-                    setFormError((prev) => {
-                      if (prev) {
-                        delete prev.phoneNumber;
-                      }
-                      return prev;
-                    });
-                  }
-                  setPhoneNumber(value);
-                }}
-                placeholder={'Phone number'}
-                validate={formError?.phoneNumber}
-                value={phoneNumber}
-              />
-              <StyledTextField
-                label={'Email'}
-                onChange={(e) => {
-                  if (formError?.email) {
-                    setFormError((prev) => {
-                      if (prev) {
-                        delete prev.email;
-                      }
-                      return prev;
-                    });
-                  }
-                  setEmail(e.target.value);
-                }}
-                placeholder={'Email'}
-                validate={formError?.email}
-                value={email}
-              />
-            </Stack>
-          </StyledFormItem>
-
-          <StyledFormItem gap={3} label={'Citizenship status'} sub>
-            <StyledSelectOption
-              onChange={(value) =>
-                setCitizenship(value as string as LoanCitizenshipEnum)
-              }
-              options={OPTIONS_COMMON_CITIZEN_TYPE}
-              sx={{ maxWidth: 600 }}
-              value={citizenship}
-            />
-          </StyledFormItem>
-
-          <StyledFormItem
-            gap={3}
-            label={'Current address'}
-            labelSx={{ pb: 3 }}
             maxWidth={600}
-            sub
+            width={'100%'}
           >
-            <StyledGoogleAutoComplete
-              address={address}
-              addressError={addressError}
-            />
-          </StyledFormItem>
-
-          <Transitions
-            style={{
-              display:
-                citizenship !== LoanCitizenshipEnum.foreign_national
-                  ? 'flex'
-                  : 'none',
-              width: '100%',
-            }}
-          >
-            {citizenship !== LoanCitizenshipEnum.foreign_national && (
-              <StyledFormItem gap={3} label={'Social security number'} sub>
-                <StyledTextFieldSocialNumber
-                  label={'Social security number'}
-                  onValueChange={(v) => {
-                    if (formError?.ssn) {
-                      setFormError((prev) => {
-                        if (prev) {
-                          delete prev.ssn;
-                        }
-                        return prev;
-                      });
+            <StyledTextField
+              label={'First name'}
+              onChange={(e) => {
+                if (formError?.firstName) {
+                  setFormError((prev) => {
+                    if (prev) {
+                      delete prev.firstName;
                     }
-                    setSsn(v);
-                  }}
-                  sx={{ maxWidth: 600 }}
-                  validate={formError?.ssn}
-                  value={ssn}
-                />
-              </StyledFormItem>
-            )}
-          </Transitions>
+                    return prev;
+                  });
+                }
+                setFirstName(e.target.value);
+              }}
+              placeholder={'First name'}
+              validate={formError?.firstName}
+              value={firstName}
+            />
+            <StyledTextField
+              label={'Last name'}
+              onChange={(e) => {
+                if (formError?.lastName) {
+                  setFormError((prev) => {
+                    if (prev) {
+                      delete prev.lastName;
+                    }
+                    return prev;
+                  });
+                }
+                setLastName(e.target.value);
+              }}
+              placeholder={'Last name'}
+              validate={formError?.lastName}
+              value={lastName}
+            />
+          </Stack>
 
-          <StyledButton
-            color={'primary'}
-            disabled={saveLoading}
-            loading={saveLoading}
-            onClick={handleSave}
-            sx={{ width: 200 }}
+          <Stack
+            flexDirection={{ xs: 'column', lg: 'row' }}
+            gap={3}
+            maxWidth={600}
+            width={'100%'}
           >
-            Save and continue
-          </StyledButton>
-        </Stack>
+            {(borrowerType === DashboardTaskBorrowerType.trust ||
+              borrowerType === DashboardTaskBorrowerType.entity) && (
+              <StyledTextField
+                label={'Authorized signatory title'}
+                onChange={(e) => {
+                  if (formError?.signatoryTitle) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.signatoryTitle;
+                      }
+                      return prev;
+                    });
+                  }
+                  setSignatoryTitle(e.target.value);
+                }}
+                placeholder={'Authorized signatory title'}
+                validate={formError?.signatoryTitle}
+                value={signatoryTitle}
+              />
+            )}
 
-        {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+            <StyledDatePicker
+              disableFuture={true}
+              label={'Date of birth'}
+              onChange={(value) => {
+                if (formError?.birthDate) {
+                  setFormError((prev) => {
+                    if (prev) {
+                      delete prev.birthDate;
+                    }
+                    return prev;
+                  });
+                }
+                setBirthDate(value as Date);
+              }}
+              validate={formError?.birthDate}
+              value={birthDate}
+            />
+          </Stack>
+
+          <Stack
+            flexDirection={{ xs: 'column', lg: 'row' }}
+            gap={3}
+            maxWidth={600}
+            width={'100%'}
+          >
+            <StyledTextFieldPhone
+              label={'Phone number'}
+              onValueChange={({ value }) => {
+                if (formError?.phoneNumber) {
+                  setFormError((prev) => {
+                    if (prev) {
+                      delete prev.phoneNumber;
+                    }
+                    return prev;
+                  });
+                }
+                setPhoneNumber(value);
+              }}
+              placeholder={'Phone number'}
+              validate={formError?.phoneNumber}
+              value={phoneNumber}
+            />
+            <StyledTextField
+              label={'Email'}
+              onChange={(e) => {
+                if (formError?.email) {
+                  setFormError((prev) => {
+                    if (prev) {
+                      delete prev.email;
+                    }
+                    return prev;
+                  });
+                }
+                setEmail(e.target.value);
+              }}
+              placeholder={'Email'}
+              validate={formError?.email}
+              value={email}
+            />
+          </Stack>
+        </StyledFormItem>
+
+        <StyledFormItem gap={3} label={'Citizenship status'} sub>
+          <StyledSelectOption
+            onChange={(value) =>
+              setCitizenship(value as string as LoanCitizenshipEnum)
+            }
+            options={OPTIONS_COMMON_CITIZEN_TYPE}
+            sx={{ maxWidth: 600 }}
+            value={citizenship}
+          />
+        </StyledFormItem>
+
+        <StyledFormItem
+          gap={3}
+          label={'Current address'}
+          labelSx={{ pb: 3 }}
+          maxWidth={600}
+          sub
+        >
+          <StyledGoogleAutoComplete
+            address={address}
+            addressError={addressError}
+          />
+        </StyledFormItem>
+
+        <Transitions
+          style={{
+            display:
+              citizenship !== LoanCitizenshipEnum.foreign_national
+                ? 'flex'
+                : 'none',
+            width: '100%',
+          }}
+        >
+          {citizenship !== LoanCitizenshipEnum.foreign_national && (
+            <StyledFormItem gap={3} label={'Social security number'} sub>
+              <StyledTextFieldSocialNumber
+                label={'Social security number'}
+                onValueChange={(v) => {
+                  if (formError?.ssn) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.ssn;
+                      }
+                      return prev;
+                    });
+                  }
+                  setSsn(v);
+                }}
+                sx={{ maxWidth: 600 }}
+                validate={formError?.ssn}
+                value={ssn}
+              />
+            </StyledFormItem>
+          )}
+        </Transitions>
+
+        <StyledButton
+          color={'primary'}
+          disabled={saveLoading}
+          loading={saveLoading}
+          onClick={handleSave}
+          sx={{ width: 200, mb: 8 }}
+        >
+          Save and continue
+        </StyledButton>
       </Stack>
     </Fade>
   );

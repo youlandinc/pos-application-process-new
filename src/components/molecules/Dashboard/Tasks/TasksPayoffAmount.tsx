@@ -8,14 +8,12 @@ import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSGetParamsFromUrl } from '@/utils';
-import { useBreakpoints } from '@/hooks';
 
 import {
   StyledButton,
   StyledLoading,
   StyledTextFieldNumber,
 } from '@/components/atoms';
-import { TasksRightMenu } from '@/components/molecules';
 
 import { DashboardTaskKey, HttpError } from '@/types';
 import {
@@ -28,8 +26,6 @@ export const TasksPayoffAmount: FC = observer(() => {
   const {
     dashboardInfo: { jumpToNextTask },
   } = useMst();
-
-  const breakpoints = useBreakpoints();
 
   const [saveLoading, setSaveLoading] = useState(false);
 
@@ -99,51 +95,42 @@ export const TasksPayoffAmount: FC = observer(() => {
   ) : (
     <Fade in={!loading}>
       <Stack
-        flexDirection={'row'}
         gap={3}
-        justifyContent={'space-between'}
+        justifyContent={'flex-start'}
+        maxWidth={900}
         width={'100%'}
       >
-        <Stack
-          gap={3}
-          justifyContent={'flex-start'}
-          maxWidth={900}
-          width={'100%'}
-        >
-          <Typography fontSize={{ xs: 20, lg: 24 }}>
-            Payoff amount
-            <Typography
-              color={'text.secondary'}
-              fontSize={{ xs: 12, lg: 16 }}
-              mt={1}
-              variant={'body1'}
-            >
-              Please provide the full amount due to your lender for the complete
-              repayment of your current loan.
-            </Typography>
-          </Typography>
-
-          <StyledTextFieldNumber
-            label={'Payoff amount'}
-            onValueChange={({ floatValue }) => setPayoffAmount(floatValue)}
-            placeholder={'Payoff amount'}
-            prefix={'$'}
-            sx={{ maxWidth: 600 }}
-            value={payoffAmount}
-          />
-
-          <StyledButton
-            color={'primary'}
-            disabled={saveLoading || !payoffAmount}
-            loading={saveLoading}
-            onClick={handleSave}
-            sx={{ width: 200, mt: { xs: 3, lg: 5 } }}
+        <Typography fontSize={{ xs: 20, lg: 24 }}>
+          Payoff amount
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
+            variant={'body1'}
           >
-            Save and continue
-          </StyledButton>
-        </Stack>
+            Please provide the full amount due to your lender for the complete
+            repayment of your current loan.
+          </Typography>
+        </Typography>
 
-        {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+        <StyledTextFieldNumber
+          label={'Payoff amount'}
+          onValueChange={({ floatValue }) => setPayoffAmount(floatValue)}
+          placeholder={'Payoff amount'}
+          prefix={'$'}
+          sx={{ maxWidth: 600 }}
+          value={payoffAmount}
+        />
+
+        <StyledButton
+          color={'primary'}
+          disabled={saveLoading || !payoffAmount}
+          loading={saveLoading}
+          onClick={handleSave}
+          sx={{ width: 200, mt: { xs: 3, lg: 5 } }}
+        >
+          Save and continue
+        </StyledButton>
       </Stack>
     </Fade>
   );

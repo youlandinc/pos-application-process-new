@@ -6,7 +6,6 @@ import { useAsync } from 'react-use';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useBreakpoints } from '@/hooks';
 import { POSGetParamsFromUrl } from '@/utils';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
@@ -21,15 +20,12 @@ import {
   _fetchLoanTaskDetail,
   _updateLoanTaskDetail,
 } from '@/requests/dashboard';
-import { TasksRightMenu } from '@/components/molecules';
 
 export const TasksSquareFootage: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
   const {
     dashboardInfo: { jumpToNextTask },
   } = useMst();
-
-  const breakpoints = useBreakpoints();
 
   const [saveLoading, setSaveLoading] = useState(false);
 
@@ -95,7 +91,7 @@ export const TasksSquareFootage: FC = observer(() => {
       alignItems={'center'}
       justifyContent={'center'}
       margin={'auto 0'}
-      minHeight={'calc(667px - 46px)'}
+      minHeight={'calc(667px - 194px)'}
       width={'100%'}
     >
       <StyledLoading sx={{ color: 'text.grey' }} />
@@ -103,50 +99,41 @@ export const TasksSquareFootage: FC = observer(() => {
   ) : (
     <Fade in={!loading}>
       <Stack
-        flexDirection={'row'}
         gap={3}
-        justifyContent={'space-between'}
+        justifyContent={'flex-start'}
+        maxWidth={900}
         width={'100%'}
       >
-        <Stack
-          gap={3}
-          justifyContent={'flex-start'}
-          maxWidth={900}
-          width={'100%'}
-        >
-          <Typography fontSize={{ xs: 20, lg: 24 }}>
-            Square footage
-            <Typography
-              color={'text.secondary'}
-              fontSize={{ xs: 12, lg: 16 }}
-              mt={1}
-              variant={'body1'}
-            >
-              Please provide the square footage of the planned property
-            </Typography>
-          </Typography>
-
-          <StyledTextFieldNumber
-            label={'Square footage'}
-            onValueChange={({ floatValue }) => setSquareFootage(floatValue)}
-            placeholder={'Square footage (ex: 1000 sq ft)'}
-            suffix={' Sq ft'}
-            sx={{ maxWidth: 600 }}
-            value={squareFootage}
-          />
-
-          <StyledButton
-            color={'primary'}
-            disabled={saveLoading || !isFormDataValid}
-            loading={saveLoading}
-            onClick={handleSave}
-            sx={{ mt: { xs: 3, lg: 5 }, width: 200 }}
+        <Typography fontSize={{ xs: 20, lg: 24 }}>
+          Square footage
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
+            variant={'body1'}
           >
-            Save and continue
-          </StyledButton>
-        </Stack>
+            Please provide the square footage of the planned property
+          </Typography>
+        </Typography>
 
-        {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+        <StyledTextFieldNumber
+          label={'Square footage'}
+          onValueChange={({ floatValue }) => setSquareFootage(floatValue)}
+          placeholder={'Square footage (ex: 1000 sq ft)'}
+          suffix={' Sq ft'}
+          sx={{ maxWidth: 600 }}
+          value={squareFootage}
+        />
+
+        <StyledButton
+          color={'primary'}
+          disabled={saveLoading || !isFormDataValid}
+          loading={saveLoading}
+          onClick={handleSave}
+          sx={{ mt: { xs: 3, lg: 5 }, width: 200 }}
+        >
+          Save and continue
+        </StyledButton>
       </Stack>
     </Fade>
   );

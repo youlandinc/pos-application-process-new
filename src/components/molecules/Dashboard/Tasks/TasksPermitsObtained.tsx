@@ -6,7 +6,6 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useBreakpoints } from '@/hooks';
 import { POSGetParamsFromUrl } from '@/utils';
 import {
   AUTO_HIDE_DURATION,
@@ -23,7 +22,6 @@ import {
   StyledTextFieldNumber,
   StyledUploadButtonBox,
 } from '@/components/atoms';
-import { TasksRightMenu } from '@/components/molecules';
 
 import {
   _fetchLoanTaskDetail,
@@ -42,8 +40,6 @@ export const TasksPermitsObtained: FC = observer(() => {
   const {
     dashboardInfo: { jumpToNextTask },
   } = useMst();
-
-  const breakpoints = useBreakpoints();
 
   const [saveLoading, setSaveLoading] = useState(false);
   const [landType, setLandType] = useState<LandTypeEnum>(LandTypeEnum.raw_land);
@@ -143,7 +139,7 @@ export const TasksPermitsObtained: FC = observer(() => {
       alignItems={'center'}
       justifyContent={'center'}
       margin={'auto 0'}
-      minHeight={'calc(667px - 46px)'}
+      minHeight={'calc(667px - 194px)'}
       width={'100%'}
     >
       <StyledLoading sx={{ color: 'text.grey' }} />
@@ -151,108 +147,99 @@ export const TasksPermitsObtained: FC = observer(() => {
   ) : (
     <Fade in={!loading}>
       <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
+        gap={{ xs: 6, lg: 8 }}
+        justifyContent={'flex-start'}
+        maxWidth={900}
         width={'100%'}
       >
-        <Stack
-          gap={{ xs: 6, lg: 8 }}
-          justifyContent={'flex-start'}
-          maxWidth={900}
-          width={'100%'}
-        >
-          <Typography fontSize={{ xs: 20, lg: 24 }}>
-            Upload all permits obtained
-            <Typography
-              color={'text.secondary'}
-              fontSize={{ xs: 12, lg: 16 }}
-              mt={1}
-              variant={'body1'}
-            >
-              Please upload all permits that you&apos;ve obtained related to
-              this project.
-            </Typography>
+        <Typography fontSize={{ xs: 20, lg: 24 }}>
+          Upload all permits obtained
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
+            variant={'body1'}
+          >
+            Please upload all permits that you&apos;ve obtained related to this
+            project.
           </Typography>
+        </Typography>
 
-          <StyledFormItem
-            gap={3}
-            label={
-              'Is the property currently raw land or has it received some or all utility improvements?'
-            }
-            mt={-3}
-            sub
-          >
-            <StyledSelectOption
-              onChange={(value) => {
-                setLandType(value as LandTypeEnum);
-              }}
-              options={OPTIONS_TASK_LAND_TYPE}
-              sx={{ maxWidth: 600 }}
-              value={landType}
-            />
-          </StyledFormItem>
+        <StyledFormItem
+          gap={3}
+          label={
+            'Is the property currently raw land or has it received some or all utility improvements?'
+          }
+          mt={-3}
+          sub
+        >
+          <StyledSelectOption
+            onChange={(value) => {
+              setLandType(value as LandTypeEnum);
+            }}
+            options={OPTIONS_TASK_LAND_TYPE}
+            sx={{ maxWidth: 600 }}
+            value={landType}
+          />
+        </StyledFormItem>
 
-          <StyledFormItem gap={3} label={'Are you permit ready /RTI?'} sub>
-            <StyledButtonGroup
-              onChange={(_, v) => {
-                if (v === null) {
-                  return;
-                }
-                setIsPermitReadyOrRTI(v);
-              }}
-              options={OPTIONS_COMMON_YES_OR_NO}
-              sx={{ maxWidth: 600 }}
-              value={isPermitReadyOrRTI}
-            />
-          </StyledFormItem>
-
-          <StyledFormItem
-            gap={3}
-            label={
-              'How many months until you anticipate having building permits?'
-            }
-            sub
-          >
-            <StyledTextFieldNumber
-              label={'Months until permit'}
-              onValueChange={({ floatValue }) =>
-                setAnticipateHavingBuildPermits(floatValue)
+        <StyledFormItem gap={3} label={'Are you permit ready /RTI?'} sub>
+          <StyledButtonGroup
+            onChange={(_, v) => {
+              if (v === null) {
+                return;
               }
-              placeholder={'Months until permit'}
-              sx={{ maxWidth: 600 }}
-              thousandSeparator={false}
-              value={anticipateHavingBuildPermits}
-            />
-          </StyledFormItem>
+              setIsPermitReadyOrRTI(v);
+            }}
+            options={OPTIONS_COMMON_YES_OR_NO}
+            sx={{ maxWidth: 600 }}
+            value={isPermitReadyOrRTI}
+          />
+        </StyledFormItem>
 
-          <Stack maxWidth={600}>
-            <StyledUploadButtonBox
-              accept={
-                'image/*,.pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-              }
-              fileKey={DashboardTaskKey.permits_obtained}
-              fileName={'Upload permits obtained'}
-              files={permitsFiles}
-              isShowHistory={false}
-              refresh={fetchInitData}
-              templateName={templateName}
-              templateUrl={templateUrl}
-            />
-          </Stack>
+        <StyledFormItem
+          gap={3}
+          label={
+            'How many months until you anticipate having building permits?'
+          }
+          sub
+        >
+          <StyledTextFieldNumber
+            label={'Months until permit'}
+            onValueChange={({ floatValue }) =>
+              setAnticipateHavingBuildPermits(floatValue)
+            }
+            placeholder={'Months until permit'}
+            sx={{ maxWidth: 600 }}
+            thousandSeparator={false}
+            value={anticipateHavingBuildPermits}
+          />
+        </StyledFormItem>
 
-          <StyledButton
-            color={'primary'}
-            disabled={saveLoading || !isFormDataValid}
-            loading={saveLoading}
-            onClick={handleSave}
-            sx={{ width: 200 }}
-          >
-            Save and continue
-          </StyledButton>
+        <Stack maxWidth={600}>
+          <StyledUploadButtonBox
+            accept={
+              'image/*,.pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            }
+            fileKey={DashboardTaskKey.permits_obtained}
+            fileName={'Upload permits obtained'}
+            files={permitsFiles}
+            isShowHistory={false}
+            refresh={fetchInitData}
+            templateName={templateName}
+            templateUrl={templateUrl}
+          />
         </Stack>
 
-        {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+        <StyledButton
+          color={'primary'}
+          disabled={saveLoading || !isFormDataValid}
+          loading={saveLoading}
+          onClick={handleSave}
+          sx={{ width: 200 }}
+        >
+          Save and continue
+        </StyledButton>
       </Stack>
     </Fade>
   );

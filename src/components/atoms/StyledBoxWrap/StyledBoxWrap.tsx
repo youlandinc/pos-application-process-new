@@ -18,7 +18,7 @@ export const StyledBoxWrap: FC<StyledBoxWrapProps> = ({ sx, children }) => {
             xs: '100%',
           },
           pt: 'clamp(24px,6.4vw,48px)',
-          py: 'clamp(24px,6.4vw,60px)',
+          pb: 'clamp(24px,6.4vw,60px)',
           pr: {
             lg: 0,
             xs: 'clamp(24px,6.4vw,60px)',

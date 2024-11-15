@@ -9,7 +9,6 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 import { Address, IAddress } from '@/models/common/Address';
 
-import { useBreakpoints } from '@/hooks';
 import { POSGetParamsFromUrl } from '@/utils';
 import {
   AddressSchema,
@@ -32,7 +31,6 @@ import {
   StyledTextFieldSocialNumber,
   Transitions,
 } from '@/components/atoms';
-import { TasksRightMenu } from '@/components/molecules';
 
 import {
   DashboardTaskKey,
@@ -50,8 +48,6 @@ export const TasksCoBorrower: FC = observer(() => {
   const {
     dashboardInfo: { jumpToNextTask },
   } = useMst();
-
-  const breakpoints = useBreakpoints();
 
   const [saveLoading, setSaveLoading] = useState(false);
 
@@ -191,7 +187,7 @@ export const TasksCoBorrower: FC = observer(() => {
       alignItems={'center'}
       justifyContent={'center'}
       margin={'auto 0'}
-      minHeight={'calc(667px - 46px)'}
+      minHeight={'calc(667px - 194px)'}
       width={'100%'}
     >
       <StyledLoading sx={{ color: 'text.grey' }} />
@@ -199,238 +195,228 @@ export const TasksCoBorrower: FC = observer(() => {
   ) : (
     <Fade in={!loading}>
       <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
+        gap={{ xs: 6, lg: 8 }}
+        justifyContent={'flex-start'}
+        maxWidth={900}
         width={'100%'}
       >
-        <Stack
-          gap={{ xs: 6, lg: 8 }}
-          justifyContent={'flex-start'}
-          maxWidth={900}
-          width={'100%'}
-        >
-          <Typography fontSize={{ xs: 20, lg: 24 }}>
-            Co-borrower information
-            <Typography
-              color={'text.secondary'}
-              fontSize={{ xs: 12, lg: 16 }}
-              mt={1}
-              variant={'body1'}
-            >
-              Credit and background checks will apply to the co-borrower as
-              well.
-            </Typography>
+        <Typography fontSize={{ xs: 20, lg: 24 }}>
+          Co-borrower information
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
+            variant={'body1'}
+          >
+            Credit and background checks will apply to the co-borrower as well.
           </Typography>
+        </Typography>
 
-          <StyledFormItem
-            gap={3}
-            label={'Is there a co-borrower?'}
-            maxWidth={600}
-            mt={-3}
-            sub
-          >
-            <StyledButtonGroup
-              onChange={(e, value) => {
-                if (value === null) {
-                  return;
-                }
-                setIsCoBorrower(value === LoanAnswerEnum.yes);
-              }}
-              options={OPTIONS_COMMON_YES_OR_NO}
-              sx={{ width: '100%' }}
-              value={isCoBorrower ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
-            />
-          </StyledFormItem>
-
-          <Transitions
-            style={{
-              display: isCoBorrower ? 'block' : 'none',
-              width: '100%',
+        <StyledFormItem
+          gap={3}
+          label={'Is there a co-borrower?'}
+          maxWidth={600}
+          mt={-3}
+          sub
+        >
+          <StyledButtonGroup
+            onChange={(e, value) => {
+              if (value === null) {
+                return;
+              }
+              setIsCoBorrower(value === LoanAnswerEnum.yes);
             }}
-          >
-            {isCoBorrower && (
-              <Stack gap={{ xs: 6, lg: 8 }} maxWidth={600} width={'100%'}>
-                <StyledFormItem
-                  gap={3}
-                  label={'Personal information'}
-                  labelSx={{ pb: 3 }}
-                  sub
-                >
-                  <Stack
-                    flexDirection={{ xs: 'column', lg: 'row' }}
-                    gap={3}
-                    width={'100%'}
-                  >
-                    <StyledTextField
-                      label={'First name'}
-                      onChange={(e) => {
-                        if (formMessage?.firstName) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.firstName;
-                            }
-                            return prev;
-                          });
-                        }
-                        setFirstName(e.target.value);
-                      }}
-                      placeholder={'First name'}
-                      validate={formMessage?.firstName}
-                      value={firstName}
-                    />
-                    <StyledTextField
-                      label={'Last name'}
-                      onChange={(e) => {
-                        if (formMessage?.lastName) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.lastName;
-                            }
-                            return prev;
-                          });
-                        }
-                        setLastName(e.target.value);
-                      }}
-                      placeholder={'Last name'}
-                      validate={formMessage?.lastName}
-                      value={lastName}
-                    />
-                  </Stack>
+            options={OPTIONS_COMMON_YES_OR_NO}
+            sx={{ width: '100%' }}
+            value={isCoBorrower ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
+          />
+        </StyledFormItem>
 
-                  <StyledDatePicker
-                    disableFuture={false}
-                    label={'Date of birth'}
-                    onChange={(value) => {
-                      if (formMessage?.birthDate) {
+        <Transitions
+          style={{
+            display: isCoBorrower ? 'block' : 'none',
+            width: '100%',
+          }}
+        >
+          {isCoBorrower && (
+            <Stack gap={{ xs: 6, lg: 8 }} maxWidth={600} width={'100%'}>
+              <StyledFormItem
+                gap={3}
+                label={'Personal information'}
+                labelSx={{ pb: 3 }}
+                sub
+              >
+                <Stack
+                  flexDirection={{ xs: 'column', lg: 'row' }}
+                  gap={3}
+                  width={'100%'}
+                >
+                  <StyledTextField
+                    label={'First name'}
+                    onChange={(e) => {
+                      if (formMessage?.firstName) {
                         setFormError((prev) => {
                           if (prev) {
-                            delete prev.birthDate;
+                            delete prev.firstName;
                           }
                           return prev;
                         });
                       }
-                      setBirthDate(value as Date);
+                      setFirstName(e.target.value);
                     }}
-                    validate={formMessage?.birthDate}
-                    value={birthDate}
+                    placeholder={'First name'}
+                    validate={formMessage?.firstName}
+                    value={firstName}
                   />
-
-                  <Stack
-                    flexDirection={{ xs: 'column', lg: 'row' }}
-                    gap={3}
-                    width={'100%'}
-                  >
-                    <StyledTextFieldPhone
-                      label={'Phone number'}
-                      onValueChange={({ value }) => {
-                        if (formMessage?.phoneNumber) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.phoneNumber;
-                            }
-                            return prev;
-                          });
-                        }
-                        setPhoneNumber(value);
-                      }}
-                      placeholder={'Phone number'}
-                      validate={formMessage?.phoneNumber}
-                      value={phoneNumber}
-                    />
-                    <StyledTextField
-                      label={'Email'}
-                      onChange={(e) => {
-                        if (formMessage?.email) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.email;
-                            }
-                            return prev;
-                          });
-                        }
-                        setEmail(e.target.value);
-                      }}
-                      placeholder={'Email'}
-                      validate={formMessage?.email}
-                      value={email}
-                    />
-                  </Stack>
-                </StyledFormItem>
-
-                <StyledFormItem gap={3} label={'Citizenship status'} sub>
-                  <StyledSelectOption
-                    onChange={(value) =>
-                      setCitizenship(value as string as LoanCitizenshipEnum)
-                    }
-                    options={OPTIONS_COMMON_CITIZEN_TYPE}
-                    value={citizenship}
-                  />
-                </StyledFormItem>
-
-                <StyledFormItem
-                  gap={3}
-                  label={'Current address'}
-                  labelSx={{ pb: 3 }}
-                  sub
-                >
-                  <StyledGoogleAutoComplete
-                    address={address}
-                    addressError={addressError}
-                  />
-                </StyledFormItem>
-
-                <Transitions
-                  style={{
-                    display:
-                      citizenship !== LoanCitizenshipEnum.foreign_national
-                        ? 'flex'
-                        : 'none',
-                    width: '100%',
-                  }}
-                >
-                  {citizenship !== LoanCitizenshipEnum.foreign_national && (
-                    <StyledFormItem
-                      gap={3}
-                      label={'Social security number'}
-                      labelSx={{ pb: 3 }}
-                      sub
-                    >
-                      <StyledTextFieldSocialNumber
-                        label={'Social security number'}
-                        onValueChange={(v) => {
-                          if (formMessage?.ssn) {
-                            setFormError((prev) => {
-                              if (prev) {
-                                delete prev.ssn;
-                              }
-                              return prev;
-                            });
+                  <StyledTextField
+                    label={'Last name'}
+                    onChange={(e) => {
+                      if (formMessage?.lastName) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.lastName;
                           }
-                          setSsn(v);
-                        }}
-                        validate={formMessage?.ssn}
-                        value={ssn}
-                      />
-                    </StyledFormItem>
-                  )}
-                </Transitions>
-              </Stack>
-            )}
-          </Transitions>
+                          return prev;
+                        });
+                      }
+                      setLastName(e.target.value);
+                    }}
+                    placeholder={'Last name'}
+                    validate={formMessage?.lastName}
+                    value={lastName}
+                  />
+                </Stack>
 
-          <StyledButton
-            color={'primary'}
-            disabled={saveLoading}
-            loading={saveLoading}
-            onClick={handleSave}
-            sx={{ width: 200 }}
-          >
-            Save and continue
-          </StyledButton>
-        </Stack>
+                <StyledDatePicker
+                  disableFuture={false}
+                  label={'Date of birth'}
+                  onChange={(value) => {
+                    if (formMessage?.birthDate) {
+                      setFormError((prev) => {
+                        if (prev) {
+                          delete prev.birthDate;
+                        }
+                        return prev;
+                      });
+                    }
+                    setBirthDate(value as Date);
+                  }}
+                  validate={formMessage?.birthDate}
+                  value={birthDate}
+                />
 
-        {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+                <Stack
+                  flexDirection={{ xs: 'column', lg: 'row' }}
+                  gap={3}
+                  width={'100%'}
+                >
+                  <StyledTextFieldPhone
+                    label={'Phone number'}
+                    onValueChange={({ value }) => {
+                      if (formMessage?.phoneNumber) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.phoneNumber;
+                          }
+                          return prev;
+                        });
+                      }
+                      setPhoneNumber(value);
+                    }}
+                    placeholder={'Phone number'}
+                    validate={formMessage?.phoneNumber}
+                    value={phoneNumber}
+                  />
+                  <StyledTextField
+                    label={'Email'}
+                    onChange={(e) => {
+                      if (formMessage?.email) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.email;
+                          }
+                          return prev;
+                        });
+                      }
+                      setEmail(e.target.value);
+                    }}
+                    placeholder={'Email'}
+                    validate={formMessage?.email}
+                    value={email}
+                  />
+                </Stack>
+              </StyledFormItem>
+
+              <StyledFormItem gap={3} label={'Citizenship status'} sub>
+                <StyledSelectOption
+                  onChange={(value) =>
+                    setCitizenship(value as string as LoanCitizenshipEnum)
+                  }
+                  options={OPTIONS_COMMON_CITIZEN_TYPE}
+                  value={citizenship}
+                />
+              </StyledFormItem>
+
+              <StyledFormItem
+                gap={3}
+                label={'Current address'}
+                labelSx={{ pb: 3 }}
+                sub
+              >
+                <StyledGoogleAutoComplete
+                  address={address}
+                  addressError={addressError}
+                />
+              </StyledFormItem>
+
+              <Transitions
+                style={{
+                  display:
+                    citizenship !== LoanCitizenshipEnum.foreign_national
+                      ? 'flex'
+                      : 'none',
+                  width: '100%',
+                }}
+              >
+                {citizenship !== LoanCitizenshipEnum.foreign_national && (
+                  <StyledFormItem
+                    gap={3}
+                    label={'Social security number'}
+                    labelSx={{ pb: 3 }}
+                    sub
+                  >
+                    <StyledTextFieldSocialNumber
+                      label={'Social security number'}
+                      onValueChange={(v) => {
+                        if (formMessage?.ssn) {
+                          setFormError((prev) => {
+                            if (prev) {
+                              delete prev.ssn;
+                            }
+                            return prev;
+                          });
+                        }
+                        setSsn(v);
+                      }}
+                      validate={formMessage?.ssn}
+                      value={ssn}
+                    />
+                  </StyledFormItem>
+                )}
+              </Transitions>
+            </Stack>
+          )}
+        </Transitions>
+
+        <StyledButton
+          color={'primary'}
+          disabled={saveLoading}
+          loading={saveLoading}
+          onClick={handleSave}
+          sx={{ width: 200 }}
+        >
+          Save and continue
+        </StyledButton>
       </Stack>
     </Fade>
   );

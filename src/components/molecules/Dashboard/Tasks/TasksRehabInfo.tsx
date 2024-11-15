@@ -7,7 +7,6 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { useBreakpoints } from '@/hooks';
 import { POSGetParamsFromUrl } from '@/utils';
 
 import {
@@ -15,7 +14,6 @@ import {
   StyledLoading,
   StyledTextFieldNumber,
 } from '@/components/atoms';
-import { TasksRightMenu } from '@/components/molecules';
 
 import { DashboardTaskKey, HttpError } from '@/types';
 import {
@@ -28,8 +26,6 @@ export const TasksRehabInfo: FC = observer(() => {
   const {
     dashboardInfo: { jumpToNextTask },
   } = useMst();
-
-  const breakpoints = useBreakpoints();
 
   const [saveLoading, setSaveLoading] = useState(false);
 
@@ -98,7 +94,7 @@ export const TasksRehabInfo: FC = observer(() => {
       alignItems={'center'}
       justifyContent={'center'}
       margin={'auto 0'}
-      minHeight={'calc(667px - 46px)'}
+      minHeight={'calc(667px - 194px)'}
       width={'100%'}
     >
       <StyledLoading sx={{ color: 'text.grey' }} />
@@ -106,60 +102,51 @@ export const TasksRehabInfo: FC = observer(() => {
   ) : (
     <Fade in={!loading}>
       <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'space-between'}
+        gap={{ xs: 6, lg: 8 }}
+        justifyContent={'flex-start'}
+        maxWidth={900}
         width={'100%'}
       >
-        <Stack
-          gap={{ xs: 6, lg: 8 }}
-          justifyContent={'flex-start'}
-          maxWidth={900}
-          width={'100%'}
-        >
-          <Typography fontSize={{ xs: 20, lg: 24 }}>
-            Rehab info
-            <Typography
-              color={'text.secondary'}
-              fontSize={{ xs: 12, lg: 16 }}
-              mt={1}
-              variant={'body1'}
-            >
-              Please provide some more information about the value of the
-              property as it is now and the planned after-repair square footage.
-            </Typography>
-          </Typography>
-
-          <Stack gap={3} maxWidth={600} mt={-3} width={'100%'}>
-            <StyledTextFieldNumber
-              label={'After repair value (ARV)'}
-              onValueChange={({ floatValue }) => setArv(floatValue)}
-              placeholder={'After repair value (ARV)'}
-              prefix={'$'}
-              value={arv}
-            />
-
-            <StyledTextFieldNumber
-              label={'After-repair square footage'}
-              onValueChange={({ floatValue }) => setSquare(floatValue)}
-              placeholder={'After-repair square footage'}
-              suffix={' Sq ft'}
-              value={square}
-            />
-          </Stack>
-
-          <StyledButton
-            color={'primary'}
-            disabled={saveLoading || !isFormDataValid}
-            loading={saveLoading}
-            onClick={handleSave}
-            sx={{ flex: 1, width: '100%' }}
+        <Typography fontSize={{ xs: 20, lg: 24 }}>
+          Rehab info
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
+            variant={'body1'}
           >
-            Save and continue
-          </StyledButton>
+            Please provide some more information about the value of the property
+            as it is now and the planned after-repair square footage.
+          </Typography>
+        </Typography>
+
+        <Stack gap={3} maxWidth={600} mt={-3} width={'100%'}>
+          <StyledTextFieldNumber
+            label={'After repair value (ARV)'}
+            onValueChange={({ floatValue }) => setArv(floatValue)}
+            placeholder={'After repair value (ARV)'}
+            prefix={'$'}
+            value={arv}
+          />
+
+          <StyledTextFieldNumber
+            label={'After-repair square footage'}
+            onValueChange={({ floatValue }) => setSquare(floatValue)}
+            placeholder={'After-repair square footage'}
+            suffix={' Sq ft'}
+            value={square}
+          />
         </Stack>
 
-        {['lg', 'xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+        <StyledButton
+          color={'primary'}
+          disabled={saveLoading || !isFormDataValid}
+          loading={saveLoading}
+          onClick={handleSave}
+          sx={{ flex: 1, width: '100%' }}
+        >
+          Save and continue
+        </StyledButton>
       </Stack>
     </Fade>
   );
