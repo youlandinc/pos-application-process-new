@@ -32,6 +32,28 @@ const DEFAULT_ORDER: { [key in DashboardTaskKey]: number } = {
   [DashboardTaskKey.referring_broker]: 11,
 };
 
+const getOrderedTasks = (taskMap: any, filterComplete = false) =>
+  Object.entries(DEFAULT_ORDER)
+    .filter(([key]) => {
+      const hasKey = taskMap.has(key as DashboardTaskKey);
+      return filterComplete
+        ? hasKey && !taskMap.get(key as DashboardTaskKey)
+        : hasKey;
+    })
+    .map(([key, value]) => ({ key: key as DashboardTaskKey, value }))
+    .sort((a, b) => a.value - b.value);
+
+const handleError = (err: HttpError, redirectTo?: string) => {
+  const { header, message, variant } = err;
+  enqueueSnackbar(message, {
+    variant: variant || 'error',
+    autoHideDuration: AUTO_HIDE_DURATION,
+    isSimple: !header,
+    header,
+    ...(redirectTo && { onClose: () => (window.location.href = redirectTo) }),
+  });
+};
+
 export const DashboardInfo = types
   .model({
     propertyAddress: Address,
@@ -62,35 +84,18 @@ export const DashboardInfo = types
   })
   .actions((self) => ({
     findFirst() {
-      return Object.entries(DEFAULT_ORDER)
-        .filter(([key]) => self.taskMap.has(key as DashboardTaskKey))
-        .map(([key, value]) => ({ key: key as DashboardTaskKey, value }))
-        .sort((a, b) => a.value - b.value)[0]?.key;
+      return getOrderedTasks(self.taskMap)[0]?.key;
     },
-    findNextTask(
-      taskOrder: TaskItem[],
-      currentKey?: DashboardTaskKey,
-    ): DashboardTaskKey | undefined {
+    findNextTask(taskOrder: TaskItem[], currentKey?: DashboardTaskKey) {
       const index = taskOrder.findIndex((item) => item.key === currentKey);
       return taskOrder[index + 1]?.key;
     },
-    findPrevTask(
-      taskOrder: TaskItem[],
-      currentKey?: DashboardTaskKey,
-    ): DashboardTaskKey | undefined {
+    findPrevTask(taskOrder: TaskItem[], currentKey?: DashboardTaskKey) {
       const index = taskOrder.findIndex((item) => item.key === currentKey);
-
       return taskOrder[index - 1 < 0 ? taskOrder.length - 1 : index - 1]?.key;
     },
     updateTaskOrder() {
-      return Object.entries(DEFAULT_ORDER)
-        .filter(
-          ([key]) =>
-            self.taskMap.has(key as DashboardTaskKey) &&
-            !self.taskMap.get(key as DashboardTaskKey),
-        )
-        .map(([key, value]) => ({ key: key as DashboardTaskKey, value }))
-        .sort((a, b) => a.value - b.value);
+      return getOrderedTasks(self.taskMap, true);
     },
     setLoanId(loanId: string) {
       self.loanId = loanId;
@@ -180,14 +185,7 @@ export const DashboardInfo = types
         self.loanId = loanId;
         self.loanNumber = loanNumber ?? '';
       } catch (err) {
-        const { header, message, variant } = err as HttpError;
-        enqueueSnackbar(message, {
-          variant: variant || 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-          isSimple: !header,
-          header,
-          onClose: () => (window.location.href = '/pipeline'),
-        });
+        handleError(err as HttpError, '/pipeline');
       } finally {
         self.loading = false;
       }
@@ -210,13 +208,7 @@ export const DashboardInfo = types
         self.taskMap = data;
         self.taskOrder = cast(self.updateTaskOrder());
       } catch (err) {
-        const { header, message, variant } = err as HttpError;
-        enqueueSnackbar(message, {
-          variant: variant || 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-          isSimple: !header,
-          header,
-        });
+        handleError(err as HttpError);
       }
     });
 
