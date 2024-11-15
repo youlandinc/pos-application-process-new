@@ -11,7 +11,6 @@ import { useMst } from '@/models/Root';
 
 import { Address, IAddress, SAddress } from '@/models/common/Address';
 
-import { useBreakpoints } from '@/hooks';
 import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
 import {
@@ -36,7 +35,6 @@ import {
   StyledTextFieldPhone,
   Transitions,
 } from '@/components/atoms';
-import { TasksRightMenu } from '@/components/molecules';
 
 import {
   DashboardTaskInstructions,
@@ -96,7 +94,6 @@ export const TasksTitleOrEscrow: FC = observer(() => {
     dashboardInfo: { jumpToNextTask },
   } = useMst();
 
-  const breakpoints = useBreakpoints();
   const { saasState } = useSessionStorageState('tenantConfig');
 
   const [saveLoading, setSaveLoading] = useState(false);

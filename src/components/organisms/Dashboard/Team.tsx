@@ -4,8 +4,6 @@ import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 
-import { useBreakpoints } from '@/hooks';
-
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFormatUSPhoneToText, POSGetParamsFromUrl } from '@/utils';
 
@@ -19,7 +17,6 @@ import TEAM_OPERATION from '@/svg/dashboard/team_operation.svg';
 import TEAM_CONTACT from '@/svg/dashboard/team_contact.svg';
 
 export const Team = () => {
-  const breakpoints = useBreakpoints();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 

@@ -1,5 +1,5 @@
 import { FC, ReactNode, useEffect } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
@@ -7,7 +7,7 @@ import { useMst } from '@/models/Root';
 
 import { useBreakpoints, useCheckIsLogin } from '@/hooks';
 
-import { StyledBoxWrap, StyledButton } from '@/components/atoms';
+import { StyledBoxWrap } from '@/components/atoms';
 
 import { POSHeader } from './index';
 
