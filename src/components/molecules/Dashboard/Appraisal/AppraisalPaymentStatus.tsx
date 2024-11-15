@@ -234,8 +234,8 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
       <Icon
         component={computedObj?.icon}
         sx={{
-          width: 200,
-          height: 179,
+          width: 135,
+          height: 120,
         }}
       />
       <Typography color={computedObj?.color} mt={3} variant={'h5'}>

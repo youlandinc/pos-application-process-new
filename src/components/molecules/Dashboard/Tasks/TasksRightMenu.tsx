@@ -97,6 +97,7 @@ export const TasksRightMenu: FC = observer(() => {
         flexShrink={0}
         gap={1}
         height={'fit-content'}
+        ml={'auto'}
         p={2.5}
         position={'sticky'}
         sx={{

@@ -289,13 +289,16 @@ export const AppraisalPayment: FC<PaymentTableProps> = ({
         </Typography>
       </Stack>
 
-      <Stack flexDirection={'row'} gap={3} width={'100%'}>
+      <Stack flexDirection={'row'} gap={3} maxWidth={600} width={'100%'}>
         <StyledButton
           color={'info'}
           disabled={backState}
           loading={backState}
           onClick={backStep}
-          sx={{ flex: 1 }}
+          sx={{
+            flex: 1,
+            maxWidth: 276,
+          }}
           variant={'text'}
         >
           Back
@@ -312,6 +315,7 @@ export const AppraisalPayment: FC<PaymentTableProps> = ({
               flex: 1,
               alignSelf: 'flex-start',
               flexShrink: 0,
+              maxWidth: 276,
             }}
             variant={'contained'}
           >
