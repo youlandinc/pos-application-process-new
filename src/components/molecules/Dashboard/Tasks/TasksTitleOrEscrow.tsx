@@ -11,7 +11,6 @@ import { useMst } from '@/models/Root';
 
 import { Address, IAddress, SAddress } from '@/models/common/Address';
 
-import { useBreakpoints } from '@/hooks';
 import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
 import { useSessionStorageState } from '@/hooks';
 import {
@@ -36,7 +35,6 @@ import {
   StyledTextFieldPhone,
   Transitions,
 } from '@/components/atoms';
-import { TasksRightMenu } from '@/components/molecules';
 
 import {
   DashboardTaskInstructions,
@@ -96,7 +94,6 @@ export const TasksTitleOrEscrow: FC = observer(() => {
     dashboardInfo: { jumpToNextTask },
   } = useMst();
 
-  const breakpoints = useBreakpoints();
   const { saasState } = useSessionStorageState('tenantConfig');
 
   const [saveLoading, setSaveLoading] = useState(false);
@@ -303,502 +300,467 @@ export const TasksTitleOrEscrow: FC = observer(() => {
       alignItems={'center'}
       justifyContent={'center'}
       margin={'auto 0'}
-      minHeight={'calc(667px - 46px)'}
+      minHeight={'calc(667px - 194px)'}
       width={'100%'}
     >
       <StyledLoading sx={{ color: 'text.grey' }} />
     </Stack>
   ) : (
     <Fade in={!loading}>
-      <Stack flexDirection={'row'} justifyContent={'center'} width={'100%'}>
-        <Stack
-          alignItems={'center'}
-          gap={6}
-          justifyContent={'flex-start'}
-          maxWidth={900}
-          mx={{ lg: 'auto', xs: 0 }}
-          px={{ lg: 3, xs: 0 }}
-          width={'100%'}
-        >
+      <Stack
+        gap={{ xs: 6, lg: 8 }}
+        justifyContent={'flex-start'}
+        maxWidth={900}
+        width={'100%'}
+      >
+        <Typography fontSize={{ xs: 20, lg: 24 }}>
+          Title company (optional)
           <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            textAlign={'center'}
-            variant={'h5'}
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
+            sx={{ display: 'flex', flexDirection: 'column' }}
+            variant={'body1'}
           >
-            Title company (optional)
-            <Typography
-              color={'text.secondary'}
-              fontSize={{ xs: 12, lg: 16 }}
-              mt={1}
-              sx={{ display: 'flex', flexDirection: 'column' }}
-              variant={'body1'}
-            >
-              A closing agent assists with closing and verifies there are no
-              outstanding title issues.
-              <Typography component={'span'}>
-                {saasState?.organizationName || 'YouLand'} also orders a Title
-                Commitment and a Title Report on the property from this agent.
-              </Typography>
+            A closing agent assists with closing and verifies there are no
+            outstanding title issues.
+            <Typography component={'span'}>
+              {saasState?.organizationName || 'YouLand'} also orders a Title
+              Commitment and a Title Report on the property from this agent.
             </Typography>
           </Typography>
+        </Typography>
 
-          <StyledFormItem
-            gap={3}
-            label={'Provide contact details for the title company'}
-            labelSx={{ pb: 3 }}
-            maxWidth={600}
-            sub
-          >
-            <StyledTextField
-              label={'Company name'}
-              onChange={(e) => {
-                if (formError?.contactForm?.companyName) {
-                  setFormError((prev) => {
-                    if (prev) {
-                      delete prev.contactForm.companyName;
-                    }
-                    return prev;
-                  });
-                }
-                setContactForm({
-                  ...contactForm,
-                  companyName: e.target.value,
-                });
-              }}
-              validate={formError?.contactForm?.companyName}
-              value={contactForm.companyName}
-            />
-            <StyledTextField
-              label={'Title order number'}
-              onChange={(e) => {
-                if (formError?.contactForm?.titleOrderNumber) {
-                  setFormError((prev) => {
-                    if (prev) {
-                      delete prev.contactForm.titleOrderNumber;
-                    }
-                    return prev;
-                  });
-                }
-                setContactForm({
-                  ...contactForm,
-                  titleOrderNumber: e.target.value,
-                });
-              }}
-              validate={formError?.contactForm?.titleOrderNumber}
-              value={contactForm.titleOrderNumber}
-            />
-            <StyledDatePicker
-              label={'Title effective date'}
-              onChange={(date) => {
-                if (formError?.contactForm?.contractDate) {
-                  setFormError((prev) => {
-                    if (prev) {
-                      delete prev.contactForm.contractDate;
-                    }
-                    return prev;
-                  });
-                }
-                setContactForm({ ...contactForm, contractDate: date });
-              }}
-              validate={formError?.contactForm?.contractDate}
-              value={contactForm.contractDate}
-            />
-            <StyledGoogleAutoComplete
-              address={clientContactAddress}
-              addressError={addressError?.contactAddress}
-              label={'Company address'}
-            />
-          </StyledFormItem>
-
-          <StyledFormItem
-            gap={3}
-            label={
-              'Who is signing the closing instructions on behalf of the title company?'
-            }
-            maxWidth={600}
-            sub
-          >
-            <Stack maxWidth={600} width={'100%'}>
-              <StyledSelectOption
-                onChange={(value) =>
-                  setInstructions(value as string as DashboardTaskInstructions)
-                }
-                options={OPTIONS_TASK_INSTRUCTIONS}
-                value={instructions}
-              />
-            </Stack>
-
-            <Transitions
-              style={{
-                maxWidth: 600,
-                width: '100%',
-                display:
-                  POSNotUndefined(instructions) && instructions
-                    ? 'flex'
-                    : 'none',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
-              {POSNotUndefined(instructions) && instructions && (
-                <>
-                  <Stack
-                    flexDirection={{ lg: 'row', xs: 'column' }}
-                    gap={3}
-                    width={'100%'}
-                  >
-                    <StyledTextField
-                      label={"Signee's first name"}
-                      onChange={(e) => {
-                        if (formError?.contactForm?.firstName) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.contactForm.firstName;
-                            }
-                            return prev;
-                          });
-                        }
-                        setContactForm({
-                          ...contactForm,
-                          firstName: e.target.value,
-                        });
-                      }}
-                      validate={formError?.contactForm?.firstName}
-                      value={contactForm.firstName}
-                    />
-                    <StyledTextField
-                      label={"Signee's last name"}
-                      onChange={(e) => {
-                        if (formError?.contactForm?.lastName) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.contactForm.lastName;
-                            }
-                            return prev;
-                          });
-                        }
-                        setContactForm({
-                          ...contactForm,
-                          lastName: e.target.value,
-                        });
-                      }}
-                      validate={formError?.contactForm?.lastName}
-                      value={contactForm.lastName}
-                    />
-                  </Stack>
-
-                  <Stack
-                    flexDirection={{ lg: 'row', xs: 'column' }}
-                    gap={3}
-                    mt={3}
-                    width={'100%'}
-                  >
-                    <StyledTextFieldPhone
-                      label={"Signee's phone number"}
-                      onValueChange={({ value }) => {
-                        if (formError?.contactForm?.phoneNumber) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.contactForm.phoneNumber;
-                            }
-                            return prev;
-                          });
-                        }
-                        setContactForm({
-                          ...contactForm,
-                          phoneNumber: value,
-                        });
-                      }}
-                      validate={formError?.contactForm?.phoneNumber}
-                      value={contactForm.phoneNumber}
-                    />
-                    <StyledTextField
-                      label={"Signee's email address"}
-                      onChange={(e) => {
-                        if (formError?.contactForm?.email) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.contactForm.email;
-                            }
-                            return prev;
-                          });
-                        }
-                        setContactForm({
-                          ...contactForm,
-                          email: e.target.value,
-                        });
-                      }}
-                      validate={formError?.contactForm?.email}
-                      value={contactForm.email}
-                    />
-                  </Stack>
-                </>
-              )}
-            </Transitions>
-          </StyledFormItem>
-
-          <StyledFormItem
-            gap={3}
-            label={'Is the title company also managing loan closing?'}
-            maxWidth={600}
-            sub
-          >
-            <StyledButtonGroup
-              onChange={(e, value) => {
-                if (value === null) {
-                  return;
-                }
+        <StyledFormItem
+          gap={3}
+          label={'Provide contact details for the title company'}
+          labelSx={{ pb: 3 }}
+          maxWidth={600}
+          mt={-3}
+          sub
+        >
+          <StyledTextField
+            label={'Company name'}
+            onChange={(e) => {
+              if (formError?.contactForm?.companyName) {
                 setFormError((prev) => {
-                  if (prev?.manageForm) {
-                    delete prev.manageForm;
-                  }
-                  if (prev?.escrowNumber) {
-                    delete prev.escrowNumber;
+                  if (prev) {
+                    delete prev.contactForm.companyName;
                   }
                   return prev;
                 });
-                setAddressError((prev) => {
-                  if (prev?.manageAddress) {
-                    delete prev.manageAddress;
+              }
+              setContactForm({
+                ...contactForm,
+                companyName: e.target.value,
+              });
+            }}
+            validate={formError?.contactForm?.companyName}
+            value={contactForm.companyName}
+          />
+          <StyledTextField
+            label={'Title order number'}
+            onChange={(e) => {
+              if (formError?.contactForm?.titleOrderNumber) {
+                setFormError((prev) => {
+                  if (prev) {
+                    delete prev.contactForm.titleOrderNumber;
                   }
                   return prev;
                 });
+              }
+              setContactForm({
+                ...contactForm,
+                titleOrderNumber: e.target.value,
+              });
+            }}
+            validate={formError?.contactForm?.titleOrderNumber}
+            value={contactForm.titleOrderNumber}
+          />
+          <StyledDatePicker
+            label={'Title effective date'}
+            onChange={(date) => {
+              if (formError?.contactForm?.contractDate) {
+                setFormError((prev) => {
+                  if (prev) {
+                    delete prev.contactForm.contractDate;
+                  }
+                  return prev;
+                });
+              }
+              setContactForm({ ...contactForm, contractDate: date });
+            }}
+            validate={formError?.contactForm?.contractDate}
+            value={contactForm.contractDate}
+          />
+          <StyledGoogleAutoComplete
+            address={clientContactAddress}
+            addressError={addressError?.contactAddress}
+            label={'Company address'}
+          />
+        </StyledFormItem>
 
-                setIsLoanClosing(value === LoanAnswerEnum.yes);
-              }}
-              options={OPTIONS_COMMON_YES_OR_NO}
-              sx={{ width: '100%', maxWidth: 600 }}
-              value={isLoanClosing ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
-            />
-          </StyledFormItem>
+        <StyledFormItem
+          gap={3}
+          label={
+            'Who is signing the closing instructions on behalf of the title company?'
+          }
+          sub
+        >
+          <StyledSelectOption
+            onChange={(value) =>
+              setInstructions(value as string as DashboardTaskInstructions)
+            }
+            options={OPTIONS_TASK_INSTRUCTIONS}
+            sx={{ maxWidth: 600 }}
+            value={instructions}
+          />
 
           <Transitions
             style={{
               maxWidth: 600,
               width: '100%',
-              display: 'flex',
+              display:
+                POSNotUndefined(instructions) && instructions ? 'flex' : 'none',
               flexDirection: 'column',
               alignItems: 'center',
             }}
           >
-            {POSNotUndefined(isLoanClosing) ? (
-              !isLoanClosing ? (
-                <StyledFormItem
+            {POSNotUndefined(instructions) && instructions && (
+              <>
+                <Stack
+                  flexDirection={{ lg: 'row', xs: 'column' }}
                   gap={3}
-                  label={'Who is managing loan closing?'}
-                  sub
                   width={'100%'}
                 >
-                  <StyledSelectOption
-                    onChange={(value) =>
-                      setWhoIsManaging(
-                        value as string as DashboardTaskLoanClosing,
-                      )
-                    }
-                    options={OPTIONS_TASK_MANAGING_LOAN_CLOSING}
-                    value={whoIsManaging}
-                  />
-
-                  <Stack
-                    flexDirection={{ lg: 'row', xs: 'column' }}
-                    gap={3}
-                    width={'100%'}
-                  >
-                    <StyledTextField
-                      label={'Contact first name'}
-                      onChange={(e) => {
-                        if (formError?.manageForm?.firstName) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.manageForm.firstName;
-                            }
-                            return prev;
-                          });
-                        }
-                        setManageForm({
-                          ...manageForm,
-                          firstName: e.target.value,
-                        });
-                      }}
-                      validate={formError?.manageForm?.firstName}
-                      value={manageForm.firstName}
-                    />
-                    <StyledTextField
-                      label={'Contact last name'}
-                      onChange={(e) => {
-                        if (formError?.manageForm?.lastName) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.manageForm.lastName;
-                            }
-                            return prev;
-                          });
-                        }
-                        setManageForm({
-                          ...manageForm,
-                          lastName: e.target.value,
-                        });
-                      }}
-                      validate={formError?.manageForm?.lastName}
-                      value={manageForm.lastName}
-                    />
-                  </Stack>
-
-                  <Stack
-                    flexDirection={{ lg: 'row', xs: 'column' }}
-                    gap={3}
-                    width={'100%'}
-                  >
-                    <StyledTextFieldPhone
-                      label={'Phone number'}
-                      onValueChange={({ value }) => {
-                        if (formError?.manageForm?.phoneNumber) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.manageForm.phoneNumber;
-                            }
-                            return prev;
-                          });
-                        }
-                        setManageForm({ ...manageForm, phoneNumber: value });
-                      }}
-                      validate={formError?.manageForm?.phoneNumber}
-                      value={manageForm.phoneNumber}
-                    />
-                    <StyledTextField
-                      label={'Email'}
-                      onChange={(e) => {
-                        if (formError?.manageForm?.email) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.manageForm.email;
-                            }
-                            return prev;
-                          });
-                        }
-                        setManageForm({
-                          ...manageForm,
-                          email: e.target.value,
-                        });
-                      }}
-                      validate={formError?.manageForm?.email}
-                      value={manageForm.email}
-                    />
-                  </Stack>
-
-                  <Stack
-                    flexDirection={{ lg: 'row', xs: 'column' }}
-                    gap={3}
-                    width={'100%'}
-                  >
-                    <StyledTextField
-                      label={'Company name'}
-                      onChange={(e) => {
-                        if (formError?.manageForm?.companyName) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.manageForm.companyName;
-                            }
-                            return prev;
-                          });
-                        }
-                        setManageForm({
-                          ...manageForm,
-                          companyName: e.target.value,
-                        });
-                      }}
-                      validate={formError?.manageForm?.companyName}
-                      value={manageForm.companyName}
-                    />
-                    <StyledTextField
-                      label={
-                        whoIsManaging ===
-                        DashboardTaskLoanClosing.escrow_company
-                          ? 'Escrow number'
-                          : 'Closing attorney file No.'
-                      }
-                      onChange={(e) => {
-                        if (formError?.manageForm?.titleOrderNumber) {
-                          setFormError((prev) => {
-                            if (prev) {
-                              delete prev.manageForm.titleOrderNumber;
-                            }
-                            return prev;
-                          });
-                        }
-                        setManageForm({
-                          ...manageForm,
-                          titleOrderNumber: e.target.value,
-                        });
-                      }}
-                      validate={formError?.manageForm?.titleOrderNumber}
-                      value={manageForm.titleOrderNumber}
-                    />
-                  </Stack>
-
-                  <StyledGoogleAutoComplete
-                    address={clientManageAddress}
-                    addressError={addressError?.manageAddress}
-                    label={'Company address'}
-                  />
-                </StyledFormItem>
-              ) : (
-                <Stack mt={-3} width={'100%'}>
-                  <StyledTextFieldNumber
-                    decimalScale={0}
-                    label={'Escrow number'}
-                    onValueChange={({ floatValue }) => {
-                      if (formError?.escrowNumber) {
+                  <StyledTextField
+                    label={"Signee's first name"}
+                    onChange={(e) => {
+                      if (formError?.contactForm?.firstName) {
                         setFormError((prev) => {
                           if (prev) {
-                            delete prev.escrowNumber;
+                            delete prev.contactForm.firstName;
                           }
                           return prev;
                         });
                       }
-                      setEscrowNumber(floatValue);
+                      setContactForm({
+                        ...contactForm,
+                        firstName: e.target.value,
+                      });
                     }}
-                    thousandSeparator={false}
-                    validate={formError?.escrowNumber}
-                    value={escrowNumber}
+                    validate={formError?.contactForm?.firstName}
+                    value={contactForm.firstName}
+                  />
+                  <StyledTextField
+                    label={"Signee's last name"}
+                    onChange={(e) => {
+                      if (formError?.contactForm?.lastName) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.contactForm.lastName;
+                          }
+                          return prev;
+                        });
+                      }
+                      setContactForm({
+                        ...contactForm,
+                        lastName: e.target.value,
+                      });
+                    }}
+                    validate={formError?.contactForm?.lastName}
+                    value={contactForm.lastName}
                   />
                 </Stack>
-              )
-            ) : null}
-          </Transitions>
 
-          <Stack
-            flexDirection={{ xs: 'unset', md: 'row' }}
-            gap={3}
-            maxWidth={600}
-            width={'100%'}
-          >
-            <StyledButton
-              color={'info'}
-              onClick={async () => {
-                await router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { loanId: router.query.loanId },
-                });
-              }}
-              sx={{ flex: 1, width: '100%' }}
-              variant={'text'}
-            >
-              Back
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disabled={saveLoading}
-              loading={saveLoading}
-              onClick={handleSave}
-              sx={{ flex: 1, width: '100%' }}
-            >
-              Save
-            </StyledButton>
-          </Stack>
-        </Stack>
-        {['xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+                <Stack
+                  flexDirection={{ lg: 'row', xs: 'column' }}
+                  gap={3}
+                  mt={3}
+                  width={'100%'}
+                >
+                  <StyledTextFieldPhone
+                    label={"Signee's phone number"}
+                    onValueChange={({ value }) => {
+                      if (formError?.contactForm?.phoneNumber) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.contactForm.phoneNumber;
+                          }
+                          return prev;
+                        });
+                      }
+                      setContactForm({
+                        ...contactForm,
+                        phoneNumber: value,
+                      });
+                    }}
+                    validate={formError?.contactForm?.phoneNumber}
+                    value={contactForm.phoneNumber}
+                  />
+                  <StyledTextField
+                    label={"Signee's email address"}
+                    onChange={(e) => {
+                      if (formError?.contactForm?.email) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.contactForm.email;
+                          }
+                          return prev;
+                        });
+                      }
+                      setContactForm({
+                        ...contactForm,
+                        email: e.target.value,
+                      });
+                    }}
+                    validate={formError?.contactForm?.email}
+                    value={contactForm.email}
+                  />
+                </Stack>
+              </>
+            )}
+          </Transitions>
+        </StyledFormItem>
+
+        <StyledFormItem
+          gap={3}
+          label={'Is the title company also managing loan closing?'}
+          maxWidth={600}
+          sub
+        >
+          <StyledButtonGroup
+            onChange={(e, value) => {
+              if (value === null) {
+                return;
+              }
+              setFormError((prev) => {
+                if (prev?.manageForm) {
+                  delete prev.manageForm;
+                }
+                if (prev?.escrowNumber) {
+                  delete prev.escrowNumber;
+                }
+                return prev;
+              });
+              setAddressError((prev) => {
+                if (prev?.manageAddress) {
+                  delete prev.manageAddress;
+                }
+                return prev;
+              });
+
+              setIsLoanClosing(value === LoanAnswerEnum.yes);
+            }}
+            options={OPTIONS_COMMON_YES_OR_NO}
+            sx={{ width: '100%', maxWidth: 600 }}
+            value={isLoanClosing ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
+          />
+        </StyledFormItem>
+
+        <Transitions
+          style={{
+            maxWidth: 600,
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          {POSNotUndefined(isLoanClosing) ? (
+            !isLoanClosing ? (
+              <StyledFormItem
+                gap={3}
+                label={'Who is managing loan closing?'}
+                sub
+                width={'100%'}
+              >
+                <StyledSelectOption
+                  onChange={(value) =>
+                    setWhoIsManaging(
+                      value as string as DashboardTaskLoanClosing,
+                    )
+                  }
+                  options={OPTIONS_TASK_MANAGING_LOAN_CLOSING}
+                  value={whoIsManaging}
+                />
+
+                <Stack
+                  flexDirection={{ lg: 'row', xs: 'column' }}
+                  gap={3}
+                  width={'100%'}
+                >
+                  <StyledTextField
+                    label={'Contact first name'}
+                    onChange={(e) => {
+                      if (formError?.manageForm?.firstName) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.manageForm.firstName;
+                          }
+                          return prev;
+                        });
+                      }
+                      setManageForm({
+                        ...manageForm,
+                        firstName: e.target.value,
+                      });
+                    }}
+                    validate={formError?.manageForm?.firstName}
+                    value={manageForm.firstName}
+                  />
+                  <StyledTextField
+                    label={'Contact last name'}
+                    onChange={(e) => {
+                      if (formError?.manageForm?.lastName) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.manageForm.lastName;
+                          }
+                          return prev;
+                        });
+                      }
+                      setManageForm({
+                        ...manageForm,
+                        lastName: e.target.value,
+                      });
+                    }}
+                    validate={formError?.manageForm?.lastName}
+                    value={manageForm.lastName}
+                  />
+                </Stack>
+
+                <Stack
+                  flexDirection={{ lg: 'row', xs: 'column' }}
+                  gap={3}
+                  width={'100%'}
+                >
+                  <StyledTextFieldPhone
+                    label={'Phone number'}
+                    onValueChange={({ value }) => {
+                      if (formError?.manageForm?.phoneNumber) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.manageForm.phoneNumber;
+                          }
+                          return prev;
+                        });
+                      }
+                      setManageForm({ ...manageForm, phoneNumber: value });
+                    }}
+                    validate={formError?.manageForm?.phoneNumber}
+                    value={manageForm.phoneNumber}
+                  />
+                  <StyledTextField
+                    label={'Email'}
+                    onChange={(e) => {
+                      if (formError?.manageForm?.email) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.manageForm.email;
+                          }
+                          return prev;
+                        });
+                      }
+                      setManageForm({
+                        ...manageForm,
+                        email: e.target.value,
+                      });
+                    }}
+                    validate={formError?.manageForm?.email}
+                    value={manageForm.email}
+                  />
+                </Stack>
+
+                <Stack
+                  flexDirection={{ lg: 'row', xs: 'column' }}
+                  gap={3}
+                  width={'100%'}
+                >
+                  <StyledTextField
+                    label={'Company name'}
+                    onChange={(e) => {
+                      if (formError?.manageForm?.companyName) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.manageForm.companyName;
+                          }
+                          return prev;
+                        });
+                      }
+                      setManageForm({
+                        ...manageForm,
+                        companyName: e.target.value,
+                      });
+                    }}
+                    validate={formError?.manageForm?.companyName}
+                    value={manageForm.companyName}
+                  />
+                  <StyledTextField
+                    label={
+                      whoIsManaging === DashboardTaskLoanClosing.escrow_company
+                        ? 'Escrow number'
+                        : 'Closing attorney file No.'
+                    }
+                    onChange={(e) => {
+                      if (formError?.manageForm?.titleOrderNumber) {
+                        setFormError((prev) => {
+                          if (prev) {
+                            delete prev.manageForm.titleOrderNumber;
+                          }
+                          return prev;
+                        });
+                      }
+                      setManageForm({
+                        ...manageForm,
+                        titleOrderNumber: e.target.value,
+                      });
+                    }}
+                    validate={formError?.manageForm?.titleOrderNumber}
+                    value={manageForm.titleOrderNumber}
+                  />
+                </Stack>
+
+                <StyledGoogleAutoComplete
+                  address={clientManageAddress}
+                  addressError={addressError?.manageAddress}
+                  label={'Company address'}
+                />
+              </StyledFormItem>
+            ) : (
+              <Stack mt={{ xs: -3, lg: -5 }} width={'100%'}>
+                <StyledTextFieldNumber
+                  decimalScale={0}
+                  label={'Escrow number'}
+                  onValueChange={({ floatValue }) => {
+                    if (formError?.escrowNumber) {
+                      setFormError((prev) => {
+                        if (prev) {
+                          delete prev.escrowNumber;
+                        }
+                        return prev;
+                      });
+                    }
+                    setEscrowNumber(floatValue);
+                  }}
+                  thousandSeparator={false}
+                  validate={formError?.escrowNumber}
+                  value={escrowNumber}
+                />
+              </Stack>
+            )
+          ) : null}
+        </Transitions>
+
+        <StyledButton
+          color={'primary'}
+          disabled={saveLoading}
+          loading={saveLoading}
+          onClick={handleSave}
+          sx={{ width: 200 }}
+        >
+          Save and continue
+        </StyledButton>
       </Stack>
     </Fade>
   );

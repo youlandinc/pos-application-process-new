@@ -168,7 +168,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
     }, [isNeedToFill, isNeedToSend, userType]);
 
     return (
-      <>
+      <Stack gap={{ xs: 6, lg: 8 }}>
         <StyledFormItem gap={3} label={'Do you have a recent appraisal?'} sub>
           <StyledButtonGroup
             onChange={(e, value) => {
@@ -178,7 +178,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
               setHaveAppraisal(value === LoanAnswerEnum.yes);
             }}
             options={OPTIONS_COMMON_YES_OR_NO}
-            sx={{ width: '100%' }}
+            sx={{ maxWidth: 600 }}
             value={haveAppraisal ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
           />
         </StyledFormItem>
@@ -187,6 +187,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
           style={{
             display: haveAppraisal ? 'block' : 'none',
             width: '100%',
+            maxWidth: 600,
           }}
         >
           {haveAppraisal && (
@@ -205,7 +206,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
           }}
         >
           {!haveAppraisal && (
-            <Stack gap={6} width={'100%'}>
+            <Stack gap={{ xs: 6, lg: 9 }} width={'100%'}>
               <StyledFormItem
                 gap={3}
                 label={'Would you like to expedite your appraisal order?'}
@@ -223,7 +224,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
                     setIsExpedited(value === LoanAnswerEnum.yes);
                   }}
                   options={OPTIONS_COMMON_YES_OR_NO}
-                  sx={{ width: '100%' }}
+                  sx={{ maxWidth: 600 }}
                   value={isExpedited ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
                 />
               </StyledFormItem>
@@ -242,7 +243,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
                       setIsNeedToSend(value === LoanAnswerEnum.yes);
                     }}
                     options={OPTIONS_COMMON_YES_OR_NO}
-                    sx={{ width: '100%' }}
+                    sx={{ maxWidth: 600 }}
                     value={
                       isNeedToSend ? LoanAnswerEnum.yes : LoanAnswerEnum.no
                     }
@@ -311,6 +312,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
                     <Stack
                       flexDirection={{ xs: 'column', lg: 'row' }}
                       gap={3}
+                      maxWidth={600}
                       width={'100%'}
                     >
                       <StyledTextField
@@ -336,6 +338,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
                     <Stack
                       flexDirection={{ xs: 'column', lg: 'row' }}
                       gap={3}
+                      maxWidth={600}
                       width={'100%'}
                     >
                       <StyledTextField
@@ -344,6 +347,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
                           setEmail(e.target.value);
                         }}
                         placeholder={'Email (optional)'}
+                        sx={{ maxWidth: 600 }}
                         value={email}
                       />
                       <StyledTextFieldPhone
@@ -361,6 +365,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
                         setInstructions(e.target.value);
                       }}
                       placeholder={'Property access instructions (optional)'}
+                      sx={{ maxWidth: 600 }}
                       value={instructions}
                     />
                   </StyledFormItem>
@@ -370,190 +375,17 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
           )}
         </Transitions>
 
-        <Stack alignItems={'center'} mt={{ xs: 3, lg: 2 }} width={'100%'}>
-          <StyledButton
-            color={'primary'}
-            disabled={nextState || !isFormDataValid}
-            loading={nextState}
-            onClick={handleSave}
-            sx={{ maxWidth: 276, width: '100%' }}
-          >
-            {haveAppraisal ? 'Save' : 'Next'}
-            {/*Save*/}
-          </StyledButton>
-        </Stack>
-      </>
+        <StyledButton
+          color={'primary'}
+          disabled={nextState || !isFormDataValid}
+          loading={nextState}
+          onClick={handleSave}
+          sx={{ maxWidth: 276, width: '100%' }}
+        >
+          {haveAppraisal ? 'Save' : 'Next'}
+          {/*Save*/}
+        </StyledButton>
+      </Stack>
     );
   },
 );
-
-//<Transitions
-//    style={{
-//      display: !haveAppraisal ? 'block' : 'none',
-//    }}
-//>
-//  {!haveAppraisal && (
-//      <Stack gap={6} width={'100%'}>
-//        <StyledFormItem
-//            gap={3}
-//            label={'Would you like to expedite your appraisal order?'}
-//            sub
-//            tip={
-//              'An expedited appraisal order will typically be completed within 3-5 business days. An additional fee of $150 will apply.'
-//            }
-//            tipSx={{ textAlign: 'left', mt: 1.5 }}
-//        >
-//          <StyledButtonGroup
-//              onChange={(e, value) => {
-//                if (value === null) {
-//                  return;
-//                }
-//                setIsExpedited(value === LoanAnswerEnum.yes);
-//              }}
-//              options={OPTIONS_COMMON_YES_OR_NO}
-//              sx={{ width: '100%' }}
-//              value={isExpedited ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
-//          />
-//        </StyledFormItem>
-//
-//        {userType !== UserType.CUSTOMER && (
-//            <StyledFormItem
-//                gap={3}
-//                label={'Would you like to send the borrower a payment link?'}
-//                sub
-//            >
-//              <StyledButtonGroup
-//                  onChange={(e, value) => {
-//                    if (value === null) {
-//                      return;
-//                    }
-//                    setIsNeedToSend(value === LoanAnswerEnum.yes);
-//                  }}
-//                  options={OPTIONS_COMMON_YES_OR_NO}
-//                  sx={{ width: '100%' }}
-//                  value={
-//                    isNeedToSend ? LoanAnswerEnum.yes : LoanAnswerEnum.no
-//                  }
-//              />
-//
-//              <Transitions
-//                  style={{
-//                    display: isNeedToSend ? 'block' : 'none',
-//                  }}
-//              >
-//                {isNeedToSend && (
-//                    <Stack gap={3}>
-//                      <Typography
-//                          color={'text.secondary'}
-//                          component={'div'}
-//                          fontSize={16}
-//                      >
-//                        You can customize the logo and domain name of the
-//                        payment link in the &quot;
-//                        <Typography
-//                            color={'#365EC6'}
-//                            component={'span'}
-//                            fontWeight={600}
-//                            onClick={async () => {
-//                              await router.push({
-//                                pathname: '/account',
-//                                query: { tab: 2 },
-//                              });
-//                            }}
-//                            sx={{ cursor: 'pointer' }}
-//                        >
-//                          My Account
-//                        </Typography>
-//                        &quot; settings.
-//                      </Typography>
-//                      <Stack alignItems={'center'} flexDirection={'row'}>
-//                        <StyledSwitch
-//                            checked={isNeedToFill}
-//                            onChange={(e) => {
-//                              setIsNeedToFill(e.target.checked);
-//                            }}
-//                        />
-//                        <Typography fontSize={14} ml={1} pt={'2px'}>
-//                          Ask the borrower to fill in the property inspection
-//                          contact information.
-//                        </Typography>
-//                      </Stack>
-//                    </Stack>
-//                )}
-//              </Transitions>
-//            </StyledFormItem>
-//        )}
-//
-//        <Transitions
-//            style={{
-//              display: renderCondition ? 'block' : 'none',
-//            }}
-//        >
-//          {renderCondition && (
-//              <StyledFormItem
-//                  gap={3}
-//                  label={'Property inspection contact information'}
-//                  labelSx={{ pb: 3 }}
-//                  sub
-//              >
-//                <Stack
-//                    flexDirection={{ xs: 'column', lg: 'row' }}
-//                    gap={3}
-//                    width={'100%'}
-//                >
-//                  <StyledTextField
-//                      label={'First name'}
-//                      onChange={(e) => {
-//                        setFirstName(e.target.value);
-//                      }}
-//                      placeholder={'First name'}
-//                      required
-//                      value={firstName}
-//                  />
-//                  <StyledTextField
-//                      label={'Last name'}
-//                      onChange={(e) => {
-//                        setLastName(e.target.value);
-//                      }}
-//                      placeholder={'Last name'}
-//                      required
-//                      value={lastName}
-//                  />
-//                </Stack>
-//
-//                <Stack
-//                    flexDirection={{ xs: 'column', lg: 'row' }}
-//                    gap={3}
-//                    width={'100%'}
-//                >
-//                  <StyledTextField
-//                      label={'Email (optional)'}
-//                      onChange={(e) => {
-//                        setEmail(e.target.value);
-//                      }}
-//                      placeholder={'Email (optional)'}
-//                      value={email}
-//                  />
-//                  <StyledTextFieldPhone
-//                      label={'Phone number'}
-//                      onValueChange={({ value }) => setPhoneNumber(value)}
-//                      placeholder={'Phone number'}
-//                      required
-//                      value={phoneNumber}
-//                  />
-//                </Stack>
-//
-//                <StyledTextField
-//                    label={'Property access instructions (optional)'}
-//                    onChange={(e) => {
-//                      setInstructions(e.target.value);
-//                    }}
-//                    placeholder={'Property access instructions (optional)'}
-//                    value={instructions}
-//                />
-//              </StyledFormItem>
-//          )}
-//        </Transitions>
-//      </Stack>
-//  )}
-//</Transitions>

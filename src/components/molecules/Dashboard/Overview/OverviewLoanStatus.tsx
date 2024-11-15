@@ -17,7 +17,12 @@ import { useBreakpoints } from '@/hooks';
 
 import { StyledButton } from '@/components/atoms';
 
-import { HttpError, LoanSnapshotEnum, PipelineLoanStageEnum } from '@/types';
+import {
+  DashboardOverviewResponse,
+  HttpError,
+  LoanSnapshotEnum,
+  PipelineLoanStageEnum,
+} from '@/types';
 import { _resubmitLoan } from '@/requests/dashboard';
 
 const hash = {
@@ -32,27 +37,10 @@ const hash = {
   [PipelineLoanStageEnum.not_submitted]: -1,
 };
 
-interface baseData {
-  date?: string;
-}
-
-interface ILoanStatusDetails {
-  [PipelineLoanStageEnum.scenario]: baseData | null;
-  [PipelineLoanStageEnum.initial_approval]: baseData | null;
-  [PipelineLoanStageEnum.pre_approved]: baseData | null;
-  [PipelineLoanStageEnum.preparing_docs]: baseData | null;
-  [PipelineLoanStageEnum.docs_out]: baseData | null;
-  [PipelineLoanStageEnum.funded]: baseData | null;
-  [PipelineLoanStageEnum.rejected]: (baseData & { reason?: string }) | null;
-  [PipelineLoanStageEnum.inactive]: baseData | null;
-}
-
-type ILoanStage = `${PipelineLoanStageEnum}`;
-
-interface OverviewLoanStatusProps {
-  loanStatus: ILoanStage;
-  loanStatusDetails: ILoanStatusDetails;
-}
+export type OverviewLoanStatusProps = {
+  loanStatus: DashboardOverviewResponse['data']['loanStatus'];
+  loanStatusDetails: DashboardOverviewResponse['data']['loanStatusDetails'];
+};
 
 export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
   loanStatus = PipelineLoanStageEnum.scenario,
@@ -155,7 +143,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
             },
             {
               icon: null,
-              label: 'Preparing loan documents',
+              label: 'Final approval',
               description:
                 'We have completed the approval process for this loan and are now preparing the documents.These will be sent out as soon as possible.',
               date: loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs]
@@ -216,33 +204,29 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
     ],
   );
 
+  const [activeIndex, setActiveIndex] = useState(-1);
+
   return (
-    <Stack
-      border={'1px solid #D2D6E1'}
-      borderRadius={2}
-      flex={1}
-      gap={3}
-      p={3}
-      width={'100%'}
-    >
-      <Typography color={'text.primary'} variant={'h6'}>
-        Loan status
-      </Typography>
+    <Stack borderRadius={2} gap={1.5} width={'100%'}>
+      <Typography fontSize={{ xs: 16, md: 20 }}>Loan status</Typography>
 
       <Stepper
         activeStep={hash[loanStatus]}
         connector={null}
         orientation={'vertical'}
-        sx={{
-          width: '100%',
-          pl: 1,
-        }}
+        sx={{ width: '100%' }}
       >
         {computedData.map((item, index) => (
           <Step
             completed={index <= hash[loanStatus]}
             expanded={true}
             key={`${item.label}-${index}`}
+            onMouseEnter={() => {
+              setActiveIndex(index);
+            }}
+            onMouseLeave={() => {
+              setActiveIndex(-1);
+            }}
           >
             <StepLabel icon={item.icon}>
               <Stack
@@ -313,14 +297,9 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
               <Stack
                 flexDirection={{ xs: 'column', xl: 'row' }}
                 gap={{ xs: 1.5, xl: 3 }}
-                mb={
-                  index === computedData.length - 1
-                    ? 0
-                    : ['xs', 'sm', 'md', 'lg'].includes(breakpoints)
-                      ? 1
-                      : 7
-                }
+                minHeight={24}
                 ml={0.5}
+                my={1}
               >
                 {hash[loanStatus] === index && (
                   <Typography
@@ -377,15 +356,18 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                   </Typography>
                 )}
 
-                {item.date && hash[loanStatus] >= index && (
-                  <Typography
-                    color={'text.secondary'}
-                    ml={{ xs: 'unset', xl: 'auto' }}
-                    variant={'body3'}
-                  >
-                    {item.date}
-                  </Typography>
-                )}
+                {item.date &&
+                  hash[loanStatus] >= index &&
+                  (['xs', 'sm', 'md', 'lg'].includes(breakpoints) ||
+                    activeIndex === index) && (
+                    <Typography
+                      color={'text.secondary'}
+                      ml={{ xs: 'unset', xl: 'auto' }}
+                      variant={'body3'}
+                    >
+                      {item.date}
+                    </Typography>
+                  )}
               </Stack>
             </StepContent>
           </Step>

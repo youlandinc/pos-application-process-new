@@ -1,4 +1,25 @@
-import { TaskFiles } from '@/types';
+import { LoanSnapshotEnum, PipelineLoanStageEnum, TaskFiles } from '@/types';
+
+// overview
+export type PipelineLoanStageKey = `${PipelineLoanStageEnum}`;
+
+export interface DashboardOverviewResponse {
+  data: {
+    estDate: string;
+    loanStatus: PipelineLoanStageEnum;
+    loanStatusDetails: {
+      [key in PipelineLoanStageKey]: {
+        date?: string;
+        reason?: string;
+      };
+    };
+    loanTasks: DashboardTasksResponse;
+  };
+  id: number | string;
+  loanId: number | string;
+  snapshot: LoanSnapshotEnum;
+  isBind: boolean;
+}
 
 // tasks
 export enum DashboardTaskKey {

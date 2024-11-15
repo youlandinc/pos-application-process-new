@@ -8,6 +8,7 @@ export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
   value,
   onChange,
   disabled = false,
+  sx,
 }) => {
   const handledSelectChange = useCallback(
     (optionValue: Option['value']) => () => {
@@ -43,6 +44,7 @@ export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
       alignItems={'center'}
       gap={{ xs: 1.5, lg: 3 }}
       justifyContent={'center'}
+      sx={sx}
       width={'100%'}
     >
       {renderOptions}

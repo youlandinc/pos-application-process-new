@@ -4,8 +4,6 @@ import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 
-import { useBreakpoints } from '@/hooks';
-
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { POSFormatUSPhoneToText, POSGetParamsFromUrl } from '@/utils';
 
@@ -19,7 +17,6 @@ import TEAM_OPERATION from '@/svg/dashboard/team_operation.svg';
 import TEAM_CONTACT from '@/svg/dashboard/team_contact.svg';
 
 export const Team = () => {
-  const breakpoints = useBreakpoints();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -76,20 +73,14 @@ export const Team = () => {
         gap={3}
         justifyContent={'flex-start'}
         maxWidth={900}
-        mx={{ lg: 'auto', xs: 0 }}
-        px={{ lg: 3, xs: 0 }}
         width={'100%'}
       >
-        <Typography
-          textAlign={'center'}
-          variant={['xs', 'sm', 'md'].includes(breakpoints) ? 'h6' : 'h5'}
-        >
+        <Typography fontSize={{ xs: 20, md: 24 }}>
           My team
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
-            mt={1.5}
-            textAlign={'center'}
+            mt={3}
           >
             Our dedicated team of loan management specialists is here to provide
             you with personalized solutions and expert advice.
@@ -97,23 +88,24 @@ export const Team = () => {
         </Typography>
 
         <Stack
-          alignItems={'center'}
+          alignItems={{ xs: 'unset', md: 'center' }}
+          border={'1px solid #D2D6E1'}
+          borderRadius={2}
           flexDirection={{ xs: 'column', md: 'row' }}
-          gap={3}
+          gap={{ xs: 1, md: 1.5 }}
+          p={{ xs: 2, lg: 3 }}
           width={'100%'}
         >
           <Stack
-            alignItems={'center'}
-            border={'1px solid #D2D6E1'}
-            borderRadius={2}
-            flex={1}
-            gap={1.5}
-            p={3}
-            width={'100%'}
+            fontSize={{
+              xs: 12,
+              md: 14,
+              xl: 16,
+            }}
+            gap={0.5}
+            order={{ xs: 2, md: 1 }}
           >
-            <Icon component={TEAM_OPERATION} sx={{ width: 64, height: 64 }} />
             <Typography
-              color={'text.primary'}
               fontSize={{
                 xs: 16,
                 md: 18,
@@ -122,36 +114,42 @@ export const Team = () => {
             >
               Hours of operation
             </Typography>
-
-            <Stack
-              alignItems={'center'}
-              fontSize={{
-                xs: 12,
-                md: 14,
-                xl: 16,
-              }}
-              gap={0.5}
-            >
-              <Typography color={'text.primary'} fontSize={'inherit'}>
-                {slogan}
-              </Typography>
-              <Typography color={'text.primary'} fontSize={'inherit'}>
-                {workTime}
-              </Typography>
-            </Stack>
+            <Typography color={'text.primary'} fontSize={'inherit'}>
+              {slogan}
+            </Typography>
+            <Typography color={'text.primary'} fontSize={'inherit'}>
+              {workTime}
+            </Typography>
           </Stack>
+          <Icon
+            component={TEAM_OPERATION}
+            sx={{
+              width: { xs: 48, md: 64 },
+              height: { xs: 48, md: 64 },
+              ml: { xs: 0, md: 'auto' },
+              order: { xs: 1, md: 2 },
+            }}
+          />
+        </Stack>
 
+        <Stack
+          alignItems={{ xs: 'unset', md: 'center' }}
+          border={'1px solid #D2D6E1'}
+          borderRadius={2}
+          flexDirection={{ xs: 'column', md: 'row' }}
+          gap={{ xs: 1, md: 1.5 }}
+          p={{ xs: 2, lg: 3 }}
+          width={'100%'}
+        >
           <Stack
-            alignItems={'center'}
-            border={'1px solid #D2D6E1'}
-            borderRadius={2}
-            flex={1}
-            gap={1.5}
-            p={3}
-            width={'100%'}
+            fontSize={{
+              xs: 12,
+              md: 14,
+              xl: 16,
+            }}
+            gap={0.5}
+            order={{ xs: 2, md: 1 }}
           >
-            <Icon component={TEAM_CONTACT} sx={{ width: 64, height: 64 }} />
-
             <Typography
               color={'text.primary'}
               fontSize={{
@@ -162,24 +160,22 @@ export const Team = () => {
             >
               Contact us
             </Typography>
-
-            <Stack
-              alignItems={'center'}
-              fontSize={{
-                xs: 12,
-                md: 14,
-                xl: 16,
-              }}
-              gap={0.5}
-            >
-              <Typography color={'text.primary'} fontSize={'inherit'}>
-                {email}
-              </Typography>
-              <Typography color={'text.primary'} fontSize={'inherit'}>
-                {POSFormatUSPhoneToText(phone)}
-              </Typography>
-            </Stack>
+            <Typography color={'text.primary'} fontSize={'inherit'}>
+              {email}
+            </Typography>
+            <Typography color={'text.primary'} fontSize={'inherit'}>
+              {POSFormatUSPhoneToText(phone)}
+            </Typography>
           </Stack>
+          <Icon
+            component={TEAM_CONTACT}
+            sx={{
+              width: { xs: 48, md: 64 },
+              height: { xs: 48, md: 64 },
+              ml: { xs: 0, md: 'auto' },
+              order: { xs: 1, md: 2 },
+            }}
+          />
         </Stack>
 
         <Stack flexDirection={'row'} flexWrap={'wrap'} gap={3} width={'100%'}>

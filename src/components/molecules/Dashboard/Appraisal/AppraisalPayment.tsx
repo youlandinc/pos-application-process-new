@@ -148,21 +148,24 @@ export const AppraisalPayment: FC<PaymentTableProps> = ({
 
   return (
     <StyledFormItem
-      alignItems={'center'}
-      gap={3}
+      gap={{ xs: 6, lg: 8 }}
       label={'Complete your appraisal payment below'}
-      labelSx={{ textAlign: 'center' }}
-      px={{ lg: 3, xs: 0 }}
+      labelSx={{ pb: 0, fontWeight: 400 }}
+      maxWidth={900}
     >
-      <Stack mt={3} width={'100%'}>
+      <Stack maxWidth={600} width={'100%'}>
         <SpecificalPaymentInfo {...paymentDetail} />
       </Stack>
 
-      <Stack borderRadius={2} width={'100%'}>
+      <Stack
+        borderRadius={2}
+        maxWidth={activeStep === 0 ? 600 : 900}
+        width={'100%'}
+      >
         <Stepper
           activeStep={activeStep}
           connector={
-            <Box borderBottom={'1px dashed #ccc'} height={0} width={80}></Box>
+            <Box borderBottom={'1px dashed #ccc'} height={0} width={80} />
           }
           sx={{ mb: 3 }}
         >
@@ -265,33 +268,28 @@ export const AppraisalPayment: FC<PaymentTableProps> = ({
           </>
         ) : null}
         <Box
-          height={activeStep === 1 ? 'auto' : 0}
+          height={activeStep === 1 ? 'fit-content' : 0}
           overflow={'hidden'}
           position={'relative'}
-          // height={910}
           ref={paymentContentRef}
-        ></Box>
+          sx={{
+            '& iframe': {
+              //border: '1px solid #E4E7EF !important',
+            },
+          }}
+        />
+        <Typography variant={'body3'}>
+          <strong>Important:</strong> By proceeding, you acknowledge that the
+          payment amount may be adjusted due to extenuating property factors
+          such as size or location. Additionally, if your property does not meet
+          the required standards during inspection, you will be responsible for
+          the cost of a second appraisal. Please be aware that paying for and
+          ordering an appraisal does not guarantee loan approval. We recommend
+          waiting for loan approval before placing the order.
+        </Typography>
       </Stack>
 
-      <Typography mt={'-34px'} variant={'body3'}>
-        <strong>Important:</strong> By proceeding, you acknowledge that the
-        payment amount may be adjusted due to extenuating property factors such
-        as size or location. Additionally, if your property does not meet the
-        required standards during inspection, you will be responsible for the
-        cost of a second appraisal. Please be aware that paying for and ordering
-        an appraisal does not guarantee loan approval. We recommend waiting for
-        loan approval before placing the order.
-      </Typography>
-
-      <Stack
-        flexDirection={'row'}
-        gap={3}
-        justifyContent={'center'}
-        maxWidth={600}
-        mt={8}
-        mx={'auto'}
-        width={'100%'}
-      >
+      <Stack flexDirection={'row'} gap={3} width={'100%'}>
         <StyledButton
           color={'info'}
           disabled={backState}
@@ -311,7 +309,7 @@ export const AppraisalPayment: FC<PaymentTableProps> = ({
               await getPaymentSignature();
             }}
             sx={{
-              width: 240,
+              flex: 1,
               alignSelf: 'flex-start',
               flexShrink: 0,
             }}
