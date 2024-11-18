@@ -10,7 +10,7 @@ export const OverviewEstDate: FC<{ estDate: string }> = ({ estDate }) => {
     <Stack gap={1.5} width={'100%'}>
       <Typography fontSize={{ xs: 16, md: 20 }}>Date</Typography>
 
-      <Stack flexDirection={'row'} gap={1.5} mt={2}>
+      <Stack flexDirection={'row'} gap={1.5} mt={0.5}>
         <Stack bgcolor={'#D6E2FF'} borderRadius={3} height={56} width={56}>
           <Stack
             alignItems={'center'}

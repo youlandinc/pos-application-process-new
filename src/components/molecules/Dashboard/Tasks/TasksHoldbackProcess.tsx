@@ -57,11 +57,6 @@ export const TasksHoldbackProcess: FC = observer(() => {
         autoHideDuration: AUTO_HIDE_DURATION,
         isSimple: !header,
         header,
-        onClose: () =>
-          router.push({
-            pathname: '/dashboard/tasks',
-            query: { loanId: router.query.loanId },
-          }),
       });
     }
   }, []);

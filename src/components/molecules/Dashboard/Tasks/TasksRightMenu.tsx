@@ -143,7 +143,7 @@ export const TasksRightMenu: FC = observer(() => {
                       Square footage
                     </Typography>
                     {taskMap.get(DashboardTaskKey.square_footage) && (
-                      <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                      <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                     )}
                   </Stack>
                 )}
@@ -157,7 +157,7 @@ export const TasksRightMenu: FC = observer(() => {
                       Entitlements
                     </Typography>
                     {taskMap.get(DashboardTaskKey.entitlements) && (
-                      <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                      <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                     )}
                   </Stack>
                 )}
@@ -171,7 +171,7 @@ export const TasksRightMenu: FC = observer(() => {
                       Permits obtained
                     </Typography>
                     {taskMap.get(DashboardTaskKey.permits_obtained) && (
-                      <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                      <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                     )}
                   </Stack>
                 )}
@@ -207,7 +207,7 @@ export const TasksRightMenu: FC = observer(() => {
                       Payoff amount
                     </Typography>
                     {taskMap.get(DashboardTaskKey.payoff_amount) && (
-                      <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                      <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                     )}
                   </Stack>
                 )}
@@ -221,7 +221,7 @@ export const TasksRightMenu: FC = observer(() => {
                       Rehab info
                     </Typography>
                     {taskMap.get(DashboardTaskKey.rehab_info) && (
-                      <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                      <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                     )}
                   </Stack>
                 )}
@@ -254,7 +254,7 @@ export const TasksRightMenu: FC = observer(() => {
                   Borrower
                 </Typography>
                 {taskMap.get(DashboardTaskKey.borrower) && (
-                  <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                  <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                 )}
               </Stack>
 
@@ -266,7 +266,7 @@ export const TasksRightMenu: FC = observer(() => {
                   Co-borrower
                 </Typography>
                 {taskMap.get(DashboardTaskKey.co_borrower) && (
-                  <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                  <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                 )}
               </Stack>
 
@@ -280,7 +280,7 @@ export const TasksRightMenu: FC = observer(() => {
                   Demographic information
                 </Typography>
                 {taskMap.get(DashboardTaskKey.demographics) && (
-                  <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                  <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                 )}
               </Stack>
             </Stack>
@@ -313,7 +313,7 @@ export const TasksRightMenu: FC = observer(() => {
                   Title company (optional)
                 </Typography>
                 {taskMap.get(DashboardTaskKey.title_escrow) && (
-                  <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                  <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                 )}
               </Stack>
             </Stack>
@@ -349,7 +349,7 @@ export const TasksRightMenu: FC = observer(() => {
                     Construction holdback process
                   </Typography>
                   {taskMap.get(DashboardTaskKey.holdback_process) && (
-                    <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                    <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                   )}
                 </Stack>
               </Stack>
@@ -382,7 +382,7 @@ export const TasksRightMenu: FC = observer(() => {
                     Referring broker
                   </Typography>
                   {taskMap.get(DashboardTaskKey.referring_broker) && (
-                    <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                    <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                   )}
                 </Stack>
               </Stack>

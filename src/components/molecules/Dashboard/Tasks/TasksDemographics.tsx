@@ -1,6 +1,5 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Box, Fade, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
 
@@ -26,7 +25,6 @@ import {
 } from '@/requests/dashboard';
 
 export const TasksDemographics: FC = observer(() => {
-  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const {
     dashboardInfo: { jumpToNextTask },
@@ -169,11 +167,6 @@ export const TasksDemographics: FC = observer(() => {
         autoHideDuration: AUTO_HIDE_DURATION,
         isSimple: !header,
         header,
-        onClose: () =>
-          router.push({
-            pathname: '/dashboard/tasks',
-            query: { loanId: router.query.loanId },
-          }),
       });
     }
   }, []);
