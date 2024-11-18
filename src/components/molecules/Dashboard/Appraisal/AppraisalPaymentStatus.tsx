@@ -148,36 +148,23 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
           color: '#DE6449',
           status: 'failed',
           content: (
-            <Stack width={'100%'}>
+            <Stack mt={3} width={'100%'}>
               <Typography color={'text.secondary'} variant={'body1'}>
                 Your payment couldn&apos;t be processed. Don&apos;t worry,
                 we&apos;re here to help.
               </Typography>
-              <Typography
-                color={'text.secondary'}
-                mt={1.5}
-                variant={'subtitle1'}
-              >
+              <Typography color={'text.secondary'} mt={1.5}>
                 Quick fixes:
               </Typography>
-              <Stack
-                component={'ul'}
-                sx={{
-                  listStyle: 'decimal',
-                  listStylePosition: 'inside',
-                  p: 0,
-                }}
-              >
-                <Typography color={'text.secondary'} component={'li'}>
-                  Verify your card information.
-                </Typography>
-                <Typography color={'text.secondary'} component={'li'}>
-                  Ensure you have sufficient funds.
-                </Typography>
-                <Typography color={'text.secondary'} component={'li'}>
-                  Retry the payment.
-                </Typography>
-              </Stack>
+              <Typography color={'text.secondary'}>
+                Verify your card information.
+              </Typography>
+              <Typography color={'text.secondary'}>
+                Ensure you have sufficient funds.
+              </Typography>
+              <Typography color={'text.secondary'}>
+                Retry the payment.
+              </Typography>
             </Stack>
           ),
           contact: (

@@ -175,12 +175,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
   );
 
   return (
-    <Stack
-      justifyContent={'flex-start'}
-      maxWidth={900}
-      mx={'auto'}
-      width={'100%'}
-    >
+    <Stack justifyContent={'flex-start'} maxWidth={900} width={'100%'}>
       <Typography
         color={'text.primary'}
         component={'div'}

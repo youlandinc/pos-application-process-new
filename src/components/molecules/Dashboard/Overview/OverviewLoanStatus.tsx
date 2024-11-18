@@ -297,9 +297,9 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
               <Stack
                 flexDirection={{ xs: 'column', xl: 'row' }}
                 gap={{ xs: 1.5, xl: 3 }}
+                mb={1.5}
                 minHeight={24}
                 ml={0.5}
-                my={1}
               >
                 {hash[loanStatus] === index && (
                   <Typography

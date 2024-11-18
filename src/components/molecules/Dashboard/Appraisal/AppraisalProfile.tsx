@@ -168,8 +168,13 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
     }, [isNeedToFill, isNeedToSend, userType]);
 
     return (
-      <Stack gap={{ xs: 6, lg: 8 }}>
-        <StyledFormItem gap={3} label={'Do you have a recent appraisal?'} sub>
+      <Stack gap={{ xs: 6, lg: 8 }} maxWidth={900} width={'100%'}>
+        <StyledFormItem
+          gap={3}
+          label={'Do you have a recent appraisal?'}
+          mt={-3}
+          sub
+        >
           <StyledButtonGroup
             onChange={(e, value) => {
               if (value === null) {

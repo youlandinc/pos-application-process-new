@@ -93,7 +93,7 @@ export const Overview: FC = observer(() => {
         <Stack flex={1.5} flexShrink={0} gap={{ xs: 6, lg: 9 }}>
           <Stack gap={1.5}>
             <Typography fontSize={{ xs: 20, md: 24 }}>
-              Congratulations
+              Congratulations!
             </Typography>
             <Typography mt={1.5} variant={'body2'}>
               We&apos;ve put together a list of steps for you to take to move
