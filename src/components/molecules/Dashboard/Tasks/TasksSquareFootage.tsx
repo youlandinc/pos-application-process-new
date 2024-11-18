@@ -130,7 +130,7 @@ export const TasksSquareFootage: FC = observer(() => {
           disabled={saveLoading || !isFormDataValid}
           loading={saveLoading}
           onClick={handleSave}
-          sx={{ mt: { xs: 3, lg: 5 }, width: 200 }}
+          sx={{ mt: { xs: 3, lg: 5 }, width: 276 }}
         >
           Save and continue
         </StyledButton>

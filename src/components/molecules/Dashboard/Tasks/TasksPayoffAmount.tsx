@@ -127,7 +127,7 @@ export const TasksPayoffAmount: FC = observer(() => {
           disabled={saveLoading || !payoffAmount}
           loading={saveLoading}
           onClick={handleSave}
-          sx={{ width: 200, mt: { xs: 3, lg: 5 } }}
+          sx={{ width: 276, mt: { xs: 3, lg: 5 } }}
         >
           Save and continue
         </StyledButton>

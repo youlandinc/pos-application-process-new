@@ -580,7 +580,7 @@ export const TasksBorrower: FC = observer(() => {
           disabled={saveLoading}
           loading={saveLoading}
           onClick={handleSave}
-          sx={{ width: 200, mb: 8 }}
+          sx={{ width: 276, mb: 8 }}
         >
           Save and continue
         </StyledButton>

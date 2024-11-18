@@ -143,7 +143,7 @@ export const TasksRehabInfo: FC = observer(() => {
           disabled={saveLoading || !isFormDataValid}
           loading={saveLoading}
           onClick={handleSave}
-          sx={{ flex: 1, width: '100%' }}
+          sx={{ maxWidth: 276 }}
         >
           Save and continue
         </StyledButton>
