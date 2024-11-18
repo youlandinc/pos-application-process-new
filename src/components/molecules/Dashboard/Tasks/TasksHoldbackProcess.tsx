@@ -149,7 +149,7 @@ export const TasksHoldbackProcess: FC = observer(() => {
           disabled={saveLoading}
           loading={saveLoading}
           onClick={handleSave}
-          sx={{ width: 200 }}
+          sx={{ width: 276 }}
         >
           Save and continue
         </StyledButton>
