@@ -1,5 +1,3 @@
-import { Transitions } from '@/components/atoms';
-import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { FC } from 'react';
 import {
   Box,
@@ -8,9 +6,22 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  SelectProps,
+  SxProps,
 } from '@mui/material';
 
-import { StyledSelectProps, StyledSelectStyles } from './index';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
+
+import { StyledSelectStyles } from './index';
+
+import { Transitions } from '@/components/atoms';
+
+export interface StyledSelectProps extends SelectProps {
+  validate?: undefined | string[];
+  options: Option[];
+  sxHelperText?: SxProps;
+  sxList?: SxProps;
+}
 
 export const StyledSelect: FC<StyledSelectProps> = ({
   options = [],
