@@ -59,7 +59,7 @@ export const StyledTooltip: FC<StyledTooltipProps> = ({
         }}
         {...rest}
       >
-        <Stack onClick={open} sx={tooltipSx}>
+        <Stack onClick={open} sx={{ width: '100%', ...tooltipSx }}>
           {children ? children : <span>{rest.title}</span>}
         </Stack>
       </Tooltip>
