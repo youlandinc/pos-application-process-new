@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 import { Box, Stack, SxProps } from '@mui/material';
 
 import { useBreakpoints } from '@/hooks';
