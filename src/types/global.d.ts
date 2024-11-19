@@ -10,6 +10,7 @@ interface Option {
   label: string;
   value: string | number;
   key: string | number;
+  tooltip?: string;
 }
 
 type Maybe<T> = T | void;

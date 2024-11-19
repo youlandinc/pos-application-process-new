@@ -12,16 +12,22 @@ export const APPLICATION_LOAN_CATEGORY: Option[] = [
     label: 'Stabilized Bridge',
     key: LoanProductCategoryEnum.stabilized_bridge,
     value: LoanProductCategoryEnum.stabilized_bridge,
+    tooltip:
+      'A short-term loan for properties that do not require rehabilitation',
   },
   {
     label: 'Fix and Flip',
     key: LoanProductCategoryEnum.fix_and_flip,
     value: LoanProductCategoryEnum.fix_and_flip,
+    tooltip:
+      'A short-term loan for properties that requires rehabilitation, covering both the purchase and rehabilitation costs',
   },
   {
     label: 'Ground Up Construction',
     key: LoanProductCategoryEnum.ground_up_construction,
     value: LoanProductCategoryEnum.ground_up_construction,
+    tooltip:
+      'Used to finance the construction of a new property from the ground up, covering costs from land purchase to completion of the building',
   },
 ];
 
@@ -30,11 +36,15 @@ export const APPLICATION_LOAN_PURPOSE: Option[] = [
     label: 'Purchase',
     key: LoanPurposeEnum.purchase,
     value: LoanPurposeEnum.purchase,
+    tooltip:
+      'Used to buy a new property, covering the initial cost of acquisition',
   },
   {
     label: 'Refinance',
     key: LoanPurposeEnum.refinance,
     value: LoanPurposeEnum.refinance,
+    tooltip:
+      'Used to replace an existing loan with a new one, often to secure better terms, adjust the repayment schedule, or access additional funds based on the current property value',
   },
 ];
 
@@ -43,21 +53,28 @@ export const APPLICATION_PROPERTY_TYPE: Option[] = [
     label: 'Single family',
     key: LoanPropertyTypeEnum.single_family,
     value: LoanPropertyTypeEnum.single_family,
+    tooltip:
+      'A standalone home designed for one family. It does not share walls with other houses',
   },
   {
     label: 'Townhouse',
     key: LoanPropertyTypeEnum.townhouse,
     value: LoanPropertyTypeEnum.townhouse,
+    tooltip:
+      'A multi-story residential unit attached to neighboring units, sharing one or more walls',
   },
   {
     label: 'Condo',
     key: LoanPropertyTypeEnum.condo,
     value: LoanPropertyTypeEnum.condo,
+    tooltip:
+      'An individually owned unit within a larger property, often with shared common areas and amenities',
   },
   {
     label: '2 to 4 units',
     key: LoanPropertyTypeEnum.two_to_four_family,
     value: LoanPropertyTypeEnum.two_to_four_family,
+    tooltip: 'A multi-family property with 2 to 4 rental units',
   },
 ];
 

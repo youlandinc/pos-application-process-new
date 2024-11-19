@@ -1,7 +1,11 @@
 import { FC, useCallback, useMemo } from 'react';
 import { Box, Stack } from '@mui/material';
 
+import { useBreakpoints } from '@/hooks';
+
 import { StyledSelectOptionProps, StyledSelectOptionStyles } from './index';
+
+import { StyledTooltip } from '@/components/atoms';
 
 export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
   options,
@@ -10,6 +14,7 @@ export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
   disabled = false,
   sx,
 }) => {
+  const breakpoint = useBreakpoints();
   const handledSelectChange = useCallback(
     (optionValue: Option['value']) => () => {
       if (optionValue === value || disabled) {
@@ -24,20 +29,27 @@ export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
     return (
       <>
         {options.map((opt) => (
-          <Box
-            className={`${value === opt.value ? 'active' : ''} ${
-              disabled ? 'disabled' : ''
-            }`}
+          <StyledTooltip
             key={opt.key}
-            onClick={handledSelectChange(opt.value)}
-            sx={StyledSelectOptionStyles}
+            placement={
+              ['lg', 'xl', 'xxl'].includes(breakpoint) ? 'right' : 'top'
+            }
+            title={opt.tooltip}
           >
-            {opt.label}
-          </Box>
+            <Box
+              className={`${value === opt.value ? 'active' : ''} ${
+                disabled ? 'disabled' : ''
+              }`}
+              onClick={handledSelectChange(opt.value)}
+              sx={StyledSelectOptionStyles}
+            >
+              {opt.label}
+            </Box>
+          </StyledTooltip>
         ))}
       </>
     );
-  }, [disabled, handledSelectChange, options, value]);
+  }, [breakpoint, disabled, handledSelectChange, options, value]);
 
   return (
     <Stack

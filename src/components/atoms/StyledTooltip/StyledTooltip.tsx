@@ -35,7 +35,9 @@ export const StyledTooltip: FC<StyledTooltipProps> = ({
       }}
       onClick={handledTooltipOpen}
       onClose={handledTooltipClose}
-      onMouseEnter={handledTooltipOpen}
+      onMouseEnter={() => {
+        handledTooltipOpen();
+      }}
       open={open}
       {...rest}
     >
