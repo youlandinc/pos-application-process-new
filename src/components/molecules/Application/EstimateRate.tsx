@@ -713,12 +713,15 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     value={estimateRate.rehabCost}
                   />
                   <StyledTextFieldNumber
+                    isTooltip={true}
                     label={'After repair value (ARV)'}
                     onValueChange={({ floatValue }) => {
                       estimateRate.changeFieldValue('arv', floatValue);
                     }}
                     prefix={'$'}
                     sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipTitle={'Estimated value of the property after rehab'}
                     value={estimateRate.arv}
                   />
                 </Stack>
@@ -828,12 +831,15 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   value={estimateRate.rehabCost}
                 />
                 <StyledTextFieldNumber
+                  isTooltip={true}
                   label={'After repair value (ARV)'}
                   onValueChange={({ floatValue }) => {
                     estimateRate.changeFieldValue('arv', floatValue);
                   }}
                   prefix={'$'}
                   sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                  tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                  tooltipTitle={'Estimated value of the property after rehab'}
                   value={estimateRate.arv}
                 />
               </Stack>
@@ -863,6 +869,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   />
 
                   <StyledTextFieldNumber
+                    isTooltip={true}
                     label={'Est. construction costs'}
                     onValueChange={({ floatValue }) => {
                       estimateRate.changeFieldValue(
@@ -872,31 +879,16 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     }}
                     prefix={'$'}
                     sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipTitle={
+                      'The estimated costs needed to build the construction project, including materials, labor, and other expenses'
+                    }
                     value={estimateRate.purchaseConstructionCosts}
                   />
 
                   <StyledTextFieldNumber
                     decimalScale={0}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <StyledTooltip
-                            sx={{ width: 240 }}
-                            title={
-                              'Your total loan amount as a % of your purchase price and estimated construction costs.'
-                            }
-                          >
-                            <InfoOutlined
-                              sx={{
-                                width: 20,
-                                height: 20,
-                                color: 'info.dark',
-                              }}
-                            />
-                          </StyledTooltip>
-                        </InputAdornment>
-                      ),
-                    }}
+                    isTooltip={true}
                     label={'Loan to total cost'}
                     onValueChange={({ floatValue }) => {
                       estimateRate.changeFieldValue('ltc', floatValue);
@@ -904,6 +896,10 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     suffix={'%'}
                     sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     thousandSeparator={false}
+                    tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipTitle={
+                      'Your total loan amount as a % of your purchase price and estimated construction costs.'
+                    }
                     value={estimateRate.ltc}
                   />
                 </Stack>
@@ -915,26 +911,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   ml={-0.5}
                 >
                   <StyledTextFieldNumber
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <StyledTooltip
-                            sx={{ width: 240 }}
-                            title={
-                              'Estimated value of the property after construction.'
-                            }
-                          >
-                            <InfoOutlined
-                              sx={{
-                                width: 20,
-                                height: 20,
-                                color: 'info.dark',
-                              }}
-                            />
-                          </StyledTooltip>
-                        </InputAdornment>
-                      ),
-                    }}
+                    isTooltip={true}
                     label={'Completed/After-repair value (ARV)'}
                     onValueChange={({ floatValue }) => {
                       estimateRate.changeFieldValue('arv', floatValue);
@@ -944,6 +921,10 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                       flex: 1,
                       maxWidth: { xs: '100%', lg: 464 },
                     }}
+                    tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 464 } }}
+                    tooltipTitle={
+                      'Estimated value of the property after construction.'
+                    }
                     value={estimateRate.arv}
                   />
                   {!condition && (
@@ -987,6 +968,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 />
 
                 <StyledTextFieldNumber
+                  isTooltip={true}
                   label={'Improvements since acquisition'}
                   onValueChange={({ floatValue }) =>
                     estimateRate.changeFieldValue(
@@ -996,31 +978,16 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   }
                   prefix={'$'}
                   sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                  tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                  tooltipTitle={
+                    'How much has been spent towards completed work?'
+                  }
                   value={estimateRate.improvementsSinceAcquisition}
                 />
 
                 <StyledTextFieldNumber
                   decimalScale={0}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <StyledTooltip
-                          sx={{ width: 240 }}
-                          title={
-                            'Your total loan amount as a % of your purchase price and estimated construction costs.'
-                          }
-                        >
-                          <InfoOutlined
-                            sx={{
-                              width: 20,
-                              height: 20,
-                              color: 'info.dark',
-                            }}
-                          />
-                        </StyledTooltip>
-                      </InputAdornment>
-                    ),
-                  }}
+                  isTooltip={true}
                   label={'Loan to total cost'}
                   onValueChange={({ floatValue }) => {
                     estimateRate.changeFieldValue('ltc', floatValue);
@@ -1028,6 +995,10 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   suffix={'%'}
                   sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                   thousandSeparator={false}
+                  tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                  tooltipTitle={
+                    'Your total loan amount as a % of your purchase price and estimated construction costs.'
+                  }
                   value={estimateRate.ltc}
                 />
               </Stack>
@@ -1039,6 +1010,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 ml={-0.5}
               >
                 <StyledTextFieldNumber
+                  isTooltip={true}
                   label={'Remaining construction costs'}
                   onValueChange={({ floatValue }) => {
                     estimateRate.changeFieldValue(
@@ -1048,30 +1020,15 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   }}
                   prefix={'$'}
                   sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                  tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                  tooltipTitle={
+                    'The estimated costs needed to complete the current construction project'
+                  }
                   value={estimateRate.refinanceConstructionCosts}
                 />
 
                 <StyledTextFieldNumber
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <StyledTooltip
-                          sx={{ width: 240 }}
-                          title={
-                            'Estimated value of the property after construction.'
-                          }
-                        >
-                          <InfoOutlined
-                            sx={{
-                              width: 20,
-                              height: 20,
-                              color: 'info.dark',
-                            }}
-                          />
-                        </StyledTooltip>
-                      </InputAdornment>
-                    ),
-                  }}
+                  isTooltip={true}
                   label={'Completed/After-repair value (ARV)'}
                   onValueChange={({ floatValue }) => {
                     estimateRate.changeFieldValue('arv', floatValue);
@@ -1081,6 +1038,10 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     flex: 1,
                     maxWidth: { xs: '100%', lg: 464 },
                   }}
+                  tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 464 } }}
+                  tooltipTitle={
+                    'Estimated value of the property after construction.'
+                  }
                   value={estimateRate.arv}
                 />
                 {!condition && (
@@ -1386,26 +1347,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 value={estimateRate.citizenship}
               />
               <StyledTextFieldNumber
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <StyledTooltip
-                        sx={{ width: 240 }}
-                        title={
-                          'Number of flips completed and held rental properties'
-                        }
-                      >
-                        <InfoOutlined
-                          sx={{
-                            width: 20,
-                            height: 20,
-                            color: 'info.dark',
-                          }}
-                        />
-                      </StyledTooltip>
-                    </InputAdornment>
-                  ),
-                }}
+                isTooltip={true}
                 label={
                   estimateRate.productCategory !==
                   LoanProductCategoryEnum.ground_up_construction
@@ -1416,6 +1358,13 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   estimateRate.changeFieldValue('priorExperience', floatValue);
                 }}
                 sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                tooltipTitle={
+                  estimateRate.productCategory !==
+                  LoanProductCategoryEnum.ground_up_construction
+                    ? 'Number of flips completed and held rental properties'
+                    : 'The number of investment properties you have built and exited over the last 5 years'
+                }
                 value={estimateRate.priorExperience}
               />
             </Stack>

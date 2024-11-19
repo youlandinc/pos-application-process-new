@@ -1,4 +1,4 @@
-import { FC, forwardRef, useEffect, useState } from 'react';
+import { FC, forwardRef, ReactNode, useEffect, useState } from 'react';
 import {
   NumberFormatValues,
   NumericFormat,
@@ -7,11 +7,31 @@ import {
 
 import { POSFormatDollar, POSFormatPercent, POSNotUndefined } from '@/utils';
 
-import {
-  StyledTextField,
-  StyledTextFieldNumberProps,
-  StyledTextFieldStyles,
-} from '@/components/atoms';
+import { StyledTextField, StyledTextFieldStyles } from '@/components/atoms';
+import { SxProps } from '@mui/material';
+
+export interface StyledTextFieldNumberProps {
+  allowNegative?: boolean;
+  onValueChange: (values: NumberFormatValues) => void;
+  thousandSeparator?: boolean;
+  prefix?: string;
+  suffix?: string;
+  label?: string;
+  value: number | string | undefined;
+  sx?: SxProps;
+  required?: boolean;
+  placeholder?: string;
+  decimalScale?: number;
+  disabled?: boolean;
+  validate?: undefined | string[];
+  percentage?: boolean;
+  error?: boolean | undefined;
+  size?: 'small' | 'medium';
+  InputProps?: any;
+  tooltipSx?: SxProps;
+  tooltipTitle?: ReactNode;
+  isTooltip?: boolean;
+}
 
 export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
   allowNegative = false,

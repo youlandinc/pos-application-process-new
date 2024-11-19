@@ -1,11 +1,20 @@
-import { FC, useCallback, useMemo } from 'react';
-import { Box, Stack } from '@mui/material';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { Box, Stack, SxProps } from '@mui/material';
 
 import { useBreakpoints } from '@/hooks';
 
-import { StyledSelectOptionProps, StyledSelectOptionStyles } from './index';
+import { StyledSelectOptionStyles } from './index';
 
 import { StyledTooltip } from '@/components/atoms';
+
+export interface StyledSelectOptionProps {
+  options: Option[];
+  onChange: (value: string | number) => void;
+  value: string | number | unknown;
+  disabled?: boolean;
+  sx?: SxProps;
+  tooltip?: boolean;
+}
 
 export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
   options,
@@ -15,6 +24,7 @@ export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
   sx,
 }) => {
   const breakpoint = useBreakpoints();
+
   const handledSelectChange = useCallback(
     (optionValue: Option['value']) => () => {
       if (optionValue === value || disabled) {
@@ -31,9 +41,11 @@ export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
         {options.map((opt) => (
           <StyledTooltip
             key={opt.key}
+            leaveTouchDelay={0}
             placement={
               ['lg', 'xl', 'xxl'].includes(breakpoint) ? 'right' : 'top'
             }
+            theme={'main'}
             title={opt.tooltip}
           >
             <Box

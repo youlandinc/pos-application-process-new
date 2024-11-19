@@ -1,47 +1,68 @@
-import { FC, useState } from 'react';
-import { Tooltip } from '@mui/material';
+import { FC } from 'react';
+import {
+  ClickAwayListener,
+  Stack,
+  SxProps,
+  Tooltip,
+  TooltipProps,
+} from '@mui/material';
 
-import { StyledTooltipProps, StyledTooltipStyles } from './index';
+import { StyledTooltipStyles } from './index';
+import { useSwitch } from '@/hooks';
+
+export interface StyledTooltipProps extends TooltipProps {
+  theme?: 'darker' | 'main';
+  sx?: SxProps;
+  isDisabledClose?: boolean;
+  tooltipSx?: SxProps;
+}
 
 export const StyledTooltip: FC<StyledTooltipProps> = ({
   sx,
   children,
   theme = 'darker',
+  tooltipSx = { width: '100%' },
   ...rest
 }) => {
-  const [open, setOpen] = useState(false);
-
-  const handledTooltipClose = () => {
-    setOpen(false);
-  };
-
-  const handledTooltipOpen = () => {
-    setOpen(true);
-  };
+  const { open, close, visible } = useSwitch(false);
 
   return (
-    <Tooltip
-      arrow
-      classes={{ tooltip: theme }}
-      componentsProps={{
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        tooltip: {
-          sx: {
-            ...StyledTooltipStyles,
-            ...sx,
+    <ClickAwayListener onClickAway={close}>
+      <Tooltip
+        arrow
+        classes={{ tooltip: theme }}
+        componentsProps={{
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          tooltip: {
+            sx: {
+              ...StyledTooltipStyles,
+              ...sx,
+            },
           },
-        },
-      }}
-      onClick={handledTooltipOpen}
-      onClose={handledTooltipClose}
-      onMouseEnter={() => {
-        handledTooltipOpen();
-      }}
-      open={open}
-      {...rest}
-    >
-      {children ? children : <span>{rest.title}</span>}
-    </Tooltip>
+          arrow: {
+            sx: {
+              '&:before': {
+                border: '1px solid #E6E8ED',
+              },
+              color: 'white',
+            },
+          },
+        }}
+        disableFocusListener
+        disableHoverListener
+        disableTouchListener
+        onClose={close}
+        open={visible}
+        PopperProps={{
+          disablePortal: true,
+        }}
+        {...rest}
+      >
+        <Stack onClick={open} sx={tooltipSx}>
+          {children ? children : <span>{rest.title}</span>}
+        </Stack>
+      </Tooltip>
+    </ClickAwayListener>
   );
 };
