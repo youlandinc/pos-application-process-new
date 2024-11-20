@@ -91,29 +91,42 @@ export const Overview: FC = observer(() => {
         width={'100%'}
       >
         <Stack flex={1.5} flexShrink={0} gap={{ xs: 6, lg: 9 }}>
-          <Stack gap={1.5}>
-            <Typography fontSize={{ xs: 20, md: 24 }}>
-              Congratulations!
-            </Typography>
-            <Typography mt={1.5} variant={'body2'}>
-              We&apos;ve put together a list of steps for you to take to move
-              ahead with this loan. We&apos;ll be able to work on the loan once
-              you&apos;ve completed all of your steps.
-            </Typography>
-            <Typography variant={'body2'}>
-              Not sure where to start? Click the button below and we’ll choose
-              the best step for you to work on.
-            </Typography>
-            <StyledButton
-              onClick={async () => {
-                await dashboardInfo.jumpToNextTask();
-              }}
-              size={'small'}
-              sx={{ width: 100, mt: 3 }}
-            >
-              Next step
-            </StyledButton>
-          </Stack>
+          {dashboardInfo.taskOrder.length === 0 ? (
+            <Stack gap={1.5}>
+              <Typography fontSize={{ xs: 20, md: 24 }}>
+                You&apos;re all set for now!
+              </Typography>
+              <Typography mt={1.5} variant={'body2'}>
+                You&apos;ve completed all your tasks, and we&apos;re handling
+                the next steps. Relax and let us take it from here—we&apos;ll
+                reach out if we need anything or when there’s an update.
+              </Typography>
+            </Stack>
+          ) : (
+            <Stack gap={1.5}>
+              <Typography fontSize={{ xs: 20, md: 24 }}>
+                Congratulations!
+              </Typography>
+              <Typography mt={1.5} variant={'body2'}>
+                We&apos;ve put together a list of steps for you to take to move
+                ahead with this loan. We&apos;ll be able to work on the loan
+                once you&apos;ve completed all of your steps.
+              </Typography>
+              <Typography variant={'body2'}>
+                Not sure where to start? Click the button below and we’ll choose
+                the best step for you to work on.
+              </Typography>
+              <StyledButton
+                onClick={async () => {
+                  await dashboardInfo.jumpToNextTask();
+                }}
+                size={'small'}
+                sx={{ width: 100, mt: 3 }}
+              >
+                Next step
+              </StyledButton>
+            </Stack>
+          )}
 
           <OverviewChecklist />
         </Stack>
