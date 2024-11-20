@@ -5,11 +5,13 @@ import { StyledHeaderLogoProps } from './index';
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 
 import { POSFormatUrl, POSGetImageSize } from '@/utils';
+import { LayoutSceneTypeEnum } from '@/types';
 
 export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
   sx,
   logoUrl = '/images/logo/logo_blue.svg',
   disabled = false,
+  scene = LayoutSceneTypeEnum.dashboard,
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
   const [ratio, setRatio] = useState(-1);
@@ -54,8 +56,16 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
             src={saasState?.logoUrl || logoUrl}
             style={{
               position: 'absolute',
-              top: '50%',
-              transform: 'translateY(-50%)',
+              top:
+                ['sm', 'xs', 'md', 'lg'].includes(breakpoints) ||
+                scene === LayoutSceneTypeEnum.dashboard
+                  ? '50%'
+                  : 46,
+              transform:
+                ['sm', 'xs', 'md', 'lg'].includes(breakpoints) ||
+                scene === LayoutSceneTypeEnum.dashboard
+                  ? 'translateY(-50%)'
+                  : 'none',
               left:
                 ratio === 1 && !['sm', 'xs', 'md', 'lg'].includes(breakpoints)
                   ? 44
@@ -96,6 +106,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
     ratio,
     saasState?.logoUrl,
     saasState?.organizationName,
+    scene,
   ]);
 
   useEffect(() => {
