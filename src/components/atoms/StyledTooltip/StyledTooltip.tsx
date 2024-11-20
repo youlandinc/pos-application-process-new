@@ -21,7 +21,7 @@ export interface StyledTooltipProps extends TooltipProps {
 export const StyledTooltip: FC<StyledTooltipProps> = ({
   sx,
   children,
-  theme = 'darker',
+  theme = 'main',
   tooltipSx = { width: '100%' },
   component = 'div',
   ...rest

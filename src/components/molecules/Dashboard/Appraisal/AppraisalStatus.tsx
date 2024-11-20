@@ -249,7 +249,8 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
       </Stepper>
 
       <Stack
-        border={'2px solid #759AF0'}
+        border={'2px solid'}
+        borderColor={'primary.main'}
         borderRadius={2}
         gap={1.5}
         mt={3}
