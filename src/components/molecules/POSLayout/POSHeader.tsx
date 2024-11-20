@@ -647,7 +647,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
             xs: '100%',
           }}
         >
-          <StyledHeaderLogo />
+          <StyledHeaderLogo scene={scene} />
           <Box sx={{ ml: 'auto' }}>{renderButton}</Box>
         </Stack>
         <StyledDialog
