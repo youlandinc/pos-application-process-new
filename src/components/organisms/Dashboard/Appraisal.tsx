@@ -4,7 +4,11 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
 
+import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
+
 import { AUTO_HIDE_DURATION } from '@/constants';
+import { useBreakpoints } from '@/hooks';
 import { POSGetParamsFromUrl } from '@/utils';
 
 import { StyledLoading } from '@/components/atoms';
@@ -23,6 +27,7 @@ import {
   AppraisalTaskPaymentStatus,
   DashboardPaymentDetailsResponse,
   HttpError,
+  UserType,
 } from '@/types';
 import {
   _fetchAppraisalData,
@@ -30,9 +35,12 @@ import {
   _updateAppraisalData,
 } from '@/requests/dashboard';
 
-export const Appraisal: FC = () => {
+export const Appraisal: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+
+  const { userType } = useMst();
+  const breakpoint = useBreakpoints();
 
   const [formState, setFormState] = useState<
     'profile' | 'payment' | 'afterPayment' | 'sendLink'
@@ -211,31 +219,82 @@ export const Appraisal: FC = () => {
     switch (formState) {
       case 'profile':
         return (
-          <Stack
-            alignItems={'center'}
-            gap={{ xs: 3, lg: 6 }}
-            justifyContent={'flex-start'}
-            maxWidth={648}
-            mx={'auto'}
-            px={{ lg: 3, xs: 0 }}
-            width={'100%'}
-          >
-            <Typography
-              color={'text.primary'}
-              fontSize={{ xs: 20, lg: 24 }}
-              textAlign={'center'}
-              variant={'h5'}
+          <Stack flexDirection={'row'} gap={3}>
+            <Stack
+              gap={{ xs: 3, lg: 6 }}
+              justifyContent={'flex-start'}
+              width={'100%'}
             >
-              Appraisal
-            </Typography>
+              <Typography color={'text.primary'} fontSize={{ xs: 20, lg: 24 }}>
+                Appraisal
+              </Typography>
 
-            <AppraisalProfile
-              nextState={profileLoading}
-              nextStep={async (postData) => {
-                await updateAppraisalProfileAndGetPaymentDetails(postData);
-              }}
-              profileData={profileData}
-            />
+              <AppraisalProfile
+                nextState={profileLoading}
+                nextStep={async (postData) => {
+                  await updateAppraisalProfileAndGetPaymentDetails(postData);
+                }}
+                profileData={profileData}
+              />
+            </Stack>
+            {['xl', 'xxl'].includes(breakpoint) && (
+              <Stack
+                bgcolor={'#F8F9FC'}
+                borderRadius={2}
+                flexShrink={0}
+                gap={3}
+                height={'fit-content'}
+                ml={'auto'}
+                p={3}
+                width={440}
+              >
+                <Typography variant={'subtitle3'}>Appraisal FAQs</Typography>
+                <Stack fontSize={14} fontWeight={600}>
+                  What is an appraisal?
+                  <Typography variant={'body2'}>
+                    An appraisal determines the fair market value of the
+                    property. It&apos;s required to ensure the property value
+                    aligns with the loan amount.
+                  </Typography>
+                </Stack>
+
+                <Stack fontSize={14} fontWeight={600}>
+                  Can I use a previous appraisal?
+                  <Typography variant={'body2'}>
+                    You may use a previous appraisal from the past 90 days.
+                  </Typography>
+                </Stack>
+
+                {userType === UserType.BROKER && (
+                  <Stack fontSize={14} fontWeight={600}>
+                    What is the payment link?
+                    <Typography variant={'body2'}>
+                      As a broker, you may send borrowers a white-labeled
+                      payment portal to accept the appraisal payment.
+                    </Typography>
+                  </Stack>
+                )}
+
+                <Stack fontSize={14} fontWeight={600}>
+                  Is it necessary to fill out property access instructions?
+                  <Typography variant={'body2'}>
+                    While optional, providing access instructions ensures the
+                    appraiser can enter the property without hassle. Omitting
+                    this information may result in scheduling issues or require
+                    further communication.
+                  </Typography>
+                </Stack>
+
+                <Stack fontSize={14} fontWeight={600}>
+                  Who do I contact if I have issues with the appraisal?
+                  <Typography variant={'body2'}>
+                    If you encounter any issues or have questions, please
+                    contact your support team using the information on the
+                    &quot;Team&quot; tab.
+                  </Typography>
+                </Stack>
+              </Stack>
+            )}
           </Stack>
         );
       case 'sendLink':
@@ -290,13 +349,15 @@ export const Appraisal: FC = () => {
     formState,
     profileLoading,
     profileData,
+    breakpoint,
+    userType,
     backToProfileLoading,
+    handlePayment,
     paymentDetail,
     appraisalStatus,
     appraisalDetail,
     updateAppraisalProfileAndGetPaymentDetails,
     fetchData,
-    handlePayment,
     paymentStatus,
   ]);
 
@@ -315,13 +376,10 @@ export const Appraisal: FC = () => {
       <Stack
         gap={{ xs: 3, lg: 6 }}
         justifyContent={'flex-start'}
-        maxWidth={900}
-        mx={{ lg: 'auto', xs: 0 }}
-        px={{ lg: 3, xs: 0 }}
         width={'100%'}
       >
         {renderFormNode}
       </Stack>
     </Fade>
   );
-};
+});

@@ -54,10 +54,8 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
             src={saasState?.logoUrl || logoUrl}
             style={{
               position: 'absolute',
-              top: ['sm', 'xs', 'md', 'lg'].includes(breakpoints) ? '50%' : 46,
-              transform: ['sm', 'xs', 'md', 'lg'].includes(breakpoints)
-                ? 'translateY(-50%)'
-                : 'none',
+              top: '50%',
+              transform: 'translateY(-50%)',
               left:
                 ratio === 1 && !['sm', 'xs', 'md', 'lg'].includes(breakpoints)
                   ? 44

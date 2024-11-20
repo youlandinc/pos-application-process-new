@@ -1,9 +1,10 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
-import { CloseOutlined, DehazeOutlined } from '@mui/icons-material';
+import { CloseOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
+import { useMst } from '@/models/Root';
 
 import {
   useBreakpoints,
@@ -14,9 +15,10 @@ import {
 
 import { POSFormatUrl } from '@/utils';
 
-import { POSHeaderProps, POSHeaderStyles } from './index';
-import { MyAccountButton } from '../MyAccountButton';
-import { DashboardSideDrawer } from '../DashboardSideDrawer';
+export interface POSHeaderProps {
+  scene: LayoutSceneTypeEnum;
+  loading?: boolean;
+}
 
 import {
   StyledButton,
@@ -24,24 +26,21 @@ import {
   StyledHeaderLogo,
 } from '@/components/atoms';
 import { ForgotPassword, Login, SignUp } from '@/components/molecules';
+import { POSMenuList, POSMyAccountButton } from './index';
 
 import { LayoutSceneTypeEnum, LoanSnapshotEnum } from '@/types';
 
-import ICON_REFER_FRIEND from './icon_refer_friend.svg';
-import ICON_VIEW_ALL_LOANS from './icon_view_all_loans.svg';
-import ICON_START_NEW_LOAN from './icon_start_new_loan.svg';
+import ICON_REFER_FRIEND from './assets/icon_refer_friend.svg';
+import ICON_VIEW_ALL_LOANS from './assets/icon_view_all_loans.svg';
+import ICON_START_NEW_LOAN from './assets/icon_start_new_loan.svg';
 
-export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
+export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
   const router = useRouter();
+  const store = useMst();
 
-  const { visible, open, close } = useSwitch(false);
-  const {
-    visible: closeVisible,
-    open: sideOpen,
-    close: sideClose,
-  } = useSwitch();
-  const { saasState } = useSessionStorageState('tenantConfig');
   const breakpoint = useBreakpoints();
+  const { visible, open, close } = useSwitch(false);
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const { session, applicationForm } = store;
 
@@ -185,7 +184,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
               </StyledButton>
             )}
-            <MyAccountButton scene={scene} store={store} />
+            <POSMyAccountButton scene={scene} />
           </Stack>
         );
       case LayoutSceneTypeEnum.dashboard:
@@ -273,7 +272,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
               </StyledButton>
             )}
-            <MyAccountButton scene={scene} store={store} />
+            <POSMyAccountButton scene={scene} />
           </Stack>
         );
       case LayoutSceneTypeEnum.account:
@@ -361,7 +360,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
               </StyledButton>
             )}
-            <MyAccountButton scene={scene} store={store} />
+            <POSMyAccountButton scene={scene} />
           </Stack>
         );
       case LayoutSceneTypeEnum.pipeline_without_all: {
@@ -422,7 +421,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
                 {!['xs', 'sm', 'md'].includes(breakpoint) && 'Refer a friend'}
               </StyledButton>
             )}
-            <MyAccountButton scene={scene} store={store} />
+            <POSMyAccountButton scene={scene} />
           </Stack>
         );
       }
@@ -433,7 +432,6 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
     applicationForm.snapshot,
     breakpoint,
     saasState?.tenantId,
-    store,
     open,
     router,
   ]);
@@ -516,7 +514,11 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
               color={'info'}
               mt={3}
               onClick={() => setAuthType('login')}
-              sx={{ color: 'primary.main', cursor: 'pointer', fontWeight: 600 }}
+              sx={{
+                color: 'primary.main',
+                cursor: 'pointer',
+                fontWeight: 600,
+              }}
               variant={'body2'}
             >
               Back to Log in
@@ -624,40 +626,63 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ store, scene }) => {
   ]);
 
   return (
-    <Stack
-      alignItems={'center'}
-      flexDirection={'row'}
-      justifyContent={'center'}
-    >
-      <Box sx={POSHeaderStyles}>
-        {scene === LayoutSceneTypeEnum.dashboard ? (
-          ['xs', 'sm', 'md'].includes(breakpoint) ? (
-            <StyledButton isIconButton onClick={sideOpen}>
-              <DehazeOutlined />
-            </StyledButton>
-          ) : (
-            <StyledHeaderLogo />
-          )
-        ) : (
+    <>
+      <Stack
+        alignItems={'center'}
+        flexDirection={'row'}
+        justifyContent={'center'}
+      >
+        <Stack
+          alignItems={'center'}
+          flexDirection={'row'}
+          height={92}
+          px={{
+            lg: 0,
+            xs: 'clamp(24px,6.4vw,80px)',
+          }}
+          width={{
+            xxl: 1440,
+            xl: 1240,
+            lg: 976,
+            xs: '100%',
+          }}
+        >
           <StyledHeaderLogo />
-        )}
-        <Box sx={{ ml: 'auto' }}>{renderButton}</Box>
-      </Box>
-      <DashboardSideDrawer close={sideClose} visible={closeVisible} />
-      <StyledDialog
-        content={renderDialog.content}
-        disableEscapeKeyDown
-        footer={renderDialog.footer}
-        header={renderDialog.header}
-        onClose={handledClose}
-        open={visible}
-        scroll={'body'}
-        sx={{
-          '& .MuiPaper-root': {
-            maxWidth: '600px !important',
-          },
-        }}
-      />
-    </Stack>
+          <Box sx={{ ml: 'auto' }}>{renderButton}</Box>
+        </Stack>
+        <StyledDialog
+          content={renderDialog.content}
+          disableEscapeKeyDown
+          footer={renderDialog.footer}
+          header={renderDialog.header}
+          onClose={handledClose}
+          open={visible}
+          scroll={'body'}
+          sx={{
+            '& .MuiPaper-root': {
+              maxWidth: '600px !important',
+            },
+          }}
+        />
+      </Stack>
+      {scene === LayoutSceneTypeEnum.dashboard && (
+        <Stack
+          mt={{ xs: 0, lg: 2 }}
+          mx={'auto'}
+          px={{
+            lg: 0,
+            xs: 'clamp(24px,6.4vw,60px)',
+          }}
+          width={{
+            xxl: 1440,
+            xl: 1240,
+            lg: 976,
+            xs: '100%',
+          }}
+        >
+          <POSMenuList loading={loading} scene={scene} />
+        </Stack>
+      )}
+    </>
   );
 });

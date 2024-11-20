@@ -1,6 +1,5 @@
 import { FC, useMemo, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
 
@@ -8,7 +7,6 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { useBreakpoints } from '@/hooks';
 import { POSGetParamsFromUrl } from '@/utils';
 
 import {
@@ -16,7 +14,6 @@ import {
   StyledLoading,
   StyledTextFieldNumber,
 } from '@/components/atoms';
-import { TasksRightMenu } from '@/components/molecules';
 
 import { DashboardTaskKey, HttpError } from '@/types';
 import {
@@ -25,13 +22,10 @@ import {
 } from '@/requests/dashboard';
 
 export const TasksRehabInfo: FC = observer(() => {
-  const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const {
     dashboardInfo: { jumpToNextTask },
   } = useMst();
-
-  const breakpoints = useBreakpoints();
 
   const [saveLoading, setSaveLoading] = useState(false);
 
@@ -100,90 +94,59 @@ export const TasksRehabInfo: FC = observer(() => {
       alignItems={'center'}
       justifyContent={'center'}
       margin={'auto 0'}
-      minHeight={'calc(667px - 46px)'}
+      minHeight={'calc(667px - 194px)'}
       width={'100%'}
     >
       <StyledLoading sx={{ color: 'text.grey' }} />
     </Stack>
   ) : (
     <Fade in={!loading}>
-      <Stack flexDirection={'row'} justifyContent={'center'} width={'100%'}>
-        <Stack
-          alignItems={'center'}
-          gap={6}
-          justifyContent={'flex-start'}
-          maxWidth={648}
-          mx={{ lg: 'auto', xs: 0 }}
-          px={{ lg: 3, xs: 0 }}
-          width={'100%'}
-        >
+      <Stack
+        gap={{ xs: 6, lg: 8 }}
+        justifyContent={'flex-start'}
+        maxWidth={900}
+        width={'100%'}
+      >
+        <Typography fontSize={{ xs: 20, lg: 24 }}>
+          Rehab info
           <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            textAlign={'center'}
-            variant={'h5'}
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
+            variant={'body1'}
           >
-            Rehab info
-            <Typography
-              color={'text.secondary'}
-              fontSize={{ xs: 12, lg: 16 }}
-              mt={1}
-              variant={'body1'}
-            >
-              Please provide some more information about the value of the
-              property as it is now and the planned after-repair square footage.
-            </Typography>
+            Please provide some more information about the value of the property
+            as it is now and the planned after-repair square footage.
           </Typography>
+        </Typography>
 
-          <Stack gap={3} width={'100%'}>
-            <StyledTextFieldNumber
-              label={'After repair value (ARV)'}
-              onValueChange={({ floatValue }) => setArv(floatValue)}
-              placeholder={'After repair value (ARV)'}
-              prefix={'$'}
-              value={arv}
-            />
+        <Stack gap={3} maxWidth={600} mt={-3} width={'100%'}>
+          <StyledTextFieldNumber
+            label={'After repair value (ARV)'}
+            onValueChange={({ floatValue }) => setArv(floatValue)}
+            placeholder={'After repair value (ARV)'}
+            prefix={'$'}
+            value={arv}
+          />
 
-            <StyledTextFieldNumber
-              label={'After-repair square footage'}
-              onValueChange={({ floatValue }) => setSquare(floatValue)}
-              placeholder={'After-repair square footage'}
-              suffix={' Sq ft'}
-              value={square}
-            />
-          </Stack>
-
-          <Stack
-            flexDirection={{ xs: 'unset', md: 'row' }}
-            gap={3}
-            maxWidth={600}
-            width={'100%'}
-          >
-            <StyledButton
-              color={'info'}
-              onClick={async () => {
-                await router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { loanId: router.query.loanId },
-                });
-              }}
-              sx={{ flex: 1, width: '100%' }}
-              variant={'text'}
-            >
-              Back
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disabled={saveLoading || !isFormDataValid}
-              loading={saveLoading}
-              onClick={handleSave}
-              sx={{ flex: 1, width: '100%' }}
-            >
-              Save
-            </StyledButton>
-          </Stack>
+          <StyledTextFieldNumber
+            label={'After-repair square footage'}
+            onValueChange={({ floatValue }) => setSquare(floatValue)}
+            placeholder={'After-repair square footage'}
+            suffix={' Sq ft'}
+            value={square}
+          />
         </Stack>
-        {['xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+
+        <StyledButton
+          color={'primary'}
+          disabled={saveLoading || !isFormDataValid}
+          loading={saveLoading}
+          onClick={handleSave}
+          sx={{ maxWidth: 276 }}
+        >
+          Save and continue
+        </StyledButton>
       </Stack>
     </Fade>
   );

@@ -7,9 +7,9 @@ import { useSessionStorageState } from '@/hooks';
 
 import { StyledCheckboxProps } from './index';
 
-import CHECKBOX_STATIC from './static.svg';
-import CHECKBOX_CHECKED from './checked.svg';
-import CHECKBOX_INDETERMINATE from './intermediate.svg';
+import ICON_CHECKBOX_STATIC from './assets/icon_static.svg';
+import ICON_CHECKBOX_CHECKED from './assets/icon_checked.svg';
+import ICON_CHECKBOX_INDETERMINATE from './assets/icon_intermediate.svg';
 
 export const StyledCheckbox: FC<StyledCheckboxProps> = ({
   checked = false,
@@ -31,12 +31,16 @@ export const StyledCheckbox: FC<StyledCheckboxProps> = ({
         control={
           <Checkbox
             checked={checked}
-            checkedIcon={<Icon component={checkedIcon || CHECKBOX_CHECKED} />}
+            checkedIcon={
+              <Icon component={checkedIcon || ICON_CHECKBOX_CHECKED} />
+            }
             disableRipple
-            icon={<Icon component={icon || CHECKBOX_STATIC} />}
+            icon={<Icon component={icon || ICON_CHECKBOX_STATIC} />}
             indeterminate={indeterminate}
             indeterminateIcon={
-              <Icon component={indeterminateIcon || CHECKBOX_INDETERMINATE} />
+              <Icon
+                component={indeterminateIcon || ICON_CHECKBOX_INDETERMINATE}
+              />
             }
             onChange={onChange}
             sx={{ ...sxCheckbox }}

@@ -1,3 +1,9 @@
 export * from './POSLayout';
 
-export * from './POSLayout.types';
+export * from './POSHeader';
+
+export * from './POSMenuList';
+export * from './POSMenuSelect';
+
+export * from './POSMyAccountButton';
+export * from './POSMessageItem';

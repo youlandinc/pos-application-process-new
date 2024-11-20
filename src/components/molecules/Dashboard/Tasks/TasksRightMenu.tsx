@@ -25,6 +25,7 @@ export const TasksRightMenu: FC = observer(() => {
   const [open3, setOpen3] = useState(true);
   const [open4, setOpen4] = useState(true);
   const [open5, setOpen5] = useState(true);
+  const [open6, setOpen6] = useState(true);
 
   const onClickToRedirect = useCallback(
     async (key: string) => {
@@ -58,7 +59,7 @@ export const TasksRightMenu: FC = observer(() => {
       return {
         pl: 1.5,
         pr: 0.75,
-        py: 0.5,
+        py: 0.75,
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
@@ -82,7 +83,7 @@ export const TasksRightMenu: FC = observer(() => {
           router.pathname === `/dashboard/tasks/${key}`
             ? '#2B52B6'
             : 'text.primary',
-        fontSize: 13,
+        fontSize: 15,
       };
     },
     [router.pathname],
@@ -96,8 +97,9 @@ export const TasksRightMenu: FC = observer(() => {
         flexShrink={0}
         gap={1}
         height={'fit-content'}
-        px={1.5}
-        py={1.5}
+        ml={'auto'}
+        p={2.5}
+        position={'sticky'}
         sx={{
           '& .sub_menu': {
             '&:not(:last-of-type)': {
@@ -106,15 +108,14 @@ export const TasksRightMenu: FC = observer(() => {
             },
           },
         }}
-        width={280}
+        top={92}
+        width={'clamp(320px,25vw,360px)'}
       >
-        <Typography mb={0.5} pl={0.75} variant={'subtitle2'}>
+        <Typography mb={0.5} pl={0.75} variant={'subtitle1'}>
           Jump to task
         </Typography>
 
-        {(taskMap.has(DashboardTaskKey.payoff_amount) ||
-          taskMap.has(DashboardTaskKey.rehab_info) ||
-          taskMap.has(DashboardTaskKey.entitlements) ||
+        {(taskMap.has(DashboardTaskKey.entitlements) ||
           taskMap.has(DashboardTaskKey.permits_obtained) ||
           taskMap.has(DashboardTaskKey.square_footage)) && (
           <Stack className={'sub_menu'}>
@@ -125,42 +126,14 @@ export const TasksRightMenu: FC = observer(() => {
               px={0.75}
               sx={{ cursor: 'pointer' }}
             >
-              <Typography color={'text.secondary'} variant={'subtitle3'}>
+              <Typography color={'text.secondary'} variant={'subtitle2'}>
                 Loan information
               </Typography>
               <Icon component={TASKS_ARROW} sx={() => arrowSx(open1)} />
             </Stack>
 
             <Collapse in={open1}>
-              <Stack gap={1} mt={0.5} width={'100%'}>
-                {taskMap.has(DashboardTaskKey.payoff_amount) && (
-                  <Stack
-                    onClick={() => onClickToRedirect('payoff-amount')}
-                    sx={() => menuItemSx('payoff-amount')}
-                  >
-                    <Typography sx={() => menuItemNameSx('payoff-amount')}>
-                      Payoff amount
-                    </Typography>
-                    {taskMap.get(DashboardTaskKey.payoff_amount) && (
-                      <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
-                    )}
-                  </Stack>
-                )}
-
-                {taskMap.has(DashboardTaskKey.rehab_info) && (
-                  <Stack
-                    onClick={() => onClickToRedirect('rehab-info')}
-                    sx={() => menuItemSx('rehab-info')}
-                  >
-                    <Typography sx={() => menuItemNameSx('rehab-info')}>
-                      Rehab info
-                    </Typography>
-                    {taskMap.get(DashboardTaskKey.rehab_info) && (
-                      <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
-                    )}
-                  </Stack>
-                )}
-
+              <Stack gap={1.25} mt={1} width={'100%'}>
                 {taskMap.has(DashboardTaskKey.square_footage) && (
                   <Stack
                     onClick={() => onClickToRedirect('square-footage')}
@@ -170,7 +143,7 @@ export const TasksRightMenu: FC = observer(() => {
                       Square footage
                     </Typography>
                     {taskMap.get(DashboardTaskKey.square_footage) && (
-                      <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                      <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                     )}
                   </Stack>
                 )}
@@ -184,7 +157,7 @@ export const TasksRightMenu: FC = observer(() => {
                       Entitlements
                     </Typography>
                     {taskMap.get(DashboardTaskKey.entitlements) && (
-                      <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                      <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                     )}
                   </Stack>
                 )}
@@ -198,7 +171,57 @@ export const TasksRightMenu: FC = observer(() => {
                       Permits obtained
                     </Typography>
                     {taskMap.get(DashboardTaskKey.permits_obtained) && (
-                      <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                      <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
+                    )}
+                  </Stack>
+                )}
+              </Stack>
+            </Collapse>
+          </Stack>
+        )}
+
+        {(taskMap.has(DashboardTaskKey.payoff_amount) ||
+          taskMap.has(DashboardTaskKey.rehab_info)) && (
+          <Stack className={'sub_menu'}>
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              onClick={() => setOpen2(!open2)}
+              px={0.75}
+              sx={{ cursor: 'pointer' }}
+            >
+              <Typography color={'text.secondary'} variant={'subtitle2'}>
+                Loan information
+              </Typography>
+              <Icon component={TASKS_ARROW} sx={() => arrowSx(open2)} />
+            </Stack>
+
+            <Collapse in={open2}>
+              <Stack gap={1.25} mt={1} width={'100%'}>
+                {taskMap.has(DashboardTaskKey.payoff_amount) && (
+                  <Stack
+                    onClick={() => onClickToRedirect('payoff-amount')}
+                    sx={() => menuItemSx('payoff-amount')}
+                  >
+                    <Typography sx={() => menuItemNameSx('payoff-amount')}>
+                      Payoff amount
+                    </Typography>
+                    {taskMap.get(DashboardTaskKey.payoff_amount) && (
+                      <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
+                    )}
+                  </Stack>
+                )}
+
+                {taskMap.has(DashboardTaskKey.rehab_info) && (
+                  <Stack
+                    onClick={() => onClickToRedirect('rehab-info')}
+                    sx={() => menuItemSx('rehab-info')}
+                  >
+                    <Typography sx={() => menuItemNameSx('rehab-info')}>
+                      Rehab info
+                    </Typography>
+                    {taskMap.get(DashboardTaskKey.rehab_info) && (
+                      <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                     )}
                   </Stack>
                 )}
@@ -211,17 +234,17 @@ export const TasksRightMenu: FC = observer(() => {
           <Stack
             alignItems={'center'}
             flexDirection={'row'}
-            onClick={() => setOpen2(!open2)}
+            onClick={() => setOpen3(!open3)}
             px={0.75}
             sx={{ cursor: 'pointer' }}
           >
-            <Typography color={'text.secondary'} variant={'subtitle3'}>
+            <Typography color={'text.secondary'} variant={'subtitle2'}>
               Borrower information
             </Typography>
-            <Icon component={TASKS_ARROW} sx={() => arrowSx(open2)} />
+            <Icon component={TASKS_ARROW} sx={() => arrowSx(open3)} />
           </Stack>
 
-          <Collapse in={open2}>
+          <Collapse in={open3}>
             <Stack gap={1} mt={0.5} width={'100%'}>
               <Stack
                 onClick={() => onClickToRedirect('borrower')}
@@ -231,7 +254,7 @@ export const TasksRightMenu: FC = observer(() => {
                   Borrower
                 </Typography>
                 {taskMap.get(DashboardTaskKey.borrower) && (
-                  <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                  <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                 )}
               </Stack>
 
@@ -243,7 +266,7 @@ export const TasksRightMenu: FC = observer(() => {
                   Co-borrower
                 </Typography>
                 {taskMap.get(DashboardTaskKey.co_borrower) && (
-                  <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                  <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                 )}
               </Stack>
 
@@ -257,7 +280,7 @@ export const TasksRightMenu: FC = observer(() => {
                   Demographic information
                 </Typography>
                 {taskMap.get(DashboardTaskKey.demographics) && (
-                  <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                  <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                 )}
               </Stack>
             </Stack>
@@ -268,17 +291,17 @@ export const TasksRightMenu: FC = observer(() => {
           <Stack
             alignItems={'center'}
             flexDirection={'row'}
-            onClick={() => setOpen3(!open3)}
+            onClick={() => setOpen4(!open4)}
             px={0.75}
             sx={{ cursor: 'pointer' }}
           >
-            <Typography color={'text.secondary'} variant={'subtitle3'}>
+            <Typography color={'text.secondary'} variant={'subtitle2'}>
               Third-party
             </Typography>
-            <Icon component={TASKS_ARROW} sx={() => arrowSx(open3)} />
+            <Icon component={TASKS_ARROW} sx={() => arrowSx(open4)} />
           </Stack>
 
-          <Collapse in={open3}>
+          <Collapse in={open4}>
             <Stack gap={1} mt={0.5} width={'100%'}>
               <Stack
                 onClick={() => onClickToRedirect('title-or-escrow-company')}
@@ -287,10 +310,10 @@ export const TasksRightMenu: FC = observer(() => {
                 <Typography
                   sx={() => menuItemNameSx('title-or-escrow-company')}
                 >
-                  Title / Escrow (optional)
+                  Title company (optional)
                 </Typography>
                 {taskMap.get(DashboardTaskKey.title_escrow) && (
-                  <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                  <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                 )}
               </Stack>
             </Stack>
@@ -302,17 +325,17 @@ export const TasksRightMenu: FC = observer(() => {
             <Stack
               alignItems={'center'}
               flexDirection={'row'}
-              onClick={() => setOpen4(!open4)}
+              onClick={() => setOpen5(!open5)}
               px={0.75}
               sx={{ cursor: 'pointer' }}
             >
-              <Typography color={'text.secondary'} variant={'subtitle3'}>
+              <Typography color={'text.secondary'} variant={'subtitle2'}>
                 Agreements
               </Typography>
-              <Icon component={TASKS_ARROW} sx={() => arrowSx(open4)} />
+              <Icon component={TASKS_ARROW} sx={() => arrowSx(open5)} />
             </Stack>
 
-            <Collapse in={open4}>
+            <Collapse in={open5}>
               <Stack gap={1} mt={0.5} width={'100%'}>
                 <Stack
                   onClick={() =>
@@ -323,10 +346,10 @@ export const TasksRightMenu: FC = observer(() => {
                   <Typography
                     sx={() => menuItemNameSx('construction-holdback-process')}
                   >
-                    Construction holdback
+                    Construction holdback process
                   </Typography>
                   {taskMap.get(DashboardTaskKey.holdback_process) && (
-                    <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                    <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                   )}
                 </Stack>
               </Stack>
@@ -339,17 +362,17 @@ export const TasksRightMenu: FC = observer(() => {
             <Stack
               alignItems={'center'}
               flexDirection={'row'}
-              onClick={() => setOpen5(!open5)}
+              onClick={() => setOpen6(!open6)}
               px={0.75}
               sx={{ cursor: 'pointer' }}
             >
-              <Typography color={'text.secondary'} variant={'subtitle3'}>
+              <Typography color={'text.secondary'} variant={'subtitle2'}>
                 Broker
               </Typography>
-              <Icon component={TASKS_ARROW} sx={() => arrowSx(open5)} />
+              <Icon component={TASKS_ARROW} sx={() => arrowSx(open6)} />
             </Stack>
 
-            <Collapse in={open5}>
+            <Collapse in={open6}>
               <Stack gap={1} mt={0.5} width={'100%'}>
                 <Stack
                   onClick={() => onClickToRedirect('referring-broker')}
@@ -359,7 +382,7 @@ export const TasksRightMenu: FC = observer(() => {
                     Referring broker
                   </Typography>
                   {taskMap.get(DashboardTaskKey.referring_broker) && (
-                    <CheckCircle color={'success'} sx={{ fontSize: 18 }} />
+                    <CheckCircle color={'success'} sx={{ fontSize: 20 }} />
                   )}
                 </Stack>
               </Stack>

@@ -2,6 +2,7 @@ import { get, post, put } from '@/requests/axios';
 import {
   DashboardDocumentCommentsResponse,
   DashboardDocumentsResponse,
+  DashboardOverviewResponse,
   DashboardPaymentDetailsResponse,
   DashboardTaskKey,
   DashboardTeamResponse,
@@ -16,7 +17,7 @@ export const _fetchDashboardInfo = (loanId: string) => {
 
 // overview
 export const _fetchLoanDetail = (loanId: string) => {
-  return get(`/pos/loan/process/data/${loanId}`);
+  return get<DashboardOverviewResponse>(`/pos/loan/process/data/${loanId}`);
 };
 
 export const _resubmitLoan = (params: {
@@ -104,4 +105,9 @@ export const _fetchLoanDocumentComments = (params: {
 // team
 export const _fetchTeamMembers = (loanId: string) => {
   return get<DashboardTeamResponse>(`/pos/loan/officer/${loanId}`);
+};
+
+//terms
+export const _fetchLoanTermsData = (loanId: string) => {
+  return get(`/pos/loan/process/terms/${loanId}`);
 };

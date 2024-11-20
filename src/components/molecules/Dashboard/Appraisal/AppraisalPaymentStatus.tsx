@@ -148,36 +148,23 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
           color: '#DE6449',
           status: 'failed',
           content: (
-            <Stack width={'100%'}>
+            <Stack mt={3} width={'100%'}>
               <Typography color={'text.secondary'} variant={'body1'}>
                 Your payment couldn&apos;t be processed. Don&apos;t worry,
                 we&apos;re here to help.
               </Typography>
-              <Typography
-                color={'text.secondary'}
-                mt={1.5}
-                variant={'subtitle1'}
-              >
+              <Typography color={'text.secondary'} mt={1.5}>
                 Quick fixes:
               </Typography>
-              <Stack
-                component={'ul'}
-                sx={{
-                  listStyle: 'decimal',
-                  listStylePosition: 'inside',
-                  p: 0,
-                }}
-              >
-                <Typography color={'text.secondary'} component={'li'}>
-                  Verify your card information.
-                </Typography>
-                <Typography color={'text.secondary'} component={'li'}>
-                  Ensure you have sufficient funds.
-                </Typography>
-                <Typography color={'text.secondary'} component={'li'}>
-                  Retry the payment.
-                </Typography>
-              </Stack>
+              <Typography color={'text.secondary'}>
+                Verify your card information.
+              </Typography>
+              <Typography color={'text.secondary'}>
+                Ensure you have sufficient funds.
+              </Typography>
+              <Typography color={'text.secondary'}>
+                Retry the payment.
+              </Typography>
             </Stack>
           ),
           contact: (
@@ -204,13 +191,7 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
             </Typography>
           ),
           footer: (
-            <Stack
-              alignItems={'center'}
-              gap={3}
-              maxWidth={600}
-              mt={3}
-              width={'100%'}
-            >
+            <Stack gap={3} maxWidth={600} mt={3} width={'100%'}>
               <StyledButton
                 onClick={async () => {
                   await _restartAppraisalPaymentProcess(
@@ -218,7 +199,7 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
                   );
                   router.reload();
                 }}
-                sx={{ flex: 1, maxWidth: 276, width: '100%' }}
+                sx={{ flex: 1, maxWidth: 180, width: '100%' }}
               >
                 Try again
               </StyledButton>
@@ -236,28 +217,15 @@ export const AppraisalPaymentStatus: FC<PaymentStatusProps> = ({
   ]);
 
   return (
-    <Stack
-      alignItems={'center'}
-      gap={3}
-      margin={'0 auto'}
-      maxWidth={900}
-      p={3}
-      width={'100%'}
-    >
+    <Stack gap={3} maxWidth={900} p={3} width={'100%'}>
       <Icon
         component={computedObj?.icon}
         sx={{
-          width: 269,
-          height: 240,
-          m: '0 auto',
+          width: 135,
+          height: 120,
         }}
       />
-      <Typography
-        color={computedObj?.color}
-        mt={3}
-        textAlign={'center'}
-        variant={'h4'}
-      >
+      <Typography color={computedObj?.color} mt={3} variant={'h5'}>
         Payment {computedObj?.status}
       </Typography>
       {computedObj?.content}

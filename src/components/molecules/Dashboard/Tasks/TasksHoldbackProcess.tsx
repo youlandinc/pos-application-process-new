@@ -8,11 +8,10 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { POSGetParamsFromUrl } from '@/utils';
-import { useBreakpoints, useRenderPdf, useSessionStorageState } from '@/hooks';
+import { useRenderPdf, useSessionStorageState } from '@/hooks';
 import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { StyledButton, StyledLoading } from '@/components/atoms';
-import { TasksRightMenu } from '@/components/molecules';
 
 import { DashboardTaskKey, HttpError } from '@/types';
 import {
@@ -27,7 +26,6 @@ export const TasksHoldbackProcess: FC = observer(() => {
     dashboardInfo: { jumpToNextTask },
   } = useMst();
 
-  const breakpoints = useBreakpoints();
   const { saasState } = useSessionStorageState('tenantConfig');
 
   const pdfFile = useRef(null);
@@ -59,11 +57,6 @@ export const TasksHoldbackProcess: FC = observer(() => {
         autoHideDuration: AUTO_HIDE_DURATION,
         isSimple: !header,
         header,
-        onClose: () =>
-          router.push({
-            pathname: '/dashboard/tasks',
-            query: { loanId: router.query.loanId },
-          }),
       });
     }
   }, []);
@@ -97,105 +90,69 @@ export const TasksHoldbackProcess: FC = observer(() => {
       alignItems={'center'}
       justifyContent={'center'}
       margin={'auto 0'}
-      minHeight={'calc(667px - 46px)'}
+      minHeight={'calc(667px - 194px)'}
       width={'100%'}
     >
       <StyledLoading sx={{ color: 'text.grey' }} />
     </Stack>
   ) : (
     <Fade in={!loading}>
-      <Stack flexDirection={'row'} justifyContent={'center'} width={'100%'}>
-        <Stack
-          alignItems={'center'}
-          gap={6}
-          justifyContent={'flex-start'}
-          maxWidth={900}
-          mx={{ lg: 'auto', xs: 0 }}
-          px={{ lg: 3, xs: 0 }}
-          width={'100%'}
-        >
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            textAlign={'center'}
-            variant={'h5'}
-          ></Typography>
-
-          <Typography
-            color={'text.primary'}
-            fontSize={{ xs: 20, lg: 24 }}
-            textAlign={'center'}
-            variant={'h5'}
-          >
-            Construction holdback process
-            <Typography
-              color={'text.secondary'}
-              fontSize={{ xs: 12, lg: 16 }}
-              mt={1}
-              variant={'body1'}
-            >
-              Please review and accept{' '}
-              {
-                //sass
-                saasState?.organizationName || ' YouLand'
-              }
-              &apos;s construction holdback process, which outlines how funds
-              will be disbursed during your project&apos;s construction phase.
-              {/*{`Review and accept $'s construction holdback process`}*/}
-            </Typography>
-          </Typography>
-
-          <Stack
-            border={'1px solid #DEDEDE'}
-            borderRadius={2}
-            boxShadow={'0px 3px 10px 0px #DEDEDE'}
-            p={10}
-            ref={pdfFile}
-            width={'100%'}
-          />
-
+      <Stack
+        gap={{ xs: 6, lg: 8 }}
+        justifyContent={'flex-start'}
+        maxWidth={900}
+        width={'100%'}
+      >
+        <Typography fontSize={{ xs: 20, lg: 24 }}>
+          Construction holdback process
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
+            mt={1}
             variant={'body1'}
           >
-            By clicking the <b style={{ fontWeight: 500 }}>Save</b> button
-            below, I hereby agree to the above{' '}
-            {saasState?.organizationName || ' YouLand'}&apos;s construction
-            holdback process.
+            Please review and accept{' '}
+            {
+              //sass
+              saasState?.organizationName || ' YouLand'
+            }
+            &apos;s construction holdback process, which outlines how funds will
+            be disbursed during your project&apos;s construction phase.
+            {/*{`Review and accept $'s construction holdback process`}*/}
           </Typography>
+        </Typography>
 
-          <Stack
-            flexDirection={{ xs: 'unset', md: 'row' }}
-            gap={3}
-            maxWidth={600}
-            width={'100%'}
-          >
-            <StyledButton
-              color={'info'}
-              onClick={async () => {
-                await router.push({
-                  pathname: '/dashboard/tasks',
-                  query: { loanId: router.query.loanId },
-                });
-              }}
-              sx={{ flex: 1, maxWidth: 276, width: '100%' }}
-              variant={'text'}
-            >
-              Back
-            </StyledButton>
-            <StyledButton
-              color={'primary'}
-              disabled={saveLoading}
-              loading={saveLoading}
-              onClick={handleSave}
-              sx={{ flex: 1, maxWidth: 276, width: '100%' }}
-            >
-              Save
-            </StyledButton>
-          </Stack>
-        </Stack>
-        {['xl', 'xxl'].includes(breakpoints) && <TasksRightMenu />}
+        <Stack
+          border={'1px solid #DEDEDE'}
+          borderRadius={2}
+          boxShadow={'0px 3px 10px 0px #DEDEDE'}
+          mt={-3}
+          p={{ xs: 3, lg: 10 }}
+          ref={pdfFile}
+          width={'100%'}
+        />
+
+        <Typography
+          color={'text.secondary'}
+          fontSize={{ xs: 12, lg: 16 }}
+          mt={{ xs: 0, lg: -2 }}
+          variant={'body1'}
+        >
+          By clicking the <b style={{ fontWeight: 500 }}>Save</b> button below,
+          I hereby agree to the above{' '}
+          {saasState?.organizationName || ' YouLand'}&apos;s construction
+          holdback process.
+        </Typography>
+
+        <StyledButton
+          color={'primary'}
+          disabled={saveLoading}
+          loading={saveLoading}
+          onClick={handleSave}
+          sx={{ width: 276 }}
+        >
+          Save and continue
+        </StyledButton>
       </Stack>
     </Fade>
   );

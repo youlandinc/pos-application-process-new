@@ -1,7 +1,8 @@
-import Head from 'next/head';
 import { FC } from 'react';
-import { observer } from 'mobx-react-lite';
+import Head from 'next/head';
 import dynamic from 'next/dynamic';
+
+import { observer } from 'mobx-react-lite';
 
 const DynamicDashboardPage = dynamic(
   () =>
@@ -11,24 +12,24 @@ const DynamicDashboardPage = dynamic(
   },
 );
 
-const DynamicTaskListPage = dynamic(
-  () =>
-    import('@/views/Dashboard/TaskListPage').then((mod) => mod.TaskListPage),
+const DynamicTermsPage = dynamic(
+  () => import('@/views/Dashboard/TermsPage').then((mod) => mod.TermsPage),
   {
     ssr: true,
   },
 );
-const DashboardTaskPage: FC = observer(() => {
+
+const DashboardTermsPage: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Tasks</title>
+        <title>Overview</title>
       </Head>
       <DynamicDashboardPage>
-        <DynamicTaskListPage />
+        <DynamicTermsPage />
       </DynamicDashboardPage>
     </>
   );
 });
 
-export default DashboardTaskPage;
+export default DashboardTermsPage;

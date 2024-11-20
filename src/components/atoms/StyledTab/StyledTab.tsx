@@ -65,7 +65,7 @@ export const StyledTab: FC<StyledTabProps> = ({
             p: 0,
             minWidth: 0,
             minHeight: 0,
-            mx: { xs: 1, lg: 3 },
+            mr: { xs: 1, lg: 3 },
             mb: 1.25,
             fontWeight: 600,
             '& .total_number': {
@@ -79,6 +79,7 @@ export const StyledTab: FC<StyledTabProps> = ({
           },
           mb: 3,
           minHeight: 0,
+          pl: 0,
           ...sx,
         }}
         value={value}

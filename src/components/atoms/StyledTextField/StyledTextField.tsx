@@ -1,10 +1,21 @@
 import { FC, useEffect, useState } from 'react';
-import { Box, TextField } from '@mui/material';
+import { Box, OutlinedTextFieldProps, SxProps, TextField } from '@mui/material';
 
-import { Transitions } from '@/components/atoms';
+import { StyledTooltip, Transitions } from '@/components/atoms';
 
-import { StyledTextFieldProps, StyledTextFieldStyles } from './index';
+import { StyledTextFieldStyles } from './index';
 import { useBreakpoints } from '@/hooks';
+
+export interface StyledTextFieldProps
+  extends Omit<OutlinedTextFieldProps, 'variant'> {
+  validate?: undefined | string[];
+  variant?: 'outlined';
+  sx?: SxProps;
+  disabledAutoFill?: boolean;
+  tooltipTitle?: string;
+  tooltipSx?: SxProps;
+  isTooltip?: boolean;
+}
 
 export const StyledTextField: FC<StyledTextFieldProps> = ({
   sx,
@@ -12,7 +23,10 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
   onChange,
   variant = 'outlined',
   validate,
+  tooltipTitle = '',
+  tooltipSx = { width: '100%' },
   disabledAutoFill = true,
+  isTooltip = false,
   ...rest
 }) => {
   const breakpoints = useBreakpoints();
@@ -23,8 +37,13 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
     setIsClient(true);
   }, []);
 
-  return (
-    <>
+  return isTooltip ? (
+    <StyledTooltip
+      placement={'top'}
+      theme={'main'}
+      title={tooltipTitle}
+      tooltipSx={tooltipSx}
+    >
       <TextField
         error={!!(validate?.length && validate[0])}
         FormHelperTextProps={{
@@ -96,6 +115,78 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
         variant={variant}
         {...rest}
       />
-    </>
+    </StyledTooltip>
+  ) : (
+    <TextField
+      error={!!(validate?.length && validate[0])}
+      FormHelperTextProps={{
+        // BUG :libraries,mui types bug
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        component: 'div',
+      }}
+      helperText={
+        isClient ? (
+          <Transitions>
+            {validate?.length
+              ? validate.map((item, index) => (
+                  <Box
+                    component={'span'}
+                    key={item + '_' + index}
+                    sx={{
+                      display: 'block',
+                      m: 0,
+                      pl: 0.5,
+                      '&:first-of-type': {
+                        mt: 0.5,
+                      },
+                    }}
+                  >
+                    {item}
+                  </Box>
+                ))
+              : validate
+                ? validate
+                : undefined}
+          </Transitions>
+        ) : validate?.length ? (
+          validate.map((item, index) => (
+            <Box
+              component={'span'}
+              key={item + '_' + index}
+              sx={{
+                display: 'block',
+                m: 0,
+                pl: 0.5,
+                '&:first-of-type': {
+                  mt: 0.5,
+                },
+              }}
+            >
+              {item}
+            </Box>
+          ))
+        ) : validate ? (
+          validate
+        ) : undefined
+      }
+      InputProps={{
+        ...rest.InputProps,
+        autoComplete: disabledAutoFill ? 'off' : '',
+      }}
+      inputProps={{
+        ...rest.inputProps,
+        autoComplete: disabledAutoFill ? 'off' : '',
+      }}
+      onChange={onChange}
+      // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
+      sx={{
+        ...StyledTextFieldStyles,
+        ...sx,
+      }}
+      value={value}
+      variant={variant}
+      {...rest}
+    />
   );
 };

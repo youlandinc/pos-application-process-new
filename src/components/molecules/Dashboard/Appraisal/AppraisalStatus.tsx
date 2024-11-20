@@ -175,24 +175,11 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
   );
 
   return (
-    <Stack
-      alignItems={'center'}
-      gap={{ xs: 3, lg: 6 }}
-      justifyContent={'flex-start'}
-      maxWidth={900}
-      mx={'auto'}
-      px={{
-        lg: 0,
-        xs: 'clamp(24px,6.4vw,80px)',
-      }}
-      width={'100%'}
-    >
+    <Stack justifyContent={'flex-start'} maxWidth={900} width={'100%'}>
       <Typography
         color={'text.primary'}
         component={'div'}
         fontSize={{ xs: 20, lg: 24 }}
-        textAlign={'left'}
-        variant={'h5'}
         width={'100%'}
       >
         Property appraisal
@@ -203,60 +190,6 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
         >
           Keep track of your appraisal progress below
         </Typography>
-        <Typography
-          color={'text.secondary'}
-          fontSize={{ xs: 12, lg: 16 }}
-          mt={1}
-        >
-          The property inspection contact information
-        </Typography>
-        <Typography component={'ul'} mt={1} pl={1} sx={{ listStyle: 'inside' }}>
-          {firstName && (
-            <Typography
-              color={'text.secondary'}
-              component={'li'}
-              fontSize={{ xs: 12, lg: 16 }}
-            >
-              First name: {firstName}
-            </Typography>
-          )}
-          {lastName && (
-            <Typography
-              color={'text.secondary'}
-              component={'li'}
-              fontSize={{ xs: 12, lg: 16 }}
-            >
-              Last name: {lastName}
-            </Typography>
-          )}
-          {email && (
-            <Typography
-              color={'text.secondary'}
-              component={'li'}
-              fontSize={{ xs: 12, lg: 16 }}
-            >
-              Email: {email}
-            </Typography>
-          )}
-          {phoneNumber && (
-            <Typography
-              color={'text.secondary'}
-              component={'li'}
-              fontSize={{ xs: 12, lg: 16 }}
-            >
-              Phone number: {POSFormatUSPhoneToText(phoneNumber)}
-            </Typography>
-          )}
-          {instructions && (
-            <Typography
-              color={'text.secondary'}
-              component={'li'}
-              fontSize={{ xs: 12, lg: 16 }}
-            >
-              Property access instructions: {instructions}
-            </Typography>
-          )}
-        </Typography>
       </Typography>
 
       <Stepper
@@ -265,6 +198,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
         orientation={'vertical'}
         sx={{
           width: '100%',
+          mt: 6,
         }}
       >
         {computedData.map((item, index) => (
@@ -288,7 +222,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
               </Typography>
             </StepLabel>
             <StepContent>
-              <Stack gap={1} mb={4}>
+              <Stack gap={1} minHeight={18} my={1}>
                 {hash[appraisalStage] === index && (
                   <Typography
                     color={computedData.length === 1 ? 'error' : 'text.primary'}
@@ -313,6 +247,62 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
           </Step>
         ))}
       </Stepper>
+
+      <Stack
+        border={'2px solid #759AF0'}
+        borderRadius={2}
+        gap={1.5}
+        mt={3}
+        p={3}
+      >
+        <Typography color={'text.secondary'} variant={'body2'}>
+          Property inspection contact information
+        </Typography>
+
+        <Stack gap={0.5}>
+          <Typography variant={'h6'}>
+            {firstName.replace(/^./, (match) => match.toUpperCase())}{' '}
+            {lastName.replace(/^./, (match) => match.toUpperCase())}
+          </Typography>
+
+          {email && (
+            <Typography color={'text.secondary'} variant={'body3'}>
+              Email:{' '}
+              <Typography
+                color={'text.primary'}
+                component={'span'}
+                variant={'body3'}
+              >
+                {email}
+              </Typography>
+            </Typography>
+          )}
+          {phoneNumber && (
+            <Typography color={'text.secondary'} variant={'body3'}>
+              Phone:{' '}
+              <Typography
+                color={'text.primary'}
+                component={'span'}
+                variant={'body3'}
+              >
+                {POSFormatUSPhoneToText(phoneNumber)}
+              </Typography>
+            </Typography>
+          )}
+          {instructions && (
+            <Typography color={'text.secondary'} variant={'body3'}>
+              Instructions:{' '}
+              <Typography
+                color={'text.primary'}
+                component={'span'}
+                variant={'body3'}
+              >
+                {instructions}
+              </Typography>
+            </Typography>
+          )}
+        </Stack>
+      </Stack>
     </Stack>
   );
 };
