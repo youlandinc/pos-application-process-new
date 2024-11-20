@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { ElementType, FC } from 'react';
 import {
   ClickAwayListener,
   Stack,
@@ -15,6 +15,7 @@ export interface StyledTooltipProps extends TooltipProps {
   sx?: SxProps;
   isDisabledClose?: boolean;
   tooltipSx?: SxProps;
+  component?: ElementType;
 }
 
 export const StyledTooltip: FC<StyledTooltipProps> = ({
@@ -22,6 +23,7 @@ export const StyledTooltip: FC<StyledTooltipProps> = ({
   children,
   theme = 'darker',
   tooltipSx = { width: '100%' },
+  component = 'div',
   ...rest
 }) => {
   const { open, close, visible } = useSwitch(false);
@@ -59,7 +61,11 @@ export const StyledTooltip: FC<StyledTooltipProps> = ({
         }}
         {...rest}
       >
-        <Stack onClick={open} sx={{ width: '100%', ...tooltipSx }}>
+        <Stack
+          component={component}
+          onClick={() => (visible ? close() : open())}
+          sx={{ width: '100%', ...tooltipSx }}
+        >
           {children ? children : <span>{rest.title}</span>}
         </Stack>
       </Tooltip>

@@ -483,7 +483,13 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
             width={{ md: 'calc(100% - 204px)', xs: '100%' }}
           >
             <Stack flexDirection={'row'} gap={1.5} width={'100%'}>
-              <StyledTooltip title={fileName}>
+              <StyledTooltip
+                placement={'bottom-start'}
+                title={fileName}
+                tooltipSx={{
+                  width: 'fit-content',
+                }}
+              >
                 <Typography
                   sx={{
                     fontSize: { xs: 16, md: 18 },
@@ -747,7 +753,13 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                             sx={{ width: 20, height: 20 }}
                           />
 
-                          <StyledTooltip title={`${item.originalFileName}`}>
+                          <StyledTooltip
+                            placement={'bottom-start'}
+                            title={`${item.originalFileName}`}
+                            tooltipSx={{
+                              width: 'fit-content',
+                            }}
+                          >
                             <Typography
                               sx={{
                                 overflow: 'hidden',
