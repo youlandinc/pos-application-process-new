@@ -590,6 +590,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
               <StyledSelectTextField
                 fieldLabel={'Payoff amount'}
                 fieldValue={estimateRate.payoffAmount}
+                isTooltip={true}
                 onFieldChange={(floatValue) =>
                   estimateRate.changeFieldValue('payoffAmount', floatValue)
                 }
@@ -604,6 +605,9 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   estimateRate.isPayoff ? LoanAnswerEnum.yes : LoanAnswerEnum.no
                 }
                 sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+                tooltipTitle={
+                  'The total amount needed to fully repay your existing loan. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure".'
+                }
                 validate={payoffAmountError}
               />
 
@@ -760,6 +764,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 <StyledSelectTextField
                   fieldLabel={'Payoff amount'}
                   fieldValue={estimateRate.payoffAmount}
+                  isTooltip={true}
                   onFieldChange={(floatValue) =>
                     estimateRate.changeFieldValue('payoffAmount', floatValue)
                   }
@@ -776,6 +781,9 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                       : LoanAnswerEnum.no
                   }
                   sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+                  tooltipTitle={
+                    'The total amount needed to fully repay your existing loan. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure".'
+                  }
                   validate={payoffAmountError}
                 />
 
@@ -1333,6 +1341,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
               ml={-0.5}
             >
               <StyledSelect
+                isTooltip={true}
                 label={'Citizenship'}
                 onChange={(e) => {
                   estimateRate.changeFieldValue(
@@ -1403,6 +1412,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
               <StyledSelectTextField
                 fieldLabel={'Liquidity'}
                 fieldValue={estimateRate.liquidityAmount}
+                isTooltip={true}
                 onFieldChange={(floatValue) =>
                   estimateRate.changeFieldValue('liquidityAmount', floatValue)
                 }
@@ -1420,6 +1430,9 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     : LoanAnswerEnum.no
                 }
                 sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+                tooltipTitle={
+                  '"Liquidity refers to the cash or readily available funds you have on hand. This includes cash in bank accounts, savings, and liquid investments. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure". "'
+                }
               />
 
               {!['xs', 'sm', 'md'].includes(breakpoints) &&

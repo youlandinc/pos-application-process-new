@@ -42,6 +42,7 @@ export const StyledSelectOption: FC<StyledSelectOptionProps> = ({
           <StyledTooltip
             key={opt.key}
             leaveTouchDelay={0}
+            mode={['lg', 'xl', 'xxl'].includes(breakpoint) ? 'hover' : 'click'}
             placement={
               ['lg', 'xl', 'xxl'].includes(breakpoint) ? 'right' : 'top'
             }
