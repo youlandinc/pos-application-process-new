@@ -20,6 +20,9 @@ interface StyledSelectTextField {
   sx?: SxProps;
   percentage?: boolean;
   validate?: string[];
+  tooltipTitle?: string;
+  tooltipSx?: SxProps;
+  isTooltip?: boolean;
 }
 
 export const StyledSelectTextField: FC<StyledSelectTextField> = ({
@@ -33,6 +36,9 @@ export const StyledSelectTextField: FC<StyledSelectTextField> = ({
   sx,
   percentage = false,
   validate,
+  tooltipTitle = '',
+  tooltipSx = { width: '100%' },
+  isTooltip = false,
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
 
@@ -49,7 +55,103 @@ export const StyledSelectTextField: FC<StyledSelectTextField> = ({
 
   const wrapperRef = useRef(null);
 
-  return (
+  return isTooltip ? (
+    <Stack ref={wrapperRef} sx={sx} width={'100%'}>
+      {selectValue === LoanAnswerEnum.yes ? (
+        <StyledTextFieldNumber
+          InputProps={{
+            endAdornment: (
+              <>
+                <ArrowDropDownIcon
+                  onClick={handleClick}
+                  sx={{
+                    color: 'text.secondary',
+                    cursor: 'pointer',
+                    width: 22,
+                    height: 22,
+                    transform: open ? 'rotate(.5turn)' : 'rotate(0)',
+                  }}
+                />
+                <Menu
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  open={open}
+                  sx={{
+                    '.MuiPaper-root': {
+                      mt: 1.5,
+                      width: 220,
+                      borderRadius: 2,
+                    },
+                    '.MuiList-root': {
+                      p: 0,
+                      m: 0,
+                      '& .MuiMenuItem-root:hover': {
+                        bgcolor: 'rgba(144, 149, 163, 0.1) !important',
+                      },
+                      '& .Mui-selected': {
+                        bgcolor: `hsla(${
+                          saasState?.posSettings?.h ?? 222
+                        },100%,95%,1) !important`,
+                      },
+                      '& .Mui-selected:hover': {
+                        bgcolor: `hsla(${
+                          saasState?.posSettings?.h ?? 222
+                        },100%,92%,1) !important`,
+                      },
+                      '& .MuiMenuItem-root': {
+                        fontSize: 14,
+                        color: 'text.primary',
+                        p: 1.5,
+                      },
+                    },
+                  }}
+                  transitionDuration={300}
+                >
+                  {options.map((item, index) => (
+                    <MenuItem
+                      key={`${item.label}-${index}`}
+                      onClick={() => onSelectChange(item.value)}
+                      selected={selectValue === item.value}
+                    >
+                      {item.label}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </>
+            ),
+          }}
+          isTooltip={true}
+          label={fieldLabel}
+          onValueChange={({ floatValue }) => onFieldChange(floatValue)}
+          percentage={percentage}
+          prefix={percentage ? undefined : '$'}
+          suffix={percentage ? '%' : undefined}
+          sx={{
+            '& .MuiInputBase-adornedEnd': {
+              paddingRight: '8px !important',
+            },
+          }}
+          tooltipSx={tooltipSx}
+          tooltipTitle={tooltipTitle}
+          validate={validate}
+          value={fieldValue}
+        />
+      ) : (
+        <StyledSelect
+          isTooltip={true}
+          label={selectLabel}
+          onChange={(e) => {
+            onSelectChange(e.target.value as unknown as string);
+            handleClose();
+          }}
+          options={options}
+          tooltipSx={tooltipSx}
+          tooltipTitle={tooltipTitle}
+          value={selectValue}
+        />
+      )}
+    </Stack>
+  ) : (
     <Stack ref={wrapperRef} sx={sx} width={'100%'}>
       {selectValue === LoanAnswerEnum.yes ? (
         <StyledTextFieldNumber

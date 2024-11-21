@@ -146,13 +146,10 @@ export const ProductCustomItem: FC<{
             <Typography variant={'body1'} width={'fit-content'}>
               Monthly payment
               <StyledTooltip
+                mode={'controlled'}
                 title={
                   'The interest calculation is based on a non-dutch basis and does not include the rehab loan amount.'
                 }
-                tooltipSx={{
-                  display: 'inline',
-                  width: 16,
-                }}
               >
                 <InfoOutlined
                   sx={{
@@ -183,13 +180,10 @@ export const ProductCustomItem: FC<{
               <Typography variant={'body1'} width={'fit-content'}>
                 Est. initial monthly payment
                 <StyledTooltip
+                  mode={'controlled'}
                   title={
                     'The estimated monthly payment based on the initial loan disbursement amount.'
                   }
-                  tooltipSx={{
-                    display: 'inline',
-                    width: 16,
-                  }}
                 >
                   <InfoOutlined
                     sx={{
@@ -216,13 +210,10 @@ export const ProductCustomItem: FC<{
               <Typography variant={'body1'} width={'fit-content'}>
                 Est. fully drawn monthly payment
                 <StyledTooltip
+                  mode={'controlled'}
                   title={
                     'The estimated monthly payment once the full loan amount, including future construction funding, has been disbursed.'
                   }
-                  tooltipSx={{
-                    display: 'inline',
-                    width: 16,
-                  }}
                 >
                   <InfoOutlined
                     sx={{
