@@ -15,7 +15,7 @@ import { format, parseISO } from 'date-fns';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { useBreakpoints } from '@/hooks';
 
-import { StyledButton } from '@/components/atoms';
+import { StyledButton, StyledTooltip } from '@/components/atoms';
 
 import {
   DashboardOverviewResponse,
@@ -39,7 +39,9 @@ const hash = {
 
 export type OverviewLoanStatusProps = {
   loanStatus: DashboardOverviewResponse['data']['loanStatus'];
-  loanStatusDetails: DashboardOverviewResponse['data']['loanStatusDetails'];
+  loanStatusDetails: DashboardOverviewResponse['data']['loanStatusDetails'] & {
+    tooltipTitle?: string;
+  };
 };
 
 export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
@@ -127,6 +129,8 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
             {
               icon: null,
               label: 'Preliminary underwriting passed',
+              tooltipTitle:
+                "When you have passed preliminary underwriting, you'll be well on your way to full approval. Once you provide the remaining documentation (like an appraisal), we'll review it to ensure it meets our underwriting criteria. If everything checks out, you'll be fully approved.",
               description:
                 'We have determined we can move forward with this loan. Please pay for the appraisal, upload documents and complete the necessary tasks.',
               date: loanStatusDetails?.[PipelineLoanStageEnum.initial_approval]
@@ -144,6 +148,8 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
             {
               icon: null,
               label: 'Final approval',
+              tooltipTitle:
+                'Once you reach the final approval stage, you’ll be close to completing your loan process with us! At that point, your team will have reviewed all your documents and officially approved your loan. ',
               description:
                 'We have completed the approval process for this loan and are now preparing the documents.These will be sent out as soon as possible.',
               date: loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs]
@@ -160,6 +166,8 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
             {
               icon: null,
               label: 'Docs out',
+              tooltipTitle:
+                'The documents for this loan will have been sent out to the settlement agent. They will reach out to you for the signing appointment.',
               description:
                 'The documents for this loan have been sent out to the settlement agent.',
               date: loanStatusDetails?.[PipelineLoanStageEnum.docs_out]?.date
@@ -174,6 +182,8 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
             {
               icon: null,
               label: 'Loan funded',
+              tooltipTitle:
+                'Your loan will have closed and you will have received the funding. Congratulations!',
               description:
                 'Congratulations! This loan has been closed and funded.',
               date: loanStatusDetails?.[PipelineLoanStageEnum.funded]?.date
@@ -228,7 +238,36 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
               setActiveIndex(-1);
             }}
           >
-            <StepLabel icon={item.icon}>
+            <StepLabel
+              icon={
+                !item.icon ? (
+                  index <= hash[loanStatus] ? (
+                    item.icon
+                  ) : (
+                    <StyledTooltip placement={'left'} title={item.tooltipTitle}>
+                      <Stack
+                        alignItems={'center'}
+                        bgcolor={
+                          index <= hash[loanStatus]
+                            ? 'primary.main'
+                            : 'rgba(0, 0, 0, 0.38)'
+                        }
+                        borderRadius={'50%'}
+                        color={'#ffffff'}
+                        fontSize={12}
+                        height={24}
+                        justifyContent={'center'}
+                        width={24}
+                      >
+                        {index + 1}
+                      </Stack>
+                    </StyledTooltip>
+                  )
+                ) : (
+                  item.icon
+                )
+              }
+            >
               <Stack
                 flexDirection={'row'}
                 justifyContent={'space-between'}
