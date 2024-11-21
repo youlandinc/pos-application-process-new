@@ -147,6 +147,7 @@ export const ProductCustomItem: FC<{
               Monthly payment
               <StyledTooltip
                 mode={'controlled'}
+                placement={'top'}
                 title={
                   'The interest calculation is based on a non-dutch basis and does not include the rehab loan amount.'
                 }
@@ -181,6 +182,7 @@ export const ProductCustomItem: FC<{
                 Est. initial monthly payment
                 <StyledTooltip
                   mode={'controlled'}
+                  placement={'top'}
                   title={
                     'The estimated monthly payment based on the initial loan disbursement amount.'
                   }
@@ -211,6 +213,7 @@ export const ProductCustomItem: FC<{
                 Est. fully drawn monthly payment
                 <StyledTooltip
                   mode={'controlled'}
+                  placement={'top'}
                   title={
                     'The estimated monthly payment once the full loan amount, including future construction funding, has been disbursed.'
                   }
