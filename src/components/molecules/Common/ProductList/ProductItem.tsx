@@ -117,6 +117,7 @@ export const ProductItem: FC<ProductItemProps> = observer(
                   Est. initial monthly payment
                   <StyledTooltip
                     mode={'controlled'}
+                    placement={'top'}
                     title={
                       'The estimated monthly payment based on the initial loan disbursement amount.'
                     }
@@ -147,6 +148,7 @@ export const ProductItem: FC<ProductItemProps> = observer(
                   Est. fully drawn monthly payment
                   <StyledTooltip
                     mode={'controlled'}
+                    placement={'top'}
                     title={
                       'The estimated monthly payment once the full loan amount, including future construction funding, has been disbursed.'
                     }
