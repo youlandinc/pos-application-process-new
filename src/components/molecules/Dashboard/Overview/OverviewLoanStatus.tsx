@@ -63,6 +63,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
             {
               icon: <CancelRounded sx={{ color: 'error.main' }} />,
               label: 'Loan rejected',
+              tooltipTitle: '',
               description: (
                 <Stack>
                   {loanStatusDetails?.[PipelineLoanStageEnum.rejected]
@@ -93,6 +94,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
             {
               icon: <CancelRounded sx={{ color: 'error.main' }} />,
               label: 'Loan is now inactive',
+              tooltipTitle: '',
               description:
                 'Please click the button below to resubmit this loan.',
               date: loanStatusDetails?.[PipelineLoanStageEnum.inactive]?.date
@@ -115,6 +117,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
             {
               icon: null,
               label: 'Application submitted',
+              tooltipTitle: '',
               description:
                 "We're currently reviewing your file to check for eligibility. You'll hear from us soon!",
               date: loanStatusDetails?.[PipelineLoanStageEnum.scenario]?.date
@@ -226,191 +229,343 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
         orientation={'vertical'}
         sx={{ width: '100%' }}
       >
-        {computedData.map((item, index) => (
-          <Step
-            completed={index <= hash[loanStatus]}
-            expanded={true}
-            key={`${item.label}-${index}`}
-            onMouseEnter={() => {
-              setActiveIndex(index);
-            }}
-            onMouseLeave={() => {
-              setActiveIndex(-1);
-            }}
-          >
-            <StepLabel
-              icon={
-                !item.icon ? (
-                  index <= hash[loanStatus] ? (
-                    item.icon
-                  ) : (
-                    <StyledTooltip placement={'left'} title={item.tooltipTitle}>
-                      <Stack
-                        alignItems={'center'}
-                        bgcolor={
-                          index <= hash[loanStatus]
-                            ? 'primary.main'
-                            : 'rgba(0, 0, 0, 0.38)'
-                        }
-                        borderRadius={'50%'}
-                        color={'#ffffff'}
-                        fontSize={12}
-                        height={24}
-                        justifyContent={'center'}
-                        width={24}
-                      >
-                        {index + 1}
-                      </Stack>
-                    </StyledTooltip>
-                  )
-                ) : (
-                  item.icon
-                )
-              }
+        {computedData.map((item, index) =>
+          ['xs', 'sm', 'md'].includes(breakpoints) ? (
+            <StyledTooltip
+              key={`${item.label}-${index}`}
+              mode={'controlled'}
+              placement={'top'}
+              PopperProps={{
+                modifiers: [
+                  {
+                    name: 'offset',
+                    options: {
+                      offset: [0, -24],
+                    },
+                  },
+                ],
+              }}
+              title={item.tooltipTitle}
             >
-              <Stack
-                flexDirection={'row'}
-                justifyContent={'space-between'}
-                ml={0.5}
+              <Step
+                completed={index <= hash[loanStatus]}
+                expanded={true}
+                key={`${item.label}-${index}`}
+                onMouseEnter={() => {
+                  setActiveIndex(index);
+                }}
+                onMouseLeave={() => {
+                  setActiveIndex(-1);
+                }}
               >
-                <Typography
-                  color={
-                    computedData.length === 1
-                      ? 'error'
-                      : index <= hash[loanStatus]
-                        ? 'text.primary'
-                        : 'text.secondary'
-                  }
-                  fontSize={{ xs: 14, lg: 16 }}
-                  variant={'subtitle1'}
+                <StepLabel icon={item.icon}>
+                  <Stack
+                    flexDirection={'row'}
+                    justifyContent={'space-between'}
+                    ml={0.5}
+                  >
+                    <Typography
+                      color={
+                        computedData.length === 1
+                          ? 'error'
+                          : index <= hash[loanStatus]
+                            ? 'text.primary'
+                            : 'text.secondary'
+                      }
+                      fontSize={{ xs: 14, lg: 16 }}
+                      variant={'subtitle1'}
+                    >
+                      {item.label}
+                    </Typography>
+                    {!['xs', 'sm', 'md', 'lg'].includes(breakpoints) && (
+                      <Typography
+                        bgcolor={
+                          loanStatus === PipelineLoanStageEnum.rejected
+                            ? 'error.background'
+                            : loanStatus === PipelineLoanStageEnum.inactive
+                              ? 'rgba(239, 239, 239, 1)'
+                              : index <= hash[loanStatus]
+                                ? 'success.background'
+                                : 'transparent'
+                        }
+                        border={
+                          index <= hash[loanStatus]
+                            ? '1px solid transparent'
+                            : '1px solid #BABCBE'
+                        }
+                        borderRadius={5}
+                        color={
+                          loanStatus === PipelineLoanStageEnum.rejected
+                            ? 'error.main'
+                            : loanStatus === PipelineLoanStageEnum.inactive
+                              ? '#9F9F9F'
+                              : index <= hash[loanStatus]
+                                ? 'success.main'
+                                : 'text.disabled'
+                        }
+                        height={22}
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                        variant={'subtitle3'}
+                        width={120}
+                      >
+                        {loanStatus === PipelineLoanStageEnum.rejected
+                          ? 'Rejected'
+                          : loanStatus === PipelineLoanStageEnum.inactive
+                            ? 'Inactive'
+                            : index <= hash[loanStatus]
+                              ? 'Completed'
+                              : 'Pending'}
+                      </Typography>
+                    )}
+                  </Stack>
+                </StepLabel>
+                <StepContent>
+                  <Stack
+                    flexDirection={{ xs: 'column', xl: 'row' }}
+                    gap={{ xs: 1.5, xl: 3 }}
+                    mb={1.5}
+                    minHeight={24}
+                    ml={0.5}
+                  >
+                    {hash[loanStatus] === index && (
+                      <Typography
+                        color={'text.secondary'}
+                        variant={'body2'}
+                        width={{ xs: '100%', xl: '50%' }}
+                      >
+                        {item.description}
+                      </Typography>
+                    )}
+
+                    {['xs', 'sm', 'md', 'lg'].includes(breakpoints) && (
+                      <Typography
+                        bgcolor={
+                          loanStatus === PipelineLoanStageEnum.rejected
+                            ? 'error.background'
+                            : loanStatus === PipelineLoanStageEnum.inactive
+                              ? 'rgba(239, 239, 239, 1)'
+                              : index <= hash[loanStatus]
+                                ? 'success.background'
+                                : 'transparent'
+                        }
+                        border={
+                          index <= hash[loanStatus]
+                            ? '1px solid transparent'
+                            : '1px solid #BABCBE'
+                        }
+                        borderRadius={5}
+                        color={
+                          loanStatus === PipelineLoanStageEnum.rejected
+                            ? 'error.main'
+                            : loanStatus === PipelineLoanStageEnum.inactive
+                              ? '#9F9F9F'
+                              : index <= hash[loanStatus]
+                                ? 'success.main'
+                                : 'text.disabled'
+                        }
+                        height={22}
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                        variant={'subtitle3'}
+                        width={120}
+                      >
+                        {loanStatus === PipelineLoanStageEnum.rejected
+                          ? 'Rejected'
+                          : loanStatus === PipelineLoanStageEnum.inactive
+                            ? 'Inactive'
+                            : index <= hash[loanStatus]
+                              ? 'Completed'
+                              : 'Pending'}
+                      </Typography>
+                    )}
+
+                    {item.date &&
+                      hash[loanStatus] >= index &&
+                      (['xs', 'sm', 'md', 'lg'].includes(breakpoints) ||
+                        activeIndex === index) && (
+                        <Typography
+                          color={'text.secondary'}
+                          ml={{ xs: 'unset', xl: 'auto' }}
+                          variant={'body3'}
+                        >
+                          {item.date}
+                        </Typography>
+                      )}
+                  </Stack>
+                </StepContent>
+              </Step>
+            </StyledTooltip>
+          ) : (
+            <Step
+              completed={index <= hash[loanStatus]}
+              expanded={true}
+              key={`${item.label}-${index}`}
+              onMouseEnter={() => {
+                setActiveIndex(index);
+              }}
+              onMouseLeave={() => {
+                setActiveIndex(-1);
+              }}
+            >
+              <StyledTooltip
+                mode={'controlled'}
+                placement={'left'}
+                title={item.tooltipTitle}
+              >
+                <StepLabel icon={item.icon}>
+                  <Stack
+                    flexDirection={'row'}
+                    justifyContent={'space-between'}
+                    ml={0.5}
+                  >
+                    <Typography
+                      color={
+                        computedData.length === 1
+                          ? 'error'
+                          : index <= hash[loanStatus]
+                            ? 'text.primary'
+                            : 'text.secondary'
+                      }
+                      fontSize={{ xs: 14, lg: 16 }}
+                      variant={'subtitle1'}
+                    >
+                      {item.label}
+                    </Typography>
+                    {!['xs', 'sm', 'md', 'lg'].includes(breakpoints) && (
+                      <Typography
+                        bgcolor={
+                          loanStatus === PipelineLoanStageEnum.rejected
+                            ? 'error.background'
+                            : loanStatus === PipelineLoanStageEnum.inactive
+                              ? 'rgba(239, 239, 239, 1)'
+                              : index <= hash[loanStatus]
+                                ? 'success.background'
+                                : 'transparent'
+                        }
+                        border={
+                          index <= hash[loanStatus]
+                            ? '1px solid transparent'
+                            : '1px solid #BABCBE'
+                        }
+                        borderRadius={5}
+                        color={
+                          loanStatus === PipelineLoanStageEnum.rejected
+                            ? 'error.main'
+                            : loanStatus === PipelineLoanStageEnum.inactive
+                              ? '#9F9F9F'
+                              : index <= hash[loanStatus]
+                                ? 'success.main'
+                                : 'text.disabled'
+                        }
+                        height={22}
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                        variant={'subtitle3'}
+                        width={120}
+                      >
+                        {loanStatus === PipelineLoanStageEnum.rejected
+                          ? 'Rejected'
+                          : loanStatus === PipelineLoanStageEnum.inactive
+                            ? 'Inactive'
+                            : index <= hash[loanStatus]
+                              ? 'Completed'
+                              : 'Pending'}
+                      </Typography>
+                    )}
+                  </Stack>
+                </StepLabel>
+              </StyledTooltip>
+
+              <StepContent>
+                <Stack
+                  flexDirection={{ xs: 'column', xl: 'row' }}
+                  gap={{ xs: 1.5, xl: 3 }}
+                  mb={1.5}
+                  minHeight={24}
+                  ml={0.5}
                 >
-                  {item.label}
-                </Typography>
-                {!['xs', 'sm', 'md', 'lg'].includes(breakpoints) && (
-                  <Typography
-                    bgcolor={
-                      loanStatus === PipelineLoanStageEnum.rejected
-                        ? 'error.background'
-                        : loanStatus === PipelineLoanStageEnum.inactive
-                          ? 'rgba(239, 239, 239, 1)'
-                          : index <= hash[loanStatus]
-                            ? 'success.background'
-                            : 'transparent'
-                    }
-                    border={
-                      index <= hash[loanStatus]
-                        ? '1px solid transparent'
-                        : '1px solid #BABCBE'
-                    }
-                    borderRadius={5}
-                    color={
-                      loanStatus === PipelineLoanStageEnum.rejected
-                        ? 'error.main'
-                        : loanStatus === PipelineLoanStageEnum.inactive
-                          ? '#9F9F9F'
-                          : index <= hash[loanStatus]
-                            ? 'success.main'
-                            : 'text.disabled'
-                    }
-                    height={22}
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                    variant={'subtitle3'}
-                    width={120}
-                  >
-                    {loanStatus === PipelineLoanStageEnum.rejected
-                      ? 'Rejected'
-                      : loanStatus === PipelineLoanStageEnum.inactive
-                        ? 'Inactive'
-                        : index <= hash[loanStatus]
-                          ? 'Completed'
-                          : 'Pending'}
-                  </Typography>
-                )}
-              </Stack>
-            </StepLabel>
-            <StepContent>
-              <Stack
-                flexDirection={{ xs: 'column', xl: 'row' }}
-                gap={{ xs: 1.5, xl: 3 }}
-                mb={1.5}
-                minHeight={24}
-                ml={0.5}
-              >
-                {hash[loanStatus] === index && (
-                  <Typography
-                    color={'text.secondary'}
-                    variant={'body2'}
-                    width={{ xs: '100%', xl: '50%' }}
-                  >
-                    {item.description}
-                  </Typography>
-                )}
-
-                {['xs', 'sm', 'md', 'lg'].includes(breakpoints) && (
-                  <Typography
-                    bgcolor={
-                      loanStatus === PipelineLoanStageEnum.rejected
-                        ? 'error.background'
-                        : loanStatus === PipelineLoanStageEnum.inactive
-                          ? 'rgba(239, 239, 239, 1)'
-                          : index <= hash[loanStatus]
-                            ? 'success.background'
-                            : 'transparent'
-                    }
-                    border={
-                      index <= hash[loanStatus]
-                        ? '1px solid transparent'
-                        : '1px solid #BABCBE'
-                    }
-                    borderRadius={5}
-                    color={
-                      loanStatus === PipelineLoanStageEnum.rejected
-                        ? 'error.main'
-                        : loanStatus === PipelineLoanStageEnum.inactive
-                          ? '#9F9F9F'
-                          : index <= hash[loanStatus]
-                            ? 'success.main'
-                            : 'text.disabled'
-                    }
-                    height={22}
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                    variant={'subtitle3'}
-                    width={120}
-                  >
-                    {loanStatus === PipelineLoanStageEnum.rejected
-                      ? 'Rejected'
-                      : loanStatus === PipelineLoanStageEnum.inactive
-                        ? 'Inactive'
-                        : index <= hash[loanStatus]
-                          ? 'Completed'
-                          : 'Pending'}
-                  </Typography>
-                )}
-
-                {item.date &&
-                  hash[loanStatus] >= index &&
-                  (['xs', 'sm', 'md', 'lg'].includes(breakpoints) ||
-                    activeIndex === index) && (
+                  {hash[loanStatus] === index && (
                     <Typography
                       color={'text.secondary'}
-                      ml={{ xs: 'unset', xl: 'auto' }}
-                      variant={'body3'}
+                      variant={'body2'}
+                      width={{ xs: '100%', xl: '50%' }}
                     >
-                      {item.date}
+                      {item.description}
                     </Typography>
                   )}
-              </Stack>
-            </StepContent>
-          </Step>
-        ))}
+
+                  {['xs', 'sm', 'md', 'lg'].includes(breakpoints) && (
+                    <Typography
+                      bgcolor={
+                        loanStatus === PipelineLoanStageEnum.rejected
+                          ? 'error.background'
+                          : loanStatus === PipelineLoanStageEnum.inactive
+                            ? 'rgba(239, 239, 239, 1)'
+                            : index <= hash[loanStatus]
+                              ? 'success.background'
+                              : 'transparent'
+                      }
+                      border={
+                        index <= hash[loanStatus]
+                          ? '1px solid transparent'
+                          : '1px solid #BABCBE'
+                      }
+                      borderRadius={5}
+                      color={
+                        loanStatus === PipelineLoanStageEnum.rejected
+                          ? 'error.main'
+                          : loanStatus === PipelineLoanStageEnum.inactive
+                            ? '#9F9F9F'
+                            : index <= hash[loanStatus]
+                              ? 'success.main'
+                              : 'text.disabled'
+                      }
+                      height={22}
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                      variant={'subtitle3'}
+                      width={120}
+                    >
+                      {loanStatus === PipelineLoanStageEnum.rejected
+                        ? 'Rejected'
+                        : loanStatus === PipelineLoanStageEnum.inactive
+                          ? 'Inactive'
+                          : index <= hash[loanStatus]
+                            ? 'Completed'
+                            : 'Pending'}
+                    </Typography>
+                  )}
+
+                  {item.date &&
+                    hash[loanStatus] >= index &&
+                    (['xs', 'sm', 'md', 'lg'].includes(breakpoints) ||
+                      activeIndex === index) && (
+                      <Typography
+                        color={'text.secondary'}
+                        ml={{ xs: 'unset', xl: 'auto' }}
+                        variant={'body3'}
+                      >
+                        {item.date}
+                      </Typography>
+                    )}
+                </Stack>
+              </StepContent>
+            </Step>
+          ),
+        )}
       </Stepper>
       {loanStatus === PipelineLoanStageEnum.inactive && (
         <StyledButton

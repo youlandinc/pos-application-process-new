@@ -17,7 +17,7 @@ export interface StyledTooltipProps extends TooltipProps {
   isDisabledClose?: boolean;
   tooltipSx?: SxProps;
   component?: ElementType;
-  mode?: 'click' | 'hover' | 'for-select' | 'controlled';
+  mode?: 'click' | 'hover' | 'for-select' | 'controlled' | 'none';
   forSelectState?: boolean;
 }
 
@@ -163,6 +163,8 @@ export const StyledTooltip: FC<StyledTooltipProps> = ({
             {children ? children : <span>{rest.title}</span>}
           </Tooltip>
         );
+      case 'none':
+        return children;
       default:
         return null;
     }
