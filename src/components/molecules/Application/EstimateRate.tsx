@@ -1431,7 +1431,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 }
                 sx={{ maxWidth: { xs: '100%', lg: 220 } }}
                 tooltipTitle={
-                  '"Liquidity refers to the cash or readily available funds you have on hand. This includes cash in bank accounts, savings, and liquid investments. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure". "'
+                  'Liquidity refers to the cash or readily available funds you have on hand. This includes cash in bank accounts, savings, and liquid investments. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure". '
                 }
               />
 
