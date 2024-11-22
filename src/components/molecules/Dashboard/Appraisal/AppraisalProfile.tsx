@@ -36,7 +36,7 @@ export interface AppraisalProfileData {
 }
 
 export interface AppraisalProfileProps {
-  nextStep?: (postData: AppraisalProfileData) => void;
+  nextStep?: (postData: AppraisalProfileData) => Promise<void>;
   nextState: boolean;
   profileData: AppraisalProfileData;
 }
@@ -116,7 +116,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
       }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
       const postData = {
         loanId: router.query.loanId,
         haveAppraisal,
@@ -130,7 +130,13 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
         email,
         instructions,
       };
-      nextStep?.(postData);
+      await nextStep?.(postData);
+      if (haveAppraisal) {
+        await router.push({
+          pathname: '/dashboard/overview',
+          query: { loanId: router.query.loanId },
+        });
+      }
     };
 
     const isFormDataValid = useMemo(() => {
