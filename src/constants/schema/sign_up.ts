@@ -20,6 +20,9 @@ export const SignUpSchema = {
       message: "doesn't look like a valid email",
     },
   },
+  phone: {
+    AmericanPhoneNumber: {},
+  },
   confirmedPassword: {
     equality: {
       attribute: 'password',

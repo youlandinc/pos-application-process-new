@@ -47,8 +47,10 @@ import { _downloadFile, _fetchFile } from '@/requests/application';
 import NOTIFICATION_INFO from '@/components/atoms/StyledNotification/notification_info.svg';
 
 export const Terms: FC = observer(() => {
-  const breakpoints = useBreakpoints();
   const router = useRouter();
+
+  const breakpoints = useBreakpoints();
+
   const { enqueueSnackbar } = useSnackbar();
 
   const { userType } = useMst();
@@ -78,6 +80,12 @@ export const Terms: FC = observer(() => {
       });
     }
   }, [location?.href]);
+
+  const {
+    open: modifyOpen,
+    close: modifyClose,
+    visible: modifyVisible,
+  } = useSwitch(false);
 
   const {
     open: previewOpen,
@@ -842,8 +850,55 @@ export const Terms: FC = observer(() => {
               <b>Disclaimer: </b>The estimates are subject to change and do not
               include 3rd party settlement fees required to close your loan.
             </Typography>
+
+            <StyledButton
+              color={'info'}
+              onClick={modifyOpen}
+              size={'small'}
+              sx={{ width: 276, mt: 3, ml: 'auto' }}
+              variant={'outlined'}
+            >
+              Modify application
+            </StyledButton>
           </Stack>
         </Stack>
+
+        <StyledDialog
+          content={
+            <Typography
+              color={'text.secondary'}
+              pb={4}
+              pt={1.5}
+              variant={'body2'}
+              width={'100%'}
+            >
+              You will have to resubmit the application and go through
+              underwriting again.
+            </Typography>
+          }
+          footer={
+            <Stack flexDirection={'row'} gap={3}>
+              <StyledButton
+                color={'info'}
+                size={'small'}
+                sx={{ width: 120 }}
+                variant={'outlined'}
+              >
+                No, cancel
+              </StyledButton>
+              <StyledButton
+                color={'warning'}
+                size={'small'}
+                sx={{ width: 120 }}
+              >
+                Yes, modify
+              </StyledButton>
+            </Stack>
+          }
+          header={'Are you sure you want to modify your application?'}
+          onClose={modifyClose}
+          open={modifyVisible}
+        />
 
         <StyledDialog
           content={

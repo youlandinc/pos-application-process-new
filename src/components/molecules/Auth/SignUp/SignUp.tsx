@@ -43,6 +43,7 @@ import {
   StyledTextField,
   StyledTextFieldOtp,
   StyledTextFieldPassword,
+  StyledTextFieldPhone,
   Transitions,
 } from '@/components/atoms';
 
@@ -66,6 +67,7 @@ export const SignUp: FC<SignUpProps> = observer(
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
@@ -115,6 +117,7 @@ export const SignUp: FC<SignUpProps> = observer(
           confirmedPassword,
           firstName,
           lastName,
+          phone,
         };
 
         const errors = validate(validateSchema, SignUpSchema);
@@ -131,6 +134,7 @@ export const SignUp: FC<SignUpProps> = observer(
             firstName,
             companyName,
             lastName,
+            phone,
             password: userpool.encode(password),
             userType:
               saasState?.serviceTypeEnum === 'SAAS'
@@ -163,6 +167,7 @@ export const SignUp: FC<SignUpProps> = observer(
         lastName,
         open,
         password,
+        phone,
         saasState?.serviceTypeEnum,
         userType,
       ],
@@ -401,15 +406,29 @@ export const SignUp: FC<SignUpProps> = observer(
             />
           </Stack>
 
-          <StyledTextField
-            disabled={loading}
-            label={'Email'}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={'Email'}
-            required
-            validate={formError?.email}
-            value={email}
-          />
+          <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
+            <StyledTextField
+              disabled={loading}
+              label={'Email'}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={'Email'}
+              required
+              validate={formError?.email}
+              value={email}
+            />
+
+            <StyledTextFieldPhone
+              disabled={loading}
+              label={'Phone number'}
+              onValueChange={({ value }) => {
+                setPhone(value);
+              }}
+              placeholder={'Phone number'}
+              required
+              validate={formError?.phone}
+              value={phone}
+            />
+          </Stack>
 
           <Box>
             <StyledTextFieldPassword
@@ -487,6 +506,7 @@ export const SignUp: FC<SignUpProps> = observer(
       firstName,
       formError?.confirmedPassword,
       formError?.email,
+      formError?.phone,
       formError?.userType,
       handledPasswordChange,
       handledSubmit,
@@ -496,6 +516,7 @@ export const SignUp: FC<SignUpProps> = observer(
       loading,
       password,
       passwordError,
+      phone,
       saasState?.serviceTypeEnum,
       userType,
       userTypeOption,

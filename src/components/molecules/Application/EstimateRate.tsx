@@ -1081,8 +1081,10 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
           ? estimateRate.purchaseConstructionCosts
           : estimateRate.refinanceConstructionCosts;
 
-      const initialDisbursement =
-        (totalLoanAmount ?? 0) - (futureConstructionFunding ?? 0);
+      const initialDisbursement = Math.max(
+        (totalLoanAmount ?? 0) - (futureConstructionFunding ?? 0),
+        0,
+      );
 
       const firstLine = (
         <Stack
@@ -1106,7 +1108,14 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 variant={'subtitle1'}
               >
                 Future construction funding:{' '}
-                <span>{POSFormatDollar(futureConstructionFunding)}</span>
+                <span>
+                  {POSFormatDollar(
+                    Math.min(
+                      futureConstructionFunding ?? 0,
+                      totalLoanAmount ?? 0,
+                    ),
+                  )}
+                </span>
               </Typography>
             </>
           )}
