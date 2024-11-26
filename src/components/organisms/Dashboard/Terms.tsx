@@ -39,21 +39,25 @@ import {
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPurposeEnum,
+  LoanSnapshotEnum,
   UserType,
 } from '@/types';
-import { _fetchLoanTermsData } from '@/requests/dashboard';
+import { _fetchLoanTermsData, _resubmitLoan } from '@/requests/dashboard';
 import { _downloadFile, _fetchFile } from '@/requests/application';
 
 import NOTIFICATION_INFO from '@/components/atoms/StyledNotification/notification_info.svg';
 
 export const Terms: FC = observer(() => {
-  const breakpoints = useBreakpoints();
   const router = useRouter();
+
+  const breakpoints = useBreakpoints();
+
   const { enqueueSnackbar } = useSnackbar();
 
   const { userType } = useMst();
 
   const [data, setData] = useState<any>({});
+  const [modifying, setModifying] = useState(false);
 
   const { loading } = useAsync(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
@@ -78,6 +82,12 @@ export const Terms: FC = observer(() => {
       });
     }
   }, [location?.href]);
+
+  const {
+    open: modifyOpen,
+    close: modifyClose,
+    visible: modifyVisible,
+  } = useSwitch(false);
 
   const {
     open: previewOpen,
@@ -515,6 +525,38 @@ export const Terms: FC = observer(() => {
     }
   }, [enqueueSnackbar]);
 
+  const onClickToModify = useCallback(async () => {
+    const { loanId } = POSGetParamsFromUrl(location.href);
+    if (!loanId) {
+      return;
+    }
+    const postData = {
+      loanId,
+      nextSnapshot: LoanSnapshotEnum.starting_question,
+    };
+    setModifying(true);
+
+    try {
+      await _resubmitLoan(postData);
+      await router.push({
+        pathname: '/',
+        query: {
+          loanId,
+        },
+      });
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setModifying(false);
+    }
+  }, [enqueueSnackbar, router]);
+
   return loading ? (
     <Stack
       alignItems={'center'}
@@ -842,8 +884,59 @@ export const Terms: FC = observer(() => {
               <b>Disclaimer: </b>The estimates are subject to change and do not
               include 3rd party settlement fees required to close your loan.
             </Typography>
+
+            <StyledButton
+              color={'info'}
+              onClick={modifyOpen}
+              size={'small'}
+              sx={{ width: 276, mt: 3, ml: 'auto' }}
+              variant={'outlined'}
+            >
+              Modify application
+            </StyledButton>
           </Stack>
         </Stack>
+
+        <StyledDialog
+          content={
+            <Typography
+              color={'text.secondary'}
+              pb={4}
+              pt={1.5}
+              variant={'body2'}
+              width={'100%'}
+            >
+              You will have to resubmit the application and go through
+              underwriting again.
+            </Typography>
+          }
+          footer={
+            <Stack flexDirection={'row'} gap={3}>
+              <StyledButton
+                color={'info'}
+                onClick={modifyClose}
+                size={'small'}
+                sx={{ width: 120 }}
+                variant={'outlined'}
+              >
+                No, cancel
+              </StyledButton>
+              <StyledButton
+                color={'error'}
+                disabled={modifying}
+                loading={modifying}
+                onClick={onClickToModify}
+                size={'small'}
+                sx={{ width: 120 }}
+              >
+                Yes, modify
+              </StyledButton>
+            </Stack>
+          }
+          header={'Are you sure you want to modify your application?'}
+          onClose={modifyClose}
+          open={modifyVisible}
+        />
 
         <StyledDialog
           content={

@@ -49,6 +49,7 @@ declare namespace User {
       email: string;
       password: string;
       userType: UserType;
+      phone: string;
     };
   }
 
