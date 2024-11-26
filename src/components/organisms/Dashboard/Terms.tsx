@@ -39,9 +39,10 @@ import {
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPurposeEnum,
+  LoanSnapshotEnum,
   UserType,
 } from '@/types';
-import { _fetchLoanTermsData } from '@/requests/dashboard';
+import { _fetchLoanTermsData, _resubmitLoan } from '@/requests/dashboard';
 import { _downloadFile, _fetchFile } from '@/requests/application';
 
 import NOTIFICATION_INFO from '@/components/atoms/StyledNotification/notification_info.svg';
@@ -56,6 +57,7 @@ export const Terms: FC = observer(() => {
   const { userType } = useMst();
 
   const [data, setData] = useState<any>({});
+  const [modifying, setModifying] = useState(false);
 
   const { loading } = useAsync(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
@@ -523,6 +525,38 @@ export const Terms: FC = observer(() => {
     }
   }, [enqueueSnackbar]);
 
+  const onClickToModify = useCallback(async () => {
+    const { loanId } = POSGetParamsFromUrl(location.href);
+    if (!loanId) {
+      return;
+    }
+    const postData = {
+      loanId,
+      nextSnapshot: LoanSnapshotEnum.starting_question,
+    };
+    setModifying(true);
+
+    try {
+      await _resubmitLoan(postData);
+      await router.push({
+        pathname: '/',
+        query: {
+          loanId,
+        },
+      });
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    } finally {
+      setModifying(false);
+    }
+  }, [enqueueSnackbar, router]);
+
   return loading ? (
     <Stack
       alignItems={'center'}
@@ -880,6 +914,7 @@ export const Terms: FC = observer(() => {
             <Stack flexDirection={'row'} gap={3}>
               <StyledButton
                 color={'info'}
+                onClick={modifyClose}
                 size={'small'}
                 sx={{ width: 120 }}
                 variant={'outlined'}
@@ -887,7 +922,10 @@ export const Terms: FC = observer(() => {
                 No, cancel
               </StyledButton>
               <StyledButton
-                color={'warning'}
+                color={'error'}
+                disabled={modifying}
+                loading={modifying}
+                onClick={onClickToModify}
                 size={'small'}
                 sx={{ width: 120 }}
               >
