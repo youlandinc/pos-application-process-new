@@ -200,7 +200,7 @@ export const ProductCustomItem: FC<{
               </Typography>
 
               <Typography fontSize={{ xs: 16, lg: 20 }} variant={'h6'}>
-                {POSFormatDollar(initialMonthlyPayment)}
+                {POSFormatDollar(Math.max(initialMonthlyPayment, 0))}
               </Typography>
             </Stack>
             <Stack
