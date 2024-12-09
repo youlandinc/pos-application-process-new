@@ -541,19 +541,21 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                   value={estimateRate.purchaseLoanAmount}
                 />
-                <Typography
-                  color={'text.secondary'}
-                  mt={2}
-                  sx={{
-                    '& > b': {
-                      color: 'primary.main',
-                      fontWeight: 600,
-                    },
-                  }}
-                  variant={'body3'}
-                >
-                  Loan to value: <b>{POSFormatPercent(LTV, 1)}</b>
-                </Typography>
+                {!condition && (
+                  <Typography
+                    color={'text.secondary'}
+                    mt={2}
+                    sx={{
+                      '& > b': {
+                        color: 'primary.main',
+                        fontWeight: 600,
+                      },
+                    }}
+                    variant={'body3'}
+                  >
+                    Loan to value: <b>{POSFormatPercent(LTV, 1)}</b>
+                  </Typography>
+                )}
               </Stack>
             );
           }
