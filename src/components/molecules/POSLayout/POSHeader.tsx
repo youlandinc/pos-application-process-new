@@ -78,20 +78,28 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
   const hasSession = useMemo<boolean>(() => !!session, [session]);
 
   const calculateProgress = useMemo(() => {
+    if (
+      LOGIN_BROKER.indexOf(snapshot) < 0 ||
+      LOGIN_NOT_BROKER.indexOf(snapshot) < 0 ||
+      NOT_LOGIN.indexOf(snapshot) < 0
+    ) {
+      return false;
+    }
     if (scene === LayoutSceneTypeEnum.application) {
       if (hasSession) {
-        if (userType !== UserType.CUSTOMER) {
+        if (userType === UserType.CUSTOMER) {
           return (
-            ((LOGIN_BROKER.indexOf(snapshot) + 1) / LOGIN_BROKER.length) *
+            (LOGIN_NOT_BROKER.indexOf(snapshot) /
+              (LOGIN_NOT_BROKER.length - 1)) *
               100 || 0
           );
         }
         return (
-          ((LOGIN_NOT_BROKER.indexOf(snapshot) + 1) / LOGIN_NOT_BROKER.length) *
-            100 || 0
+          (LOGIN_BROKER.indexOf(snapshot) / (LOGIN_BROKER.length - 1)) * 100 ||
+          0
         );
       }
-      return ((NOT_LOGIN.indexOf(snapshot) + 1) / NOT_LOGIN.length) * 100 || 0;
+      return (NOT_LOGIN.indexOf(snapshot) / (NOT_LOGIN.length - 1)) * 100 || 0;
     }
     return 0;
   }, [hasSession, scene, snapshot, userType]);
@@ -711,7 +719,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
           }}
         />
       </Stack>
-      {scene === LayoutSceneTypeEnum.application && (
+      {scene === LayoutSceneTypeEnum.application && !!calculateProgress && (
         <Stack
           alignItems={'center'}
           bgcolor={'#D2D6E1'}

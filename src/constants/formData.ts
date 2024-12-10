@@ -13,7 +13,7 @@ import {
 export const FormData = {
   [LoanSnapshotEnum.starting_question]: {
     loanType: LoanTypeEnum.bridge, // BRIDGE, MORTGAGE
-    productCategory: LoanProductCategoryEnum.stabilized_bridge, // STABILIZED_BRIDGE,   FIX_AND_FLIP,   GROUND_UP_CONSTRUCTION
+    productCategory: LoanProductCategoryEnum.stabilized_bridge, // STABILIZED_BRIDGE,   FIX_AND_FLIP,   GROUND_UP_CONSTRUCTION,  DSCR_RENTAL
     loanPurpose: LoanPurposeEnum.purchase, // purchase, refinance
     propertyType: LoanPropertyTypeEnum.single_family, //  SINGLE_FAMILY,   TOWNHOUSE,  CONDO,   UNITS24
     propertyUnit: LoanPropertyUnitEnum.two_units, //  TWO_UNITS,   THREE_UNITS,   FOUR_UNITS
