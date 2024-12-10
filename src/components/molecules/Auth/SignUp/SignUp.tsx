@@ -493,7 +493,7 @@ export const SignUp: FC<SignUpProps> = observer(
 
           <StyledButton
             color="primary"
-            //disabled={isDisabled || loading}
+            disabled={isDisabled || loading}
             type={'submit'}
             variant="contained"
           >
