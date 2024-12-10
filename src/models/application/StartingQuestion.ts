@@ -19,6 +19,7 @@ export const ApplicationStartingQuestion = types
       types.literal(LoanProductCategoryEnum.stabilized_bridge),
       types.literal(LoanProductCategoryEnum.fix_and_flip),
       types.literal(LoanProductCategoryEnum.ground_up_construction),
+      types.literal(LoanProductCategoryEnum.dscr_rental),
     ),
     loanPurpose: types.union(
       types.literal(LoanPurposeEnum.default),
