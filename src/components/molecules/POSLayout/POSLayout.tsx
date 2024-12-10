@@ -71,6 +71,7 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
             router.pathname.includes('tasks')
               ? 8
               : 0,
+          mt: scene === LayoutSceneTypeEnum.application ? 3 : 0,
         }}
       >
         {children}

@@ -56,16 +56,16 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
             src={saasState?.logoUrl || logoUrl}
             style={{
               position: 'absolute',
-              top:
-                ['sm', 'xs', 'md', 'lg'].includes(breakpoints) ||
-                scene === LayoutSceneTypeEnum.dashboard
-                  ? '50%'
-                  : 46,
-              transform:
-                ['sm', 'xs', 'md', 'lg'].includes(breakpoints) ||
-                scene === LayoutSceneTypeEnum.dashboard
-                  ? 'translateY(-50%)'
-                  : 'none',
+              top: '50%',
+              //['sm', 'xs', 'md', 'lg'].includes(breakpoints) ||
+              //scene === LayoutSceneTypeEnum.dashboard
+              //  ? '50%'
+              //  : 46,
+              transform: 'translateY(-50%)',
+              //['sm', 'xs', 'md', 'lg'].includes(breakpoints) ||
+              //scene === LayoutSceneTypeEnum.dashboard
+              //  ? 'translateY(-50%)'
+              //  : 'none',
               left:
                 ratio === 1 && !['sm', 'xs', 'md', 'lg'].includes(breakpoints)
                   ? 44
@@ -73,12 +73,10 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
               zIndex: 1,
               maxHeight: ['sm', 'xs', 'md', 'lg'].includes(breakpoints)
                 ? 36
-                : 68,
-              maxWidth: ['sm', 'xs'].includes(breakpoints)
+                : 40,
+              maxWidth: ['sm', 'xs', 'md', 'lg'].includes(breakpoints)
                 ? 120
-                : ['md', 'lg'].includes(breakpoints)
-                  ? 160
-                  : 225,
+                : 180,
             }}
           />
         </picture>
@@ -106,7 +104,6 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
     ratio,
     saasState?.logoUrl,
     saasState?.organizationName,
-    scene,
   ]);
 
   useEffect(() => {
