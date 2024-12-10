@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
-import { validate } from 'validate.js';
+import validate from '@/constants/validate';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 

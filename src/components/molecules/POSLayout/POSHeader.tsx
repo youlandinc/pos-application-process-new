@@ -744,13 +744,15 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
             sx={{ transition: 'width .3s' }}
             width={`${calculateProgress}%`}
           />
-          <Typography
-            color={'primary.main'}
-            sx={{ position: 'absolute', top: 8 }}
-            variant={'body2'}
-          >
-            {Math.ceil(calculateProgress)}%
-          </Typography>
+          {!['xs', 'sm', 'md'].includes(breakpoint) && (
+            <Typography
+              color={'primary.main'}
+              sx={{ position: 'absolute', top: 8 }}
+              variant={'body2'}
+            >
+              {Math.ceil(calculateProgress)}%
+            </Typography>
+          )}
         </Stack>
       )}
 
