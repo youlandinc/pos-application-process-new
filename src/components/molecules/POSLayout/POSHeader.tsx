@@ -13,7 +13,7 @@ import {
   useSwitch,
 } from '@/hooks';
 
-import { POSFormatUrl } from '@/utils';
+import { POSFormatUrl, POSNotUndefined } from '@/utils';
 import {
   StyledButton,
   StyledDialog,
@@ -83,7 +83,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
       LOGIN_NOT_BROKER.indexOf(snapshot) < 0 ||
       NOT_LOGIN.indexOf(snapshot) < 0
     ) {
-      return false;
+      return undefined;
     }
     if (scene === LayoutSceneTypeEnum.application) {
       if (hasSession) {
@@ -101,7 +101,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
       }
       return (NOT_LOGIN.indexOf(snapshot) / (NOT_LOGIN.length - 1)) * 100 || 0;
     }
-    return 0;
+    return undefined;
   }, [hasSession, scene, snapshot, userType]);
 
   const handledLoginSuccess = usePersistFn(() => {
@@ -719,50 +719,52 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
           }}
         />
       </Stack>
-      {scene === LayoutSceneTypeEnum.application && !!calculateProgress && (
-        <Stack
-          alignItems={'center'}
-          bgcolor={'#D2D6E1'}
-          flexDirection={'row'}
-          height={'1px'}
-          mx={'auto'}
-          position={'relative'}
-          px={{
-            lg: 0,
-            xs: 'clamp(24px,6.4vw,80px)',
-          }}
-          width={{
-            xxl: 1440,
-            xl: 1240,
-            lg: 976,
-            xs: '100%',
-          }}
-        >
+      {scene === LayoutSceneTypeEnum.application &&
+        POSNotUndefined(calculateProgress) && (
           <Stack
-            bgcolor={'primary.main'}
-            borderRadius={1}
-            bottom={0}
-            height={4}
-            left={0}
-            position={'absolute'}
+            alignItems={'center'}
+            bgcolor={'#D2D6E1'}
+            flexDirection={'row'}
+            height={'1px'}
+            mx={'auto'}
+            position={'relative'}
             px={{
               lg: 0,
               xs: 'clamp(24px,6.4vw,80px)',
             }}
-            sx={{ transition: 'width .3s' }}
-            width={`${calculateProgress}%`}
-          />
-          {!['xs', 'sm', 'md'].includes(breakpoint) && (
-            <Typography
-              color={'primary.main'}
-              sx={{ position: 'absolute', top: 8 }}
-              variant={'body2'}
-            >
-              {Math.ceil(calculateProgress)}%
-            </Typography>
-          )}
-        </Stack>
-      )}
+            width={{
+              xxl: 1440,
+              xl: 1240,
+              lg: 976,
+              xs: '100%',
+            }}
+          >
+            <Stack
+              bgcolor={'primary.main'}
+              borderRadius={1}
+              bottom={0}
+              height={4}
+              left={0}
+              position={'absolute'}
+              px={{
+                lg: 0,
+                xs: 'clamp(24px,6.4vw,80px)',
+              }}
+              sx={{ transition: 'width .3s' }}
+              width={`${calculateProgress}%`}
+            />
+            {!['xs', 'sm', 'md'].includes(breakpoint) &&
+              POSNotUndefined(calculateProgress) && (
+                <Typography
+                  color={'primary.main'}
+                  sx={{ position: 'absolute', top: 8 }}
+                  variant={'body2'}
+                >
+                  {Math.ceil(calculateProgress!)}%
+                </Typography>
+              )}
+          </Stack>
+        )}
 
       {scene === LayoutSceneTypeEnum.dashboard && (
         <Stack
