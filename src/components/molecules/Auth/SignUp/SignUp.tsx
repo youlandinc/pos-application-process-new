@@ -9,10 +9,11 @@ import {
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import { validate } from 'validate.js';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
+
+import { POSFormatUrl } from '@/utils';
 
 import {
   AUTO_HIDE_DURATION,
@@ -51,7 +52,8 @@ import SIGN_UP_SVG from '@/svg/auth/sign_up.svg';
 
 import { SignUpProps, SignUpStyles } from './index';
 import { User } from '@/types/user';
-import { POSFormatUrl } from '@/utils';
+
+import validate from '@/constants/validate';
 
 export const SignUp: FC<SignUpProps> = observer(
   ({ isNestForm = false, isRedirect = true, successCb }) => {
@@ -491,7 +493,7 @@ export const SignUp: FC<SignUpProps> = observer(
 
           <StyledButton
             color="primary"
-            disabled={isDisabled || loading}
+            //disabled={isDisabled || loading}
             type={'submit'}
             variant="contained"
           >
@@ -510,7 +512,6 @@ export const SignUp: FC<SignUpProps> = observer(
       formError?.userType,
       handledPasswordChange,
       handledSubmit,
-      isDisabled,
       isNestForm,
       lastName,
       loading,

@@ -9,7 +9,6 @@ import { useStoreData } from '@/hooks';
 import { POSLayout } from '@/components/molecules';
 
 import { LayoutSceneTypeEnum } from '@/types';
-import { Box } from '@mui/material';
 
 export const ApplicationPage: FC<{ children?: ReactNode }> = observer(
   ({ children }) => {
