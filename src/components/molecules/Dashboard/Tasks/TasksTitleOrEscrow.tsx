@@ -4,7 +4,6 @@ import { format, isDate, isValid } from 'date-fns';
 import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import { validate } from 'validate.js';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -21,6 +20,8 @@ import {
   OPTIONS_TASK_MANAGING_LOAN_CLOSING,
   TaskTitleOrEscrowSchema,
 } from '@/constants';
+
+import validate from '@/constants/validate';
 
 import {
   StyledButton,

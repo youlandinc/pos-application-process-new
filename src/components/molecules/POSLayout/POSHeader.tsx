@@ -14,12 +14,6 @@ import {
 } from '@/hooks';
 
 import { POSFormatUrl } from '@/utils';
-
-export interface POSHeaderProps {
-  scene: LayoutSceneTypeEnum;
-  loading?: boolean;
-}
-
 import {
   StyledButton,
   StyledDialog,
@@ -28,11 +22,42 @@ import {
 import { ForgotPassword, Login, SignUp } from '@/components/molecules';
 import { POSMenuList, POSMyAccountButton } from './index';
 
-import { LayoutSceneTypeEnum, LoanSnapshotEnum } from '@/types';
+import { LayoutSceneTypeEnum, LoanSnapshotEnum, UserType } from '@/types';
 
 import ICON_REFER_FRIEND from './assets/icon_refer_friend.svg';
 import ICON_VIEW_ALL_LOANS from './assets/icon_view_all_loans.svg';
 import ICON_START_NEW_LOAN from './assets/icon_start_new_loan.svg';
+
+export interface POSHeaderProps {
+  scene: LayoutSceneTypeEnum;
+  loading?: boolean;
+}
+
+const NOT_LOGIN = [
+  LoanSnapshotEnum.starting_question,
+  LoanSnapshotEnum.estimate_rate,
+  LoanSnapshotEnum.auth_page,
+  LoanSnapshotEnum.loan_address,
+  LoanSnapshotEnum.background_information,
+  LoanSnapshotEnum.loan_summary,
+];
+
+const LOGIN_NOT_BROKER = [
+  LoanSnapshotEnum.starting_question,
+  LoanSnapshotEnum.estimate_rate,
+  LoanSnapshotEnum.loan_address,
+  LoanSnapshotEnum.background_information,
+  LoanSnapshotEnum.loan_summary,
+];
+
+const LOGIN_BROKER = [
+  LoanSnapshotEnum.starting_question,
+  LoanSnapshotEnum.estimate_rate,
+  LoanSnapshotEnum.loan_address,
+  LoanSnapshotEnum.background_information,
+  LoanSnapshotEnum.compensation_page,
+  LoanSnapshotEnum.loan_summary,
+];
 
 export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
   const router = useRouter();
@@ -42,13 +67,34 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
   const { visible, open, close } = useSwitch(false);
   const { saasState } = useSessionStorageState('tenantConfig');
 
-  const { session, applicationForm } = store;
+  const { session, applicationForm, userType } = store;
+
+  const { snapshot } = applicationForm;
 
   const [authType, setAuthType] = useState<
     'login' | 'sign_up' | 'reset_password'
   >('login');
 
   const hasSession = useMemo<boolean>(() => !!session, [session]);
+
+  const calculateProgress = useMemo(() => {
+    if (scene === LayoutSceneTypeEnum.application) {
+      if (hasSession) {
+        if (userType !== UserType.CUSTOMER) {
+          return (
+            ((LOGIN_BROKER.indexOf(snapshot) + 1) / LOGIN_BROKER.length) *
+              100 || 0
+          );
+        }
+        return (
+          ((LOGIN_NOT_BROKER.indexOf(snapshot) + 1) / LOGIN_NOT_BROKER.length) *
+            100 || 0
+        );
+      }
+      return ((NOT_LOGIN.indexOf(snapshot) + 1) / NOT_LOGIN.length) * 100 || 0;
+    }
+    return 0;
+  }, [hasSession, scene, snapshot, userType]);
 
   const handledLoginSuccess = usePersistFn(() => {
     close();
@@ -665,6 +711,51 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
           }}
         />
       </Stack>
+      {scene === LayoutSceneTypeEnum.application && (
+        <Stack
+          alignItems={'center'}
+          bgcolor={'#D2D6E1'}
+          flexDirection={'row'}
+          height={'1px'}
+          mx={'auto'}
+          position={'relative'}
+          px={{
+            lg: 0,
+            xs: 'clamp(24px,6.4vw,80px)',
+          }}
+          width={{
+            xxl: 1440,
+            xl: 1240,
+            lg: 976,
+            xs: '100%',
+          }}
+        >
+          <Stack
+            bgcolor={'primary.main'}
+            borderRadius={1}
+            bottom={0}
+            height={4}
+            left={0}
+            position={'absolute'}
+            px={{
+              lg: 0,
+              xs: 'clamp(24px,6.4vw,80px)',
+            }}
+            sx={{ transition: 'width .3s' }}
+            width={`${calculateProgress}%`}
+          />
+          {!['xs', 'sm', 'md'].includes(breakpoint) && (
+            <Typography
+              color={'primary.main'}
+              sx={{ position: 'absolute', top: 8 }}
+              variant={'body2'}
+            >
+              {Math.ceil(calculateProgress)}%
+            </Typography>
+          )}
+        </Stack>
+      )}
+
       {scene === LayoutSceneTypeEnum.dashboard && (
         <Stack
           mt={{ xs: 0, lg: 2 }}

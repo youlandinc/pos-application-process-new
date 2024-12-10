@@ -9,7 +9,7 @@ import {
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import { validate } from 'validate.js';
+import validate from '@/constants/validate';
 
 import { ForgotPasswordProps } from './index';
 import { POSFlex } from '@/styles';

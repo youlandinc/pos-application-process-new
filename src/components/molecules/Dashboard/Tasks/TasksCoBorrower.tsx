@@ -3,7 +3,7 @@ import { Fade, Stack, Typography } from '@mui/material';
 import { format, isDate, isValid } from 'date-fns';
 import { useAsync } from 'react-use';
 import { useSnackbar } from 'notistack';
-import { validate } from 'validate.js';
+import validate from '@/constants/validate';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
