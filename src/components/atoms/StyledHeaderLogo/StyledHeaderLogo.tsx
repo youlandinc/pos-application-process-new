@@ -5,13 +5,13 @@ import { StyledHeaderLogoProps } from './index';
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 
 import { POSFormatUrl, POSGetImageSize } from '@/utils';
-import { LayoutSceneTypeEnum } from '@/types';
+//import { LayoutSceneTypeEnum } from '@/types';
 
 export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
   sx,
   logoUrl = '/images/logo/logo_blue.svg',
   disabled = false,
-  scene = LayoutSceneTypeEnum.dashboard,
+  //scene = LayoutSceneTypeEnum.dashboard,
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
   const [ratio, setRatio] = useState(-1);

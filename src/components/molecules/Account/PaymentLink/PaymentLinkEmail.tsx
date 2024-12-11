@@ -8,6 +8,7 @@ import {
   Stepper,
   Typography,
 } from '@mui/material';
+import { ContentCopy } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
@@ -28,6 +29,7 @@ import {
 } from '@/types';
 import {
   _addCustomEmailDomain,
+  _deleteCustomEmailDomain,
   _fetchCustomEmailDomains,
   _fetchIdentityCustomEmailDomain,
   _modifyCustomEmailDomain,
@@ -37,7 +39,7 @@ import {
 import ICON_REFRESH from './icon_refresh.svg';
 import ICON_SUCCESS from './icon_success.svg';
 import ICON_PENDING from './icon_pending.svg';
-import { ContentCopy } from '@mui/icons-material';
+import ICON_DELETE from './icon_delete.svg';
 
 const steps = ['Enter email domain', 'Verify ownership', 'Choose username'];
 
@@ -71,6 +73,11 @@ export const PaymentLinkEmail: FC<{
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { open, close, visible } = useSwitch(false);
+  const {
+    open: deleteOpen,
+    close: deleteClose,
+    visible: deleteVisible,
+  } = useSwitch(false);
   const breakpoints = useBreakpoints();
 
   const [fetchLoading, setFetchLoading] = useState(false);
@@ -87,6 +94,9 @@ export const PaymentLinkEmail: FC<{
   const [domainVerifyList, setDomainVerifyList] = useState<EmailDomainData[]>(
     [],
   );
+
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteItem, setDeleteItem] = useState<EmailDomainDetails>();
 
   const fetchCustomEmailDomain = useCallback(async () => {
     if (fetchLoading) {
@@ -625,6 +635,28 @@ export const PaymentLinkEmail: FC<{
     [activeStep],
   );
 
+  const onClickToDelete = useCallback(async () => {
+    if (!deleteItem) {
+      return;
+    }
+    setDeleteLoading(true);
+    try {
+      await _deleteCustomEmailDomain(deleteItem.id);
+      await fetchCustomEmailDomain();
+    } catch (err) {
+      const { message, header, variant } = err as HttpError;
+      enqueueSnackbar(message, { variant, header, isSimple: false });
+    } finally {
+      deleteClose();
+      setDeleteItem(void 0);
+      setDeleteLoading(false);
+      setTimeout(() => {
+        setActiveStep(0);
+        setDeleteItem(void 0);
+      }, 200);
+    }
+  }, [deleteClose, deleteItem, enqueueSnackbar, fetchCustomEmailDomain]);
+
   useEffect(() => {
     document.addEventListener('keydown', keydownEvent, false);
     return () => {
@@ -722,7 +754,7 @@ export const PaymentLinkEmail: FC<{
                 Email
               </Typography>
               <Typography fontSize={{ xs: 12, lg: 16 }}>
-                {item.email || '-'}
+                {item.email || item.emailDomain}
               </Typography>
             </Stack>
 
@@ -748,6 +780,20 @@ export const PaymentLinkEmail: FC<{
                 </Typography>
               </Stack>
             </Stack>
+
+            <Stack>
+              <Typography
+                color={'#5B76BC'}
+                onClick={() => {
+                  deleteOpen();
+                  setDeleteItem(item);
+                }}
+                sx={{ cursor: 'pointer' }}
+                variant={'subtitle3'}
+              >
+                {item.source === DomainSource.CUSTOM && 'Remove'}
+              </Typography>
+            </Stack>
           </Stack>
         ))
       ) : (
@@ -759,12 +805,13 @@ export const PaymentLinkEmail: FC<{
             <Typography flex={2} flexShrink={0} fontSize={14} fontWeight={600}>
               State
             </Typography>
+            <Typography width={60} />
           </Stack>
 
           {emailDomainList.map((item) => (
             <Stack flexDirection={'row'} gap={1.5} key={`pc_${item.id}`}>
               <Typography flex={3} flexShrink={0} fontSize={12}>
-                {item.email}
+                {item.email || item.emailDomain}
               </Typography>
 
               <Stack
@@ -783,6 +830,20 @@ export const PaymentLinkEmail: FC<{
                 />
                 <Typography fontSize={12}>
                   {DomainStateHash[item.validStatus]}
+                </Typography>
+              </Stack>
+
+              <Stack width={60}>
+                <Typography
+                  color={'#5B76BC'}
+                  onClick={() => {
+                    deleteOpen();
+                    setDeleteItem(item);
+                  }}
+                  sx={{ cursor: 'pointer' }}
+                  variant={'subtitle3'}
+                >
+                  {item.source === DomainSource.CUSTOM && 'Remove'}
                 </Typography>
               </Stack>
             </Stack>
@@ -874,6 +935,60 @@ export const PaymentLinkEmail: FC<{
             },
           },
         }}
+      />
+
+      <StyledDialog
+        content={
+          <Typography color={'text.secondary'} my={2} variant={'body2'}>
+            Are you sure you want to delete{' '}
+            <Typography
+              color={'text.primary'}
+              component={'span'}
+              fontSize={14}
+              fontWeight={500}
+            >
+              {deleteItem?.email || deleteItem?.emailDomain}
+            </Typography>
+            ?
+          </Typography>
+        }
+        footer={
+          <Stack
+            flexDirection={'row'}
+            gap={1.5}
+            justifyContent={'flex-end'}
+            width={'100%'}
+          >
+            <StyledButton
+              color={'info'}
+              onClick={() => {
+                deleteClose();
+              }}
+              size={'small'}
+              sx={{ width: 80 }}
+              variant={'outlined'}
+            >
+              Cancel
+            </StyledButton>
+            <StyledButton
+              color={'error'}
+              disabled={deleteLoading}
+              loading={deleteLoading}
+              onClick={onClickToDelete}
+              size={'small'}
+              sx={{ width: 80 }}
+            >
+              Delete
+            </StyledButton>
+          </Stack>
+        }
+        header={
+          <Stack alignItems={'center'} flexDirection={'row'} gap={1.5}>
+            <Icon component={ICON_DELETE} sx={{ width: 24, height: 24 }} />
+            <Typography variant={'h6'}>Delete</Typography>
+          </Stack>
+        }
+        open={deleteVisible}
       />
     </Stack>
   );

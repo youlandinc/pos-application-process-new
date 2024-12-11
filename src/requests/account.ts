@@ -116,6 +116,10 @@ export const _fetchLiveRecords = (params: { domainName: string }) => {
   return post('/usercenter/api/domain/liveRecord', params);
 };
 
+export const _deleteCustomDomain = (params: { id: string | number }) => {
+  return del('/usercenter/api/domain/delete', { data: params });
+};
+
 // payment link custom email domain
 // POST      api/customEmail    新增   {"domain":""}
 // POST      api/customEmail/modify    修改邮箱名   {"id":"","username":""}
@@ -144,4 +148,8 @@ export const _modifyCustomEmailDomain = (params: {
   userName: string;
 }) => {
   return post('/usercenter/api/customEmail/modify', params);
+};
+
+export const _deleteCustomEmailDomain = (id: number | string) => {
+  return del(`/usercenter/api/customEmail/${id}`);
 };
