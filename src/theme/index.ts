@@ -66,6 +66,7 @@ declare module '@mui/material/styles' {
     darker?: string;
     darkest?: string;
     lighter?: string;
+    lighter_font?: string;
     lightest?: string;
     hover?: string;
     background?: string;
@@ -121,6 +122,7 @@ export const theme = createTheme({
       darkest: `hsla(${CONSTANT_COLOR_HUE},28%,18%,1)`,
       light: `hsla(${CONSTANT_COLOR_HUE},100%,92%,1)`,
       lighter: `hsla(${CONSTANT_COLOR_HUE},100%,97%,1)`,
+      lighter_font: `hsla(${CONSTANT_COLOR_HUE},64%,44%,1)`,
       lightest: `hsla(${CONSTANT_COLOR_HUE},32%,98%,1)`,
       slightly_lighter: `hsla(${CONSTANT_COLOR_HUE},42%,55%,.8)`,
       contrastText: '#FFFFFF',
