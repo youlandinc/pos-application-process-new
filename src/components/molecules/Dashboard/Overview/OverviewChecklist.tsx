@@ -5,11 +5,11 @@ import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { DashboardTaskKey } from '@/types';
 import { POSGetParamsFromUrl } from '@/utils';
 
 import ICON_UNCOMPLETED from './assets/icon_uncompleted.svg';
 import ICON_COMPLETED from './assets/icon_completed.svg';
-import { DashboardTaskKey } from '@/types';
 
 export const OverviewChecklist: FC = observer(() => {
   const router = useRouter();

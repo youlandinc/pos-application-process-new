@@ -88,7 +88,26 @@ export const DashboardInfo = types
     },
     findNextTask(taskOrder: TaskItem[], currentKey?: DashboardTaskKey) {
       const index = taskOrder.findIndex((item) => item.key === currentKey);
-      return taskOrder[index + 1]?.key;
+      if (index > -1) {
+        return taskOrder[index + 1]?.key;
+      }
+
+      const originalOrder = Object.entries(DEFAULT_ORDER)
+        .filter(([key]) => self.taskMap.has(key as DashboardTaskKey))
+        .map(([key, value]) => ({ key: key as DashboardTaskKey, value }))
+        .sort((a, b) => a.value - b.value);
+
+      const originalIndex = originalOrder.findIndex(
+        (item) => item.key === currentKey,
+      );
+
+      for (let i = originalIndex + 1; i < originalOrder.length; i++) {
+        if (!self.taskMap.get(originalOrder[i].key)) {
+          return originalOrder[i].key;
+        }
+      }
+
+      return this.findFirst();
     },
     findPrevTask(taskOrder: TaskItem[], currentKey?: DashboardTaskKey) {
       const index = taskOrder.findIndex((item) => item.key === currentKey);
@@ -110,7 +129,6 @@ export const DashboardInfo = types
     async jumpToNextTask(taskKey?: DashboardTaskKey): Promise<void> {
       if (taskKey) {
         self.taskMap.set(taskKey, true);
-        self.taskOrder = cast(this.updateTaskOrder());
       }
 
       const condition = Array.from(self.taskMap.values()).every(
@@ -130,6 +148,7 @@ export const DashboardInfo = types
           query: { loanId: self.loanId },
         });
       }
+      self.taskOrder = cast(this.updateTaskOrder());
     },
     async jumpToNextTaskMobile() {
       const taskKey = Object.entries(TASK_URL_HASH).find(
@@ -141,8 +160,10 @@ export const DashboardInfo = types
         .map(([key, value]) => ({ key: key as DashboardTaskKey, value }))
         .sort((a, b) => a.value - b.value);
       const nextTaskKey = this.findNextTask(order, taskKey);
+
+      const target = nextTaskKey || this.findFirst();
       await Router.push({
-        pathname: TASK_URL_HASH[nextTaskKey!],
+        pathname: TASK_URL_HASH[target],
         query: { loanId: self.loanId },
       });
     },

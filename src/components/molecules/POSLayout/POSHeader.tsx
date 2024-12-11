@@ -78,30 +78,22 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
   const hasSession = useMemo<boolean>(() => !!session, [session]);
 
   const calculateProgress = useMemo(() => {
-    if (
-      LOGIN_BROKER.indexOf(snapshot) < 0 ||
-      LOGIN_NOT_BROKER.indexOf(snapshot) < 0 ||
-      NOT_LOGIN.indexOf(snapshot) < 0
-    ) {
+    if (scene !== LayoutSceneTypeEnum.application) {
       return undefined;
     }
-    if (scene === LayoutSceneTypeEnum.application) {
-      if (hasSession) {
-        if (userType === UserType.CUSTOMER) {
-          return (
-            (LOGIN_NOT_BROKER.indexOf(snapshot) /
-              (LOGIN_NOT_BROKER.length - 1)) *
-              100 || 0
-          );
-        }
-        return (
-          (LOGIN_BROKER.indexOf(snapshot) / (LOGIN_BROKER.length - 1)) * 100 ||
-          0
-        );
-      }
-      return (NOT_LOGIN.indexOf(snapshot) / (NOT_LOGIN.length - 1)) * 100 || 0;
+
+    const getProgress = (list: LoanSnapshotEnum[]) => {
+      const index = list.indexOf(snapshot);
+      return index < 0 ? undefined : (index / (list.length - 1)) * 100 || 0;
+    };
+
+    if (hasSession) {
+      return userType === UserType.CUSTOMER
+        ? getProgress(LOGIN_NOT_BROKER)
+        : getProgress(LOGIN_BROKER);
     }
-    return undefined;
+
+    return getProgress(NOT_LOGIN);
   }, [hasSession, scene, snapshot, userType]);
 
   const handledLoginSuccess = usePersistFn(() => {

@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { OPTIONS_COMMON_STATE } from '@/constants';
+import { OPTIONS_COMMON_STATE, TASK_URL_HASH } from '@/constants';
 import { useBreakpoints } from '@/hooks';
 
 import { POSMenuSelect } from './index';
@@ -144,7 +144,11 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ loading }) => {
         setActiveKey(key);
         if (path === 'tasks') {
           await dashboardInfo.fetchTaskMap(router.query.loanId as string);
-          await dashboardInfo.jumpToNextTask();
+          const target = dashboardInfo.findFirst();
+          await router.push({
+            pathname: `${TASK_URL_HASH[target]}`,
+            query: { loanId: router.query.loanId },
+          });
         } else {
           await router.push({
             pathname: `/dashboard/${path}`,
