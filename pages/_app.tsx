@@ -151,6 +151,7 @@ export default function MyApp(props: MyAppProps) {
             darkest: `hsla(${saasState?.posSettings?.h ?? 222},28%,18%,1)`,
             light: `hsla(${saasState?.posSettings?.h ?? 222},100%,92%,1)`,
             lighter: `hsla(${saasState?.posSettings?.h ?? 222},100%,97%,1)`,
+            lighter_font: `hsla(${saasState?.posSettings?.h ?? 222},64%,44%,1)`,
             lightest: `hsla(${saasState?.posSettings?.h ?? 222},32%,98%,1)`,
             brightness: `hsla(${saasState?.posSettings?.h ?? 222},80%,70%,1)`,
           },
