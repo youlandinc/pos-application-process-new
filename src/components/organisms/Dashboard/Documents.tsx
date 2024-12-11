@@ -197,8 +197,8 @@ export const Documents: FC = observer(() => {
             mt={3}
           >
             We&apos;ve implemented robust security measures to ensure your
-            data&apos;s privacy and protection, including advanced encryption,
-            privacy compliance, and regular security audits.
+            data&apos;s privacy and protection, including advanced 256-bit
+            encryption, secure SSL connections, and regular security audits.
           </Typography>
           <Typography
             color={'text.secondary'}
