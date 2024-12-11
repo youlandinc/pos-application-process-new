@@ -512,6 +512,7 @@ export const SignUp: FC<SignUpProps> = observer(
       formError?.userType,
       handledPasswordChange,
       handledSubmit,
+      isDisabled,
       isNestForm,
       lastName,
       loading,

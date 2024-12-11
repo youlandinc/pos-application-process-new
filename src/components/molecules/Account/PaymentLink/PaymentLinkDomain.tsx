@@ -11,6 +11,7 @@ import {
 import { ContentCopy } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 
+import { AUTO_HIDE_DURATION } from '@/constants';
 import { useBreakpoints, useSwitch } from '@/hooks';
 
 import {
@@ -29,6 +30,7 @@ import {
 } from '@/types';
 import {
   _addOrFetchCustomDomain,
+  _deleteCustomDomain,
   _fetchCustomDomains,
   _fetchLiveRecords,
   _verifyCustomDomain,
@@ -37,7 +39,7 @@ import {
 import ICON_REFRESH from './icon_refresh.svg';
 import ICON_SUCCESS from './icon_success.svg';
 import ICON_PENDING from './icon_pending.svg';
-import { AUTO_HIDE_DURATION } from '@/constants';
+import ICON_DELETE from './icon_delete.svg';
 
 const steps = ['Enter domain', 'Verify ownership', 'Go live'];
 
@@ -75,6 +77,11 @@ export const PaymentLinkDomain: FC<{
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { open, close, visible } = useSwitch(false);
+  const {
+    open: deleteOpen,
+    close: deleteClose,
+    visible: deleteVisible,
+  } = useSwitch(false);
   const breakpoints = useBreakpoints();
 
   const [fetchLoading, setFetchLoading] = useState(false);
@@ -92,6 +99,9 @@ export const PaymentLinkDomain: FC<{
   const [domainLiveData, setDomainLiveData] = useState<DomainLiveData>(
     initialDomainLiveData,
   );
+
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteItem, setDeleteItem] = useState<DomainDetails>();
 
   const fetchCustomDomain = useCallback(async () => {
     if (fetchLoading) {
@@ -759,6 +769,28 @@ export const PaymentLinkDomain: FC<{
     [activeStep],
   );
 
+  const onClickToDelete = useCallback(async () => {
+    if (!deleteItem) {
+      return;
+    }
+    setDeleteLoading(true);
+    try {
+      await _deleteCustomDomain({ id: deleteItem.id });
+      await fetchCustomDomain();
+    } catch (err) {
+      const { message, header, variant } = err as HttpError;
+      enqueueSnackbar(message, { variant, header, isSimple: false });
+    } finally {
+      deleteClose();
+      setDeleteItem(void 0);
+      setDeleteLoading(false);
+      setTimeout(() => {
+        setActiveStep(0);
+        setDeleteItem(void 0);
+      }, 200);
+    }
+  }, [deleteClose, deleteItem, enqueueSnackbar, fetchCustomDomain]);
+
   useEffect(() => {
     document.addEventListener('keydown', keydownEvent, false);
     return () => {
@@ -883,6 +915,20 @@ export const PaymentLinkDomain: FC<{
                 </Typography>
               </Stack>
             </Stack>
+
+            <Stack>
+              <Typography
+                color={'#5B76BC'}
+                onClick={() => {
+                  deleteOpen();
+                  setDeleteItem(item);
+                }}
+                sx={{ cursor: 'pointer' }}
+                variant={'subtitle3'}
+              >
+                {item.source === DomainSource.CUSTOM && 'Remove'}
+              </Typography>
+            </Stack>
           </Stack>
         ))
       ) : (
@@ -894,6 +940,8 @@ export const PaymentLinkDomain: FC<{
             <Typography flex={2} flexShrink={0} fontSize={14} fontWeight={600}>
               State
             </Typography>
+
+            <Typography width={60} />
           </Stack>
 
           {domainList.map((item) => (
@@ -924,6 +972,19 @@ export const PaymentLinkDomain: FC<{
                   {DomainStateHash[item.state]}
                 </Typography>
               </Stack>
+
+              <Typography
+                color={'#5B76BC'}
+                onClick={() => {
+                  deleteOpen();
+                  setDeleteItem(item);
+                }}
+                sx={{ cursor: 'pointer' }}
+                variant={'subtitle3'}
+                width={60}
+              >
+                {item.source === DomainSource.CUSTOM && 'Remove'}
+              </Typography>
             </Stack>
           ))}
         </Stack>
@@ -974,7 +1035,7 @@ export const PaymentLinkDomain: FC<{
                 sx={{ width: 80 }}
                 variant={'outlined'}
               >
-                Cancel
+                {activeStep === 1 ? 'Close' : 'Cancel'}
               </StyledButton>
             )}
             {renderStepButton}
@@ -1016,6 +1077,60 @@ export const PaymentLinkDomain: FC<{
             },
           },
         }}
+      />
+
+      <StyledDialog
+        content={
+          <Typography color={'text.secondary'} my={2} variant={'body2'}>
+            Are you sure you want to delete{' '}
+            <Typography
+              color={'text.primary'}
+              component={'span'}
+              fontSize={14}
+              fontWeight={500}
+            >
+              {deleteItem?.domainName}
+            </Typography>
+            ?
+          </Typography>
+        }
+        footer={
+          <Stack
+            flexDirection={'row'}
+            gap={1.5}
+            justifyContent={'flex-end'}
+            width={'100%'}
+          >
+            <StyledButton
+              color={'info'}
+              onClick={() => {
+                deleteClose();
+              }}
+              size={'small'}
+              sx={{ width: 80 }}
+              variant={'outlined'}
+            >
+              Cancel
+            </StyledButton>
+            <StyledButton
+              color={'error'}
+              disabled={deleteLoading}
+              loading={deleteLoading}
+              onClick={onClickToDelete}
+              size={'small'}
+              sx={{ width: 80 }}
+            >
+              Delete
+            </StyledButton>
+          </Stack>
+        }
+        header={
+          <Stack alignItems={'center'} flexDirection={'row'} gap={1.5}>
+            <Icon component={ICON_DELETE} sx={{ width: 24, height: 24 }} />
+            <Typography variant={'h6'}>Delete</Typography>
+          </Stack>
+        }
+        open={deleteVisible}
       />
     </Stack>
   );
