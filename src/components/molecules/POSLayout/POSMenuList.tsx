@@ -1,11 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { Box, Icon, Skeleton, Stack, Typography } from '@mui/material';
-import {
-  AccountBalanceOutlined,
-  FolderOpenOutlined,
-  GradingOutlined,
-  PeopleAltOutlined,
-} from '@mui/icons-material';
+
 import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
@@ -18,8 +13,12 @@ import { POSMenuSelect } from './index';
 
 import { LayoutSceneTypeEnum, MenuItems } from '@/types';
 
-import ICON_APPRAISAL from './assets/icon_appraisal.svg';
-import ICON_LOAN_TERMS from './assets/icon_loan_terms.svg';
+import ICON_DASHBOARD_OVERVIEW from './assets/icon_dashboard_overview.svg';
+import ICON_DASHBOARD_TASKS from './assets/icon_dashboard_task.svg';
+import ICON_DASHBOARD_TERMS from './assets/icon_dashboard_term.svg';
+import ICON_DASHBOARD_APPRAISAL from './assets/icon_dashboard_appraisal.svg';
+import ICON_DASHBOARD_DOCUMENTS from './assets/icon_dashboard_documents.svg';
+import ICON_DASHBOARD_TEAM from './assets/icon_dashboard_team.svg';
 
 interface POSMenuListProps {
   scene?: LayoutSceneTypeEnum;
@@ -32,11 +31,11 @@ const DASHBOARD_MENU_LIST: MenuItems[] = [
     path: 'overview',
     key: 'overview',
     icon: (
-      <AccountBalanceOutlined
+      <Icon
+        component={ICON_DASHBOARD_OVERVIEW}
         sx={{
-          '& path': {
-            fill: '#636A7C',
-          },
+          width: 20,
+          height: 20,
         }}
       />
     ),
@@ -46,13 +45,11 @@ const DASHBOARD_MENU_LIST: MenuItems[] = [
     path: 'tasks',
     key: 'tasks',
     icon: (
-      <GradingOutlined
+      <Icon
+        component={ICON_DASHBOARD_TASKS}
         sx={{
           width: 20,
           height: 20,
-          '& path': {
-            fill: '#636A7C',
-          },
         }}
       />
     ),
@@ -63,7 +60,7 @@ const DASHBOARD_MENU_LIST: MenuItems[] = [
     key: 'terms',
     icon: (
       <Icon
-        component={ICON_LOAN_TERMS}
+        component={ICON_DASHBOARD_TERMS}
         sx={{
           width: 20,
           height: 20,
@@ -77,7 +74,7 @@ const DASHBOARD_MENU_LIST: MenuItems[] = [
     key: 'appraisal',
     icon: (
       <Icon
-        component={ICON_APPRAISAL}
+        component={ICON_DASHBOARD_APPRAISAL}
         sx={{
           width: 20,
           height: 20,
@@ -90,13 +87,11 @@ const DASHBOARD_MENU_LIST: MenuItems[] = [
     path: 'documents',
     key: 'documents',
     icon: (
-      <FolderOpenOutlined
+      <Icon
+        component={ICON_DASHBOARD_DOCUMENTS}
         sx={{
           width: 20,
           height: 20,
-          '& path': {
-            fill: '#636A7C',
-          },
         }}
       />
     ),
@@ -106,13 +101,11 @@ const DASHBOARD_MENU_LIST: MenuItems[] = [
     path: 'team',
     key: 'team',
     icon: (
-      <PeopleAltOutlined
+      <Icon
+        component={ICON_DASHBOARD_TEAM}
         sx={{
           width: 20,
           height: 20,
-          '& path': {
-            fill: '#636A7C',
-          },
         }}
       />
     ),
@@ -203,10 +196,9 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ loading }) => {
                   color: 'primary.main',
                   position: 'relative',
                   '&::after': pseudo,
-                  '& .icon_appraisal_svg__theme-color, & svg > path, & .icon_loan_terms_svg__theme-color':
-                    {
-                      fill: fillColor,
-                    },
+                  '& svg > path': {
+                    fill: fillColor,
+                  },
                 },
                 '& svg': {
                   verticalAlign: 'middle',

@@ -42,7 +42,7 @@ export const OverviewChecklist: FC = observer(() => {
       color: 'text.primary',
       '&:hover': {
         bgcolor: 'primary.lighter',
-        color: 'primary.contrastHover',
+        color: 'primary.lighter_font',
       },
     };
   }, []);
