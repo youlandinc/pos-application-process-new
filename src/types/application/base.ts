@@ -9,6 +9,11 @@ export enum LoanSnapshotEnum {
   compensation_page = 'COMPENSATION_PAGE',
   loan_summary = 'LOAN_SUMMARY',
   loan_overview = 'LOAN_OVERVIEW',
+  // multifamily
+  enter_loan_info = 'ENTER_LOAN_INFO',
+  // commercial
+  contact_info = 'CONTACT_INFO',
+  thank_you_page = 'THANK_YOU_PAGE',
 }
 
 export interface AdditionalFee {
@@ -32,4 +37,10 @@ export interface BackgroundInformationFormData {
   hadForeclosure: LoanAnswerEnum;
   hadFelony: LoanAnswerEnum;
   hadLitigation: LoanAnswerEnum;
+}
+
+export enum PrepaymentPenaltyEnum {
+  three_year = 'THREE_YEAR_TERM',
+  five_year = 'FIVE_YEAR_TERM',
+  seven_year = 'SEVEN_YEAR_TERM',
 }

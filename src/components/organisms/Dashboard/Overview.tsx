@@ -99,7 +99,7 @@ export const Overview: FC = observer(() => {
               <Typography mt={1.5} variant={'body2'}>
                 You&apos;ve completed all your tasks, and we&apos;re handling
                 the next steps. Relax and let us take it from here—we&apos;ll
-                reach out if we need anything or when there’s an update.
+                reach out if we need anything or when there&apos;s an update.
               </Typography>
             </Stack>
           ) : (
@@ -113,8 +113,8 @@ export const Overview: FC = observer(() => {
                 once you&apos;ve completed all of your steps.
               </Typography>
               <Typography variant={'body2'}>
-                Not sure where to start? Click the button below and we’ll choose
-                the best step for you to work on.
+                Not sure where to start? Click the button below and we&apos;ll
+                choose the best step for you to work on.
               </Typography>
               <StyledButton
                 onClick={async () => {

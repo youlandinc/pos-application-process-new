@@ -8,6 +8,7 @@ import {
   LoanPurposeEnum,
   LoanSnapshotEnum,
   LoanTypeEnum,
+  PrepaymentPenaltyEnum,
 } from '@/types';
 
 export const FormData = {
@@ -56,6 +57,13 @@ export const FormData = {
     purchaseConstructionCosts: 0,
     refinanceConstructionCosts: 0,
     ltc: 0,
+    // dscr rental
+    monthlyIncome: 0,
+    propertyInsurance: 0,
+    propertyTaxes: 0,
+    monthlyHoaFee: 0,
+    prepaymentPenalty: PrepaymentPenaltyEnum.three_year,
+    acquisitionDate: '',
   },
   [LoanSnapshotEnum.loan_address]: {
     formatAddress: '',

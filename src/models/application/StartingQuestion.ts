@@ -10,35 +10,11 @@ import {
 
 export const ApplicationStartingQuestion = types
   .model({
-    loanType: types.union(
-      types.literal(LoanTypeEnum.bridge),
-      types.literal(LoanTypeEnum.mortgage),
-    ),
-    productCategory: types.union(
-      types.literal(LoanProductCategoryEnum.default),
-      types.literal(LoanProductCategoryEnum.stabilized_bridge),
-      types.literal(LoanProductCategoryEnum.fix_and_flip),
-      types.literal(LoanProductCategoryEnum.ground_up_construction),
-      types.literal(LoanProductCategoryEnum.dscr_rental),
-    ),
-    loanPurpose: types.union(
-      types.literal(LoanPurposeEnum.default),
-      types.literal(LoanPurposeEnum.purchase),
-      types.literal(LoanPurposeEnum.refinance),
-    ),
-    propertyType: types.union(
-      types.literal(LoanPropertyTypeEnum.default),
-      types.literal(LoanPropertyTypeEnum.single_family),
-      types.literal(LoanPropertyTypeEnum.townhouse),
-      types.literal(LoanPropertyTypeEnum.condo),
-      types.literal(LoanPropertyTypeEnum.two_to_four_family),
-    ),
-    propertyUnit: types.union(
-      types.literal(LoanPropertyUnitEnum.default),
-      types.literal(LoanPropertyUnitEnum.two_units),
-      types.literal(LoanPropertyUnitEnum.three_units),
-      types.literal(LoanPropertyUnitEnum.four_units),
-    ),
+    loanType: types.enumeration(Object.values(LoanTypeEnum)),
+    productCategory: types.enumeration(Object.values(LoanProductCategoryEnum)),
+    loanPurpose: types.enumeration(Object.values(LoanPurposeEnum)),
+    propertyType: types.enumeration(Object.values(LoanPropertyTypeEnum)),
+    propertyUnit: types.enumeration(Object.values(LoanPropertyUnitEnum)),
     isOccupyProperty: types.boolean,
   })
   .actions((self) => ({

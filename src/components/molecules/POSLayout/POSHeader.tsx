@@ -22,7 +22,13 @@ import {
 import { ForgotPassword, Login, SignUp } from '@/components/molecules';
 import { POSMenuList, POSMyAccountButton } from './index';
 
-import { LayoutSceneTypeEnum, LoanSnapshotEnum, UserType } from '@/types';
+import {
+  LayoutSceneTypeEnum,
+  LoanProductCategoryEnum,
+  LoanPropertyTypeEnum,
+  LoanSnapshotEnum,
+  UserType,
+} from '@/types';
 
 import ICON_REFER_FRIEND from './assets/icon_refer_friend.svg';
 import ICON_VIEW_ALL_LOANS from './assets/icon_view_all_loans.svg';
@@ -59,6 +65,38 @@ const LOGIN_BROKER = [
   LoanSnapshotEnum.loan_summary,
 ];
 
+const MULTIFAMILY_NOT_LOGIN = [
+  LoanSnapshotEnum.starting_question,
+  LoanSnapshotEnum.enter_loan_info,
+  LoanSnapshotEnum.auth_page,
+  LoanSnapshotEnum.loan_address,
+  LoanSnapshotEnum.background_information,
+  LoanSnapshotEnum.loan_summary,
+];
+
+const MULTIFAMILY_LOGIN_NOT_BROKER = [
+  LoanSnapshotEnum.starting_question,
+  LoanSnapshotEnum.enter_loan_info,
+  LoanSnapshotEnum.loan_address,
+  LoanSnapshotEnum.background_information,
+  LoanSnapshotEnum.loan_summary,
+];
+
+const MULTIFAMILY_LOGIN_BROKER = [
+  LoanSnapshotEnum.starting_question,
+  LoanSnapshotEnum.enter_loan_info,
+  LoanSnapshotEnum.loan_address,
+  LoanSnapshotEnum.background_information,
+  LoanSnapshotEnum.compensation_page,
+  LoanSnapshotEnum.loan_summary,
+];
+
+const COMMERCIAL = [
+  LoanSnapshotEnum.starting_question,
+  LoanSnapshotEnum.contact_info,
+  LoanSnapshotEnum.thank_you_page,
+];
+
 export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
   const router = useRouter();
   const store = useMst();
@@ -69,7 +107,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
 
   const { session, applicationForm, userType } = store;
 
-  const { snapshot } = applicationForm;
+  const { snapshot, productCategory, propertyType } = applicationForm;
 
   const [authType, setAuthType] = useState<
     'login' | 'sign_up' | 'reset_password'
@@ -87,14 +125,28 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
       return index < 0 ? undefined : (index / (list.length - 1)) * 100 || 0;
     };
 
-    if (hasSession) {
-      return userType === UserType.CUSTOMER
-        ? getProgress(LOGIN_NOT_BROKER)
-        : getProgress(LOGIN_BROKER);
+    const isEnterLoanInfo =
+      productCategory === LoanProductCategoryEnum.dscr_rental ||
+      propertyType === LoanPropertyTypeEnum.multifamily;
+
+    const isContactInfo = propertyType === LoanPropertyTypeEnum.commercial;
+
+    if (isContactInfo) {
+      return getProgress(COMMERCIAL);
     }
 
-    return getProgress(NOT_LOGIN);
-  }, [hasSession, scene, snapshot, userType]);
+    if (hasSession) {
+      return userType === UserType.CUSTOMER
+        ? getProgress(
+            isEnterLoanInfo ? MULTIFAMILY_LOGIN_NOT_BROKER : LOGIN_NOT_BROKER,
+          )
+        : getProgress(
+            isEnterLoanInfo ? MULTIFAMILY_LOGIN_BROKER : LOGIN_BROKER,
+          );
+    }
+
+    return getProgress(isEnterLoanInfo ? MULTIFAMILY_NOT_LOGIN : NOT_LOGIN);
+  }, [hasSession, productCategory, propertyType, scene, snapshot, userType]);
 
   const handledLoginSuccess = usePersistFn(() => {
     close();

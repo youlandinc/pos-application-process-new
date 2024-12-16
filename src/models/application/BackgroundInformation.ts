@@ -3,36 +3,11 @@ import { BackgroundInformationFormData, LoanAnswerEnum } from '@/types';
 
 export const BackgroundInformation = types
   .model({
-    hadBankruptcy: types.union(
-      types.literal(LoanAnswerEnum.default),
-      types.literal(LoanAnswerEnum.yes),
-      types.literal(LoanAnswerEnum.no),
-      types.literal(LoanAnswerEnum.not_sure),
-    ),
-    hadDelinquent: types.union(
-      types.literal(LoanAnswerEnum.default),
-      types.literal(LoanAnswerEnum.yes),
-      types.literal(LoanAnswerEnum.no),
-      types.literal(LoanAnswerEnum.not_sure),
-    ),
-    hadForeclosure: types.union(
-      types.literal(LoanAnswerEnum.default),
-      types.literal(LoanAnswerEnum.yes),
-      types.literal(LoanAnswerEnum.no),
-      types.literal(LoanAnswerEnum.not_sure),
-    ),
-    hadFelony: types.union(
-      types.literal(LoanAnswerEnum.default),
-      types.literal(LoanAnswerEnum.yes),
-      types.literal(LoanAnswerEnum.no),
-      types.literal(LoanAnswerEnum.not_sure),
-    ),
-    hadLitigation: types.union(
-      types.literal(LoanAnswerEnum.default),
-      types.literal(LoanAnswerEnum.yes),
-      types.literal(LoanAnswerEnum.no),
-      types.literal(LoanAnswerEnum.not_sure),
-    ),
+    hadBankruptcy: types.enumeration(Object.values(LoanAnswerEnum)),
+    hadDelinquent: types.enumeration(Object.values(LoanAnswerEnum)),
+    hadForeclosure: types.enumeration(Object.values(LoanAnswerEnum)),
+    hadFelony: types.enumeration(Object.values(LoanAnswerEnum)),
+    hadLitigation: types.enumeration(Object.values(LoanAnswerEnum)),
   })
   .actions((self) => {
     return {

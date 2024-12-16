@@ -25,8 +25,8 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
   validate,
   tooltipTitle = '',
   tooltipSx = { width: '100%' },
-  disabledAutoFill = true,
   isTooltip = false,
+  disabledAutoFill = true,
   ...rest
 }) => {
   const breakpoints = useBreakpoints();

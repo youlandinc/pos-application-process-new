@@ -9,11 +9,16 @@ import { useMst } from '@/models/Root';
 import { useSessionStorageState, useStoreData } from '@/hooks';
 
 import { POSGetParamsFromUrl } from '@/utils';
-import { AUTO_HIDE_DURATION } from '@/constants';
+import { AUTO_HIDE_DURATION, URL_HASH } from '@/constants';
 
 import { StartingQuestion } from '@/components/molecules/Application';
 
-import { HttpError, LoanSnapshotEnum } from '@/types';
+import {
+  HttpError,
+  LoanProductCategoryEnum,
+  LoanPropertyTypeEnum,
+  LoanSnapshotEnum,
+} from '@/types';
 import { _startNewLoan } from '@/requests/application';
 
 export const StartingQuestionPage: FC = observer(() => {
@@ -29,21 +34,40 @@ export const StartingQuestionPage: FC = observer(() => {
 
   const next = async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
+    const storeData = applicationForm.startingQuestion.getPostData();
+    const { productCategory, propertyType } = storeData;
+
+    let toSnapshot = LoanSnapshotEnum.estimate_rate;
+
+    const isEnterLoanInfo =
+      productCategory === LoanProductCategoryEnum.dscr_rental ||
+      propertyType === LoanPropertyTypeEnum.multifamily;
+
+    const isContactInfo = propertyType === LoanPropertyTypeEnum.commercial;
+
+    switch (true) {
+      case isEnterLoanInfo:
+        toSnapshot = LoanSnapshotEnum.enter_loan_info;
+        break;
+      case isContactInfo:
+        toSnapshot = LoanSnapshotEnum.contact_info;
+        break;
+    }
 
     if (!loanId) {
       if (!saasState?.tenantId) {
         return;
       }
       const postData = {
-        ...applicationForm.startingQuestion.getPostData(),
+        ...storeData,
         tenantId: saasState?.tenantId || '1000052023020700000112',
       };
       setLoading(true);
       try {
         const { data } = await _startNewLoan(postData);
-        applicationForm.setSnapshot(LoanSnapshotEnum.estimate_rate);
+        applicationForm.setSnapshot(toSnapshot);
         await router.push({
-          pathname: '/estimate-rate',
+          pathname: URL_HASH[toSnapshot],
           query: { loanId: data.loanId },
         });
       } catch (err) {
@@ -60,14 +84,14 @@ export const StartingQuestionPage: FC = observer(() => {
       return;
     }
     const postData = {
-      data: applicationForm.startingQuestion.getPostData(),
-      nextSnapshot: LoanSnapshotEnum.estimate_rate,
+      data: storeData,
+      nextSnapshot: toSnapshot,
       snapshot: LoanSnapshotEnum.starting_question,
       loanId,
     };
     await updateFrom(postData);
     await router.push({
-      pathname: '/estimate-rate',
+      pathname: URL_HASH[toSnapshot],
       query: { loanId },
     });
   };

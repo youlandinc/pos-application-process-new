@@ -14,6 +14,7 @@ import {
 } from '@/hooks';
 
 import {
+  POSFindHashKey,
   POSFindLabel,
   POSFormatDollar,
   POSFormatPercent,
@@ -23,9 +24,11 @@ import {
 import {
   APPLICATION_LOAN_CATEGORY,
   APPLICATION_LOAN_PURPOSE,
+  APPLICATION_PREPAYMENT_PENALTY,
   APPLICATION_PROPERTY_TYPE,
   APPLICATION_PROPERTY_UNIT,
   AUTO_HIDE_DURATION,
+  MULTIFAMILY_HASH,
 } from '@/constants';
 
 import { StyledButton, StyledDialog, StyledFormItem } from '@/components/atoms';
@@ -35,6 +38,7 @@ import {
   HttpError,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
+  LoanPropertyUnitEnum,
   LoanPurposeEnum,
   UserType,
 } from '@/types';
@@ -95,6 +99,23 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
       relocate,
       resetMap,
     ]);
+
+    const renderPropertyType = useMemo(() => {
+      switch (data?.propertyType) {
+        case LoanPropertyTypeEnum.two_to_four_family:
+          return ` ${POSFindLabel(
+            APPLICATION_PROPERTY_UNIT,
+            data?.propertyUnit,
+          )}`;
+        case LoanPropertyTypeEnum.multifamily:
+          return `Multifamily (${data?.propertyUnit === LoanPropertyUnitEnum.twenty_plus_units ? '20+' : POSFindHashKey(data?.propertyUnit, MULTIFAMILY_HASH)} Units)`;
+        default:
+          return `${POSFindLabel(
+            APPLICATION_PROPERTY_TYPE,
+            data?.propertyType,
+          )}`;
+      }
+    }, [data?.propertyType, data?.propertyUnit]);
 
     const getPDF = useCallback(
       async (fileType: 'letter' | 'summary') => {
@@ -536,52 +557,58 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               {renderLoanAmount}
             </Stack>
 
-            <Stack
-              border={'1px solid #D2D6E1'}
-              borderRadius={2}
-              gap={{ xs: 1.5, lg: 3 }}
-              p={{ xs: 1.5, lg: 3 }}
-              width={'100%'}
-            >
-              <LoanSummaryCardRow
-                content={POSFormatPercent(
-                  data?.interestRate,
-                  POSGetDecimalPlaces(data?.interestRate),
-                )}
-                isHeader={true}
-                title={'Interest rate'}
-              />
-              <LoanSummaryCardRow
-                content={`${data?.loanTerm} months`}
-                title={'Term'}
-              />
-            </Stack>
-
-            <Stack
-              border={'1px solid #D2D6E1'}
-              borderRadius={2}
-              gap={{ xs: 1.5, lg: 3 }}
-              p={{ xs: 1.5, lg: 3 }}
-              width={'100%'}
-            >
-              <LoanSummaryCardRow
-                content={POSFormatDollar(data?.monthlyPayment, 2)}
-                isHeader={true}
-                title={
-                  data?.productCategory ===
-                  LoanProductCategoryEnum.ground_up_construction
-                    ? 'Initial monthly payment'
-                    : 'Monthly payment'
-                }
-              />
-              {data?.productCategory ===
-                LoanProductCategoryEnum.ground_up_construction && (
-                <LoanSummaryCardRow
-                  content={POSFormatDollar(data?.fullDrawnMonthlyPayment)}
-                  title={'Full monthly payment'}
-                />
+            {data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
+              data?.propertyType !== LoanPropertyTypeEnum.multifamily && (
+                <Stack
+                  border={'1px solid #D2D6E1'}
+                  borderRadius={2}
+                  gap={{ xs: 1.5, lg: 3 }}
+                  p={{ xs: 1.5, lg: 3 }}
+                  width={'100%'}
+                >
+                  <LoanSummaryCardRow
+                    content={POSFormatPercent(
+                      data?.interestRate,
+                      POSGetDecimalPlaces(data?.interestRate),
+                    )}
+                    isHeader={true}
+                    title={'Interest rate'}
+                  />
+                  <LoanSummaryCardRow
+                    content={`${data?.loanTerm} months`}
+                    title={'Term'}
+                  />
+                </Stack>
               )}
-            </Stack>
+
+            {data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
+              data?.propertyType !== LoanPropertyTypeEnum.multifamily && (
+                <Stack
+                  border={'1px solid #D2D6E1'}
+                  borderRadius={2}
+                  gap={{ xs: 1.5, lg: 3 }}
+                  p={{ xs: 1.5, lg: 3 }}
+                  width={'100%'}
+                >
+                  <LoanSummaryCardRow
+                    content={POSFormatDollar(data?.monthlyPayment, 2)}
+                    isHeader={true}
+                    title={
+                      data?.productCategory ===
+                      LoanProductCategoryEnum.ground_up_construction
+                        ? 'Initial monthly payment'
+                        : 'Monthly payment'
+                    }
+                  />
+                  {data?.productCategory ===
+                    LoanProductCategoryEnum.ground_up_construction && (
+                    <LoanSummaryCardRow
+                      content={POSFormatDollar(data?.fullDrawnMonthlyPayment)}
+                      title={'Full monthly payment'}
+                    />
+                  )}
+                </Stack>
+              )}
 
             <Stack
               border={'1px solid #D2D6E1'}
@@ -698,7 +725,12 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               <Collapse in={collapsed}>
                 <Stack gap={{ xs: 1.5, lg: 3 }} mb={{ xs: 1.5, lg: 3 }}>
                   <LoanSummaryCardRow
-                    content={data?.prepaymentPenalty || '0-0-0'}
+                    content={
+                      POSFindLabel(
+                        APPLICATION_PREPAYMENT_PENALTY,
+                        data?.prepaymentPenalty,
+                      ) || '0-0-0'
+                    }
                     title={'Prepayment penalty'}
                   />
                   <LoanSummaryCardRow
@@ -720,18 +752,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                     title={'Purpose'}
                   />
                   <LoanSummaryCardRow
-                    content={
-                      data?.propertyType ===
-                      LoanPropertyTypeEnum.two_to_four_family
-                        ? POSFindLabel(
-                            APPLICATION_PROPERTY_UNIT,
-                            data?.propertyUnit,
-                          )
-                        : POSFindLabel(
-                            APPLICATION_PROPERTY_TYPE,
-                            data?.propertyType,
-                          )
-                    }
+                    content={renderPropertyType}
                     title={'Property type'}
                   />
                   <LoanSummaryCardRow
@@ -803,15 +824,19 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                   }`}
                 </Typography>
               </Stack>
-              <StyledButton
-                color={'info'}
-                disabled={viewLoading || data?.isCustom}
-                loading={viewLoading}
-                onClick={() => getPDF('letter')}
-                variant={'outlined'}
-              >
-                View pre-approval letter
-              </StyledButton>
+              {data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
+                data?.propertyType !== LoanPropertyTypeEnum.multifamily && (
+                  <StyledButton
+                    color={'info'}
+                    disabled={viewLoading || data?.isCustom}
+                    loading={viewLoading}
+                    onClick={() => getPDF('letter')}
+                    variant={'outlined'}
+                  >
+                    View pre-approval letter
+                  </StyledButton>
+                )}
+
               {data?.isCustom && (
                 <Typography color={'text.secondary'} variant={'body3'}>
                   When using a custom loan amount, the pre-approval letter is

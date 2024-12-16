@@ -17,6 +17,7 @@ import { User } from '@/types/user';
 
 import { FormData, userpool } from '@/constants';
 import {
+  LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
   LoanSnapshotEnum,
@@ -46,22 +47,8 @@ export const RootModel = {
   // todo: need extract to user model
   // useConfig:UserConfig,
   // UserProfile: UserProfile,
-  userType: types.maybe(
-    types.union(
-      types.literal(UserType.CUSTOMER),
-      types.literal(UserType.BROKER),
-      types.literal(UserType.REAL_ESTATE_AGENT),
-      types.literal(UserType.LOAN_OFFICER),
-      types.literal(UserType.LENDER),
-    ),
-  ),
-  loginType: types.maybe(
-    types.union(
-      types.literal(LoginType.YLACCOUNT_LOGIN),
-      types.literal(LoginType.GOOGLE_LOGIN),
-      types.literal(LoginType.DEFAULT),
-    ),
-  ),
+  userType: types.maybe(types.enumeration(Object.values(UserType))),
+  loginType: types.maybe(types.enumeration(Object.values(LoginType))),
 
   detectUserActiveService: DetectUserActiveService,
   notificationStation: NotificationStation,
@@ -168,10 +155,13 @@ const initialState = {
     loading: true,
     isBind: false,
     initialized: false,
+    productCategory: LoanProductCategoryEnum.stabilized_bridge,
+    propertyType: LoanPropertyTypeEnum.single_family,
     loanId: '',
     snapshot: LoanSnapshotEnum.starting_question,
     startingQuestion: FormData[LoanSnapshotEnum.starting_question],
     estimateRate: FormData[LoanSnapshotEnum.estimate_rate],
+    loanInformation: FormData[LoanSnapshotEnum.estimate_rate],
     loanAddress: FormData[LoanSnapshotEnum.loan_address],
     backgroundInformation: FormData[LoanSnapshotEnum.background_information],
     compensationInformation: FormData[LoanSnapshotEnum.compensation_page],

@@ -782,17 +782,19 @@ export const PaymentLinkEmail: FC<{
             </Stack>
 
             <Stack>
-              <Typography
-                color={'#5B76BC'}
-                onClick={() => {
-                  deleteOpen();
-                  setDeleteItem(item);
-                }}
-                sx={{ cursor: 'pointer' }}
-                variant={'subtitle3'}
-              >
-                {item.source === DomainSource.CUSTOM && 'Remove'}
-              </Typography>
+              {item.source === DomainSource.CUSTOM && (
+                <Typography
+                  color={'#5B76BC'}
+                  onClick={() => {
+                    deleteOpen();
+                    setDeleteItem(item);
+                  }}
+                  sx={{ cursor: 'pointer' }}
+                  variant={'subtitle3'}
+                >
+                  Remove
+                </Typography>
+              )}
             </Stack>
           </Stack>
         ))
@@ -834,17 +836,19 @@ export const PaymentLinkEmail: FC<{
               </Stack>
 
               <Stack width={60}>
-                <Typography
-                  color={'#5B76BC'}
-                  onClick={() => {
-                    deleteOpen();
-                    setDeleteItem(item);
-                  }}
-                  sx={{ cursor: 'pointer' }}
-                  variant={'subtitle3'}
-                >
-                  {item.source === DomainSource.CUSTOM && 'Remove'}
-                </Typography>
+                {item.source === DomainSource.CUSTOM && (
+                  <Typography
+                    color={'#5B76BC'}
+                    onClick={() => {
+                      deleteOpen();
+                      setDeleteItem(item);
+                    }}
+                    sx={{ cursor: 'pointer' }}
+                    variant={'subtitle3'}
+                  >
+                    Remove
+                  </Typography>
+                )}
               </Stack>
             </Stack>
           ))}

@@ -917,17 +917,19 @@ export const PaymentLinkDomain: FC<{
             </Stack>
 
             <Stack>
-              <Typography
-                color={'#5B76BC'}
-                onClick={() => {
-                  deleteOpen();
-                  setDeleteItem(item);
-                }}
-                sx={{ cursor: 'pointer' }}
-                variant={'subtitle3'}
-              >
-                {item.source === DomainSource.CUSTOM && 'Remove'}
-              </Typography>
+              {item.source === DomainSource.CUSTOM && (
+                <Typography
+                  color={'#5B76BC'}
+                  onClick={() => {
+                    deleteOpen();
+                    setDeleteItem(item);
+                  }}
+                  sx={{ cursor: 'pointer' }}
+                  variant={'subtitle3'}
+                >
+                  Remove
+                </Typography>
+              )}
             </Stack>
           </Stack>
         ))
@@ -973,18 +975,21 @@ export const PaymentLinkDomain: FC<{
                 </Typography>
               </Stack>
 
-              <Typography
-                color={'#5B76BC'}
-                onClick={() => {
-                  deleteOpen();
-                  setDeleteItem(item);
-                }}
-                sx={{ cursor: 'pointer' }}
-                variant={'subtitle3'}
-                width={60}
-              >
-                {item.source === DomainSource.CUSTOM && 'Remove'}
-              </Typography>
+              <Stack width={60}>
+                {item.source === DomainSource.CUSTOM && (
+                  <Typography
+                    color={'#5B76BC'}
+                    onClick={() => {
+                      deleteOpen();
+                      setDeleteItem(item);
+                    }}
+                    sx={{ cursor: 'pointer' }}
+                    variant={'subtitle3'}
+                  >
+                    Remove
+                  </Typography>
+                )}
+              </Stack>
             </Stack>
           ))}
         </Stack>

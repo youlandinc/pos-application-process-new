@@ -152,7 +152,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
               icon: null,
               label: 'Final approval',
               tooltipTitle:
-                'Once you reach the final approval stage, you’ll be close to completing your loan process with us! At that point, your team will have reviewed all your documents and officially approved your loan. ',
+                "Once you reach the final approval stage, you'll be close to completing your loan process with us! At that point, your team will have reviewed all your documents and officially approved your loan.",
               description:
                 'We have completed the approval process for this loan and are now preparing the documents.These will be sent out as soon as possible.',
               date: loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs]
