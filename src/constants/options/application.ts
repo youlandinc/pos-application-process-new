@@ -5,6 +5,7 @@ import {
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
   LoanPurposeEnum,
+  PrepaymentPenaltyEnum,
 } from '@/types';
 
 export const APPLICATION_LOAN_CATEGORY: Option[] = [
@@ -28,6 +29,12 @@ export const APPLICATION_LOAN_CATEGORY: Option[] = [
     value: LoanProductCategoryEnum.ground_up_construction,
     tooltip:
       'Used to finance the construction of a new property from the ground up, covering costs from land purchase to completion of the building',
+  },
+  {
+    label: 'DSCR Rental',
+    key: LoanProductCategoryEnum.dscr_rental,
+    value: LoanProductCategoryEnum.dscr_rental,
+    tooltip: "A rental loan based on the property's projected cash flow",
   },
 ];
 
@@ -75,6 +82,19 @@ export const APPLICATION_PROPERTY_TYPE: Option[] = [
     key: LoanPropertyTypeEnum.two_to_four_family,
     value: LoanPropertyTypeEnum.two_to_four_family,
     tooltip: 'A multi-family property with 2 to 4 rental units',
+  },
+  {
+    label: 'Multifamily (5+ units)',
+    key: LoanPropertyTypeEnum.multifamily,
+    value: LoanPropertyTypeEnum.multifamily,
+    tooltip: 'A property with 5 or more rental units',
+  },
+  {
+    label: 'Commercial',
+    key: LoanPropertyTypeEnum.commercial,
+    value: LoanPropertyTypeEnum.commercial,
+    tooltip:
+      'A property designed for business activities or mixed use (combining residential and commercial units). Includes malls, offices, restaurants, industrial estates and more.',
   },
 ];
 
@@ -144,5 +164,23 @@ export const APPLICATION_LIQUIDITY: Option[] = [
     label: 'Not sure',
     key: LoanAnswerEnum.no,
     value: LoanAnswerEnum.no,
+  },
+];
+
+export const APPLICATION_PREPAYMENT_PENALTY: Option[] = [
+  {
+    label: '3-year-term',
+    key: PrepaymentPenaltyEnum.three_year,
+    value: PrepaymentPenaltyEnum.three_year,
+  },
+  {
+    label: '5-year-term',
+    key: PrepaymentPenaltyEnum.five_year,
+    value: PrepaymentPenaltyEnum.five_year,
+  },
+  {
+    label: '7-year-term',
+    key: PrepaymentPenaltyEnum.seven_year,
+    value: PrepaymentPenaltyEnum.seven_year,
   },
 ];

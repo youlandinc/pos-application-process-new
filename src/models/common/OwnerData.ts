@@ -9,12 +9,7 @@ export const OwnerData = types.model({
   birthday: types.maybeNull(types.union(types.Date, types.string)),
   state: types.maybe(types.string),
   licenseType: types.maybe(
-    types.union(
-      types.literal(QualificationQuestionnaireLicenseType.default),
-      types.literal(QualificationQuestionnaireLicenseType.dre_salesperson),
-      types.literal(QualificationQuestionnaireLicenseType.dre_broker),
-      types.literal(QualificationQuestionnaireLicenseType.nmls),
-    ),
+    types.enumeration(Object.values(QualificationQuestionnaireLicenseType)),
   ),
   license: types.maybe(types.string),
 });

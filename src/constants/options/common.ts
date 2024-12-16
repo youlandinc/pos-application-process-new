@@ -2,6 +2,7 @@ import {
   AppraisalStatusEnum,
   LoanAnswerEnum,
   LoanCitizenshipEnum,
+  LoanPropertyUnitEnum,
   UserType,
 } from '@/types';
 import { ReactNode } from 'react';
@@ -355,11 +356,6 @@ export const OPTIONS_COMMON_MARKS: {
   value: number;
   label?: ReactNode;
 }[] = [
-  { label: '0', value: 0 },
-  { label: '', value: 1 },
-  { label: '', value: 2 },
-  { label: '', value: 3 },
-  { label: '', value: 4 },
   { label: '5', value: 5 },
   { label: '', value: 6 },
   { label: '', value: 7 },
@@ -410,3 +406,22 @@ export const OPTIONS_COMMON_APPRAISAL_STAGE: Option[] = [
     key: AppraisalStatusEnum.completed,
   },
 ];
+
+export const MULTIFAMILY_HASH: { [key: number]: LoanPropertyUnitEnum } = {
+  5: LoanPropertyUnitEnum.five_units,
+  6: LoanPropertyUnitEnum.six_units,
+  7: LoanPropertyUnitEnum.seven_units,
+  8: LoanPropertyUnitEnum.eight_units,
+  9: LoanPropertyUnitEnum.nine_units,
+  10: LoanPropertyUnitEnum.ten_units,
+  11: LoanPropertyUnitEnum.eleven_units,
+  12: LoanPropertyUnitEnum.twelve_units,
+  13: LoanPropertyUnitEnum.thirteen_units,
+  14: LoanPropertyUnitEnum.fourteen_units,
+  15: LoanPropertyUnitEnum.fifteen_units,
+  16: LoanPropertyUnitEnum.sixteen_units,
+  17: LoanPropertyUnitEnum.seventeen_units,
+  18: LoanPropertyUnitEnum.eighteen_units,
+  19: LoanPropertyUnitEnum.nineteen_units,
+  20: LoanPropertyUnitEnum.twenty_plus_units,
+};

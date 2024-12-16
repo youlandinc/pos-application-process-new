@@ -7,54 +7,19 @@ import {
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
   LoanPurposeEnum,
+  PrepaymentPenaltyEnum,
 } from '@/types';
 
 export const EstimateRate = types
   .model({
-    productCategory: types.union(
-      types.literal(LoanProductCategoryEnum.default),
-      types.literal(LoanProductCategoryEnum.stabilized_bridge),
-      types.literal(LoanProductCategoryEnum.fix_and_flip),
-      types.literal(LoanProductCategoryEnum.ground_up_construction),
-      types.literal(LoanProductCategoryEnum.dscr_rental),
-    ),
-    loanPurpose: types.union(
-      types.literal(LoanPurposeEnum.default),
-      types.literal(LoanPurposeEnum.purchase),
-      types.literal(LoanPurposeEnum.refinance),
-    ),
-    propertyType: types.union(
-      types.literal(LoanPropertyTypeEnum.default),
-      types.literal(LoanPropertyTypeEnum.single_family),
-      types.literal(LoanPropertyTypeEnum.townhouse),
-      types.literal(LoanPropertyTypeEnum.condo),
-      types.literal(LoanPropertyTypeEnum.two_to_four_family),
-    ),
-    propertyUnit: types.union(
-      types.literal(LoanPropertyUnitEnum.default),
-      types.literal(LoanPropertyUnitEnum.two_units),
-      types.literal(LoanPropertyUnitEnum.three_units),
-      types.literal(LoanPropertyUnitEnum.four_units),
-    ),
-    citizenship: types.union(
-      types.literal(LoanCitizenshipEnum.default),
-      types.literal(LoanCitizenshipEnum.us_citizen),
-      types.literal(LoanCitizenshipEnum.permanent_resident_alien),
-      types.literal(LoanCitizenshipEnum.foreign_national),
-    ),
+    productCategory: types.enumeration(Object.values(LoanProductCategoryEnum)),
+    loanPurpose: types.enumeration(Object.values(LoanPurposeEnum)),
+    propertyType: types.enumeration(Object.values(LoanPropertyTypeEnum)),
+    propertyUnit: types.enumeration(Object.values(LoanPropertyUnitEnum)),
+    citizenship: types.enumeration(Object.values(LoanCitizenshipEnum)),
     priorExperience: types.maybe(types.number),
     state: types.string,
-    ficoScore: types.union(
-      types.literal(LoanFicoScoreEnum.default),
-      types.literal(LoanFicoScoreEnum.no_fico),
-      types.literal(LoanFicoScoreEnum.fico_not_available),
-      types.literal(LoanFicoScoreEnum.below_600),
-      types.literal(LoanFicoScoreEnum.between_600_649),
-      types.literal(LoanFicoScoreEnum.between_650_699),
-      types.literal(LoanFicoScoreEnum.between_700_749),
-      types.literal(LoanFicoScoreEnum.between_750_799),
-      types.literal(LoanFicoScoreEnum.above_800),
-    ),
+    ficoScore: types.enumeration(Object.values(LoanFicoScoreEnum)),
     isLiquidity: types.maybe(types.boolean),
     liquidityAmount: types.maybe(types.number),
     rehabCost: types.maybe(types.number),
@@ -76,6 +41,12 @@ export const EstimateRate = types
     purchaseConstructionCosts: types.maybe(types.number),
     refinanceConstructionCosts: types.maybe(types.number),
     ltc: types.maybe(types.number),
+    monthlyIncome: types.maybe(types.number),
+    propertyInsurance: types.maybe(types.number),
+    propertyTaxes: types.maybe(types.number),
+    monthlyHoaFee: types.maybe(types.number),
+    prepaymentPenalty: types.enumeration(Object.values(PrepaymentPenaltyEnum)),
+    acquisitionDate: types.maybe(types.string),
   })
   .actions((self) => ({
     changeFieldValue<T extends keyof typeof self>(
@@ -113,11 +84,19 @@ export const EstimateRate = types
         isDutch: self.isDutch,
         citizenship: self.citizenship,
         priorExperience: self.priorExperience,
+        // ground up
         improvementsSinceAcquisition: self.improvementsSinceAcquisition,
         constructionProjectsExited: self.constructionProjectsExited,
         purchaseConstructionCosts: self.purchaseConstructionCosts,
         refinanceConstructionCosts: self.refinanceConstructionCosts,
         ltc: Math.floor((self.ltc as number) * 1000000) / 100000000,
+        // rental
+        monthlyIncome: self.monthlyIncome,
+        propertyInsurance: self.propertyInsurance,
+        propertyTaxes: self.propertyTaxes,
+        monthlyHoaFee: self.monthlyHoaFee,
+        prepaymentPenalty: self.prepaymentPenalty,
+        acquisitionDate: self.acquisitionDate,
       };
     },
     injectServerData(data: EstimateRateFormData) {
@@ -149,6 +128,12 @@ export const EstimateRate = types
         purchaseConstructionCosts,
         refinanceConstructionCosts,
         ltc,
+        monthlyIncome,
+        propertyInsurance,
+        propertyTaxes,
+        monthlyHoaFee,
+        prepaymentPenalty,
+        acquisitionDate,
       } = data;
 
       self.productCategory =
@@ -180,5 +165,12 @@ export const EstimateRate = types
       self.purchaseConstructionCosts = purchaseConstructionCosts ?? undefined;
       self.refinanceConstructionCosts = refinanceConstructionCosts ?? undefined;
       self.ltc = ltc * 100 ?? undefined;
+      self.monthlyIncome = monthlyIncome ?? undefined;
+      self.propertyInsurance = propertyInsurance ?? undefined;
+      self.propertyTaxes = propertyTaxes ?? undefined;
+      self.monthlyHoaFee = monthlyHoaFee ?? undefined;
+      self.prepaymentPenalty =
+        prepaymentPenalty ?? PrepaymentPenaltyEnum.three_year;
+      self.acquisitionDate = acquisitionDate ?? '';
     },
   }));

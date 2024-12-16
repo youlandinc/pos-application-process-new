@@ -57,19 +57,8 @@ const handleError = (err: HttpError, redirectTo?: string) => {
 export const DashboardInfo = types
   .model({
     propertyAddress: Address,
-    propertyType: types.union(
-      types.literal(LoanPropertyTypeEnum.default),
-      types.literal(LoanPropertyTypeEnum.single_family),
-      types.literal(LoanPropertyTypeEnum.townhouse),
-      types.literal(LoanPropertyTypeEnum.condo),
-      types.literal(LoanPropertyTypeEnum.two_to_four_family),
-    ),
-    propertyUnit: types.union(
-      types.literal(LoanPropertyUnitEnum.default),
-      types.literal(LoanPropertyUnitEnum.two_units),
-      types.literal(LoanPropertyUnitEnum.three_units),
-      types.literal(LoanPropertyUnitEnum.four_units),
-    ),
+    propertyType: types.enumeration(Object.values(LoanPropertyTypeEnum)),
+    propertyUnit: types.enumeration(Object.values(LoanPropertyUnitEnum)),
     loanType: types.maybe(types.string),
     loading: types.boolean,
     loanId: types.maybe(types.string),

@@ -103,3 +103,14 @@ export const createPaymentIframe = (
   iframe.contentWindow?.document.body.appendChild(form);
   form.submit();
 };
+
+export const POSFindHashKey = (
+  value: any,
+  obj: { [key: string | number]: any },
+) => {
+  for (const [k, v] of Object.entries(obj)) {
+    if (v === value) {
+      return k;
+    }
+  }
+};
