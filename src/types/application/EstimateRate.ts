@@ -67,6 +67,6 @@ export interface EstimateRateFormData {
   propertyInsurance: number;
   propertyTaxes: number;
   monthlyHoaFee: number;
-  prepaymentPenalty: PrepaymentPenaltyEnum;
+  prepaymentPenalty: PrepaymentPenaltyEnum | string;
   acquisitionDate: string;
 }
