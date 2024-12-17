@@ -1481,14 +1481,14 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
           LoanProductCategoryEnum.dscr_rental ? (
           <Stack gap={3} mt={3}>
             <StyledTooltip
+              mode={'controlled'}
               placement={'top'}
               theme={'main'}
               title={
                 'We use your Debt Service Coverage Ratio, along with other information like your FICO score, to determine your approved loan amount.'
               }
-              tooltipSx={{ width: 'fit-content' }}
             >
-              <Typography>DSCR information</Typography>
+              <Typography width={'fit-content'}>DSCR information</Typography>
             </StyledTooltip>
 
             <Stack
