@@ -77,6 +77,7 @@ const RootStore = types.model(RootModel).actions((self) => {
         email: profile.userProfile.email,
         userType: profile.userProfile.userType,
         loginType: profile.userProfile.loginType,
+        userId: profile.userProfile.userId,
       };
     },
     injectSimpleUserProfile(profile: ClientUserProfile) {
