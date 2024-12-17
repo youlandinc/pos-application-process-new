@@ -32,6 +32,7 @@ interface ClientUserProfile {
   email?: string | undefined;
   userType?: import('@/types/enum.ts').UserType | undefined;
   loginType?: import('@/types/enum').LoginType | undefined;
+  userId?: string | undefined;
 }
 
 type google = import('@types/google.maps');
