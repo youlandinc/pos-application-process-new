@@ -169,17 +169,17 @@ export const APPLICATION_LIQUIDITY: Option[] = [
 
 export const APPLICATION_PREPAYMENT_PENALTY: Option[] = [
   {
-    label: '3-year-term',
+    label: '3-year term',
     key: PrepaymentPenaltyEnum.three_year,
     value: PrepaymentPenaltyEnum.three_year,
   },
   {
-    label: '5-year-term',
+    label: '5-year term',
     key: PrepaymentPenaltyEnum.five_year,
     value: PrepaymentPenaltyEnum.five_year,
   },
   {
-    label: '7-year-term',
+    label: '7-year term',
     key: PrepaymentPenaltyEnum.seven_year,
     value: PrepaymentPenaltyEnum.seven_year,
   },
