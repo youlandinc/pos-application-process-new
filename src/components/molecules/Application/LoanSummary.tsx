@@ -729,7 +729,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                       POSFindLabel(
                         APPLICATION_PREPAYMENT_PENALTY,
                         data?.prepaymentPenalty,
-                      ) || '0-0-0'
+                      ) || data?.prepaymentPenalty
                     }
                     title={'Prepayment penalty'}
                   />

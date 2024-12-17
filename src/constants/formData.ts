@@ -24,7 +24,7 @@ export const FormData = {
     productCategory: LoanProductCategoryEnum.fix_and_flip, // STABILIZED_BRIDGE,   FIX_AND_FLIP,   GROUND_UP_CONSTRUCTION
     loanPurpose: LoanPurposeEnum.purchase, // purchase, refinance
     propertyType: LoanPropertyTypeEnum.single_family, //  SINGLE_FAMILY,   TOWNHOUSE,  CONDO,   UNITS24
-    propertyUnit: LoanPropertyUnitEnum.two_units,
+    propertyUnit: LoanPropertyUnitEnum.default, //  TWO_UNITS,   THREE_UNITS,   FOUR_UNITS
     citizenship: LoanCitizenshipEnum.default, // US_CITIZEN,   PERMANENT_RESIDENT_ALIEN,   FOREIGN_NATIONAL
     priorExperience: 0,
     // common search condition params
