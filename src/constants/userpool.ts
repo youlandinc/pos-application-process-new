@@ -125,6 +125,7 @@ export const userpool = {
     localStorage.removeItem(`${prefix}.lastAuthUser_user_type`);
     localStorage.removeItem(`${prefix}.lastAuthUser_login_type`);
     localStorage.removeItem(`${prefix}.lastAuthUser_avatar`);
+    this.clearLastAuthUserId();
   },
   getLastAuthUserId(): string {
     const _key = `${this._getKeyPrefix()}.lastAuthUser_id`;

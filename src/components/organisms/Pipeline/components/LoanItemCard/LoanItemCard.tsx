@@ -27,9 +27,17 @@ import {
 } from '@mui/icons-material';
 import { format, parseISO } from 'date-fns';
 
-import { POSFlex } from '@/styles';
-import { LoanSnapshotEnum, PipelineLoanStageEnum, UserType } from '@/types';
 import {
+  LoanProductCategoryEnum,
+  LoanPropertyTypeEnum,
+  LoanPropertyUnitEnum,
+  LoanPurposeEnum,
+  LoanSnapshotEnum,
+  PipelineLoanStageEnum,
+  UserType,
+} from '@/types';
+import {
+  POSFindHashKey,
   POSFindLabel,
   POSFormatDollar,
   POSFormatPercent,
@@ -37,13 +45,19 @@ import {
 } from '@/utils';
 
 import { StyledBadge, StyledButton } from '@/components/atoms';
-import { OPTIONS_LOAN_STAGE } from '@/constants';
+import {
+  APPLICATION_LOAN_CATEGORY,
+  APPLICATION_LOAN_PURPOSE,
+  APPLICATION_PROPERTY_TYPE,
+  APPLICATION_PROPERTY_UNIT,
+  MULTIFAMILY_HASH,
+  OPTIONS_LOAN_STAGE,
+} from '@/constants';
 
 export interface LoanItemCardProps {
   formData: {
     loanId: string;
     address: string;
-    loanType: string;
     loanAmount: number;
     snapshot: LoanSnapshotEnum;
     applicationDate: Date | null;
@@ -52,6 +66,10 @@ export interface LoanItemCardProps {
     originationPoints: number | null;
     processingFee: number | null;
     loanNumber: string | null;
+    productCategory: LoanProductCategoryEnum;
+    loanPurpose: LoanPurposeEnum;
+    propertyType: LoanPropertyTypeEnum;
+    propertyUnit: LoanPropertyUnitEnum;
   };
   userType: UserType | undefined;
   children?: ReactNode;
@@ -71,13 +89,16 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
 
   const {
     address,
-    loanType,
-    loanAmount,
+    //loanAmount,
     applicationDate,
     loanStage,
     originationPoints,
     processingFee,
     loanNumber,
+    productCategory,
+    loanPurpose,
+    propertyType,
+    propertyUnit,
   } = formData;
 
   const [line_1, line_2] = address.split('NEW_LINE');
@@ -251,7 +272,9 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
       <Box
         sx={{
           '& .product_item': {
-            ...POSFlex('center', 'space-between', 'row'),
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            gap: 1.5,
             fontSize: {
               md: 16,
               xs: 12,
@@ -263,29 +286,58 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
           },
         }}
       >
-        <Box className={'product_item'}>
-          <Box>Loan type</Box>
-          <Typography variant={'subtitle1'}>{loanType}</Typography>
-        </Box>
-        <Box className={'product_item'}>
-          <Box>Loan amount</Box>
-          <Typography variant={'subtitle1'}>
-            {POSFormatDollar(loanAmount)}
+        <Stack className={'product_item'}>
+          <Box flexShrink={0}>Loan type</Box>
+          <Typography textAlign={'right'} variant={'subtitle1'}>
+            {`${POSFindLabel(
+              APPLICATION_LOAN_CATEGORY,
+              productCategory,
+            )} ${POSFindLabel(APPLICATION_LOAN_PURPOSE, loanPurpose)}`}
           </Typography>
-        </Box>
-        <Box className={'product_item'}>
-          <Box>Date submitted</Box>
+        </Stack>
+
+        {/*<Box className={'product_item'}>*/}
+        {/*  <Box>Loan amount</Box>*/}
+        {/*  <Typography variant={'subtitle1'}>*/}
+        {/*    {POSFormatDollar(loanAmount)}*/}
+        {/*  </Typography>*/}
+        {/*</Box>*/}
+
+        <Stack className={'product_item'}>
+          <Box flexShrink={0}>Property type</Box>
+          <Typography variant={'subtitle1'}>
+            {(() => {
+              switch (propertyType) {
+                case LoanPropertyTypeEnum.two_to_four_family:
+                  return `${POSFindLabel(
+                    APPLICATION_PROPERTY_UNIT,
+                    propertyUnit,
+                  )}`;
+                case LoanPropertyTypeEnum.multifamily:
+                  return `Multifamily (${propertyUnit === LoanPropertyUnitEnum.twenty_plus_units ? '20+' : POSFindHashKey(propertyUnit, MULTIFAMILY_HASH)} Units)`;
+                default:
+                  return `${POSFindLabel(
+                    APPLICATION_PROPERTY_TYPE,
+                    propertyType,
+                  )}`;
+              }
+            })()}
+          </Typography>
+        </Stack>
+
+        <Stack className={'product_item'}>
+          <Box flexShrink={0}>Date submitted</Box>
           <Typography variant={'subtitle1'}>
             {format(
               parseISO(applicationDate as unknown as string),
               'MM/dd/yyyy',
             )}
           </Typography>
-        </Box>
+        </Stack>
 
         {userType !== UserType.CUSTOMER && (
-          <Box className={'product_item'}>
-            <Box>Compensation</Box>
+          <Stack className={'product_item'}>
+            <Box flexShrink={0}>Compensation</Box>
             <Typography variant={'subtitle1'}>
               {`${
                 userType !== UserType.REAL_ESTATE_AGENT
@@ -296,21 +348,21 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
                   : ''
               }${POSFormatDollar(processingFee)}`}
             </Typography>
-          </Box>
+          </Stack>
         )}
 
-        <Box className={'product_item'}>
-          <Box>Stage</Box>
+        <Stack className={'product_item'}>
+          <Box flexShrink={0}>Stage</Box>
           <StyledBadge
             content={POSFindLabel(OPTIONS_LOAN_STAGE, loanStage)}
             status={loanStage}
           />
-        </Box>
+        </Stack>
 
-        <Box className={'product_item'}>
-          <Box>Loan number</Box>
+        <Stack className={'product_item'}>
+          <Box flexShrink={0}>Loan number</Box>
           <Typography variant={'subtitle1'}>{loanNumber}</Typography>
-        </Box>
+        </Stack>
       </Box>
     </Box>
   );

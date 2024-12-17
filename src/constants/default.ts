@@ -22,6 +22,9 @@ export const URL_HASH: Record<string, any> = {
   [LoanSnapshotEnum.background_information]: '/background-information',
   [LoanSnapshotEnum.compensation_page]: '/compensation-information',
   [LoanSnapshotEnum.loan_summary]: '/loan-summary',
+  [LoanSnapshotEnum.enter_loan_info]: '/loan-information',
+  [LoanSnapshotEnum.contact_info]: '/submit-lead',
+  [LoanSnapshotEnum.thank_you_page]: '/submit-lead-success',
 };
 
 export const TASK_URL_HASH: Record<string, any> = {

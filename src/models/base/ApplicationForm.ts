@@ -8,8 +8,11 @@ import {
   CompensationInformationFromData,
   EstimateRateFormData,
   HttpError,
+  LoanProductCategoryEnum,
+  LoanPropertyTypeEnum,
   LoanSnapshotEnum,
   StartingQuestionFormData,
+  SubmitLeadFromData,
 } from '@/types';
 
 import {
@@ -17,6 +20,7 @@ import {
   BackgroundInformation,
   CompensationInformation,
   EstimateRate,
+  SubmitLead,
 } from '@/models/application';
 
 import { Address } from '@/models/common/Address';
@@ -31,21 +35,17 @@ export const ApplicationForm = types
     loading: types.boolean,
     isBind: types.boolean,
     loanId: types.maybe(types.string),
-    snapshot: types.union(
-      types.literal(LoanSnapshotEnum.starting_question),
-      types.literal(LoanSnapshotEnum.estimate_rate),
-      types.literal(LoanSnapshotEnum.auth_page),
-      types.literal(LoanSnapshotEnum.loan_address),
-      types.literal(LoanSnapshotEnum.background_information),
-      types.literal(LoanSnapshotEnum.compensation_page),
-      types.literal(LoanSnapshotEnum.loan_summary),
-      types.literal(LoanSnapshotEnum.loan_overview),
-    ),
+    productCategory: types.enumeration(Object.values(LoanProductCategoryEnum)),
+    propertyType: types.enumeration(Object.values(LoanPropertyTypeEnum)),
+    snapshot: types.enumeration(Object.values(LoanSnapshotEnum)),
     startingQuestion: ApplicationStartingQuestion,
     estimateRate: EstimateRate,
+    loanInformation: EstimateRate,
     loanAddress: Address,
     backgroundInformation: BackgroundInformation,
     compensationInformation: CompensationInformation,
+    submitLead: SubmitLead,
+    // commercial
   })
   .actions((self) => ({
     setSnapshot(snapshot: LoanSnapshotEnum) {
@@ -68,11 +68,16 @@ export const ApplicationForm = types
       self.isBind = false;
       self.initialized = true;
       self.loanId = '';
+      self.productCategory = LoanProductCategoryEnum.stabilized_bridge;
+      self.propertyType = LoanPropertyTypeEnum.single_family;
       self.snapshot = LoanSnapshotEnum.starting_question;
       self.startingQuestion.injectServerData(
         FormData[LoanSnapshotEnum.starting_question],
       );
       self.estimateRate.injectServerData(
+        FormData[LoanSnapshotEnum.estimate_rate],
+      );
+      self.loanInformation.injectServerData(
         FormData[LoanSnapshotEnum.estimate_rate],
       );
       self.loanAddress.injectServerData({
@@ -93,7 +98,8 @@ export const ApplicationForm = types
         | EstimateRateFormData
         | AddressData
         | BackgroundInformationFormData
-        | CompensationInformationFromData,
+        | CompensationInformationFromData
+        | SubmitLeadFromData,
     ) {
       switch (snapshot) {
         case LoanSnapshotEnum.starting_question:
@@ -103,6 +109,9 @@ export const ApplicationForm = types
           break;
         case LoanSnapshotEnum.estimate_rate:
           self.estimateRate.injectServerData(data as EstimateRateFormData);
+          break;
+        case LoanSnapshotEnum.enter_loan_info:
+          self.loanInformation.injectServerData(data as EstimateRateFormData);
           break;
         case LoanSnapshotEnum.loan_address:
           self.loanAddress.injectServerData(data as AddressData);
@@ -117,6 +126,9 @@ export const ApplicationForm = types
             data as CompensationInformationFromData,
           );
           break;
+        case LoanSnapshotEnum.contact_info:
+          self.submitLead.injectServerData(data as SubmitLeadFromData);
+          break;
         default:
           break;
       }
@@ -128,11 +140,13 @@ export const ApplicationForm = types
       self.loading = true;
       try {
         const {
-          data: { snapshot, data, isBind },
+          data: { snapshot, data, isBind, productCategory, propertyType },
         } = yield _fetchLoanDetailTest(loanId);
         self.snapshot = snapshot;
         self.loanId = loanId;
         self.isBind = isBind;
+        self.productCategory = productCategory;
+        self.propertyType = propertyType;
         self.injectServerData(snapshot, data);
 
         if (Router.pathname !== URL_HASH[snapshot]) {

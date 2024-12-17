@@ -1,5 +1,5 @@
-import { FC, useCallback, useEffect, useMemo } from 'react';
-import { Stack } from '@mui/material';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { Slider, Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -9,6 +9,8 @@ import {
   APPLICATION_LOAN_PURPOSE,
   APPLICATION_PROPERTY_TYPE,
   APPLICATION_PROPERTY_UNIT,
+  MULTIFAMILY_HASH,
+  OPTIONS_COMMON_MARKS,
 } from '@/constants';
 
 import {
@@ -32,6 +34,8 @@ export const StartingQuestion: FC<
   const {
     applicationForm: { startingQuestion },
   } = useMst();
+
+  const [propertiesNum, setPropertiesNum] = useState(5);
 
   const keydownEvent = useCallback(
     (e: KeyboardEvent) => {
@@ -123,6 +127,18 @@ export const StartingQuestion: FC<
               'propertyType',
               value as string as LoanPropertyTypeEnum,
             );
+            if (value === LoanPropertyTypeEnum.two_to_four_family) {
+              startingQuestion.changeFieldValue(
+                'propertyUnit',
+                LoanPropertyUnitEnum.default,
+              );
+            }
+            if (value === LoanPropertyTypeEnum.multifamily) {
+              startingQuestion.changeFieldValue(
+                'propertyUnit',
+                LoanPropertyUnitEnum.five_units,
+              );
+            }
           }}
           options={propertyTypeOptions}
           value={startingQuestion.propertyType}
@@ -133,11 +149,12 @@ export const StartingQuestion: FC<
         style={{
           width: '100%',
           maxWidth: 600,
-          display:
-            startingQuestion.propertyType ===
-            LoanPropertyTypeEnum.two_to_four_family
-              ? 'flex'
-              : 'none',
+          display: [
+            LoanPropertyTypeEnum.two_to_four_family,
+            LoanPropertyTypeEnum.multifamily,
+          ].includes(startingQuestion.propertyType)
+            ? 'flex'
+            : 'none',
         }}
       >
         {startingQuestion.propertyType ===
@@ -158,6 +175,47 @@ export const StartingQuestion: FC<
               }}
               options={APPLICATION_PROPERTY_UNIT}
               value={startingQuestion.propertyUnit}
+            />
+          </StyledFormItem>
+        )}
+        {startingQuestion.propertyType === LoanPropertyTypeEnum.multifamily && (
+          <StyledFormItem
+            label={'How many units are there?'}
+            labelSx={{
+              textAlign: { xs: 'left', lg: 'center' },
+            }}
+            width={'100%'}
+          >
+            <Slider
+              defaultValue={5}
+              marks={OPTIONS_COMMON_MARKS}
+              max={20}
+              min={5}
+              onChange={(e, v) => {
+                setPropertiesNum(v as number);
+                startingQuestion.changeFieldValue(
+                  'propertyUnit',
+                  MULTIFAMILY_HASH[v as number],
+                );
+              }}
+              step={1}
+              sx={{
+                height: 8,
+                '.MuiSlider-mark': {
+                  width: 4,
+                  height: 4,
+                  borderRadius: '50%',
+                  transform: 'translateY(-50%)',
+                  '&[data-index="15"],&[data-index="0"]': {
+                    display: 'none !important',
+                  },
+                },
+              }}
+              value={propertiesNum}
+              valueLabelDisplay={'auto'}
+              valueLabelFormat={(value) => {
+                return value === 20 ? '20+' : value;
+              }}
             />
           </StyledFormItem>
         )}

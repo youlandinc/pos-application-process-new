@@ -4,6 +4,7 @@ import {
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
   LoanPurposeEnum,
+  PrepaymentPenaltyEnum,
 } from '@/types';
 
 export enum LoanFicoScoreEnum {
@@ -61,4 +62,11 @@ export interface EstimateRateFormData {
   initialDisbursement?: number;
   fullDrawnMonthlyPayment?: number;
   futureConstructionFunding?: number;
+  // for rental
+  monthlyIncome: number;
+  propertyInsurance: number;
+  propertyTaxes: number;
+  monthlyHoaFee: number;
+  prepaymentPenalty: PrepaymentPenaltyEnum;
+  acquisitionDate: string;
 }

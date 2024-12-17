@@ -1,4 +1,4 @@
-import { FC, useEffect, useLayoutEffect, useState } from 'react';
+import { FC, useLayoutEffect } from 'react';
 import { Box, Fade } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -8,37 +8,20 @@ import { useMst } from '@/models/Root';
 import { useStoreData } from '@/hooks';
 
 import { POSGetParamsFromUrl } from '@/utils';
+import { LoanSnapshotEnum } from '@/types';
 
-import {
-  HttpErrorType,
-  LoanProductCategoryEnum,
-  LoanPropertyTypeEnum,
-  LoanSnapshotEnum,
-} from '@/types';
+import { SubmitLead } from '@/components/molecules/Application';
 
-import { LoanAddress } from '@/components/molecules/Application';
-
-export const LoanAddressPage: FC = observer(() => {
+export const SubmitLeadPage: FC = observer(() => {
   const router = useRouter();
   const { applicationForm } = useMst();
-  const { loanAddress, productCategory, propertyType } = applicationForm;
 
-  const [stateError, setStateError] = useState(false);
-
-  const { updateFrom, updateFormState, redirectFrom, redirectFromState } =
+  const { redirectFrom, redirectFromState, updateFormState, updateFrom } =
     useStoreData();
 
   const back = async () => {
-    const isEnterLoanInfo =
-      productCategory === LoanProductCategoryEnum.dscr_rental ||
-      propertyType === LoanPropertyTypeEnum.multifamily;
-
-    const toSnapshot = isEnterLoanInfo
-      ? LoanSnapshotEnum.enter_loan_info
-      : LoanSnapshotEnum.estimate_rate;
-
     const postData = {
-      nextSnapshot: toSnapshot,
+      nextSnapshot: LoanSnapshotEnum.starting_question,
       loanId: applicationForm.loanId,
     };
     await redirectFrom(postData);
@@ -46,16 +29,12 @@ export const LoanAddressPage: FC = observer(() => {
 
   const next = async () => {
     const postData = {
-      snapshot: LoanSnapshotEnum.loan_address,
-      nextSnapshot: LoanSnapshotEnum.background_information,
+      snapshot: LoanSnapshotEnum.contact_info,
+      nextSnapshot: LoanSnapshotEnum.thank_you_page,
       loanId: applicationForm.loanId,
-      data: loanAddress.getPostData(),
+      data: applicationForm.submitLead.getPostData(),
     };
-    await updateFrom(postData).then((res) => {
-      if (res === HttpErrorType.state_verify_error) {
-        setStateError(true);
-      }
-    });
+    await updateFrom(postData);
   };
 
   useLayoutEffect(
@@ -72,20 +51,15 @@ export const LoanAddressPage: FC = observer(() => {
     [],
   );
 
-  useEffect(() => {
-    setStateError(false);
-  }, [loanAddress.state]);
-
   return (
     <Fade in={!applicationForm.loading}>
       <Box>
         {!applicationForm.loading && (
-          <LoanAddress
+          <SubmitLead
             backState={redirectFromState.loading}
             backStep={back}
             nextState={updateFormState.loading}
             nextStep={next}
-            stateError={stateError}
           />
         )}
       </Box>

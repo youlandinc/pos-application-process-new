@@ -38,6 +38,7 @@ export const StyledSelect: FC<StyledSelectProps> = ({
   sxHelperText,
   required,
   tooltipTitle = '',
+  tooltipSx = { width: '100%' },
   isTooltip = false,
   ...rest
 }) => {
@@ -53,6 +54,7 @@ export const StyledSelect: FC<StyledSelectProps> = ({
       placement={'top'}
       theme={'main'}
       title={tooltipTitle}
+      tooltipSx={tooltipSx}
     >
       <FormControl
         error={!!(validate?.length && validate[0])}

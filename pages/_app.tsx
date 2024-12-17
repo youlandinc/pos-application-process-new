@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import Head from 'next/head';
 import { AppProps } from 'next/app';
-import { Router, useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import Script from 'next/script';
 import localFont from 'next/font/local';
 
@@ -32,7 +32,7 @@ import { Provider, rootStore } from '@/models/Root';
 import { _fetchSaasConfig } from '@/requests/saas';
 import { HttpError } from '@/types';
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
-import { AUTO_HIDE_DURATION } from '@/constants';
+import { AUTO_HIDE_DURATION, userpool } from '@/constants';
 import {
   ProviderDetectActive,
   ProviderPersistData,
@@ -40,15 +40,14 @@ import {
   StyledNotification,
 } from '@/components/atoms';
 
+import { _recordUrlTrigger } from '@/requests/statistics';
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
-
-const handledRouteStart = () => NProgress.start();
-const handledRouteDone = () => NProgress.done();
 
 const POS_FONT = localFont({
   src: [
@@ -126,16 +125,44 @@ export default function MyApp(props: MyAppProps) {
     }
   }, []);
 
+  const handleRouteStart = () => {
+    NProgress.start();
+  };
+
+  const handleRouteComplete = useCallback(async () => {
+    NProgress.done();
+    await _recordUrlTrigger({
+      loanId: Router?.query?.loanId as string,
+      pageUrl: Router.pathname,
+      tenantId: saasState?.tenantId || '',
+      userId:
+        rootStore?.userProfile?.userId || userpool.getLastAuthUserId() || '',
+      isFail: 'true',
+    });
+  }, [saasState?.tenantId]);
+
+  const handleRouteError = useCallback(async () => {
+    NProgress.done();
+    await _recordUrlTrigger({
+      loanId: Router?.query?.loanId as string,
+      pageUrl: Router.pathname,
+      tenantId: saasState?.tenantId || '',
+      userId:
+        rootStore?.userProfile?.userId || userpool.getLastAuthUserId() || '',
+      isFail: 'false',
+    });
+  }, [saasState?.tenantId]);
+
   useEffect(() => {
-    Router.events.on('routeChangeStart', handledRouteStart);
-    Router.events.on('routeChangeComplete', handledRouteDone);
-    Router.events.on('routeChangeError', handledRouteDone);
+    Router.events.on('routeChangeStart', handleRouteStart);
+    Router.events.on('routeChangeComplete', handleRouteComplete);
+    Router.events.on('routeChangeError', handleRouteError);
     return () => {
-      Router.events.off('routeChangeStart', handledRouteStart);
-      Router.events.off('routeChangeComplete', handledRouteDone);
-      Router.events.off('routeChangeError', handledRouteDone);
+      Router.events.off('routeChangeStart', handleRouteStart);
+      Router.events.off('routeChangeComplete', handleRouteComplete);
+      Router.events.off('routeChangeError', handleRouteError);
     };
-  }, []);
+  }, [handleRouteComplete, handleRouteError]);
 
   const renderComponent = useMemo(() => {
     if (saasState) {

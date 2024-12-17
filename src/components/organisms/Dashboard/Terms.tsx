@@ -591,52 +591,58 @@ export const Terms: FC = observer(() => {
               {renderLoanAmount}
             </Stack>
 
-            <Stack
-              border={'1px solid #D2D6E1'}
-              borderRadius={2}
-              gap={{ xs: 1.5, lg: 3 }}
-              p={{ xs: 1.5, lg: 3 }}
-              width={'100%'}
-            >
-              <LoanTermCardRow
-                content={POSFormatPercent(
-                  data?.interestRate,
-                  POSGetDecimalPlaces(data?.interestRate),
-                )}
-                isHeader={true}
-                title={'Interest rate'}
-              />
-              <LoanTermCardRow
-                content={`${data?.loanTerm} months`}
-                title={'Term'}
-              />
-            </Stack>
-
-            <Stack
-              border={'1px solid #D2D6E1'}
-              borderRadius={2}
-              gap={{ xs: 1.5, lg: 3 }}
-              p={{ xs: 1.5, lg: 3 }}
-              width={'100%'}
-            >
-              <LoanTermCardRow
-                content={POSFormatDollar(data?.monthlyPayment, 2)}
-                isHeader={true}
-                title={
-                  data?.productCategory ===
-                  LoanProductCategoryEnum.ground_up_construction
-                    ? 'Initial monthly payment'
-                    : 'Monthly payment'
-                }
-              />
-              {data?.productCategory ===
-                LoanProductCategoryEnum.ground_up_construction && (
-                <LoanTermCardRow
-                  content={POSFormatDollar(data?.fullDrawnMonthlyPayment)}
-                  title={'Full monthly payment'}
-                />
+            {data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
+              data?.propertyType !== LoanPropertyTypeEnum.multifamily && (
+                <Stack
+                  border={'1px solid #D2D6E1'}
+                  borderRadius={2}
+                  gap={{ xs: 1.5, lg: 3 }}
+                  p={{ xs: 1.5, lg: 3 }}
+                  width={'100%'}
+                >
+                  <LoanTermCardRow
+                    content={POSFormatPercent(
+                      data?.interestRate,
+                      POSGetDecimalPlaces(data?.interestRate),
+                    )}
+                    isHeader={true}
+                    title={'Interest rate'}
+                  />
+                  <LoanTermCardRow
+                    content={`${data?.loanTerm} months`}
+                    title={'Term'}
+                  />
+                </Stack>
               )}
-            </Stack>
+
+            {data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
+              data?.propertyType !== LoanPropertyTypeEnum.multifamily && (
+                <Stack
+                  border={'1px solid #D2D6E1'}
+                  borderRadius={2}
+                  gap={{ xs: 1.5, lg: 3 }}
+                  p={{ xs: 1.5, lg: 3 }}
+                  width={'100%'}
+                >
+                  <LoanTermCardRow
+                    content={POSFormatDollar(data?.monthlyPayment, 2)}
+                    isHeader={true}
+                    title={
+                      data?.productCategory ===
+                      LoanProductCategoryEnum.ground_up_construction
+                        ? 'Initial monthly payment'
+                        : 'Monthly payment'
+                    }
+                  />
+                  {data?.productCategory ===
+                    LoanProductCategoryEnum.ground_up_construction && (
+                    <LoanTermCardRow
+                      content={POSFormatDollar(data?.fullDrawnMonthlyPayment)}
+                      title={'Full monthly payment'}
+                    />
+                  )}
+                </Stack>
+              )}
 
             <Stack
               border={'1px solid #D2D6E1'}
@@ -858,15 +864,19 @@ export const Terms: FC = observer(() => {
                   }`}
                 </Typography>
               </Stack>
-              <StyledButton
-                color={'info'}
-                disabled={viewLoading || data?.isCustom}
-                loading={viewLoading}
-                onClick={() => getPDF('letter')}
-                variant={'outlined'}
-              >
-                View pre-approval letter
-              </StyledButton>
+              {data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
+                data?.propertyType !== LoanPropertyTypeEnum.multifamily && (
+                  <StyledButton
+                    color={'info'}
+                    disabled={viewLoading || data?.isCustom}
+                    loading={viewLoading}
+                    onClick={() => getPDF('letter')}
+                    variant={'outlined'}
+                  >
+                    View pre-approval letter
+                  </StyledButton>
+                )}
+
               {data?.isCustom && (
                 <Typography color={'text.secondary'} variant={'body3'}>
                   When using a custom loan amount, the pre-approval letter is

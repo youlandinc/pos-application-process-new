@@ -4,10 +4,7 @@ import { FeeUnitEnum } from '@/types';
 export const AdditionalFee = types.model({
   id: types.maybe(types.string),
   fieldName: types.maybe(types.string),
-  unit: types.union(
-    types.literal(FeeUnitEnum.dollar),
-    types.literal(FeeUnitEnum.percent),
-  ),
+  unit: types.enumeration(Object.values(FeeUnitEnum)),
   value: types.maybe(types.number),
 });
 

@@ -7,3 +7,6 @@ export * from './LoanAddressPage';
 export * from './BackgroundInformationPage';
 export * from './CompensationInformationPage';
 export * from './LoanSummaryPage';
+
+export * from './SubmitLeadPage';
+export * from './SubmitLeadSuccessPage';
