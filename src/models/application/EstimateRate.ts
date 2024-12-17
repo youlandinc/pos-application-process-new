@@ -45,7 +45,10 @@ export const EstimateRate = types
     propertyInsurance: types.maybe(types.number),
     propertyTaxes: types.maybe(types.number),
     monthlyHoaFee: types.maybe(types.number),
-    prepaymentPenalty: types.enumeration(Object.values(PrepaymentPenaltyEnum)),
+    prepaymentPenalty: types.union(
+      types.enumeration(Object.values(PrepaymentPenaltyEnum)),
+      types.string,
+    ),
     acquisitionDate: types.maybe(types.string),
   })
   .actions((self) => ({
@@ -169,8 +172,7 @@ export const EstimateRate = types
       self.propertyInsurance = propertyInsurance ?? undefined;
       self.propertyTaxes = propertyTaxes ?? undefined;
       self.monthlyHoaFee = monthlyHoaFee ?? undefined;
-      self.prepaymentPenalty =
-        prepaymentPenalty ?? PrepaymentPenaltyEnum.three_year;
+      self.prepaymentPenalty = prepaymentPenalty;
       self.acquisitionDate = acquisitionDate ?? '';
     },
   }));

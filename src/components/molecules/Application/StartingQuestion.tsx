@@ -130,13 +130,24 @@ export const StartingQuestion: FC<
             if (value === LoanPropertyTypeEnum.two_to_four_family) {
               startingQuestion.changeFieldValue(
                 'propertyUnit',
-                LoanPropertyUnitEnum.default,
+                LoanPropertyUnitEnum.two_units,
               );
             }
             if (value === LoanPropertyTypeEnum.multifamily) {
               startingQuestion.changeFieldValue(
                 'propertyUnit',
                 LoanPropertyUnitEnum.five_units,
+              );
+            }
+            if (
+              ![
+                LoanPropertyTypeEnum.multifamily,
+                LoanPropertyTypeEnum.two_to_four_family,
+              ].includes(value as string as LoanPropertyTypeEnum)
+            ) {
+              startingQuestion.changeFieldValue(
+                'propertyUnit',
+                LoanPropertyUnitEnum.default,
               );
             }
           }}
