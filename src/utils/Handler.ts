@@ -1,7 +1,10 @@
 export const POSFindLabel = (
   options: Option[],
-  val: number | string,
+  val: number | string | null,
 ): string => {
+  if (val === null) {
+    return '';
+  }
   return options.find((item) => item.value === val)?.label || '';
 };
 

@@ -30,7 +30,10 @@ export const ApplicationStartingQuestion = types
         productCategory: self.productCategory,
         loanPurpose: self.loanPurpose,
         propertyType: self.propertyType,
-        propertyUnit: self.propertyUnit,
+        propertyUnit:
+          self.propertyUnit === LoanPropertyUnitEnum.default
+            ? null
+            : self.propertyUnit,
         isOccupyProperty: self.isOccupyProperty,
       };
     },
