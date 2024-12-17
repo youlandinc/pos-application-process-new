@@ -34,7 +34,7 @@ export interface EstimateRateFormData {
   productCategory: LoanProductCategoryEnum;
   loanPurpose: LoanPurposeEnum;
   propertyType: LoanPropertyTypeEnum;
-  propertyUnit: LoanPropertyUnitEnum;
+  propertyUnit: LoanPropertyUnitEnum | null;
   citizenship: LoanCitizenshipEnum;
   priorExperience: number;
   state: string;
@@ -67,6 +67,6 @@ export interface EstimateRateFormData {
   propertyInsurance: number;
   propertyTaxes: number;
   monthlyHoaFee: number;
-  prepaymentPenalty: PrepaymentPenaltyEnum | string;
+  prepaymentPenalty: PrepaymentPenaltyEnum | string | null;
   acquisitionDate: string;
 }

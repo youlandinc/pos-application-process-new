@@ -15,7 +15,9 @@ export const EstimateRate = types
     productCategory: types.enumeration(Object.values(LoanProductCategoryEnum)),
     loanPurpose: types.enumeration(Object.values(LoanPurposeEnum)),
     propertyType: types.enumeration(Object.values(LoanPropertyTypeEnum)),
-    propertyUnit: types.enumeration(Object.values(LoanPropertyUnitEnum)),
+    propertyUnit: types.maybeNull(
+      types.enumeration(Object.values(LoanPropertyUnitEnum)),
+    ),
     citizenship: types.enumeration(Object.values(LoanCitizenshipEnum)),
     priorExperience: types.maybe(types.number),
     state: types.string,
@@ -45,9 +47,11 @@ export const EstimateRate = types
     propertyInsurance: types.maybe(types.number),
     propertyTaxes: types.maybe(types.number),
     monthlyHoaFee: types.maybe(types.number),
-    prepaymentPenalty: types.union(
-      types.enumeration(Object.values(PrepaymentPenaltyEnum)),
-      types.string,
+    prepaymentPenalty: types.maybeNull(
+      types.union(
+        types.enumeration(Object.values(PrepaymentPenaltyEnum)),
+        types.string,
+      ),
     ),
     acquisitionDate: types.maybe(types.string),
   })
