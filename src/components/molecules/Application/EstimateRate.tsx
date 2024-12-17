@@ -1076,95 +1076,122 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       }
     }, [ARLTV, LTC, LTV, breakpoints, estimateRate, payoffAmountError]);
 
-    const renderTail = useMemo(() => {
-      const condition = ['xs', 'sm', 'md'].includes(breakpoints);
-      const futureConstructionFunding =
-        estimateRate.loanPurpose === LoanPurposeEnum.purchase
-          ? estimateRate.purchaseConstructionCosts
-          : estimateRate.refinanceConstructionCosts;
+    const renderTail = useMemo(
+      () => {
+        const condition = ['xs', 'sm', 'md'].includes(breakpoints);
+        const futureConstructionFunding =
+          estimateRate.loanPurpose === LoanPurposeEnum.purchase
+            ? estimateRate.purchaseConstructionCosts
+            : estimateRate.refinanceConstructionCosts;
 
-      const initialDisbursement = Math.max(
-        (totalLoanAmount ?? 0) - (futureConstructionFunding ?? 0),
-        0,
-      );
+        const initialDisbursement = Math.max(
+          (totalLoanAmount ?? 0) - (futureConstructionFunding ?? 0),
+          0,
+        );
 
-      const firstLine = (
-        <Stack
-          flexDirection={{ xs: 'column', lg: 'row' }}
-          gap={{ xs: 1.5, lg: 3 }}
-        >
-          {estimateRate.productCategory ===
-            LoanProductCategoryEnum.ground_up_construction && (
-            <>
-              <Typography
-                color={'text.secondary'}
-                sx={{ '& > span': { color: 'primary.main', fontWeight: 600 } }}
-                variant={'subtitle1'}
-              >
-                Initial disbursement:{' '}
-                <span>{POSFormatDollar(initialDisbursement)}</span>
-              </Typography>
-              <Typography
-                color={'text.secondary'}
-                sx={{ '& > span': { color: 'primary.main', fontWeight: 600 } }}
-                variant={'subtitle1'}
-              >
-                Future construction funding:{' '}
-                <span>
-                  {POSFormatDollar(
-                    Math.min(
-                      futureConstructionFunding ?? 0,
-                      totalLoanAmount ?? 0,
-                    ),
-                  )}
-                </span>
-              </Typography>
-            </>
-          )}
-
-          <Typography
-            color={'text.secondary'}
-            sx={{ '& > span': { color: 'primary.main', fontWeight: 600 } }}
-            variant={'subtitle1'}
+        const firstLine = (
+          <Stack
+            flexDirection={{ xs: 'column', lg: 'row' }}
+            gap={{ xs: 1.5, lg: 3 }}
           >
-            Total loan amount: <span>{POSFormatDollar(totalLoanAmount)}</span>
-          </Typography>
-        </Stack>
-      );
+            {estimateRate.productCategory ===
+              LoanProductCategoryEnum.ground_up_construction && (
+              <>
+                <Typography
+                  color={'text.secondary'}
+                  sx={{
+                    '& > span': { color: 'primary.main', fontWeight: 600 },
+                  }}
+                  variant={'subtitle1'}
+                >
+                  Initial disbursement:{' '}
+                  <span>{POSFormatDollar(initialDisbursement)}</span>
+                </Typography>
+                <Typography
+                  color={'text.secondary'}
+                  sx={{
+                    '& > span': { color: 'primary.main', fontWeight: 600 },
+                  }}
+                  variant={'subtitle1'}
+                >
+                  Future construction funding:{' '}
+                  <span>
+                    {POSFormatDollar(
+                      Math.min(
+                        futureConstructionFunding ?? 0,
+                        totalLoanAmount ?? 0,
+                      ),
+                    )}
+                  </span>
+                </Typography>
+              </>
+            )}
 
-      if (!condition) {
-        return firstLine;
-      }
+            <Typography
+              color={'text.secondary'}
+              sx={{ '& > span': { color: 'primary.main', fontWeight: 600 } }}
+              variant={'subtitle1'}
+            >
+              Total loan amount: <span>{POSFormatDollar(totalLoanAmount)}</span>
+            </Typography>
+          </Stack>
+        );
 
-      return (
-        <>
-          {firstLine}
-          {estimateRate.productCategory !==
-            LoanProductCategoryEnum.ground_up_construction && (
-            <Stack flex={1} maxWidth={240} mt={-1.5} width={'100%'}>
-              {loading ? (
+        if (!condition) {
+          return firstLine;
+        }
+
+        return (
+          <>
+            {firstLine}
+            {estimateRate.productCategory !==
+              LoanProductCategoryEnum.ground_up_construction && (
+              <Stack flex={1} maxWidth={240} mt={-1.5} width={'100%'}>
+                {loading ? (
+                  <>
+                    <Skeleton
+                      animation={'wave'}
+                      height={14}
+                      variant="rounded"
+                      width={'100%'}
+                    />
+                    <Skeleton
+                      animation={'wave'}
+                      height={14}
+                      sx={{
+                        marginTop: 1,
+                      }}
+                      variant="rounded"
+                      width={'100%'}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Typography color={'text.secondary'} variant={'body3'}>
+                      You qualify for a loan amount between{' '}
+                    </Typography>
+                    <Typography
+                      color={'text.secondary'}
+                      sx={{
+                        '& > b': {
+                          color: 'primary.main',
+                          fontWeight: 600,
+                        },
+                      }}
+                      variant={'body3'}
+                    >
+                      <b>{POSFormatDollar(limits?.minLoanAmount)}</b> and{' '}
+                      <b>{POSFormatDollar(limits?.maxLoanAmount)}</b>.
+                    </Typography>
+                  </>
+                )}
+              </Stack>
+            )}
+
+            <Stack flex={1} mt={-1.5}>
+              {estimateRate.productCategory !==
+              LoanProductCategoryEnum.stabilized_bridge ? (
                 <>
-                  <Skeleton
-                    animation={'wave'}
-                    height={14}
-                    variant="rounded"
-                    width={'100%'}
-                  />
-                  <Skeleton
-                    animation={'wave'}
-                    height={14}
-                    sx={{
-                      marginTop: 1,
-                    }}
-                    variant="rounded"
-                    width={'100%'}
-                  />
-                </>
-              ) : (
-                <>
-                  <Typography color={'text.secondary'} variant={'body3'}>
-                    You qualify for a loan amount between{' '}
-                  </Typography>
                   <Typography
                     color={'text.secondary'}
                     sx={{
@@ -1175,18 +1202,27 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     }}
                     variant={'body3'}
                   >
-                    <b>{POSFormatDollar(limits?.minLoanAmount)}</b> and{' '}
-                    <b>{POSFormatDollar(limits?.maxLoanAmount)}</b>.
+                    After-repair loan to value:{' '}
+                    <b>{POSFormatPercent(ARLTV, 1)}</b>
                   </Typography>
-                </>
-              )}
-            </Stack>
-          )}
 
-          <Stack flex={1} mt={-1.5}>
-            {estimateRate.productCategory !==
-            LoanProductCategoryEnum.stabilized_bridge ? (
-              <>
+                  {estimateRate.productCategory !==
+                    LoanProductCategoryEnum.ground_up_construction && (
+                    <Typography
+                      color={'text.secondary'}
+                      sx={{
+                        '& > b': {
+                          color: 'primary.main',
+                          fontWeight: 600,
+                        },
+                      }}
+                      variant={'body3'}
+                    >
+                      Loan to cost: <b>{POSFormatPercent(LTC, 1)}</b>
+                    </Typography>
+                  )}
+                </>
+              ) : (
                 <Typography
                   color={'text.secondary'}
                   sx={{
@@ -1197,57 +1233,53 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   }}
                   variant={'body3'}
                 >
-                  After-repair loan to value:{' '}
-                  <b>{POSFormatPercent(ARLTV, 1)}</b>
+                  Loan to value: <b>{POSFormatPercent(LTV, 1)}</b>
                 </Typography>
-
-                {estimateRate.productCategory !==
-                  LoanProductCategoryEnum.ground_up_construction && (
-                  <Typography
-                    color={'text.secondary'}
-                    sx={{
-                      '& > b': {
-                        color: 'primary.main',
-                        fontWeight: 600,
-                      },
-                    }}
-                    variant={'body3'}
-                  >
-                    Loan to cost: <b>{POSFormatPercent(LTC, 1)}</b>
-                  </Typography>
-                )}
-              </>
-            ) : (
-              <Typography
-                color={'text.secondary'}
-                sx={{
-                  '& > b': {
-                    color: 'primary.main',
-                    fontWeight: 600,
-                  },
-                }}
-                variant={'body3'}
-              >
-                Loan to value: <b>{POSFormatPercent(LTV, 1)}</b>
-              </Typography>
-            )}
-          </Stack>
-        </>
-      );
-    }, [
-      ARLTV,
-      LTC,
-      LTV,
-      breakpoints,
-      estimateRate.loanPurpose,
-      estimateRate.productCategory,
-      estimateRate.purchaseConstructionCosts,
-      estimateRate.refinanceConstructionCosts,
-      limits?.maxLoanAmount,
-      limits?.minLoanAmount,
-      loading,
-      totalLoanAmount,
-    ]);
+              )}
+            </Stack>
+          </>
+        );
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [
+        ARLTV,
+        LTC,
+        LTV,
+        breakpoints,
+        estimateRate.productCategory,
+        estimateRate.loanPurpose,
+        estimateRate.propertyType,
+        estimateRate.propertyUnit,
+        estimateRate.state,
+        estimateRate.ficoScore,
+        estimateRate.isLiquidity,
+        estimateRate.liquidityAmount,
+        estimateRate.rehabCost,
+        estimateRate.arv,
+        estimateRate.purchasePrice,
+        estimateRate.purchaseLoanAmount,
+        estimateRate.propertyValue,
+        estimateRate.refinanceLoanAmount,
+        estimateRate.isPayoff,
+        estimateRate.payoffAmount,
+        estimateRate.isCustom,
+        estimateRate.loanTerm,
+        estimateRate.interestRate,
+        estimateRate.isDutch,
+        estimateRate.citizenship,
+        estimateRate.priorExperience,
+        estimateRate.improvementsSinceAcquisition,
+        estimateRate.constructionProjectsExited,
+        estimateRate.purchaseConstructionCosts,
+        estimateRate.refinanceConstructionCosts,
+        estimateRate.ltc,
+        estimateRate.monthlyIncome,
+        limits?.maxLoanAmount,
+        limits?.minLoanAmount,
+        loading,
+        totalLoanAmount,
+      ],
+    );
 
     useEffect(
       () => {
