@@ -1,33 +1,29 @@
-import { FC, useLayoutEffect } from 'react';
+import { FC, useLayoutEffect, useMemo } from 'react';
 import { Box, Fade } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useStoreData } from '@/hooks';
-
 import { POSGetParamsFromUrl } from '@/utils';
-import { LoanSnapshotEnum } from '@/types';
 
 import { SubmitLeadSuccess } from '@/components/molecules/Application';
+import { useSessionStorageState } from '@/hooks';
 
-export const SubmitLeadSuccessPage = observer(() => {
+export const SubmitLeadSuccessPage: FC = observer(() => {
   const router = useRouter();
 
-  const { redirectFrom, redirectFromState } = useStoreData();
+  const { applicationForm, session } = useMst();
 
-  const { applicationForm } = useMst();
+  const hasSession = useMemo<boolean>(() => !!session, [session]);
+  const { saasState } = useSessionStorageState('tenantConfig');
 
-  const back = async () => {
-    const postData = {
-      nextSnapshot: LoanSnapshotEnum.starting_question,
-      loanId: applicationForm.loanId,
-    };
-    await redirectFrom(postData);
+  const next = async () => {
+    if (!hasSession) {
+      return await router.push(saasState.website);
+    }
+    await router.push('/pipeline');
   };
-
-  const next = async () => {};
 
   useLayoutEffect(
     () => {
@@ -45,7 +41,9 @@ export const SubmitLeadSuccessPage = observer(() => {
 
   return (
     <Fade in={!applicationForm.loading}>
-      <Box>{!applicationForm.loading && <SubmitLeadSuccess />}</Box>
+      <Box>
+        {!applicationForm.loading && <SubmitLeadSuccess nextStep={next} />}
+      </Box>
     </Fade>
   );
 });

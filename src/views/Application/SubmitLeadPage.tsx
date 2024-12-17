@@ -12,12 +12,12 @@ import { LoanSnapshotEnum } from '@/types';
 
 import { SubmitLead } from '@/components/molecules/Application';
 
-export const SubmitLeadPage = observer(() => {
+export const SubmitLeadPage: FC = observer(() => {
   const router = useRouter();
-
-  const { redirectFrom, redirectFromState } = useStoreData();
-
   const { applicationForm } = useMst();
+
+  const { redirectFrom, redirectFromState, updateFormState, updateFrom } =
+    useStoreData();
 
   const back = async () => {
     const postData = {
@@ -27,7 +27,15 @@ export const SubmitLeadPage = observer(() => {
     await redirectFrom(postData);
   };
 
-  const next = async () => {};
+  const next = async () => {
+    const postData = {
+      snapshot: LoanSnapshotEnum.contact_info,
+      nextSnapshot: LoanSnapshotEnum.thank_you_page,
+      loanId: applicationForm.loanId,
+      data: applicationForm.submitLead.getPostData(),
+    };
+    await updateFrom(postData);
+  };
 
   useLayoutEffect(
     () => {
@@ -47,7 +55,12 @@ export const SubmitLeadPage = observer(() => {
     <Fade in={!applicationForm.loading}>
       <Box>
         {!applicationForm.loading && (
-          <SubmitLead backState={redirectFromState.loading} backStep={back} />
+          <SubmitLead
+            backState={redirectFromState.loading}
+            backStep={back}
+            nextState={updateFormState.loading}
+            nextStep={next}
+          />
         )}
       </Box>
     </Fade>

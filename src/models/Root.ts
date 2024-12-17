@@ -165,6 +165,14 @@ const initialState = {
     loanAddress: FormData[LoanSnapshotEnum.loan_address],
     backgroundInformation: FormData[LoanSnapshotEnum.background_information],
     compensationInformation: FormData[LoanSnapshotEnum.compensation_page],
+    submitLead: {
+      addressInfo: { ...FormData[LoanSnapshotEnum.loan_address] },
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      additionalInfo: '',
+    },
   },
   dashboardInfo: {
     propertyAddress: FormData[LoanSnapshotEnum.loan_address],
