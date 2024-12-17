@@ -12,6 +12,7 @@ import {
   LoanPropertyTypeEnum,
   LoanSnapshotEnum,
   StartingQuestionFormData,
+  SubmitLeadFromData,
 } from '@/types';
 
 import {
@@ -19,6 +20,7 @@ import {
   BackgroundInformation,
   CompensationInformation,
   EstimateRate,
+  SubmitLead,
 } from '@/models/application';
 
 import { Address } from '@/models/common/Address';
@@ -42,6 +44,7 @@ export const ApplicationForm = types
     loanAddress: Address,
     backgroundInformation: BackgroundInformation,
     compensationInformation: CompensationInformation,
+    submitLead: SubmitLead,
     // commercial
   })
   .actions((self) => ({
@@ -95,7 +98,8 @@ export const ApplicationForm = types
         | EstimateRateFormData
         | AddressData
         | BackgroundInformationFormData
-        | CompensationInformationFromData,
+        | CompensationInformationFromData
+        | SubmitLeadFromData,
     ) {
       switch (snapshot) {
         case LoanSnapshotEnum.starting_question:
@@ -121,6 +125,9 @@ export const ApplicationForm = types
           self.compensationInformation.injectServerData(
             data as CompensationInformationFromData,
           );
+          break;
+        case LoanSnapshotEnum.contact_info:
+          self.submitLead.injectServerData(data as SubmitLeadFromData);
           break;
         default:
           break;

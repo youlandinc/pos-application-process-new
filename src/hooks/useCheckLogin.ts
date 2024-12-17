@@ -39,17 +39,14 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
 
   const check = usePersistFn(async () => {
     if (!session) {
-      // if (logoutNotification) {
-      //   enqueueSnackbar("You haven't logged", {
-      //     variant: 'error',
-      //     autoHideDuration: AUTO_HIDE_DURATION,
-      //   });
-      // }
       if (
         router.pathname === jumpPath ||
         router.pathname === '/' ||
         router.pathname.includes('estimate-rate') ||
-        router.pathname.includes('auth-page')
+        router.pathname.includes('auth-page') ||
+        router.pathname.includes('loan-information') ||
+        router.pathname.includes('submit-lead') ||
+        router.pathname.includes('submit-lead-success')
       ) {
         return;
       }

@@ -29,7 +29,6 @@ export const LoanInformationPage: FC = observer(() => {
   };
 
   const next = async () => {
-    console.log(applicationForm.loanInformation.getPostData());
     const postData = {
       data: applicationForm.loanInformation.getPostData(),
       snapshot: LoanSnapshotEnum.enter_loan_info,
