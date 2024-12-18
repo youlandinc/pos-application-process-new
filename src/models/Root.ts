@@ -25,7 +25,6 @@ import {
 } from '@/types';
 import { DashboardInfo } from '@/models/base/DashboardInfo';
 import { Questionnaire } from './account/Questionnaire';
-import { POSGetParamsFromUrl } from '@/utils';
 
 export const RootModel = {
   persistDataLoaded: types.boolean,
