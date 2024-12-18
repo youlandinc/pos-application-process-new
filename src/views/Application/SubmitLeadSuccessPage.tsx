@@ -20,7 +20,7 @@ export const SubmitLeadSuccessPage: FC = observer(() => {
 
   const next = async () => {
     if (!hasSession) {
-      return await router.push(saasState.website);
+      return (location.href = saasState.website);
     }
     await router.push('/pipeline');
   };
