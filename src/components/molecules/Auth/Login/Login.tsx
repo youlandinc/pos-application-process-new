@@ -60,13 +60,13 @@ export const Login: FC<LoginProps> = observer(
           return router.push('/auth/reset-password/');
         }
         const { asPath } = router;
-        if (asPath.includes('loanId')) {
+        if (asPath.includes('loanId') && !asPath.includes('type')) {
           setLoading(false);
           return router.push(asPath);
         }
         if (to) {
           setLoading(false);
-          return router.push(to);
+          return router.push({ pathname: to, query: router.query });
         }
       },
       [router, store, successCb, to],
