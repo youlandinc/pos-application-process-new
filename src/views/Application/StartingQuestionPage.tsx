@@ -45,13 +45,12 @@ export const StartingQuestionPage: FC = observer(() => {
 
     const isContactInfo = propertyType === LoanPropertyTypeEnum.commercial;
 
-    switch (true) {
-      case isEnterLoanInfo:
-        toSnapshot = LoanSnapshotEnum.enter_loan_info;
-        break;
-      case isContactInfo:
-        toSnapshot = LoanSnapshotEnum.contact_info;
-        break;
+    if (isEnterLoanInfo) {
+      toSnapshot = LoanSnapshotEnum.enter_loan_info;
+    }
+
+    if (isContactInfo) {
+      toSnapshot = LoanSnapshotEnum.contact_info;
     }
 
     if (!loanId) {
