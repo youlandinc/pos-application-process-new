@@ -17,14 +17,21 @@ import {
   StyledUploadButtonBox,
 } from '@/components/atoms';
 
-import { HttpError } from '@/types';
+import {
+  HttpError,
+  LoanProductCategoryEnum,
+  LoanPropertyTypeEnum,
+} from '@/types';
 import { _downloadFile } from '@/requests/application';
 import { _fetchLoanDocumentData } from '@/requests/dashboard';
 
 import NOTIFICATION_WARNING from '@/components/atoms/StyledNotification/notification_warning.svg';
 
 export const Documents: FC = observer(() => {
-  const { notificationDocuments } = useMst();
+  const {
+    notificationDocuments,
+    dashboardInfo: { productCategory, propertyType },
+  } = useMst();
 
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
@@ -200,36 +207,39 @@ export const Documents: FC = observer(() => {
             data&apos;s privacy and protection, including advanced 256-bit
             encryption, secure SSL connections, and regular security audits.
           </Typography>
-          <Typography
-            color={'text.secondary'}
-            fontSize={{ xs: 12, lg: 16 }}
-            mt={1.5}
-          >
-            Here is your{' '}
-            <Typography
-              color={downloadLoading ? 'text.disabled' : 'primary.main'}
-              component={'span'}
-              fontSize={{ xs: 12, lg: 16 }}
-              fontWeight={600}
-              onClick={async () => {
-                if (downloadLoading) {
-                  return;
-                }
-                await onClickToDownloadLetter();
-                // todo
-                // await router.push({
-                //   pathname: '/dashboard/overview',
-                //   query: {
-                //     loanId: router.query.loanId,
-                //   },
-                // });
-              }}
-              sx={{ cursor: downloadLoading ? 'not-allowed' : 'pointer' }}
-            >
-              Pre-approval letter
-            </Typography>
-            .
-          </Typography>
+          {productCategory !== LoanProductCategoryEnum.dscr_rental &&
+            propertyType !== LoanPropertyTypeEnum.multifamily && (
+              <Typography
+                color={'text.secondary'}
+                fontSize={{ xs: 12, lg: 16 }}
+                mt={1.5}
+              >
+                Here is your{' '}
+                <Typography
+                  color={downloadLoading ? 'text.disabled' : 'primary.main'}
+                  component={'span'}
+                  fontSize={{ xs: 12, lg: 16 }}
+                  fontWeight={600}
+                  onClick={async () => {
+                    if (downloadLoading) {
+                      return;
+                    }
+                    await onClickToDownloadLetter();
+                    // todo
+                    // await router.push({
+                    //   pathname: '/dashboard/overview',
+                    //   query: {
+                    //     loanId: router.query.loanId,
+                    //   },
+                    // });
+                  }}
+                  sx={{ cursor: downloadLoading ? 'not-allowed' : 'pointer' }}
+                >
+                  Pre-approval letter
+                </Typography>
+                .
+              </Typography>
+            )}
           {isTips && (
             <Stack
               bgcolor={'rgba(255, 249, 234, 1)'}

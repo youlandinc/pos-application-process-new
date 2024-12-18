@@ -20,6 +20,7 @@ import {
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
+  LoanPurposeEnum,
   LoanSnapshotEnum,
 } from '@/types';
 import { DashboardInfo } from '@/models/base/DashboardInfo';
@@ -179,10 +180,11 @@ const initialState = {
     propertyAddress: FormData[LoanSnapshotEnum.loan_address],
     propertyType: LoanPropertyTypeEnum.default,
     propertyUnit: LoanPropertyUnitEnum.default,
-    loanType: '',
     loading: false,
     loanId: '',
     loanNumber: '',
+    productCategory: LoanProductCategoryEnum.stabilized_bridge,
+    loanPurpose: LoanPurposeEnum.purchase,
   },
 
   questionnaire: {
