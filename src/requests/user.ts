@@ -74,3 +74,11 @@ export const _readMessage = (params: { messageId: string }) => {
 export const _readAllMessage = (params: { fileId: number | string }) => {
   return put('/pos/notification/batchRead', params);
 };
+
+export const _signInByToken = (token: string) => {
+  return get('/usercenter/api/user/fetchUserInfo', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

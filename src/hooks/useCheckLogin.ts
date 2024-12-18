@@ -50,7 +50,7 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
       ) {
         return;
       }
-      return router.push(jumpPath);
+      return router.push({ pathname: jumpPath, query: router.query });
     }
 
     try {
