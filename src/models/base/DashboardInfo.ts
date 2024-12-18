@@ -8,8 +8,10 @@ import { Address } from '@/models/common/Address';
 import {
   DashboardTaskKey,
   HttpError,
+  LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
+  LoanPurposeEnum,
 } from '@/types';
 import { _fetchDashboardInfo, _fetchLoanTaskList } from '@/requests/dashboard';
 
@@ -59,7 +61,8 @@ export const DashboardInfo = types
     propertyAddress: Address,
     propertyType: types.enumeration(Object.values(LoanPropertyTypeEnum)),
     propertyUnit: types.enumeration(Object.values(LoanPropertyUnitEnum)),
-    loanType: types.maybe(types.string),
+    productCategory: types.enumeration(Object.values(LoanProductCategoryEnum)),
+    loanPurpose: types.maybe(types.enumeration(Object.values(LoanPurposeEnum))),
     loading: types.boolean,
     loanId: types.maybe(types.string),
     loanNumber: types.maybe(types.string),
@@ -182,16 +185,18 @@ export const DashboardInfo = types
         const {
           data: {
             propertyAddress,
-            loanType,
             propertyType,
             propertyUnit,
             loanNumber,
+            productCategory,
+            loanPurpose,
           },
         } = yield _fetchDashboardInfo(loanId);
         self.propertyAddress.injectServerData(propertyAddress);
-        self.loanType = loanType;
         self.propertyType = propertyType || LoanPropertyTypeEnum.default;
         self.propertyUnit = propertyUnit || LoanPropertyUnitEnum.default;
+        self.productCategory = productCategory;
+        self.loanPurpose = loanPurpose;
         self.loanId = loanId;
         self.loanNumber = loanNumber ?? '';
       } catch (err) {
