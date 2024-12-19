@@ -177,7 +177,7 @@ export const DashboardInfo = types
   }))
   .actions((self) => {
     const fetchDashboardInfo = flow(function* (loanId: string) {
-      if (loanId === self.loanId || !loanId) {
+      if (!loanId || (loanId === self.loanId && !!self.loanNumber)) {
         return;
       }
       self.loading = true;
