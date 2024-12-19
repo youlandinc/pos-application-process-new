@@ -119,7 +119,7 @@ export const SubmitLead: FC<FormNodeBaseProps> = observer(
             inputProps={{
               maxLength: 300,
             }}
-            label={'Additional information'}
+            label={'Loan details'}
             multiline
             onChange={(e) =>
               submitLead.changeFieldValue('additionalInfo', e.target.value)
