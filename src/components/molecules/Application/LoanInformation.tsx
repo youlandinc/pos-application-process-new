@@ -1563,7 +1563,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
 
     return (
       <StyledFormItem
-        label={'Enter Loan Information'}
+        label={'Enter loan information'}
         m={'0 auto'}
         maxWidth={976}
         tip={renderTip}
