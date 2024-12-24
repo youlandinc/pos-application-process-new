@@ -46,7 +46,7 @@ import {
 
 import ICON_NOTIFICATION from './assets/icon_notification.svg';
 import ICON_NO_MORE from './assets/icon_no_more.svg';
-import ICON_NO_HISTORY from '@/components/atoms/StyledUploadButtonBox/icon_no_history.svg';
+import ICON_NO_HISTORY from '@/components/atoms/StyledUploadButtonBox/assets/icon_no_history.svg';
 
 const MENU_LIST = [
   { label: 'Account', url: '/account' },
