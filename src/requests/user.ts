@@ -82,3 +82,18 @@ export const _signInByToken = (token: string) => {
     },
   });
 };
+
+export const _readAllChatMessage = (loanId: number | string) => {
+  return get(`/pos/notification/readAll/${loanId}`);
+};
+
+export const _fetchLoanChatMessage = (loanId: number | string) => {
+  return get(`/pos/notification/comments/list/${loanId}`);
+};
+
+export const _postChatMessage = (params: {
+  loanId: string | number;
+  content: string;
+}) => {
+  return post('/pos/notification/comments/add', params);
+};

@@ -14,6 +14,8 @@ import {
   LoanPurposeEnum,
 } from '@/types';
 import { _fetchDashboardInfo, _fetchLoanTaskList } from '@/requests/dashboard';
+import { _fetchLoanChatMessage } from '@/requests';
+import { ChatMessageItem, RoleEnum } from '@/types/account/notification';
 
 interface TaskItem {
   key: DashboardTaskKey;
@@ -73,6 +75,23 @@ export const DashboardInfo = types
         value: types.number,
       }),
     ),
+    unReadCount: types.number,
+    loanChatMessage: types.array(
+      types.model({
+        firstName: types.maybeNull(types.string),
+        lastName: types.maybeNull(types.string),
+        name: types.maybeNull(types.string),
+        avatar: types.maybeNull(types.string),
+        backgroundColor: types.maybeNull(types.string),
+        operatorId: types.maybeNull(types.union(types.string, types.number)),
+        operationTime: types.maybeNull(types.string),
+        content: types.maybeNull(types.string),
+        role: types.maybeNull(
+          types.enumeration('key', Object.values(RoleEnum)),
+        ),
+        docName: types.maybeNull(types.string),
+      }),
+    ),
   })
   .actions((self) => ({
     findFirst() {
@@ -117,6 +136,13 @@ export const DashboardInfo = types
     setLoanTasks(taskMap: any) {
       self.taskMap = taskMap;
       self.taskOrder = cast(this.updateTaskOrder());
+    },
+    setUnReadCount(count: number) {
+      self.unReadCount = count;
+    },
+    addLoanChatMessage(message: ChatMessageItem) {
+      self.unReadCount = 0;
+      self.loanChatMessage.push(message);
     },
     async jumpToNextTask(taskKey?: DashboardTaskKey): Promise<void> {
       if (taskKey) {
@@ -180,8 +206,20 @@ export const DashboardInfo = types
       if (!loanId || (loanId === self.loanId && !!self.loanNumber)) {
         return;
       }
+
       self.loading = true;
-      try {
+
+      const requestList = [
+        yield _fetchDashboardInfo(loanId),
+        yield _fetchLoanChatMessage(loanId),
+      ];
+
+      const [infoRes, chatRes] = yield Promise.allSettled(requestList);
+      if (infoRes.status === 'rejected' || chatRes.status === 'rejected') {
+        handleError(infoRes.reason as HttpError, '/pipeline');
+      }
+
+      if (infoRes.status === 'fulfilled') {
         const {
           data: {
             propertyAddress,
@@ -191,7 +229,7 @@ export const DashboardInfo = types
             productCategory,
             loanPurpose,
           },
-        } = yield _fetchDashboardInfo(loanId);
+        } = infoRes.value;
         self.propertyAddress.injectServerData(propertyAddress);
         self.propertyType = propertyType || LoanPropertyTypeEnum.default;
         self.propertyUnit = propertyUnit || LoanPropertyUnitEnum.default;
@@ -199,11 +237,17 @@ export const DashboardInfo = types
         self.loanPurpose = loanPurpose;
         self.loanId = loanId;
         self.loanNumber = loanNumber ?? '';
-      } catch (err) {
-        handleError(err as HttpError, '/pipeline');
-      } finally {
-        self.loading = false;
       }
+
+      if (chatRes.status === 'fulfilled') {
+        const {
+          data: { unReadCount, messages },
+        } = chatRes.value;
+        self.unReadCount = unReadCount;
+        self.loanChatMessage = messages;
+      }
+
+      self.loading = false;
     });
 
     const fetchTaskMap = flow(function* (loanId: string) {
@@ -227,8 +271,32 @@ export const DashboardInfo = types
       }
     });
 
+    const fetchChatMessage = flow(function* (loanId: string, cb?: () => void) {
+      if (!loanId) {
+        yield Router.push('/pipeline');
+        enqueueSnackbar('Invalid loan ID', {
+          variant: 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+        });
+        return;
+      }
+
+      self.setLoanId(loanId);
+      try {
+        const {
+          data: { unReadCount, messages },
+        } = yield _fetchLoanChatMessage(loanId);
+        self.unReadCount = unReadCount;
+        self.loanChatMessage = messages;
+        cb?.();
+      } catch (err) {
+        handleError(err as HttpError);
+      }
+    });
+
     return {
       fetchDashboardInfo,
+      fetchChatMessage,
       fetchTaskMap,
     };
   });

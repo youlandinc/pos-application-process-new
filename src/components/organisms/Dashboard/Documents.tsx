@@ -1,4 +1,4 @@
-import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
+import { FC, ReactNode, useCallback, useState } from 'react';
 import { Fade, Icon, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
@@ -29,7 +29,6 @@ import NOTIFICATION_WARNING from '@/components/atoms/StyledNotification/notifica
 
 export const Documents: FC = observer(() => {
   const {
-    notificationDocuments,
     dashboardInfo: { productCategory, propertyType },
   } = useMst();
 
@@ -41,7 +40,7 @@ export const Documents: FC = observer(() => {
   >([]);
 
   const [isTips, setIsTips] = useState<boolean>(false);
-  const [startTabIndex, setStartTabIndex] = useState<number>(0);
+  //const [startTabIndex, setStartTabIndex] = useState<number>(0);
 
   const { loading } = useAsync(async () => await fetchData(), [location.href]);
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
@@ -62,13 +61,17 @@ export const Documents: FC = observer(() => {
       } = await _fetchLoanDocumentData(loanId);
       setIsTips(isTips);
       const tabData = docs.reduce(
-        (acc, cur, index) => {
+        (
+          acc,
+          cur,
+          //index
+        ) => {
           if (!cur?.categoryName) {
             return acc;
           }
-          if (cur.categoryKey === notificationDocuments.categoryKey) {
-            setStartTabIndex(index);
-          }
+          //if (cur.categoryKey === notificationDocuments.categoryKey) {
+          //  setStartTabIndex(index);
+          //}
           const temp: { label: string | ReactNode; content: ReactNode } = {
             label: '',
             content: undefined,
@@ -99,6 +102,7 @@ export const Documents: FC = observer(() => {
             <Stack gap={3} my={3}>
               {cur.categoryDocs.map((item, index) => (
                 <StyledUploadButtonBox
+                  isShowHistory={false}
                   key={`${item.fileKey}_${index}`}
                   loanNumber={loanNumber}
                   refresh={() => fetchData()}
@@ -164,24 +168,24 @@ export const Documents: FC = observer(() => {
     }
   }, [enqueueSnackbar]);
 
-  useEffect(
-    () => {
-      if (
-        !notificationDocuments.categoryKey ||
-        !notificationDocuments.fileId ||
-        !notificationDocuments.fileName
-      ) {
-        return;
-      }
-      fetchData();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      notificationDocuments.categoryKey,
-      notificationDocuments.fileId,
-      notificationDocuments.fileName,
-    ],
-  );
+  //useEffect(
+  //  () => {
+  //    if (
+  //      !notificationDocuments.categoryKey ||
+  //      !notificationDocuments.fileId ||
+  //      !notificationDocuments.fileName
+  //    ) {
+  //      return;
+  //    }
+  //    fetchData();
+  //  },
+  //  // eslint-disable-next-line react-hooks/exhaustive-deps
+  //  [
+  //    notificationDocuments.categoryKey,
+  //    notificationDocuments.fileId,
+  //    notificationDocuments.fileName,
+  //  ],
+  //);
 
   return loading ? (
     <Stack
@@ -262,7 +266,7 @@ export const Documents: FC = observer(() => {
 
         <Stack maxWidth={'100%'} width={'100%'}>
           <StyledTab
-            startIndex={startTabIndex}
+            startIndex={0}
             sx={{ maxWidth: '100%', m: 0 }}
             tabsData={tabData}
           />

@@ -9,9 +9,9 @@ import { POSLayout } from '@/components/molecules';
 export const DashboardPage: FC<{ children?: ReactNode }> = observer(
   ({ children }) => {
     return (
-      <POSLayout scene={LayoutSceneTypeEnum.dashboard}>
-        <>{children}</>
-      </POSLayout>
+      <>
+        <POSLayout scene={LayoutSceneTypeEnum.dashboard}>{children}</POSLayout>
+      </>
     );
   },
 );

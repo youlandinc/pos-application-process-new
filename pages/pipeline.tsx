@@ -42,11 +42,11 @@ const PipelinePage: FC = observer(() => {
       return;
     }
 
-    store.setNotificationDocument({
-      categoryKey,
-      fileId: +fileId,
-      fileName,
-    });
+    //store.setNotificationDocument({
+    //  categoryKey,
+    //  fileId: +fileId,
+    //  fileName,
+    //});
 
     if (type === 'comment') {
       await _readAllMessage({ fileId });
