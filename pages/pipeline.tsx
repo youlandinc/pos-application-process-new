@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useAsync } from 'react-use';
 
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
+//import { useMst } from '@/models/Root';
 
 import { POSGetParamsFromUrl } from '@/utils';
 
@@ -31,7 +31,7 @@ const DynamicPipelineListPage = dynamic(
 
 const PipelinePage: FC = observer(() => {
   const router = useRouter();
-  const store = useMst();
+  //const store = useMst();
 
   useAsync(async () => {
     const { type, loanId, fileId, categoryKey, fileName } = POSGetParamsFromUrl(
@@ -42,11 +42,11 @@ const PipelinePage: FC = observer(() => {
       return;
     }
 
-    store.setNotificationDocument({
-      categoryKey,
-      fileId: +fileId,
-      fileName,
-    });
+    //store.setNotificationDocument({
+    //  categoryKey,
+    //  fileId: +fileId,
+    //  fileName,
+    //});
 
     if (type === 'comment') {
       await _readAllMessage({ fileId });

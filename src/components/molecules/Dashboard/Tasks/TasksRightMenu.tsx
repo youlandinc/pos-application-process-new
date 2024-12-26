@@ -110,6 +110,7 @@ export const TasksRightMenu: FC = observer(() => {
         }}
         top={92}
         width={'clamp(320px,25vw,360px)'}
+        zIndex={0}
       >
         <Typography mb={0.5} pl={0.75} variant={'subtitle1'}>
           Jump to task

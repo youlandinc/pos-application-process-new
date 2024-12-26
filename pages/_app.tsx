@@ -94,8 +94,18 @@ export default function MyApp(props: MyAppProps) {
           return;
         }
         const data = JSON.parse(e.data);
-        if (data.messageType === 'COUNT') {
-          rootStore.setTotalNotification(data.count);
+        switch (data.messageType) {
+          case 'LOAN_DETAIL':
+            if (rootStore.notificationDetail.loanIdList.includes(data.loanId)) {
+              return;
+            }
+            rootStore.addNotificationLoanId(data.loanId);
+            break;
+          case 'COUNT':
+            rootStore.updateNotificationCount(data.count);
+            break;
+          default:
+            break;
         }
       };
 

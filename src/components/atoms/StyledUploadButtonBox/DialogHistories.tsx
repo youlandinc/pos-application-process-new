@@ -4,7 +4,7 @@ import { format, parseISO } from 'date-fns';
 import { Icon, Stack, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
+//import { useMst } from '@/models/Root';
 
 import {
   StyledAvatar,
@@ -28,7 +28,7 @@ interface DialogHistoriesProps extends UploadButtonDialog {
 
 export const DialogHistories: FC<DialogHistoriesProps> = observer(
   ({ visible, onClose, histories, fileName, loading, onTrigger }) => {
-    const store = useMst();
+    //const store = useMst();
 
     const reducedName = (item: DashboardDocumentComment) => {
       const { firstName, lastName, name } = item;
@@ -145,17 +145,17 @@ export const DialogHistories: FC<DialogHistoriesProps> = observer(
               autoFocus
               color={'info'}
               onClick={() => {
-                if (
-                  store.notificationDocuments.categoryKey &&
-                  store.notificationDocuments.fileId &&
-                  store.notificationDocuments.fileName
-                ) {
-                  store.setNotificationDocument({
-                    categoryKey: '',
-                    fileId: 0,
-                    fileName: '',
-                  });
-                }
+                //if (
+                //  store.notificationDocuments.categoryKey &&
+                //  store.notificationDocuments.fileId &&
+                //  store.notificationDocuments.fileName
+                //) {
+                //  store.setNotificationDocument({
+                //    categoryKey: '',
+                //    fileId: 0,
+                //    fileName: '',
+                //  });
+                //}
                 onClose();
               }}
               size={'small'}
@@ -198,17 +198,17 @@ export const DialogHistories: FC<DialogHistoriesProps> = observer(
           </Stack>
         }
         onClose={() => {
-          if (
-            store.notificationDocuments.categoryKey &&
-            store.notificationDocuments.fileId &&
-            store.notificationDocuments.fileName
-          ) {
-            store.setNotificationDocument({
-              categoryKey: '',
-              fileId: 0,
-              fileName: '',
-            });
-          }
+          //if (
+          //  store.notificationDocuments.categoryKey &&
+          //  store.notificationDocuments.fileId &&
+          //  store.notificationDocuments.fileName
+          //) {
+          //  store.setNotificationDocument({
+          //    categoryKey: '',
+          //    fileId: 0,
+          //    fileName: '',
+          //  });
+          //}
           onClose();
         }}
         open={visible}

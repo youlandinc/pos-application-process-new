@@ -22,3 +22,33 @@ export enum NotificationMessageLabel {
   read = 'READ',
   unread = 'UNREAD',
 }
+
+export interface ChatMessageItem {
+  firstName: string | null;
+  lastName: string | null;
+  name: string | null;
+  avatar: string | null;
+  backgroundColor: string | null;
+  operatorId: string | number | null;
+  operationTime: string | null;
+  content: string | null;
+  role: RoleEnum | null;
+  docName: string | null;
+  source: ChatMessageItemSource | null;
+}
+
+export enum ChatMessageItemSource {
+  pos = 'POS',
+  los = 'LOS',
+}
+
+export enum RoleEnum {
+  processor = 'PROCESSOR',
+  admin = 'ADMIN',
+  executive = 'EXECUTIVE',
+}
+
+export interface ChatMessageResponse {
+  unReadCount: number;
+  messages: ChatMessageItem[];
+}

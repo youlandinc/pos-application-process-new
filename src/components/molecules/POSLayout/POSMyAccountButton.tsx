@@ -292,7 +292,7 @@ export const POSMyAccountButton: FC<POSMyAccountButtonProps> = observer(() => {
       gap={{ xs: 2.5, lg: 3.5 }}
     >
       <Badge
-        badgeContent={store.totalNotification}
+        badgeContent={store.notificationDetail.total}
         onClick={onClickOpenMessageBox}
         ref={messageBoxRef}
         sx={{
