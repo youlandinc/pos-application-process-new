@@ -16,7 +16,7 @@ import {
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 
-import { useMst } from '@/models/Root';
+//import { useMst } from '@/models/Root';
 import { observer } from 'mobx-react-lite';
 
 import { useBreakpoints, useSessionStorageState, useSwitch } from '@/hooks';
@@ -25,33 +25,34 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import {
   getFilesWebkitDataTransferItems,
   POSFormatDate,
-  POSGetParamsFromUrl,
+  //POSGetParamsFromUrl,
   renameFile,
 } from '@/utils';
 import { SUploadData } from '@/models/common/UploadFile';
 import {
-  DashboardDocumentComment,
+  //DashboardDocumentComment,
   DashboardDocumentStatus,
   HttpError,
 } from '@/types';
 
 import { _deleteFile, _uploadFile } from '@/requests/base';
-import { _fetchLoanDocumentComments } from '@/requests/dashboard';
+//import { _fetchLoanDocumentComments } from '@/requests/dashboard';
 import { _downloadBrokerFile } from '@/requests';
 
 import {
   StyledButton,
-  StyledLoading,
+  //StyledLoading,
   StyledTooltip,
   Transitions,
 } from '@/components/atoms';
-import { DialogHistories } from './DialogHistories';
+//import { DialogHistories } from './DialogHistories';
 import { DialogInsurance } from './DialogInsurance';
 import { DialogDelete } from './DialogDelete';
 
 import ICON_IMAGE from './assets/icon_image.svg';
 import ICON_FILE from './assets/icon_file.svg';
-import ICON_HISTORY from './assets/icon_history.svg';
+
+//import ICON_HISTORY from './assets/icon_history.svg';
 
 interface StyledUploadButtonBoxProps {
   id?: number | string;
@@ -112,7 +113,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
     isShowHistory = true,
     redDotFlag = false,
   }) => {
-    const store = useMst();
+    //const store = useMst();
 
     const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
@@ -129,11 +130,11 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
       visible: visibleInsurance,
       close: closeInsurance,
     } = useSwitch(false);
-    const {
-      open: openHistories,
-      visible: visibleHistories,
-      close: closeHistories,
-    } = useSwitch(false);
+    //const {
+    //  open: openHistories,
+    //  visible: visibleHistories,
+    //  close: closeHistories,
+    //} = useSwitch(false);
 
     const [deleteIndex, setDeleteIndex] = useState<number>(-1);
     const [activeIndex, setActiveIndex] = useState<number>(-1);
@@ -143,9 +144,9 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
 
     const [fileList, setFileList] = useState(files);
 
-    const [fetchHistoryLoading, setFetchHistoryLoading] = useState(false);
-    const [refreshHistoryLoading, setRefreshHistoryLoading] = useState(false);
-    const [histories, setHistories] = useState<DashboardDocumentComment[]>([]);
+    //const [fetchHistoryLoading, setFetchHistoryLoading] = useState(false);
+    //const [refreshHistoryLoading, setRefreshHistoryLoading] = useState(false);
+    //const [histories, setHistories] = useState<DashboardDocumentComment[]>([]);
 
     const [isDragging, setIsDragging] = useState(false);
 
@@ -341,73 +342,73 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
       );
     }, [fileList.length, status]);
 
-    const onClickShowHistory = useCallback(
-      async (condition: 'inside' | 'outside') => {
-        if (fetchHistoryLoading || refreshHistoryLoading) {
-          return;
-        }
-        const { loanId } = POSGetParamsFromUrl(window.location.href);
-        if (!loanId) {
-          return;
-        }
-        const postData = {
-          loanId,
-          fileId: id as number | string,
-        };
-        condition === 'outside'
-          ? setFetchHistoryLoading(true)
-          : setRefreshHistoryLoading(true);
-        try {
-          const {
-            data: { content },
-          } = await _fetchLoanDocumentComments(postData);
-          setHistories(content);
-          if (!visibleHistories) {
-            openHistories();
-          }
-        } catch (err) {
-          const { header, message, variant } = err as HttpError;
-          enqueueSnackbar(message, {
-            variant: variant || 'error',
-            autoHideDuration: AUTO_HIDE_DURATION,
-            isSimple: !header,
-            header,
-          });
-        } finally {
-          condition === 'outside'
-            ? setFetchHistoryLoading(false)
-            : setRefreshHistoryLoading(false);
-          await refresh?.();
-        }
-      },
-      [
-        enqueueSnackbar,
-        fetchHistoryLoading,
-        openHistories,
-        visibleHistories,
-        id,
-        refresh,
-        refreshHistoryLoading,
-      ],
-    );
+    //const onClickShowHistory = useCallback(
+    //  async (condition: 'inside' | 'outside') => {
+    //    if (fetchHistoryLoading || refreshHistoryLoading) {
+    //      return;
+    //    }
+    //    const { loanId } = POSGetParamsFromUrl(window.location.href);
+    //    if (!loanId) {
+    //      return;
+    //    }
+    //    const postData = {
+    //      loanId,
+    //      fileId: id as number | string,
+    //    };
+    //    condition === 'outside'
+    //      ? setFetchHistoryLoading(true)
+    //      : setRefreshHistoryLoading(true);
+    //    try {
+    //      const {
+    //        data: { content },
+    //      } = await _fetchLoanDocumentComments(postData);
+    //      setHistories(content);
+    //      if (!visibleHistories) {
+    //        openHistories();
+    //      }
+    //    } catch (err) {
+    //      const { header, message, variant } = err as HttpError;
+    //      enqueueSnackbar(message, {
+    //        variant: variant || 'error',
+    //        autoHideDuration: AUTO_HIDE_DURATION,
+    //        isSimple: !header,
+    //        header,
+    //      });
+    //    } finally {
+    //      condition === 'outside'
+    //        ? setFetchHistoryLoading(false)
+    //        : setRefreshHistoryLoading(false);
+    //      await refresh?.();
+    //    }
+    //  },
+    //  [
+    //    enqueueSnackbar,
+    //    fetchHistoryLoading,
+    //    openHistories,
+    //    visibleHistories,
+    //    id,
+    //    refresh,
+    //    refreshHistoryLoading,
+    //  ],
+    //);
 
     useEffect(() => {
       setFileList(files);
     }, [files]);
 
-    useEffect(
-      () => {
-        if (store.notificationDocuments.fileId === id) {
-          onClickShowHistory('outside');
-        }
-      },
-      //eslint-disable-next-line react-hooks/exhaustive-deps
-      [
-        store.notificationDocuments.categoryKey,
-        store.notificationDocuments.fileId,
-        store.notificationDocuments.fileName,
-      ],
-    );
+    //useEffect(
+    //  () => {
+    //    if (store.notificationDocuments.fileId === id) {
+    //      onClickShowHistory('outside');
+    //    }
+    //  },
+    //  //eslint-disable-next-line react-hooks/exhaustive-deps
+    //  [
+    //    store.notificationDocuments.categoryKey,
+    //    store.notificationDocuments.fileId,
+    //    store.notificationDocuments.fileName,
+    //  ],
+    //);
 
     return (
       <Box
@@ -613,41 +614,41 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
               </Typography>
             )}
 
-            {isShowHistory &&
-              (fetchHistoryLoading ? (
-                <StyledLoading
-                  size={24}
-                  sx={{
-                    color: '#E3E3EE',
-                  }}
-                />
-              ) : (
-                <Stack
-                  alignItems={'center'}
-                  height={24}
-                  justifyContent={'center'}
-                  position={'relative'}
-                  sx={{
-                    '&:after': {
-                      content: '""',
-                      position: 'absolute',
-                      top: -2,
-                      right: -2,
-                      width: 10,
-                      height: 10,
-                      borderRadius: '50%',
-                      backgroundColor: redDotFlag ? '#FF5630' : 'transparent',
-                    },
-                  }}
-                  width={24}
-                >
-                  <Icon
-                    component={ICON_HISTORY}
-                    onClick={() => onClickShowHistory('outside')}
-                    sx={{ cursor: 'pointer' }}
-                  />
-                </Stack>
-              ))}
+            {/*{isShowHistory &&*/}
+            {/*  (fetchHistoryLoading ? (*/}
+            {/*    <StyledLoading*/}
+            {/*      size={24}*/}
+            {/*      sx={{*/}
+            {/*        color: '#E3E3EE',*/}
+            {/*      }}*/}
+            {/*    />*/}
+            {/*  ) : (*/}
+            {/*    <Stack*/}
+            {/*      alignItems={'center'}*/}
+            {/*      height={24}*/}
+            {/*      justifyContent={'center'}*/}
+            {/*      position={'relative'}*/}
+            {/*      sx={{*/}
+            {/*        '&:after': {*/}
+            {/*          content: '""',*/}
+            {/*          position: 'absolute',*/}
+            {/*          top: -2,*/}
+            {/*          right: -2,*/}
+            {/*          width: 10,*/}
+            {/*          height: 10,*/}
+            {/*          borderRadius: '50%',*/}
+            {/*          backgroundColor: redDotFlag ? '#FF5630' : 'transparent',*/}
+            {/*        },*/}
+            {/*      }}*/}
+            {/*      width={24}*/}
+            {/*    >*/}
+            {/*      <Icon*/}
+            {/*        component={ICON_HISTORY}*/}
+            {/*        onClick={() => onClickShowHistory('outside')}*/}
+            {/*        sx={{ cursor: 'pointer' }}*/}
+            {/*      />*/}
+            {/*    </Stack>*/}
+            {/*  ))}*/}
             <StyledButton
               color={'primary'}
               component={'label'}
@@ -913,14 +914,14 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
           }}
           visible={visibleDelete}
         />
-        <DialogHistories
-          fileName={fileName}
-          histories={histories}
-          loading={refreshHistoryLoading}
-          onClose={closeHistories}
-          onTrigger={() => onClickShowHistory('inside')}
-          visible={visibleHistories}
-        />
+        {/*<DialogHistories*/}
+        {/*  fileName={fileName}*/}
+        {/*  histories={histories}*/}
+        {/*  loading={refreshHistoryLoading}*/}
+        {/*  onClose={closeHistories}*/}
+        {/*  onTrigger={() => onClickShowHistory('inside')}*/}
+        {/*  visible={visibleHistories}*/}
+        {/*/>*/}
       </Box>
     );
   },

@@ -29,11 +29,11 @@ import { Questionnaire } from './account/Questionnaire';
 export const RootModel = {
   persistDataLoaded: types.boolean,
   loadedGoogle: types.boolean,
-  totalNotification: types.number,
-  notificationDocuments: types.model({
-    categoryKey: types.maybe(types.string),
-    fileId: types.maybe(types.number),
-    fileName: types.maybe(types.string),
+
+  notificationDetail: types.model({
+    total: types.number,
+    visible: types.boolean,
+    loanIdList: types.array(types.string),
   }),
 
   applicationForm: ApplicationForm,
@@ -111,17 +111,23 @@ const RootStore = types.model(RootModel).actions((self) => {
     setLogoutNotification(val: boolean) {
       self.logoutNotification = val;
     },
-    setTotalNotification(val: number) {
-      self.totalNotification = val;
+    updateNotificationCount(total: number) {
+      self.notificationDetail.total = total;
     },
-    setNotificationDocument(val: {
-      categoryKey: string;
-      fileId: number;
-      fileName: string;
-    }) {
-      self.notificationDocuments.categoryKey = val.categoryKey;
-      self.notificationDocuments.fileId = val.fileId;
-      self.notificationDocuments.fileName = val.fileName;
+    updateNotificationVisible(visible: boolean) {
+      self.notificationDetail.visible = visible;
+    },
+    addNotificationLoanId(loanId: string) {
+      self.notificationDetail.loanIdList.push(loanId);
+    },
+    removeNotificationLoanId(loanId: string) {
+      if (self.notificationDetail.loanIdList.indexOf(loanId) === -1) {
+        return;
+      }
+      self.notificationDetail.loanIdList.splice(
+        self.notificationDetail.loanIdList.indexOf(loanId),
+        1,
+      );
     },
     logout() {
       if (Router.pathname === '/auth/login') {
@@ -141,11 +147,10 @@ const RootStore = types.model(RootModel).actions((self) => {
 });
 
 const initialState = {
-  totalNotification: 0,
-  notificationDocuments: {
-    categoryKey: '',
-    fileId: 0,
-    fileName: '',
+  notificationDetail: {
+    total: 0,
+    visible: false,
+    loanId: [],
   },
 
   loadedGoogle: false,
@@ -185,6 +190,8 @@ const initialState = {
     loanNumber: '',
     productCategory: LoanProductCategoryEnum.stabilized_bridge,
     loanPurpose: LoanPurposeEnum.purchase,
+    unReadCount: 0,
+    messages: [],
   },
 
   questionnaire: {
