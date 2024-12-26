@@ -2,9 +2,13 @@ import { FC } from 'react';
 import { Avatar, Stack, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
+//import { useMst } from '@/models/Root';
 
-import { ChatMessageItem, RoleEnum } from '@/types/account/notification';
+import {
+  ChatMessageItem,
+  ChatMessageItemSource,
+  RoleEnum,
+} from '@/types/account/notification';
 import { POSFormatDate } from '@/utils';
 
 const ROLE_HASH: { [key in RoleEnum]: string } = {
@@ -13,22 +17,25 @@ const ROLE_HASH: { [key in RoleEnum]: string } = {
   [RoleEnum.processor]: 'Processor',
 };
 
-export const MessageItem: FC<ChatMessageItem> = observer(
+export const MessageItem: FC<Partial<ChatMessageItem>> = observer(
   ({
     firstName = 'A',
     lastName = 'B',
     //name = '',
     avatar = '',
     backgroundColor = '',
-    operatorId = '',
+    //operatorId = '',
     operationTime = '',
     content = '',
     role = RoleEnum.admin,
     docName = '',
+    source = ChatMessageItemSource.pos,
   }) => {
-    const { userProfile } = useMst();
+    //const { userProfile } = useMst();
 
-    const isSelf = userProfile?.userId == operatorId;
+    //const isSelf = userProfile?.userId == operatorId;
+
+    const isSelf = source === 'POS';
 
     return (
       <Stack

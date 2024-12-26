@@ -17,6 +17,7 @@ import { _postChatMessage, _readAllChatMessage } from '@/requests';
 import ICON_SEND from './assets/icon-send.svg';
 import ICON_MESSAGE from './assets/icon-message.svg';
 import ICON_CLOSE from './assets/icon-close.svg';
+import { ChatMessageItemSource } from '@/types/account/notification';
 
 export const MessageBox: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
@@ -66,6 +67,7 @@ export const MessageBox: FC = observer(() => {
         content,
         role: null,
         docName: '',
+        source: ChatMessageItemSource.pos,
       });
     } catch (err) {
       const { header, message, variant } = err as HttpError;
