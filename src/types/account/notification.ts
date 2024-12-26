@@ -34,6 +34,12 @@ export interface ChatMessageItem {
   content: string | null;
   role: RoleEnum | null;
   docName: string | null;
+  source: ChatMessageItemSource | null;
+}
+
+export enum ChatMessageItemSource {
+  pos = 'POS',
+  los = 'LOS',
 }
 
 export enum RoleEnum {

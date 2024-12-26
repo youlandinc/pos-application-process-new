@@ -15,7 +15,11 @@ import {
 } from '@/types';
 import { _fetchDashboardInfo, _fetchLoanTaskList } from '@/requests/dashboard';
 import { _fetchLoanChatMessage } from '@/requests';
-import { ChatMessageItem, RoleEnum } from '@/types/account/notification';
+import {
+  ChatMessageItem,
+  ChatMessageItemSource,
+  RoleEnum,
+} from '@/types/account/notification';
 
 interface TaskItem {
   key: DashboardTaskKey;
@@ -71,7 +75,7 @@ export const DashboardInfo = types
     taskMap: types.map(types.boolean),
     taskOrder: types.array(
       types.model({
-        key: types.enumeration('key', Object.values(DashboardTaskKey)),
+        key: types.enumeration(Object.values(DashboardTaskKey)),
         value: types.number,
       }),
     ),
@@ -86,10 +90,11 @@ export const DashboardInfo = types
         operatorId: types.maybeNull(types.union(types.string, types.number)),
         operationTime: types.maybeNull(types.string),
         content: types.maybeNull(types.string),
-        role: types.maybeNull(
-          types.enumeration('key', Object.values(RoleEnum)),
-        ),
+        role: types.maybeNull(types.enumeration(Object.values(RoleEnum))),
         docName: types.maybeNull(types.string),
+        source: types.maybeNull(
+          types.enumeration(Object.values(ChatMessageItemSource)),
+        ),
       }),
     ),
   })
