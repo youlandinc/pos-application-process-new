@@ -71,7 +71,7 @@ export const _readMessage = (params: { messageId: string }) => {
   return put('/pos/notification/read', params);
 };
 
-export const _readAllMessage = (params: { fileId: number | string }) => {
+export const _readAllMessage = (params: { loanId: number | string }) => {
   return put('/pos/notification/batchRead', params);
 };
 

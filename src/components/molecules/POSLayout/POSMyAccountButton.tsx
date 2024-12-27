@@ -254,14 +254,14 @@ export const POSMyAccountButton: FC<POSMyAccountButtonProps> = observer(() => {
   const onClickMessageItemCb = useCallback(
     async (item: NotificationMessageItem) => {
       const { variables } = item;
-      const { fileId } = variables;
-      if (!fileId) {
+      const { loanId } = variables;
+      if (!loanId) {
         return;
       }
       setMessageClickLoading(true);
 
       try {
-        await _readAllMessage({ fileId });
+        await _readAllMessage({ loanId });
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
