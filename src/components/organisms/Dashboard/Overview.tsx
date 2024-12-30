@@ -62,6 +62,7 @@ export const Overview: FC = observer(() => {
       setEstDate(estDate);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
+      await router.push('/pipeline');
       enqueueSnackbar(message, {
         variant: variant || 'error',
         autoHideDuration: AUTO_HIDE_DURATION,

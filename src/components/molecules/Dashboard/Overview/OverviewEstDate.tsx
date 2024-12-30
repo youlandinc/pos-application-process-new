@@ -2,7 +2,10 @@ import { FC } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { format } from 'date-fns';
 
-export const OverviewEstDate: FC<{ estDate: string }> = ({ estDate }) => {
+export const OverviewEstDate: FC<{ estDate: string }> = ({ estDate = '' }) => {
+  if (!estDate) {
+    return null;
+  }
   const month = format(new Date(estDate), 'MMM');
   const day = format(new Date(estDate), 'dd');
 
