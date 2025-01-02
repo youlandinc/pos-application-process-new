@@ -46,7 +46,7 @@ import {
 
 import ICON_NOTIFICATION from './assets/icon_notification.svg';
 import ICON_NO_MORE from './assets/icon_no_more.svg';
-import ICON_NO_HISTORY from '@/components/atoms/StyledUploadButtonBox/icon_no_history.svg';
+import ICON_NO_HISTORY from '@/components/atoms/StyledUploadButtonBox/assets/icon_no_history.svg';
 
 const MENU_LIST = [
   { label: 'Account', url: '/account' },
@@ -254,14 +254,14 @@ export const POSMyAccountButton: FC<POSMyAccountButtonProps> = observer(() => {
   const onClickMessageItemCb = useCallback(
     async (item: NotificationMessageItem) => {
       const { variables } = item;
-      const { fileId } = variables;
-      if (!fileId) {
+      const { loanId } = variables;
+      if (!loanId) {
         return;
       }
       setMessageClickLoading(true);
 
       try {
-        await _readAllMessage({ fileId });
+        await _readAllMessage({ loanId });
       } catch (err) {
         const { header, message, variant } = err as HttpError;
         enqueueSnackbar(message, {
@@ -292,7 +292,7 @@ export const POSMyAccountButton: FC<POSMyAccountButtonProps> = observer(() => {
       gap={{ xs: 2.5, lg: 3.5 }}
     >
       <Badge
-        badgeContent={store.totalNotification}
+        badgeContent={store.notificationDetail.total}
         onClick={onClickOpenMessageBox}
         ref={messageBoxRef}
         sx={{

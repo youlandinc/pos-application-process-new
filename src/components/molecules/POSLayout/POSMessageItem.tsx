@@ -28,7 +28,11 @@ export const POSMessageItem: FC<POSMessageItemProps> = observer(
     clickLoading,
     dateFromNow,
     cb,
-    variables: { loanId, categoryKey, fileId, fileName },
+    variables: {
+      loanId,
+      fileName,
+      //categoryKey, fileId
+    },
     //operationTime,
   }) => {
     const store = useMst();
@@ -46,32 +50,23 @@ export const POSMessageItem: FC<POSMessageItemProps> = observer(
       if (clickLoading) {
         return;
       }
-      store.setNotificationDocument({
-        categoryKey,
-        fileId,
-        fileName,
-      });
 
       await cb?.();
-      if (router.pathname === '/dashboard/documents' && insideId === loanId) {
+
+      setTimeout(() => {
+        store.updateNotificationVisible(true);
+      }, 300);
+
+      if (insideId === loanId) {
         return;
       }
       await router.push({
-        pathname: '/dashboard/documents',
+        pathname: '/dashboard/overview',
         query: {
           loanId,
         },
       });
-    }, [
-      categoryKey,
-      cb,
-      clickLoading,
-      fileId,
-      fileName,
-      loanId,
-      router,
-      store,
-    ]);
+    }, [cb, clickLoading, loanId, router, store]);
 
     return (
       <Stack

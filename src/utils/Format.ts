@@ -41,7 +41,7 @@ export const POSFormatPercent = (
 };
 
 export const POSFormatDate = (
-  date: string | Date,
+  date: string | Date | null,
   timeFormat = 'yyyy-MM-dd HH:mm:ss O',
   options?: {
     locale?: Locale;
@@ -51,6 +51,9 @@ export const POSFormatDate = (
     useAdditionalDayOfYearTokens?: boolean;
   },
 ): string => {
+  if (!date) {
+    return '';
+  }
   return format(new Date(date), timeFormat, options);
 };
 

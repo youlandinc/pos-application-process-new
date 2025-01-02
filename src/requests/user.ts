@@ -71,7 +71,7 @@ export const _readMessage = (params: { messageId: string }) => {
   return put('/pos/notification/read', params);
 };
 
-export const _readAllMessage = (params: { fileId: number | string }) => {
+export const _readAllMessage = (params: { loanId: number | string }) => {
   return put('/pos/notification/batchRead', params);
 };
 
@@ -81,4 +81,19 @@ export const _signInByToken = (token: string) => {
       Authorization: `Bearer ${token}`,
     },
   });
+};
+
+export const _readAllChatMessage = (loanId: number | string) => {
+  return get(`/pos/notification/readAll/${loanId}`);
+};
+
+export const _fetchLoanChatMessage = (loanId: number | string) => {
+  return get(`/pos/notification/comments/list/${loanId}`);
+};
+
+export const _postChatMessage = (params: {
+  loanId: string | number;
+  content: string;
+}) => {
+  return post('/pos/notification/comments/add', params);
 };

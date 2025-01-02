@@ -10,7 +10,6 @@ import { useMst } from '@/models/Root';
 import { POSGetParamsFromUrl } from '@/utils';
 
 import { LayoutSceneTypeEnum } from '@/types';
-import { _readAllMessage } from '@/requests';
 
 const DynamicPipelinePage = dynamic(
   () => import('@/views/Pipeline/PipelinePage').then((mod) => mod.PipelinePage),
@@ -32,27 +31,20 @@ const DynamicPipelineListPage = dynamic(
 const PipelinePage: FC = observer(() => {
   const router = useRouter();
   const store = useMst();
+  const { session } = store;
 
   useAsync(async () => {
-    const { type, loanId, fileId, categoryKey, fileName } = POSGetParamsFromUrl(
-      location.href,
-    );
+    const { type, loanId } = POSGetParamsFromUrl(location.href);
 
-    if (!type || !loanId || !fileId || !categoryKey || !fileName) {
+    if (!type || !loanId || !session) {
       return;
     }
 
-    store.setNotificationDocument({
-      categoryKey,
-      fileId: +fileId,
-      fileName,
-    });
-
     if (type === 'comment') {
-      await _readAllMessage({ fileId });
+      store.updateNotificationVisible(true);
 
       await router.push({
-        pathname: '/dashboard/documents',
+        pathname: '/dashboard/overview',
         query: {
           loanId,
         },

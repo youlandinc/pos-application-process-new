@@ -12,7 +12,7 @@ import { StyledBoxWrap } from '@/components/atoms';
 import { POSHeader } from './index';
 
 import { LayoutSceneTypeEnum } from '@/types';
-import { TasksRightMenu } from '@/components/molecules';
+import { MessageBox, TasksRightMenu } from '@/components/molecules';
 
 export interface POSLayoutProps {
   children?: ReactNode;
@@ -29,7 +29,9 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
       loading,
       backToPrevTaskMobile,
       jumpToNextTaskMobile,
+      fetchChatMessage,
     },
+    notificationDetail,
   } = store;
   const breakpoint = useBreakpoints();
 
@@ -44,7 +46,21 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
     ) {
       fetchDashboardInfo(router.query.loanId as string);
     }
-  }, [fetchDashboardInfo, router.pathname, router.query.loanId]);
+  }, [fetchDashboardInfo, router.pathname, router.query?.loanId]);
+
+  useEffect(() => {
+    if (notificationDetail.loanIdList.includes(router.query.loanId as string)) {
+      fetchChatMessage(router.query.loanId as string, () =>
+        store.removeNotificationLoanId(router.query.loanId as string),
+      );
+    }
+  }, [
+    fetchChatMessage,
+    notificationDetail.loanIdList,
+    notificationDetail.loanIdList.length,
+    router.query.loanId,
+    store,
+  ]);
 
   return (
     <Box sx={{ height: '100%' }}>
@@ -72,12 +88,15 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
               ? 8
               : 0,
           mt: scene === LayoutSceneTypeEnum.application ? 3 : 0,
+          position: 'relative',
         }}
       >
         {children}
         {['lg', 'xl', 'xxl'].includes(breakpoint) &&
           router.pathname.includes('tasks') && <TasksRightMenu />}
+        {scene === LayoutSceneTypeEnum.dashboard && <MessageBox />}
       </StyledBoxWrap>
+
       {['xs', 'sm'].includes(breakpoint) &&
         router.pathname.includes('tasks') && (
           <Stack
@@ -88,7 +107,7 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
             flexDirection={'row'}
             height={48}
             position={'sticky'}
-            zIndex={9999}
+            zIndex={9}
           >
             <Stack
               alignItems={'center'}

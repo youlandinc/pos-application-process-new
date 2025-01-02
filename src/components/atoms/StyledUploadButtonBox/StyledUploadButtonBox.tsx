@@ -10,15 +10,13 @@ import React, {
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import {
   CloseOutlined,
-  ContentCopy,
-  DeleteForeverOutlined,
   GetAppOutlined,
   RemoveRedEyeOutlined,
 } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 
-import { useMst } from '@/models/Root';
+//import { useMst } from '@/models/Root';
 import { observer } from 'mobx-react-lite';
 
 import { useBreakpoints, useSessionStorageState, useSwitch } from '@/hooks';
@@ -27,34 +25,34 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import {
   getFilesWebkitDataTransferItems,
   POSFormatDate,
-  POSGetParamsFromUrl,
+  //POSGetParamsFromUrl,
   renameFile,
 } from '@/utils';
 import { SUploadData } from '@/models/common/UploadFile';
 import {
-  DashboardDocumentComment,
+  //DashboardDocumentComment,
   DashboardDocumentStatus,
   HttpError,
 } from '@/types';
 
 import { _deleteFile, _uploadFile } from '@/requests/base';
-import { _fetchLoanDocumentComments } from '@/requests/dashboard';
+//import { _fetchLoanDocumentComments } from '@/requests/dashboard';
 import { _downloadBrokerFile } from '@/requests';
 
 import {
   StyledButton,
-  StyledDialog,
-  StyledLoading,
+  //StyledLoading,
   StyledTooltip,
   Transitions,
 } from '@/components/atoms';
-import { StyledHistoryItem } from './StyledHistoryItem';
+//import { DialogHistories } from './DialogHistories';
+import { DialogInsurance } from './DialogInsurance';
+import { DialogDelete } from './DialogDelete';
 
-import ICON_IMAGE from './icon_image.svg';
-import ICON_FILE from './icon_file.svg';
-import ICON_HISTORY from './icon_history.svg';
-import ICON_REFRESH from './icon_refresh.svg';
-import ICON_NO_HISTORY from './icon_no_history.svg';
+import ICON_IMAGE from './assets/icon_image.svg';
+import ICON_FILE from './assets/icon_file.svg';
+
+//import ICON_HISTORY from './assets/icon_history.svg';
 
 interface StyledUploadButtonBoxProps {
   id?: number | string;
@@ -86,6 +84,11 @@ interface StyledUploadButtonBoxProps {
   redDotFlag?: boolean;
 }
 
+export interface UploadButtonDialog {
+  onClose: () => void | Promise<void>;
+  visible: boolean;
+}
+
 export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
   ({
     id,
@@ -110,24 +113,28 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
     isShowHistory = true,
     redDotFlag = false,
   }) => {
+    //const store = useMst();
+
     const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
 
-    const store = useMst();
-
     const breakpoints = useBreakpoints();
     const { saasState } = useSessionStorageState('tenantConfig');
-    const { open, visible, close } = useSwitch(false);
     const {
-      open: popupOpen,
-      visible: popUpVisible,
-      close: popupClose,
+      open: openDelete,
+      visible: visibleDelete,
+      close: closeDelete,
     } = useSwitch(false);
     const {
-      open: historyOpen,
-      visible: historyVisible,
-      close: historyClose,
+      open: openInsurance,
+      visible: visibleInsurance,
+      close: closeInsurance,
     } = useSwitch(false);
+    //const {
+    //  open: openHistories,
+    //  visible: visibleHistories,
+    //  close: closeHistories,
+    //} = useSwitch(false);
 
     const [deleteIndex, setDeleteIndex] = useState<number>(-1);
     const [activeIndex, setActiveIndex] = useState<number>(-1);
@@ -137,23 +144,13 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
 
     const [fileList, setFileList] = useState(files);
 
-    const [fetchHistoryLoading, setFetchHistoryLoading] = useState(false);
-    const [refreshHistoryLoading, setRefreshHistoryLoading] = useState(false);
-    const [histories, setHistories] = useState<DashboardDocumentComment[]>([
-      //{
-      //  firstName: 'John',
-      //  lastName: 'Doe',
-      //  name: 'John Doe',
-      //  avatar: '',
-      //  backgroundColor: '#FFC107',
-      //  note: 'This is a note',
-      //  operationTime: '2024-07-31T07:11:06.603414Z',
-      //},
-    ]);
+    //const [fetchHistoryLoading, setFetchHistoryLoading] = useState(false);
+    //const [refreshHistoryLoading, setRefreshHistoryLoading] = useState(false);
+    //const [histories, setHistories] = useState<DashboardDocumentComment[]>([]);
 
     const [isDragging, setIsDragging] = useState(false);
 
-    const handleUpload = useCallback(
+    const onTriggerUpload = useCallback(
       async (files: FileList | any[]) => {
         setIsDragging(false);
         setInnerLoading(true);
@@ -217,16 +214,16 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
       [fileSize, enqueueSnackbar],
     );
 
-    const handleChange = useCallback(
+    const onFileChange = useCallback(
       async (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (event.target.files && validatorFileSize(event.target.files)) {
           setInnerLoading(true);
-          await handleUpload(event.target.files);
+          await onTriggerUpload(event.target.files);
           // event.target.value = '';
         }
       },
-      [handleUpload, validatorFileSize],
+      [onTriggerUpload, validatorFileSize],
     );
 
     const onDownload = useCallback(
@@ -262,7 +259,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
       try {
         if (onDelete) {
           await onDelete(deleteIndex);
-          close();
+          closeDelete();
           return;
         }
         await _deleteFile({
@@ -271,7 +268,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
           loanId: router.query.loanId as string,
         });
         await refresh?.();
-        close();
+        closeDelete();
         const temp = JSON.parse(JSON.stringify(fileList));
         temp.splice(deleteIndex, 1);
         setTimeout(() => {
@@ -291,7 +288,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
         setDeleteIndex(-1);
       }
     }, [
-      close,
+      closeDelete,
       deleteIndex,
       enqueueSnackbar,
       fileKey,
@@ -345,73 +342,73 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
       );
     }, [fileList.length, status]);
 
-    const onClickShowHistory = useCallback(
-      async (condition: 'inside' | 'outside') => {
-        if (fetchHistoryLoading || refreshHistoryLoading) {
-          return;
-        }
-        const { loanId } = POSGetParamsFromUrl(window.location.href);
-        if (!loanId) {
-          return;
-        }
-        const postData = {
-          loanId,
-          fileId: id as number | string,
-        };
-        condition === 'outside'
-          ? setFetchHistoryLoading(true)
-          : setRefreshHistoryLoading(true);
-        try {
-          const {
-            data: { content },
-          } = await _fetchLoanDocumentComments(postData);
-          setHistories(content);
-          if (!historyVisible) {
-            historyOpen();
-          }
-        } catch (err) {
-          const { header, message, variant } = err as HttpError;
-          enqueueSnackbar(message, {
-            variant: variant || 'error',
-            autoHideDuration: AUTO_HIDE_DURATION,
-            isSimple: !header,
-            header,
-          });
-        } finally {
-          condition === 'outside'
-            ? setFetchHistoryLoading(false)
-            : setRefreshHistoryLoading(false);
-          await refresh?.();
-        }
-      },
-      [
-        enqueueSnackbar,
-        fetchHistoryLoading,
-        historyOpen,
-        historyVisible,
-        id,
-        refresh,
-        refreshHistoryLoading,
-      ],
-    );
+    //const onClickShowHistory = useCallback(
+    //  async (condition: 'inside' | 'outside') => {
+    //    if (fetchHistoryLoading || refreshHistoryLoading) {
+    //      return;
+    //    }
+    //    const { loanId } = POSGetParamsFromUrl(window.location.href);
+    //    if (!loanId) {
+    //      return;
+    //    }
+    //    const postData = {
+    //      loanId,
+    //      fileId: id as number | string,
+    //    };
+    //    condition === 'outside'
+    //      ? setFetchHistoryLoading(true)
+    //      : setRefreshHistoryLoading(true);
+    //    try {
+    //      const {
+    //        data: { content },
+    //      } = await _fetchLoanDocumentComments(postData);
+    //      setHistories(content);
+    //      if (!visibleHistories) {
+    //        openHistories();
+    //      }
+    //    } catch (err) {
+    //      const { header, message, variant } = err as HttpError;
+    //      enqueueSnackbar(message, {
+    //        variant: variant || 'error',
+    //        autoHideDuration: AUTO_HIDE_DURATION,
+    //        isSimple: !header,
+    //        header,
+    //      });
+    //    } finally {
+    //      condition === 'outside'
+    //        ? setFetchHistoryLoading(false)
+    //        : setRefreshHistoryLoading(false);
+    //      await refresh?.();
+    //    }
+    //  },
+    //  [
+    //    enqueueSnackbar,
+    //    fetchHistoryLoading,
+    //    openHistories,
+    //    visibleHistories,
+    //    id,
+    //    refresh,
+    //    refreshHistoryLoading,
+    //  ],
+    //);
 
     useEffect(() => {
       setFileList(files);
     }, [files]);
 
-    useEffect(
-      () => {
-        if (store.notificationDocuments.fileId === id) {
-          onClickShowHistory('outside');
-        }
-      },
-      //eslint-disable-next-line react-hooks/exhaustive-deps
-      [
-        store.notificationDocuments.categoryKey,
-        store.notificationDocuments.fileId,
-        store.notificationDocuments.fileName,
-      ],
-    );
+    //useEffect(
+    //  () => {
+    //    if (store.notificationDocuments.fileId === id) {
+    //      onClickShowHistory('outside');
+    //    }
+    //  },
+    //  //eslint-disable-next-line react-hooks/exhaustive-deps
+    //  [
+    //    store.notificationDocuments.categoryKey,
+    //    store.notificationDocuments.fileId,
+    //    store.notificationDocuments.fileName,
+    //  ],
+    //);
 
     return (
       <Box
@@ -453,7 +450,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                 return renameFile(file, file.filepath);
               });
 
-            await handleUpload(reducedFileList);
+            await onTriggerUpload(reducedFileList);
           } catch (err) {
             //eslint-disable-next-line no-console
             console.log(err);
@@ -513,7 +510,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                 !['xs', 'sm'].includes(breakpoints) && (
                   <Typography
                     color={'primary.main'}
-                    onClick={popupOpen}
+                    onClick={openInsurance}
                     sx={{
                       textDecoration: 'underline',
                       cursor: 'pointer',
@@ -528,7 +525,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                 !['xs', 'sm'].includes(breakpoints) && (
                   <Typography
                     color={'primary.main'}
-                    onClick={popupOpen}
+                    onClick={openInsurance}
                     sx={{
                       textDecoration: 'underline',
                       cursor: 'pointer',
@@ -570,7 +567,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                 ['xs', 'sm'].includes(breakpoints) && (
                   <Typography
                     color={'primary.main'}
-                    onClick={popupOpen}
+                    onClick={openInsurance}
                     sx={{
                       textDecoration: 'underline',
                       cursor: 'pointer',
@@ -587,7 +584,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                 ['xs', 'sm'].includes(breakpoints) && (
                   <Typography
                     color={'primary.main'}
-                    onClick={popupOpen}
+                    onClick={openInsurance}
                     sx={{
                       textDecoration: 'underline',
                       cursor: 'pointer',
@@ -617,41 +614,41 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
               </Typography>
             )}
 
-            {isShowHistory &&
-              (fetchHistoryLoading ? (
-                <StyledLoading
-                  size={24}
-                  sx={{
-                    color: '#E3E3EE',
-                  }}
-                />
-              ) : (
-                <Stack
-                  alignItems={'center'}
-                  height={24}
-                  justifyContent={'center'}
-                  position={'relative'}
-                  sx={{
-                    '&:after': {
-                      content: '""',
-                      position: 'absolute',
-                      top: -2,
-                      right: -2,
-                      width: 10,
-                      height: 10,
-                      borderRadius: '50%',
-                      backgroundColor: redDotFlag ? '#FF5630' : 'transparent',
-                    },
-                  }}
-                  width={24}
-                >
-                  <Icon
-                    component={ICON_HISTORY}
-                    onClick={() => onClickShowHistory('outside')}
-                    sx={{ cursor: 'pointer' }}
-                  />
-                </Stack>
-              ))}
+            {/*{isShowHistory &&*/}
+            {/*  (fetchHistoryLoading ? (*/}
+            {/*    <StyledLoading*/}
+            {/*      size={24}*/}
+            {/*      sx={{*/}
+            {/*        color: '#E3E3EE',*/}
+            {/*      }}*/}
+            {/*    />*/}
+            {/*  ) : (*/}
+            {/*    <Stack*/}
+            {/*      alignItems={'center'}*/}
+            {/*      height={24}*/}
+            {/*      justifyContent={'center'}*/}
+            {/*      position={'relative'}*/}
+            {/*      sx={{*/}
+            {/*        '&:after': {*/}
+            {/*          content: '""',*/}
+            {/*          position: 'absolute',*/}
+            {/*          top: -2,*/}
+            {/*          right: -2,*/}
+            {/*          width: 10,*/}
+            {/*          height: 10,*/}
+            {/*          borderRadius: '50%',*/}
+            {/*          backgroundColor: redDotFlag ? '#FF5630' : 'transparent',*/}
+            {/*        },*/}
+            {/*      }}*/}
+            {/*      width={24}*/}
+            {/*    >*/}
+            {/*      <Icon*/}
+            {/*        component={ICON_HISTORY}*/}
+            {/*        onClick={() => onClickShowHistory('outside')}*/}
+            {/*        sx={{ cursor: 'pointer' }}*/}
+            {/*      />*/}
+            {/*    </Stack>*/}
+            {/*  ))}*/}
             <StyledButton
               color={'primary'}
               component={'label'}
@@ -670,7 +667,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                 accept={accept}
                 hidden
                 multiple
-                onChange={handleChange}
+                onChange={onFileChange}
                 style={{
                   width: '100%',
                 }}
@@ -818,7 +815,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                               <CloseOutlined
                                 onClick={() => {
                                   setDeleteIndex(index);
-                                  open();
+                                  openDelete();
                                 }}
                                 sx={{
                                   fontSize: 20,
@@ -879,7 +876,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                               <CloseOutlined
                                 onClick={() => {
                                   setDeleteIndex(index);
-                                  open();
+                                  openDelete();
                                 }}
                                 sx={{
                                   fontSize: 20,
@@ -900,321 +897,31 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
           </Box>
         )}
 
-        <StyledDialog
-          content={
-            <Box
-              color={'#9095A3'}
-              fontSize={14}
-              fontWeight={400}
-              lineHeight={1.5}
-              py={3}
-              sx={{
-                overflow: 'hidden',
-                wordBreak: 'break-all',
-              }}
-            >
-              {`Are you sure you want to delete ${fileList[deleteIndex]?.originalFileName}`}
-            </Box>
-          }
-          footer={
-            <Stack flexDirection={'row'} gap={1} mt={3}>
-              <StyledButton
-                autoFocus
-                color={'info'}
-                onClick={close}
-                size={'small'}
-                sx={{ width: 88 }}
-                variant={'outlined'}
-              >
-                Cancel
-              </StyledButton>
-              <StyledButton
-                autoFocus
-                color={'error'}
-                disabled={deleteLoading}
-                loading={deleteLoading}
-                onClick={onDialogConfirmDelete}
-                size={'small'}
-                sx={{ width: 88 }}
-              >
-                Confirm
-              </StyledButton>
-            </Stack>
-          }
-          header={
-            <>
-              <DeleteForeverOutlined
-                sx={{
-                  mr: 1.5,
-                  lineHeight: '28px',
-                  verticalAlign: 'middle',
-                }}
-              />
-              Delete?
-            </>
-          }
-          onClose={(event, reason) => {
-            if (reason !== 'backdropClick') {
-              close();
-              setDeleteIndex(-1);
-              setActiveIndex(-1);
-            }
-          }}
-          open={visible}
+        <DialogInsurance
+          loanNumber={loanNumber}
+          onClose={closeInsurance}
+          saasState={saasState}
+          visible={visibleInsurance}
         />
-
-        <StyledDialog
-          content={
-            <Stack gap={3} my={3}>
-              <Stack gap={1.5}>
-                <Typography variant={'subtitle2'}>
-                  Coverage requirements
-                </Typography>
-                <Typography variant={'body3'}>
-                  Dwelling coverage must cover the loan amount or the
-                  replacement cost estimate (RCE), whichever of the two is
-                  lower.
-                </Typography>
-              </Stack>
-              <Stack>
-                <Typography variant={'subtitle2'}>
-                  Mortgagee information
-                </Typography>
-                <Stack flexDirection={'row'} gap={1} mt={1.5}>
-                  <Typography variant={'body3'}>
-                    {saasState?.organizationName || 'YouLand Inc.'} ISAOA/ATIMA
-                  </Typography>
-                  <ContentCopy
-                    onClick={async () => {
-                      await navigator.clipboard.writeText(
-                        `${saasState?.organizationName || 'YouLand Inc.'} ISAOA/ATIMA
-${saasState?.address?.address}${
-                          saasState?.address.aptNumber
-                            ? `, ${saasState?.address.aptNumber}`
-                            : ''
-                        }.
-${saasState?.address?.city ? `${saasState?.address?.city}, ` : ''}${
-                          saasState?.address?.state
-                            ? `${saasState?.address?.state}, `
-                            : ''
-                        }${
-                          saasState?.address?.postcode
-                            ? `${saasState?.address?.postcode}`
-                            : ''
-                        }`,
-                      );
-                      enqueueSnackbar('Copied data to clipboard', {
-                        variant: 'success',
-                      });
-                    }}
-                    sx={{ fontSize: 18, cursor: 'pointer' }}
-                  />
-                </Stack>
-                <Typography variant={'body3'}>
-                  {`${saasState?.address?.address}${
-                    saasState?.address.aptNumber
-                      ? `, ${saasState?.address.aptNumber}`
-                      : ''
-                  }`}
-                </Typography>
-                <Typography variant={'body3'}>
-                  {`${
-                    saasState?.address?.city
-                      ? `${saasState?.address?.city}, `
-                      : ''
-                  }${
-                    saasState?.address?.state
-                      ? `${saasState?.address?.state}, `
-                      : ''
-                  }${
-                    saasState?.address?.postcode
-                      ? `${saasState?.address?.postcode}`
-                      : ''
-                  }`}
-                </Typography>
-              </Stack>
-              <Stack gap={1.5}>
-                <Typography variant={'subtitle2'}>Loan number</Typography>
-                <Stack flexDirection={'row'} gap={1}>
-                  <Typography variant={'body3'}>{loanNumber}</Typography>
-                  <ContentCopy
-                    onClick={async () => {
-                      await navigator.clipboard.writeText(loanNumber!);
-                      enqueueSnackbar('Copied data to clipboard', {
-                        variant: 'success',
-                      });
-                    }}
-                    sx={{ fontSize: 18, cursor: 'pointer' }}
-                  />
-                </Stack>
-              </Stack>
-            </Stack>
-          }
-          footer={
-            <Stack flexDirection={'row'} gap={1}>
-              <StyledButton
-                autoFocus
-                color={'info'}
-                onClick={popupClose}
-                size={'small'}
-                sx={{ width: 80 }}
-                variant={'outlined'}
-              >
-                Close
-              </StyledButton>
-            </Stack>
-          }
-          header={
-            <Stack
-              alignItems={'center'}
-              flexDirection={'row'}
-              justifyContent={'space-between'}
-            >
-              Insurance requirements
-              <CloseOutlined
-                onClick={popupClose}
-                sx={{
-                  cursor: 'pointer',
-                  '&:hover': {
-                    color: 'primary.main',
-                  },
-                }}
-              />
-            </Stack>
-          }
-          onClose={(event, reason) => {
-            if (reason !== 'backdropClick') {
-              popupClose();
-            }
-          }}
-          open={popUpVisible}
-          PaperProps={{
-            sx: { maxWidth: '800px !important' },
-          }}
-        />
-
-        <StyledDialog
-          content={
-            <>
-              {!refreshHistoryLoading ? (
-                histories?.length && history.length > 0 ? (
-                  histories?.map((item, index) => (
-                    <StyledHistoryItem
-                      key={`history-item-${index}`}
-                      {...item}
-                    />
-                  ))
-                ) : (
-                  <Stack
-                    alignItems={'center'}
-                    gap={3}
-                    height={'100%'}
-                    justifyContent={'center'}
-                    width={'100%'}
-                  >
-                    <Icon
-                      component={ICON_NO_HISTORY}
-                      sx={{ width: 206, height: 120 }}
-                    />
-                    <Typography color={'text.secondary'} variant={'h6'}>
-                      No comments added yet
-                    </Typography>
-                  </Stack>
-                )
-              ) : (
-                <Stack
-                  alignItems={'center'}
-                  height={'100%'}
-                  justifyContent={'center'}
-                  width={'100%'}
-                >
-                  <StyledLoading
-                    size={48}
-                    sx={{
-                      color: '#E3E3EE',
-                    }}
-                  />
-                </Stack>
-              )}
-            </>
-          }
-          footer={
-            <Stack flexDirection={'row'} gap={1} pt={2}>
-              <StyledButton
-                autoFocus
-                color={'info'}
-                onClick={() => {
-                  if (
-                    store.notificationDocuments.categoryKey &&
-                    store.notificationDocuments.fileId &&
-                    store.notificationDocuments.fileName
-                  ) {
-                    store.setNotificationDocument({
-                      categoryKey: '',
-                      fileId: 0,
-                      fileName: '',
-                    });
-                  }
-                  historyClose();
-                }}
-                size={'small'}
-                sx={{ width: 80 }}
-                variant={'outlined'}
-              >
-                Close
-              </StyledButton>
-            </Stack>
-          }
-          header={
-            <Stack
-              alignItems={'center'}
-              flexDirection={'row'}
-              justifyContent={'space-between'}
-              pb={2}
-            >
-              <Typography component={'div'} variant={'subtitle1'}>
-                Notes
-                <Typography
-                  color={'text.secondary'}
-                  component={'span'}
-                  ml={1.5}
-                  variant={'body2'}
-                >
-                  {fileName}
-                </Typography>
-              </Typography>
-
-              <Icon
-                component={ICON_REFRESH}
-                onClick={() => onClickShowHistory('inside')}
-                sx={{
-                  cursor: 'pointer',
-                  '& > path': {
-                    fill: refreshHistoryLoading ? '#BABCBE' : '#231F20',
-                  },
-                }}
-              />
-            </Stack>
-          }
+        <DialogDelete
+          deleteItem={fileList[deleteIndex]}
+          loading={deleteLoading}
+          onClickDelete={onDialogConfirmDelete}
           onClose={() => {
-            if (
-              store.notificationDocuments.categoryKey &&
-              store.notificationDocuments.fileId &&
-              store.notificationDocuments.fileName
-            ) {
-              store.setNotificationDocument({
-                categoryKey: '',
-                fileId: 0,
-                fileName: '',
-              });
-            }
-            historyClose();
+            closeDelete();
+            setDeleteIndex(-1);
+            setActiveIndex(-1);
           }}
-          open={historyVisible}
-          PaperProps={{
-            sx: { maxWidth: '800px !important', height: 600 },
-          }}
+          visible={visibleDelete}
         />
+        {/*<DialogHistories*/}
+        {/*  fileName={fileName}*/}
+        {/*  histories={histories}*/}
+        {/*  loading={refreshHistoryLoading}*/}
+        {/*  onClose={closeHistories}*/}
+        {/*  onTrigger={() => onClickShowHistory('inside')}*/}
+        {/*  visible={visibleHistories}*/}
+        {/*/>*/}
       </Box>
     );
   },
