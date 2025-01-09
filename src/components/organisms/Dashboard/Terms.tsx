@@ -902,11 +902,11 @@ export const Terms: FC = observer(() => {
             </Typography>
 
             <StyledButton
-              color={'info'}
+              color={'primary'}
               onClick={modifyOpen}
               size={'small'}
               sx={{ width: 276, mt: 3, ml: 'auto' }}
-              variant={'outlined'}
+              variant={'contained'}
             >
               Modify application
             </StyledButton>
