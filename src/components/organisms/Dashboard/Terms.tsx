@@ -901,15 +901,21 @@ export const Terms: FC = observer(() => {
               include 3rd party settlement fees required to close your loan.
             </Typography>
 
-            <StyledButton
-              color={'primary'}
+            <Typography
+              color={'primary.main'}
               onClick={modifyOpen}
-              size={'small'}
-              sx={{ width: 276, mt: 3, ml: 'auto' }}
-              variant={'contained'}
+              sx={{
+                mt: 3,
+                ml: 'auto',
+                cursor: 'pointer',
+                py: 0.75,
+                px: 1.5,
+                borderRadius: 2,
+                '&:hover': { bgcolor: 'primary.lighter' },
+              }}
             >
               Modify application
-            </StyledButton>
+            </Typography>
           </Stack>
         </Stack>
 
