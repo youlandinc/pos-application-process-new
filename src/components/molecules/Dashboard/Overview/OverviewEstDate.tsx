@@ -38,7 +38,7 @@ export const OverviewEstDate: FC<{ estDate: string }> = ({ estDate = '' }) => {
         <Stack justifyContent={'center'}>
           <Typography variant={'body2'}>Est. funding date</Typography>
           <Typography variant={'body2'}>
-            {format(new Date(estDate), 'MMMM dd yyyy')}
+            {format(new Date(estDate), 'MMMM dd, yyyy')}
           </Typography>
         </Stack>
       </Stack>
