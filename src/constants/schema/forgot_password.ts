@@ -6,7 +6,7 @@ export const ForgotPasswordSchema = {
     },
     length: {
       minimu: 3,
-      maximum: 30,
+      maximum: 320,
       tooShort: 'is too short',
       tooLong: 'is too long',
     },
