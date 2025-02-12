@@ -299,21 +299,18 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
             ) / 100000
           );
         }
-        return estimateRate.propertyOwned === LoanAnswerEnum.yes
-          ? Math.ceil(
-              (estimateRate.refinanceLoanAmount ??
-                0 /
-                  ((estimateRate?.propertyValue ?? 0) +
-                    (estimateRate?.improvementsSinceAcquisition ?? 0))) *
-                100000,
-            ) / 100000
-          : Math.ceil(
-              (estimateRate.refinanceLoanAmount ??
-                0 /
-                  ((estimateRate?.purchasePrice ?? 0) +
-                    (estimateRate?.improvementsSinceAcquisition ?? 0))) *
-                100000,
-            ) / 100000;
+        const dividend =
+          estimateRate.propertyOwned === LoanAnswerEnum.no
+            ? (estimateRate?.purchasePrice ?? 0) +
+              (estimateRate?.improvementsSinceAcquisition ?? 0)
+            : (estimateRate?.propertyValue ?? 0) +
+              (estimateRate?.improvementsSinceAcquisition ?? 0);
+
+        return (
+          Math.ceil(
+            ((estimateRate.refinanceLoanAmount ?? 0) / dividend) * 100000,
+          ) / 100000
+        );
       }
     }, [
       estimateRate?.improvementsSinceAcquisition,
@@ -754,7 +751,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                           }}
                           variant={'body3'}
                         >
-                          Initial LTC:{' '}
+                          Initial LTC:
                           <b>
                             {POSFormatPercent(
                               initialLTC,
@@ -958,7 +955,12 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                         variant={'body3'}
                       >
                         Initial LTC:{' '}
-                        <b>{POSFormatPercent(LTC, POSGetDecimalPlaces(LTC))}</b>
+                        <b>
+                          {POSFormatPercent(
+                            initialLTC,
+                            POSGetDecimalPlaces(initialLTC),
+                          )}
+                        </b>
                       </Typography>
                     </Stack>
                   )}
