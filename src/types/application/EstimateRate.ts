@@ -1,4 +1,5 @@
 import {
+  LoanAnswerEnum,
   LoanCitizenshipEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
@@ -54,6 +55,7 @@ export interface EstimateRateFormData {
   loanTerm: number;
   interestRate: number;
   isDutch: boolean;
+  propertyOwned: LoanAnswerEnum;
   improvementsSinceAcquisition: number;
   constructionProjectsExited: number;
   purchaseConstructionCosts: number;

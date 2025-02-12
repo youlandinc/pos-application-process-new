@@ -33,6 +33,8 @@ export const FormData = {
     // for now not use liquidity
     isLiquidity: true,
     liquidityAmount: 100000,
+    // fix
+    propertyOwned: LoanAnswerEnum.no,
     // fix or ground-up
     rehabCost: 0,
     arv: 0, // after repair value
