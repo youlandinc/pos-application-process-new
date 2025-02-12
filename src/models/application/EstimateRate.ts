@@ -1,6 +1,7 @@
 import { types } from 'mobx-state-tree';
 import {
   EstimateRateFormData,
+  LoanAnswerEnum,
   LoanCitizenshipEnum,
   LoanFicoScoreEnum,
   LoanProductCategoryEnum,
@@ -29,6 +30,7 @@ export const EstimateRate = types
     purchasePrice: types.maybe(types.number),
     purchaseLoanAmount: types.maybe(types.number),
     propertyValue: types.maybe(types.number),
+    propertyOwned: types.enumeration(Object.values(LoanAnswerEnum)),
     refinanceLoanAmount: types.maybe(types.number),
     isPayoff: types.maybe(types.boolean),
     payoffAmount: types.maybe(types.number),
@@ -85,6 +87,7 @@ export const EstimateRate = types
         payoffAmount: self.payoffAmount,
         originationPoints: self.originationPoints,
         processingFee: self.processingFee,
+        propertyOwned: self.propertyOwned,
         isCustom: self.isCustom,
         loanTerm: self.loanTerm,
         interestRate: self.interestRate,
@@ -129,6 +132,7 @@ export const EstimateRate = types
         interestRate,
         isDutch,
         citizenship,
+        propertyOwned,
         priorExperience,
         improvementsSinceAcquisition,
         constructionProjectsExited,
@@ -178,5 +182,6 @@ export const EstimateRate = types
       self.monthlyHoaFee = monthlyHoaFee ?? undefined;
       self.prepaymentPenalty = prepaymentPenalty;
       self.acquisitionDate = acquisitionDate ?? '';
+      self.propertyOwned = propertyOwned ?? LoanAnswerEnum.no;
     },
   }));

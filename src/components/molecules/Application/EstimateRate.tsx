@@ -25,6 +25,7 @@ import {
   AUTO_HIDE_DURATION,
   OPTIONS_COMMON_CITIZEN_TYPE,
   OPTIONS_COMMON_STATE,
+  OPTIONS_COMMON_YES_OR_NO,
 } from '@/constants';
 
 import {
@@ -251,17 +252,28 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       ) {
         switch (estimateRate.loanPurpose) {
           case LoanPurposeEnum.purchase:
-            return estimateRate?.purchasePrice
-              ? ((estimateRate?.purchaseLoanAmount ?? 0) +
-                  (estimateRate?.rehabCost ?? 0)) /
-                  (estimateRate?.purchasePrice + (estimateRate?.rehabCost ?? 0))
-              : 0;
+            return (
+              Math.ceil(
+                (estimateRate?.purchasePrice
+                  ? ((estimateRate?.purchaseLoanAmount ?? 0) +
+                      (estimateRate?.rehabCost ?? 0)) /
+                    (estimateRate?.purchasePrice +
+                      (estimateRate?.rehabCost ?? 0))
+                  : 0) * 100000,
+              ) / 100000
+            );
+
           case LoanPurposeEnum.refinance:
-            return estimateRate?.propertyValue
-              ? ((estimateRate.refinanceLoanAmount ?? 0) +
-                  (estimateRate?.rehabCost ?? 0)) /
-                  (estimateRate.propertyValue + (estimateRate?.rehabCost ?? 0))
-              : 0;
+            return (
+              Math.ceil(
+                (estimateRate?.propertyValue
+                  ? ((estimateRate.refinanceLoanAmount ?? 0) +
+                      (estimateRate?.rehabCost ?? 0)) /
+                    (estimateRate.propertyValue +
+                      (estimateRate?.rehabCost ?? 0))
+                  : 0) * 100000,
+              ) / 100000
+            );
         }
       }
       return 0;
@@ -273,6 +285,45 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       estimateRate?.purchasePrice,
       estimateRate?.refinanceLoanAmount,
       estimateRate?.rehabCost,
+    ]);
+
+    const initialLTC = useMemo(() => {
+      if (
+        estimateRate.productCategory === LoanProductCategoryEnum.fix_and_flip
+      ) {
+        if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
+          return (
+            Math.ceil(
+              (estimateRate.purchaseLoanAmount ??
+                0 / (estimateRate?.purchasePrice ?? 0)) * 100000,
+            ) / 100000
+          );
+        }
+        return estimateRate.propertyOwned === LoanAnswerEnum.yes
+          ? Math.ceil(
+              (estimateRate.refinanceLoanAmount ??
+                0 /
+                  ((estimateRate?.propertyValue ?? 0) +
+                    (estimateRate?.improvementsSinceAcquisition ?? 0))) *
+                100000,
+            ) / 100000
+          : Math.ceil(
+              (estimateRate.refinanceLoanAmount ??
+                0 /
+                  ((estimateRate?.purchasePrice ?? 0) +
+                    (estimateRate?.improvementsSinceAcquisition ?? 0))) *
+                100000,
+            ) / 100000;
+      }
+    }, [
+      estimateRate?.improvementsSinceAcquisition,
+      estimateRate.loanPurpose,
+      estimateRate.productCategory,
+      estimateRate.propertyOwned,
+      estimateRate?.propertyValue,
+      estimateRate.purchaseLoanAmount,
+      estimateRate?.purchasePrice,
+      estimateRate.refinanceLoanAmount,
     ]);
 
     const renderSummary = useMemo(() => {
@@ -507,133 +558,13 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       totalLoanAmount,
     ]);
 
-    const renderEditFields = useMemo(() => {
-      const condition = ['xs', 'sm', 'md'].includes(breakpoints);
-      switch (estimateRate.productCategory) {
-        case LoanProductCategoryEnum.stabilized_bridge:
-          if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
-            return (
-              <Stack
-                alignItems={{ xs: 'flex-start', lg: 'stretch' }}
-                flexDirection={{ xs: 'column', lg: 'row' }}
-                gap={3}
-                ml={-0.5}
-              >
-                <StyledTextFieldNumber
-                  label={'Purchase price'}
-                  onValueChange={({ floatValue }) => {
-                    estimateRate.changeFieldValue('purchasePrice', floatValue);
-                  }}
-                  prefix={'$'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  value={estimateRate.purchasePrice}
-                />
-
-                <StyledTextFieldNumber
-                  label={'Purchase loan amount'}
-                  onValueChange={({ floatValue }) => {
-                    estimateRate.changeFieldValue(
-                      'purchaseLoanAmount',
-                      floatValue,
-                    );
-                  }}
-                  prefix={'$'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  value={estimateRate.purchaseLoanAmount}
-                />
-                {!condition && (
-                  <Typography
-                    color={'text.secondary'}
-                    mt={2}
-                    sx={{
-                      '& > b': {
-                        color: 'primary.main',
-                        fontWeight: 600,
-                      },
-                    }}
-                    variant={'body3'}
-                  >
-                    Loan to value: <b>{POSFormatPercent(LTV, 1)}</b>
-                  </Typography>
-                )}
-              </Stack>
-            );
-          }
-          return (
-            <Stack
-              alignItems={{ xs: 'flex-start', lg: 'stretch' }}
-              flexDirection={{ xs: 'column', lg: 'row' }}
-              gap={3}
-              ml={-0.5}
-            >
-              <StyledTextFieldNumber
-                label={'As-is property value'}
-                onValueChange={({ floatValue }) => {
-                  estimateRate.changeFieldValue('propertyValue', floatValue);
-                }}
-                prefix={'$'}
-                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                value={estimateRate.propertyValue}
-              />
-
-              <StyledTextFieldNumber
-                label={'Refinance loan amount'}
-                onValueChange={({ floatValue }) => {
-                  estimateRate.changeFieldValue(
-                    'refinanceLoanAmount',
-                    floatValue,
-                  );
-                }}
-                prefix={'$'}
-                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                value={estimateRate.refinanceLoanAmount}
-              />
-
-              <StyledSelectTextField
-                fieldLabel={'Payoff amount'}
-                fieldValue={estimateRate.payoffAmount}
-                isTooltip={true}
-                onFieldChange={(floatValue) =>
-                  estimateRate.changeFieldValue('payoffAmount', floatValue)
-                }
-                onSelectChange={(value) => {
-                  estimateRate.changeFieldValue(
-                    'isPayoff',
-                    value === LoanAnswerEnum.yes,
-                  );
-                }}
-                selectLabel={'Payoff amount'}
-                selectValue={
-                  estimateRate.isPayoff ? LoanAnswerEnum.yes : LoanAnswerEnum.no
-                }
-                sx={{ maxWidth: { xs: '100%', lg: 220 } }}
-                tooltipTitle={
-                  'The total amount needed to fully repay your existing loan. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure".'
-                }
-                validate={payoffAmountError}
-              />
-
-              {!condition && (
-                <Typography
-                  color={'text.secondary'}
-                  mt={2}
-                  sx={{
-                    '& > b': {
-                      color: 'primary.main',
-                      fontWeight: 600,
-                    },
-                  }}
-                  variant={'body3'}
-                >
-                  Loan to value: <b>{POSFormatPercent(LTV, 1)}</b>
-                </Typography>
-              )}
-            </Stack>
-          );
-        case LoanProductCategoryEnum.fix_and_flip:
-          if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
-            return (
-              <>
+    const renderEditFields = useMemo(
+      () => {
+        const condition = ['xs', 'sm', 'md'].includes(breakpoints);
+        switch (estimateRate.productCategory) {
+          case LoanProductCategoryEnum.stabilized_bridge:
+            if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
+              return (
                 <Stack
                   alignItems={{ xs: 'flex-start', lg: 'stretch' }}
                   flexDirection={{ xs: 'column', lg: 'row' }}
@@ -665,75 +596,25 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={estimateRate.purchaseLoanAmount}
                   />
-
                   {!condition && (
-                    <Stack mt={0.5}>
-                      <Typography
-                        color={'text.secondary'}
-                        sx={{
-                          '& > b': {
-                            color: 'primary.main',
-                            fontWeight: 600,
-                          },
-                        }}
-                        variant={'body3'}
-                      >
-                        After-repair loan to value:{' '}
-                        <b>
-                          {POSFormatPercent(ARLTV, POSGetDecimalPlaces(ARLTV))}
-                        </b>
-                      </Typography>
-
-                      <Typography
-                        color={'text.secondary'}
-                        sx={{
-                          '& > b': {
-                            color: 'primary.main',
-                            fontWeight: 600,
-                          },
-                        }}
-                        variant={'body3'}
-                      >
-                        Loan to cost:{' '}
-                        <b>{POSFormatPercent(LTC, POSGetDecimalPlaces(LTC))}</b>
-                      </Typography>
-                    </Stack>
+                    <Typography
+                      color={'text.secondary'}
+                      mt={2}
+                      sx={{
+                        '& > b': {
+                          color: 'primary.main',
+                          fontWeight: 600,
+                        },
+                      }}
+                      variant={'body3'}
+                    >
+                      Loan to value: <b>{POSFormatPercent(LTV, 1)}</b>
+                    </Typography>
                   )}
                 </Stack>
-
-                <Stack
-                  alignItems={{ xs: 'flex-start', lg: 'center' }}
-                  flexDirection={{ xs: 'column', lg: 'row' }}
-                  gap={3}
-                  ml={-0.5}
-                >
-                  <StyledTextFieldNumber
-                    label={'Est. cost of rehab'}
-                    onValueChange={({ floatValue }) => {
-                      estimateRate.changeFieldValue('rehabCost', floatValue);
-                    }}
-                    prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                    value={estimateRate.rehabCost}
-                  />
-                  <StyledTextFieldNumber
-                    isTooltip={true}
-                    label={'After repair value (ARV)'}
-                    onValueChange={({ floatValue }) => {
-                      estimateRate.changeFieldValue('arv', floatValue);
-                    }}
-                    prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                    tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                    tooltipTitle={'Estimated value of the property after rehab'}
-                    value={estimateRate.arv}
-                  />
-                </Stack>
-              </>
-            );
-          }
-          return (
-            <>
+              );
+            }
+            return (
               <Stack
                 alignItems={{ xs: 'flex-start', lg: 'stretch' }}
                 flexDirection={{ xs: 'column', lg: 'row' }}
@@ -789,72 +670,405 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   validate={payoffAmountError}
                 />
 
-                {!['xs', 'sm', 'md'].includes(breakpoints) && (
-                  <Stack mt={0.5}>
-                    <Typography
-                      color={'text.secondary'}
-                      sx={{
-                        '& > b': {
-                          color: 'primary.main',
-                          fontWeight: 600,
-                        },
-                      }}
-                      variant={'body3'}
-                    >
-                      After-repair loan to value:{' '}
-                      <b>
-                        {POSFormatPercent(ARLTV, POSGetDecimalPlaces(ARLTV))}
-                      </b>
-                    </Typography>
-
-                    <Typography
-                      color={'text.secondary'}
-                      sx={{
-                        '& > b': {
-                          color: 'primary.main',
-                          fontWeight: 600,
-                        },
-                      }}
-                      variant={'body3'}
-                    >
-                      Loan to cost:{' '}
-                      <b>{POSFormatPercent(LTC, POSGetDecimalPlaces(LTC))}</b>
-                    </Typography>
-                  </Stack>
+                {!condition && (
+                  <Typography
+                    color={'text.secondary'}
+                    mt={2}
+                    sx={{
+                      '& > b': {
+                        color: 'primary.main',
+                        fontWeight: 600,
+                      },
+                    }}
+                    variant={'body3'}
+                  >
+                    Loan to value: <b>{POSFormatPercent(LTV, 1)}</b>
+                  </Typography>
                 )}
               </Stack>
-              <Stack
-                alignItems={{ xs: 'flex-start', lg: 'center' }}
-                flexDirection={{ xs: 'column', lg: 'row' }}
-                gap={3}
-                ml={-0.5}
-              >
-                <StyledTextFieldNumber
-                  label={'Est. cost of rehab'}
-                  onValueChange={({ floatValue }) => {
-                    estimateRate.changeFieldValue('rehabCost', floatValue);
-                  }}
-                  prefix={'$'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  value={estimateRate.rehabCost}
-                />
-                <StyledTextFieldNumber
-                  isTooltip={true}
-                  label={'After repair value (ARV)'}
-                  onValueChange={({ floatValue }) => {
-                    estimateRate.changeFieldValue('arv', floatValue);
-                  }}
-                  prefix={'$'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  tooltipTitle={'Estimated value of the property after rehab'}
-                  value={estimateRate.arv}
-                />
-              </Stack>
-            </>
-          );
-        case LoanProductCategoryEnum.ground_up_construction:
-          if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
+            );
+          case LoanProductCategoryEnum.fix_and_flip:
+            if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
+              return (
+                <>
+                  <Stack
+                    alignItems={{ xs: 'flex-start', lg: 'stretch' }}
+                    flexDirection={{ xs: 'column', lg: 'row' }}
+                    gap={3}
+                    ml={-0.5}
+                  >
+                    <StyledTextFieldNumber
+                      label={'Purchase price'}
+                      onValueChange={({ floatValue }) => {
+                        estimateRate.changeFieldValue(
+                          'purchasePrice',
+                          floatValue,
+                        );
+                      }}
+                      prefix={'$'}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      value={estimateRate.purchasePrice}
+                    />
+
+                    <StyledTextFieldNumber
+                      label={'Purchase loan amount'}
+                      onValueChange={({ floatValue }) => {
+                        estimateRate.changeFieldValue(
+                          'purchaseLoanAmount',
+                          floatValue,
+                        );
+                      }}
+                      prefix={'$'}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      value={estimateRate.purchaseLoanAmount}
+                    />
+
+                    {!condition && (
+                      <Stack mt={0.5}>
+                        <Typography
+                          color={'text.secondary'}
+                          sx={{
+                            '& > b': {
+                              color: 'primary.main',
+                              fontWeight: 600,
+                            },
+                          }}
+                          variant={'body3'}
+                        >
+                          After-repair loan to value:{' '}
+                          <b>
+                            {POSFormatPercent(
+                              ARLTV,
+                              POSGetDecimalPlaces(ARLTV),
+                            )}
+                          </b>
+                        </Typography>
+
+                        <Typography
+                          color={'text.secondary'}
+                          sx={{
+                            '& > b': {
+                              color: 'primary.main',
+                              fontWeight: 600,
+                            },
+                          }}
+                          variant={'body3'}
+                        >
+                          Initial LTC:{' '}
+                          <b>
+                            {POSFormatPercent(
+                              initialLTC,
+                              POSGetDecimalPlaces(initialLTC),
+                            )}
+                          </b>
+                        </Typography>
+                      </Stack>
+                    )}
+                  </Stack>
+
+                  <Stack
+                    alignItems={{ xs: 'flex-start', lg: 'center' }}
+                    flexDirection={{ xs: 'column', lg: 'row' }}
+                    gap={3}
+                    ml={-0.5}
+                  >
+                    <StyledTextFieldNumber
+                      label={'Est. cost of rehab'}
+                      onValueChange={({ floatValue }) => {
+                        estimateRate.changeFieldValue('rehabCost', floatValue);
+                      }}
+                      prefix={'$'}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      value={estimateRate.rehabCost}
+                    />
+                    <StyledTextFieldNumber
+                      isTooltip={true}
+                      label={'After repair value (ARV)'}
+                      onValueChange={({ floatValue }) => {
+                        estimateRate.changeFieldValue('arv', floatValue);
+                      }}
+                      prefix={'$'}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      tooltipTitle={
+                        'Estimated value of the property after rehab'
+                      }
+                      value={estimateRate.arv}
+                    />
+                  </Stack>
+                </>
+              );
+            }
+            return (
+              <>
+                <Stack
+                  alignItems={{ xs: 'flex-start', lg: 'stretch' }}
+                  flexDirection={{ xs: 'column', lg: 'row' }}
+                  gap={3}
+                  ml={-0.5}
+                >
+                  <StyledSelect
+                    label={'Property owned > 6 months'}
+                    onChange={(e) => {
+                      estimateRate.changeFieldValue(
+                        'propertyOwned',
+                        e.target.value as LoanAnswerEnum,
+                      );
+                    }}
+                    options={OPTIONS_COMMON_YES_OR_NO}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    value={estimateRate.propertyOwned}
+                  />
+                  {estimateRate.propertyOwned === LoanAnswerEnum.no ? (
+                    <StyledTextFieldNumber
+                      label={'Purchase price'}
+                      onValueChange={({ floatValue }) => {
+                        estimateRate.changeFieldValue(
+                          'purchasePrice',
+                          floatValue,
+                        );
+                      }}
+                      prefix={'$'}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      value={estimateRate.purchasePrice || 0}
+                    />
+                  ) : (
+                    <StyledTextFieldNumber
+                      label={'As-is property value'}
+                      onValueChange={({ floatValue }) => {
+                        estimateRate.changeFieldValue(
+                          'propertyValue',
+                          floatValue,
+                        );
+                      }}
+                      prefix={'$'}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      value={estimateRate.propertyValue || 0}
+                    />
+                  )}
+                  <StyledTextFieldNumber
+                    label={'Refinance loan amount'}
+                    onValueChange={({ floatValue }) => {
+                      estimateRate.changeFieldValue(
+                        'refinanceLoanAmount',
+                        floatValue,
+                      );
+                    }}
+                    prefix={'$'}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    value={estimateRate.refinanceLoanAmount}
+                  />
+                  <StyledSelectTextField
+                    fieldLabel={'Payoff amount'}
+                    fieldValue={estimateRate.payoffAmount}
+                    isTooltip={true}
+                    onFieldChange={(floatValue) =>
+                      estimateRate.changeFieldValue('payoffAmount', floatValue)
+                    }
+                    onSelectChange={(value) => {
+                      estimateRate.changeFieldValue(
+                        'isPayoff',
+                        value === LoanAnswerEnum.yes,
+                      );
+                    }}
+                    selectLabel={'Payoff amount'}
+                    selectValue={
+                      estimateRate.isPayoff
+                        ? LoanAnswerEnum.yes
+                        : LoanAnswerEnum.no
+                    }
+                    sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipTitle={
+                      'The total amount needed to fully repay your existing loan. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure".'
+                    }
+                    validate={payoffAmountError}
+                  />
+                </Stack>
+                <Stack
+                  alignItems={{ xs: 'flex-start', lg: 'center' }}
+                  flexDirection={{ xs: 'column', lg: 'row' }}
+                  gap={3}
+                  ml={-0.5}
+                >
+                  <StyledTextFieldNumber
+                    isTooltip={true}
+                    label={'Improvements since acquisition'}
+                    onValueChange={({ floatValue }) =>
+                      estimateRate.changeFieldValue(
+                        'improvementsSinceAcquisition',
+                        floatValue,
+                      )
+                    }
+                    prefix={'$'}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipTitle={
+                      'How much has been spent towards completed work?'
+                    }
+                    value={estimateRate.improvementsSinceAcquisition}
+                  />
+                  <StyledTextFieldNumber
+                    label={'Est. cost of rehab'}
+                    onValueChange={({ floatValue }) => {
+                      estimateRate.changeFieldValue('rehabCost', floatValue);
+                    }}
+                    prefix={'$'}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    value={estimateRate.rehabCost}
+                  />
+                  <StyledTextFieldNumber
+                    isTooltip={true}
+                    label={'After repair value (ARV)'}
+                    onValueChange={({ floatValue }) => {
+                      estimateRate.changeFieldValue('arv', floatValue);
+                    }}
+                    prefix={'$'}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipTitle={'Estimated value of the property after rehab'}
+                    value={estimateRate.arv}
+                  />
+
+                  {!['xs', 'sm', 'md'].includes(breakpoints) && (
+                    <Stack mt={0.5}>
+                      <Typography
+                        color={'text.secondary'}
+                        sx={{
+                          '& > b': {
+                            color: 'primary.main',
+                            fontWeight: 600,
+                          },
+                        }}
+                        variant={'body3'}
+                      >
+                        After-repair loan to value:{' '}
+                        <b>
+                          {POSFormatPercent(ARLTV, POSGetDecimalPlaces(ARLTV))}
+                        </b>
+                      </Typography>
+
+                      <Typography
+                        color={'text.secondary'}
+                        sx={{
+                          '& > b': {
+                            color: 'primary.main',
+                            fontWeight: 600,
+                          },
+                        }}
+                        variant={'body3'}
+                      >
+                        Initial LTC:{' '}
+                        <b>{POSFormatPercent(LTC, POSGetDecimalPlaces(LTC))}</b>
+                      </Typography>
+                    </Stack>
+                  )}
+                </Stack>
+              </>
+            );
+          case LoanProductCategoryEnum.ground_up_construction:
+            if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
+              return (
+                <>
+                  <Stack
+                    alignItems={{ xs: 'flex-start', lg: 'stretch' }}
+                    flexDirection={{ xs: 'column', lg: 'row' }}
+                    gap={3}
+                    ml={-0.5}
+                  >
+                    <StyledTextFieldNumber
+                      label={'Purchase price'}
+                      onValueChange={({ floatValue }) => {
+                        estimateRate.changeFieldValue(
+                          'purchasePrice',
+                          floatValue,
+                        );
+                      }}
+                      prefix={'$'}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      value={estimateRate.purchasePrice}
+                    />
+
+                    <StyledTextFieldNumber
+                      isTooltip={true}
+                      label={'Est. construction costs'}
+                      onValueChange={({ floatValue }) => {
+                        estimateRate.changeFieldValue(
+                          'purchaseConstructionCosts',
+                          floatValue,
+                        );
+                      }}
+                      prefix={'$'}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      tooltipTitle={
+                        'The estimated costs needed to build the construction project, including materials, labor, and other expenses'
+                      }
+                      value={estimateRate.purchaseConstructionCosts}
+                    />
+
+                    <StyledTextFieldNumber
+                      decimalScale={0}
+                      isTooltip={true}
+                      label={'Loan to total cost'}
+                      onValueChange={({ floatValue }) => {
+                        estimateRate.changeFieldValue('ltc', floatValue);
+                      }}
+                      suffix={'%'}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      thousandSeparator={false}
+                      tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      tooltipTitle={
+                        'Your total loan amount as a % of your purchase price and estimated construction costs.'
+                      }
+                      value={estimateRate.ltc}
+                    />
+                  </Stack>
+
+                  <Stack
+                    alignItems={{ xs: 'flex-start', lg: 'center' }}
+                    flexDirection={{ xs: 'column', lg: 'row' }}
+                    gap={3}
+                    ml={-0.5}
+                  >
+                    <StyledTextFieldNumber
+                      isTooltip={true}
+                      label={'Completed/After-repair value (ARV)'}
+                      onValueChange={({ floatValue }) => {
+                        estimateRate.changeFieldValue('arv', floatValue);
+                      }}
+                      prefix={'$'}
+                      sx={{
+                        flex: 1,
+                        maxWidth: { xs: '100%', lg: 464 },
+                      }}
+                      tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 464 } }}
+                      tooltipTitle={
+                        'Estimated value of the property after construction.'
+                      }
+                      value={estimateRate.arv}
+                    />
+                    {!condition && (
+                      <Typography
+                        color={'text.secondary'}
+                        sx={{
+                          mt: 0.5,
+                          '& > b': {
+                            color: 'primary.main',
+                            fontWeight: 600,
+                          },
+                        }}
+                        variant={'body3'}
+                      >
+                        After-repair loan to value:{' '}
+                        <b>
+                          {POSFormatPercent(ARLTV, POSGetDecimalPlaces(ARLTV))}
+                        </b>
+                      </Typography>
+                    )}
+                  </Stack>
+                </>
+              );
+            }
             return (
               <>
                 <Stack
@@ -878,20 +1092,20 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
 
                   <StyledTextFieldNumber
                     isTooltip={true}
-                    label={'Est. construction costs'}
-                    onValueChange={({ floatValue }) => {
+                    label={'Improvements since acquisition'}
+                    onValueChange={({ floatValue }) =>
                       estimateRate.changeFieldValue(
-                        'purchaseConstructionCosts',
+                        'improvementsSinceAcquisition',
                         floatValue,
-                      );
-                    }}
+                      )
+                    }
                     prefix={'$'}
                     sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     tooltipTitle={
-                      'The estimated costs needed to build the construction project, including materials, labor, and other expenses'
+                      'How much has been spent towards completed work?'
                     }
-                    value={estimateRate.purchaseConstructionCosts}
+                    value={estimateRate.improvementsSinceAcquisition}
                   />
 
                   <StyledTextFieldNumber
@@ -918,6 +1132,24 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                   gap={3}
                   ml={-0.5}
                 >
+                  <StyledTextFieldNumber
+                    isTooltip={true}
+                    label={'Remaining construction costs'}
+                    onValueChange={({ floatValue }) => {
+                      estimateRate.changeFieldValue(
+                        'refinanceConstructionCosts',
+                        floatValue,
+                      );
+                    }}
+                    prefix={'$'}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipTitle={
+                      'The estimated costs needed to complete the current construction project'
+                    }
+                    value={estimateRate.refinanceConstructionCosts}
+                  />
+
                   <StyledTextFieldNumber
                     isTooltip={true}
                     label={'Completed/After-repair value (ARV)'}
@@ -956,125 +1188,49 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 </Stack>
               </>
             );
-          }
-          return (
-            <>
-              <Stack
-                alignItems={{ xs: 'flex-start', lg: 'stretch' }}
-                flexDirection={{ xs: 'column', lg: 'row' }}
-                gap={3}
-                ml={-0.5}
-              >
-                <StyledTextFieldNumber
-                  label={'Purchase price'}
-                  onValueChange={({ floatValue }) => {
-                    estimateRate.changeFieldValue('purchasePrice', floatValue);
-                  }}
-                  prefix={'$'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  value={estimateRate.purchasePrice}
-                />
-
-                <StyledTextFieldNumber
-                  isTooltip={true}
-                  label={'Improvements since acquisition'}
-                  onValueChange={({ floatValue }) =>
-                    estimateRate.changeFieldValue(
-                      'improvementsSinceAcquisition',
-                      floatValue,
-                    )
-                  }
-                  prefix={'$'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  tooltipTitle={
-                    'How much has been spent towards completed work?'
-                  }
-                  value={estimateRate.improvementsSinceAcquisition}
-                />
-
-                <StyledTextFieldNumber
-                  decimalScale={0}
-                  isTooltip={true}
-                  label={'Loan to total cost'}
-                  onValueChange={({ floatValue }) => {
-                    estimateRate.changeFieldValue('ltc', floatValue);
-                  }}
-                  suffix={'%'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  thousandSeparator={false}
-                  tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  tooltipTitle={
-                    'Your total loan amount as a % of your purchase price and estimated construction costs.'
-                  }
-                  value={estimateRate.ltc}
-                />
-              </Stack>
-
-              <Stack
-                alignItems={{ xs: 'flex-start', lg: 'center' }}
-                flexDirection={{ xs: 'column', lg: 'row' }}
-                gap={3}
-                ml={-0.5}
-              >
-                <StyledTextFieldNumber
-                  isTooltip={true}
-                  label={'Remaining construction costs'}
-                  onValueChange={({ floatValue }) => {
-                    estimateRate.changeFieldValue(
-                      'refinanceConstructionCosts',
-                      floatValue,
-                    );
-                  }}
-                  prefix={'$'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  tooltipTitle={
-                    'The estimated costs needed to complete the current construction project'
-                  }
-                  value={estimateRate.refinanceConstructionCosts}
-                />
-
-                <StyledTextFieldNumber
-                  isTooltip={true}
-                  label={'Completed/After-repair value (ARV)'}
-                  onValueChange={({ floatValue }) => {
-                    estimateRate.changeFieldValue('arv', floatValue);
-                  }}
-                  prefix={'$'}
-                  sx={{
-                    flex: 1,
-                    maxWidth: { xs: '100%', lg: 464 },
-                  }}
-                  tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 464 } }}
-                  tooltipTitle={
-                    'Estimated value of the property after construction.'
-                  }
-                  value={estimateRate.arv}
-                />
-                {!condition && (
-                  <Typography
-                    color={'text.secondary'}
-                    sx={{
-                      mt: 0.5,
-                      '& > b': {
-                        color: 'primary.main',
-                        fontWeight: 600,
-                      },
-                    }}
-                    variant={'body3'}
-                  >
-                    After-repair loan to value:{' '}
-                    <b>{POSFormatPercent(ARLTV, POSGetDecimalPlaces(ARLTV))}</b>
-                  </Typography>
-                )}
-              </Stack>
-            </>
-          );
-        default:
-          return <></>;
-      }
-    }, [ARLTV, LTC, LTV, breakpoints, estimateRate, payoffAmountError]);
+          default:
+            return <></>;
+        }
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [
+        ARLTV,
+        LTC,
+        LTV,
+        breakpoints,
+        estimateRate.productCategory,
+        estimateRate.loanPurpose,
+        estimateRate.propertyType,
+        estimateRate.propertyUnit,
+        estimateRate.state,
+        estimateRate.ficoScore,
+        estimateRate.isLiquidity,
+        estimateRate.liquidityAmount,
+        estimateRate.rehabCost,
+        estimateRate.arv,
+        estimateRate.purchasePrice,
+        estimateRate.purchaseLoanAmount,
+        estimateRate.propertyValue,
+        estimateRate.refinanceLoanAmount,
+        estimateRate.isPayoff,
+        estimateRate.payoffAmount,
+        estimateRate.isCustom,
+        estimateRate.loanTerm,
+        estimateRate.interestRate,
+        estimateRate.isDutch,
+        estimateRate.citizenship,
+        estimateRate.priorExperience,
+        estimateRate.improvementsSinceAcquisition,
+        estimateRate.constructionProjectsExited,
+        estimateRate.purchaseConstructionCosts,
+        estimateRate.refinanceConstructionCosts,
+        estimateRate.ltc,
+        estimateRate.monthlyIncome,
+        estimateRate.propertyOwned,
+        initialLTC,
+        payoffAmountError,
+      ],
+    );
 
     const renderTail = useMemo(
       () => {
@@ -1245,6 +1401,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         ARLTV,
         LTC,
         LTV,
+        initialLTC,
         breakpoints,
         estimateRate.productCategory,
         estimateRate.loanPurpose,
@@ -1274,6 +1431,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         estimateRate.refinanceConstructionCosts,
         estimateRate.ltc,
         estimateRate.monthlyIncome,
+        estimateRate.propertyOwned,
         limits?.maxLoanAmount,
         limits?.minLoanAmount,
         loading,
@@ -1320,6 +1478,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         estimateRate?.improvementsSinceAcquisition,
         estimateRate?.refinanceConstructionCosts,
         estimateRate?.purchaseConstructionCosts,
+        estimateRate?.propertyOwned,
         estimateRate?.ltc,
         session,
       ],
