@@ -209,8 +209,8 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 />
                 <LoanSummaryCardRow
                   content={POSFormatPercent(
-                    data?.ltc,
-                    POSGetDecimalPlaces(data?.ltc),
+                    data?.ltv,
+                    POSGetDecimalPlaces(data?.ltv),
                   )}
                   title={'Initial LTC'}
                 />
@@ -244,8 +244,8 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               />
               <LoanSummaryCardRow
                 content={POSFormatPercent(
-                  data?.ltc,
-                  POSGetDecimalPlaces(data?.ltc),
+                  data?.ltv,
+                  POSGetDecimalPlaces(data?.ltv),
                 )}
                 title={'Initial LTC'}
               />
