@@ -36,6 +36,7 @@ import { StyledButton, StyledDialog, StyledFormItem } from '@/components/atoms';
 import {
   AdditionalFee,
   HttpError,
+  LoanAnswerEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
@@ -226,9 +227,20 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
           }
           return (
             <>
+              {data?.propertyOwned === LoanAnswerEnum.no ? (
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.propertyValue)}
+                  title={'As-is property value'}
+                />
+              ) : (
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.purchasePrice)}
+                  title={'Purchase price'}
+                />
+              )}
               <LoanSummaryCardRow
-                content={POSFormatDollar(data?.propertyValue)}
-                title={'As-is property value'}
+                content={POSFormatDollar(data?.improvementsSinceAcquisition)}
+                title={'Improvements since acquisition'}
               />
               <LoanSummaryCardRow
                 content={POSFormatDollar(data?.refinanceLoanAmount)}
