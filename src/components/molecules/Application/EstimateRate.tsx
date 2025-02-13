@@ -292,35 +292,37 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         estimateRate.productCategory === LoanProductCategoryEnum.fix_and_flip
       ) {
         if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
-          return (
-            Math.ceil(
-              (estimateRate.purchaseLoanAmount ??
-                0 / (estimateRate?.purchasePrice ?? 0)) * 100000,
-            ) / 100000
-          );
+          return LTC;
         }
+
         const dividend =
           estimateRate.propertyOwned === LoanAnswerEnum.no
             ? (estimateRate?.purchasePrice ?? 0) +
-              (estimateRate?.improvementsSinceAcquisition ?? 0)
+              (estimateRate?.improvementsSinceAcquisition ?? 0) +
+              (estimateRate?.rehabCost ?? 0)
             : (estimateRate?.propertyValue ?? 0) +
-              (estimateRate?.improvementsSinceAcquisition ?? 0);
+              (estimateRate?.improvementsSinceAcquisition ?? 0) +
+              (estimateRate?.rehabCost ?? 0);
 
         return (
           Math.ceil(
-            ((estimateRate.refinanceLoanAmount ?? 0) / dividend) * 100000,
+            ((estimateRate.refinanceLoanAmount ??
+              0 + (estimateRate?.rehabCost ?? 0)) /
+              dividend) *
+              100000,
           ) / 100000
         );
       }
     }, [
+      LTC,
       estimateRate?.improvementsSinceAcquisition,
       estimateRate.loanPurpose,
       estimateRate.productCategory,
       estimateRate.propertyOwned,
       estimateRate?.propertyValue,
-      estimateRate.purchaseLoanAmount,
       estimateRate?.purchasePrice,
       estimateRate.refinanceLoanAmount,
+      estimateRate?.rehabCost,
     ]);
 
     const renderSummary = useMemo(() => {
@@ -751,7 +753,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                           }}
                           variant={'body3'}
                         >
-                          Initial LTC:
+                          Loan to cost:
                           <b>
                             {POSFormatPercent(
                               initialLTC,
@@ -954,7 +956,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                         }}
                         variant={'body3'}
                       >
-                        Initial LTC:{' '}
+                        Loan to cost:{' '}
                         <b>
                           {POSFormatPercent(
                             initialLTC,
