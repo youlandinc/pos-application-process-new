@@ -295,6 +295,10 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
           return LTC;
         }
 
+        const divisor =
+          (estimateRate.refinanceLoanAmount ?? 0) +
+          (estimateRate?.rehabCost ?? 0);
+
         const dividend =
           estimateRate.propertyOwned === LoanAnswerEnum.no
             ? (estimateRate?.purchasePrice ?? 0) +
@@ -304,14 +308,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
               (estimateRate?.improvementsSinceAcquisition ?? 0) +
               (estimateRate?.rehabCost ?? 0);
 
-        return (
-          Math.ceil(
-            ((estimateRate.refinanceLoanAmount ??
-              0 + (estimateRate?.rehabCost ?? 0)) /
-              dividend) *
-              100000,
-          ) / 100000
-        );
+        return Math.ceil((divisor / dividend) * 100000) / 100000;
       }
     }, [
       LTC,
