@@ -376,6 +376,7 @@ export const Terms: FC = observer(() => {
     data?.ltv,
     data?.payoffAmount,
     data?.productCategory,
+    data?.propertyOwned,
     data?.propertyValue,
     data?.purchaseLoanAmount,
     data?.purchasePrice,
