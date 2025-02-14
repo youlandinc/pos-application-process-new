@@ -37,6 +37,7 @@ import { StyledButton, StyledDialog, StyledLoading } from '@/components/atoms';
 import {
   AdditionalFee,
   HttpError,
+  LoanAnswerEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPurposeEnum,
@@ -251,9 +252,20 @@ export const Terms: FC = observer(() => {
         }
         return (
           <>
+            {data?.propertyOwned === LoanAnswerEnum.no ? (
+              <LoanTermCardRow
+                content={POSFormatDollar(data?.propertyValue)}
+                title={'As-is property value'}
+              />
+            ) : (
+              <LoanTermCardRow
+                content={POSFormatDollar(data?.purchasePrice)}
+                title={'Purchase price'}
+              />
+            )}
             <LoanTermCardRow
-              content={POSFormatDollar(data?.propertyValue)}
-              title={'As-is property value'}
+              content={POSFormatDollar(data?.improvementsSinceAcquisition)}
+              title={'Improvements since acquisition'}
             />
             <LoanTermCardRow
               content={POSFormatDollar(data?.refinanceLoanAmount)}
@@ -364,6 +376,7 @@ export const Terms: FC = observer(() => {
     data?.ltv,
     data?.payoffAmount,
     data?.productCategory,
+    data?.propertyOwned,
     data?.propertyValue,
     data?.purchaseLoanAmount,
     data?.purchasePrice,
