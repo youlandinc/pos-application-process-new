@@ -229,13 +229,13 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
             <>
               {data?.propertyOwned === LoanAnswerEnum.no ? (
                 <LoanSummaryCardRow
-                  content={POSFormatDollar(data?.propertyValue)}
-                  title={'As-is property value'}
+                  content={POSFormatDollar(data?.purchasePrice)}
+                  title={'Purchase price'}
                 />
               ) : (
                 <LoanSummaryCardRow
-                  content={POSFormatDollar(data?.purchasePrice)}
-                  title={'Purchase price'}
+                  content={POSFormatDollar(data?.propertyValue)}
+                  title={'As-is property value'}
                 />
               )}
               <LoanSummaryCardRow

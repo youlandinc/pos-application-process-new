@@ -254,13 +254,13 @@ export const Terms: FC = observer(() => {
           <>
             {data?.propertyOwned === LoanAnswerEnum.no ? (
               <LoanTermCardRow
-                content={POSFormatDollar(data?.propertyValue)}
-                title={'As-is property value'}
+                content={POSFormatDollar(data?.purchasePrice)}
+                title={'Purchase price'}
               />
             ) : (
               <LoanTermCardRow
-                content={POSFormatDollar(data?.purchasePrice)}
-                title={'Purchase price'}
+                content={POSFormatDollar(data?.propertyValue)}
+                title={'As-is property value'}
               />
             )}
             <LoanTermCardRow
