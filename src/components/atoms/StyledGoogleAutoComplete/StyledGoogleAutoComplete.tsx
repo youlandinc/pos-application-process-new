@@ -320,7 +320,6 @@ const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
           label={label || 'Street address'}
           placeholder="Address"
           validate={validate}
-          variant="outlined"
           // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
         />
       )}

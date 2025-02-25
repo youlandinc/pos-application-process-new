@@ -171,6 +171,7 @@ const initialState = {
     loanInformation: FormData[LoanSnapshotEnum.estimate_rate],
     loanAddress: FormData[LoanSnapshotEnum.loan_address],
     backgroundInformation: FormData[LoanSnapshotEnum.background_information],
+    selectExecutive: FormData[LoanSnapshotEnum.select_executive],
     compensationInformation: FormData[LoanSnapshotEnum.compensation_page],
     submitLead: {
       addressInfo: { ...FormData[LoanSnapshotEnum.loan_address] },

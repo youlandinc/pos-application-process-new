@@ -6,6 +6,8 @@ import _uniqueId from 'lodash/uniqueId';
 export const CompensationInformation = types
   .model({
     originationPoints: types.maybe(types.number),
+    executiveId: types.maybe(types.string),
+    executiveName: types.maybe(types.string),
     processingFee: types.maybe(types.number),
     isAdditional: types.maybe(types.boolean),
     additionalInfo: types.maybe(types.string),
@@ -39,6 +41,8 @@ export const CompensationInformation = types
           isAdditional,
           additionalInfo,
           additionalFees,
+          executiveId,
+          executiveName,
         } = data;
 
         self.originationPoints = originationPoints
@@ -47,6 +51,8 @@ export const CompensationInformation = types
         self.processingFee = processingFee ?? 200;
         self.isAdditional = isAdditional ?? false;
         self.additionalInfo = additionalInfo ?? '';
+        self.executiveId = executiveId ?? '';
+        self.executiveName = executiveName ?? '';
 
         if (additionalFees && additionalFees.length > 0) {
           additionalFees.map((item) => {
@@ -65,6 +71,8 @@ export const CompensationInformation = types
           isAdditional: self.isAdditional,
           additionalInfo: self.additionalInfo,
           additionalFees: self.additionalFees,
+          executiveId: self.executiveId,
+          executiveName: self.executiveName,
         };
       },
     };

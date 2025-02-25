@@ -6,9 +6,12 @@ export enum LoanSnapshotEnum {
   auth_page = 'AUTH_PAGE',
   loan_address = 'LOAN_ADDRESS',
   background_information = 'BACKGROUND_INFORMATION',
-  compensation_page = 'COMPENSATION_PAGE',
   loan_summary = 'LOAN_SUMMARY',
   loan_overview = 'LOAN_OVERVIEW',
+  // customer after background information
+  select_executive = 'SELECT_EXECUTIVE',
+  // broker after background information
+  compensation_page = 'COMPENSATION_PAGE',
   // multifamily
   enter_loan_info = 'ENTER_LOAN_INFO',
   // commercial
@@ -23,7 +26,13 @@ export interface AdditionalFee {
   value: number | undefined;
 }
 
-export interface CompensationInformationFromData {
+export interface SelectExecutiveFormData {
+  executiveId: string;
+  executiveName: string;
+}
+
+export interface CompensationInformationFromData
+  extends SelectExecutiveFormData {
   originationPoints: number;
   processingFee: number;
   isAdditional: boolean;
