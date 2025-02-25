@@ -65,3 +65,12 @@ export const _downloadFile = (loanId: string) => {
     responseType: 'blob',
   });
 };
+
+export const _fetchExecutiveList = (keyword: string, size = 10) => {
+  return post('/usercenter/api/user/fetchList', {
+    size,
+    keyword,
+    role: 'EXECUTIVE',
+    page: 0,
+  });
+};

@@ -20,6 +20,7 @@ export const URL_HASH: Record<string, any> = {
   [LoanSnapshotEnum.auth_page]: '/auth-page',
   [LoanSnapshotEnum.loan_address]: '/loan-address',
   [LoanSnapshotEnum.background_information]: '/background-information',
+  [LoanSnapshotEnum.select_executive]: '/select-executive',
   [LoanSnapshotEnum.compensation_page]: '/compensation-information',
   [LoanSnapshotEnum.loan_summary]: '/loan-summary',
   [LoanSnapshotEnum.enter_loan_info]: '/loan-information',

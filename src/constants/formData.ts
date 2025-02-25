@@ -86,9 +86,15 @@ export const FormData = {
     hadFelony: LoanAnswerEnum.not_sure,
     hadLitigation: LoanAnswerEnum.not_sure,
   },
+  [LoanSnapshotEnum.select_executive]: {
+    executiveId: '',
+    executiveName: '',
+  },
   [LoanSnapshotEnum.compensation_page]: {
     // user type broker/loan officer
     // agent fee use processing fee
+    executiveId: '',
+    executiveName: '',
     originationPoints: 0, // %
     processingFee: 0,
     isAdditional: false,

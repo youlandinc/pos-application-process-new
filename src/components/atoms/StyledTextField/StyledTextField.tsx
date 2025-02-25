@@ -9,7 +9,6 @@ import { useBreakpoints } from '@/hooks';
 export interface StyledTextFieldProps
   extends Omit<OutlinedTextFieldProps, 'variant'> {
   validate?: undefined | string[];
-  variant?: 'outlined';
   sx?: SxProps;
   disabledAutoFill?: boolean;
   tooltipTitle?: string;
@@ -21,7 +20,6 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
   sx,
   value = '',
   onChange,
-  variant = 'outlined',
   validate,
   tooltipTitle = '',
   tooltipSx = { width: '100%' },
@@ -106,14 +104,14 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
           autoComplete: disabledAutoFill ? 'off' : '',
         }}
         onChange={onChange}
-        // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
         sx={{
           ...StyledTextFieldStyles,
           ...sx,
         }}
         value={value}
-        variant={variant}
+        variant={'outlined'}
         {...rest}
+        // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
       />
     </StyledTooltip>
   ) : (
@@ -179,14 +177,14 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
         autoComplete: disabledAutoFill ? 'off' : '',
       }}
       onChange={onChange}
-      // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
       sx={{
         ...StyledTextFieldStyles,
         ...sx,
       }}
       value={value}
-      variant={variant}
+      variant={'outlined'}
       {...rest}
+      // size={['xs', 'sm', 'md'].includes(breakpoints) ? 'small' : 'medium'}
     />
   );
 };
