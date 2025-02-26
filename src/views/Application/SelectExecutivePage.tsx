@@ -11,19 +11,19 @@ import { POSGetParamsFromUrl } from '@/utils';
 
 import { LoanSnapshotEnum, UserType } from '@/types';
 
-import { BackgroundInformation } from '@/components/molecules/Application';
+import { SelectExecutive } from '@/components/molecules/Application';
 
-export const BackgroundInformationPage: FC = observer(() => {
+export const SelectExecutivePage: FC = observer(() => {
   const router = useRouter();
   const { applicationForm, userType } = useMst();
-  const { backgroundInformation } = applicationForm;
+  const { selectExecutive } = applicationForm;
 
   const { updateFrom, updateFormState, redirectFrom, redirectFromState } =
     useStoreData();
 
   const back = async () => {
     const postData = {
-      nextSnapshot: LoanSnapshotEnum.loan_address,
+      nextSnapshot: LoanSnapshotEnum.background_information,
       loanId: applicationForm.loanId,
     };
     await redirectFrom(postData);
@@ -34,13 +34,13 @@ export const BackgroundInformationPage: FC = observer(() => {
       return;
     }
     const postData = {
-      snapshot: LoanSnapshotEnum.background_information,
+      snapshot: LoanSnapshotEnum.select_executive,
       nextSnapshot:
         userType === UserType.CUSTOMER
-          ? LoanSnapshotEnum.select_executive
+          ? LoanSnapshotEnum.loan_summary
           : LoanSnapshotEnum.compensation_page,
       loanId: applicationForm.loanId,
-      data: backgroundInformation.getPostData(),
+      data: selectExecutive.getPostData(),
     };
     await updateFrom(postData);
   };
@@ -63,7 +63,7 @@ export const BackgroundInformationPage: FC = observer(() => {
     <Fade in={!applicationForm.loading}>
       <Box>
         {!applicationForm.loading && (
-          <BackgroundInformation
+          <SelectExecutive
             backState={redirectFromState.loading}
             backStep={back}
             nextState={updateFormState.loading}

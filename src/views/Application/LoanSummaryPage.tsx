@@ -33,7 +33,7 @@ export const LoanSummaryPage: FC = observer(() => {
     const postData = {
       nextSnapshot:
         userType === UserType.CUSTOMER
-          ? LoanSnapshotEnum.background_information
+          ? LoanSnapshotEnum.select_executive
           : LoanSnapshotEnum.compensation_page,
       loanId: applicationForm.loanId,
     };

@@ -1,12 +1,29 @@
-import { FC, useCallback, useEffect, useMemo } from 'react';
-import { Grow, Icon, Stack, Typography } from '@mui/material';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  Autocomplete,
+  CircularProgress,
+  Grow,
+  Icon,
+  Stack,
+  Typography,
+} from '@mui/material';
 import _uniqueId from 'lodash/uniqueId';
+import { debounce } from 'lodash';
+import { useSnackbar } from 'notistack';
+import match from 'autosuggest-highlight/match';
+import parse from 'autosuggest-highlight/parse';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
-import { AdditionalFee, FeeUnitEnum, LoanAnswerEnum, UserType } from '@/types';
+import {
+  AdditionalFee,
+  FeeUnitEnum,
+  HttpError,
+  LoanAnswerEnum,
+  UserType,
+} from '@/types';
 
 import {
   StyledButton,
@@ -17,6 +34,8 @@ import {
   Transitions,
 } from '@/components/atoms';
 
+import { _fetchExecutiveList } from '@/requests/application';
+
 import ICON_CLOSE from '@/svg/icon/icon_close.svg';
 
 const initialized: AdditionalFee = {
@@ -25,12 +44,83 @@ const initialized: AdditionalFee = {
   value: undefined,
 };
 
+interface InsideOption {
+  title: string;
+  key: string;
+  value: string;
+}
+
+const genOption = (arr: any[]) => {
+  if (arr.length === 0) {
+    return [];
+  }
+  return arr.reduce((acc, cur) => {
+    acc.push({
+      title: `${cur?.userInfo?.firstName || ''} ${cur?.userInfo?.lastName || ''}`,
+      key: cur?.id || '',
+      value: cur?.id || '',
+    });
+    return acc;
+  }, []);
+};
+
 export const CompensationInformation: FC<FormNodeBaseProps> = observer(
   ({ nextState, nextStep, backState, backStep }) => {
+    const { enqueueSnackbar } = useSnackbar();
     const {
       applicationForm: { compensationInformation },
       userType,
     } = useMst();
+
+    const [open, setOpen] = useState(false);
+    const [options, setOptions] = useState<InsideOption[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [selfValue, setSelfValue] = useState<any>({
+      title: compensationInformation.executiveName || '',
+      key: compensationInformation.executiveId || '',
+      value: compensationInformation.executiveId || '',
+    });
+
+    const handleOpen = async () => {
+      setOpen(true);
+    };
+
+    const handleClose = () => {
+      setOpen(false);
+      setLoading(false);
+    };
+
+    const fetchOptions = useCallback(
+      async (value: string, loading = true) => {
+        loading && setLoading(true);
+        try {
+          const { data } = await _fetchExecutiveList(value);
+          setOptions(genOption(data?.content || []));
+        } catch (err) {
+          const { message, header, variant } = err as HttpError;
+          enqueueSnackbar(message, { variant, header, isSimple: false });
+        } finally {
+          loading && setLoading(false);
+        }
+      },
+      [enqueueSnackbar],
+    );
+
+    const throttleFetchOptions = useMemo(
+      () =>
+        debounce(async () => {
+          await fetchOptions(compensationInformation.executiveName || '');
+        }, 500),
+      [fetchOptions, compensationInformation.executiveName],
+    );
+
+    useEffect(
+      () => {
+        fetchOptions('', false);
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [],
+    );
 
     const keydownEvent = useCallback(
       (e: KeyboardEvent) => {
@@ -257,6 +347,105 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
               />
             )}
           </Transitions>
+        </StyledFormItem>
+
+        <StyledFormItem
+          gap={3}
+          label={'Is there anyone helping you with the loan?'}
+          sub
+        >
+          <Autocomplete
+            getOptionLabel={(option) => {
+              return option.title;
+            }}
+            inputValue={compensationInformation.executiveName}
+            isOptionEqualToValue={(option, value) =>
+              option.title === value.title
+            }
+            loading={loading}
+            onChange={(e, newValue) => {
+              setSelfValue(newValue);
+              compensationInformation.changeFieldValue(
+                'executiveId',
+                newValue?.key || '',
+              );
+              compensationInformation.changeFieldValue(
+                'executiveName',
+                newValue?.title || '',
+              );
+            }}
+            onClose={handleClose}
+            onInputChange={(e, newValue) => {
+              compensationInformation.changeFieldValue(
+                'executiveName',
+                newValue || '',
+              );
+              throttleFetchOptions();
+            }}
+            onOpen={handleOpen}
+            open={open}
+            options={options}
+            renderInput={(params) => (
+              <StyledTextField
+                {...params}
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <>
+                      {loading && (
+                        <CircularProgress color="inherit" size={20} />
+                      )}
+                      {params.InputProps.endAdornment}
+                    </>
+                  ),
+                }}
+                label={'Please select an account executive'}
+              />
+            )}
+            renderOption={(props, option, { inputValue }) => {
+              const matches = match(option.title, inputValue, {
+                insideWords: true,
+              });
+              const parts = parse(option.title, matches);
+              return (
+                <Stack
+                  {...props}
+                  component={'li'}
+                  flexDirection={'row'}
+                  height={48}
+                  key={props.id}
+                  sx={{
+                    alignItems: 'center !important',
+                    justifyContent: 'flex-start !important',
+                  }}
+                >
+                  {parts.map((part, index) => (
+                    <Stack
+                      component="span"
+                      height={'100%'}
+                      justifyContent={'center'}
+                      key={index}
+                      sx={{
+                        fontWeight: part.highlight ? 'bold' : 'regular',
+                      }}
+                    >
+                      {part.text}
+                    </Stack>
+                  ))}
+                </Stack>
+              );
+            }}
+            slotProps={{
+              paper: {
+                sx: {
+                  '.MuiAutocomplete-listbox': {
+                    p: 0,
+                  },
+                },
+              },
+            }}
+            value={selfValue}
+          />
         </StyledFormItem>
 
         <Stack flexDirection={'row'} gap={3} maxWidth={600} width={'100%'}>

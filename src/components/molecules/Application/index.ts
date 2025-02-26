@@ -6,6 +6,7 @@ export * from './LoanInformation';
 
 export * from './LoanAddress';
 export * from './BackgroundInformation';
+export * from './SelectExecutive';
 export * from './CompensationInformation';
 export * from './LoanSummary';
 

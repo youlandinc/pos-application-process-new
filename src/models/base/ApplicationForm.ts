@@ -11,6 +11,7 @@ import {
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanSnapshotEnum,
+  SelectExecutiveFormData,
   StartingQuestionFormData,
   SubmitLeadFromData,
 } from '@/types';
@@ -20,6 +21,7 @@ import {
   BackgroundInformation,
   CompensationInformation,
   EstimateRate,
+  SelectExecutive,
   SubmitLead,
 } from '@/models/application';
 
@@ -43,6 +45,7 @@ export const ApplicationForm = types
     loanInformation: EstimateRate,
     loanAddress: Address,
     backgroundInformation: BackgroundInformation,
+    selectExecutive: SelectExecutive,
     compensationInformation: CompensationInformation,
     submitLead: SubmitLead,
     // commercial
@@ -87,6 +90,9 @@ export const ApplicationForm = types
       self.backgroundInformation.injectServerData(
         FormData[LoanSnapshotEnum.background_information],
       );
+      self.selectExecutive.injectServerData(
+        FormData[LoanSnapshotEnum.select_executive],
+      );
       self.compensationInformation.injectServerData(
         FormData[LoanSnapshotEnum.compensation_page],
       );
@@ -99,7 +105,8 @@ export const ApplicationForm = types
         | AddressData
         | BackgroundInformationFormData
         | CompensationInformationFromData
-        | SubmitLeadFromData,
+        | SubmitLeadFromData
+        | SelectExecutiveFormData,
     ) {
       switch (snapshot) {
         case LoanSnapshotEnum.starting_question:
@@ -119,6 +126,11 @@ export const ApplicationForm = types
         case LoanSnapshotEnum.background_information:
           self.backgroundInformation.injectServerData(
             data as BackgroundInformationFormData,
+          );
+          break;
+        case LoanSnapshotEnum.select_executive:
+          self.selectExecutive.injectServerData(
+            data as SelectExecutiveFormData,
           );
           break;
         case LoanSnapshotEnum.compensation_page:
