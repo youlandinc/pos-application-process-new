@@ -94,7 +94,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
           const {
             data: { content },
           } = await _fetchExecutiveList(value);
-          setOptions(genOption(content));
+          setOptions(genOption(content || []));
         } catch (err) {
           const { message, header, variant } = err as HttpError;
           enqueueSnackbar(message, { variant, header, isSimple: false });
