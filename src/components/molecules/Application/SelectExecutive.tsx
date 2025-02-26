@@ -63,10 +63,8 @@ export const SelectExecutive: FC<FormNodeBaseProps> = observer(
       async (value: string, loading = true) => {
         loading && setLoading(true);
         try {
-          const {
-            data: { content },
-          } = await _fetchExecutiveList(value);
-          setOptions(genOption(content || []));
+          const { data } = await _fetchExecutiveList(value);
+          setOptions(genOption(data?.content || []));
         } catch (err) {
           const { message, header, variant } = err as HttpError;
           enqueueSnackbar(message, { variant, header, isSimple: false });
