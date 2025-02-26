@@ -24,11 +24,14 @@ interface InsideOption {
 }
 
 const genOption = (arr: any[]) => {
+  if (arr.length === 0) {
+    return [];
+  }
   return arr.reduce((acc, cur) => {
     acc.push({
-      title: cur.userInfo.name,
-      key: cur.id,
-      value: cur.id,
+      title: `${cur?.userInfo?.firstName || ''} ${cur?.userInfo?.lastName || ''}`,
+      key: cur?.id || '',
+      value: cur?.id || '',
     });
     return acc;
   }, []);
@@ -142,7 +145,7 @@ export const SelectExecutive: FC<FormNodeBaseProps> = observer(
               />
             )}
             renderOption={(props, option, { inputValue }) => {
-              const matches = match(option.title, inputValue || '', {
+              const matches = match(option.title, inputValue, {
                 insideWords: true,
               });
               const parts = parse(option.title, matches);
