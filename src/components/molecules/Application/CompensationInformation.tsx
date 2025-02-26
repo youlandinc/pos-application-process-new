@@ -400,7 +400,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
               />
             )}
             renderOption={(props, option, { inputValue }) => {
-              const matches = match(option.title, inputValue, {
+              const matches = match(option.title, inputValue || '', {
                 insideWords: true,
               });
               const parts = parse(option.title, matches);
