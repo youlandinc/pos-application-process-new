@@ -141,7 +141,7 @@ const RootStore = types.model(RootModel).actions((self) => {
         userpool.clearLastAuthUserInfo(lastAuthId);
         userpool.clearLastAuthUserToken(lastAuthId);
       }
-      Router.push('/auth/login');
+      Router.push({ pathname: '/auth/login', query: Router.query });
     },
   };
 });
