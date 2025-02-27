@@ -57,7 +57,10 @@ export const Login: FC<LoginProps> = observer(
         store.updateUserType(userType as UserType);
         store.updateLoginType(loginType as LoginType);
         if (profile.forceChangePassword) {
-          return router.push('/auth/reset-password/');
+          return router.push({
+            pathname: '/auth/reset-password/',
+            query: router.query,
+          });
         }
         const { asPath } = router;
         if (asPath.includes('loanId') && !asPath.includes('type')) {

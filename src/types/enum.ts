@@ -53,3 +53,8 @@ export enum LandTypeEnum {
   some_utilities = 'SOME_UTILITIES',
   all_utilities = 'ALL_UTILITIES',
 }
+
+export enum LinkFromOutEnum {
+  upload_file = 'upload',
+  file_comment = 'comment',
+}

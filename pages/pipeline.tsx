@@ -9,7 +9,7 @@ import { useMst } from '@/models/Root';
 
 import { POSGetParamsFromUrl } from '@/utils';
 
-import { LayoutSceneTypeEnum } from '@/types';
+import { LayoutSceneTypeEnum, LinkFromOutEnum } from '@/types';
 
 const DynamicPipelinePage = dynamic(
   () => import('@/views/Pipeline/PipelinePage').then((mod) => mod.PipelinePage),
@@ -40,15 +40,27 @@ const PipelinePage: FC = observer(() => {
       return;
     }
 
-    if (type === 'comment') {
-      store.updateNotificationVisible(true);
+    switch (type) {
+      case LinkFromOutEnum.file_comment:
+        store.updateNotificationVisible(true);
 
-      await router.push({
-        pathname: '/dashboard/overview',
-        query: {
-          loanId,
-        },
-      });
+        await router.push({
+          pathname: '/dashboard/overview',
+          query: {
+            loanId,
+          },
+        });
+        break;
+      case LinkFromOutEnum.upload_file:
+        store.updateNotificationVisible(false);
+
+        await router.push({
+          pathname: '/dashboard/documents',
+          query: {
+            loanId,
+          },
+        });
+        break;
     }
   }, [location.href]);
 
