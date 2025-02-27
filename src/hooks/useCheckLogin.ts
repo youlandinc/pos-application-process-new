@@ -22,7 +22,7 @@ export const useCheckHasLoggedIn = (jumpPath = '/pipeline') => {
       variant: 'success',
       autoHideDuration: AUTO_HIDE_DURATION,
     });
-    return router.push(jumpPath);
+    return router.push({ pathname: jumpPath, query: router.query });
   });
   useEffect(() => {
     check();
