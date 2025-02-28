@@ -71,8 +71,9 @@ export const CompensationInformation = types
           isAdditional: self.isAdditional,
           additionalInfo: self.additionalInfo,
           additionalFees: self.additionalFees,
-          executiveId: self.executiveId,
-          executiveName: self.executiveName,
+          executiveId: self.executiveId === 'None' ? '' : self.executiveId,
+          executiveName:
+            self.executiveName === 'None' ? '' : self.executiveName,
         };
       },
     };
