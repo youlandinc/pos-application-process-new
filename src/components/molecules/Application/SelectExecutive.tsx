@@ -23,18 +23,29 @@ interface InsideOption {
   value: string;
 }
 
+const DefaultOption: InsideOption = {
+  title: 'None',
+  key: 'None',
+  value: 'None',
+};
+
 const genOption = (arr: any[]) => {
   if (arr.length === 0) {
-    return [];
+    return [DefaultOption];
   }
-  return arr.reduce((acc, cur) => {
-    acc.push({
-      title: `${cur?.userInfo?.firstName || ''} ${cur?.userInfo?.lastName || ''}`,
-      key: cur?.id || '',
-      value: cur?.id || '',
-    });
-    return acc;
-  }, []);
+  return arr.reduce(
+    (acc, cur) => {
+      if (cur?.id) {
+        acc.push({
+          title: `${cur?.userInfo?.firstName || ''} ${cur?.userInfo?.lastName || ''}`,
+          key: cur?.id || '',
+          value: cur?.id || '',
+        });
+      }
+      return acc;
+    },
+    [DefaultOption],
+  );
 };
 
 export const SelectExecutive: FC<FormNodeBaseProps> = observer(
@@ -45,7 +56,7 @@ export const SelectExecutive: FC<FormNodeBaseProps> = observer(
     } = useMst();
 
     const [open, setOpen] = useState(false);
-    const [options, setOptions] = useState<InsideOption[]>([]);
+    const [options, setOptions] = useState<InsideOption[]>([DefaultOption]);
     const [loading, setLoading] = useState(false);
     const [selfValue, setSelfValue] = useState<any>({
       title: selectExecutive.executiveName || '',
@@ -67,7 +78,7 @@ export const SelectExecutive: FC<FormNodeBaseProps> = observer(
         loading && setLoading(true);
         try {
           const { data } = await _fetchExecutiveList(value);
-          setOptions(genOption(data?.content || []));
+          setOptions(genOption(data?.content || [DefaultOption]));
         } catch (err) {
           const { message, header, variant } = err as HttpError;
           enqueueSnackbar(message, { variant, header, isSimple: false });
@@ -106,7 +117,7 @@ export const SelectExecutive: FC<FormNodeBaseProps> = observer(
         >
           <Autocomplete
             getOptionLabel={(option) => {
-              return option.title;
+              return option.title === 'None' ? '' : option.title;
             }}
             inputValue={selectExecutive.executiveName}
             isOptionEqualToValue={(option, value) =>

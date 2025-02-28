@@ -14,8 +14,8 @@ export const SelectExecutive = types
     },
     getPostData() {
       return {
-        executiveId: self.executiveId,
-        executiveName: self.executiveName,
+        executiveId: self.executiveId === 'None' ? '' : self.executiveId,
+        executiveName: self.executiveName === 'None' ? '' : self.executiveName,
       };
     },
     changeFieldValue<K extends keyof SelectExecutiveFormData>(
