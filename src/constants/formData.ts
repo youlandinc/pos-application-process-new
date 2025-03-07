@@ -29,7 +29,7 @@ export const FormData = {
     priorExperience: 0,
     // common search condition params
     state: 'CA',
-    ficoScore: LoanFicoScoreEnum.between_700_749,
+    ficoScore: LoanFicoScoreEnum.between_700_730,
     // for now not use liquidity
     isLiquidity: true,
     liquidityAmount: 100000,
