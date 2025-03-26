@@ -274,7 +274,7 @@ export const MessageBox: FC = observer(() => {
               minRows={3}
               multiline
               onChange={(e) => setContent(e.target.value)}
-              placeholder={'Add notes here'}
+              placeholder={'Write message here'}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   height: 'auto !important',
