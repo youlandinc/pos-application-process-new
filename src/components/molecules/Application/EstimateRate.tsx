@@ -50,7 +50,7 @@ import {
 import { _fetchProductList } from '@/requests/application';
 
 export const EstimateRate: FC<FormNodeBaseProps> = observer(
-  ({ backStep, backState }) => {
+  ({ backStep, backState, nextStep, nextState }) => {
     const router = useRouter();
     const breakpoints = useBreakpoints();
 
@@ -1302,48 +1302,49 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
           <>
             {firstLine}
             {estimateRate.productCategory !==
-              LoanProductCategoryEnum.ground_up_construction && (
-              <Stack flex={1} maxWidth={240} mt={-1.5} width={'100%'}>
-                {loading ? (
-                  <>
-                    <Skeleton
-                      animation={'wave'}
-                      height={14}
-                      variant="rounded"
-                      width={'100%'}
-                    />
-                    <Skeleton
-                      animation={'wave'}
-                      height={14}
-                      sx={{
-                        marginTop: 1,
-                      }}
-                      variant="rounded"
-                      width={'100%'}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Typography color={'text.secondary'} variant={'body3'}>
-                      You qualify for a loan amount between{' '}
-                    </Typography>
-                    <Typography
-                      color={'text.secondary'}
-                      sx={{
-                        '& > b': {
-                          color: 'primary.main',
-                          fontWeight: 600,
-                        },
-                      }}
-                      variant={'body3'}
-                    >
-                      <b>{POSFormatDollar(limits?.minLoanAmount)}</b> and{' '}
-                      <b>{POSFormatDollar(limits?.maxLoanAmount)}</b>.
-                    </Typography>
-                  </>
-                )}
-              </Stack>
-            )}
+              LoanProductCategoryEnum.ground_up_construction &&
+              saasState?.posSettings?.usePricingEngine && (
+                <Stack flex={1} maxWidth={240} mt={-1.5} width={'100%'}>
+                  {loading ? (
+                    <>
+                      <Skeleton
+                        animation={'wave'}
+                        height={14}
+                        variant="rounded"
+                        width={'100%'}
+                      />
+                      <Skeleton
+                        animation={'wave'}
+                        height={14}
+                        sx={{
+                          marginTop: 1,
+                        }}
+                        variant="rounded"
+                        width={'100%'}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Typography color={'text.secondary'} variant={'body3'}>
+                        You qualify for a loan amount between{' '}
+                      </Typography>
+                      <Typography
+                        color={'text.secondary'}
+                        sx={{
+                          '& > b': {
+                            color: 'primary.main',
+                            fontWeight: 600,
+                          },
+                        }}
+                        variant={'body3'}
+                      >
+                        <b>{POSFormatDollar(limits?.minLoanAmount)}</b> and{' '}
+                        <b>{POSFormatDollar(limits?.maxLoanAmount)}</b>.
+                      </Typography>
+                    </>
+                  )}
+                </Stack>
+              )}
 
             <Stack flex={1} mt={-1.5}>
               {estimateRate.productCategory !==
@@ -1456,6 +1457,9 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         if (!saasState?.tenantId) {
           return;
         }
+        if (!saasState?.posSettings?.usePricingEngine) {
+          return;
+        }
         setLoading(true);
         run();
       },
@@ -1520,7 +1524,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
               justifyContent={'space-between'}
               width={'100%'}
             >
-              <Typography color={'text.secondary'}>
+              <Typography color={'text.secondary'} variant={'body3'}>
                 Rates based on following property:
               </Typography>
               <StyledButton
@@ -1528,7 +1532,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                 size={'small'}
                 variant={'outlined'}
               >
-                Edit
+                Edit {saasState?.posSettings?.usePricingEngine ? '' : 'info'}
               </StyledButton>
             </Stack>
             {renderSummary}
@@ -1640,7 +1644,8 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
 
               {!['xs', 'sm', 'md'].includes(breakpoints) &&
                 estimateRate.productCategory !==
-                  LoanProductCategoryEnum.ground_up_construction && (
+                  LoanProductCategoryEnum.ground_up_construction &&
+                saasState?.posSettings?.usePricingEngine && (
                   <>
                     <Stack flex={1} maxWidth={240} mt={0.5}>
                       {loading ? (
@@ -1691,43 +1696,80 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
           </Stack>
         )}
 
-        {['xs', 'sm', 'md'].includes(breakpoints) && (
-          <StyledButton
-            onClick={() => {
-              if (!wrapperRef.current) {
-                return;
-              }
-              const { top } = wrapperRef.current.getBoundingClientRect();
-              window.scrollTo({ top: top + 24, behavior: 'smooth' });
-            }}
-            sx={{ maxWidth: 600, width: '100%', mt: 3 }}
-            variant={'outlined'}
-          >
-            See rates
-          </StyledButton>
+        {['xs', 'sm', 'md'].includes(breakpoints) &&
+          saasState?.posSettings?.usePricingEngine && (
+            <StyledButton
+              onClick={() => {
+                if (!wrapperRef.current) {
+                  return;
+                }
+                const { top } = wrapperRef.current.getBoundingClientRect();
+                window.scrollTo({ top: top + 24, behavior: 'smooth' });
+              }}
+              sx={{ maxWidth: 600, width: '100%', mt: 3 }}
+              variant={'outlined'}
+            >
+              See rates
+            </StyledButton>
+          )}
+
+        {saasState?.posSettings?.usePricingEngine && (
+          <Stack ref={wrapperRef} width={'100%'}>
+            <ProductList
+              errorList={errorList}
+              loading={loading}
+              productList={productList}
+              totalLoanAmount={totalLoanAmount}
+              totalLoanAmountWithoutDutch={totalLoanAmountWithoutDutch}
+            />
+          </Stack>
         )}
 
-        <Stack ref={wrapperRef} width={'100%'}>
-          <ProductList
-            errorList={errorList}
-            loading={loading}
-            productList={productList}
-            totalLoanAmount={totalLoanAmount}
-            totalLoanAmountWithoutDutch={totalLoanAmountWithoutDutch}
-          />
-        </Stack>
+        {!saasState?.posSettings?.usePricingEngine && (
+          <Typography
+            color={'text.secondary'}
+            fontSize={{ xs: 12, lg: 16 }}
+            mt={{ xs: 3, lg: 6 }}
+          >
+            Loan terms will be provided after you complete the application and
+            our underwriting team reviews your submission.
+          </Typography>
+        )}
 
-        <Stack alignItems={'center'} mt={{ xs: 6, lg: 8 }} width={'100%'}>
+        <Stack
+          alignItems={'center'}
+          flexDirection={'row'}
+          gap={6}
+          mt={{
+            xs: saasState?.posSettings?.usePricingEngine ? 6 : 3,
+            lg: saasState?.posSettings?.usePricingEngine ? 8 : 4.5,
+          }}
+          width={'100%'}
+        >
           <StyledButton
             color={'info'}
             disabled={backState}
             loading={backState}
             onClick={backStep}
-            sx={{ width: '100%', maxWidth: 600 }}
+            sx={{
+              width: '100%',
+              maxWidth: saasState?.posSettings?.usePricingEngine ? 600 : 280,
+            }}
             variant={'text'}
           >
             Back
           </StyledButton>
+          {!saasState?.posSettings?.usePricingEngine && (
+            <StyledButton
+              color={'primary'}
+              disabled={nextState}
+              loading={nextState}
+              onClick={nextStep}
+              sx={{ width: '100%', maxWidth: 280 }}
+            >
+              Next
+            </StyledButton>
+          )}
         </Stack>
       </StyledFormItem>
     );

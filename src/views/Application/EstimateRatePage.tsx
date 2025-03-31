@@ -15,9 +15,27 @@ import { EstimateRate } from '@/components/molecules/Application';
 export const EstimateRatePage: FC = observer(() => {
   const router = useRouter();
 
-  const { redirectFrom, redirectFromState } = useStoreData();
+  const { redirectFrom, redirectFromState, updateFrom, updateFormState } =
+    useStoreData();
 
   const { applicationForm } = useMst();
+
+  const { estimateRate } = applicationForm;
+
+  const next = async () => {
+    const postData = {
+      data: {
+        ...estimateRate.getPostData(),
+        isCustom: false,
+      },
+      snapshot: LoanSnapshotEnum.estimate_rate,
+      nextSnapshot: applicationForm.isBind
+        ? LoanSnapshotEnum.loan_address
+        : LoanSnapshotEnum.auth_page,
+      loanId: applicationForm.loanId,
+    };
+    await updateFrom(postData);
+  };
 
   const back = async () => {
     const postData = {
@@ -45,7 +63,12 @@ export const EstimateRatePage: FC = observer(() => {
     <Fade in={!applicationForm.loading}>
       <Box>
         {!applicationForm.loading && (
-          <EstimateRate backState={redirectFromState.loading} backStep={back} />
+          <EstimateRate
+            backState={redirectFromState.loading}
+            backStep={back}
+            nextState={updateFormState.loading}
+            nextStep={next}
+          />
         )}
       </Box>
     </Fade>

@@ -12,6 +12,7 @@ import {
   useBreakpoints,
   useGoogleStreetViewAndMap,
   useRenderPdf,
+  useSessionStorageState,
   useSwitch,
 } from '@/hooks';
 
@@ -57,6 +58,8 @@ export const Terms: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
 
   const { userType } = useMst();
+
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [data, setData] = useState<any>({});
   const [modifying, setModifying] = useState(false);
@@ -571,6 +574,87 @@ export const Terms: FC = observer(() => {
     }
   }, [enqueueSnackbar, router]);
 
+  const renderConditionRatesAndPayment = useMemo(() => {
+    const shouldRender =
+      data?.loanTerm > 0 && data?.interestRate > 0 && data?.monthlyPayment > 0;
+    const renderNodes = () => (
+      <>
+        <Stack
+          border={'1px solid #D2D6E1'}
+          borderRadius={2}
+          gap={{ xs: 1.5, lg: 3 }}
+          p={{ xs: 1.5, lg: 3 }}
+          width={'100%'}
+        >
+          <LoanTermCardRow
+            content={POSFormatPercent(
+              data?.interestRate,
+              POSGetDecimalPlaces(data?.interestRate),
+            )}
+            isHeader={true}
+            title={'Interest rate'}
+          />
+          <LoanTermCardRow
+            content={`${data?.loanTerm} months`}
+            title={'Term'}
+          />
+        </Stack>
+        <Stack
+          border={'1px solid #D2D6E1'}
+          borderRadius={2}
+          gap={{ xs: 1.5, lg: 3 }}
+          p={{ xs: 1.5, lg: 3 }}
+          width={'100%'}
+        >
+          <LoanTermCardRow
+            content={POSFormatDollar(data?.monthlyPayment, 2)}
+            isHeader={true}
+            title={
+              data?.productCategory ===
+              LoanProductCategoryEnum.ground_up_construction
+                ? 'Initial monthly payment'
+                : 'Monthly payment'
+            }
+          />
+          {data?.productCategory ===
+            LoanProductCategoryEnum.ground_up_construction && (
+            <LoanTermCardRow
+              content={POSFormatDollar(data?.fullDrawnMonthlyPayment)}
+              title={'Full monthly payment'}
+            />
+          )}
+        </Stack>
+      </>
+    );
+
+    if (!saasState?.posSettings?.usePricingEngine) {
+      if (
+        data?.productCategory !== LoanProductCategoryEnum.dscr_rental ||
+        data?.propertyType !== LoanPropertyTypeEnum.multifamily
+      ) {
+        return shouldRender ? renderNodes() : null;
+      }
+      return shouldRender ? renderNodes() : null;
+    }
+
+    if (
+      data?.productCategory === LoanProductCategoryEnum.dscr_rental ||
+      data?.propertyType === LoanPropertyTypeEnum.multifamily
+    ) {
+      return shouldRender ? renderNodes() : null;
+    }
+
+    return renderNodes();
+  }, [
+    data?.loanTerm,
+    data?.interestRate,
+    data?.monthlyPayment,
+    data?.productCategory,
+    data?.propertyType,
+    data?.fullDrawnMonthlyPayment,
+    saasState?.posSettings?.usePricingEngine,
+  ]);
+
   return loading ? (
     <Stack
       alignItems={'center'}
@@ -605,58 +689,7 @@ export const Terms: FC = observer(() => {
               {renderLoanAmount}
             </Stack>
 
-            {data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
-              data?.propertyType !== LoanPropertyTypeEnum.multifamily && (
-                <Stack
-                  border={'1px solid #D2D6E1'}
-                  borderRadius={2}
-                  gap={{ xs: 1.5, lg: 3 }}
-                  p={{ xs: 1.5, lg: 3 }}
-                  width={'100%'}
-                >
-                  <LoanTermCardRow
-                    content={POSFormatPercent(
-                      data?.interestRate,
-                      POSGetDecimalPlaces(data?.interestRate),
-                    )}
-                    isHeader={true}
-                    title={'Interest rate'}
-                  />
-                  <LoanTermCardRow
-                    content={`${data?.loanTerm} months`}
-                    title={'Term'}
-                  />
-                </Stack>
-              )}
-
-            {data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
-              data?.propertyType !== LoanPropertyTypeEnum.multifamily && (
-                <Stack
-                  border={'1px solid #D2D6E1'}
-                  borderRadius={2}
-                  gap={{ xs: 1.5, lg: 3 }}
-                  p={{ xs: 1.5, lg: 3 }}
-                  width={'100%'}
-                >
-                  <LoanTermCardRow
-                    content={POSFormatDollar(data?.monthlyPayment, 2)}
-                    isHeader={true}
-                    title={
-                      data?.productCategory ===
-                      LoanProductCategoryEnum.ground_up_construction
-                        ? 'Initial monthly payment'
-                        : 'Monthly payment'
-                    }
-                  />
-                  {data?.productCategory ===
-                    LoanProductCategoryEnum.ground_up_construction && (
-                    <LoanTermCardRow
-                      content={POSFormatDollar(data?.fullDrawnMonthlyPayment)}
-                      title={'Full monthly payment'}
-                    />
-                  )}
-                </Stack>
-              )}
+            {renderConditionRatesAndPayment}
 
             <Stack
               border={'1px solid #D2D6E1'}
