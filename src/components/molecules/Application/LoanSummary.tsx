@@ -10,6 +10,7 @@ import {
   useBreakpoints,
   useGoogleStreetViewAndMap,
   useRenderPdf,
+  useSessionStorageState,
   useSwitch,
 } from '@/hooks';
 
@@ -50,6 +51,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
   ({ nextStep, nextState, backState, backStep, data }) => {
     const { applicationForm, userType } = useMst();
     const { enqueueSnackbar } = useSnackbar();
+    const { saasState } = useSessionStorageState('tenantConfig');
     const breakpoints = useBreakpoints();
 
     const {
@@ -351,6 +353,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
       data?.ltv,
       data?.payoffAmount,
       data?.productCategory,
+      data?.propertyOwned,
       data?.propertyValue,
       data?.purchaseLoanAmount,
       data?.purchasePrice,
@@ -570,7 +573,8 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
             </Stack>
 
             {data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
-              data?.propertyType !== LoanPropertyTypeEnum.multifamily && (
+              data?.propertyType !== LoanPropertyTypeEnum.multifamily &&
+              saasState?.posSettings?.usePricingEngine && (
                 <Stack
                   border={'1px solid #D2D6E1'}
                   borderRadius={2}
@@ -594,7 +598,8 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
               )}
 
             {data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
-              data?.propertyType !== LoanPropertyTypeEnum.multifamily && (
+              data?.propertyType !== LoanPropertyTypeEnum.multifamily &&
+              saasState?.posSettings?.usePricingEngine && (
                 <Stack
                   border={'1px solid #D2D6E1'}
                   borderRadius={2}
