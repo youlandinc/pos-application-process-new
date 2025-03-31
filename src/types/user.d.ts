@@ -8,6 +8,7 @@ import {
   FreeTrialState,
   LoginType,
   ServiceTypeEnum,
+  SoftCreditRequirementEnum,
   UserType,
 } from './enum';
 
@@ -176,8 +177,9 @@ declare namespace User {
     customFee?: POSCustomFee;
     isWarning?: boolean;
     borrowerTypes?: POSBorrowerTypes[];
-    softCreditRequirement?: POSSoftCreditRequirement;
+    softCreditRequirement?: SoftCreditRequirementEnum;
     customLoanTerms?: POSBorrowerTypes[];
+    usePricingEngine?: boolean;
   }
 
   interface TenantConfigUserInfo {
