@@ -842,7 +842,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                               new Date(item.uploadTime as string),
                               isToday(new Date(item.uploadTime as string))
                                 ? 'hh:mm aa'
-                                : 'MMMM dd, yyyy',
+                                : 'MMMM d, yyyy',
                             )}
                           </Typography>
 
