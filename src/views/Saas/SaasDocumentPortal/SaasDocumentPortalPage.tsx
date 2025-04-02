@@ -114,18 +114,18 @@ export const SaasDocumentPortalPage: FC = () => {
           >
             <StyledHeaderLogo />
 
-            {mode === 'edit' && (
-              <StyledButton
-                color={'info'}
-                onClick={async () => {
-                  setMode('detail');
-                  await _portalClickTimes(loanId);
-                }}
-                variant={'outlined'}
-              >
-                View loan progress
-              </StyledButton>
-            )}
+            {/*{mode === 'edit' && (*/}
+            {/*  <StyledButton*/}
+            {/*    color={'info'}*/}
+            {/*    onClick={async () => {*/}
+            {/*      setMode('detail');*/}
+            {/*      await _portalClickTimes(loanId);*/}
+            {/*    }}*/}
+            {/*    variant={'outlined'}*/}
+            {/*  >*/}
+            {/*    View loan progress*/}
+            {/*  </StyledButton>*/}
+            {/*)}*/}
           </Stack>
 
           <Stack
