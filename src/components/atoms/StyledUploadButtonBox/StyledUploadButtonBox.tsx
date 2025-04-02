@@ -51,6 +51,7 @@ import { DialogDelete } from './DialogDelete';
 
 import ICON_IMAGE from './assets/icon_image.svg';
 import ICON_FILE from './assets/icon_file.svg';
+import { isToday } from 'date-fns';
 
 //import ICON_HISTORY from './assets/icon_history.svg';
 
@@ -839,7 +840,9 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                           <Typography color={'#9095A3'} variant={'body3'}>
                             {POSFormatDate(
                               new Date(item.uploadTime as string),
-                              'M-dd-yyyy',
+                              isToday(new Date(item.uploadTime as string))
+                                ? 'hh:mm aa'
+                                : 'MMMM dd, yyyy',
                             )}
                           </Typography>
 
