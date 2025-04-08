@@ -174,12 +174,22 @@ export const APPLICATION_LIQUIDITY: Option[] = [
 
 export const APPLICATION_PREPAYMENT_PENALTY: Option[] = [
   {
-    label: '3-year term',
+    label: 'No PPP (Prepayment Penalty)',
+    key: PrepaymentPenaltyEnum.no_ppp,
+    value: PrepaymentPenaltyEnum.no_ppp,
+  },
+  {
+    label: '1-year (3% in Year 1)',
+    key: PrepaymentPenaltyEnum.one_year,
+    value: PrepaymentPenaltyEnum.one_year,
+  },
+  {
+    label: '3-year (321 stepdown)',
     key: PrepaymentPenaltyEnum.three_year,
     value: PrepaymentPenaltyEnum.three_year,
   },
   {
-    label: '5-year term',
+    label: '5-year (54321 stepdown)',
     key: PrepaymentPenaltyEnum.five_year,
     value: PrepaymentPenaltyEnum.five_year,
   },

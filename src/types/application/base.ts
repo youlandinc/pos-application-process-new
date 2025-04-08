@@ -49,6 +49,8 @@ export interface BackgroundInformationFormData {
 }
 
 export enum PrepaymentPenaltyEnum {
+  no_ppp = 'NO_PPP',
+  one_year = 'ONE_YEAR_TERM',
   three_year = 'THREE_YEAR_TERM',
   five_year = 'FIVE_YEAR_TERM',
   seven_year = 'SEVEN_YEAR_TERM',
