@@ -555,7 +555,7 @@ export const Terms: FC = observer(() => {
 
     try {
       await _resubmitLoan(postData);
-      await router.push({
+      router.push({
         pathname: '/',
         query: {
           loanId,
@@ -653,6 +653,25 @@ export const Terms: FC = observer(() => {
     data?.propertyType,
     data?.fullDrawnMonthlyPayment,
     saasState?.posSettings?.usePricingEngine,
+  ]);
+
+  const preApprovedCondition = useMemo(() => {
+    if (data?.productCategory === LoanProductCategoryEnum.dscr_rental) {
+      if (!data?.loanTerm || !data?.interestRate) {
+        return false;
+      }
+      return data?.propertyType !== LoanPropertyTypeEnum.multifamily;
+    }
+
+    return (
+      data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
+      data?.propertyType !== LoanPropertyTypeEnum.multifamily
+    );
+  }, [
+    data?.interestRate,
+    data?.loanTerm,
+    data?.productCategory,
+    data?.propertyType,
   ]);
 
   return loading ? (
@@ -916,18 +935,17 @@ export const Terms: FC = observer(() => {
                   }`}
                 </Typography>
               </Stack>
-              {data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
-                data?.propertyType !== LoanPropertyTypeEnum.multifamily && (
-                  <StyledButton
-                    color={'info'}
-                    disabled={viewLoading || data?.isCustom}
-                    loading={viewLoading}
-                    onClick={() => getPDF('letter')}
-                    variant={'outlined'}
-                  >
-                    View pre-approval letter
-                  </StyledButton>
-                )}
+              {preApprovedCondition && (
+                <StyledButton
+                  color={'info'}
+                  disabled={viewLoading || data?.isCustom}
+                  loading={viewLoading}
+                  onClick={() => getPDF('letter')}
+                  variant={'outlined'}
+                >
+                  View pre-approval letter
+                </StyledButton>
+              )}
 
               {data?.isCustom && (
                 <Typography color={'text.secondary'} variant={'body3'}>
@@ -1026,9 +1044,8 @@ export const Terms: FC = observer(() => {
                       component={NOTIFICATION_INFO}
                       sx={{ mt: { xs: -0.5, lg: -0.25 } }}
                     />
-                    If you want to add the borrower&apos;s name to the
-                    pre-approval letter, you can complete the borrower&apos;s
-                    information task after submitting the loan.
+                    To show the borrower’s name on the pre-approval letter,
+                    submit the loan first, then complete the borrower info task.
                   </Stack>
                 </Stack>
               )}

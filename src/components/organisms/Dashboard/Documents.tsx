@@ -211,6 +211,7 @@ export const Documents: FC = observer(() => {
             data&apos;s privacy and protection, including advanced 256-bit
             encryption, secure SSL connections, and regular security audits.
           </Typography>
+          {/*todo : pre-approval*/}
           {productCategory !== LoanProductCategoryEnum.dscr_rental &&
             propertyType !== LoanPropertyTypeEnum.multifamily && (
               <Typography
