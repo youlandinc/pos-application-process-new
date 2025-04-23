@@ -344,7 +344,8 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
           fontSize={12}
           height={24}
           justifyContent={'center'}
-          width={72}
+          px={0.75}
+          width={'fit-content'}
         >
           {result.text}
         </Stack>
