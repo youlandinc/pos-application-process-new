@@ -544,7 +544,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
     return (
       <StyledFormItem
         gap={3}
-        label={'View your loan terms'}
+        label={'Last step - Review & submit application'}
         labelSx={{
           fontSize: { xs: 18, lg: 24 },
         }}
@@ -885,7 +885,7 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 onClick={nextStep}
               >
                 Submit{' '}
-                {!['xs', 'sm', 'md'].includes(breakpoints) && 'for review'}
+                {!['xs', 'sm', 'md'].includes(breakpoints) && 'application'}
               </StyledButton>
               <StyledButton
                 color={'info'}
@@ -920,9 +920,8 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                       component={NOTIFICATION_INFO}
                       sx={{ mt: { xs: -0.5, lg: -0.25 } }}
                     />
-                    If you want to add the borrower&apos;s name to the
-                    pre-approval letter, you can complete the borrower&apos;s
-                    information task after submitting the loan.
+                    To show the borrower’s name on the pre-approval letter,
+                    submit the loan first, then complete the borrower info task.
                   </Stack>
                 </Stack>
               )}
