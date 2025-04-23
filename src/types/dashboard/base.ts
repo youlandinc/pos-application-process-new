@@ -79,6 +79,7 @@ export enum DashboardDocumentStatus {
   flag = 'FLAG',
   approve = 'APPROVE',
   in_review = 'IN_REVIEW',
+  waiting_for_review = 'WAITING_FOR_REVIEW',
 }
 
 // documents
