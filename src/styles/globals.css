@@ -1,6 +1,6 @@
 @font-face {
-  font-family: Inter;
-  src: url('../../public/fonts/Inter.woff2');
+  font-family: 'Inter';
+  src: url('../../public/fonts/inter-full-variable.ttf');
   font-display: swap;
 }
 
@@ -13,13 +13,13 @@ body {
   height: 100%;
   padding: 0;
   margin: 0;
-  font-family: Inter, sans-serif;
+  font-family: 'Inter', sans-serif;
   box-sizing: border-box;
 }
 
 * {
   box-sizing: border-box;
-  font-family: Inter, sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 a {
@@ -150,7 +150,7 @@ ul {
     right: 48px !important;
     max-width: calc(100% - 72px);
   }
-
+  
   .notistack-CollapseWrapper {
     padding: 0 0 8px 0;
   }
@@ -161,7 +161,7 @@ ul {
     top: 36px !important;
     max-width: calc(100% - 72px) !important;
   }
-
+  
   .notistack-CollapseWrapper {
     padding: 0 0 8px 0;
   }
