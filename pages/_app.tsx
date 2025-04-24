@@ -4,7 +4,6 @@ import Head from 'next/head';
 import { AppProps } from 'next/app';
 import Router, { useRouter } from 'next/router';
 import Script from 'next/script';
-import localFont from 'next/font/local';
 
 import { useAsync } from 'react-use';
 import en from 'date-fns/locale/en-US';
@@ -48,28 +47,6 @@ const clientSideEmotionCache = createEmotionCache();
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
-
-const POS_FONT = localFont({
-  src: [
-    {
-      path: '../public/fonts/Poppins-Regular.woff2',
-      weight: '400',
-    },
-    {
-      path: '../public/fonts/Poppins-Medium.woff2',
-      weight: '500',
-    },
-    {
-      path: '../public/fonts/Poppins-SemiBold.woff2',
-      weight: '600',
-    },
-    {
-      path: '../public/fonts/Poppins-Bold.woff2',
-      weight: '700',
-    },
-  ],
-  display: 'swap',
-});
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
@@ -214,7 +191,7 @@ export default function MyApp(props: MyAppProps) {
               }}
               maxSnack={3}
             >
-              <Component className={POS_FONT.className} {...pageProps} />
+              <Component {...pageProps} />
             </SnackbarProvider>
           </LocalizationProvider>
         </ThemeProvider>
@@ -241,7 +218,7 @@ export default function MyApp(props: MyAppProps) {
               }}
               maxSnack={3}
             >
-              <Component className={POS_FONT.className} {...pageProps} />
+              <Component {...pageProps} />
             </SnackbarProvider>
           </LocalizationProvider>
         </ThemeProvider>
