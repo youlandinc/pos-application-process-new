@@ -1,6 +1,6 @@
 @font-face {
-  font-family: Inter;
-  src: url('../../public/fonts/Inter.woff2');
+  font-family: 'Inter';
+  src: url('../../public/fonts/inter-full-variable.ttf');
   font-display: swap;
 }
 
@@ -13,13 +13,13 @@ body {
   height: 100%;
   padding: 0;
   margin: 0;
-  font-family: Inter, sans-serif;
+  font-family: 'Inter', sans-serif;
   box-sizing: border-box;
 }
 
 * {
   box-sizing: border-box;
-  font-family: Inter, sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 a {

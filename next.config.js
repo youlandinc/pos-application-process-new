@@ -15,6 +15,7 @@ module.exports = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  optimizeFonts: false,
   images: {
     domains: ['youland-common-images.s3.us-west-1.amazonaws.com'],
   },

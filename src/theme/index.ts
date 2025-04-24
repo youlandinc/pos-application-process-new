@@ -184,7 +184,7 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Inter, sans-serif',
+    fontFamily: "'Inter', sans-serif",
     h1: {
       fontSize: 56,
       lineHeight: 1.5,
