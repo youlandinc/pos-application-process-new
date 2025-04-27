@@ -670,7 +670,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
                   onClick={() =>
                     window.open(
                       POSFormatUrl(saasState?.legalAgreements?.termsUrl) ||
-                        'https://www.youland.com/legal/terms/',
+                        'https://corepass.com/legal/terms-and-conditions/',
                     )
                   }
                   sx={{
@@ -689,7 +689,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
                     window.open(
                       POSFormatUrl(
                         saasState?.legalAgreements?.privacyPolicyUrl,
-                      ) || 'https://www.youland.com/legal/privacy/',
+                      ) || 'https://corepass.com/legal/privacy-policy/',
                     )
                   }
                   sx={{

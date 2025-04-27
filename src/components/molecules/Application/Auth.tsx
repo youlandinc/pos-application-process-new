@@ -64,7 +64,7 @@ export const Auth: FC<FormNodeBaseProps> = observer(
                     onClick={() =>
                       window.open(
                         POSFormatUrl(saasState?.legalAgreements?.termsUrl) ||
-                          'https://www.youland.com/legal/terms/',
+                          'https://corepass.com/legal/terms-and-conditions/',
                       )
                     }
                     sx={{
@@ -83,7 +83,7 @@ export const Auth: FC<FormNodeBaseProps> = observer(
                       window.open(
                         POSFormatUrl(
                           saasState?.legalAgreements?.privacyPolicyUrl,
-                        ) || 'https://www.youland.com/legal/privacy/',
+                        ) || 'https://corepass.com/legal/privacy-policy/',
                       )
                     }
                     sx={{
