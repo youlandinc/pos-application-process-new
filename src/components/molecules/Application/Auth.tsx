@@ -76,14 +76,7 @@ export const Auth: FC<FormNodeBaseProps> = observer(
                   >
                     Terms of Use{' '}
                   </Typography>
-                  and acknowledge
-                </Typography>
-                <Typography
-                  color={'text.secondary'}
-                  component={'div'}
-                  variant={'body2'}
-                >
-                  that you&apos;ve read our{' '}
+                  and{' '}
                   <Typography
                     component={'span'}
                     onClick={() =>
@@ -102,7 +95,11 @@ export const Auth: FC<FormNodeBaseProps> = observer(
                   >
                     Privacy Policy
                   </Typography>
-                  .
+                  ,
+                </Typography>
+                <Typography color={'text.secondary'} variant={'body2'}>
+                  and consent to receive loan-related emails and SMS from{' '}
+                  {saasState?.organizationName}.
                 </Typography>
               </Box>
             </>
