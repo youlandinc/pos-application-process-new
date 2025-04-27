@@ -605,7 +605,8 @@ export const SignUp: FC<SignUpProps> = observer(
                           window.open(
                             POSFormatUrl(
                               saasState?.legalAgreements?.termsUrl,
-                            ) || 'https://www.youland.com/legal/terms/',
+                            ) ||
+                              'https://corepass.com/legal/terms-and-conditions/',
                           )
                         }
                         sx={{
@@ -624,7 +625,7 @@ export const SignUp: FC<SignUpProps> = observer(
                           window.open(
                             POSFormatUrl(
                               saasState?.legalAgreements?.privacyPolicyUrl,
-                            ) || 'https://www.youland.com/legal/privacy/',
+                            ) || 'https://corepass.com/legal/privacy-policy/',
                           )
                         }
                         sx={{
