@@ -65,6 +65,15 @@ export const Login: FC<LoginProps> = observer(
         const { asPath } = router;
         if (asPath.includes('loanId') && !asPath.includes('type')) {
           setLoading(false);
+          if (asPath.includes('/auth/login/?loanId=')) {
+            return router.push({
+              pathname: '/',
+              query: {
+                ...router.query,
+                loanId: router.query.loanId,
+              },
+            });
+          }
           return router.push(asPath);
         }
         if (to) {
@@ -215,7 +224,7 @@ export const Login: FC<LoginProps> = observer(
                         fontWeight={600}
                         variant={'body2'}
                       >
-                        <Link href={'./sign_up/'}> Sign up</Link>
+                        <Link href={'/auth/sign_up/'}> Sign up</Link>
                       </Typography>
                     </Typography>
                     <Typography
@@ -223,7 +232,9 @@ export const Login: FC<LoginProps> = observer(
                       fontWeight={600}
                       variant="body2"
                     >
-                      <Link href={'./forgot_password/'}>Forgot password?</Link>
+                      <Link href={'/auth/forgot_password/'}>
+                        Forgot password?
+                      </Link>
                     </Typography>
                   </Box>
                 </Box>

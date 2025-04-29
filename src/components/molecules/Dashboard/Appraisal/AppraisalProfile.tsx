@@ -279,9 +279,9 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
                             component={'span'}
                             fontWeight={600}
                             onClick={async () => {
-                              await router.push({
+                              router.push({
                                 pathname: '/account',
-                                query: { tab: 2 },
+                                query: { tab: 1 },
                               });
                             }}
                             sx={{ cursor: 'pointer' }}
