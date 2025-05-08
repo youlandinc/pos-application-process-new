@@ -344,6 +344,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
           fontSize={12}
           height={24}
           justifyContent={'center'}
+          ml={'auto'}
           px={0.75}
           width={'fit-content'}
         >
@@ -503,7 +504,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
                     textAlign: 'left',
                     wordBreak: 'break-word',
                     color: 'text.primary',
-                    width: '100%',
+                    width: 'fit-content',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
