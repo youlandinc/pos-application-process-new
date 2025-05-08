@@ -116,6 +116,9 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       try {
         const { data } = await _fetchProductList(postData);
         setProductList(data?.products ?? []);
+        if (data?.products.length === 0) {
+          setExpanded(true);
+        }
         setErrorList(data?.reasons ?? []);
         setLimits(data?.limits ?? void 0);
       } catch (err) {
@@ -1516,7 +1519,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
 
     return (
       <StyledFormItem
-        label={'Estimate your rate'}
+        label={'Enter loan information'}
         m={'0 auto'}
         maxWidth={976}
         tip={`${POSFindLabel(
