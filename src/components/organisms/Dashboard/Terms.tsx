@@ -350,6 +350,10 @@ export const Terms: FC = observer(() => {
               title={'Improvements since purchase'}
             />
             <LoanTermCardRow
+              content={POSFormatDollar(data?.payoffAmount)}
+              title={'Payoff amount'}
+            />
+            <LoanTermCardRow
               content={POSFormatPercent(
                 data?.ltc,
                 POSGetDecimalPlaces(data?.ltc),

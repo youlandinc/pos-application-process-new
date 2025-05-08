@@ -84,7 +84,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
             (estimateRate?.refinanceLoanAmount ?? 0)
           ) {
             return [
-              // 'Payoff amount must be equal to or less than the refinance loan amount',
+              'Payoff amount must be equal to or less than the refinance loan amount',
             ];
           }
         }
@@ -1090,7 +1090,6 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                     sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={estimateRate.purchasePrice}
                   />
-
                   <StyledTextFieldNumber
                     isTooltip={true}
                     label={'Improvements since acquisition'}
@@ -1107,6 +1106,32 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                       'How much has been spent towards completed work?'
                     }
                     value={estimateRate.improvementsSinceAcquisition}
+                  />
+
+                  <StyledSelectTextField
+                    fieldLabel={'Payoff amount'}
+                    fieldValue={estimateRate.payoffAmount}
+                    isTooltip={true}
+                    onFieldChange={(floatValue) =>
+                      estimateRate.changeFieldValue('payoffAmount', floatValue)
+                    }
+                    onSelectChange={(value) => {
+                      estimateRate.changeFieldValue(
+                        'isPayoff',
+                        value === LoanAnswerEnum.yes,
+                      );
+                    }}
+                    selectLabel={'Payoff amount'}
+                    selectValue={
+                      estimateRate.isPayoff
+                        ? LoanAnswerEnum.yes
+                        : LoanAnswerEnum.no
+                    }
+                    sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipTitle={
+                      'The total amount needed to fully repay your existing loan. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure".'
+                    }
+                    validate={payoffAmountError}
                   />
 
                   <StyledTextFieldNumber
