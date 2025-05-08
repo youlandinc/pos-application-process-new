@@ -1486,6 +1486,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
           return;
         }
         if (!saasState?.posSettings?.usePricingEngine) {
+          setExpanded(true);
           return;
         }
         setLoading(true);
