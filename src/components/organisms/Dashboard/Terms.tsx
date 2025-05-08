@@ -349,10 +349,10 @@ export const Terms: FC = observer(() => {
               content={POSFormatDollar(data?.improvementsSinceAcquisition)}
               title={'Improvements since purchase'}
             />
-            <LoanTermCardRow
-              content={POSFormatDollar(data?.payoffAmount)}
-              title={'Payoff amount'}
-            />
+            {/*<LoanTermCardRow*/}
+            {/*  content={POSFormatDollar(data?.payoffAmount)}*/}
+            {/*  title={'Payoff amount'}*/}
+            {/*/>*/}
             <LoanTermCardRow
               content={POSFormatPercent(
                 data?.ltc,
