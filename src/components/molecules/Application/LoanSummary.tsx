@@ -324,6 +324,10 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 title={'Improvements since purchase'}
               />
               <LoanSummaryCardRow
+                content={POSFormatDollar(data?.payoffAmount)}
+                title={'Payoff amount'}
+              />
+              <LoanSummaryCardRow
                 content={POSFormatPercent(
                   data?.ltc,
                   POSGetDecimalPlaces(data?.ltc),
