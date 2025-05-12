@@ -35,13 +35,13 @@ interface formItem {
 export const SaasDocumentPortalPage: FC = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
-  
+
   const [firstLoading, setFirstLoading] = useState<boolean>(true);
   const [loanId, setLoanId] = useState<string>('');
   const [loanNumber, setLoanNumber] = useState<string>('');
   const [formList, setFormList] = useState<formItem[]>([]);
   const [address, setAddress] = useState<string>('');
-  
+
   useEffect(
     () => {
       setFirstLoading(true);
@@ -51,31 +51,31 @@ export const SaasDocumentPortalPage: FC = () => {
       }
       setLoanId(loanId);
       _portalFetchData(loanId)
-      .then((res) => {
-        const { data } = res;
-        setFormList(data?.formList);
-        setAddress(data?.propertyAddress ?? '');
-        setLoanNumber(data?.loanNumber ?? '');
-      })
-      .catch((err) => {
-        const { header, message, variant } = err as HttpError;
-        enqueueSnackbar(message, {
-          variant: variant || 'error',
-          autoHideDuration: AUTO_HIDE_DURATION,
-          isSimple: !header,
-          header,
+        .then((res) => {
+          const { data } = res;
+          setFormList(data?.formList);
+          setAddress(data?.propertyAddress ?? '');
+          setLoanNumber(data?.loanNumber ?? '');
+        })
+        .catch((err) => {
+          const { header, message, variant } = err as HttpError;
+          enqueueSnackbar(message, {
+            variant: variant || 'error',
+            autoHideDuration: AUTO_HIDE_DURATION,
+            isSimple: !header,
+            header,
+          });
+        })
+        .finally(() => {
+          setFirstLoading(false);
         });
-      })
-      .finally(() => {
-        setFirstLoading(false);
-      });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
-  
+
   const [mode, setMode] = useState<'edit' | 'detail'>('edit');
-  
+
   return (
     <Stack
       bgcolor={'#FFFFFF'}
@@ -113,7 +113,7 @@ export const SaasDocumentPortalPage: FC = () => {
             width={'100%'}
           >
             <StyledHeaderLogo />
-            
+
             {/*{mode === 'edit' && (*/}
             {/*  <StyledButton*/}
             {/*    color={'info'}*/}
@@ -127,7 +127,7 @@ export const SaasDocumentPortalPage: FC = () => {
             {/*  </StyledButton>*/}
             {/*)}*/}
           </Stack>
-          
+
           <Stack
             gap={6}
             px={{
@@ -151,7 +151,7 @@ export const SaasDocumentPortalPage: FC = () => {
                   Document portal
                 </Typography>
                 {address && <Typography mt={1}>{address}</Typography>}
-                
+
                 <Stack gap={3} mt={6} width={'100%'}>
                   {formList &&
                     formList?.length > 0 &&
