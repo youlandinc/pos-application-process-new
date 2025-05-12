@@ -1,5 +1,6 @@
 import { del, get, post, put } from './axios';
 import { User } from '@/types/user';
+import { DashboardDocumentStatus, TaskFiles } from '@/types';
 
 // common
 
@@ -106,6 +107,33 @@ export const _portalDeleteFile = (params: {
 }) => {
   return del('/los/anon/document/portal/form', { data: params });
 };
+
+//export interface ResponsePortalFetchData {
+//  finishNum: number;
+//  totalNum: number;
+//  loanNumber: string | null;
+//  propertyAddress: string | null;
+//  docs: {
+//    categoryKey: string;
+//    categoryName: string;
+//    collapse: boolean;
+//    categoryDocs: {
+//      fileKey: string;
+//      fileName: string;
+//      files: TaskFiles[];
+//      id: number;
+//      templateName: string;
+//      templateUrl: string;
+//      status: DashboardDocumentStatus;
+//    }[];
+//  }[];
+//}
+//
+//export const _portalFetchData = (loanId: string) => {
+//  return get<ResponsePortalFetchData>(
+//    `/los/anon/document/portal/form/${loanId}`,
+//  );
+//};
 
 export const _portalFetchData = (loanId: string) => {
   return get(`/los/anon/document/portal/form/${loanId}`);

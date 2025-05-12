@@ -64,7 +64,7 @@ export const Auth: FC<FormNodeBaseProps> = observer(
                     onClick={() =>
                       window.open(
                         POSFormatUrl(saasState?.legalAgreements?.termsUrl) ||
-                          'https://www.youland.com/legal/terms/',
+                          'https://corepass.com/legal/terms-and-conditions/',
                       )
                     }
                     sx={{
@@ -76,21 +76,14 @@ export const Auth: FC<FormNodeBaseProps> = observer(
                   >
                     Terms of Use{' '}
                   </Typography>
-                  and acknowledge
-                </Typography>
-                <Typography
-                  color={'text.secondary'}
-                  component={'div'}
-                  variant={'body2'}
-                >
-                  that you&apos;ve read our{' '}
+                  and{' '}
                   <Typography
                     component={'span'}
                     onClick={() =>
                       window.open(
                         POSFormatUrl(
                           saasState?.legalAgreements?.privacyPolicyUrl,
-                        ) || 'https://www.youland.com/legal/privacy/',
+                        ) || 'https://corepass.com/legal/privacy-policy/',
                       )
                     }
                     sx={{
@@ -102,7 +95,11 @@ export const Auth: FC<FormNodeBaseProps> = observer(
                   >
                     Privacy Policy
                   </Typography>
-                  .
+                  ,
+                </Typography>
+                <Typography color={'text.secondary'} variant={'body2'}>
+                  and consent to receive loan-related emails and SMS from{' '}
+                  {saasState?.organizationName}.
                 </Typography>
               </Box>
             </>

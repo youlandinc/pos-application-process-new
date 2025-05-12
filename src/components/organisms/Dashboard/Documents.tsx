@@ -48,7 +48,7 @@ export const Documents: FC = observer(() => {
   const fetchData = async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
     if (!loanId) {
-      await router.push('/pipeline');
+      router.push('/pipeline');
       enqueueSnackbar('Invalid loan ID', {
         variant: 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
