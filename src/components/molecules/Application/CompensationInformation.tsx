@@ -145,7 +145,14 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
         }
 
         if (e.key === 'Enter') {
-          if (!button.disabled) {
+          const activeElement = document.activeElement;
+          const isInputFocused =
+            activeElement &&
+            (activeElement.tagName === 'INPUT' ||
+              activeElement.tagName === 'TEXTAREA' ||
+              activeElement.getAttribute('role') === 'combobox');
+
+          if (!isInputFocused && !button.disabled && !e.shiftKey) {
             nextStep?.();
           }
         }
