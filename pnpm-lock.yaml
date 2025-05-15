@@ -39,8 +39,8 @@ importers:
         specifier: 3.3.4
         version: 3.3.4
       axios:
-        specifier: 1.7.7
-        version: 1.7.7
+        specifier: 1.8.4
+        version: 1.8.4
       crypto-js:
         specifier: 4.2.0
         version: 4.2.0
@@ -50,6 +50,9 @@ importers:
       date-fns:
         specifier: 2.30.0
         version: 2.30.0
+      eslint-plugin-react-hooks:
+        specifier: 4.5.0
+        version: 4.5.0(eslint@8.57.1)
       lodash:
         specifier: 4.17.21
         version: 4.17.21
@@ -1008,6 +1011,7 @@ packages:
   '@mui/base@5.0.0-beta.40':
     resolution: {integrity: sha512-I/lGHztkCzvwlXpjD2+SNmvNQvB4227xBXhISPjEaJUXGImOQ9f3D2Yj/T3KasSI/h0MLWy74X0J6clhPmsRbQ==}
     engines: {node: '>=12.0.0'}
+    deprecated: This package has been replaced by @base-ui-components/react
     peerDependencies:
       '@types/react': ^17.0.0 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
@@ -1573,8 +1577,8 @@ packages:
     resolution: {integrity: sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==}
     engines: {node: '>=4'}
 
-  axios@1.7.7:
-    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
+  axios@1.8.4:
+    resolution: {integrity: sha512-eBSYY4Y68NNlHbHBMdeDmKNtDgXWhQsJcGqzO3iLUM0GraQFSS9cVgPX5I9b3lbdFKyYoAEGAZF1DwhTaljNAw==}
 
   axobject-query@3.1.1:
     resolution: {integrity: sha512-goKlv8DZrK9hUh975fnHzhNIO4jUnFCfv/dszV5VwUGDFjI6vQ2VwoyjYjYNEbBE8AH87TduWP5uyDR1D+Iteg==}
@@ -2054,8 +2058,8 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
 
-  eslint-plugin-react-hooks@4.6.0:
-    resolution: {integrity: sha512-oFc7Itz9Qxh2x4gNHStv3BqJq54ExXmfC+a1NjAta66IAN87Wu0R/QArgIS9qKzX3dXKPI9H5crl9QchNMY9+g==}
+  eslint-plugin-react-hooks@4.5.0:
+    resolution: {integrity: sha512-8k1gRt7D7h03kd+SAAlzXkQwWK22BnK6GKZG+FJA6BAGy22CFvl8kCIXKpVux0cCxMWDQUPqSok0LKaZ0aOcCw==}
     engines: {node: '>=10'}
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
@@ -5258,7 +5262,7 @@ snapshots:
 
   axe-core@4.7.0: {}
 
-  axios@1.7.7:
+  axios@1.8.4:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -5829,7 +5833,7 @@ snapshots:
       eslint-plugin-import: 2.29.1(@typescript-eslint/parser@8.12.1(eslint@8.57.1)(typescript@5.0.4))(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.7.1(eslint@8.57.1)
       eslint-plugin-react: 7.35.0(eslint@8.57.1)
-      eslint-plugin-react-hooks: 4.6.0(eslint@8.57.1)
+      eslint-plugin-react-hooks: 4.5.0(eslint@8.57.1)
     optionalDependencies:
       typescript: 5.0.4
     transitivePeerDependencies:
@@ -5942,7 +5946,7 @@ snapshots:
       object.fromentries: 2.0.6
       semver: 6.3.0
 
-  eslint-plugin-react-hooks@4.6.0(eslint@8.57.1):
+  eslint-plugin-react-hooks@4.5.0(eslint@8.57.1):
     dependencies:
       eslint: 8.57.1
 
