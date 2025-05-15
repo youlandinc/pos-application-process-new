@@ -1,4 +1,4 @@
-import { FC, forwardRef, ReactNode, useEffect, useState } from 'react';
+import { FC, forwardRef, ReactNode, useEffect, useMemo, useState } from 'react';
 import {
   NumberFormatValues,
   NumericFormat,
@@ -47,6 +47,8 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
 }) => {
   const [text, setText] = useState(value ?? 0);
 
+  const [fixedDecimalScale, setFixedDecimalScale] = useState(false);
+
   useEffect(() => {
     if (POSNotUndefined(value) && value) {
       if (thousandSeparator) {
@@ -69,6 +71,13 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
     onValueChange(e.target.value);
   };
 
+  const reduceFixedDecimalScale = useMemo(() => {
+    const isInteger = percentage
+      ? Number.isInteger(text)
+      : Number.isInteger(value);
+    return isInteger ? false : fixedDecimalScale;
+  }, [fixedDecimalScale, percentage, text, value]);
+
   return (
     <>
       <StyledTextField
@@ -85,15 +94,17 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
           suffix,
           value,
           sx,
-          decimalScale,
+          decimalScale: decimalScale,
           thousandSeparator,
-          fixedDecimalScale: percentage,
+          fixedDecimalScale: reduceFixedDecimalScale,
           autoComplete: 'off',
         }}
         name="numberformat"
+        onBlur={() => setFixedDecimalScale(true)}
         //eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         onChange={handledChange}
+        onFocus={() => setFixedDecimalScale(false)}
         sx={{
           ...StyledTextFieldStyles,
           ...sx,
