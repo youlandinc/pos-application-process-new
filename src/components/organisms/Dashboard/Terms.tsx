@@ -33,7 +33,12 @@ import {
   POSGetParamsFromUrl,
 } from '@/utils';
 
-import { StyledButton, StyledDialog, StyledLoading } from '@/components/atoms';
+import {
+  StyledButton,
+  StyledDialog,
+  StyledLoading,
+  StyledTooltip,
+} from '@/components/atoms';
 
 import {
   AdditionalFee,
@@ -49,6 +54,7 @@ import { _fetchLoanTermsData, _resubmitLoan } from '@/requests/dashboard';
 import { _downloadFile, _fetchFile } from '@/requests/application';
 
 import NOTIFICATION_INFO from '@/components/atoms/StyledNotification/notification_info.svg';
+import ICON_LOCKED from './assets/icon-locked.svg';
 
 export const Terms: FC = observer(() => {
   const router = useRouter();
@@ -67,7 +73,7 @@ export const Terms: FC = observer(() => {
   const { loading } = useAsync(async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
     if (!loanId) {
-      await router.push('/pipeline');
+      router.push('/pipeline');
       enqueueSnackbar('Invalid loan ID', {
         variant: 'error',
         autoHideDuration: AUTO_HIDE_DURATION,
@@ -969,21 +975,52 @@ export const Terms: FC = observer(() => {
               include 3rd party settlement fees required to close your loan.
             </Typography>
 
-            <Typography
-              color={'primary.main'}
-              onClick={modifyOpen}
-              sx={{
-                mt: 3,
-                ml: 'auto',
-                cursor: 'pointer',
-                py: 0.75,
-                px: 1.5,
-                borderRadius: 2,
-                '&:hover': { bgcolor: 'primary.lighter' },
-              }}
-            >
-              Modify application
-            </Typography>
+            {data?.isLocked ? (
+              <Stack alignItems={{ xs: 'unset', lg: 'flex-end' }}>
+                <StyledTooltip
+                  mode={'controlled'}
+                  title={
+                    'The underwriter has locked this loan. Please contact them for any changes you want to make.'
+                  }
+                  tooltipSx={{ width: 166 }}
+                >
+                  <Stack
+                    alignItems={'center'}
+                    bgcolor={'#F5F5F5'}
+                    borderRadius={2}
+                    color={'#BABCBE'}
+                    flexDirection={'row'}
+                    gap={0.5}
+                    height={40}
+                    justifyContent={'center'}
+                    sx={{ cursor: 'default' }}
+                    width={166}
+                  >
+                    Details locked
+                    <Icon
+                      component={ICON_LOCKED}
+                      sx={{ height: 16, width: 16 }}
+                    />
+                  </Stack>
+                </StyledTooltip>
+              </Stack>
+            ) : (
+              <Typography
+                color={'primary.main'}
+                onClick={modifyOpen}
+                sx={{
+                  mt: 3,
+                  ml: { xs: 0, lg: 'auto' },
+                  cursor: 'pointer',
+                  py: 0.75,
+                  px: 1.5,
+                  borderRadius: 2,
+                  '&:hover': { bgcolor: 'primary.lighter' },
+                }}
+              >
+                Modify application
+              </Typography>
+            )}
           </Stack>
         </Stack>
 
