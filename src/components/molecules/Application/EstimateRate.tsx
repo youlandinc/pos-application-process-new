@@ -1766,9 +1766,9 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         )}
 
         <Stack
-          alignItems={'center'}
           flexDirection={'row'}
           gap={6}
+          justifyContent={'center'}
           mt={{
             xs: saasState?.posSettings?.usePricingEngine ? 6 : 3,
             lg: saasState?.posSettings?.usePricingEngine ? 8 : 4.5,
@@ -1782,7 +1782,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
             onClick={backStep}
             sx={{
               width: '100%',
-              maxWidth: saasState?.posSettings?.usePricingEngine ? 600 : 280,
+              maxWidth: 280,
             }}
             variant={'text'}
           >
