@@ -1,21 +1,21 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { HttpError } from '@/types';
 import {
-  _portalClickTimes,
   _portalDeleteFile,
   _portalFetchData,
   _portalUploadFile,
 } from '@/requests';
 
 import {
-  StyledButton,
   StyledHeaderLogo,
   StyledLoading,
+  StyledTab,
   StyledUploadButtonBox,
 } from '@/components/atoms';
 
@@ -23,56 +23,153 @@ import { SaasLoanProgress } from './components';
 
 import { POSGetParamsFromUrl } from '@/utils';
 
-interface formItem {
-  formId: string;
-  formName: string;
-  templateUrl: string;
-  templateName: string;
-  popup: string;
-  files: any[];
-}
-
 export const SaasDocumentPortalPage: FC = () => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [firstLoading, setFirstLoading] = useState<boolean>(true);
   const [loanId, setLoanId] = useState<string>('');
-  const [loanNumber, setLoanNumber] = useState<string>('');
-  const [formList, setFormList] = useState<formItem[]>([]);
   const [address, setAddress] = useState<string>('');
 
-  useEffect(
-    () => {
-      setFirstLoading(true);
-      const { loanId } = POSGetParamsFromUrl(window.location.href);
-      if (!loanId) {
-        router.push('/');
-      }
-      setLoanId(loanId);
-      _portalFetchData(loanId)
-        .then((res) => {
-          const { data } = res;
-          setFormList(data?.formList);
-          setAddress(data?.propertyAddress ?? '');
-          setLoanNumber(data?.loanNumber ?? '');
-        })
-        .catch((err) => {
-          const { header, message, variant } = err as HttpError;
-          enqueueSnackbar(message, {
-            variant: variant || 'error',
-            autoHideDuration: AUTO_HIDE_DURATION,
-            isSimple: !header,
-            header,
-          });
-        })
-        .finally(() => {
-          setFirstLoading(false);
-        });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
+  const [tabData, setTabData] = useState<
+    { label: string | ReactNode; content: ReactNode }[]
+  >([]);
+
+  const { loading } = useAsync(async () => await fetchData(), [location.href]);
+
+  const fetchData = async () => {
+    const { loanId } = POSGetParamsFromUrl(location.href);
+    if (!loanId) {
+      enqueueSnackbar('Invalid loan ID', {
+        variant: 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        onClose: () => router.push('/'),
+      });
+      return;
+    }
+    setLoanId(loanId);
+
+    try {
+      const {
+        data: { docs, propertyAddress, loanNumber },
+      } = await _portalFetchData(loanId);
+
+      setAddress(propertyAddress ?? '');
+
+      const tabData = docs.reduce(
+        (acc, cur) => {
+          if (!cur?.categoryName) {
+            return acc;
+          }
+          const temp: { label: string | ReactNode; content: ReactNode } = {
+            label: '',
+            content: undefined,
+          };
+          temp.label = (
+            <Typography
+              component={'div'}
+              fontWeight={600}
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+            >
+              {cur.categoryName}{' '}
+              <Stack
+                alignItems={'center'}
+                borderRadius={1}
+                className={'total_number'}
+                color={'#ffffff'}
+                fontSize={12}
+                fontWeight={600}
+                height={20}
+                justifyContent={'center'}
+                px={1}
+              >
+                {cur.categoryDocs.length}
+              </Stack>
+            </Typography>
+          );
+          temp.content = (
+            <Stack gap={3} my={3}>
+              {cur.categoryDocs.map((item, index) => {
+                return (
+                  <StyledUploadButtonBox
+                    deleteOnly={true}
+                    fileKey={item.id + ''}
+                    fileName={item.fileName}
+                    files={item.files || []}
+                    id={item.id}
+                    isFromLOS={true}
+                    isShowHistory={false}
+                    key={`${item.id}_${index}`}
+                    loanId={loanId}
+                    loanNumber={loanNumber || ''}
+                    onDelete={async (deleteIndex) => {
+                      if (!item.files[deleteIndex].url) {
+                        return;
+                      }
+                      const params = {
+                        url: item.files[deleteIndex].url as string,
+                        loanId,
+                        formId: item.id + '',
+                      };
+                      try {
+                        await _portalDeleteFile(params);
+                        await fetchData();
+                      } catch (err) {
+                        const { header, message, variant } = err as HttpError;
+                        enqueueSnackbar(message, {
+                          variant: variant || 'error',
+                          autoHideDuration: AUTO_HIDE_DURATION,
+                          isSimple: !header,
+                          header,
+                        });
+                      }
+                    }}
+                    onUpload={async (files) => {
+                      const formData = new FormData();
+                      formData.append('formId', item.id + '');
+                      Array.from(files, (item) => {
+                        formData.append('files', item as Blob);
+                      });
+                      try {
+                        await _portalUploadFile({
+                          files: formData,
+                          loanId,
+                        });
+                        await fetchData();
+                      } catch (err) {
+                        const { header, message, variant } = err as HttpError;
+                        enqueueSnackbar(message, {
+                          variant: variant || 'error',
+                          autoHideDuration: AUTO_HIDE_DURATION,
+                          isSimple: !header,
+                          header,
+                        });
+                      }
+                    }}
+                    popup={item.fileKey}
+                    status={item.status}
+                    templateName={item.templateName || ''}
+                    templateUrl={item.templateUrl || ''}
+                  />
+                );
+              })}
+            </Stack>
+          );
+          acc.push(temp);
+          return acc;
+        },
+        [] as { label: string | ReactNode; content: ReactNode }[],
+      );
+      setTabData(tabData);
+    } catch (err) {
+      const { header, message, variant } = err as HttpError;
+      enqueueSnackbar(message, {
+        variant: variant || 'error',
+        autoHideDuration: AUTO_HIDE_DURATION,
+        isSimple: !header,
+        header,
+      });
+    }
+  };
 
   const [mode, setMode] = useState<'edit' | 'detail'>('edit');
 
@@ -88,7 +185,7 @@ export const SaasDocumentPortalPage: FC = () => {
         xs: '100%',
       }}
     >
-      {firstLoading ? (
+      {loading ? (
         <Stack
           alignItems={'center'}
           height={'100vh'}
@@ -153,64 +250,11 @@ export const SaasDocumentPortalPage: FC = () => {
                 {address && <Typography mt={1}>{address}</Typography>}
 
                 <Stack gap={3} mt={6} width={'100%'}>
-                  {formList &&
-                    formList?.length > 0 &&
-                    formList.map((item, index) => (
-                      <StyledUploadButtonBox
-                        deleteOnly={true}
-                        fileKey={item.formId}
-                        fileName={item.formName}
-                        files={item.files || []}
-                        id={item.formId}
-                        isFromLOS={true}
-                        isShowHistory={false}
-                        key={`${item.formId}_${index}`}
-                        loanId={loanId}
-                        loanNumber={loanNumber}
-                        onDelete={async (deleteIndex) => {
-                          if (!item.files[deleteIndex].url) {
-                            return;
-                          }
-                          const params = {
-                            url: item.files[deleteIndex].url as string,
-                            loanId,
-                            formId: item.formId,
-                          };
-                          await _portalDeleteFile(params);
-                          const tempFiles = JSON.parse(
-                            JSON.stringify(item.files),
-                          );
-                          const tempList = JSON.parse(JSON.stringify(formList));
-                          tempFiles.splice(deleteIndex, 1);
-                          tempList.splice(index, 1, {
-                            ...item,
-                            files: tempFiles,
-                          });
-                          setFormList(tempList);
-                        }}
-                        onUpload={async (files) => {
-                          const formData = new FormData();
-                          formData.append('formId', item.formId);
-                          Array.from(files, (item) => {
-                            formData.append('files', item as Blob);
-                          });
-                          const { data } = await _portalUploadFile({
-                            files: formData,
-                            loanId,
-                          });
-                          const tempFiles = [...item.files, ...data];
-                          const tempList = JSON.parse(JSON.stringify(formList));
-                          tempList.splice(index, 1, {
-                            ...item,
-                            files: tempFiles,
-                          });
-                          setFormList(tempList);
-                        }}
-                        popup={item.popup}
-                        templateName={item.templateName}
-                        templateUrl={item.templateUrl}
-                      />
-                    ))}
+                  <StyledTab
+                    startIndex={0}
+                    sx={{ maxWidth: '100%', m: 0 }}
+                    tabsData={tabData}
+                  />
                 </Stack>
               </Stack>
             ) : (
