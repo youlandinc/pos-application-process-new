@@ -52,8 +52,8 @@ export const EstimateRate = types
     // common or condo
     monthlyHoaFee: types.maybe(types.number),
     // multi
-    operatingExpense:types.maybe(types.number),
-    vacancyRate:types.maybe(types.number),
+    operatingExpense: types.maybe(types.number),
+    vacancyRate: types.maybe(types.number),
     prepaymentPenalty: types.maybeNull(
       types.union(
         types.enumeration(Object.values(PrepaymentPenaltyEnum)),
@@ -108,9 +108,9 @@ export const EstimateRate = types
         // rental
         monthlyIncome: self.monthlyIncome,
         propertyInsurance: self.propertyInsurance,
-        operatingExpense:self.operatingExpense,
+        operatingExpense: self.operatingExpense,
         propertyTaxes: self.propertyTaxes,
-        vacancyRate:self.vacancyRate,
+        vacancyRate: self.vacancyRate,
         monthlyHoaFee: self.monthlyHoaFee,
         prepaymentPenalty: self.prepaymentPenalty,
         acquisitionDate: self.acquisitionDate,
