@@ -1475,80 +1475,235 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
       totalLoanAmount,
     ]);
 
-    const renderRentalDSCR = useMemo(
-      () => {
-        return loanInformation.productCategory ===
-          LoanProductCategoryEnum.dscr_rental ? (
-          <Stack gap={3} mt={3}>
-            <StyledTooltip
-              mode={'controlled'}
-              placement={'top'}
-              theme={'main'}
-              title={
-                'We use your Debt Service Coverage Ratio, along with other information like your FICO score, to determine your approved loan amount.'
-              }
-            >
-              <Typography width={'fit-content'}>DSCR information</Typography>
-            </StyledTooltip>
+    // Reusable DSCR tooltip component
+    const TitleTooltip = (title = 'DSCR information') =>
+      title === 'DSCR information' ? (
+        <StyledTooltip
+          mode={'controlled'}
+          placement={'top'}
+          theme={'main'}
+          title={
+            'We use your Debt Service Coverage Ratio, along with other information like your FICO score, to determine your approved loan amount.'
+          }
+        >
+          <Typography width={'fit-content'}>{title}</Typography>
+        </StyledTooltip>
+      ) : (
+        <Typography width={'fit-content'}>{title}</Typography>
+      );
 
-            <Stack
-              alignItems={{ xs: 'flex-start', lg: 'stretch' }}
-              flexDirection={{ xs: 'column', lg: 'row' }}
-              gap={3}
-              ml={-0.5}
-            >
-              <StyledTextFieldNumber
-                label={'Est. monthly rental income'}
-                onValueChange={({ floatValue }) =>
-                  loanInformation.changeFieldValue('monthlyIncome', floatValue)
-                }
-                prefix={'$'}
-                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                value={loanInformation.monthlyIncome}
-              />
-              <StyledTextFieldNumber
-                label={'Est. annual property insurance'}
-                onValueChange={({ floatValue }) =>
-                  loanInformation.changeFieldValue(
-                    'propertyInsurance',
-                    floatValue,
-                  )
-                }
-                prefix={'$'}
-                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                value={loanInformation.propertyInsurance}
-              />
-              <StyledTextFieldNumber
-                label={'Est. annual property taxes'}
-                onValueChange={({ floatValue }) =>
-                  loanInformation.changeFieldValue('propertyTaxes', floatValue)
-                }
-                prefix={'$'}
-                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                value={loanInformation.propertyTaxes}
-              />
-              <StyledTextFieldNumber
-                label={'Est. monthly HOA fee'}
-                onValueChange={({ floatValue }) =>
-                  loanInformation.changeFieldValue('monthlyHoaFee', floatValue)
-                }
-                prefix={'$'}
-                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                value={loanInformation.monthlyHoaFee}
-              />
-            </Stack>
-          </Stack>
-        ) : null;
-      },
+    // Reusable common DSCR input fields
+    const CommonInputFields = useMemo(
+      () => (
+        <Stack
+          alignItems={{ xs: 'flex-start', lg: 'stretch' }}
+          flexDirection={{ xs: 'column', lg: 'row' }}
+          gap={3}
+          ml={-0.5}
+        >
+          <StyledTextFieldNumber
+            InputLabelProps={{ shrink: true }}
+            label={'Monthly gross rental income'}
+            onValueChange={({ floatValue }) =>
+              loanInformation.changeFieldValue('monthlyIncome', floatValue)
+            }
+            prefix={'$'}
+            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+            value={loanInformation.monthlyIncome}
+          />
+          <StyledTextFieldNumber
+            InputLabelProps={{ shrink: true }}
+            label={'Annual operating expenses '}
+            onValueChange={({ floatValue }) =>
+              loanInformation.changeFieldValue('operatingExpense', floatValue)
+            }
+            prefix={'$'}
+            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+            value={loanInformation.operatingExpense}
+          />
+          <StyledTextFieldNumber
+            InputLabelProps={{ shrink: true }}
+            label={'Annual insurance'}
+            onValueChange={({ floatValue }) =>
+              loanInformation.changeFieldValue('propertyInsurance', floatValue)
+            }
+            prefix={'$'}
+            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+            value={loanInformation.propertyInsurance}
+          />
+          <StyledTextFieldNumber
+            InputLabelProps={{ shrink: true }}
+            label={'Annual property taxes'}
+            onValueChange={({ floatValue }) =>
+              loanInformation.changeFieldValue('propertyTaxes', floatValue)
+            }
+            prefix={'$'}
+            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+            value={loanInformation.propertyTaxes}
+          />
+        </Stack>
+      ),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [
+        loanInformation.monthlyIncome,
+        loanInformation.operatingExpense,
         loanInformation.propertyInsurance,
         loanInformation.propertyTaxes,
-        loanInformation.monthlyHoaFee,
-        loanInformation.monthlyIncome,
         loanInformation.productCategory,
       ],
     );
+
+    // Vacancy rate field component
+    const VacancyRateField = useMemo(
+      () => (
+        <StyledTextFieldNumber
+          InputLabelProps={{ shrink: true }}
+          label={'Vacancy rate'}
+          onValueChange={({ floatValue }) =>
+            loanInformation.changeFieldValue('vacancyRate', floatValue)
+          }
+          percentage={true}
+          suffix={'%'}
+          sx={{ width: { xs: '100%', lg: 220 }, ml: -0.5 }}
+          thousandSeparator={false}
+          value={loanInformation.vacancyRate}
+        />
+      ),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [loanInformation.vacancyRate],
+    );
+
+    // HOA fee field component
+    const HOAFeeField = useMemo(
+      () => (
+        <StyledTextFieldNumber
+          InputLabelProps={{ shrink: true }}
+          label={'Monthly HOA fee'}
+          onValueChange={({ floatValue }) =>
+            loanInformation.changeFieldValue('monthlyHoaFee', floatValue)
+          }
+          prefix={' $'}
+          sx={{ width: { xs: '100%', lg: 220 }, ml: -0.5 }}
+          thousandSeparator={false}
+          value={loanInformation.monthlyHoaFee}
+        />
+      ),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [loanInformation.monthlyHoaFee],
+    );
+
+    // DSCR calculation display component
+    const DSCRCalculationInfo = useMemo(
+      () => (
+        <Stack gap={1} mt={1}>
+          {/*<Typography*/}
+          {/*  color={'text.secondary'}*/}
+          {/*  fontSize={{ xs: 14, lg: 18 }}*/}
+          {/*  fontWeight={600}*/}
+          {/*>*/}
+          {/*  Estimated DSCR calculation:{' '}*/}
+          {/*  <Typography*/}
+          {/*    color={'primary.main'}*/}
+          {/*    component={'span'}*/}
+          {/*    fontSize={'inherit'}*/}
+          {/*    fontWeight={600}*/}
+          {/*  >*/}
+          {/*    1.20*/}
+          {/*  </Typography>*/}
+          {/*</Typography>*/}
+
+          <Typography color={'text.secondary'} fontSize={{ xs: 12, lg: 16 }}>
+            Loan terms will be provided after you complete the application and
+            our underwriting team reviews your submission.
+          </Typography>
+        </Stack>
+      ),
+      [],
+    );
+
+    // Simple loan terms message
+    const LoanTermsMessage = () => (
+      <Typography color={'text.secondary'} fontSize={{ xs: 12, lg: 16 }}>
+        Loan terms will be provided after you complete the application and our
+        underwriting team reviews your submission.
+      </Typography>
+    );
+
+    // Bridge and Fix component
+    const renderExtraBridgeAndFix = useMemo(
+      () => {
+        return (
+          <Stack gap={3} mt={3}>
+            {TitleTooltip('Multifamily information')}
+            {CommonInputFields}
+            {VacancyRateField}
+          </Stack>
+        );
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [CommonInputFields, VacancyRateField],
+    );
+
+    // DSCR component with conditional rendering based on property type
+    const renderExtraDSCR = useMemo(
+      () => {
+        switch (loanInformation.propertyType) {
+          case LoanPropertyTypeEnum.condo:
+            return (
+              <Stack gap={3} mt={3}>
+                {TitleTooltip()}
+                {CommonInputFields}
+                {HOAFeeField}
+                {DSCRCalculationInfo}
+              </Stack>
+            );
+          case LoanPropertyTypeEnum.multifamily:
+            return (
+              <Stack gap={3} mt={3}>
+                {TitleTooltip()}
+                {CommonInputFields}
+                {VacancyRateField}
+                {DSCRCalculationInfo}
+              </Stack>
+            );
+          default:
+            return (
+              <Stack gap={3} mt={3}>
+                {TitleTooltip()}
+                {CommonInputFields}
+                <LoanTermsMessage />
+              </Stack>
+            );
+        }
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [
+        VacancyRateField,
+        HOAFeeField,
+        DSCRCalculationInfo,
+        CommonInputFields,
+        loanInformation.propertyType,
+        loanInformation.productCategory,
+      ],
+    );
+
+    const renderExtraTextField = useMemo(() => {
+      switch (loanInformation.productCategory) {
+        case LoanProductCategoryEnum.stabilized_bridge:
+        case LoanProductCategoryEnum.fix_and_flip:
+          return renderExtraBridgeAndFix;
+        case LoanProductCategoryEnum.dscr_rental:
+          return renderExtraDSCR;
+        case LoanProductCategoryEnum.ground_up_construction:
+        case LoanProductCategoryEnum.default:
+        default:
+          return null;
+      }
+    }, [
+      loanInformation.productCategory,
+      renderExtraDSCR,
+      renderExtraBridgeAndFix,
+    ]);
 
     useEffect(
       () => {
@@ -1745,12 +1900,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
 
             {renderTail}
 
-            {renderRentalDSCR}
-
-            <Typography color={'text.secondary'} fontSize={{ xs: 12, lg: 16 }}>
-              Loan terms will be provided after you complete the application and
-              our underwriting team reviews your submission.
-            </Typography>
+            {renderExtraTextField}
           </Stack>
         )}
 

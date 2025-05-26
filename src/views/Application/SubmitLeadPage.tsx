@@ -34,6 +34,18 @@ export const SubmitLeadPage: FC = observer(() => {
       loanId: applicationForm.loanId,
       data: applicationForm.submitLead.getPostData(),
     };
+    if (window?.dataLayer) {
+      const isFirstTime = !localStorage.getItem('youland_visited');
+      if (isFirstTime) {
+        localStorage.setItem('youland_visited', 'true');
+      }
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'form_submit_success',
+        user_type: isFirstTime ? 'first_time' : 'returning',
+      });
+    }
     await updateFrom(postData);
   };
 

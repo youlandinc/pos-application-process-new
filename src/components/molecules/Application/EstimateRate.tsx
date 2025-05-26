@@ -753,7 +753,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
                           }}
                           variant={'body3'}
                         >
-                          Loan to cost:
+                          Loan to cost:{' '}
                           <b>
                             {POSFormatPercent(
                               initialLTC,

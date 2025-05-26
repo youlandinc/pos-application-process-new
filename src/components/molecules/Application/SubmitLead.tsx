@@ -157,7 +157,7 @@ export const SubmitLead: FC<FormNodeBaseProps> = observer(
             sx={{ width: 'calc(50% - 12px)' }}
             variant={'contained'}
           >
-            Next
+            Submit
           </StyledButton>
         </Stack>
       </Stack>
