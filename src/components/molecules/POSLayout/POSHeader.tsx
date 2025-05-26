@@ -93,7 +93,6 @@ const MULTIFAMILY_LOGIN_BROKER = [
 ];
 
 const COMMERCIAL = [
-  LoanSnapshotEnum.starting_question,
   LoanSnapshotEnum.contact_info,
   LoanSnapshotEnum.thank_you_page,
 ];
@@ -123,6 +122,9 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
 
     const getProgress = (list: LoanSnapshotEnum[]) => {
       const index = list.indexOf(snapshot);
+      if (list.length === 2) {
+        return index < 0 ? undefined : ((index + 1) / list.length) * 100 || 0;
+      }
       return index < 0 ? undefined : (index / list.length) * 100 || 0;
     };
 

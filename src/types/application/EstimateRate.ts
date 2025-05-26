@@ -73,10 +73,12 @@ export interface EstimateRateFormData {
   fullDrawnMonthlyPayment?: number;
   futureConstructionFunding?: number;
   // for rental
-  monthlyIncome: number;
-  propertyInsurance: number;
-  propertyTaxes: number;
-  monthlyHoaFee: number;
+  monthlyIncome?: number;
+  operatingExpense?: number;
+  propertyInsurance?: number;
+  propertyTaxes?: number;
+  vacancyRate?:number;
+  monthlyHoaFee?: number;
   prepaymentPenalty: PrepaymentPenaltyEnum | string | null;
   acquisitionDate: string;
 }

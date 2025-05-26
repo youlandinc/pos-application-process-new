@@ -262,6 +262,9 @@ export const SignUp: FC<SignUpProps> = observer(
 
     const handledVerifyOtp = useCallback(
       async (v: string) => {
+        if (loading) {
+          return;
+        }
         const data = {
           appkey: LOGIN_APP_KEY,
           code: v,
@@ -289,7 +292,15 @@ export const SignUp: FC<SignUpProps> = observer(
           setLoading(false);
         }
       },
-      [close, email, enqueueSnackbar, handledLogin, isRedirect, router],
+      [
+        close,
+        email,
+        enqueueSnackbar,
+        handledLogin,
+        isRedirect,
+        loading,
+        router,
+      ],
     );
 
     const isDisabled = useMemo(() => {
@@ -665,7 +676,10 @@ export const SignUp: FC<SignUpProps> = observer(
                 </Typography>
               </Typography>
               <Box className={'POS_flex POS_jc_c POS_al_c'} mt={3}>
-                <StyledTextFieldOtp onComplete={handledVerifyOtp} />
+                <StyledTextFieldOtp
+                  disabled={loading}
+                  onComplete={handledVerifyOtp}
+                />
               </Box>
               <Typography
                 className={'POS_tc POS_fullwidth'}
