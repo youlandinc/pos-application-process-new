@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { useSwitch } from '@/hooks';
+import { useSessionStorageState, useSwitch } from '@/hooks';
 
 import { StyledButton, StyledTextField } from '@/components/atoms';
 import { MessageItem } from './MessageItem';
@@ -22,6 +22,7 @@ import { ChatMessageItemSource } from '@/types/account/notification';
 export const MessageBox: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
   const store = useMst();
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const {
     dashboardInfo: {
@@ -155,14 +156,14 @@ export const MessageBox: FC = observer(() => {
       <Fade in={!visible}>
         <Stack
           alignItems={'center'}
-          bgcolor={'primary.main'}
+          bgcolor={`hsla(${saasState?.posSettings?.h ?? 222},57%, 49%, 1)`}
           borderRadius={50}
           flexDirection={'row'}
           gap={0.5}
           height={48}
           onClick={onOpen}
           position={'fixed'}
-          px={2}
+          px={3.5}
           sx={{
             bottom: 'clamp(24px,6.4vw,60px)',
             right: {
@@ -182,7 +183,7 @@ export const MessageBox: FC = observer(() => {
           {!!unReadCount && (
             <Stack
               alignItems={'center'}
-              bgcolor={'primary.brightness'}
+              bgcolor={'#FFFFFF66'}
               borderRadius={1}
               color={'#ffffff'}
               fontSize={12}
