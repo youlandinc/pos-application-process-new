@@ -340,7 +340,6 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                         {item.description}
                       </Typography>
                     )}
-
                     {['xs', 'sm', 'md', 'lg'].includes(breakpoints) && (
                       <Typography
                         bgcolor={
@@ -385,7 +384,6 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                               : 'Pending'}
                       </Typography>
                     )}
-
                     {item.date &&
                       hash[loanStatus] >= index &&
                       (['xs', 'sm', 'md', 'lg'].includes(breakpoints) ||
