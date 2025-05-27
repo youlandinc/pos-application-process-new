@@ -205,7 +205,7 @@ export const Documents: FC = observer(() => {
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
-            mt={3}
+            mt={1}
           >
             We&apos;ve implemented robust security measures to ensure your
             data&apos;s privacy and protection, including advanced 256-bit

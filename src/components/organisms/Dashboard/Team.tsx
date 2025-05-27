@@ -80,7 +80,7 @@ export const Team = () => {
           <Typography
             color={'text.secondary'}
             fontSize={{ xs: 12, lg: 16 }}
-            mt={3}
+            mt={1}
           >
             Our dedicated team of loan management specialists is here to provide
             you with personalized solutions and expert advice.

@@ -1537,6 +1537,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         tipSx={{
           textAlign: 'left',
           fontSize: { xs: 12, lg: 16 },
+          pb: { xs: 1.5, lg: 0 },
         }}
       >
         {POSNotUndefined(expanded) && !expanded && (
