@@ -47,7 +47,7 @@ const initialized: AdditionalFee = {
 interface InsideOption {
   title: string;
   key: string;
-  value: string;
+  value: string | null | undefined;
 }
 
 const DefaultOption: InsideOption = {
@@ -102,7 +102,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
     };
 
     const fetchOptions = useCallback(
-      async (value: string, loading = true) => {
+      async (value: string | null | undefined, loading = true) => {
         loading && setLoading(true);
         try {
           const { data } = await _fetchExecutiveList(value);
@@ -375,7 +375,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
         >
           <Autocomplete
             getOptionLabel={(option) => {
-              return option.title === 'None' ? '' : option.title;
+              return option.title;
             }}
             inputValue={compensationInformation.executiveName}
             isOptionEqualToValue={(option, value) =>
