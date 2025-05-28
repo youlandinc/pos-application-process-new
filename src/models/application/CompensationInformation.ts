@@ -51,8 +51,9 @@ export const CompensationInformation = types
         self.processingFee = processingFee ?? 200;
         self.isAdditional = isAdditional ?? false;
         self.additionalInfo = additionalInfo ?? '';
-        self.executiveId = executiveId ?? '';
-        self.executiveName = executiveName ?? '';
+        self.executiveId = executiveId === null ? 'None' : (executiveId ?? '');
+        self.executiveName =
+          executiveName === null ? 'None' : (executiveName ?? '');
 
         if (additionalFees && additionalFees.length > 0) {
           additionalFees.map((item) => {
@@ -71,9 +72,18 @@ export const CompensationInformation = types
           isAdditional: self.isAdditional,
           additionalInfo: self.additionalInfo,
           additionalFees: self.additionalFees,
-          executiveId: self.executiveId === 'None' ? '' : self.executiveId,
+          executiveId:
+            self.executiveId === 'None'
+              ? null
+              : self.executiveId
+                ? self.executiveId
+                : '',
           executiveName:
-            self.executiveName === 'None' ? '' : self.executiveName,
+            self.executiveName === 'None'
+              ? null
+              : self.executiveName
+                ? self.executiveName
+                : '',
         };
       },
     };

@@ -66,7 +66,7 @@ export const _downloadFile = (loanId: string) => {
   });
 };
 
-export const _fetchExecutiveList = (keyword: string, size = 10) => {
+export const _fetchExecutiveList = (keyword?: string | null, size = 10) => {
   return post('/usercenter/api/user/fetchList', {
     size,
     keyword,
