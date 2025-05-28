@@ -300,9 +300,9 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
     ]);
 
     const renderStatus = useMemo(() => {
-      if (fileList.length === 0) {
-        return null;
-      }
+      //if (fileList.length === 0) {
+      //  return null;
+      //}
 
       const result = {
         bgColor: '',
