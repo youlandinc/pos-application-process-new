@@ -316,6 +316,7 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
           result.textColor = '#9095A3';
           result.text = 'Waiting for review';
           break;
+        case DashboardDocumentStatus.exception_granted:
         case DashboardDocumentStatus.approve:
           result.bgColor = '#69C0A51A';
           result.textColor = '#69C0A5';
@@ -326,7 +327,8 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
           result.textColor = '#9E4FB4';
           result.text = 'In review';
           break;
-        case DashboardDocumentStatus.flag:
+        case DashboardDocumentStatus.uw_flag:
+        case DashboardDocumentStatus.dd_flag:
           result.bgColor = '#DE6449';
           result.text = 'Flagged';
           break;
