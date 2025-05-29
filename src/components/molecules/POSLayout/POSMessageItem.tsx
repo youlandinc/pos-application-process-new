@@ -136,6 +136,7 @@ export const POSMessageItem: FC<POSMessageItemProps> = observer(
               <Stack
                 bgcolor={'error.main'}
                 borderRadius={'50%'}
+                flexShrink={0}
                 height={8}
                 ml={'auto'}
                 width={8}
