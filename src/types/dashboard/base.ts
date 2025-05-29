@@ -76,7 +76,10 @@ export interface DashboardPaymentDetailsResponse {
 }
 
 export enum DashboardDocumentStatus {
-  flag = 'FLAG',
+  not_needed = 'NOT_NEEDED',
+  uw_flag = 'UW_FLAG',
+  dd_flag = 'DD_FLAG',
+  exception_granted = 'EXCEPTION_GRANTED',
   approve = 'APPROVE',
   in_review = 'IN_REVIEW',
   waiting_for_review = 'WAITING_FOR_REVIEW',

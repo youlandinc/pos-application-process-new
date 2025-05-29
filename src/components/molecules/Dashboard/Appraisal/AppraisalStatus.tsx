@@ -222,7 +222,7 @@ export const AppraisalStatus: FC<AppraisalStatusProps> = ({
               </Typography>
             </StepLabel>
             <StepContent>
-              <Stack gap={1} minHeight={18} my={1}>
+              <Stack gap={1} mb={1.75} minHeight={18} mt={0.25}>
                 {hash[appraisalStage] === index && (
                   <Typography
                     color={computedData.length === 1 ? 'error' : 'text.primary'}

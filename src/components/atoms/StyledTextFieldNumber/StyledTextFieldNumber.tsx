@@ -8,7 +8,7 @@ import {
 import { POSFormatDollar, POSFormatPercent, POSNotUndefined } from '@/utils';
 
 import { StyledTextField, StyledTextFieldStyles } from '@/components/atoms';
-import { SxProps } from '@mui/material';
+import { SxProps, TextFieldProps } from '@mui/material';
 
 export interface StyledTextFieldNumberProps {
   allowNegative?: boolean;
@@ -31,6 +31,7 @@ export interface StyledTextFieldNumberProps {
   tooltipSx?: SxProps;
   tooltipTitle?: ReactNode;
   isTooltip?: boolean;
+  InputLabelProps?: TextFieldProps['InputLabelProps'];
 }
 
 export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({

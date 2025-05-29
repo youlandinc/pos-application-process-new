@@ -45,10 +45,15 @@ export const EstimateRate = types
     purchaseConstructionCosts: types.maybe(types.number),
     refinanceConstructionCosts: types.maybe(types.number),
     ltc: types.maybe(types.number),
+    // common
     monthlyIncome: types.maybe(types.number),
     propertyInsurance: types.maybe(types.number),
     propertyTaxes: types.maybe(types.number),
+    // common or condo
     monthlyHoaFee: types.maybe(types.number),
+    // multi
+    operatingExpense: types.maybe(types.number),
+    vacancyRate: types.maybe(types.number),
     prepaymentPenalty: types.maybeNull(
       types.union(
         types.enumeration(Object.values(PrepaymentPenaltyEnum)),
@@ -103,7 +108,9 @@ export const EstimateRate = types
         // rental
         monthlyIncome: self.monthlyIncome,
         propertyInsurance: self.propertyInsurance,
+        operatingExpense: self.operatingExpense,
         propertyTaxes: self.propertyTaxes,
+        vacancyRate: self.vacancyRate,
         monthlyHoaFee: self.monthlyHoaFee,
         prepaymentPenalty: self.prepaymentPenalty,
         acquisitionDate: self.acquisitionDate,
@@ -141,7 +148,9 @@ export const EstimateRate = types
         ltc,
         monthlyIncome,
         propertyInsurance,
+        operatingExpense,
         propertyTaxes,
+        vacancyRate,
         monthlyHoaFee,
         prepaymentPenalty,
         acquisitionDate,
@@ -177,8 +186,10 @@ export const EstimateRate = types
       self.refinanceConstructionCosts = refinanceConstructionCosts ?? undefined;
       self.ltc = ltc * 100 ?? undefined;
       self.monthlyIncome = monthlyIncome ?? undefined;
+      self.operatingExpense = operatingExpense ?? undefined;
       self.propertyInsurance = propertyInsurance ?? undefined;
       self.propertyTaxes = propertyTaxes ?? undefined;
+      self.vacancyRate = vacancyRate ?? undefined;
       self.monthlyHoaFee = monthlyHoaFee ?? undefined;
       self.prepaymentPenalty = prepaymentPenalty;
       self.acquisitionDate = acquisitionDate ?? '';

@@ -44,7 +44,7 @@ export const MessageItem: FC<Partial<ChatMessageItem>> = observer(
         gap={1}
         ml={isSelf ? 'auto' : 0}
         p={1.5}
-        width={'80%'}
+        width={'100%'}
       >
         {!isSelf && (
           <Stack alignItems={'center'} flexDirection={'row'} gap={1}>
