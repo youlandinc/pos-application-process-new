@@ -10,7 +10,7 @@ import {
 
 export const APPLICATION_LOAN_CATEGORY: Option[] = [
   {
-    label: 'Stabilized Bridge',
+    label: 'Bridge',
     key: LoanProductCategoryEnum.stabilized_bridge,
     value: LoanProductCategoryEnum.stabilized_bridge,
     tooltip:
