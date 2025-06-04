@@ -544,7 +544,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
           header: (
             <Box className={'POS_flex POS_jc_sb POS_al_c POS_fd_row'}>
               <Typography variant={'h6'}>
-                Log in to {saasState?.organizationName || 'YouLand'}
+                Log in to {saasState?.doingBusinessAsName || 'YouLand'}
               </Typography>
               <StyledButton color={'info'} isIconButton onClick={close}>
                 <CloseOutlined />
@@ -707,7 +707,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
               </Typography>
               <Typography color={'text.secondary'} variant={'body2'}>
                 and consent to receive loan-related emails and SMS from{' '}
-                {saasState?.organizationName}.
+                {saasState?.doingBusinessAsName}.
               </Typography>
             </Stack>
           ),
@@ -720,7 +720,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
     handledSignUpAndResetSuccess,
     saasState?.legalAgreements?.privacyPolicyUrl,
     saasState?.legalAgreements?.termsUrl,
-    saasState?.organizationName,
+    saasState?.doingBusinessAsName,
   ]);
 
   return (
