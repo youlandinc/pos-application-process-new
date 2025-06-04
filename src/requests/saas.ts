@@ -68,7 +68,7 @@ export interface ILoanRate {
 }
 
 // payment
-export const _creatSpecifyPayment = (orderNo: string, source: string) => {
+export const _createSpecifyPayment = (orderNo: string, source: string) => {
   return get(
     `/pos/appraisal/payment/link/info?orderNo=${orderNo}&&source=${source}`,
   );

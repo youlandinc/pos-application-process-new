@@ -450,7 +450,7 @@ export const ACH: FC = observer(() => {
               >
                 I hereby consent and acknowledge my agreement to the electronic
                 loan agreement and associated terms of{' '}
-                {saasState?.organizationName || 'YouLand'}.
+                {saasState?.doingBusinessAsName || 'YouLand'}.
               </Typography>
               <StyledButton
                 disabled={agreeLoading}
