@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Autocomplete,
   CircularProgress,
-  Grow,
+  Fade,
   Icon,
   Stack,
   Typography,
@@ -255,12 +255,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
               </StyledButton>
             </Stack>
             {compensationInformation.additionalFees.map((item, index) => (
-              <Grow
-                in={true}
-                key={item.id}
-                style={{ transformOrigin: 'top left' }}
-                timeout={index * 300}
-              >
+              <Fade in={true} key={item.id}>
                 <Stack gap={1.5}>
                   <Stack
                     alignItems={'center'}
@@ -310,7 +305,7 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
                     />
                   </Stack>
                 </Stack>
-              </Grow>
+              </Fade>
             ))}
           </Stack>
         </StyledFormItem>

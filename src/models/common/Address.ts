@@ -7,6 +7,7 @@ type AddressError = Partial<AddressData>;
 
 export const Address = types
   .model({
+    id: types.maybe(types.string),
     formatAddress: types.string,
     state: types.string,
     street: types.string,
@@ -89,6 +90,7 @@ export const Address = types
     },
 
     reset(): void {
+      self.id = void 0;
       self.formatAddress = '';
       self.state = '';
       self.street = '';

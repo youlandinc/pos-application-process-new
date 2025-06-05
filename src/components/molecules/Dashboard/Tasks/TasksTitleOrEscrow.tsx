@@ -68,6 +68,7 @@ const initialValues: {
 };
 
 const initialAddress: SAddress = {
+  id: '',
   formatAddress: '',
   state: '',
   street: '',
