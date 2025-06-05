@@ -43,7 +43,7 @@ export interface AppraisalProfileProps {
 
 export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
   ({ nextStep, nextState, profileData }) => {
-    const { userType } = useMst();
+    const { userType, dashboardInfo } = useMst();
     const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
 
@@ -175,24 +175,26 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
 
     return (
       <Stack gap={{ xs: 6, lg: 8 }} maxWidth={900} width={'100%'}>
-        <StyledFormItem
-          gap={3}
-          label={'Do you have a recent appraisal?'}
-          mt={-3}
-          sub
-        >
-          <StyledButtonGroup
-            onChange={(e, value) => {
-              if (value === null) {
-                return;
-              }
-              setHaveAppraisal(value === LoanAnswerEnum.yes);
-            }}
-            options={OPTIONS_COMMON_YES_OR_NO}
-            sx={{ maxWidth: 600 }}
-            value={haveAppraisal ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
-          />
-        </StyledFormItem>
+        {dashboardInfo?.additionalAddress?.length === 0 && (
+          <StyledFormItem
+            gap={3}
+            label={'Do you have a recent appraisal?'}
+            mt={-3}
+            sub
+          >
+            <StyledButtonGroup
+              onChange={(e, value) => {
+                if (value === null) {
+                  return;
+                }
+                setHaveAppraisal(value === LoanAnswerEnum.yes);
+              }}
+              options={OPTIONS_COMMON_YES_OR_NO}
+              sx={{ maxWidth: 600 }}
+              value={haveAppraisal ? LoanAnswerEnum.yes : LoanAnswerEnum.no}
+            />
+          </StyledFormItem>
+        )}
 
         <Transitions
           style={{

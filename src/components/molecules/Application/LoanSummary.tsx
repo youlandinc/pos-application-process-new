@@ -36,6 +36,7 @@ import { StyledButton, StyledDialog, StyledFormItem } from '@/components/atoms';
 
 import {
   AdditionalFee,
+  AddressData,
   HttpError,
   LoanAnswerEnum,
   LoanProductCategoryEnum,
@@ -814,7 +815,9 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                   mt={{ xs: 1.5, lg: 0 }}
                   variant={'subtitle1'}
                 >
-                  Address
+                  {data?.additionalAddress?.length > 0
+                    ? 'Multiple addresses'
+                    : 'Address'}
                 </Typography>
                 <Typography
                   color={'primary.darker'}
@@ -822,28 +825,61 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                     ['xs', 'sm', 'md'].includes(breakpoints) ? 'h7' : 'h5'
                   }
                 >
-                  {`${
-                    data.propertyAddress?.address
-                      ? `${data.propertyAddress?.address} `
-                      : ''
-                  }${
-                    data.propertyAddress?.aptNumber
-                      ? `${data.propertyAddress?.aptNumber}, `
-                      : ''
-                  }${
-                    data.propertyAddress?.city
-                      ? `${data.propertyAddress?.city}, `
-                      : ''
-                  }${
-                    data.propertyAddress?.state
-                      ? `${data.propertyAddress?.state} `
-                      : ''
-                  }${
-                    data.propertyAddress?.postcode
-                      ? `${data.propertyAddress?.postcode}`
-                      : ''
-                  }`}
+                  {/*{`${*/}
+                  {/*  data.propertyAddress?.address*/}
+                  {/*    ? `${data.propertyAddress?.address} `*/}
+                  {/*    : ''*/}
+                  {/*}${*/}
+                  {/*  data.propertyAddress?.aptNumber*/}
+                  {/*    ? `${data.propertyAddress?.aptNumber}, `*/}
+                  {/*    : ''*/}
+                  {/*}${*/}
+                  {/*  data.propertyAddress?.city*/}
+                  {/*    ? `${data.propertyAddress?.city}, `*/}
+                  {/*    : ''*/}
+                  {/*}${*/}
+                  {/*  data.propertyAddress?.state*/}
+                  {/*    ? `${data.propertyAddress?.state} `*/}
+                  {/*    : ''*/}
+                  {/*}${*/}
+                  {/*  data.propertyAddress?.postcode*/}
+                  {/*    ? `${data.propertyAddress?.postcode}`*/}
+                  {/*    : ''*/}
+                  {/*}`}*/}
+                  {[
+                    data.propertyAddress?.address,
+                    data.propertyAddress?.aptNumber &&
+                      `${data.propertyAddress?.aptNumber},`,
+                    data.propertyAddress?.city &&
+                      `${data.propertyAddress?.city},`,
+                    data.propertyAddress?.state,
+                    data.propertyAddress?.postcode,
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
                 </Typography>
+                {data?.additionalAddress?.length > 0 &&
+                  (data.additionalAddress as AddressData[])?.map(
+                    (item, index) => (
+                      <Typography
+                        color={'primary.darker'}
+                        key={`additional_address_${index}`}
+                        variant={
+                          ['xs', 'sm', 'md'].includes(breakpoints) ? 'h7' : 'h5'
+                        }
+                      >
+                        {[
+                          item?.address,
+                          item?.aptNumber && `${item?.aptNumber},`,
+                          item?.city && `${item?.city},`,
+                          item?.state,
+                          item?.postcode,
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
+                      </Typography>
+                    ),
+                  )}
               </Stack>
               {data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
                 data?.propertyType !== LoanPropertyTypeEnum.multifamily && (

@@ -79,6 +79,7 @@ export const ACH: FC = observer(() => {
     useState<TaskFiles>(initialDocumentFile);
   const [achAddress] = useState<IAddress>(
     Address.create({
+      id: '',
       formatAddress: '',
       state: '',
       street: '',

@@ -1,3 +1,4 @@
+import { StyledTooltip } from '@/components/atoms';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { Box, Icon, Skeleton, Stack, Typography } from '@mui/material';
 
@@ -19,6 +20,7 @@ import ICON_DASHBOARD_TERMS from './assets/icon_dashboard_term.svg';
 import ICON_DASHBOARD_APPRAISAL from './assets/icon_dashboard_appraisal.svg';
 import ICON_DASHBOARD_DOCUMENTS from './assets/icon_dashboard_documents.svg';
 import ICON_DASHBOARD_TEAM from './assets/icon_dashboard_team.svg';
+import ICON_RIGHT_ARROW from './assets/icon_right_arrow.svg';
 
 interface POSMenuListProps {
   scene?: LayoutSceneTypeEnum;
@@ -253,41 +255,132 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ loading }) => {
           </Stack>
         ) : (
           <>
-            <Typography
-              color={'text.primary'}
-              textAlign={{ xs: 'left', lg: 'right' }}
-              variant={'body2'}
-            >
-              {dashboardInfo?.propertyAddress &&
-                (dashboardInfo?.propertyAddress.formatAddress
-                  ? `${
-                      dashboardInfo.propertyAddress?.formatAddress
-                        ? `${dashboardInfo.propertyAddress?.formatAddress}, `
-                        : ''
-                    }${
-                      dashboardInfo.propertyAddress?.aptNumber
-                        ? `${dashboardInfo.propertyAddress?.aptNumber}, `
-                        : ''
-                    } ${
-                      dashboardInfo.propertyAddress?.city
-                        ? `${dashboardInfo.propertyAddress?.city}, `
-                        : ''
-                    }${
-                      dashboardInfo.propertyAddress?.state
-                        ? `${dashboardInfo.propertyAddress?.state} `
-                        : ''
-                    }${
-                      dashboardInfo.propertyAddress?.postcode
-                        ? `${dashboardInfo.propertyAddress?.postcode}`
-                        : ''
-                    }`
-                  : OPTIONS_COMMON_STATE.find(
-                      (item) =>
-                        item.value ===
-                        (dashboardInfo?.propertyAddress &&
-                          dashboardInfo?.propertyAddress.state),
-                    )?.label || '')}
-            </Typography>
+            {dashboardInfo?.additionalAddress?.length > 0 ? (
+              <StyledTooltip
+                mode={
+                  ['xs', 'sm', 'md'].includes(breakpoint) ? 'click' : 'hover'
+                }
+                placement={
+                  ['xs', 'sm', 'md'].includes(breakpoint)
+                    ? 'bottom-end'
+                    : 'bottom'
+                }
+                title={
+                  <Stack gap={1}>
+                    <Typography variant={'body2'}>
+                      {dashboardInfo?.propertyAddress &&
+                        (dashboardInfo?.propertyAddress.formatAddress
+                          ? [
+                              dashboardInfo.propertyAddress?.formatAddress &&
+                                `${dashboardInfo.propertyAddress.formatAddress},`,
+                              dashboardInfo.propertyAddress?.aptNumber &&
+                                `${dashboardInfo.propertyAddress.aptNumber},`,
+                              dashboardInfo.propertyAddress?.city &&
+                                `${dashboardInfo.propertyAddress.city},`,
+                              dashboardInfo.propertyAddress?.state,
+                              dashboardInfo.propertyAddress?.postcode,
+                            ]
+                              .filter(Boolean)
+                              .join(' ')
+                          : OPTIONS_COMMON_STATE.find(
+                              (item) =>
+                                item.value ===
+                                (dashboardInfo?.propertyAddress &&
+                                  dashboardInfo?.propertyAddress.state),
+                            )?.label || '')}
+                    </Typography>
+                    {dashboardInfo?.additionalAddress?.map((item, index) => (
+                      <Typography
+                        key={`${item?.formatAddress}-${index}`}
+                        variant={'body2'}
+                      >
+                        {[
+                          item?.formatAddress,
+                          item?.aptNumber && `${item?.aptNumber},`,
+                          item?.city && `${item?.city},`,
+                          item?.state,
+                          item?.postcode,
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
+                      </Typography>
+                    ))}
+                  </Stack>
+                }
+                tooltipSx={{ width: 'fit-content' }}
+              >
+                <Stack
+                  alignItems={'center'}
+                  flexDirection={'row'}
+                  gap={0.25}
+                  justifyContent={{ xs: 'unset', lg: 'flex-end' }}
+                  sx={{ cursor: 'pointer', width: '100%' }}
+                >
+                  <Typography color={'text.primary'} variant={'body2'}>
+                    Multiple addresses (
+                    {dashboardInfo?.additionalAddress?.length + 1})
+                  </Typography>
+                  <Icon
+                    component={ICON_RIGHT_ARROW}
+                    sx={{ width: 12, height: 12 }}
+                  />
+                </Stack>
+              </StyledTooltip>
+            ) : (
+              <Typography
+                color={'text.primary'}
+                textAlign={{ xs: 'left', lg: 'right' }}
+                variant={'body2'}
+              >
+                {dashboardInfo?.propertyAddress &&
+                  (dashboardInfo?.propertyAddress.formatAddress
+                    ? [
+                        dashboardInfo.propertyAddress?.formatAddress &&
+                          `${dashboardInfo.propertyAddress.formatAddress},`,
+                        dashboardInfo.propertyAddress?.aptNumber &&
+                          `${dashboardInfo.propertyAddress.aptNumber},`,
+                        dashboardInfo.propertyAddress?.city &&
+                          `${dashboardInfo.propertyAddress.city},`,
+                        dashboardInfo.propertyAddress?.state,
+                        dashboardInfo.propertyAddress?.postcode,
+                      ]
+                        .filter(Boolean)
+                        .join(' ')
+                    : OPTIONS_COMMON_STATE.find(
+                        (item) =>
+                          item.value === dashboardInfo?.propertyAddress?.state,
+                      )?.label || '')}
+                {/*{dashboardInfo?.propertyAddress &&*/}
+                {/*  (dashboardInfo?.propertyAddress.formatAddress*/}
+                {/*    ? `${*/}
+                {/*        dashboardInfo.propertyAddress?.formatAddress*/}
+                {/*          ? `${dashboardInfo.propertyAddress?.formatAddress}, `*/}
+                {/*          : ''*/}
+                {/*      }${*/}
+                {/*        dashboardInfo.propertyAddress?.aptNumber*/}
+                {/*          ? `${dashboardInfo.propertyAddress?.aptNumber}, `*/}
+                {/*          : ''*/}
+                {/*      } ${*/}
+                {/*        dashboardInfo.propertyAddress?.city*/}
+                {/*          ? `${dashboardInfo.propertyAddress?.city}, `*/}
+                {/*          : ''*/}
+                {/*      }${*/}
+                {/*        dashboardInfo.propertyAddress?.state*/}
+                {/*          ? `${dashboardInfo.propertyAddress?.state} `*/}
+                {/*          : ''*/}
+                {/*      }${*/}
+                {/*        dashboardInfo.propertyAddress?.postcode*/}
+                {/*          ? `${dashboardInfo.propertyAddress?.postcode}`*/}
+                {/*          : ''*/}
+                {/*      }`*/}
+                {/*    : OPTIONS_COMMON_STATE.find(*/}
+                {/*        (item) =>*/}
+                {/*          item.value ===*/}
+                {/*          (dashboardInfo?.propertyAddress &&*/}
+                {/*            dashboardInfo?.propertyAddress.state),*/}
+                {/*      )?.label || '')}*/}
+              </Typography>
+            )}
 
             <Typography
               color={'text.secondary'}

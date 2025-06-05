@@ -4,6 +4,7 @@ import {
   ReactNode,
   SyntheticEvent,
   useCallback,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -27,6 +28,8 @@ import {
 } from '@mui/icons-material';
 import { format, parseISO } from 'date-fns';
 
+import { useBreakpoints } from '@/hooks';
+
 import {
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
@@ -44,7 +47,7 @@ import {
   POSGetDecimalPlaces,
 } from '@/utils';
 
-import { StyledBadge, StyledButton } from '@/components/atoms';
+import { StyledBadge, StyledButton, StyledTooltip } from '@/components/atoms';
 import {
   APPLICATION_LOAN_CATEGORY,
   APPLICATION_LOAN_PURPOSE,
@@ -57,7 +60,7 @@ import {
 export interface LoanItemCardProps {
   formData: {
     loanId: string;
-    address: string;
+    address: string[];
     loanAmount: number;
     snapshot: LoanSnapshotEnum;
     applicationDate: Date | null;
@@ -85,6 +88,8 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
 }) => {
   const [popperVisible, setPopperVisible] = useState(false);
 
+  const breakpoints = useBreakpoints();
+
   const anchorRef = useRef<HTMLButtonElement>(null);
 
   const {
@@ -101,7 +106,61 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
     propertyUnit,
   } = formData;
 
-  const [line_1, line_2] = address.split('NEW_LINE');
+  const renderAddress = useMemo(() => {
+    if (address.length > 1) {
+      return (
+        <StyledTooltip
+          mode={['xs', 'sm', 'md'].includes(breakpoints) ? 'click' : 'hover'}
+          title={
+            <Stack gap={1}>
+              {address.map((item, index) => {
+                const [line_1, line_2] = item.split('NEW_LINE');
+                return (
+                  <Typography key={`${item}-${index}`} variant={'body2'}>
+                    {line_1} {line_2}
+                  </Typography>
+                );
+              })}
+            </Stack>
+          }
+        >
+          <Typography variant={'subtitle1'} width={'fit-content'}>
+            Multiple addresses ({address.length})
+          </Typography>
+        </StyledTooltip>
+      );
+    }
+    if (address.length === 1 && address[0]) {
+      const [line_1, line_2] = address[0].split('NEW_LINE');
+      return (
+        <>
+          <Typography
+            overflow={'hidden'}
+            sx={{
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+            variant={'subtitle1'}
+            width={'100%'}
+          >
+            {line_1},
+          </Typography>
+          <Typography
+            overflow={'hidden'}
+            sx={{
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+            variant={'subtitle1'}
+            width={'100%'}
+          >
+            {line_2}
+          </Typography>
+        </>
+      );
+    }
+    return <Typography variant={'subtitle1'}>Draft</Typography>;
+  }, [address]);
 
   const handledClose = useCallback((event: Event | SyntheticEvent) => {
     if (
@@ -172,35 +231,14 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
         justifyContent={'space-between'}
         width={'100%'}
       >
-        <Box minWidth={0} width={'calc(100% - 64px)'}>
-          {line_1 ? (
-            <>
-              <Typography
-                overflow={'hidden'}
-                sx={{
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-                variant={'subtitle1'}
-                width={'100%'}
-              >
-                {line_1},
-              </Typography>
-              <Typography
-                overflow={'hidden'}
-                sx={{
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-                variant={'subtitle1'}
-                width={'100%'}
-              >
-                {line_2}
-              </Typography>
-            </>
-          ) : (
-            <Typography variant={'subtitle1'}>Draft</Typography>
-          )}
+        <Box
+          minWidth={0}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          width={'calc(100% - 64px)'}
+        >
+          {renderAddress}
         </Box>
         <StyledButton
           color={'info'}
