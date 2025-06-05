@@ -110,7 +110,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
     if (address.length > 1) {
       return (
         <StyledTooltip
-          mode={['xs', 'sm', 'md'].includes(breakpoints) ? 'click' : 'hover'}
+          mode={'hover'}
           title={
             <Stack gap={1}>
               {address.map((item, index) => {
@@ -160,7 +160,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
       );
     }
     return <Typography variant={'subtitle1'}>Draft</Typography>;
-  }, [address]);
+  }, [address, breakpoints]);
 
   const handledClose = useCallback((event: Event | SyntheticEvent) => {
     if (
@@ -231,13 +231,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
         justifyContent={'space-between'}
         width={'100%'}
       >
-        <Box
-          minWidth={0}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-          width={'calc(100% - 64px)'}
-        >
+        <Box minWidth={0} width={'calc(100% - 64px)'}>
           {renderAddress}
         </Box>
         <StyledButton
