@@ -1,5 +1,5 @@
 import { FC, FormEventHandler, useCallback, useMemo, useState } from 'react';
-import { Box, Icon, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -24,8 +24,6 @@ import {
 } from '@/components/atoms';
 
 import { useSessionStorageState } from '@/hooks';
-
-import LOG_IN_SVG from '@/svg/auth/log_in.svg';
 
 export const Login: FC<LoginProps> = observer(
   ({ to, successCb, isNestForm = false }) => {
@@ -195,21 +193,6 @@ export const Login: FC<LoginProps> = observer(
               }}
             >
               <Box sx={LoginStyles.login}>
-                <Icon
-                  component={LOG_IN_SVG}
-                  sx={{
-                    flex: 1,
-                    width: '100%',
-                    height: 'auto',
-                    display: { xs: 'none', lg: 'block' },
-                    '& .log_in_svg__pos_svg_theme_color': {
-                      fill: `hsla(${
-                        saasState?.posSettings?.h ?? 222
-                      },42%,55%,1)`,
-                    },
-                  }}
-                />
-
                 <Box className="sign_in_form">
                   <Typography className="form_title" variant="h3">
                     Log in to {saasState?.doingBusinessAsName || 'YouLand'}

@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Box, Icon, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
@@ -47,8 +47,6 @@ import {
   StyledTextFieldPhone,
   Transitions,
 } from '@/components/atoms';
-
-import SIGN_UP_SVG from '@/svg/auth/sign_up.svg';
 
 import { SignUpProps, SignUpStyles } from './index';
 import { User } from '@/types/user';
@@ -566,21 +564,6 @@ export const SignUp: FC<SignUpProps> = observer(
               }}
             >
               <Box sx={SignUpStyles.singUp}>
-                <Icon
-                  component={SIGN_UP_SVG}
-                  sx={{
-                    display: { xs: 'none', lg: 'block' },
-                    width: '100%',
-                    height: 'auto',
-                    flex: 1,
-                    '& .sign_up_svg__pos_svg_theme_color': {
-                      fill: `hsla(${
-                        saasState?.posSettings?.h ?? 222
-                      },42%,55%,1)`,
-                    },
-                  }}
-                />
-
                 <Box className="sign_up_form">
                   <Typography className="form_title" variant="h3">
                     Sign up
