@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Box, Icon, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import validate from '@/constants/validate';
@@ -31,7 +31,7 @@ import {
   LOGIN_APP_KEY,
   userpool,
 } from '@/constants';
-import { useSessionStorageState, useSwitch } from '@/hooks';
+import { useSwitch } from '@/hooks';
 import { BizType, HttpError } from '@/types';
 import {
   _fetchUserResetPasswordSendCode,
@@ -39,15 +39,11 @@ import {
   _fetchUserResetPasswordVerifyCode,
 } from '@/requests';
 
-import FORGOT_PASSWORD_SVG from '@/svg/auth/forgot_password.svg';
-
 export const ForgotPassword: FC<ForgotPasswordProps> = ({
   isNestForm = false,
   successCb,
   isRedirect = true,
 }) => {
-  const { saasState } = useSessionStorageState('tenantConfig');
-
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
@@ -498,19 +494,6 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
               pb={12}
               width={'100%'}
             >
-              <Icon
-                component={FORGOT_PASSWORD_SVG}
-                sx={{
-                  flex: 1,
-                  width: '100%',
-                  height: 'auto',
-                  display: { xs: 'none', lg: 'block' },
-                  '& .forgot_password_svg__pos_svg_theme_color': {
-                    fill: `hsla(${saasState?.posSettings?.h ?? 222},42%,55%,1)`,
-                  },
-                }}
-              />
-
               <Stack
                 borderRadius={2}
                 boxShadow={{
@@ -520,6 +503,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
                 className="forgot_password_form"
                 flex={1}
                 gap={3}
+                maxWidth={700}
                 px={{ lg: 4, xs: 3 }}
                 py={7}
                 width={{ lg: '700px', xs: '100%' }}
