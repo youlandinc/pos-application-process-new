@@ -28,8 +28,6 @@ import {
 } from '@mui/icons-material';
 import { format, parseISO } from 'date-fns';
 
-import { useBreakpoints } from '@/hooks';
-
 import {
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
@@ -87,8 +85,6 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
   onDelete,
 }) => {
   const [popperVisible, setPopperVisible] = useState(false);
-
-  const breakpoints = useBreakpoints();
 
   const anchorRef = useRef<HTMLButtonElement>(null);
 
@@ -160,7 +156,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
       );
     }
     return <Typography variant={'subtitle1'}>Draft</Typography>;
-  }, [address, breakpoints]);
+  }, [address]);
 
   const handledClose = useCallback((event: Event | SyntheticEvent) => {
     if (
