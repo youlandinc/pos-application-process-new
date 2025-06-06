@@ -69,7 +69,7 @@ export const LoanAddress: FC<FormNodeBaseProps & { stateError: boolean }> =
               }}
               variant={'text'}
             >
-              + Add new address
+              + Add another property
             </StyledButton>
           </Stack>
 
@@ -87,7 +87,7 @@ export const LoanAddress: FC<FormNodeBaseProps & { stateError: boolean }> =
                     justifyContent={'space-between'}
                   >
                     <Typography variant={'subtitle1'}>
-                      Additional address {index + 1}
+                      Additional property {index + 1}
                     </Typography>
 
                     <Icon
