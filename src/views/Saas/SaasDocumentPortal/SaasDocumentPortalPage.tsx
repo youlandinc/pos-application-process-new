@@ -30,7 +30,7 @@ export const SaasDocumentPortalPage: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [loanId, setLoanId] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
+  const [address, setAddress] = useState<string[]>([]);
 
   const [tabData, setTabData] = useState<
     { label: string | ReactNode; content: ReactNode }[]
@@ -55,7 +55,7 @@ export const SaasDocumentPortalPage: FC = () => {
         data: { docs, propertyAddress, loanNumber },
       } = await _portalFetchData(loanId);
 
-      setAddress(propertyAddress ?? '');
+      setAddress(propertyAddress ?? []);
 
       const tabData = docs.reduce(
         (acc, cur) => {
@@ -249,7 +249,11 @@ export const SaasDocumentPortalPage: FC = () => {
                 >
                   Document portal
                 </Typography>
-                {address && <Typography mt={1}>{address}</Typography>}
+                {address.map((item, index) => (
+                  <Typography key={'address_' + index} mt={1}>
+                    {item}
+                  </Typography>
+                ))}
 
                 <Stack gap={3} mt={6} width={'100%'}>
                   <StyledTab
