@@ -68,7 +68,7 @@ export interface ILoanRate {
 }
 
 // payment
-export const _creatSpecifyPayment = (orderNo: string, source: string) => {
+export const _createSpecifyPayment = (orderNo: string, source: string) => {
   return get(
     `/pos/appraisal/payment/link/info?orderNo=${orderNo}&&source=${source}`,
   );
@@ -112,7 +112,7 @@ export interface ResponsePortalFetchData {
   finishNum: number;
   totalNum: number;
   loanNumber: string | null;
-  propertyAddress: string | null;
+  propertyAddress: string[] | null;
   docs: {
     categoryKey: string;
     categoryName: string;

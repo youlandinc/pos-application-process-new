@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect } from 'react';
-import { Stack } from '@mui/material';
+import { Fade, Icon, Stack, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -9,6 +9,8 @@ import {
   StyledFormItem,
   StyledGoogleAutoComplete,
 } from '@/components/atoms';
+
+import ICON_CLOSE from '@/svg/icon/icon_close.svg';
 
 export const LoanAddress: FC<FormNodeBaseProps & { stateError: boolean }> =
   observer(({ nextStep, nextState, backState, backStep, stateError }) => {
@@ -55,6 +57,56 @@ export const LoanAddress: FC<FormNodeBaseProps & { stateError: boolean }> =
             address={loanAddress}
             stateError={stateError}
           />
+
+          <Stack alignItems={'center'} flexDirection={'row'} gap={3}>
+            <Stack bgcolor={'#D2D6E1'} flex={1} height={2} />
+            <StyledButton
+              color={'info'}
+              onClick={() => loanAddress.addAdditionalAddress()}
+              sx={{
+                p: '0 !important',
+                '&:hover': { backgroundColor: 'transparent' },
+              }}
+              variant={'text'}
+            >
+              + Add another property
+            </StyledButton>
+          </Stack>
+
+          {loanAddress.additionalAddress.length > 0 &&
+            loanAddress.additionalAddress.map((item, index) => (
+              <Fade in={true} key={item.id}>
+                <Stack
+                  gap={3}
+                  key={`additional-address-${item.id}`}
+                  width={'100%'}
+                >
+                  <Stack
+                    alignItems={'center'}
+                    flexDirection={'row'}
+                    justifyContent={'space-between'}
+                  >
+                    <Typography variant={'subtitle1'}>
+                      Additional property {index + 1}
+                    </Typography>
+
+                    <Icon
+                      component={ICON_CLOSE}
+                      onClick={() => loanAddress.removeAdditionalAddress(index)}
+                      sx={{
+                        height: { xs: 20, lg: 24 },
+                        width: { xs: 20, lg: 24 },
+                        cursor: 'pointer',
+                      }}
+                    />
+                  </Stack>
+                  <StyledGoogleAutoComplete
+                    address={item}
+                    stateError={stateError}
+                  />
+                </Stack>
+              </Fade>
+            ))}
         </StyledFormItem>
 
         <Stack flexDirection={'row'} gap={3} width={'100%'}>

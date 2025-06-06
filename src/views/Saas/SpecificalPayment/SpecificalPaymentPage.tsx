@@ -11,7 +11,7 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { useBreakpoints } from '@/hooks';
 import { IAddress } from '@/models/common/Address';
 import {
-  _creatSpecifyPayment,
+  _createSpecifyPayment,
   _getPaymentSignature,
   _updateSpecifyContactInfo,
 } from '@/requests';
@@ -104,7 +104,7 @@ export const SpecificalPaymentPage = () => {
   const [insideIsNeedToFill, setInsideIsNeedToFill] = useState(false);
 
   const [logo, setLogo] = useState('');
-  const [organizationName, setOrganizationName] = useState('');
+  const [doingBusinessAsName, setDoingBusinessAsName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhoneNumber, setContactPhoneNumber] = useState('');
   // const [signatureData, setSignatureData] = useState<Record<string, any>>({});
@@ -185,14 +185,14 @@ export const SpecificalPaymentPage = () => {
           instructions,
 
           logo,
-          organizationName,
+          doingBusinessAsName,
           contactEmail,
           contactPhoneNumber,
         },
-      } = await _creatSpecifyPayment(orderNo, source);
+      } = await _createSpecifyPayment(orderNo, source);
 
       setLogo(logo ?? '');
-      setOrganizationName(organizationName ?? '');
+      setDoingBusinessAsName(doingBusinessAsName ?? '');
       setContactEmail(contactEmail ?? '');
       setContactPhoneNumber(contactPhoneNumber ?? '');
 
@@ -362,7 +362,7 @@ export const SpecificalPaymentPage = () => {
     try {
       const {
         data: { paymentStatus, appraisalStatus, appraisalStatusDetail },
-      } = await _creatSpecifyPayment(orderNo, source);
+      } = await _createSpecifyPayment(orderNo, source);
       if (paymentStatus === AppraisalTaskPaymentStatus.complete) {
         setPaymentStatus(paymentStatus ?? AppraisalTaskPaymentStatus.undone);
         setAppraisalStatus(appraisalStatus ?? AppraisalStatusEnum.canceled);
@@ -425,8 +425,8 @@ export const SpecificalPaymentPage = () => {
             width={'100%'}
           >
             <SpecificalPaymentLogo
+              doingBusinessAsName={doingBusinessAsName}
               logoUrl={logo}
-              organizationName={organizationName}
             />
           </Stack>
 

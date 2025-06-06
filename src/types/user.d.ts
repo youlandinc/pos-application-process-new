@@ -129,6 +129,7 @@ declare namespace User {
     organizationInfo?: {
       name: string;
     };
+    doingBusinessAsName?: string;
     organizationName: string;
     email: string;
     phone: string;

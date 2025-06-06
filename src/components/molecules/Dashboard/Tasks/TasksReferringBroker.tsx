@@ -60,6 +60,7 @@ export const TasksReferringBroker: FC = observer(() => {
 
   const [address] = useState<IAddress>(
     Address.create({
+      id: '',
       formatAddress: '',
       state: '',
       street: '',

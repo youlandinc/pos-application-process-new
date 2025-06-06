@@ -39,7 +39,7 @@ export const Appraisal: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { userType } = useMst();
+  const { userType, dashboardInfo } = useMst();
   const breakpoint = useBreakpoints();
 
   const [formState, setFormState] = useState<
@@ -177,7 +177,10 @@ export const Appraisal: FC = observer(() => {
       } = await _fetchAppraisalData(loanId);
 
       setProfileData({
-        haveAppraisal: haveAppraisal ?? false,
+        haveAppraisal:
+          dashboardInfo?.additionalAddress?.length > 0
+            ? true
+            : (haveAppraisal ?? false),
         appraisalFiles: appraisalFiles ?? [],
 
         isExpedited: isExpedited ?? false,
@@ -211,7 +214,7 @@ export const Appraisal: FC = observer(() => {
         header,
       });
     }
-  }, [enqueueSnackbar, router]);
+  }, [dashboardInfo?.additionalAddress?.length, enqueueSnackbar, router]);
 
   const { loading } = useAsync(fetchData, [location.href]);
 

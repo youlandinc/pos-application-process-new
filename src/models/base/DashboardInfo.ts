@@ -1,3 +1,4 @@
+import _uniqueId from 'lodash/uniqueId';
 import Router from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 import { cast, flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
@@ -6,6 +7,7 @@ import { AUTO_HIDE_DURATION, TASK_URL_HASH } from '@/constants';
 import { Address } from '@/models/common/Address';
 
 import {
+  AddressData,
   DashboardTaskKey,
   HttpError,
   LoanProductCategoryEnum,
@@ -65,6 +67,7 @@ const handleError = (err: HttpError, redirectTo?: string) => {
 export const DashboardInfo = types
   .model({
     propertyAddress: Address,
+    additionalAddress: types.array(Address),
     propertyType: types.enumeration(Object.values(LoanPropertyTypeEnum)),
     propertyUnit: types.enumeration(Object.values(LoanPropertyUnitEnum)),
     productCategory: types.enumeration(Object.values(LoanProductCategoryEnum)),
@@ -205,6 +208,26 @@ export const DashboardInfo = types
         query: { loanId: self.loanId },
       });
     },
+    injectAdditionalAddressServerData(data: AddressData[]) {
+      const list = data.map((item) => {
+        const { address, aptNumber, city, state, postcode, lng, lat } = item;
+
+        return Address.create({
+          id: _uniqueId('additional_address_'),
+          formatAddress: address ?? '',
+          state: state ?? '',
+          street: '',
+          aptNumber: aptNumber ?? '',
+          city: city ?? '',
+          postcode: postcode ?? '',
+          lat: lat ?? void 0,
+          lng: lng ?? void 0,
+          isValid: Object.keys(item).some((v) => v),
+          errors: {},
+        });
+      });
+      self.additionalAddress = cast(list);
+    },
   }))
   .actions((self) => {
     const fetchDashboardInfo = flow(function* (loanId: string) {
@@ -233,8 +256,10 @@ export const DashboardInfo = types
             loanNumber,
             productCategory,
             loanPurpose,
+            additionalAddress,
           },
         } = infoRes.value;
+        self.injectAdditionalAddressServerData(additionalAddress || []);
         self.propertyAddress.injectServerData(propertyAddress);
         self.propertyType = propertyType || LoanPropertyTypeEnum.default;
         self.propertyUnit = propertyUnit || LoanPropertyUnitEnum.default;

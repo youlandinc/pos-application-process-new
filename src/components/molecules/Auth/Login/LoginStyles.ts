@@ -16,6 +16,7 @@ export const LoginStyles = {
     ...POSFlex('center', 'space-between', 'row'),
     width: '100%',
     height: '100%',
+    maxWidth: 700,
     pb: 11.5,
     '& .sign_in_img': {},
     '& .sign_in_form': {

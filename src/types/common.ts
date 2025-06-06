@@ -2,6 +2,7 @@ import { User } from '@/types/user';
 import { ReactNode } from 'react';
 
 export interface AddressData {
+  id?: string;
   address: string;
   aptNumber: string;
   city: string;
@@ -9,6 +10,10 @@ export interface AddressData {
   postcode: string;
   lng?: number;
   lat?: number;
+}
+
+export interface LoanAddressData extends AddressData {
+  additionalAddress: AddressData[];
 }
 
 export type EstateAgent = User.BaseUserInfo;

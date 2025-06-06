@@ -34,7 +34,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
               mt: 3,
             }}
           >
-            {saasState?.organizationName}
+            {saasState?.doingBusinessAsName}
           </Stack>
         );
       }
@@ -94,7 +94,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
           mt: 3,
         }}
       >
-        {saasState?.organizationName}
+        {saasState?.doingBusinessAsName}
       </Stack>
     );
   }, [
@@ -103,7 +103,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
     logoUrl,
     ratio,
     saasState?.logoUrl,
-    saasState?.organizationName,
+    saasState?.doingBusinessAsName,
   ]);
 
   useEffect(() => {

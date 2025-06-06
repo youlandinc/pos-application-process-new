@@ -155,9 +155,9 @@ export const Pipeline: FC = observer(() => {
     );
   };
 
-  const handledDelete = (id: string, address: string) => {
+  const handledDelete = (id: string, address: string[]) => {
     open();
-    setDeleteAddress(address.split('NEW_LINE'));
+    setDeleteAddress(address.length === 1 ? address[0].split('NEW_LINE') : []);
     setDeleteId(id);
   };
 
