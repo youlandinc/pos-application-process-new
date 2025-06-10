@@ -200,7 +200,10 @@ export default function MyApp(props: MyAppProps) {
         </ThemeProvider>
       );
     }
-    if (router.pathname.includes('payment')) {
+    if (
+      router.pathname.includes('payment') ||
+      router.pathname.includes('subscription')
+    ) {
       return (
         <ThemeProvider theme={theme}>
           <CssBaseline />
