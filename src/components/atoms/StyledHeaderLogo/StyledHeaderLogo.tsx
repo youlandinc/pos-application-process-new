@@ -57,15 +57,7 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
             style={{
               position: 'absolute',
               top: '50%',
-              //['sm', 'xs', 'md', 'lg'].includes(breakpoints) ||
-              //scene === LayoutSceneTypeEnum.dashboard
-              //  ? '50%'
-              //  : 46,
               transform: 'translateY(-50%)',
-              //['sm', 'xs', 'md', 'lg'].includes(breakpoints) ||
-              //scene === LayoutSceneTypeEnum.dashboard
-              //  ? 'translateY(-50%)'
-              //  : 'none',
               left:
                 ratio === 1 && !['sm', 'xs', 'md', 'lg'].includes(breakpoints)
                   ? 44
@@ -114,21 +106,6 @@ export const StyledHeaderLogo: FC<StyledHeaderLogoProps> = ({
       });
     }
   }, [saasState?.logoUrl]);
-
-  //const computedHeight = useMemo(() => {
-  //  switch (true) {
-  //    case ratio < 1:
-  //      return { md: '80px', xs: 'calc(100% - 48px)' };
-  //    case ratio === 1:
-  //      return { md: '80px', xs: 'calc(100% - 60px)' };
-  //    case ratio > 1:
-  //      return { md: 'calc(100% - 48px)', xs: 'calc(100% - 60px)' };
-  //    case ratio === -1:
-  //      return { md: 32, xs: 24 };
-  //    default:
-  //      return { md: 32, xs: 24 };
-  //  }
-  //}, [ratio]);
 
   return (
     <Box
