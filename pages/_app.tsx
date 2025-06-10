@@ -95,7 +95,10 @@ export default function MyApp(props: MyAppProps) {
   );
 
   const { loading } = useAsync(async () => {
-    if (router.pathname.includes('payment')) {
+    if (
+      router.pathname.includes('payment') ||
+      router.pathname.includes('subscription')
+    ) {
       return;
     }
     try {
