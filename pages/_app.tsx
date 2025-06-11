@@ -249,6 +249,14 @@ export default function MyApp(props: MyAppProps) {
     }
   }, [Component, breakpoints, loading, pageProps, router.pathname, saasState]);
 
+  const renderTitle = useMemo(() => {
+    return router.pathname === '/' ? (
+      <title>Apply for a loan</title>
+    ) : (
+      <title></title>
+    );
+  }, [router?.pathname]);
+
   return (
     <>
       <Head>
@@ -259,6 +267,7 @@ export default function MyApp(props: MyAppProps) {
         />
         <meta content="Corepass Software Team" name="description" />
         <meta content="Point Of Sales System" name="keywords" />
+        {renderTitle}
         <link
           href={saasState?.faviconUrl || '/POS.svg'}
           rel="icon"
