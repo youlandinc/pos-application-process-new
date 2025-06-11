@@ -516,7 +516,7 @@ export const Questionnaire: FC = observer(() => {
               <Typography fontSize={{ xs: 12, md: 16 }} variant={'body3'}>
                 By clicking the button, I hereby agree to the above broker
                 agreement and authorize{' '}
-                {saasState?.organizationName || 'YouLand'} to check my
+                {saasState?.doingBusinessAsName || 'YouLand'} to check my
                 background.
               </Typography>
               <StyledButton

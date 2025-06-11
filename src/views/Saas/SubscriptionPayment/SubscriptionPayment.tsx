@@ -24,7 +24,7 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 
 import { useBreakpoints } from '@/hooks';
 import { IAddress } from '@/models/common/Address';
-import { _creatSpecifyPayment, _getPaymentSignature } from '@/requests';
+import { _createSpecifyPayment, _getPaymentSignature } from '@/requests';
 
 import { AppraisalTaskPaymentStatus, HttpError } from '@/types';
 import {
@@ -116,7 +116,7 @@ export const SubscriptionPayment = () => {
           phoneNumber,
           instructions,
         },
-      } = await _creatSpecifyPayment(orderNo, source);
+      } = await _createSpecifyPayment(orderNo, source);
 
       setPaymentStatus(paymentStatus ?? AppraisalTaskPaymentStatus.undone);
 
@@ -206,7 +206,7 @@ export const SubscriptionPayment = () => {
     try {
       const {
         data: { paymentStatus },
-      } = await _creatSpecifyPayment(orderNo, source);
+      } = await _createSpecifyPayment(orderNo, source);
       if (paymentStatus === AppraisalTaskPaymentStatus.complete) {
         setPaymentStatus(paymentStatus ?? AppraisalTaskPaymentStatus.undone);
         clearInterval(timeoutRef.current as NodeJS.Timeout);

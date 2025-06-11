@@ -68,6 +68,7 @@ const initialValues: {
 };
 
 const initialAddress: SAddress = {
+  id: '',
   formatAddress: '',
   state: '',
   street: '',
@@ -321,7 +322,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
             A closing agent assists with closing and verifies there are no
             outstanding title issues.
             <Typography component={'span'}>
-              {saasState?.organizationName || 'YouLand'} also orders a Title
+              {saasState?.doingBusinessAsName || 'YouLand'} also orders a Title
               Commitment and a Title Report on the property from this agent.
             </Typography>
           </Typography>

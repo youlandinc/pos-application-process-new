@@ -7,12 +7,12 @@ import { POSGetImageSize } from '@/utils';
 
 interface StyledHeaderLogoProps {
   logoUrl?: string;
-  organizationName?: string;
+  doingBusinessAsName?: string;
 }
 
 export const SpecificalPaymentLogo: FC<StyledHeaderLogoProps> = ({
   logoUrl,
-  organizationName,
+  doingBusinessAsName,
 }) => {
   const [ratio, setRatio] = useState(-1);
   const [isFirstLoading, setIsFirstLoading] = useState(true);
@@ -34,7 +34,7 @@ export const SpecificalPaymentLogo: FC<StyledHeaderLogoProps> = ({
               width: { xs: 160, xl: 225 },
             }}
           >
-            {organizationName}
+            {doingBusinessAsName}
           </Stack>
         );
       }
@@ -88,10 +88,10 @@ export const SpecificalPaymentLogo: FC<StyledHeaderLogoProps> = ({
           width: { xs: 160, xl: 225 },
         }}
       >
-        {organizationName}
+        {doingBusinessAsName}
       </Stack>
     );
-  }, [breakpoints, isFirstLoading, logoUrl, organizationName, ratio]);
+  }, [breakpoints, isFirstLoading, logoUrl, doingBusinessAsName, ratio]);
 
   useEffect(() => {
     if (logoUrl) {

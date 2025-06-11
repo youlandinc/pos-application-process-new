@@ -7,7 +7,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Box, Icon, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import validate from '@/constants/validate';
@@ -28,7 +28,6 @@ import {
 import { HttpError } from '@/types';
 import { _forceUpdatePassword } from '@/requests';
 
-import FORGOT_PASSWORD_SVG from '@/svg/auth/forgot_password.svg';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
@@ -177,19 +176,6 @@ export const ResetPassword: FC = observer(() => {
             pb={12}
             width={'100%'}
           >
-            <Icon
-              component={FORGOT_PASSWORD_SVG}
-              sx={{
-                flex: 1,
-                width: '100%',
-                height: 'auto',
-                display: { xs: 'none', lg: 'block' },
-                '& .forgot_password_svg__pos_svg_theme_color': {
-                  fill: (theme) => theme.palette.primary.main,
-                },
-              }}
-            />
-
             <Stack
               borderRadius={2}
               boxShadow={{
@@ -199,6 +185,7 @@ export const ResetPassword: FC = observer(() => {
               component={'form'}
               flex={1}
               gap={3}
+              maxWidth={700}
               onSubmit={onSubmitClick}
               px={{ lg: 4, xs: 3 }}
               py={7}

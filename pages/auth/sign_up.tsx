@@ -18,7 +18,7 @@ const SignUpPage: FC = observer((): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Sign up</title>
+        <title>Sign Up</title>
       </Head>
       <DynamicSignUp isRedirect={false} />
     </>

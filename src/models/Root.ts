@@ -193,6 +193,7 @@ const initialState = {
     loanPurpose: LoanPurposeEnum.purchase,
     unReadCount: 0,
     messages: [],
+    additionalAddress: [],
   },
 
   questionnaire: {

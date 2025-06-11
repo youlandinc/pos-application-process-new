@@ -49,7 +49,7 @@ export const LoanAddressPage: FC = observer(() => {
       snapshot: LoanSnapshotEnum.loan_address,
       nextSnapshot: LoanSnapshotEnum.background_information,
       loanId: applicationForm.loanId,
-      data: loanAddress.getPostData(),
+      data: loanAddress.getLoanAddressPostData(),
     };
     await updateFrom(postData).then((res) => {
       if (res === HttpErrorType.state_verify_error) {

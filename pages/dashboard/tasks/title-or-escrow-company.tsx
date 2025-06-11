@@ -26,7 +26,7 @@ const DashboardTaskTitleOrEscrowCompany: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Tasks - Borrower</title>
+        <title>Tasks - Title Company (Optional)</title>
       </Head>
       <DynamicDashboardPage>
         <DynamicTasksTitleOrEscrowPagePage />

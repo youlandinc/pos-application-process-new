@@ -67,7 +67,7 @@ const PipelinePage: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>My loans</title>
+        <title>My Loans</title>
       </Head>
       <DynamicPipelinePage scene={LayoutSceneTypeEnum.pipeline_without_all}>
         <DynamicPipelineListPage />
