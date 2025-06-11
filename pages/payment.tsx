@@ -7,7 +7,7 @@ const PaymentPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Appraisal Payment</title>
+        <title key={'title'}>Appraisal Payment</title>
       </Head>
       <SpecificalPaymentPage />
     </>

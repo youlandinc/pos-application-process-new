@@ -262,7 +262,7 @@ export default function MyApp(props: MyAppProps) {
           rel="icon"
           sizes={'16x16'}
         />
-        <title>Apply for a loan</title>
+        <title key={'title'}>Apply for a loan</title>
       </Head>
       <Provider value={rootStore}>
         <ProviderPersistData rootStoreKeys={['session', 'userProfile']}>
