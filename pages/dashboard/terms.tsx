@@ -23,7 +23,7 @@ const DashboardTermsPage: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Overview</title>
+        <title>Loan Terms</title>
       </Head>
       <DynamicDashboardPage>
         <DynamicTermsPage />

@@ -25,7 +25,7 @@ const AccountSettingsPage: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>My account</title>
+        <title>My Account</title>
       </Head>
       <DynamicAccountPage>
         <DynamicAccountSettings />

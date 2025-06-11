@@ -18,7 +18,7 @@ const ResetPasswordPage: FC = observer((): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Reset password</title>
+        <title>Reset Password</title>
       </Head>
       <DynamicResetPassword />
     </>

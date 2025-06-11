@@ -26,7 +26,7 @@ const DashboardTaskSquareFootage: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Tasks - Borrower</title>
+        <title>Tasks - Square Footage</title>
       </Head>
       <DynamicDashboardPage>
         <DynamicTasksSquareFootage />

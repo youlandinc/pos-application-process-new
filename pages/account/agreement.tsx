@@ -25,7 +25,7 @@ const QualificationACHPage: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Agreement Info</title>
+        <title>Agreement Information</title>
       </Head>
       <DynamicAccountPage>
         <DynamicAccountAgreementPage />

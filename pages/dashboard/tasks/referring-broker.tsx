@@ -26,7 +26,7 @@ const DashboardTaskRehabInfo: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Tasks - Borrower</title>
+        <title key={'title'}>Tasks - Referring Broker</title>
       </Head>
       <DynamicDashboardPage>
         <DynamicTasksReferringBrokerPage />

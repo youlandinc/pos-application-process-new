@@ -257,12 +257,13 @@ export default function MyApp(props: MyAppProps) {
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
           name="viewport"
         />
+        <meta content="Corepass Software Team" name="description" />
+        <meta content="Point Of Sales System" name="keywords" />
         <link
           href={saasState?.faviconUrl || '/POS.svg'}
           rel="icon"
           sizes={'16x16'}
         />
-        <title key={'title'}>Apply for a loan</title>
       </Head>
       <Provider value={rootStore}>
         <ProviderPersistData rootStoreKeys={['session', 'userProfile']}>

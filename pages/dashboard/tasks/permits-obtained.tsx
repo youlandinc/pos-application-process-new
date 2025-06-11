@@ -26,7 +26,7 @@ const DashboardTasksPermitsObtained: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Tasks - Permits obtained</title>
+        <title>Tasks - Permits Obtained</title>
       </Head>
       <DynamicDashboardPage>
         <DynamicTasksPermitsObtainedPage />

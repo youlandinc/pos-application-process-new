@@ -26,7 +26,7 @@ const DashboardTaskConstructionHoldbackProcess: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Tasks - Borrower</title>
+        <title>Tasks - Construction Holdback Process</title>
       </Head>
       <DynamicDashboardPage>
         <DynamicTasksHoldbackProcessPage />
