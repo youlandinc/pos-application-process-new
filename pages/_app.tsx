@@ -95,7 +95,10 @@ export default function MyApp(props: MyAppProps) {
   );
 
   const { loading } = useAsync(async () => {
-    if (router.pathname.includes('payment')) {
+    if (
+      router.pathname.includes('payment') ||
+      router.pathname.includes('subscription')
+    ) {
       return;
     }
     try {
@@ -197,7 +200,10 @@ export default function MyApp(props: MyAppProps) {
         </ThemeProvider>
       );
     }
-    if (router.pathname.includes('payment')) {
+    if (
+      router.pathname.includes('payment') ||
+      router.pathname.includes('subscription')
+    ) {
       return (
         <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -256,7 +262,7 @@ export default function MyApp(props: MyAppProps) {
           rel="icon"
           sizes={'16x16'}
         />
-        <title>Apply for a loan</title>
+        <title key={'title'}>Apply for a loan</title>
       </Head>
       <Provider value={rootStore}>
         <ProviderPersistData rootStoreKeys={['session', 'userProfile']}>
@@ -274,12 +280,6 @@ export default function MyApp(props: MyAppProps) {
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbKnoaYuPycOQD4uQdPrc1nESFEVRH5-g&libraries=places,streetView,maps"
         type="text/javascript"
       />
-      {/*<Script*/}
-      {/*  onLoad={() => {*/}
-      {/*    const vConsole = new window.VConsole();*/}
-      {/*  }}*/}
-      {/*  src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"*/}
-      {/*/>*/}
     </>
   );
 }

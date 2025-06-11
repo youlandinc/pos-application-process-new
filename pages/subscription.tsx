@@ -7,7 +7,7 @@ const SubscriptionPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Subscription Payment</title>
+        <title key={'title'}>Subscription Payment</title>
       </Head>
       <SubscriptionPayment />
     </>
