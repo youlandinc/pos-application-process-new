@@ -26,7 +26,7 @@ const DashboardTaskPayoffAmount: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Tasks - Borrower</title>
+        <title>Tasks - Payoff Amount</title>
       </Head>
       <DynamicDashboardPage>
         <DynamicTasksPayoffAmountPage />

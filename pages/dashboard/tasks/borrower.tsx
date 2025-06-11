@@ -26,7 +26,7 @@ const DashboardTaskBorrower: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Tasks - Borrower</title>
+        <title>Tasks - Borrower Information</title>
       </Head>
       <DynamicDashboardPage>
         <DynamicBorrowerTypePage />

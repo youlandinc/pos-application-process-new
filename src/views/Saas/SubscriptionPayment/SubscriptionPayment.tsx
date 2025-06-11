@@ -26,11 +26,7 @@ import { useBreakpoints } from '@/hooks';
 import { IAddress } from '@/models/common/Address';
 import { _createSpecifyPayment, _getPaymentSignature } from '@/requests';
 
-import {
-  AppraisalStatusEnum,
-  AppraisalTaskPaymentStatus,
-  HttpError,
-} from '@/types';
+import { AppraisalTaskPaymentStatus, HttpError } from '@/types';
 import {
   createPaymentIframe,
   POSGetParamsFromUrl,

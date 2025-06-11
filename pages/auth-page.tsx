@@ -24,9 +24,7 @@ const AuthPage = observer(() => {
   return (
     <>
       <Head>
-        <meta content="Corepass Software Team" name="description" />
-        <meta content="Point Of Sales System" name="keywords" />
-        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <title>Apply for a loan</title>
       </Head>
       <DynamicApplicationPage>
         <DynamicAuthPage />

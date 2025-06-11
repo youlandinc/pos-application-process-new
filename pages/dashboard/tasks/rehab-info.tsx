@@ -26,7 +26,7 @@ const DashboardTaskRehabInfo: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Tasks - Borrower</title>
+        <title>Tasks - Rehab Info</title>
       </Head>
       <DynamicDashboardPage>
         <DynamicTasksRehabInfoPage />

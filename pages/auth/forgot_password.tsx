@@ -18,7 +18,7 @@ const ForgotPasswordPage: FC = observer((): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Forgot password</title>
+        <title>Forgot Password</title>
       </Head>
       <DynamicForgotPasswordPage />
     </>

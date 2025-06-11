@@ -24,7 +24,7 @@ const DashboardAppraisalPage: FC = observer(() => {
   return (
     <>
       <Head>
-        <title>Overview</title>
+        <title>Appraisal</title>
       </Head>
       <DynamicDashboardPage>
         <DynamicAppraisalPagePage />
