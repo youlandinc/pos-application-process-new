@@ -329,7 +329,8 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
           break;
         case DashboardDocumentStatus.uw_flag:
         case DashboardDocumentStatus.dd_flag:
-          result.bgColor = '#DE6449';
+          result.bgColor = '#FFEEEA';
+          result.textColor = '#DE6449';
           result.text = 'Flagged';
           break;
         default:
