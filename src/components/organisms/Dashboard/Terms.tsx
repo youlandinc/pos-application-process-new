@@ -19,7 +19,6 @@ import {
 import {
   APPLICATION_LOAN_CATEGORY,
   APPLICATION_LOAN_PURPOSE,
-  APPLICATION_PREPAYMENT_PENALTY,
   APPLICATION_PROPERTY_TYPE,
   APPLICATION_PROPERTY_UNIT,
   AUTO_HIDE_DURATION,
@@ -836,12 +835,7 @@ export const Terms: FC = observer(() => {
               <Collapse in={collapsed}>
                 <Stack gap={{ xs: 1.5, lg: 3 }} mb={{ xs: 1.5, lg: 3 }}>
                   <LoanTermCardRow
-                    content={
-                      POSFindLabel(
-                        APPLICATION_PREPAYMENT_PENALTY,
-                        data?.prepaymentPenalty,
-                      ) || data?.prepaymentPenalty
-                    }
+                    content={data?.prepaymentPenalty}
                     title={'Prepayment penalty'}
                   />
                   <LoanTermCardRow
