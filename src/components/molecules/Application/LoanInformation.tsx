@@ -75,8 +75,6 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
       );
     }, [saasState?.losSettings?.prepaymentPenaltyOptions]);
 
-    console.log(prepaymentPenaltyOptions);
-
     const payoffAmountError = useMemo(() => {
       if (loanInformation.loanPurpose === LoanPurposeEnum.refinance) {
         if (loanInformation.isPayoff) {
@@ -1328,6 +1326,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
         LTC,
         LTV,
         breakpoints,
+        prepaymentPenaltyOptions,
         loanInformation.productCategory,
         loanInformation.loanPurpose,
         loanInformation.propertyType,
@@ -1698,6 +1697,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [
+        prepaymentPenaltyOptions,
         VacancyRateField,
         HOAFeeField,
         DSCRCalculationInfo,
