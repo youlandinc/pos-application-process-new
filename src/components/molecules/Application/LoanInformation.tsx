@@ -75,6 +75,8 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
       );
     }, [saasState?.losSettings?.prepaymentPenaltyOptions]);
 
+    console.log(prepaymentPenaltyOptions);
+
     const payoffAmountError = useMemo(() => {
       if (loanInformation.loanPurpose === LoanPurposeEnum.refinance) {
         if (loanInformation.isPayoff) {
@@ -1237,6 +1239,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                       )
                     }
                     options={prepaymentPenaltyOptions}
+                    renderValue={(v) => <>{v}</>}
                     sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={loanInformation.prepaymentPenalty}
                   />
