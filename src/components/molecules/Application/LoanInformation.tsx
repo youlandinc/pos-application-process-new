@@ -4,7 +4,7 @@ import { Stack, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useBreakpoints } from '@/hooks';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import {
   POSFindHashKey,
   POSFindLabel,
@@ -57,6 +57,24 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
     } = useMst();
 
     const [expanded, setExpanded] = useState<boolean | undefined>();
+
+    const { saasState } = useSessionStorageState('tenantConfig');
+
+    const prepaymentPenaltyOptions = useMemo(() => {
+      return saasState?.losSettings?.prepaymentPenaltyOptions?.reduce(
+        (acc: Option[], cur: { key: string; label: string }) => {
+          if (cur) {
+            acc.push({
+              label: `${cur.key} ${cur.label ? `(${cur.label})` : ''}`,
+              key: `${cur.key} ${cur.label ? `(${cur.label})` : ''}`,
+              value: `${cur.key} ${cur.label ? `(${cur.label})` : ''}`,
+            });
+          }
+          return acc;
+        },
+        [],
+      );
+    }, [saasState?.losSettings?.prepaymentPenaltyOptions]);
 
     const payoffAmountError = useMemo(() => {
       if (loanInformation.loanPurpose === LoanPurposeEnum.refinance) {
@@ -1219,7 +1237,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                         e.target.value as string as PrepaymentPenaltyEnum,
                       )
                     }
-                    options={APPLICATION_PREPAYMENT_PENALTY}
+                    options={prepaymentPenaltyOptions}
                     sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={loanInformation.prepaymentPenalty}
                   />
@@ -1291,7 +1309,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                       e.target.value as string as PrepaymentPenaltyEnum,
                     )
                   }
-                  options={APPLICATION_PREPAYMENT_PENALTY}
+                  options={prepaymentPenaltyOptions}
                   sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                   value={loanInformation.prepaymentPenalty}
                 />
