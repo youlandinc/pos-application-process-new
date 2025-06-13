@@ -144,6 +144,7 @@ declare namespace User {
     whiteLabelUrl: string;
     losSettings: {
       customFee: FeeSettings | null;
+      prepaymentPenaltyOptions: { key: string; label: string }[];
     };
     useTimes: number;
     freeTrialState: FreeTrialState;
