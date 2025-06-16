@@ -1314,7 +1314,10 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                   }
                   options={prepaymentPenaltyOptions}
                   sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  value={loanInformation.prepaymentPenalty}
+                  value={
+                    loanInformation.prepaymentPenalty ||
+                    prepaymentPenaltyOptions[0].value
+                  }
                 />
               </Stack>
             );
