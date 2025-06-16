@@ -249,7 +249,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
       loanInformation?.refinanceLoanAmount,
       loanInformation?.rehabCost,
     ]);
-
+    console.log(prepaymentPenaltyOptions);
     const renderSummary = useMemo(() => {
       switch (loanInformation.productCategory) {
         case LoanProductCategoryEnum.stabilized_bridge:
@@ -1239,7 +1239,11 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                     options={prepaymentPenaltyOptions}
                     renderValue={(v) => <>{v}</>}
                     sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                    value={loanInformation.prepaymentPenalty}
+                    value={
+                      loanInformation.prepaymentPenalty ||
+                      prepaymentPenaltyOptions?.[0]?.value ||
+                      ''
+                    }
                   />
                 </Stack>
               );
@@ -1311,7 +1315,11 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                   }
                   options={prepaymentPenaltyOptions}
                   sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  value={loanInformation.prepaymentPenalty}
+                  value={
+                    loanInformation.prepaymentPenalty ||
+                    prepaymentPenaltyOptions?.[0]?.value ||
+                    ''
+                  }
                 />
               </Stack>
             );
