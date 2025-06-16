@@ -1741,7 +1741,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
     );
 
     useEffect(()=>{
-      if(prepaymentPenaltyOptions.length){
+      if(!loanInformation.prepaymentPenalty&&prepaymentPenaltyOptions?.length>0){
         loanInformation.changeFieldValue(
           'prepaymentPenalty',
           prepaymentPenaltyOptions[0].value as string as PrepaymentPenaltyEnum,
