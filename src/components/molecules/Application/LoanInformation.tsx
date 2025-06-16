@@ -1240,7 +1240,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                     renderValue={(v) => <>{v}</>}
                     sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={
-                      loanInformation.prepaymentPenalty
+                      loanInformation.prepaymentPenalty||''
                     }
                   />
                 </Stack>
@@ -1314,7 +1314,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                   options={prepaymentPenaltyOptions}
                   sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                   value={
-                    loanInformation.prepaymentPenalty
+                    loanInformation.prepaymentPenalty||''
                   }
                 />
               </Stack>
