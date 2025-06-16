@@ -64,9 +64,9 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
         (acc: Option[], cur: { key: string; label: string }) => {
           if (cur) {
             acc.push({
-              label: cur.key + cur.label,
-              key: cur.key + cur.label,
-              value: cur.key + cur.label,
+              label: `${cur.key} ${cur.label}`,
+              key: `${cur.key} ${cur.label}`,
+              value: `${cur.key} ${cur.label}`,
             });
           }
           return acc;
