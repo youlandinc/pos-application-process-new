@@ -249,7 +249,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
       loanInformation?.refinanceLoanAmount,
       loanInformation?.rehabCost,
     ]);
-    console.log(prepaymentPenaltyOptions);
+
     const renderSummary = useMemo(() => {
       switch (loanInformation.productCategory) {
         case LoanProductCategoryEnum.stabilized_bridge:
@@ -1240,9 +1240,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                     renderValue={(v) => <>{v}</>}
                     sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={
-                      loanInformation.prepaymentPenalty ||
-                      prepaymentPenaltyOptions?.[0]?.value ||
-                      ''
+                      loanInformation.prepaymentPenalty
                     }
                   />
                 </Stack>
@@ -1316,9 +1314,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                   options={prepaymentPenaltyOptions}
                   sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                   value={
-                    loanInformation.prepaymentPenalty ||
-                    prepaymentPenaltyOptions?.[0]?.value ||
-                    ''
+                    loanInformation.prepaymentPenalty
                   }
                 />
               </Stack>
@@ -1743,6 +1739,15 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [],
     );
+
+    useEffect(()=>{
+      if(prepaymentPenaltyOptions.length){
+        loanInformation.changeFieldValue(
+          'prepaymentPenalty',
+          prepaymentPenaltyOptions[0].value as string as PrepaymentPenaltyEnum,
+        )
+      }
+    },[loanInformation, prepaymentPenaltyOptions])
 
     return (
       <StyledFormItem
