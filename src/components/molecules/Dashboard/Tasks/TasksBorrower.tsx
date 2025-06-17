@@ -82,6 +82,8 @@ export const TasksBorrower: FC = observer(() => {
   );
   const [entityState, setEntityState] = useState('');
   const [entityId, setEntityId] = useState('');
+  const [companyPhone, setCompanyPhone] = useState<string | number>('');
+  const [companyEmail, setCompanyEmail] = useState('');
   // trust
   const [trustName, setTrustName] = useState('');
 
@@ -121,6 +123,8 @@ export const TasksBorrower: FC = observer(() => {
             entityType,
             entityId,
             entityState,
+            companyPhone,
+            companyEmail,
             signatoryTitle,
             trustName,
           },
@@ -140,6 +144,8 @@ export const TasksBorrower: FC = observer(() => {
 
       setSignatoryTitle(signatoryTitle ?? '');
       setTrustName(trustName ?? '');
+      setCompanyEmail(companyEmail ?? '');
+      setCompanyPhone(companyPhone ?? '');
 
       setEntityName(entityName ?? '');
       setEntityType(entityType ?? DashboardTaskBorrowerEntityType.default);
@@ -183,6 +189,8 @@ export const TasksBorrower: FC = observer(() => {
         entityType: entityType || undefined,
         entityId,
         entityState,
+        companyEmail: companyEmail || undefined,
+        companyPhone: companyPhone || undefined,
       },
     };
 
@@ -340,6 +348,43 @@ export const TasksBorrower: FC = observer(() => {
                 sx={{ maxWidth: 600 }}
                 validate={formError?.entityState}
                 value={entityState}
+              />
+
+              <StyledTextFieldPhone
+                label={'Company phone'}
+                onValueChange={({ value }) => {
+                  if (formError?.companyPhone) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.companyPhone;
+                      }
+                      return prev;
+                    });
+                  }
+                  setCompanyPhone(value);
+                }}
+                placeholder={'Company phone'}
+                sx={{ maxWidth: 600 }}
+                validate={formError?.companyPhone}
+                value={companyPhone}
+              />
+              <StyledTextField
+                label={'Company email'}
+                onChange={(e) => {
+                  if (formError?.companyEmail) {
+                    setFormError((prev) => {
+                      if (prev) {
+                        delete prev.companyEmail;
+                      }
+                      return prev;
+                    });
+                  }
+                  setCompanyEmail(e.target.value);
+                }}
+                placeholder={'Company email'}
+                sx={{ maxWidth: 600 }}
+                validate={formError?.companyEmail}
+                value={companyEmail}
               />
             </StyledFormItem>
           )}
@@ -520,17 +565,6 @@ export const TasksBorrower: FC = observer(() => {
           </Stack>
         </StyledFormItem>
 
-        <StyledFormItem gap={3} label={'Citizenship status'} sub>
-          <StyledSelectOption
-            onChange={(value) =>
-              setCitizenship(value as string as LoanCitizenshipEnum)
-            }
-            options={OPTIONS_COMMON_CITIZEN_TYPE}
-            sx={{ maxWidth: 600 }}
-            value={citizenship}
-          />
-        </StyledFormItem>
-
         <StyledFormItem
           gap={3}
           label={'Current address'}
@@ -541,6 +575,17 @@ export const TasksBorrower: FC = observer(() => {
           <StyledGoogleAutoComplete
             address={address}
             addressError={addressError}
+          />
+        </StyledFormItem>
+
+        <StyledFormItem gap={3} label={'Citizenship status'} sub>
+          <StyledSelectOption
+            onChange={(value) =>
+              setCitizenship(value as string as LoanCitizenshipEnum)
+            }
+            options={OPTIONS_COMMON_CITIZEN_TYPE}
+            sx={{ maxWidth: 600 }}
+            value={citizenship}
           />
         </StyledFormItem>
 
