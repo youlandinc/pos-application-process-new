@@ -1239,9 +1239,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                     options={prepaymentPenaltyOptions}
                     renderValue={(v) => <>{v}</>}
                     sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                    value={
-                      loanInformation.prepaymentPenalty
-                    }
+                    value={loanInformation.prepaymentPenalty || ''}
                   />
                 </Stack>
               );
@@ -1313,9 +1311,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                   }
                   options={prepaymentPenaltyOptions}
                   sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  value={
-                    loanInformation.prepaymentPenalty
-                  }
+                  value={loanInformation.prepaymentPenalty || ''}
                 />
               </Stack>
             );
@@ -1740,14 +1736,17 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
       [],
     );
 
-    useEffect(()=>{
-      if(prepaymentPenaltyOptions.length){
+    useEffect(() => {
+      if (
+        !loanInformation.prepaymentPenalty &&
+        prepaymentPenaltyOptions?.length > 0
+      ) {
         loanInformation.changeFieldValue(
           'prepaymentPenalty',
           prepaymentPenaltyOptions[0].value as string as PrepaymentPenaltyEnum,
-        )
+        );
       }
-    },[loanInformation, prepaymentPenaltyOptions])
+    }, [loanInformation, prepaymentPenaltyOptions]);
 
     return (
       <StyledFormItem
