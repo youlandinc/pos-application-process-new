@@ -113,6 +113,38 @@ export const TaskBorrowerSchema: Record<any, any> = {
       },
     };
   },
+  companyPhone: (value: any, attributes: any) => {
+    if (
+      [
+        DashboardTaskBorrowerType.individual,
+        DashboardTaskBorrowerType.trust,
+      ].includes(attributes.borrowerType)
+    ) {
+      return undefined;
+    }
+    if (value) {
+      return {
+        AmericanPhoneNumber: {},
+      };
+    }
+    return undefined;
+  },
+  companyEmail: (value: any, attributes: any) => {
+    if (
+      [
+        DashboardTaskBorrowerType.individual,
+        DashboardTaskBorrowerType.trust,
+      ].includes(attributes.borrowerType)
+    ) {
+      return undefined;
+    }
+    if (value) {
+      return {
+        formEmail: {},
+      };
+    }
+    return undefined;
+  },
   trustName: (value: any, attributes: any) => {
     if (
       [
