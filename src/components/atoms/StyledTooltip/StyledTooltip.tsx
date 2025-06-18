@@ -62,9 +62,6 @@ export const StyledTooltip: FC<StyledTooltipProps> = ({
               disableTouchListener
               onClose={close}
               open={visible}
-              PopperProps={{
-                disablePortal: true,
-              }}
               {...rest}
             >
               <Stack
