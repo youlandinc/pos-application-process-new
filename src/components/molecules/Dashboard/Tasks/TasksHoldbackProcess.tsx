@@ -114,7 +114,7 @@ export const TasksHoldbackProcess: FC = observer(() => {
             Please review and accept{' '}
             {
               //sass
-              saasState?.doingBusinessAsName || ' YouLand'
+              saasState?.dbaName
             }
             &apos;s construction holdback process, which outlines how funds will
             be disbursed during your project&apos;s construction phase.
@@ -139,8 +139,7 @@ export const TasksHoldbackProcess: FC = observer(() => {
           variant={'body1'}
         >
           By clicking the <b style={{ fontWeight: 500 }}>Save</b> button below,
-          I hereby agree to the above{' '}
-          {saasState?.doingBusinessAsName || ' YouLand'}&apos;s construction
+          I hereby agree to the above {saasState?.dbaName}&apos;s construction
           holdback process.
         </Typography>
 

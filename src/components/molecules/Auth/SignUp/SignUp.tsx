@@ -635,7 +635,7 @@ export const SignUp: FC<SignUpProps> = observer(
                     </Typography>
                     <Typography color={'text.secondary'} variant={'body2'}>
                       and consent to receive loan-related emails and SMS from{' '}
-                      {saasState?.doingBusinessAsName}.
+                      {saasState?.dbaName}.
                     </Typography>
                   </Box>
                 </Box>
