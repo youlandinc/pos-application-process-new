@@ -1,3 +1,4 @@
+import _uniqueId from 'lodash/uniqueId';
 import { FC, forwardRef, ReactNode, useEffect, useMemo, useState } from 'react';
 import {
   NumberFormatValues,
@@ -83,7 +84,7 @@ export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({
     <>
       <StyledTextField
         {...rest}
-        id="formatted-numberformat-input"
+        id={_uniqueId('StyledTextFieldNumber-')}
         InputProps={{
           ...rest.InputProps,
           inputComponent: NumericFormatCustom as any,
