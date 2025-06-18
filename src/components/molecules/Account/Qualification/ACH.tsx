@@ -450,8 +450,7 @@ export const ACH: FC = observer(() => {
                 variant={['xs', 'sm'].includes(breakpoints) ? 'body3' : 'body1'}
               >
                 I hereby consent and acknowledge my agreement to the electronic
-                loan agreement and associated terms of{' '}
-                {saasState?.doingBusinessAsName || 'YouLand'}.
+                loan agreement and associated terms of {saasState?.dbaName}.
               </Typography>
               <StyledButton
                 disabled={agreeLoading}

@@ -195,7 +195,7 @@ export const Login: FC<LoginProps> = observer(
               <Box sx={LoginStyles.login}>
                 <Box className="sign_in_form">
                   <Typography className="form_title" variant="h3">
-                    Log in to {saasState?.doingBusinessAsName || 'YouLand'}
+                    Log in to {saasState?.dbaName}
                   </Typography>
                   {FormBody}
                   <Box className="form_foot">
