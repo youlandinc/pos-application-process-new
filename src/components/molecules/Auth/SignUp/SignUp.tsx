@@ -13,18 +13,20 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { POSFormatUrl } from '@/utils';
+import { POSFormatUrl, POSHasUTMParams } from '@/utils';
 
 import {
   AUTO_HIDE_DURATION,
   LOGIN_APP_KEY,
   OPTIONS_SIGN_UP_ROLE,
+  OPTIONS_SIGN_UP_SURVEY,
   SignUpSchema,
   userpool,
 } from '@/constants';
 import { useSessionStorageState, useSwitch } from '@/hooks';
 
 import {
+  _submitSurvey,
   _userSendCode,
   _userSingIn,
   _userSingUp,
@@ -34,7 +36,13 @@ import {
 import { DetectActiveService } from '@/services/DetectActive';
 import { POSFlex } from '@/styles';
 
-import { BizType, HttpError, LoginType, UserType } from '@/types';
+import {
+  BizType,
+  HttpError,
+  LoginType,
+  SurveySourceEnum,
+  UserType,
+} from '@/types';
 import {
   StyledBoxWrap,
   StyledButton,
@@ -68,6 +76,15 @@ export const SignUp: FC<SignUpProps> = observer(
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [surveySource, setSurveySource] = useState<SurveySourceEnum>();
+    const [surveyDetail, setSurveyDetail] = useState<string>('');
+
+    const conditions = [
+      SurveySourceEnum.social_media,
+      SurveySourceEnum.event,
+      SurveySourceEnum.other,
+    ].includes(surveySource as SurveySourceEnum);
+
     const [password, setPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
@@ -88,6 +105,10 @@ export const SignUp: FC<SignUpProps> = observer(
     });
 
     const { open, close, visible } = useSwitch(false);
+
+    const isVisibleSurvey = useMemo(() => {
+      return !POSHasUTMParams(router.query);
+    }, [router.query]);
 
     const handledPasswordChange: ChangeEventHandler<HTMLInputElement> =
       useCallback((e) => {
@@ -142,6 +163,7 @@ export const SignUp: FC<SignUpProps> = observer(
                 : UserType.CUSTOMER,
           },
         };
+
         try {
           setLoading(true);
           await _userSingUp(params);
@@ -156,6 +178,15 @@ export const SignUp: FC<SignUpProps> = observer(
           });
         } finally {
           setLoading(false);
+
+          if (isVisibleSurvey) {
+            const surveyData = {
+              surveyDetail: surveyDetail || '',
+              surveySource: surveySource || '',
+            };
+
+            await _submitSurvey(surveyData);
+          }
         }
       },
       [
@@ -164,11 +195,14 @@ export const SignUp: FC<SignUpProps> = observer(
         email,
         enqueueSnackbar,
         firstName,
+        isVisibleSurvey,
         lastName,
         open,
         password,
         phone,
         saasState?.serviceTypeEnum,
+        surveyDetail,
+        surveySource,
         userType,
       ],
     );
@@ -353,6 +387,17 @@ export const SignUp: FC<SignUpProps> = observer(
       return result;
     }, [saasState?.posSettings?.borrowerTypes]);
 
+    const detailLabel = useMemo(() => {
+      switch (surveySource) {
+        case SurveySourceEnum.social_media:
+          return 'Which platform (e.g. LinkedIn, Youtube, Instagram)?';
+        case SurveySourceEnum.event:
+          return 'Which event?';
+        case SurveySourceEnum.other:
+          return 'Please specify';
+      }
+    }, [surveySource]);
+
     const FormBody = useMemo(() => {
       return (
         <Box
@@ -441,6 +486,29 @@ export const SignUp: FC<SignUpProps> = observer(
             />
           </Stack>
 
+          {isVisibleSurvey && (
+            <>
+              <StyledSelect
+                disabled={loading}
+                label={'Where did you hear about us？'}
+                onChange={(e) =>
+                  setSurveySource(e.target.value as SurveySourceEnum)
+                }
+                options={OPTIONS_SIGN_UP_SURVEY}
+                value={surveySource}
+              />
+              {conditions && (
+                <StyledTextField
+                  label={detailLabel}
+                  onChange={(e) => setSurveyDetail(e.target.value)}
+                  value={surveyDetail}
+                />
+              )}
+            </>
+          )}
+
+          <Box sx={{ height: '1px', bgcolor: '#D2D6E1' }} />
+
           <Box>
             <StyledTextFieldPassword
               disabled={loading}
@@ -512,7 +580,9 @@ export const SignUp: FC<SignUpProps> = observer(
       );
     }, [
       companyName,
+      conditions,
       confirmedPassword,
+      detailLabel,
       email,
       firstName,
       formError?.confirmedPassword,
@@ -523,12 +593,15 @@ export const SignUp: FC<SignUpProps> = observer(
       handledSubmit,
       isDisabled,
       isNestForm,
+      isVisibleSurvey,
       lastName,
       loading,
       password,
       passwordError,
       phone,
       saasState?.serviceTypeEnum,
+      surveyDetail,
+      surveySource,
       userType,
       userTypeOption,
     ]);

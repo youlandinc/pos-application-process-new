@@ -15,7 +15,7 @@ export const Auth: FC<FormNodeBaseProps> = observer(
 
     const [authType, setAuthType] = useState<
       'login' | 'sign_up' | 'reset_password'
-    >('login');
+    >('sign_up');
 
     return (
       <StyledFormItem

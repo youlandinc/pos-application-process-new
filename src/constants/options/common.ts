@@ -3,6 +3,7 @@ import {
   LoanAnswerEnum,
   LoanCitizenshipEnum,
   LoanPropertyUnitEnum,
+  SurveySourceEnum,
   UserType,
 } from '@/types';
 import { ReactNode } from 'react';
@@ -171,6 +172,49 @@ export const OPTIONS_SIGN_UP_ROLE: Option[] = [
     label: 'Loan Officer',
     key: UserType.LOAN_OFFICER,
     value: UserType.LOAN_OFFICER,
+  },
+];
+
+export const OPTIONS_SIGN_UP_SURVEY: Option[] = [
+  {
+    label: 'Email',
+    value: SurveySourceEnum.email,
+    key: SurveySourceEnum.email,
+  },
+  {
+    label: 'Google Search',
+    value: SurveySourceEnum.google_search,
+    key: SurveySourceEnum.google_search,
+  },
+  {
+    label: 'Call',
+    value: SurveySourceEnum.call,
+    key: SurveySourceEnum.call,
+  },
+  {
+    label: 'Social Media',
+    value: SurveySourceEnum.social_media,
+    key: SurveySourceEnum.social_media,
+  },
+  {
+    label: 'Flyer',
+    value: SurveySourceEnum.flyer,
+    key: SurveySourceEnum.flyer,
+  },
+  {
+    label: 'Referral',
+    value: SurveySourceEnum.referral,
+    key: SurveySourceEnum.referral,
+  },
+  {
+    label: 'Event',
+    value: SurveySourceEnum.event,
+    key: SurveySourceEnum.event,
+  },
+  {
+    label: 'Other',
+    value: SurveySourceEnum.other,
+    key: SurveySourceEnum.other,
   },
 ];
 

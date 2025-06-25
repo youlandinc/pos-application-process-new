@@ -4,7 +4,15 @@ import {
   ForgotPasswordFetchCodeRequestParams,
   ForgotPasswordSubmitRequestParams,
   ForgotPasswordVerifyCodeRequestParams,
+  SurveySourceEnum,
 } from '@/types';
+
+export const _submitSurvey = (params: {
+  surveySource: SurveySourceEnum | string;
+  surveyDetail: string;
+}) => {
+  return post('/los/marketing/survey', params);
+};
 
 export const _userSingUp = (params: User.UserSignUp) => {
   return post<User.UserSignUp>(

@@ -58,3 +58,14 @@ export enum LinkFromOutEnum {
   upload_file = 'upload',
   file_comment = 'comment',
 }
+
+export enum SurveySourceEnum {
+  email = 'EMAIL',
+  google_search = 'GOOGLE_SEARCH',
+  call = 'CALL',
+  social_media = 'SOCIAL_MEDIA',
+  flyer = 'FLYER',
+  referral = 'REFERRAL',
+  event = 'EVENT',
+  other = 'OTHER',
+}
