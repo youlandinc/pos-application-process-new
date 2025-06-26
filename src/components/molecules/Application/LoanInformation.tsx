@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
@@ -50,6 +50,7 @@ import { isDate, isValid } from 'date-fns';
 export const LoanInformation: FC<FormNodeBaseProps> = observer(
   ({ nextStep, nextState, backState, backStep }) => {
     const breakpoints = useBreakpoints();
+    const { saasState } = useSessionStorageState('tenantConfig');
 
     const {
       applicationForm: { loanInformation },
@@ -57,8 +58,11 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
 
     const [expanded, setExpanded] = useState<boolean | undefined>();
 
-    const { saasState } = useSessionStorageState('tenantConfig');
+    const [prepaymentField, setPrepaymentField] = useState<string>('');
+    const [prepaymentSelect, setPrepaymentSelect] = useState<string>('');
+    const isInitializedRef = useRef(false);
 
+    // Memoize the options to prevent unnecessary recalculations
     const prepaymentPenaltyOptions = useMemo(() => {
       return saasState?.losSettings?.prepaymentPenaltyOptions?.reduce(
         (acc: Option[], cur: { key: string; label: string }) => {
@@ -71,9 +75,58 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
           }
           return acc;
         },
-        [],
+        [
+          {
+            label: 'Enter prepayment penalty',
+            key: 'enter_prepayment_penalty',
+            value: LoanAnswerEnum.yes,
+          },
+        ],
       );
     }, [saasState?.losSettings?.prepaymentPenaltyOptions]);
+
+    // Initialize the prepayment values when the component mounts or loanInformation.prepaymentPenalty changes
+    useEffect(() => {
+      // Skip if already initialized or no prepayment penalty
+      if (
+        isInitializedRef.current ||
+        !loanInformation.prepaymentPenalty ||
+        !prepaymentPenaltyOptions?.length
+      ) {
+        return;
+      }
+
+      const matchingOption = prepaymentPenaltyOptions.find(
+        (item: any) => loanInformation.prepaymentPenalty === item.label,
+      );
+
+      // Set initial values
+      if (matchingOption) {
+        setPrepaymentSelect(matchingOption.value);
+        setPrepaymentField('');
+      } else {
+        setPrepaymentSelect(LoanAnswerEnum.yes);
+        setPrepaymentField(loanInformation.prepaymentPenalty);
+      }
+
+      isInitializedRef.current = true;
+    }, [loanInformation.prepaymentPenalty, prepaymentPenaltyOptions]);
+
+    // Update the form field when prepaymentSelect or prepaymentField changes
+    useEffect(() => {
+      // Skip initial render
+      if (!isInitializedRef.current) {
+        return;
+      }
+
+      const newValue =
+        prepaymentSelect === LoanAnswerEnum.yes
+          ? prepaymentField
+          : prepaymentSelect;
+      if (loanInformation.prepaymentPenalty !== newValue) {
+        loanInformation.changeFieldValue('prepaymentPenalty', newValue);
+      }
+    }, [prepaymentSelect, prepaymentField, loanInformation]);
 
     const payoffAmountError = useMemo(() => {
       if (loanInformation.loanPurpose === LoanPurposeEnum.refinance) {
@@ -1227,19 +1280,52 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                     value={loanInformation.purchaseLoanAmount}
                   />
 
-                  <StyledSelect
-                    label={'Prepayment penalty'}
-                    labelId={'prepayment-penalty-purchase'}
-                    onChange={(e) =>
+                  <StyledSelectTextField
+                    fieldLabel={'Prepayment penalty'}
+                    fieldType={'text'}
+                    fieldValue={prepaymentField}
+                    isTooltip={true}
+                    onFieldChange={(e) => {
+                      setPrepaymentField(e.target.value);
                       loanInformation.changeFieldValue(
                         'prepaymentPenalty',
                         e.target.value as string as PrepaymentPenaltyEnum,
-                      )
-                    }
+                      );
+                    }}
+                    onSelectChange={(v) => {
+                      setPrepaymentSelect(v as string);
+                      loanInformation.changeFieldValue(
+                        'prepaymentPenalty',
+                        v as string as PrepaymentPenaltyEnum,
+                      );
+                    }}
                     options={prepaymentPenaltyOptions}
-                    renderValue={(v) => <>{v}</>}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                    value={loanInformation.prepaymentPenalty || ''}
+                    selectLabel={'Prepayment penalty'}
+                    selectValue={prepaymentSelect}
+                    sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipTitle={
+                      <Stack gap={0.5}>
+                        <Typography fontSize={12}>
+                          <b>Prepayment penalty</b> is a fee you’ll owe if you
+                          pay off or refinance the DSCR loan before the penalty
+                          period ends.
+                        </Typography>
+                        <Typography fontSize={12} ml={1.5}>
+                          <b>Step-down: </b>the fee falls each year. Example
+                          5-4-3-2-1 = 5 % of the outstanding balance in year 1,
+                          4 % in year 2, 3 % in year 3, and so on.
+                        </Typography>
+                        <Typography fontSize={12} ml={1.5}>
+                          <b>Straight-line:</b> the fee stays the same each
+                          year. Example 1-1-1-1-1 = 1 % every year for five
+                          years.
+                        </Typography>
+                        <Typography fontSize={12}>
+                          Pick a schedule in the dropdown, or type in “Not
+                          sure”.
+                        </Typography>
+                      </Stack>
+                    }
                   />
                 </Stack>
               );
@@ -1300,18 +1386,50 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                   }
                   validate={payoffAmountError}
                 />
-                <StyledSelect
-                  label={'Prepayment penalty'}
-                  labelId={'prepayment-penalty-purchase'}
-                  onChange={(e) =>
+                <StyledSelectTextField
+                  fieldLabel={'Prepayment penalty'}
+                  fieldType={'text'}
+                  fieldValue={prepaymentField}
+                  isTooltip={true}
+                  onFieldChange={(e) => {
+                    setPrepaymentField(e.target.value);
                     loanInformation.changeFieldValue(
                       'prepaymentPenalty',
                       e.target.value as string as PrepaymentPenaltyEnum,
-                    )
-                  }
+                    );
+                  }}
+                  onSelectChange={(v) => {
+                    setPrepaymentSelect(v as string);
+                    loanInformation.changeFieldValue(
+                      'prepaymentPenalty',
+                      v as string as PrepaymentPenaltyEnum,
+                    );
+                  }}
                   options={prepaymentPenaltyOptions}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  value={loanInformation.prepaymentPenalty || ''}
+                  selectLabel={'Prepayment penalty'}
+                  selectValue={prepaymentSelect}
+                  sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+                  tooltipTitle={
+                    <Stack gap={0.5}>
+                      <Typography fontSize={12}>
+                        <b>Prepayment penalty</b> is a fee you’ll owe if you pay
+                        off or refinance the DSCR loan before the penalty period
+                        ends.
+                      </Typography>
+                      <Typography fontSize={12} ml={1.5}>
+                        <b>Step-down: </b>the fee falls each year. Example
+                        5-4-3-2-1 = 5 % of the outstanding balance in year 1, 4
+                        % in year 2, 3 % in year 3, and so on.
+                      </Typography>
+                      <Typography fontSize={12} ml={1.5}>
+                        <b>Straight-line:</b> the fee stays the same each year.
+                        Example 1-1-1-1-1 = 1 % every year for five years.
+                      </Typography>
+                      <Typography fontSize={12}>
+                        Pick a schedule in the dropdown, or type in “Not sure”.
+                      </Typography>
+                    </Stack>
+                  }
                 />
               </Stack>
             );
@@ -1327,6 +1445,8 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
         LTV,
         breakpoints,
         prepaymentPenaltyOptions,
+        prepaymentSelect,
+        prepaymentField,
         loanInformation.productCategory,
         loanInformation.loanPurpose,
         loanInformation.propertyType,
@@ -1615,22 +1735,6 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
     const DSCRCalculationInfo = useMemo(
       () => (
         <Stack gap={1} mt={1}>
-          {/*<Typography*/}
-          {/*  color={'text.secondary'}*/}
-          {/*  fontSize={{ xs: 14, lg: 18 }}*/}
-          {/*  fontWeight={600}*/}
-          {/*>*/}
-          {/*  Estimated DSCR calculation:{' '}*/}
-          {/*  <Typography*/}
-          {/*    color={'primary.main'}*/}
-          {/*    component={'span'}*/}
-          {/*    fontSize={'inherit'}*/}
-          {/*    fontWeight={600}*/}
-          {/*  >*/}
-          {/*    1.20*/}
-          {/*  </Typography>*/}
-          {/*</Typography>*/}
-
           <Typography color={'text.secondary'} fontSize={{ xs: 12, lg: 16 }}>
             Loan terms will be provided after you complete the application and
             our underwriting team reviews your submission.

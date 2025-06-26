@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, ReactNode, useMemo, useState } from 'react';
 import {
   Stack,
   Step,
@@ -40,7 +40,7 @@ const hash = {
 export type OverviewLoanStatusProps = {
   loanStatus: DashboardOverviewResponse['data']['loanStatus'];
   loanStatusDetails: DashboardOverviewResponse['data']['loanStatusDetails'] & {
-    tooltipTitle?: string;
+    tooltipTitle?: ReactNode;
   };
 };
 
