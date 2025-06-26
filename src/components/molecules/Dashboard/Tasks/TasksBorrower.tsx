@@ -111,22 +111,34 @@ export const TasksBorrower: FC = observer(() => {
         data: {
           data: {
             borrowerType,
-            citizenship,
+
+            // common
+            phoneNumber,
+            email,
+
+            // individual
             firstName,
             lastName,
             birthDate,
-            phoneNumber,
-            email,
-            ssn,
             addressInfo,
+            citizenship,
+            ssn,
+
+            // entity,
             entityName,
             entityType,
             entityId,
             entityState,
+
+            // trust
+            trustName,
+
+            // trust & entity
+            signatoryInfo,
+
             companyPhone,
             companyEmail,
             signatoryTitle,
-            trustName,
           },
         },
       } = await _fetchLoanTaskDetail({
@@ -275,117 +287,140 @@ export const TasksBorrower: FC = observer(() => {
         >
           {borrowerType === DashboardTaskBorrowerType.entity && (
             <StyledFormItem gap={3} label={'Entity information'} sub>
-              <StyledTextField
-                label={'Entity name'}
-                onChange={(e) => {
-                  if (formError?.entityName) {
-                    setFormError((prev) => {
-                      if (prev) {
-                        delete prev.entityName;
-                      }
-                      return prev;
-                    });
-                  }
-                  setEntityName(e.target.value);
-                }}
-                placeholder={'Entity name'}
-                sx={{ maxWidth: 600 }}
-                validate={formError?.entityName}
-                value={entityName}
-              />
-              <StyledSelect
-                label={'Entity type'}
-                onChange={(e) => {
-                  if (formError?.entityType) {
-                    setFormError((prev) => {
-                      if (prev) {
-                        delete prev.entityType;
-                      }
-                      return prev;
-                    });
-                  }
-                  setEntityType(
-                    e.target.value as string as DashboardTaskBorrowerEntityType,
-                  );
-                }}
-                options={OPTIONS_TASK_ENTITY_TYPE}
-                sx={{ maxWidth: 600 }}
-                validate={formError?.entityType}
-                value={entityType}
-              />
-              <StyledTextField
-                label={'Secretary of State ID'}
-                onChange={(e) => {
-                  if (formError?.entityId) {
-                    setFormError((prev) => {
-                      if (prev) {
-                        delete prev.entityId;
-                      }
-                      return prev;
-                    });
-                  }
-                  setEntityId(e.target.value);
-                }}
-                placeholder={'Secretary of State ID'}
-                sx={{ maxWidth: 600 }}
-                validate={formError?.entityId}
-                value={entityId}
-              />
-              <StyledSelect
-                label={'Formation State'}
-                onChange={(e) => {
-                  if (formError?.entityState) {
-                    setFormError((prev) => {
-                      if (prev) {
-                        delete prev.entityState;
-                      }
-                      return prev;
-                    });
-                  }
-                  setEntityState(e.target.value as string);
-                }}
-                options={OPTIONS_COMMON_STATE}
-                sx={{ maxWidth: 600 }}
-                validate={formError?.entityState}
-                value={entityState}
-              />
+              <Stack
+                flexDirection={{ xs: 'column', lg: 'row' }}
+                gap={3}
+                maxWidth={600}
+                width={'100%'}
+              >
+                <StyledTextField
+                  label={'Entity name'}
+                  onChange={(e) => {
+                    if (formError?.entityName) {
+                      setFormError((prev) => {
+                        if (prev) {
+                          delete prev.entityName;
+                        }
+                        return prev;
+                      });
+                    }
+                    setEntityName(e.target.value);
+                  }}
+                  placeholder={'Entity name'}
+                  sx={{ maxWidth: 600 }}
+                  validate={formError?.entityName}
+                  value={entityName}
+                />
+                <StyledSelect
+                  label={'Entity type'}
+                  onChange={(e) => {
+                    if (formError?.entityType) {
+                      setFormError((prev) => {
+                        if (prev) {
+                          delete prev.entityType;
+                        }
+                        return prev;
+                      });
+                    }
+                    setEntityType(
+                      e.target
+                        .value as string as DashboardTaskBorrowerEntityType,
+                    );
+                  }}
+                  options={OPTIONS_TASK_ENTITY_TYPE}
+                  sx={{ maxWidth: 600 }}
+                  validate={formError?.entityType}
+                  value={entityType}
+                />
+              </Stack>
 
-              <StyledTextFieldPhone
-                label={'Company phone'}
-                onValueChange={({ value }) => {
-                  if (formError?.companyPhone) {
-                    setFormError((prev) => {
-                      if (prev) {
-                        delete prev.companyPhone;
-                      }
-                      return prev;
-                    });
-                  }
-                  setCompanyPhone(value);
-                }}
-                placeholder={'Company phone'}
-                sx={{ maxWidth: 600 }}
-                validate={formError?.companyPhone}
-                value={companyPhone}
-              />
-              <StyledTextField
-                label={'Company email'}
-                onChange={(e) => {
-                  if (formError?.companyEmail) {
-                    setFormError((prev) => {
-                      if (prev) {
-                        delete prev.companyEmail;
-                      }
-                      return prev;
-                    });
-                  }
-                  setCompanyEmail(e.target.value);
-                }}
-                placeholder={'Company email'}
-                sx={{ maxWidth: 600 }}
-                validate={formError?.companyEmail}
-                value={companyEmail}
-              />
+              <Stack
+                flexDirection={{ xs: 'column', lg: 'row' }}
+                gap={3}
+                maxWidth={600}
+                width={'100%'}
+              >
+                <StyledTextFieldPhone
+                  label={'Company phone'}
+                  onValueChange={({ value }) => {
+                    if (formError?.companyPhone) {
+                      setFormError((prev) => {
+                        if (prev) {
+                          delete prev.companyPhone;
+                        }
+                        return prev;
+                      });
+                    }
+                    setCompanyPhone(value);
+                  }}
+                  placeholder={'Company phone'}
+                  sx={{ maxWidth: 600 }}
+                  validate={formError?.companyPhone}
+                  value={companyPhone}
+                />
+                <StyledTextField
+                  label={'Company email'}
+                  onChange={(e) => {
+                    if (formError?.companyEmail) {
+                      setFormError((prev) => {
+                        if (prev) {
+                          delete prev.companyEmail;
+                        }
+                        return prev;
+                      });
+                    }
+                    setCompanyEmail(e.target.value);
+                  }}
+                  placeholder={'Company email'}
+                  sx={{ maxWidth: 600 }}
+                  validate={formError?.companyEmail}
+                  value={companyEmail}
+                />
+              </Stack>
+
+              <Stack
+                flexDirection={{ xs: 'column', lg: 'row' }}
+                gap={3}
+                maxWidth={600}
+                width={'100%'}
+              >
+                <StyledTextField
+                  label={'Secretary of State ID'}
+                  onChange={(e) => {
+                    if (formError?.entityId) {
+                      setFormError((prev) => {
+                        if (prev) {
+                          delete prev.entityId;
+                        }
+                        return prev;
+                      });
+                    }
+                    setEntityId(e.target.value);
+                  }}
+                  placeholder={'Secretary of State ID'}
+                  sx={{ maxWidth: 600 }}
+                  validate={formError?.entityId}
+                  value={entityId}
+                />
+                <StyledSelect
+                  label={'Formation State'}
+                  onChange={(e) => {
+                    if (formError?.entityState) {
+                      setFormError((prev) => {
+                        if (prev) {
+                          delete prev.entityState;
+                        }
+                        return prev;
+                      });
+                    }
+                    setEntityState(e.target.value as string);
+                  }}
+                  options={OPTIONS_COMMON_STATE}
+                  sx={{ maxWidth: 600 }}
+                  validate={formError?.entityState}
+                  value={entityState}
+                />
+              </Stack>
             </StyledFormItem>
           )}
         </Transitions>

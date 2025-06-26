@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import {
   Box,
   FormControl,
@@ -21,7 +21,7 @@ export interface StyledSelectProps extends SelectProps {
   options: Option[];
   sxHelperText?: SxProps;
   sxList?: SxProps;
-  tooltipTitle?: string;
+  tooltipTitle?: ReactNode;
   tooltipSx?: SxProps;
   isTooltip?: boolean;
 }

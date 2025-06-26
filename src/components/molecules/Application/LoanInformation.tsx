@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
@@ -11,6 +11,7 @@ import {
   POSFormatDollar,
   POSFormatPercent,
   POSGetDecimalPlaces,
+  POSNotUndefined,
 } from '@/utils';
 import {
   APPLICATION_FICO_SCORE,
@@ -49,13 +50,19 @@ import { isDate, isValid } from 'date-fns';
 export const LoanInformation: FC<FormNodeBaseProps> = observer(
   ({ nextStep, nextState, backState, backStep }) => {
     const breakpoints = useBreakpoints();
+    const { saasState } = useSessionStorageState('tenantConfig');
 
     const {
       applicationForm: { loanInformation },
     } = useMst();
 
-    const { saasState } = useSessionStorageState('tenantConfig');
+    const [expanded, setExpanded] = useState<boolean | undefined>();
 
+    const [prepaymentField, setPrepaymentField] = useState<string>('');
+    const [prepaymentSelect, setPrepaymentSelect] = useState<string>('');
+    const isInitializedRef = useRef(false);
+
+    // Memoize the options to prevent unnecessary recalculations
     const prepaymentPenaltyOptions = useMemo(() => {
       return saasState?.losSettings?.prepaymentPenaltyOptions?.reduce(
         (acc: Option[], cur: { key: string; label: string }) => {
@@ -68,9 +75,58 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
           }
           return acc;
         },
-        [],
+        [
+          {
+            label: 'Enter prepayment penalty',
+            key: 'enter_prepayment_penalty',
+            value: LoanAnswerEnum.yes,
+          },
+        ],
       );
     }, [saasState?.losSettings?.prepaymentPenaltyOptions]);
+
+    // Initialize the prepayment values when the component mounts or loanInformation.prepaymentPenalty changes
+    useEffect(() => {
+      // Skip if already initialized or no prepayment penalty
+      if (
+        isInitializedRef.current ||
+        !loanInformation.prepaymentPenalty ||
+        !prepaymentPenaltyOptions?.length
+      ) {
+        return;
+      }
+
+      const matchingOption = prepaymentPenaltyOptions.find(
+        (item: any) => loanInformation.prepaymentPenalty === item.label,
+      );
+
+      // Set initial values
+      if (matchingOption) {
+        setPrepaymentSelect(matchingOption.value);
+        setPrepaymentField('');
+      } else {
+        setPrepaymentSelect(LoanAnswerEnum.yes);
+        setPrepaymentField(loanInformation.prepaymentPenalty);
+      }
+
+      isInitializedRef.current = true;
+    }, [loanInformation.prepaymentPenalty, prepaymentPenaltyOptions]);
+
+    // Update the form field when prepaymentSelect or prepaymentField changes
+    useEffect(() => {
+      // Skip initial render
+      if (!isInitializedRef.current) {
+        return;
+      }
+
+      const newValue =
+        prepaymentSelect === LoanAnswerEnum.yes
+          ? prepaymentField
+          : prepaymentSelect;
+      if (loanInformation.prepaymentPenalty !== newValue) {
+        loanInformation.changeFieldValue('prepaymentPenalty', newValue);
+      }
+    }, [prepaymentSelect, prepaymentField, loanInformation]);
 
     const payoffAmountError = useMemo(() => {
       if (loanInformation.loanPurpose === LoanPurposeEnum.refinance) {
@@ -245,6 +301,354 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
       loanInformation?.purchasePrice,
       loanInformation?.refinanceLoanAmount,
       loanInformation?.rehabCost,
+    ]);
+
+    const renderSummary = useMemo(() => {
+      switch (loanInformation.productCategory) {
+        case LoanProductCategoryEnum.stabilized_bridge:
+          if (loanInformation.loanPurpose === LoanPurposeEnum.purchase) {
+            return (
+              <Typography
+                color={'text.secondary'}
+                sx={{
+                  '& > b': {
+                    color: 'text.primary',
+                    fontWeight: 600,
+                  },
+                }}
+                variant={'body2'}
+              >
+                This property is located in{' '}
+                <b>
+                  {POSFindLabel(OPTIONS_COMMON_STATE, loanInformation.state)}
+                </b>
+                , the FlCO score is{' '}
+                <b>
+                  {POSFindLabel(
+                    APPLICATION_FICO_SCORE,
+                    loanInformation.ficoScore,
+                  )}
+                </b>
+                {loanInformation.isLiquidity ? (
+                  <>
+                    , the liquidity is{' '}
+                    <b>{POSFormatDollar(loanInformation.liquidityAmount)}</b>
+                  </>
+                ) : (
+                  ''
+                )}
+                . The purchase price is{' '}
+                <b>{POSFormatDollar(loanInformation.purchasePrice)}</b>. The
+                total loan amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
+              </Typography>
+            );
+          }
+          return (
+            <Typography
+              color={'text.secondary'}
+              sx={{
+                '& > b': {
+                  color: 'text.primary',
+                  fontWeight: 600,
+                },
+              }}
+              variant={'body2'}
+            >
+              This property is located in{' '}
+              <b>{POSFindLabel(OPTIONS_COMMON_STATE, loanInformation.state)}</b>
+              , the FlCO score is{' '}
+              <b>
+                {POSFindLabel(
+                  APPLICATION_FICO_SCORE,
+                  loanInformation.ficoScore,
+                )}
+              </b>
+              {loanInformation.isLiquidity ? (
+                <>
+                  , the liquidity is{' '}
+                  <b>{POSFormatDollar(loanInformation.liquidityAmount)}</b>
+                </>
+              ) : (
+                ''
+              )}
+              . The as-is property value is{' '}
+              <b>{POSFormatDollar(loanInformation.propertyValue)}</b>. The total
+              loan amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
+            </Typography>
+          );
+        case LoanProductCategoryEnum.fix_and_flip:
+          if (loanInformation.loanPurpose === LoanPurposeEnum.purchase) {
+            return (
+              <Typography
+                color={'text.secondary'}
+                sx={{
+                  '& > b': {
+                    color: 'text.primary',
+                    fontWeight: 600,
+                  },
+                }}
+                variant={'body2'}
+              >
+                This property is located in{' '}
+                <b>
+                  {POSFindLabel(OPTIONS_COMMON_STATE, loanInformation.state)}
+                </b>
+                , the FlCO score is{' '}
+                <b>
+                  {POSFindLabel(
+                    APPLICATION_FICO_SCORE,
+                    loanInformation.ficoScore,
+                  )}
+                </b>
+                {loanInformation.isLiquidity ? (
+                  <>
+                    , the liquidity is{' '}
+                    <b>{POSFormatDollar(loanInformation.liquidityAmount)}</b>
+                  </>
+                ) : (
+                  ''
+                )}
+                . The purchase price is{' '}
+                <b>{POSFormatDollar(loanInformation.purchasePrice)}</b>. The
+                estimated cost of rehab is{' '}
+                <b>{POSFormatDollar(loanInformation.rehabCost)}</b>, and the
+                after-repair value of the property will be{' '}
+                <b>{POSFormatDollar(loanInformation.arv)}</b>. The total loan
+                amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
+              </Typography>
+            );
+          }
+          return (
+            <Typography
+              color={'text.secondary'}
+              sx={{
+                '& > b': {
+                  color: 'text.primary',
+                  fontWeight: 600,
+                },
+              }}
+              variant={'body2'}
+            >
+              This property is located in{' '}
+              <b>{POSFindLabel(OPTIONS_COMMON_STATE, loanInformation.state)}</b>
+              , the FlCO score is{' '}
+              <b>
+                {POSFindLabel(
+                  APPLICATION_FICO_SCORE,
+                  loanInformation.ficoScore,
+                )}
+              </b>
+              {loanInformation.isLiquidity ? (
+                <>
+                  , the liquidity is{' '}
+                  <b>{POSFormatDollar(loanInformation.liquidityAmount)}</b>
+                </>
+              ) : (
+                ''
+              )}
+              . The as-is property value is{' '}
+              <b>{POSFormatDollar(loanInformation.propertyValue)}</b>. The
+              estimated cost of rehab is{' '}
+              <b>{POSFormatDollar(loanInformation.rehabCost)}</b>, and the
+              after-repair value of the property will be{' '}
+              <b>{POSFormatDollar(loanInformation.arv)}</b>. The total loan
+              amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
+            </Typography>
+          );
+        case LoanProductCategoryEnum.ground_up_construction:
+          if (loanInformation.loanPurpose === LoanPurposeEnum.purchase) {
+            return (
+              <Typography
+                color={'text.secondary'}
+                sx={{
+                  '& > b': {
+                    color: 'text.primary',
+                    fontWeight: 600,
+                  },
+                }}
+                variant={'body2'}
+              >
+                This property is located in{' '}
+                <b>
+                  {POSFindLabel(OPTIONS_COMMON_STATE, loanInformation.state)}
+                </b>
+                , with a FICO score range of{' '}
+                <b>
+                  {POSFindLabel(
+                    APPLICATION_FICO_SCORE,
+                    loanInformation.ficoScore,
+                  )}
+                </b>
+                {loanInformation.isLiquidity ? (
+                  <>
+                    {' '}
+                    and liquidity of{' '}
+                    <b>{POSFormatDollar(loanInformation.liquidityAmount)}</b>
+                  </>
+                ) : (
+                  ''
+                )}
+                . The purchase price is{' '}
+                <b>{POSFormatDollar(loanInformation.purchasePrice)}</b>. the
+                estimated cost of rehab construction is{' '}
+                <b>
+                  {POSFormatDollar(loanInformation.purchaseConstructionCosts)}
+                </b>
+                , and the completed/after-repair value of the property will be{' '}
+                <b>{POSFormatDollar(loanInformation.arv)}</b>, and the total
+                loan amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
+              </Typography>
+            );
+          }
+          return (
+            <Typography
+              color={'text.secondary'}
+              sx={{
+                '& > b': {
+                  color: 'text.primary',
+                  fontWeight: 600,
+                },
+              }}
+              variant={'body2'}
+            >
+              This property is located in{' '}
+              <b>{POSFindLabel(OPTIONS_COMMON_STATE, loanInformation.state)}</b>
+              , the FlCO score is{' '}
+              <b>
+                {POSFindLabel(
+                  APPLICATION_FICO_SCORE,
+                  loanInformation.ficoScore,
+                )}
+              </b>
+              {loanInformation.isLiquidity ? (
+                <>
+                  , the liquidity is{' '}
+                  <b>{POSFormatDollar(loanInformation.liquidityAmount)}</b>
+                </>
+              ) : (
+                ''
+              )}
+              . The purchase price is{' '}
+              <b>{POSFormatDollar(loanInformation.purchasePrice)}</b>, with
+              <b>
+                {POSFormatDollar(loanInformation.improvementsSinceAcquisition)}
+              </b>
+              , in improvements made since acquisition and{' '}
+              <b>
+                {POSFormatDollar(loanInformation.refinanceConstructionCosts)}
+              </b>
+              remaining in construction costs. The estimated completed
+              (after-repair) value of the property is{' '}
+              <b>{POSFormatDollar(loanInformation.arv)}</b>, and the total loan
+              amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
+            </Typography>
+          );
+        case LoanProductCategoryEnum.dscr_rental:
+          if (loanInformation.loanPurpose === LoanPurposeEnum.purchase) {
+            return (
+              <Typography
+                color={'text.secondary'}
+                sx={{
+                  '& > b': {
+                    color: 'text.primary',
+                    fontWeight: 600,
+                  },
+                }}
+                variant={'body2'}
+              >
+                This property is located in{' '}
+                <b>
+                  {POSFindLabel(OPTIONS_COMMON_STATE, loanInformation.state)}
+                </b>
+                , with a FICO score range of{' '}
+                <b>
+                  {POSFindLabel(
+                    APPLICATION_FICO_SCORE,
+                    loanInformation.ficoScore,
+                  )}
+                </b>
+                {loanInformation.isLiquidity ? (
+                  <>
+                    {' '}
+                    and liquidity of{' '}
+                    <b>{POSFormatDollar(loanInformation.liquidityAmount)}</b>
+                  </>
+                ) : (
+                  ''
+                )}
+                . The purchase price is{' '}
+                <b>{POSFormatDollar(loanInformation.purchasePrice)}</b>. the
+                estimated cost of rehab construction is{' '}
+                <b>
+                  {POSFormatDollar(loanInformation.purchaseConstructionCosts)}
+                </b>
+                , and the completed/after-repair value of the property will be{' '}
+                <b>{POSFormatDollar(loanInformation.arv)}</b>, and the total
+                loan amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
+              </Typography>
+            );
+          }
+          return (
+            <Typography
+              color={'text.secondary'}
+              sx={{
+                '& > b': {
+                  color: 'text.primary',
+                  fontWeight: 600,
+                },
+              }}
+              variant={'body2'}
+            >
+              This property is located in{' '}
+              <b>{POSFindLabel(OPTIONS_COMMON_STATE, loanInformation.state)}</b>
+              , the FlCO score is{' '}
+              <b>
+                {POSFindLabel(
+                  APPLICATION_FICO_SCORE,
+                  loanInformation.ficoScore,
+                )}
+              </b>
+              {loanInformation.isLiquidity ? (
+                <>
+                  , the liquidity is{' '}
+                  <b>{POSFormatDollar(loanInformation.liquidityAmount)}</b>
+                </>
+              ) : (
+                ''
+              )}
+              . The purchase price is{' '}
+              <b>{POSFormatDollar(loanInformation.purchasePrice)}</b>, with
+              <b>
+                {POSFormatDollar(loanInformation.improvementsSinceAcquisition)}
+              </b>
+              , in improvements made since acquisition and{' '}
+              <b>
+                {POSFormatDollar(loanInformation.refinanceConstructionCosts)}
+              </b>
+              remaining in construction costs. The estimated completed
+              (after-repair) value of the property is{' '}
+              <b>{POSFormatDollar(loanInformation.arv)}</b>, and the total loan
+              amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
+            </Typography>
+          );
+        default:
+          return '';
+      }
+    }, [
+      loanInformation.arv,
+      loanInformation.ficoScore,
+      loanInformation.improvementsSinceAcquisition,
+      loanInformation.isLiquidity,
+      loanInformation.liquidityAmount,
+      loanInformation.loanPurpose,
+      loanInformation.productCategory,
+      loanInformation.propertyValue,
+      loanInformation.purchaseConstructionCosts,
+      loanInformation.purchasePrice,
+      loanInformation.refinanceConstructionCosts,
+      loanInformation.rehabCost,
+      loanInformation.state,
+      totalLoanAmount,
     ]);
 
     const renderEditFields = useMemo(
@@ -876,19 +1280,52 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                     value={loanInformation.purchaseLoanAmount}
                   />
 
-                  <StyledSelect
-                    label={'Prepayment penalty'}
-                    labelId={'prepayment-penalty-purchase'}
-                    onChange={(e) =>
+                  <StyledSelectTextField
+                    fieldLabel={'Prepayment penalty'}
+                    fieldType={'text'}
+                    fieldValue={prepaymentField}
+                    isTooltip={true}
+                    onFieldChange={(e) => {
+                      setPrepaymentField(e.target.value);
                       loanInformation.changeFieldValue(
                         'prepaymentPenalty',
                         e.target.value as string as PrepaymentPenaltyEnum,
-                      )
-                    }
+                      );
+                    }}
+                    onSelectChange={(v) => {
+                      setPrepaymentSelect(v as string);
+                      loanInformation.changeFieldValue(
+                        'prepaymentPenalty',
+                        v as string as PrepaymentPenaltyEnum,
+                      );
+                    }}
                     options={prepaymentPenaltyOptions}
-                    renderValue={(v) => <>{v}</>}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                    value={loanInformation.prepaymentPenalty || ''}
+                    selectLabel={'Prepayment penalty'}
+                    selectValue={prepaymentSelect}
+                    sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipTitle={
+                      <Stack gap={0.5}>
+                        <Typography fontSize={12}>
+                          <b>Prepayment penalty</b> is a fee you’ll owe if you
+                          pay off or refinance the DSCR loan before the penalty
+                          period ends.
+                        </Typography>
+                        <Typography fontSize={12} ml={1.5}>
+                          <b>Step-down: </b>the fee falls each year. Example
+                          5-4-3-2-1 = 5 % of the outstanding balance in year 1,
+                          4 % in year 2, 3 % in year 3, and so on.
+                        </Typography>
+                        <Typography fontSize={12} ml={1.5}>
+                          <b>Straight-line:</b> the fee stays the same each
+                          year. Example 1-1-1-1-1 = 1 % every year for five
+                          years.
+                        </Typography>
+                        <Typography fontSize={12}>
+                          Pick a schedule in the dropdown, or type in “Not
+                          sure”.
+                        </Typography>
+                      </Stack>
+                    }
                   />
                 </Stack>
               );
@@ -949,18 +1386,50 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                   }
                   validate={payoffAmountError}
                 />
-                <StyledSelect
-                  label={'Prepayment penalty'}
-                  labelId={'prepayment-penalty-purchase'}
-                  onChange={(e) =>
+                <StyledSelectTextField
+                  fieldLabel={'Prepayment penalty'}
+                  fieldType={'text'}
+                  fieldValue={prepaymentField}
+                  isTooltip={true}
+                  onFieldChange={(e) => {
+                    setPrepaymentField(e.target.value);
                     loanInformation.changeFieldValue(
                       'prepaymentPenalty',
                       e.target.value as string as PrepaymentPenaltyEnum,
-                    )
-                  }
+                    );
+                  }}
+                  onSelectChange={(v) => {
+                    setPrepaymentSelect(v as string);
+                    loanInformation.changeFieldValue(
+                      'prepaymentPenalty',
+                      v as string as PrepaymentPenaltyEnum,
+                    );
+                  }}
                   options={prepaymentPenaltyOptions}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  value={loanInformation.prepaymentPenalty || ''}
+                  selectLabel={'Prepayment penalty'}
+                  selectValue={prepaymentSelect}
+                  sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+                  tooltipTitle={
+                    <Stack gap={0.5}>
+                      <Typography fontSize={12}>
+                        <b>Prepayment penalty</b> is a fee you’ll owe if you pay
+                        off or refinance the DSCR loan before the penalty period
+                        ends.
+                      </Typography>
+                      <Typography fontSize={12} ml={1.5}>
+                        <b>Step-down: </b>the fee falls each year. Example
+                        5-4-3-2-1 = 5 % of the outstanding balance in year 1, 4
+                        % in year 2, 3 % in year 3, and so on.
+                      </Typography>
+                      <Typography fontSize={12} ml={1.5}>
+                        <b>Straight-line:</b> the fee stays the same each year.
+                        Example 1-1-1-1-1 = 1 % every year for five years.
+                      </Typography>
+                      <Typography fontSize={12}>
+                        Pick a schedule in the dropdown, or type in “Not sure”.
+                      </Typography>
+                    </Stack>
+                  }
                 />
               </Stack>
             );
@@ -976,6 +1445,8 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
         LTV,
         breakpoints,
         prepaymentPenaltyOptions,
+        prepaymentSelect,
+        prepaymentField,
         loanInformation.productCategory,
         loanInformation.loanPurpose,
         loanInformation.propertyType,
@@ -1264,22 +1735,6 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
     const DSCRCalculationInfo = useMemo(
       () => (
         <Stack gap={1} mt={1}>
-          {/*<Typography*/}
-          {/*  color={'text.secondary'}*/}
-          {/*  fontSize={{ xs: 14, lg: 18 }}*/}
-          {/*  fontWeight={600}*/}
-          {/*>*/}
-          {/*  Estimated DSCR calculation:{' '}*/}
-          {/*  <Typography*/}
-          {/*    color={'primary.main'}*/}
-          {/*    component={'span'}*/}
-          {/*    fontSize={'inherit'}*/}
-          {/*    fontWeight={600}*/}
-          {/*  >*/}
-          {/*    1.20*/}
-          {/*  </Typography>*/}
-          {/*</Typography>*/}
-
           <Typography color={'text.secondary'} fontSize={{ xs: 12, lg: 16 }}>
             Loan terms will be provided after you complete the application and
             our underwriting team reviews your submission.
@@ -1374,6 +1829,17 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
       renderExtraBridgeAndFix,
     ]);
 
+    useEffect(
+      () => {
+        if (POSNotUndefined(expanded) || expanded) {
+          return;
+        }
+        ['xs', 'sm', 'md'].includes(breakpoints) && setExpanded(false);
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [],
+    );
+
     useEffect(() => {
       if (
         !loanInformation.prepaymentPenalty &&
@@ -1397,142 +1863,182 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
           fontSize: { xs: 12, lg: 16 },
         }}
       >
-        <Stack gap={3} width={'100%'}>
+        {POSNotUndefined(expanded) && !expanded && (
           <Stack
-            alignItems={{ xs: 'flex-start', lg: 'stretch' }}
-            flexDirection={{ xs: 'column', lg: 'row' }}
+            alignItems={'center'}
             gap={3}
-            ml={-0.5}
+            justifyContent={'space-between'}
+            width={'100%'}
           >
-            <StyledSelect
-              isTooltip={true}
-              label={'Citizenship'}
-              onChange={(e) => {
-                loanInformation.changeFieldValue(
-                  'citizenship',
-                  e.target.value as string as LoanCitizenshipEnum,
-                );
-              }}
-              options={OPTIONS_COMMON_CITIZEN_TYPE}
-              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              value={loanInformation.citizenship}
-            />
-            <StyledTextFieldNumber
-              isTooltip={true}
-              label={
-                loanInformation.productCategory !==
-                LoanProductCategoryEnum.ground_up_construction
-                  ? '# of prior flips'
-                  : '# of construction projects exited'
-              }
-              onValueChange={({ floatValue }) => {
-                loanInformation.changeFieldValue('priorExperience', floatValue);
-              }}
-              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipTitle={
-                loanInformation.productCategory !==
-                LoanProductCategoryEnum.ground_up_construction
-                  ? 'Number of flips completed and held rental properties'
-                  : 'The number of investment properties you have built and exited over the last 5 years'
-              }
-              value={loanInformation.priorExperience}
-            />
-            {loanInformation.productCategory ===
-              LoanProductCategoryEnum.dscr_rental &&
-              loanInformation.loanPurpose === LoanPurposeEnum.refinance && (
-                <StyledDatePicker
-                  disableFuture={false}
-                  disablePast={false}
-                  isTooltip={true}
-                  label={'Prop. acquisition date'}
-                  onChange={(date) => {
-                    const value =
-                      isValid(date) && isDate(date)
-                        ? (date as Date).toISOString()
-                        : '';
-                    loanInformation.changeFieldValue('acquisitionDate', value);
-                  }}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  tooltipTitle={
-                    'YouLand requires a minimum of 90 days of ownership before the signing date for a Cash-Out Refinance. However, this requirement does not apply to properties owned free-and-clear or for Rate-Term Refinances. To confirm eligibility, YouLand will verify the acquisition date, defined as the closing date of the subject property.'
-                  }
-                  value={
-                    loanInformation.acquisitionDate
-                      ? new Date(loanInformation.acquisitionDate)
-                      : null
-                  }
-                />
-              )}
+            <Stack
+              alignItems={'center'}
+              flexDirection={'row'}
+              gap={3}
+              justifyContent={'space-between'}
+              width={'100%'}
+            >
+              <Typography color={'text.secondary'}>
+                Rates based on following property:
+              </Typography>
+              <StyledButton
+                onClick={() => setExpanded(true)}
+                size={'small'}
+                variant={'outlined'}
+              >
+                Edit
+              </StyledButton>
+            </Stack>
+            {renderSummary}
           </Stack>
+        )}
 
-          <Stack
-            alignItems={{ xs: 'flex-start', lg: 'stretch' }}
-            flexDirection={{ xs: 'column', lg: 'row' }}
-            gap={3}
-            ml={-0.5}
-          >
-            <StyledSelect
-              label={'State'}
-              onChange={(e) => {
-                loanInformation.changeFieldValue(
-                  'state',
-                  e.target.value as string,
-                );
-              }}
-              options={OPTIONS_COMMON_STATE}
-              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              value={loanInformation.state}
-            />
-            {loanInformation.citizenship !==
-              LoanCitizenshipEnum.foreign_national && (
+        {(!POSNotUndefined(expanded) || expanded) && (
+          <Stack gap={3} width={'100%'}>
+            <Stack
+              alignItems={{ xs: 'flex-start', lg: 'stretch' }}
+              flexDirection={{ xs: 'column', lg: 'row' }}
+              gap={3}
+              ml={-0.5}
+            >
               <StyledSelect
-                label={'Est. FICO score'}
+                isTooltip={true}
+                label={'Citizenship'}
                 onChange={(e) => {
                   loanInformation.changeFieldValue(
-                    'ficoScore',
-                    e.target.value as string as LoanFicoScoreEnum,
+                    'citizenship',
+                    e.target.value as string as LoanCitizenshipEnum,
                   );
                 }}
-                options={APPLICATION_FICO_SCORE}
+                options={OPTIONS_COMMON_CITIZEN_TYPE}
                 sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                value={loanInformation.ficoScore}
+                value={loanInformation.citizenship}
               />
-            )}
-            <StyledSelectTextField
-              fieldLabel={'Liquidity'}
-              fieldValue={loanInformation.liquidityAmount}
-              isTooltip={true}
-              onFieldChange={(floatValue) =>
-                loanInformation.changeFieldValue('liquidityAmount', floatValue)
-              }
-              onSelectChange={(value) => {
-                loanInformation.changeFieldValue(
-                  'isLiquidity',
-                  value === LoanAnswerEnum.yes,
-                );
-              }}
-              options={APPLICATION_LIQUIDITY}
-              selectLabel={'Liquidity'}
-              selectValue={
-                loanInformation.isLiquidity
-                  ? LoanAnswerEnum.yes
-                  : LoanAnswerEnum.no
-              }
-              sx={{ maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipTitle={
-                'Liquidity means the cash or readily available funds you have, like savings or liquid investments. If unsure, use the dropdown menu on the right and select "Not sure".'
-              }
-            />
+              <StyledTextFieldNumber
+                isTooltip={true}
+                label={
+                  loanInformation.productCategory !==
+                  LoanProductCategoryEnum.ground_up_construction
+                    ? '# of prior flips'
+                    : '# of construction projects exited'
+                }
+                onValueChange={({ floatValue }) => {
+                  loanInformation.changeFieldValue(
+                    'priorExperience',
+                    floatValue,
+                  );
+                }}
+                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                tooltipTitle={
+                  loanInformation.productCategory !==
+                  LoanProductCategoryEnum.ground_up_construction
+                    ? 'Number of flips completed and held rental properties'
+                    : 'The number of investment properties you have built and exited over the last 5 years'
+                }
+                value={loanInformation.priorExperience}
+              />
+              {loanInformation.productCategory ===
+                LoanProductCategoryEnum.dscr_rental &&
+                loanInformation.loanPurpose === LoanPurposeEnum.refinance && (
+                  <StyledDatePicker
+                    disableFuture={false}
+                    disablePast={false}
+                    isTooltip={true}
+                    label={'Prop. acquisition date'}
+                    onChange={(date) => {
+                      const value =
+                        isValid(date) && isDate(date)
+                          ? (date as Date).toISOString()
+                          : '';
+                      loanInformation.changeFieldValue(
+                        'acquisitionDate',
+                        value,
+                      );
+                    }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                    tooltipTitle={
+                      'YouLand requires a minimum of 90 days of ownership before the signing date for a Cash-Out Refinance. However, this requirement does not apply to properties owned free-and-clear or for Rate-Term Refinances. To confirm eligibility, YouLand will verify the acquisition date, defined as the closing date of the subject property.'
+                    }
+                    value={
+                      loanInformation.acquisitionDate
+                        ? new Date(loanInformation.acquisitionDate)
+                        : null
+                    }
+                  />
+                )}
+            </Stack>
+
+            <Stack
+              alignItems={{ xs: 'flex-start', lg: 'stretch' }}
+              flexDirection={{ xs: 'column', lg: 'row' }}
+              gap={3}
+              ml={-0.5}
+            >
+              <StyledSelect
+                label={'State'}
+                onChange={(e) => {
+                  loanInformation.changeFieldValue(
+                    'state',
+                    e.target.value as string,
+                  );
+                }}
+                options={OPTIONS_COMMON_STATE}
+                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                value={loanInformation.state}
+              />
+              {loanInformation.citizenship !==
+                LoanCitizenshipEnum.foreign_national && (
+                <StyledSelect
+                  label={'Est. FICO score'}
+                  onChange={(e) => {
+                    loanInformation.changeFieldValue(
+                      'ficoScore',
+                      e.target.value as string as LoanFicoScoreEnum,
+                    );
+                  }}
+                  options={APPLICATION_FICO_SCORE}
+                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                  value={loanInformation.ficoScore}
+                />
+              )}
+              <StyledSelectTextField
+                fieldLabel={'Liquidity'}
+                fieldValue={loanInformation.liquidityAmount}
+                isTooltip={true}
+                onFieldChange={(floatValue) =>
+                  loanInformation.changeFieldValue(
+                    'liquidityAmount',
+                    floatValue,
+                  )
+                }
+                onSelectChange={(value) => {
+                  loanInformation.changeFieldValue(
+                    'isLiquidity',
+                    value === LoanAnswerEnum.yes,
+                  );
+                }}
+                options={APPLICATION_LIQUIDITY}
+                selectLabel={'Liquidity'}
+                selectValue={
+                  loanInformation.isLiquidity
+                    ? LoanAnswerEnum.yes
+                    : LoanAnswerEnum.no
+                }
+                sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+                tooltipTitle={
+                  'Liquidity means the cash or readily available funds you have, like savings or liquid investments. If unsure, use the dropdown menu on the right and select "Not sure".'
+                }
+              />
+            </Stack>
+
+            {renderEditFields}
+
+            {renderTail}
+
+            {renderExtraTextField}
           </Stack>
-
-          {renderEditFields}
-
-          {renderTail}
-
-          {renderExtraTextField}
-        </Stack>
+        )}
 
         <Stack
           alignItems={'center'}

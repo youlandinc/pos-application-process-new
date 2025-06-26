@@ -7,14 +7,12 @@ import { useAsync } from 'react-use';
 import { AUTO_HIDE_DURATION } from '@/constants';
 import { HttpError } from '@/types';
 import {
-  //_portalClickTimes,
   _portalDeleteFile,
   _portalFetchData,
   _portalUploadFile,
 } from '@/requests';
 
 import {
-  //StyledButton,
   StyledHeaderLogo,
   StyledLoading,
   StyledTab,
