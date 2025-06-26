@@ -88,6 +88,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
     // Initialize the prepayment values when the component mounts or loanInformation.prepaymentPenalty changes
     useEffect(() => {
       // Skip if already initialized or no prepayment penalty
+
       if (
         isInitializedRef.current ||
         !loanInformation.prepaymentPenalty ||
@@ -101,6 +102,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
       );
 
       // Set initial values
+
       if (matchingOption) {
         setPrepaymentSelect(matchingOption.value);
         setPrepaymentField('');
@@ -115,6 +117,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
     // Update the form field when prepaymentSelect or prepaymentField changes
     useEffect(() => {
       // Skip initial render
+
       if (!isInitializedRef.current) {
         return;
       }
@@ -123,7 +126,11 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
         prepaymentSelect === LoanAnswerEnum.yes
           ? prepaymentField
           : prepaymentSelect;
-      if (loanInformation.prepaymentPenalty !== newValue) {
+
+      if (
+        loanInformation.prepaymentPenalty !== newValue &&
+        newValue !== LoanAnswerEnum.yes
+      ) {
         loanInformation.changeFieldValue('prepaymentPenalty', newValue);
       }
     }, [prepaymentSelect, prepaymentField, loanInformation]);
@@ -1847,7 +1854,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
       ) {
         loanInformation.changeFieldValue(
           'prepaymentPenalty',
-          prepaymentPenaltyOptions[0].value as string as PrepaymentPenaltyEnum,
+          prepaymentPenaltyOptions[1]?.value as string as PrepaymentPenaltyEnum,
         );
       }
     }, [loanInformation, prepaymentPenaltyOptions]);
