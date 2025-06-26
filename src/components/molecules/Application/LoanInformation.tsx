@@ -1313,9 +1313,9 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                     tooltipTitle={
                       <Stack gap={0.5}>
                         <Typography fontSize={12}>
-                          <b>Prepayment penalty</b> is a fee you’ll owe if you
-                          pay off or refinance the DSCR loan before the penalty
-                          period ends.
+                          <b>Prepayment penalty</b> is a fee you&apos;ll owe if
+                          you pay off or refinance the DSCR loan before the
+                          penalty period ends.
                         </Typography>
                         <Typography fontSize={12} ml={1.5}>
                           <b>Step-down: </b>the fee falls each year. Example
@@ -1328,8 +1328,8 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                           years.
                         </Typography>
                         <Typography fontSize={12}>
-                          Pick a schedule in the dropdown, or type in “Not
-                          sure”.
+                          Pick a schedule in the dropdown, or type in &quot;Not
+                          sure&quot;.
                         </Typography>
                       </Stack>
                     }
@@ -1419,9 +1419,9 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                   tooltipTitle={
                     <Stack gap={0.5}>
                       <Typography fontSize={12}>
-                        <b>Prepayment penalty</b> is a fee you’ll owe if you pay
-                        off or refinance the DSCR loan before the penalty period
-                        ends.
+                        <b>Prepayment penalty</b> is a fee you&apos;ll owe if
+                        you pay off or refinance the DSCR loan before the
+                        penalty period ends.
                       </Typography>
                       <Typography fontSize={12} ml={1.5}>
                         <b>Step-down: </b>the fee falls each year. Example
@@ -1433,7 +1433,8 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                         Example 1-1-1-1-1 = 1 % every year for five years.
                       </Typography>
                       <Typography fontSize={12}>
-                        Pick a schedule in the dropdown, or type in “Not sure”.
+                        Pick a schedule in the dropdown, or type in &quot;Not
+                        sure&quot;.
                       </Typography>
                     </Stack>
                   }
