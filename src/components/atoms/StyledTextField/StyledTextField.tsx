@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { Box, OutlinedTextFieldProps, SxProps, TextField } from '@mui/material';
 
 import { StyledTooltip, Transitions } from '@/components/atoms';
@@ -11,7 +11,7 @@ export interface StyledTextFieldProps
   validate?: undefined | string[];
   sx?: SxProps;
   disabledAutoFill?: boolean;
-  tooltipTitle?: string;
+  tooltipTitle?: ReactNode;
   tooltipSx?: SxProps;
   isTooltip?: boolean;
 }

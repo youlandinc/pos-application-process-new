@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { Box, SxProps } from '@mui/material';
 import { PickerChangeHandlerContext } from '@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue.types';
 import { DatePicker } from '@mui/x-date-pickers';
@@ -22,7 +22,7 @@ export interface StyledDatePickerProps {
   minDate?: Date;
   maxDate?: Date;
   sx?: SxProps;
-  tooltipTitle?: string;
+  tooltipTitle?: ReactNode;
   tooltipSx?: SxProps;
   isTooltip?: boolean;
 }

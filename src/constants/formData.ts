@@ -66,8 +66,8 @@ export const FormData = {
     propertyTaxes: void 0,
     monthlyHoaFee: void 0,
     vacancyRate: void 0,
-    prepaymentPenalty: PrepaymentPenaltyEnum.three_year,
     acquisitionDate: '',
+    prepaymentPenalty: '',
   },
   [LoanSnapshotEnum.loan_address]: {
     formatAddress: '',

@@ -8,7 +8,6 @@ import {
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
   LoanPurposeEnum,
-  PrepaymentPenaltyEnum,
 } from '@/types';
 
 export const EstimateRate = types
@@ -54,13 +53,9 @@ export const EstimateRate = types
     // multi
     operatingExpense: types.maybe(types.number),
     vacancyRate: types.maybe(types.number),
-    prepaymentPenalty: types.maybeNull(
-      types.union(
-        types.enumeration(Object.values(PrepaymentPenaltyEnum)),
-        types.string,
-      ),
-    ),
     acquisitionDate: types.maybe(types.string),
+    // dscr
+    prepaymentPenalty: types.string,
   })
   .actions((self) => ({
     changeFieldValue<T extends keyof typeof self>(
@@ -191,7 +186,7 @@ export const EstimateRate = types
       self.propertyTaxes = propertyTaxes ?? undefined;
       self.vacancyRate = vacancyRate ?? undefined;
       self.monthlyHoaFee = monthlyHoaFee ?? undefined;
-      self.prepaymentPenalty = prepaymentPenalty;
+      self.prepaymentPenalty = prepaymentPenalty ?? '';
       self.acquisitionDate = acquisitionDate ?? '';
       self.propertyOwned = propertyOwned ?? LoanAnswerEnum.no;
     },

@@ -135,6 +135,10 @@ export const _portalFetchData = (loanId: string) => {
   );
 };
 
+//export const _portalFetchData = (loanId: string) => {
+//  return get(`/los/anon/document/portal/form/${loanId}`);
+//};
+
 export const _portalRating = (params: {
   loanId: string;
   score: string | number | null;
