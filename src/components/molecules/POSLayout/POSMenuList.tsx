@@ -317,8 +317,27 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ loading }) => {
                   sx={{ cursor: 'pointer', width: '100%' }}
                 >
                   <Typography color={'text.primary'} variant={'body2'}>
-                    Multiple addresses (
-                    {dashboardInfo?.additionalAddress?.length + 1})
+                    {dashboardInfo?.propertyAddress &&
+                      (dashboardInfo?.propertyAddress.formatAddress
+                        ? [
+                            dashboardInfo.propertyAddress?.formatAddress &&
+                              `${dashboardInfo.propertyAddress.formatAddress},`,
+                            dashboardInfo.propertyAddress?.aptNumber &&
+                              `${dashboardInfo.propertyAddress.aptNumber},`,
+                            dashboardInfo.propertyAddress?.city &&
+                              `${dashboardInfo.propertyAddress.city},`,
+                            dashboardInfo.propertyAddress?.state,
+                            dashboardInfo.propertyAddress?.postcode,
+                          ]
+                            .filter(Boolean)
+                            .join(' ')
+                        : OPTIONS_COMMON_STATE.find(
+                            (item) =>
+                              item.value ===
+                              (dashboardInfo?.propertyAddress &&
+                                dashboardInfo?.propertyAddress.state),
+                          )?.label || '')}{' '}
+                    ({dashboardInfo?.additionalAddress?.length + 1})
                   </Typography>
                   <Icon
                     component={ICON_RIGHT_ARROW}
@@ -350,35 +369,6 @@ export const POSMenuList: FC<POSMenuListProps> = observer(({ loading }) => {
                         (item) =>
                           item.value === dashboardInfo?.propertyAddress?.state,
                       )?.label || '')}
-                {/*{dashboardInfo?.propertyAddress &&*/}
-                {/*  (dashboardInfo?.propertyAddress.formatAddress*/}
-                {/*    ? `${*/}
-                {/*        dashboardInfo.propertyAddress?.formatAddress*/}
-                {/*          ? `${dashboardInfo.propertyAddress?.formatAddress}, `*/}
-                {/*          : ''*/}
-                {/*      }${*/}
-                {/*        dashboardInfo.propertyAddress?.aptNumber*/}
-                {/*          ? `${dashboardInfo.propertyAddress?.aptNumber}, `*/}
-                {/*          : ''*/}
-                {/*      } ${*/}
-                {/*        dashboardInfo.propertyAddress?.city*/}
-                {/*          ? `${dashboardInfo.propertyAddress?.city}, `*/}
-                {/*          : ''*/}
-                {/*      }${*/}
-                {/*        dashboardInfo.propertyAddress?.state*/}
-                {/*          ? `${dashboardInfo.propertyAddress?.state} `*/}
-                {/*          : ''*/}
-                {/*      }${*/}
-                {/*        dashboardInfo.propertyAddress?.postcode*/}
-                {/*          ? `${dashboardInfo.propertyAddress?.postcode}`*/}
-                {/*          : ''*/}
-                {/*      }`*/}
-                {/*    : OPTIONS_COMMON_STATE.find(*/}
-                {/*        (item) =>*/}
-                {/*          item.value ===*/}
-                {/*          (dashboardInfo?.propertyAddress &&*/}
-                {/*            dashboardInfo?.propertyAddress.state),*/}
-                {/*      )?.label || '')}*/}
               </Typography>
             )}
 
