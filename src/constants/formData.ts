@@ -8,7 +8,6 @@ import {
   LoanPurposeEnum,
   LoanSnapshotEnum,
   LoanTypeEnum,
-  PrepaymentPenaltyEnum,
 } from '@/types';
 
 export const FormData = {

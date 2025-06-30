@@ -1,7 +1,8 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { Autocomplete, Box, Grid, Stack, Typography } from '@mui/material';
 import { LocationOnOutlined } from '@mui/icons-material';
 import parse from 'autosuggest-highlight/parse';
+
 import { observer } from 'mobx-react-lite';
 
 import {
@@ -114,10 +115,6 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
         [stateValidate, addressErrorValidate],
       );
 
-      useEffect(() => {
-        setAddressErrorValidate(addressError);
-      }, [addressError]);
-
       return (
         <Stack width={'100%'}>
           {fullAddress ? (
@@ -132,10 +129,11 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                   onInputChange={(e, val) => {
                     if (addressErrorValidate?.address) {
                       setAddressErrorValidate((prev) => {
-                        if (prev) {
-                          delete prev.address;
+                        if (!prev) {
+                          return prev;
                         }
-                        return prev;
+                        const { address, ...rest } = prev;
+                        return Object.keys(rest).length > 0 ? rest : undefined;
                       });
                     }
                     if (!val) {
@@ -162,10 +160,11 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                   onChange={(e) => {
                     if (addressErrorValidate?.city) {
                       setAddressErrorValidate((prev) => {
-                        if (prev) {
-                          delete prev.city;
+                        if (!prev) {
+                          return prev;
                         }
-                        return prev;
+                        const { city, ...rest } = prev;
+                        return Object.keys(rest).length > 0 ? rest : undefined;
                       });
                     }
                     address.changeFieldValue('city', e.target.value);

@@ -5,7 +5,6 @@ import {
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
   LoanPurposeEnum,
-  PrepaymentPenaltyEnum,
 } from '@/types';
 
 export enum LoanFicoScoreEnum {

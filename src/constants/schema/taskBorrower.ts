@@ -3,7 +3,7 @@ import {
   DashboardTaskCitizenshipStatus,
 } from '@/types';
 
-export const TaskBorrowerSchema: Record<any, any> = {
+export const TaskBorrowerIndividual: Record<any, any> = {
   firstName: {
     presence: {
       allowEmpty: false,
@@ -19,13 +19,13 @@ export const TaskBorrowerSchema: Record<any, any> = {
   phoneNumber: {
     AmericanPhoneNumber: {},
   },
+  email: {
+    formEmail: {},
+  },
   birthDate: {
     date: {
       minAge: 18,
     },
-  },
-  email: {
-    formEmail: {},
   },
   ssn: (value: any, attributes: any) => {
     if (
@@ -37,18 +37,15 @@ export const TaskBorrowerSchema: Record<any, any> = {
     }
     return undefined;
   },
-  signatoryTitle: (value: any, attributes: any) => {
-    if (attributes.borrowerType === DashboardTaskBorrowerType.individual) {
-      return undefined;
-    }
-    return {
-      presence: {
-        allowEmpty: false,
-        message: '^Cannot be empty',
-      },
-    };
+};
+
+export const TaskBorrowerEntity: Record<any, any> = {
+  phoneNumber: {
+    AmericanPhoneNumber: {},
   },
-  // entity
+  email: {
+    formEmail: {},
+  },
   entityName: (value: any, attributes: any) => {
     if (
       [
@@ -113,52 +110,67 @@ export const TaskBorrowerSchema: Record<any, any> = {
       },
     };
   },
-  companyPhone: (value: any, attributes: any) => {
+};
+
+export const TaskBorrowerTrust: Record<any, any> = {
+  trustName: {
+    presence: {
+      allowEmpty: false,
+      message: '^Cannot be empty',
+    },
+  },
+};
+
+export const TaskBorrowerSignatory: Record<any, any> = {
+  firstName: {
+    presence: {
+      allowEmpty: false,
+      message: '^Cannot be empty',
+    },
+  },
+  lastName: {
+    presence: {
+      allowEmpty: false,
+      message: '^Cannot be empty',
+    },
+  },
+  signatoryTitle: {
+    presence: {
+      allowEmpty: false,
+      message: '^Cannot be empty',
+    },
+  },
+  birthday: {
+    date: {
+      minAge: 18,
+    },
+  },
+  phoneNumber: {
+    AmericanPhoneNumber: {},
+  },
+  email: {
+    formEmail: {},
+  },
+  citizenship: {
+    presence: {
+      allowEmpty: false,
+      message: '^Cannot be empty',
+    },
+  },
+  ssn: (value: any, attributes: any) => {
     if (
-      [
-        DashboardTaskBorrowerType.individual,
-        DashboardTaskBorrowerType.trust,
-      ].includes(attributes.borrowerType)
+      attributes.citizenship !== DashboardTaskCitizenshipStatus.foreign_national
     ) {
-      return undefined;
-    }
-    if (value) {
       return {
-        AmericanPhoneNumber: {},
+        ssn: true,
       };
     }
     return undefined;
   },
-  companyEmail: (value: any, attributes: any) => {
-    if (
-      [
-        DashboardTaskBorrowerType.individual,
-        DashboardTaskBorrowerType.trust,
-      ].includes(attributes.borrowerType)
-    ) {
-      return undefined;
-    }
-    if (value) {
-      return {
-        formEmail: {},
-      };
-    }
-    return undefined;
-  },
-  trustName: (value: any, attributes: any) => {
-    if (
-      [
-        DashboardTaskBorrowerType.individual,
-        DashboardTaskBorrowerType.entity,
-      ].includes(attributes.borrowerType)
-    ) {
-      return undefined;
-    }
-    return {
-      presence: {
-        allowEmpty: false,
-        message: '^Cannot be empty',
-      },
-    };
+  maritalStatus: {
+    presence: {
+      allowEmpty: false,
+      message: '^Cannot be empty',
+    },
   },
 };

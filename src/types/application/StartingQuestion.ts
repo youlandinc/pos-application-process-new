@@ -65,3 +65,9 @@ export interface StartingQuestionFormData {
   propertyUnit: LoanPropertyUnitEnum;
   isOccupyProperty: boolean;
 }
+
+export enum LoanMarriedStatusEnum {
+  unmarried = 'UNMARRIED',
+  married = 'MARRIED',
+  separated = 'SEPARATED',
+}
