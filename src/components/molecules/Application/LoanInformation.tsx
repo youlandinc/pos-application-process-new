@@ -1177,6 +1177,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
         loanInformation.propertyUnit,
         loanInformation.state,
         loanInformation.ficoScore,
+        loanInformation.accurateScore,
         loanInformation.isLiquidity,
         loanInformation.liquidityAmount,
         loanInformation.rehabCost,
