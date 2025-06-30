@@ -2,6 +2,7 @@ import {
   AppraisalStatusEnum,
   LoanAnswerEnum,
   LoanCitizenshipEnum,
+  LoanMarriedStatusEnum,
   LoanPropertyUnitEnum,
   SurveySourceEnum,
   UserType,
@@ -89,6 +90,24 @@ export const OPTIONS_COMMON_YES_OR_NO: Option[] = [
     label: 'No',
     value: LoanAnswerEnum.no,
     key: LoanAnswerEnum.no,
+  },
+];
+
+export const OPTIONS_COMMON_MARRIED_STATUS: Option[] = [
+  {
+    label: 'Separated',
+    key: LoanMarriedStatusEnum.separated,
+    value: LoanMarriedStatusEnum.separated,
+  },
+  {
+    label: 'Unmarried',
+    key: LoanMarriedStatusEnum.unmarried,
+    value: LoanMarriedStatusEnum.unmarried,
+  },
+  {
+    label: 'Married',
+    key: LoanMarriedStatusEnum.married,
+    value: LoanMarriedStatusEnum.married,
   },
 ];
 
