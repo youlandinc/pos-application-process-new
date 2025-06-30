@@ -9,10 +9,6 @@ import {
 
 import { Address } from '@/models/common/Address';
 
-type DBorrowerSignatoryInfoError = {
-  [key in keyof DBorrowerSignatoryInfo]?: string[];
-};
-
 export const DSignatoryInfo = types
   .model({
     id: types.string,

@@ -28,6 +28,7 @@ interface StyledSelectTextField {
   tooltipSx?: SxProps;
   isTooltip?: boolean;
   fieldType?: 'number' | 'text';
+  needPrefixOrSuffix?: boolean;
 }
 
 export const StyledSelectTextField: FC<StyledSelectTextField> = ({
@@ -45,6 +46,7 @@ export const StyledSelectTextField: FC<StyledSelectTextField> = ({
   tooltipSx = { width: '100%' },
   isTooltip = false,
   fieldType = 'number',
+  needPrefixOrSuffix = true,
 }) => {
   const { saasState } = useSessionStorageState('tenantConfig');
 
@@ -131,8 +133,8 @@ export const StyledSelectTextField: FC<StyledSelectTextField> = ({
             label={fieldLabel}
             onValueChange={({ floatValue }) => onFieldChange(floatValue)}
             percentage={percentage}
-            prefix={percentage ? undefined : '$'}
-            suffix={percentage ? '%' : undefined}
+            prefix={needPrefixOrSuffix ? (percentage ? undefined : '$') : ' '}
+            suffix={needPrefixOrSuffix ? (percentage ? '%' : undefined) : ' '}
             sx={{
               '& .MuiInputBase-adornedEnd': {
                 paddingRight: '8px !important',
@@ -304,8 +306,12 @@ export const StyledSelectTextField: FC<StyledSelectTextField> = ({
             label={fieldLabel}
             onValueChange={({ floatValue }) => onFieldChange(floatValue)}
             percentage={percentage}
-            prefix={percentage ? undefined : '$'}
-            suffix={percentage ? '%' : undefined}
+            prefix={
+              needPrefixOrSuffix ? (percentage ? undefined : '$') : undefined
+            }
+            suffix={
+              needPrefixOrSuffix ? (percentage ? '%' : undefined) : undefined
+            }
             sx={{
               '& .MuiInputBase-adornedEnd': {
                 paddingRight: '8px !important',

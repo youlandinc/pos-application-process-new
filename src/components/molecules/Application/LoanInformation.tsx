@@ -153,6 +153,73 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
       loanInformation?.refinanceLoanAmount,
     ]);
 
+    const renderFico = useMemo(
+      () => {
+        if (
+          loanInformation.citizenship === LoanCitizenshipEnum.foreign_national
+        ) {
+          return null;
+        }
+
+        if (saasState?.posSettings?.exactFicoScoreConfig) {
+          const options = [
+            {
+              label: 'Fill out exact FICO score',
+              key: 'Fill out exact FICO score',
+              value: LoanAnswerEnum.yes,
+            },
+            APPLICATION_FICO_SCORE[0],
+          ];
+
+          return (
+            <StyledSelectTextField
+              fieldLabel={'Est. FICO score'}
+              fieldValue={loanInformation.accurateScore}
+              needPrefixOrSuffix={false}
+              onFieldChange={(floatValue) => {
+                loanInformation.changeFieldValue('accurateScore', floatValue);
+              }}
+              onSelectChange={(v) => {
+                loanInformation.changeFieldValue(
+                  'ficoScore',
+                  v as string as LoanFicoScoreEnum,
+                );
+                if (v === LoanFicoScoreEnum.fico_not_available) {
+                  loanInformation.changeFieldValue('accurateScore', undefined);
+                }
+              }}
+              options={options}
+              selectLabel={'Est. FICO score'}
+              selectValue={loanInformation.ficoScore || LoanAnswerEnum.yes}
+              sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+            />
+          );
+        }
+
+        return (
+          <StyledSelect
+            label={'Est. FICO score'}
+            onChange={(e) => {
+              loanInformation.changeFieldValue(
+                'ficoScore',
+                e.target.value as string as LoanFicoScoreEnum,
+              );
+            }}
+            options={APPLICATION_FICO_SCORE}
+            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+            value={loanInformation.ficoScore}
+          />
+        );
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [
+        saasState?.posSettings?.exactFicoScoreConfig,
+        loanInformation.citizenship,
+        loanInformation.ficoScore,
+        loanInformation.accurateScore,
+      ],
+    );
+
     const renderTip = useMemo(() => {
       const before = `${POSFindLabel(
         APPLICATION_LOAN_CATEGORY,
@@ -1597,21 +1664,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
               value={loanInformation.state}
             />
-            {loanInformation.citizenship !==
-              LoanCitizenshipEnum.foreign_national && (
-              <StyledSelect
-                label={'Est. FICO score'}
-                onChange={(e) => {
-                  loanInformation.changeFieldValue(
-                    'ficoScore',
-                    e.target.value as string as LoanFicoScoreEnum,
-                  );
-                }}
-                options={APPLICATION_FICO_SCORE}
-                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                value={loanInformation.ficoScore}
-              />
-            )}
+            {renderFico}
             <StyledSelectTextField
               fieldLabel={'Liquidity'}
               fieldValue={loanInformation.liquidityAmount}
