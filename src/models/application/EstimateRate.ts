@@ -81,7 +81,9 @@ export const EstimateRate = types
         accurateScore:
           self.citizenship === LoanCitizenshipEnum.foreign_national
             ? null
-            : self.accurateScore,
+            : self.accurateScore
+              ? self.accurateScore
+              : null,
         isLiquidity: self.isLiquidity,
         liquidityAmount: self.liquidityAmount,
         rehabCost: self.rehabCost,

@@ -170,13 +170,10 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         return;
       }
 
-      const mobxData = estimateRate.getPostData();
-
       const postData = {
         tenantId: saasState?.tenantId,
         loanId: router.query.loanId as string,
-        ...mobxData,
-        accurateScore: mobxData.accurateScore ? null : mobxData.accurateScore,
+        ...estimateRate.getPostData(),
       };
 
       try {
