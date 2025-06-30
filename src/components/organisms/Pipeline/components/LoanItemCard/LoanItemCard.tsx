@@ -121,7 +121,7 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
           }
         >
           <Typography variant={'subtitle1'} width={'fit-content'}>
-            Multiple addresses ({address.length})
+            {`${address[0].split('NEW_LINE')[0]} ${address[0].split('NEW_LINE')[1]} (${address.length})`}
           </Typography>
         </StyledTooltip>
       );

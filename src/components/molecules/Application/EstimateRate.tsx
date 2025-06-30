@@ -70,7 +70,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
             {
               label: 'Fill out exact FICO score',
               key: 'Fill out exact FICO score',
-              value: LoanAnswerEnum.yes,
+              value: LoanFicoScoreEnum.yes,
             },
             APPLICATION_FICO_SCORE[0],
           ];
@@ -94,7 +94,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
               }}
               options={options}
               selectLabel={'Est. FICO score'}
-              selectValue={estimateRate.ficoScore || LoanAnswerEnum.yes}
+              selectValue={estimateRate.ficoScore || LoanFicoScoreEnum.yes}
               sx={{ maxWidth: { xs: '100%', lg: 220 } }}
             />
           );

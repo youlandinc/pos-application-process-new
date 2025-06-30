@@ -77,7 +77,9 @@ export const EstimateRate = types
         ficoScore:
           self.citizenship === LoanCitizenshipEnum.foreign_national
             ? LoanFicoScoreEnum.no_fico
-            : self.ficoScore,
+            : self.ficoScore === LoanFicoScoreEnum.yes
+              ? null
+              : self.ficoScore,
         accurateScore:
           self.citizenship === LoanCitizenshipEnum.foreign_national
             ? null
