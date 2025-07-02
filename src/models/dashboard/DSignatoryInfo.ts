@@ -59,6 +59,36 @@ export const DSignatoryInfo = types
       delete newErrors[key as string];
       self.errors = newErrors;
     },
+    getPostData() {
+      const {
+        firstName,
+        lastName,
+        signatoryTitle,
+        birthday,
+        phoneNumber,
+        email,
+        citizenship,
+        ssn,
+        maritalStatus,
+        marriedTogether,
+      } = self;
+
+      const addressInfo = self.addressInfo.getPostData();
+
+      return {
+        firstName,
+        lastName,
+        signatoryTitle,
+        birthday,
+        phoneNumber,
+        email,
+        citizenship,
+        ssn,
+        addressInfo,
+        maritalStatus,
+        marriedTogether: marriedTogether || undefined,
+      };
+    },
   }));
 
 export type IDSignatoryInfo = Instance<typeof DSignatoryInfo>;

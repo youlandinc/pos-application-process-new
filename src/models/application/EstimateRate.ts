@@ -24,7 +24,11 @@ export const EstimateRate = types
     ficoScore: types.maybeNull(
       types.enumeration(Object.values(LoanFicoScoreEnum)),
     ),
-    accurateScore: types.maybe(types.number),
+    accurateScore: types.union(
+      types.number,
+      types.maybeNull(types.number),
+      types.maybe(types.number),
+    ),
     isLiquidity: types.maybe(types.boolean),
     liquidityAmount: types.maybe(types.number),
     rehabCost: types.maybe(types.number),
@@ -171,8 +175,8 @@ export const EstimateRate = types
       self.citizenship = citizenship ?? LoanCitizenshipEnum.us_citizen;
       self.priorExperience = priorExperience ?? 0;
       self.state = state ?? 'CA';
-      self.ficoScore = ficoScore || LoanFicoScoreEnum.yes;
-      self.accurateScore = accurateScore || undefined;
+      self.ficoScore = ficoScore;
+      self.accurateScore = accurateScore;
       self.isLiquidity = isLiquidity ?? true;
       self.liquidityAmount = liquidityAmount ?? undefined;
       self.rehabCost = rehabCost ?? undefined;
