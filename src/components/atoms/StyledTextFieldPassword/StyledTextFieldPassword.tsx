@@ -32,7 +32,14 @@ export const StyledTextFieldPassword: FC<StyledTextFieldPasswordProps> = ({
               </IconButton>
             </InputAdornment>
           ),
+          autoComplete: 'new-password',
+          name: 'new-password',
         }}
+        inputProps={{
+          autoComplete: 'new-password',
+          name: 'new-password',
+        }}
+        name={'new-password'}
         type={visible ? 'text' : 'password'}
         value={value}
         {...rest}

@@ -335,31 +335,6 @@ export const SignUp: FC<SignUpProps> = observer(
       ],
     );
 
-    const isDisabled = useMemo(() => {
-      for (const [, value] of Object.entries(passwordError)) {
-        if (!value) {
-          return true;
-        }
-      }
-      const condition =
-        userType === UserType.LOAN_OFFICER || userType === UserType.BROKER;
-      const result = condition ? companyName : true;
-      if (saasState?.serviceTypeEnum === 'SAAS') {
-        return (
-          !email || !password || !confirmedPassword || !userType || !result
-        );
-      }
-      return !email || !password || !confirmedPassword;
-    }, [
-      companyName,
-      confirmedPassword,
-      email,
-      password,
-      passwordError,
-      saasState?.serviceTypeEnum,
-      userType,
-    ]);
-
     const userTypeOption = useMemo(() => {
       const borrowerTypes = saasState?.posSettings?.borrowerTypes;
       if (!borrowerTypes) {
@@ -463,10 +438,14 @@ export const SignUp: FC<SignUpProps> = observer(
           </Stack>
 
           <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
+            <input name="email" style={{ display: 'none' }} type="text" />
             <StyledTextField
               disabled={loading}
               label={'Email'}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value.trim();
+                setEmail(value);
+              }}
               placeholder={'Email'}
               required
               validate={formError?.email}
@@ -510,6 +489,12 @@ export const SignUp: FC<SignUpProps> = observer(
           <Box sx={{ height: '1px', bgcolor: '#D2D6E1' }} />
 
           <Box>
+            <input
+              name="Password"
+              style={{ display: 'none' }}
+              type="password"
+            />
+
             <StyledTextFieldPassword
               disabled={loading}
               error={
@@ -570,7 +555,7 @@ export const SignUp: FC<SignUpProps> = observer(
 
           <StyledButton
             color="primary"
-            disabled={isDisabled || loading}
+            disabled={loading}
             type={'submit'}
             variant="contained"
           >
@@ -591,7 +576,6 @@ export const SignUp: FC<SignUpProps> = observer(
       formError?.userType,
       handledPasswordChange,
       handledSubmit,
-      isDisabled,
       isNestForm,
       isVisibleSurvey,
       lastName,
