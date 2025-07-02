@@ -11,6 +11,7 @@ import {
   POSFormatDollar,
   POSFormatPercent,
   POSGetDecimalPlaces,
+  POSTypeOf,
 } from '@/utils';
 import {
   APPLICATION_FICO_SCORE,
@@ -156,63 +157,73 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
     const renderFico = useMemo(
       () => {
         if (
-          loanInformation.citizenship === LoanCitizenshipEnum.foreign_national
+          loanInformation.citizenship ===
+            LoanCitizenshipEnum.foreign_national ||
+          !saasState
         ) {
           return null;
         }
 
-        if (saasState?.posSettings?.exactFicoScoreConfig) {
-          const options = [
-            {
-              label: 'Fill out exact FICO score',
-              key: 'Fill out exact FICO score',
-              value: LoanAnswerEnum.yes,
-            },
-            APPLICATION_FICO_SCORE[0],
-          ];
+        const options = saasState?.posSettings?.exactFicoScoreConfig
+          ? [
+              {
+                label: 'Fill out exact FICO score',
+                key: 'Fill out exact FICO score',
+                value: LoanFicoScoreEnum.yes,
+              },
+              APPLICATION_FICO_SCORE[0],
+            ]
+          : [
+              {
+                label: 'Fill out exact FICO score',
+                key: 'Fill out exact FICO score',
+                value: LoanFicoScoreEnum.yes,
+              },
+              ...APPLICATION_FICO_SCORE,
+            ];
 
-          return (
-            <StyledSelectTextField
-              fieldLabel={'Est. FICO score'}
-              fieldValue={loanInformation.accurateScore}
-              needPrefixOrSuffix={false}
-              onFieldChange={(floatValue) => {
-                loanInformation.changeFieldValue('accurateScore', floatValue);
-              }}
-              onSelectChange={(v) => {
-                loanInformation.changeFieldValue(
-                  'ficoScore',
-                  v as string as LoanFicoScoreEnum,
-                );
-                if (v === LoanFicoScoreEnum.fico_not_available) {
-                  loanInformation.changeFieldValue('accurateScore', undefined);
-                }
-              }}
-              options={options}
-              selectLabel={'Est. FICO score'}
-              selectValue={loanInformation.ficoScore || LoanAnswerEnum.yes}
-              sx={{ maxWidth: { xs: '100%', lg: 220 } }}
-            />
-          );
+        if (
+          POSTypeOf(loanInformation.accurateScore) === 'Null' &&
+          POSTypeOf(loanInformation.ficoScore) === 'Null'
+        ) {
+          if (saasState?.posSettings?.exactFicoScoreConfig) {
+            loanInformation.changeFieldValue('accurateScore', 700);
+          } else {
+            loanInformation.changeFieldValue('accurateScore', undefined);
+            loanInformation.changeFieldValue(
+              'ficoScore',
+              LoanFicoScoreEnum.between_700_730,
+            );
+          }
         }
 
         return (
-          <StyledSelect
-            label={'Est. FICO score'}
-            onChange={(e) => {
+          <StyledSelectTextField
+            fieldLabel={'Est. FICO score'}
+            fieldValue={loanInformation.accurateScore as number | undefined}
+            needPrefixOrSuffix={false}
+            onFieldChange={(floatValue) => {
+              loanInformation.changeFieldValue('accurateScore', floatValue);
+            }}
+            onSelectChange={(v) => {
               loanInformation.changeFieldValue(
                 'ficoScore',
-                e.target.value as string as LoanFicoScoreEnum,
+                v as string as LoanFicoScoreEnum,
               );
+              if (v === LoanFicoScoreEnum.fico_not_available) {
+                loanInformation.changeFieldValue('accurateScore', undefined);
+              }
             }}
-            options={APPLICATION_FICO_SCORE}
-            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-            value={loanInformation.ficoScore}
+            options={options}
+            selectLabel={'Est. FICO score'}
+            selectValue={loanInformation.ficoScore || LoanAnswerEnum.yes}
+            sx={{ maxWidth: { xs: '100%', lg: 220 } }}
           />
         );
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [
+        saasState,
         saasState?.posSettings?.exactFicoScoreConfig,
         loanInformation.citizenship,
         loanInformation.ficoScore,

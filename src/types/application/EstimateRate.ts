@@ -47,7 +47,7 @@ export interface EstimateRateFormData {
   citizenship: LoanCitizenshipEnum;
   priorExperience: number;
   state: string;
-  ficoScore: LoanFicoScoreEnum | null | undefined;
+  ficoScore: LoanFicoScoreEnum | null;
   accurateScore: null | number | undefined;
   isLiquidity: boolean;
   liquidityAmount: number;

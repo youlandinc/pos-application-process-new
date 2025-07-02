@@ -235,6 +235,12 @@ export const DBorrower = types
       };
     },
     getEntityPostData() {
+      const pureSignatories = self.signatories.map((item, index) => {
+        return {
+          ...item.getPostData(),
+        };
+      });
+
       return {
         borrowerType: self.borrowerType,
         phoneNumber: self.phoneNumber,
@@ -243,14 +249,22 @@ export const DBorrower = types
         entityType: self.entityType,
         entityId: self.entityId,
         entityState: self.entityState,
-        signatories: getSnapshot(self.signatories),
+        signatories: pureSignatories,
       };
     },
     getTrustPostData() {
+      const pureSignatories = self.signatories.map((item, index) => {
+        return {
+          ...item.getPostData(),
+        };
+      });
+
+      console.log(pureSignatories);
+
       return {
         borrowerType: self.borrowerType,
         trustName: self.trustName,
-        signatories: getSnapshot(self.signatories),
+        signatories: pureSignatories,
       };
     },
     checkIndividual() {
