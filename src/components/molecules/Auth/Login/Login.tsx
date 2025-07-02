@@ -1,4 +1,12 @@
-import { FC, FormEventHandler, useCallback, useMemo, useState } from 'react';
+import {
+  FC,
+  FormEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -36,10 +44,6 @@ export const Login: FC<LoginProps> = observer(
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
-
-    const isDisabled = useMemo(() => {
-      return !email || !password;
-    }, [email, password]);
 
     const handledLoginSuccess = useCallback(
       (profile: User.UserSignInRequest) => {
@@ -133,9 +137,17 @@ export const Login: FC<LoginProps> = observer(
           sx={isNestForm ? LoginStyles.form : {}}
         >
           <StyledTextField
+            autoFocus
             disabled={loading}
-            disabledAutoFill={false}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              autoComplete: 'email',
+              name: 'email',
+            }}
             label={'Email'}
+            name={'email'}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={'Email'}
             required
@@ -143,8 +155,15 @@ export const Login: FC<LoginProps> = observer(
           />
           <StyledTextFieldPassword
             disabled={loading}
-            disabledAutoFill={false}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              autoComplete: 'current-password',
+              name: 'password',
+            }}
             label={'Password'}
+            name="password"
             onChange={(e) => setPassword(e.target.value)}
             placeholder={'Password'}
             required
@@ -152,7 +171,7 @@ export const Login: FC<LoginProps> = observer(
           />
           <StyledButton
             color="primary"
-            disabled={isDisabled || loading}
+            disabled={loading}
             type={'submit'}
             variant="contained"
           >
@@ -160,7 +179,7 @@ export const Login: FC<LoginProps> = observer(
           </StyledButton>
         </Box>
       );
-    }, [email, handledLogin, isDisabled, isNestForm, loading, password]);
+    }, [email, handledLogin, isNestForm, loading, password]);
 
     return (
       <>

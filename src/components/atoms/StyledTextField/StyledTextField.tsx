@@ -96,12 +96,12 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
           ) : undefined
         }
         InputProps={{
-          ...rest.InputProps,
           autoComplete: disabledAutoFill ? 'off' : '',
+          ...rest.InputProps,
         }}
         inputProps={{
-          ...rest.inputProps,
           autoComplete: disabledAutoFill ? 'off' : '',
+          ...rest.inputProps,
         }}
         onChange={onChange}
         sx={{
@@ -169,12 +169,12 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
         ) : undefined
       }
       InputProps={{
-        ...rest.InputProps,
         autoComplete: disabledAutoFill ? 'off' : '',
+        ...rest.InputProps,
       }}
       inputProps={{
-        ...rest.inputProps,
         autoComplete: disabledAutoFill ? 'off' : '',
+        ...rest.inputProps,
       }}
       onChange={onChange}
       sx={{
