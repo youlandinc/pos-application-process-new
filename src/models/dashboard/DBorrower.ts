@@ -64,11 +64,15 @@ export const DBorrower = types
     ) {
       self[key] = value;
     },
-    changeSignatoryFieldValue<T extends keyof SDSignatoryInfo>(
+    changeSignatoryFieldValue<
+      T extends keyof Omit<SDSignatoryInfo, 'errors' | 'addressInfo'>,
+    >(
       index: number,
-      key: keyof SDSignatoryInfo,
-      value: SDSignatoryInfo[T],
+      key: keyof Omit<SDSignatoryInfo, 'errors' | 'addressInfo'>,
+      value: Omit<SDSignatoryInfo, 'errors' | 'addressInfo'>[T],
     ) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error - Type assertion needed due to dynamic property access
       self.signatories[index][key] = value;
     },
     addSignatory() {
@@ -82,6 +86,7 @@ export const DBorrower = types
         email: '',
         citizenship: '',
         ssn: '',
+        isSameMailingAddress: true,
         addressInfo: Address.create({
           formatAddress: '',
           state: '',
@@ -161,6 +166,7 @@ export const DBorrower = types
                 },
                 maritalStatus,
                 marriedTogether,
+                isSameMailingAddress,
               } = item;
 
               return DSignatoryInfo.create({
@@ -173,6 +179,7 @@ export const DBorrower = types
                 email: email ?? '',
                 citizenship: citizenship ?? LoanCitizenshipEnum.us_citizen,
                 ssn: ssn ?? '',
+                isSameMailingAddress: isSameMailingAddress ?? true,
                 addressInfo: Address.create({
                   formatAddress: address ?? '',
                   state: state ?? '',
@@ -201,6 +208,7 @@ export const DBorrower = types
                 email: '',
                 citizenship: '',
                 ssn: '',
+                isSameMailingAddress: true,
                 addressInfo: Address.create({
                   formatAddress: '',
                   state: '',
@@ -250,6 +258,7 @@ export const DBorrower = types
         entityId: self.entityId,
         entityState: self.entityState,
         signatories: pureSignatories,
+        addressInfo: self.addressInfo.getPostData(),
       };
     },
     getTrustPostData() {
@@ -263,6 +272,7 @@ export const DBorrower = types
         borrowerType: self.borrowerType,
         trustName: self.trustName,
         signatories: pureSignatories,
+        addressInfo: self.addressInfo.getPostData(),
       };
     },
     checkIndividual() {
@@ -298,10 +308,6 @@ export const DBorrower = types
     },
     checkSignatories() {
       self.signatories.map((signatory, index) => {
-        const addressError: Record<string, string[]> | undefined = validate(
-          signatory.addressInfo.getPostData(),
-          AddressSchema,
-        );
         const formError = validate(signatory, TaskBorrowerSignatory);
 
         if (
@@ -310,7 +316,16 @@ export const DBorrower = types
           signatory.maritalStatus === LoanMarriedStatusEnum.married &&
           !signatory.marriedTogether
         ) {
-          formError.marriedTogether = ['Cannot be empty'];
+          formError.marriedTogethe = ['Cannot be empty'];
+        }
+
+        let addressError: Record<string, string[]> | undefined = void 0;
+
+        if (!signatory.isSameMailingAddress) {
+          addressError = validate(
+            signatory.addressInfo.getPostData(),
+            AddressSchema,
+          );
         }
 
         self.signatories[index].errors = addressError
@@ -319,7 +334,9 @@ export const DBorrower = types
       });
 
       const arr = getSnapshot(self.signatories);
-      return arr.map((item) => item.errors);
+      return arr.map((item) => {
+        return item.errors;
+      });
     },
   }));
 
