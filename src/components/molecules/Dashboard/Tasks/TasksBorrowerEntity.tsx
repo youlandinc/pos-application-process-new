@@ -9,6 +9,7 @@ import { DashboardTaskBorrowerEntityType } from '@/types';
 
 import {
   StyledFormItem,
+  StyledGoogleAutoComplete,
   StyledSelect,
   StyledTextField,
   StyledTextFieldPhone,
@@ -45,7 +46,7 @@ export const TasksBorrowerEntity: FC<TasksBorrowerEntityProps> = observer(
               label={'Entity name'}
               onChange={(e) => {
                 if (formError?.entityName) {
-                  setFormError((prev) => {
+                  setFormError((prev: any) => {
                     if (prev) {
                       delete prev.entityName;
                     }
@@ -63,7 +64,7 @@ export const TasksBorrowerEntity: FC<TasksBorrowerEntityProps> = observer(
               label={'Entity type'}
               onChange={(e) => {
                 if (formError?.entityType) {
-                  setFormError((prev) => {
+                  setFormError((prev: any) => {
                     if (prev) {
                       delete prev.entityType;
                     }
@@ -92,7 +93,7 @@ export const TasksBorrowerEntity: FC<TasksBorrowerEntityProps> = observer(
               label={'Company phone'}
               onValueChange={({ value }) => {
                 if (formError?.companyPhone) {
-                  setFormError((prev) => {
+                  setFormError((prev: any) => {
                     if (prev) {
                       delete prev.companyPhone;
                     }
@@ -154,7 +155,7 @@ export const TasksBorrowerEntity: FC<TasksBorrowerEntityProps> = observer(
               label={'Formation State'}
               onChange={(e) => {
                 if (formError?.entityState) {
-                  setFormError((prev) => {
+                  setFormError((prev: any) => {
                     if (prev) {
                       delete prev.entityState;
                     }
@@ -172,6 +173,14 @@ export const TasksBorrowerEntity: FC<TasksBorrowerEntityProps> = observer(
               value={taskBorrower.entityState}
             />
           </Stack>
+
+          <Stack bgcolor={'#D2D6E1'} height={'1px'} maxWidth={600} />
+
+          <StyledGoogleAutoComplete
+            address={taskBorrower.addressInfo}
+            addressError={formError?.addressInfo || void 0}
+            label={'Mailing address'}
+          />
         </StyledFormItem>
 
         <TasksBorrowerSignatories />

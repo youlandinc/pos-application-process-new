@@ -16,6 +16,7 @@ export interface DBorrowerSignatoryInfo {
   citizenship: LoanCitizenshipEnum;
   ssn: string;
   maritalStatus: LoanMarriedStatusEnum;
+  isSameMailingAddress: boolean;
   addressInfo: AddressData;
   marriedTogether: LoanAnswerEnum;
 }

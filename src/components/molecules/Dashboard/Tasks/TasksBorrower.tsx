@@ -87,6 +87,7 @@ export const TasksBorrower: FC = observer(() => {
     }
 
     let formError;
+    let signatoriesError;
 
     switch (taskBorrower.borrowerType) {
       case DashboardTaskBorrowerType.individual: {
@@ -104,24 +105,49 @@ export const TasksBorrower: FC = observer(() => {
         setTrustError(undefined);
         break;
       }
-      case DashboardTaskBorrowerType.entity:
-        formError = taskBorrower.checkSignatories();
-        setEntityError(formError);
+      case DashboardTaskBorrowerType.entity: {
+        formError = taskBorrower.checkEntity();
+        signatoriesError = taskBorrower.checkSignatories();
+
+        const addressError: Record<string, string[]> | undefined = validate(
+          taskBorrower.addressInfo.getPostData(),
+          AddressSchema,
+        );
+        setEntityError(
+          addressError
+            ? { ...formError, addressInfo: addressError }
+            : formError,
+        );
         setIndividualError(undefined);
         setTrustError(undefined);
         break;
-      case DashboardTaskBorrowerType.trust:
-        formError = taskBorrower.checkSignatories();
+      }
+      case DashboardTaskBorrowerType.trust: {
+        formError = taskBorrower.checkTrust();
+        signatoriesError = taskBorrower.checkSignatories();
+
         setTrustError(formError);
         setIndividualError(undefined);
         setEntityError(undefined);
         break;
+      }
       default:
         return {};
     }
 
     if (formError) {
       return void 0;
+    }
+
+    if (taskBorrower.borrowerType !== DashboardTaskBorrowerType.individual) {
+      if (
+        signatoriesError &&
+        signatoriesError.some(
+          (errorObj) => errorObj && Object.keys(errorObj).length > 0,
+        )
+      ) {
+        return void 0;
+      }
     }
 
     const hash: Record<DashboardTaskBorrowerType, any> = {
@@ -231,6 +257,9 @@ export const TasksBorrower: FC = observer(() => {
         <StyledFormItem gap={3} label={'Borrower type'} mt={-3} sub>
           <StyledSelectOption
             onChange={(value) => {
+              if (value === taskBorrower.borrowerType) {
+                return;
+              }
               taskBorrower.changeFieldValue(
                 'borrowerType',
                 value as string as DashboardTaskBorrowerType,

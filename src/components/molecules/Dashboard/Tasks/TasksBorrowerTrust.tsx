@@ -1,9 +1,14 @@
+import { Stack } from '@mui/material';
 import { Dispatch, FC, SetStateAction } from 'react';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { StyledFormItem, StyledTextField } from '@/components/atoms';
+import {
+  StyledFormItem,
+  StyledGoogleAutoComplete,
+  StyledTextField,
+} from '@/components/atoms';
 import { TasksBorrowerSignatories } from './index';
 
 interface TasksBorrowerTrustProps {
@@ -24,7 +29,7 @@ export const TasksBorrowerTrust: FC<TasksBorrowerTrustProps> = observer(
             label={'Trust name'}
             onChange={(e) => {
               if (formError?.trustName) {
-                setFormError((prev) => {
+                setFormError((prev: any) => {
                   if (prev) {
                     delete prev.trustName;
                   }
@@ -38,6 +43,16 @@ export const TasksBorrowerTrust: FC<TasksBorrowerTrustProps> = observer(
             validate={formError?.trustName}
             value={taskBorrower.trustName}
           />
+
+          <Stack bgcolor={'#D2D6E1'} height={'1px'} maxWidth={600} />
+
+          <Stack maxWidth={600}>
+            <StyledGoogleAutoComplete
+              address={taskBorrower.addressInfo}
+              addressError={formError?.addressInfo || void 0}
+              label={'Mailing address'}
+            />
+          </Stack>
         </StyledFormItem>
 
         <TasksBorrowerSignatories />

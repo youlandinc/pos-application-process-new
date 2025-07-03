@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Icon, Stack, Typography } from '@mui/material';
 import { format, isDate, isValid } from 'date-fns';
-import { LoanMarriedStatusEnum } from '@/types';
+import { LoanCitizenshipEnum, LoanMarriedStatusEnum } from '@/types';
 
 import { useMst } from '@/models/Root';
 import { observer } from 'mobx-react-lite';
@@ -14,6 +14,7 @@ import {
 } from '@/constants';
 
 import {
+  StyledCheckbox,
   StyledDatePicker,
   StyledFormItem,
   StyledGoogleAutoComplete,
@@ -196,15 +197,17 @@ export const TasksBorrowerSignatories: FC = observer(() => {
               validate={signatory.errors?.citizenship}
               value={signatory.citizenship}
             />
-            <StyledTextFieldSocialNumber
-              label={'Social security number'}
-              onValueChange={(value) => {
-                signatory.removeError('ssn');
-                taskBorrower.changeSignatoryFieldValue(index, 'ssn', value);
-              }}
-              validate={signatory.errors?.ssn}
-              value={signatory.ssn}
-            />
+            {signatory.citizenship !== LoanCitizenshipEnum.foreign_national && (
+              <StyledTextFieldSocialNumber
+                label={'Social security number'}
+                onValueChange={(value) => {
+                  signatory.removeError('ssn');
+                  taskBorrower.changeSignatoryFieldValue(index, 'ssn', value);
+                }}
+                validate={signatory.errors?.ssn}
+                value={signatory.ssn}
+              />
+            )}
           </Stack>
 
           <StyledSelect
@@ -214,7 +217,7 @@ export const TasksBorrowerSignatories: FC = observer(() => {
               taskBorrower.changeSignatoryFieldValue(
                 index,
                 'maritalStatus',
-                e.target.value as string,
+                e.target.value as string as LoanMarriedStatusEnum,
               );
             }}
             options={OPTIONS_COMMON_MARRIED_STATUS}
@@ -225,40 +228,62 @@ export const TasksBorrowerSignatories: FC = observer(() => {
             value={signatory.maritalStatus}
           />
 
-          <Stack bgcolor={'#D2D6E1'} height={'1px'} maxWidth={600} />
-
-          <Stack maxWidth={600}>
-            <StyledGoogleAutoComplete
-              address={signatory.addressInfo}
-              addressError={signatory.errors?.addressInfo}
-            />
-          </Stack>
-
           {index === 1 &&
             taskBorrower.signatories[0].maritalStatus ===
               LoanMarriedStatusEnum.married &&
             signatory.maritalStatus === LoanMarriedStatusEnum.married && (
-              <>
-                <Stack bgcolor={'#D2D6E1'} height={'1px'} maxWidth={600} />
-                <StyledSelect
-                  label={'Are the two signatories married to each other?'}
-                  onChange={(e) => {
-                    signatory.removeError('marriedTogether');
-                    taskBorrower.changeSignatoryFieldValue(
-                      index,
-                      'marriedTogether',
-                      e.target.value as string,
-                    );
-                  }}
-                  options={OPTIONS_COMMON_YES_OR_NO}
-                  sx={{
-                    maxWidth: 600,
-                  }}
-                  validate={signatory.errors?.marriedTogether}
-                  value={signatory.marriedTogether}
-                />
-              </>
+              <StyledSelect
+                label={'Are the two signatories married to each other?'}
+                onChange={(e) => {
+                  signatory.removeError('marriedTogether');
+                  taskBorrower.changeSignatoryFieldValue(
+                    index,
+                    'marriedTogether',
+                    e.target.value as string,
+                  );
+                }}
+                options={OPTIONS_COMMON_YES_OR_NO}
+                sx={{
+                  maxWidth: 600,
+                }}
+                validate={signatory.errors?.marriedTogether}
+                value={signatory.marriedTogether}
+              />
             )}
+
+          <Stack maxWidth={600}>
+            <StyledCheckbox
+              checked={signatory.isSameMailingAddress}
+              label={
+                'Signatory’s primary residence address (no P.O. Boxes) is the same as the borrower’s mailing address'
+              }
+              onChange={(e) => {
+                taskBorrower.changeSignatoryFieldValue(
+                  index,
+                  'isSameMailingAddress',
+                  e.target.checked,
+                );
+              }}
+              sx={{
+                '& .MuiCheckbox-root': {
+                  mt: '-8px',
+                  mr: '-11px',
+                  '& svg > path': {
+                    fill: '#929292',
+                  },
+                },
+              }}
+            />
+          </Stack>
+
+          {!signatory.isSameMailingAddress && (
+            <Stack maxWidth={600}>
+              <StyledGoogleAutoComplete
+                address={signatory.addressInfo}
+                addressError={signatory.errors?.addressInfo}
+              />
+            </Stack>
+          )}
         </StyledFormItem>
       ))}
 
