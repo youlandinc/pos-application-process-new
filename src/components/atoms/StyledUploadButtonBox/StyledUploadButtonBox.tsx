@@ -251,7 +251,6 @@ export const StyledUploadButtonBox: FC<StyledUploadButtonBoxProps> = observer(
         handler(res.data, fileName);
       },
       // this function never change
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       [],
     );
 

@@ -9,7 +9,7 @@ export interface StyledGoogleAutoCompleteProps {
   addressError?: Record<string, string[]> | undefined;
 }
 
-export interface _StyledGoogleAutoCompleteProps {
+export interface StyledAutoCompleteProps {
   inputValue: string;
   onInputChange: (e: any, val: string) => void;
   fullAddress: boolean;

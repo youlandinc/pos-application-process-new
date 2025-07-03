@@ -1,7 +1,7 @@
+import { LoanProductCategoryEnum } from './StartingQuestion';
 import {
   LoanAnswerEnum,
   LoanCitizenshipEnum,
-  LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
   LoanPurposeEnum,

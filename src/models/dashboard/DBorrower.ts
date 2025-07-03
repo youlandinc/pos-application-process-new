@@ -235,7 +235,7 @@ export const DBorrower = types
       };
     },
     getEntityPostData() {
-      const pureSignatories = self.signatories.map((item, index) => {
+      const pureSignatories = self.signatories.map((item) => {
         return {
           ...item.getPostData(),
         };
@@ -253,13 +253,11 @@ export const DBorrower = types
       };
     },
     getTrustPostData() {
-      const pureSignatories = self.signatories.map((item, index) => {
+      const pureSignatories = self.signatories.map((item) => {
         return {
           ...item.getPostData(),
         };
       });
-
-      console.log(pureSignatories);
 
       return {
         borrowerType: self.borrowerType,
@@ -271,29 +269,31 @@ export const DBorrower = types
       return validate(this.getIndividualPostData(), TaskBorrowerIndividual);
     },
     checkEntity() {
-      self.signatories.map((signatory, index) => {
-        const addressError: Record<string, string[]> | undefined = validate(
-          signatory.addressInfo.getPostData(),
-          AddressSchema,
-        );
-        const formError = validate(signatory, TaskBorrowerSignatory);
-
-        if (
-          index === 1 &&
-          self.signatories[0].maritalStatus === LoanMarriedStatusEnum.married &&
-          signatory.maritalStatus === LoanMarriedStatusEnum.married &&
-          !signatory.marriedTogether
-        ) {
-          formError.marriedTogether = ['Cannot be empty'];
-        }
-
-        self.signatories[index].errors = addressError
-          ? { ...formError, addressInfo: addressError }
-          : formError || {};
-      });
-      return validate(this.getEntityPostData(), TaskBorrowerEntity);
+      const {
+        entityName,
+        entityType,
+        entityId,
+        entityState,
+        email,
+        phoneNumber,
+        borrowerType,
+      } = this.getEntityPostData();
+      
+      return validate({
+        entityName,
+        entityType,
+        entityId,
+        entityState,
+        email,
+        phoneNumber,
+        borrowerType,
+      }, TaskBorrowerEntity);
     },
     checkTrust() {
+      const { trustName, borrowerType } = this.getTrustPostData();
+      return validate({ trustName, borrowerType }, TaskBorrowerTrust);
+    },
+    checkSignatories() {
       self.signatories.map((signatory, index) => {
         const addressError: Record<string, string[]> | undefined = validate(
           signatory.addressInfo.getPostData(),
@@ -314,7 +314,9 @@ export const DBorrower = types
           ? { ...formError, addressInfo: addressError }
           : formError || {};
       });
-      return validate(this.getTrustPostData(), TaskBorrowerTrust);
+      
+      const arr = getSnapshot(self.signatories);
+      return arr.map((item) => item.errors);
     },
   }));
 

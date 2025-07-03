@@ -1499,7 +1499,6 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
           </Stack>
         );
       },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       [CommonInputFields, VacancyRateField],
     );
 

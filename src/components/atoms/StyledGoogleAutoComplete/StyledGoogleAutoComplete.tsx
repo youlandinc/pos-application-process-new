@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react'
 import { Autocomplete, Box, Grid, Stack, Typography } from '@mui/material';
 import { LocationOnOutlined } from '@mui/icons-material';
 import parse from 'autosuggest-highlight/parse';
@@ -6,8 +6,8 @@ import parse from 'autosuggest-highlight/parse';
 import { observer } from 'mobx-react-lite';
 
 import {
-  _StyledGoogleAutoCompleteProps,
   PlaceType,
+  StyledAutoCompleteProps,
   StyledGoogleAutoCompleteProps,
   StyledGoogleAutoCompleteStyles,
 } from './index';
@@ -29,12 +29,17 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
       addressError,
     }) => {
       const { formatAddress } = address;
+      
 
       const [stateValidate, setStateValidate] = useState(stateError);
 
       const [addressErrorValidate, setAddressErrorValidate] = useState<
         Record<string, string[]> | undefined
-      >(addressError);
+      >();
+      
+      useEffect(() => {
+        setAddressErrorValidate(addressError)
+      }, [addressError])
 
       const handledPlaceSelect = useCallback(
         (place: any) => {
@@ -61,10 +66,14 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
               case 'administrative_area_level_1':
                 if (addressErrorValidate?.state) {
                   setAddressErrorValidate((prev) => {
-                    if (prev) {
-                      delete prev.state;
+                    if (!prev) {
+                      return prev
                     }
-                    return prev;
+                    const newState = { ...prev }
+                    delete newState.state
+                    return Object.keys(newState).length > 0
+                        ? newState
+                        : undefined
                   });
                 }
                 address.changeFieldValue('state', short_name);
@@ -75,10 +84,14 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
               case 'postal_code':
                 if (addressErrorValidate?.postcode) {
                   setAddressErrorValidate((prev) => {
-                    if (prev) {
-                      delete prev.postcode;
+                    if (!prev) {
+                      return prev
                     }
-                    return prev;
+                    const newState = { ...prev }
+                    delete newState.postcode
+                    return Object.keys(newState).length > 0
+                        ? newState
+                        : undefined
                   });
                 }
                 address.changeFieldValue('postcode', long_name);
@@ -120,7 +133,7 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
           {fullAddress ? (
             <Stack width={'100%'}>
               <Stack width={'100%'}>
-                <_StyledGoogleAutoComplete
+                <StyledAutoComplete
                   disabled={disabled}
                   fullAddress={fullAddress}
                   handledPlaceSelect={handledPlaceSelect}
@@ -130,10 +143,13 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                     if (addressErrorValidate?.address) {
                       setAddressErrorValidate((prev) => {
                         if (!prev) {
-                          return prev;
+                          return prev
                         }
-                        const { address, ...rest } = prev;
-                        return Object.keys(rest).length > 0 ? rest : undefined;
+                        const newState = { ...prev }
+                        delete newState.address
+                        return Object.keys(newState).length > 0
+                            ? newState
+                            : undefined
                       });
                     }
                     if (!val) {
@@ -180,10 +196,11 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                   onChange={(e) => {
                     if (addressErrorValidate?.state) {
                       setAddressErrorValidate((prev) => {
-                        if (prev) {
-                          delete prev.state;
+                        if (!prev) {
+                          return undefined
                         }
-                        return prev;
+                        const { state: _removed, ...rest } = prev
+                        return Object.keys(rest).length > 0 ? rest : undefined
                       });
                     }
                     address.changeFieldValue('state', e.target.value as string);
@@ -218,10 +235,14 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                   onChange={(e) => {
                     if (addressErrorValidate?.postcode) {
                       setAddressErrorValidate((prev) => {
-                        if (prev) {
-                          delete prev.postcode;
+                        if (!prev) {
+                          return prev
                         }
-                        return prev;
+                        const newState = { ...prev }
+                        delete newState.postcode
+                        return Object.keys(newState).length > 0
+                            ? newState
+                            : undefined
                       });
                     }
                     address.changeFieldValue('postcode', e.target.value);
@@ -235,7 +256,7 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
             </Stack>
           ) : (
             <Stack>
-              <_StyledGoogleAutoComplete
+              <StyledAutoComplete
                 disabled={disabled}
                 fullAddress={fullAddress}
                 handledPlaceSelect={handledPlaceSelect}
@@ -252,7 +273,7 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
     },
   );
 
-const _StyledGoogleAutoComplete: FC<_StyledGoogleAutoCompleteProps> = ({
+const StyledAutoComplete: FC<StyledAutoCompleteProps> = ({
   inputValue,
   onInputChange,
   fullAddress,

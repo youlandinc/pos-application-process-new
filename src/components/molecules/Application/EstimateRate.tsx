@@ -93,6 +93,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         ) {
           if (saasState?.posSettings?.exactFicoScoreConfig) {
             estimateRate.changeFieldValue('accurateScore', 700);
+            estimateRate.changeFieldValue('ficoScore', LoanFicoScoreEnum.yes);
           } else {
             estimateRate.changeFieldValue('accurateScore', undefined);
             estimateRate.changeFieldValue(
