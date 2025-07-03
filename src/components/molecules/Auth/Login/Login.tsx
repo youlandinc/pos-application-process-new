@@ -1,6 +1,5 @@
 import { FC, FormEventHandler, useCallback, useMemo, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
@@ -211,24 +210,44 @@ export const Login: FC<LoginProps> = observer(
                   {FormBody}
                   <Box className="form_foot">
                     <Typography variant="body2">
-                      Don&apos;t have an account?
+                      Don&apos;t have an account?{' '}
                       <Typography
-                        color={'primary'}
                         component={'span'}
-                        fontWeight={600}
-                        variant={'body2'}
+                        onClick={async () => {
+                          await router.push({
+                            pathname: '/auth/sign_up/',
+                            query: {
+                              ...router.query,
+                            },
+                          });
+                        }}
+                        sx={{
+                          cursor: 'pointer',
+                          color: 'primary.main',
+                          fontWeight: 600,
+                          fontSize: 14,
+                        }}
                       >
-                        <Link href={'/auth/sign_up/'}> Sign up</Link>
+                        Sign up
                       </Typography>
                     </Typography>
                     <Typography
-                      color={'primary'}
-                      fontWeight={600}
-                      variant="body2"
+                      onClick={async () => {
+                        await router.push({
+                          pathname: '/auth/forgot_password/',
+                          query: {
+                            ...router.query,
+                          },
+                        });
+                      }}
+                      sx={{
+                        cursor: 'pointer',
+                        color: 'primary.main',
+                        fontWeight: 600,
+                        fontSize: 14,
+                      }}
                     >
-                      <Link href={'/auth/forgot_password/'}>
-                        Forgot password?
-                      </Link>
+                      Forgot password?
                     </Typography>
                   </Box>
                 </Box>
