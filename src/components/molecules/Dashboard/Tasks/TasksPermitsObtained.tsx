@@ -152,7 +152,7 @@ export const TasksPermitsObtained: FC = observer(() => {
         maxWidth={900}
         width={'100%'}
       >
-        <Typography fontSize={{ xs: 20, lg: 24 }}>
+        <Typography component={'div'} fontSize={{ xs: 20, lg: 24 }}>
           Upload all permits obtained
           <Typography
             color={'text.secondary'}

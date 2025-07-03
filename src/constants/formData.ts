@@ -1,7 +1,6 @@
 import {
   LoanAnswerEnum,
   LoanCitizenshipEnum,
-  LoanFicoScoreEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,

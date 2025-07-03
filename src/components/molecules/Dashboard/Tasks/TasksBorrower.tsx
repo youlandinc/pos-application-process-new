@@ -105,13 +105,13 @@ export const TasksBorrower: FC = observer(() => {
         break;
       }
       case DashboardTaskBorrowerType.entity:
-        formError = taskBorrower.checkEntity();
+        formError = taskBorrower.checkSignatories();
         setEntityError(formError);
         setIndividualError(undefined);
         setTrustError(undefined);
         break;
       case DashboardTaskBorrowerType.trust:
-        formError = taskBorrower.checkTrust();
+        formError = taskBorrower.checkSignatories();
         setTrustError(formError);
         setIndividualError(undefined);
         setEntityError(undefined);
@@ -215,7 +215,7 @@ export const TasksBorrower: FC = observer(() => {
         maxWidth={900}
         width={'100%'}
       >
-        <Typography fontSize={{ xs: 20, lg: 24 }}>
+        <Typography component={'div'} fontSize={{ xs: 20, lg: 24 }}>
           Borrower information
           <Typography
             color={'text.secondary'}

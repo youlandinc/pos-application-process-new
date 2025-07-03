@@ -230,7 +230,7 @@ export const TasksBorrowerSignatories: FC = observer(() => {
           <Stack maxWidth={600}>
             <StyledGoogleAutoComplete
               address={signatory.addressInfo}
-              addressError={signatory.errors.addressInfo}
+              addressError={signatory.errors?.addressInfo}
             />
           </Stack>
 
