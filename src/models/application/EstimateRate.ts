@@ -21,7 +21,14 @@ export const EstimateRate = types
     citizenship: types.enumeration(Object.values(LoanCitizenshipEnum)),
     priorExperience: types.maybe(types.number),
     state: types.string,
-    ficoScore: types.enumeration(Object.values(LoanFicoScoreEnum)),
+    ficoScore: types.maybeNull(
+      types.enumeration(Object.values(LoanFicoScoreEnum)),
+    ),
+    accurateScore: types.union(
+      types.number,
+      types.maybeNull(types.number),
+      types.maybe(types.number),
+    ),
     isLiquidity: types.maybe(types.boolean),
     liquidityAmount: types.maybe(types.number),
     rehabCost: types.maybe(types.number),
@@ -74,7 +81,15 @@ export const EstimateRate = types
         ficoScore:
           self.citizenship === LoanCitizenshipEnum.foreign_national
             ? LoanFicoScoreEnum.no_fico
-            : self.ficoScore,
+            : self.ficoScore === LoanFicoScoreEnum.yes
+              ? null
+              : self.ficoScore,
+        accurateScore:
+          self.citizenship === LoanCitizenshipEnum.foreign_national
+            ? null
+            : self.accurateScore
+              ? self.accurateScore
+              : null,
         isLiquidity: self.isLiquidity,
         liquidityAmount: self.liquidityAmount,
         rehabCost: self.rehabCost,
@@ -119,6 +134,7 @@ export const EstimateRate = types
         propertyUnit,
         state,
         ficoScore,
+        accurateScore,
         isLiquidity,
         liquidityAmount,
         rehabCost,
@@ -159,7 +175,8 @@ export const EstimateRate = types
       self.citizenship = citizenship ?? LoanCitizenshipEnum.us_citizen;
       self.priorExperience = priorExperience ?? 0;
       self.state = state ?? 'CA';
-      self.ficoScore = ficoScore ?? LoanFicoScoreEnum.between_700_730;
+      self.ficoScore = ficoScore;
+      self.accurateScore = accurateScore;
       self.isLiquidity = isLiquidity ?? true;
       self.liquidityAmount = liquidityAmount ?? undefined;
       self.rehabCost = rehabCost ?? undefined;
@@ -179,7 +196,7 @@ export const EstimateRate = types
       self.constructionProjectsExited = constructionProjectsExited ?? undefined;
       self.purchaseConstructionCosts = purchaseConstructionCosts ?? undefined;
       self.refinanceConstructionCosts = refinanceConstructionCosts ?? undefined;
-      self.ltc = ltc * 100 ?? undefined;
+      self.ltc = ltc * 100 || 0;
       self.monthlyIncome = monthlyIncome ?? undefined;
       self.operatingExpense = operatingExpense ?? undefined;
       self.propertyInsurance = propertyInsurance ?? undefined;

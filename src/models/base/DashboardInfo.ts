@@ -5,6 +5,7 @@ import { cast, flow, Instance, SnapshotOut, types } from 'mobx-state-tree';
 
 import { AUTO_HIDE_DURATION, TASK_URL_HASH } from '@/constants';
 import { Address } from '@/models/common/Address';
+import { DBorrower } from '@/models/dashboard/DBorrower';
 
 import {
   AddressData,
@@ -100,6 +101,7 @@ export const DashboardInfo = types
         ),
       }),
     ),
+    taskBorrower: DBorrower,
   })
   .actions((self) => ({
     findFirst() {

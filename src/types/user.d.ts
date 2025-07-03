@@ -180,9 +180,10 @@ declare namespace User {
     customFee?: POSCustomFee;
     isWarning?: boolean;
     borrowerTypes?: POSBorrowerTypes[];
-    softCreditRequirement?: SoftCreditRequirementEnum;
     customLoanTerms?: POSBorrowerTypes[];
+    softCreditRequirement?: SoftCreditRequirementEnum;
     usePricingEngine?: boolean;
+    exactFicoScoreConfig?: boolean;
   }
 
   interface TenantConfigUserInfo {

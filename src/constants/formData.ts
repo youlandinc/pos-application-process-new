@@ -1,14 +1,12 @@
 import {
   LoanAnswerEnum,
   LoanCitizenshipEnum,
-  LoanFicoScoreEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
   LoanPurposeEnum,
   LoanSnapshotEnum,
   LoanTypeEnum,
-  PrepaymentPenaltyEnum,
 } from '@/types';
 
 export const FormData = {
@@ -29,7 +27,8 @@ export const FormData = {
     priorExperience: 0,
     // common search condition params
     state: 'CA',
-    ficoScore: LoanFicoScoreEnum.between_700_730,
+    ficoScore: null,
+    accurateScore: null,
     // for now not use liquidity
     isLiquidity: true,
     liquidityAmount: 100000,

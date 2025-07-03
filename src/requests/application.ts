@@ -46,7 +46,7 @@ export const _fetchProductList = (
       tenantId: string;
       loanId: string;
       state: string;
-      ficoScore: string;
+      ficoScore: string | null;
       liquidity: number;
       propertyValue: number;
       loanAmount: number;

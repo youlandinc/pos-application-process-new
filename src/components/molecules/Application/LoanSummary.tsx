@@ -904,19 +904,41 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
             <Typography
               color={'text.secondary'}
               fontSize={{ xs: 12, lg: 16 }}
+              mb={{ xs: 8.25, md: 0 }}
               px={{ xs: 0.75, lg: 1.5 }}
             >
               <b>Disclaimer: </b>The estimates are subject to change and do not
               include 3rd party settlement fees required to close your loan.
             </Typography>
 
-            <Stack gap={3} mx={'auto'} width={'100%'}>
+            <Stack
+              flexDirection={{ xs: 'row', md: 'column' }}
+              sx={
+                ['xs', 'sm'].includes(breakpoints)
+                  ? {
+                      bgcolor: '#ffffff',
+                      position: 'fixed',
+                      bottom: 0,
+                      left: 0,
+                      gap: 6,
+                      py: 1.5,
+                      px: 3,
+                      boxShadow: `0px -1px 1px 0px hsla(${saasState?.posSettings?.h ?? 222},42%,55%,.25)`,
+                    }
+                  : { gap: 3, mx: 'auto' }
+              }
+              width={'100%'}
+            >
               <StyledButton
                 color={'primary'}
                 disabled={nextState}
                 id={'application-loan-summary-next-button'}
                 loading={nextState}
                 onClick={nextStep}
+                sx={{
+                  flex: 1,
+                  order: { xs: 2, md: 1 },
+                }}
               >
                 Submit{' '}
                 {!['xs', 'sm', 'md'].includes(breakpoints) && 'application'}
@@ -926,6 +948,10 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 disabled={backState}
                 loading={backState}
                 onClick={backStep}
+                sx={{
+                  flex: 1,
+                  order: { xs: 1, md: 2 },
+                }}
                 variant={'text'}
               >
                 Back

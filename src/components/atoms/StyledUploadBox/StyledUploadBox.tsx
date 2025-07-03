@@ -139,7 +139,6 @@ export const StyledUploadBox = (props: StyledUploadBoxProps) => {
       handler(res.data, fileName);
     },
     // this function never change
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

@@ -13,7 +13,7 @@ import {
   POSFormatDollar,
   POSFormatPercent,
   POSGetDecimalPlaces,
-  POSNotUndefined,
+  POSTypeOf,
 } from '@/utils';
 import {
   APPLICATION_FICO_SCORE,
@@ -60,7 +60,83 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       session,
     } = useMst();
 
-    const [expanded, setExpanded] = useState<boolean | undefined>();
+    const renderFico = useMemo(
+      () => {
+        if (
+          estimateRate.citizenship === LoanCitizenshipEnum.foreign_national ||
+          !saasState
+        ) {
+          return null;
+        }
+
+        const options = saasState?.posSettings?.exactFicoScoreConfig
+          ? [
+              {
+                label: 'Fill out exact FICO score',
+                key: 'Fill out exact FICO score',
+                value: LoanFicoScoreEnum.yes,
+              },
+              APPLICATION_FICO_SCORE[0],
+            ]
+          : [
+              {
+                label: 'Fill out exact FICO score',
+                key: 'Fill out exact FICO score',
+                value: LoanFicoScoreEnum.yes,
+              },
+              ...APPLICATION_FICO_SCORE,
+            ];
+
+        if (
+          POSTypeOf(estimateRate.accurateScore) === 'Null' &&
+          POSTypeOf(estimateRate.ficoScore) === 'Null'
+        ) {
+          if (saasState?.posSettings?.exactFicoScoreConfig) {
+            estimateRate.changeFieldValue('accurateScore', 700);
+            estimateRate.changeFieldValue('ficoScore', LoanFicoScoreEnum.yes);
+          } else {
+            estimateRate.changeFieldValue('accurateScore', undefined);
+            estimateRate.changeFieldValue(
+              'ficoScore',
+              LoanFicoScoreEnum.between_700_730,
+            );
+          }
+        }
+
+        return (
+          <StyledSelectTextField
+            fieldLabel={'Est. FICO score'}
+            fieldValue={estimateRate.accurateScore as number | undefined}
+            needPrefixOrSuffix={false}
+            onFieldChange={(floatValue) => {
+              estimateRate.changeFieldValue('accurateScore', floatValue);
+            }}
+            onSelectChange={(v) => {
+              estimateRate.changeFieldValue(
+                'ficoScore',
+                v as string as LoanFicoScoreEnum,
+              );
+              if (v === LoanFicoScoreEnum.fico_not_available) {
+                estimateRate.changeFieldValue('accurateScore', undefined);
+              }
+            }}
+            options={options}
+            selectLabel={'Est. FICO score'}
+            selectValue={estimateRate.ficoScore || LoanFicoScoreEnum.yes}
+            sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+          />
+        );
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [
+        saasState,
+        saasState?.posSettings?.exactFicoScoreConfig,
+        estimateRate.citizenship,
+        estimateRate.ficoScore,
+        estimateRate.accurateScore,
+      ],
+    );
+
     const [loading, setLoading] = useState<boolean>(false);
     const [productList, setProductList] = useState<
       Array<ProductItemProps | any>
@@ -116,9 +192,6 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       try {
         const { data } = await _fetchProductList(postData);
         setProductList(data?.products ?? []);
-        if (data?.products.length === 0) {
-          setExpanded(true);
-        }
         setErrorList(data?.reasons ?? []);
         setLimits(data?.limits ?? void 0);
       } catch (err) {
@@ -323,238 +396,6 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
       estimateRate?.purchasePrice,
       estimateRate.refinanceLoanAmount,
       estimateRate?.rehabCost,
-    ]);
-
-    const renderSummary = useMemo(() => {
-      switch (estimateRate.productCategory) {
-        case LoanProductCategoryEnum.stabilized_bridge:
-          if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
-            return (
-              <Typography
-                color={'text.secondary'}
-                sx={{
-                  '& > b': {
-                    color: 'text.primary',
-                    fontWeight: 600,
-                  },
-                }}
-                variant={'body2'}
-              >
-                This property is located in{' '}
-                <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
-                the FlCO score is{' '}
-                <b>
-                  {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
-                </b>
-                {estimateRate.isLiquidity ? (
-                  <>
-                    , the liquidity is{' '}
-                    <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
-                  </>
-                ) : (
-                  ''
-                )}
-                . The purchase price is{' '}
-                <b>{POSFormatDollar(estimateRate.purchasePrice)}</b>. The total
-                loan amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
-              </Typography>
-            );
-          }
-          return (
-            <Typography
-              color={'text.secondary'}
-              sx={{
-                '& > b': {
-                  color: 'text.primary',
-                  fontWeight: 600,
-                },
-              }}
-              variant={'body2'}
-            >
-              This property is located in{' '}
-              <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
-              the FlCO score is{' '}
-              <b>
-                {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
-              </b>
-              {estimateRate.isLiquidity ? (
-                <>
-                  , the liquidity is{' '}
-                  <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
-                </>
-              ) : (
-                ''
-              )}
-              . The as-is property value is{' '}
-              <b>{POSFormatDollar(estimateRate.propertyValue)}</b>. The total
-              loan amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
-            </Typography>
-          );
-        case LoanProductCategoryEnum.fix_and_flip:
-          if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
-            return (
-              <Typography
-                color={'text.secondary'}
-                sx={{
-                  '& > b': {
-                    color: 'text.primary',
-                    fontWeight: 600,
-                  },
-                }}
-                variant={'body2'}
-              >
-                This property is located in{' '}
-                <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
-                the FlCO score is{' '}
-                <b>
-                  {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
-                </b>
-                {estimateRate.isLiquidity ? (
-                  <>
-                    , the liquidity is{' '}
-                    <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
-                  </>
-                ) : (
-                  ''
-                )}
-                . The purchase price is{' '}
-                <b>{POSFormatDollar(estimateRate.purchasePrice)}</b>. The
-                estimated cost of rehab is{' '}
-                <b>{POSFormatDollar(estimateRate.rehabCost)}</b>, and the
-                after-repair value of the property will be{' '}
-                <b>{POSFormatDollar(estimateRate.arv)}</b>. The total loan
-                amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
-              </Typography>
-            );
-          }
-          return (
-            <Typography
-              color={'text.secondary'}
-              sx={{
-                '& > b': {
-                  color: 'text.primary',
-                  fontWeight: 600,
-                },
-              }}
-              variant={'body2'}
-            >
-              This property is located in{' '}
-              <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
-              the FlCO score is{' '}
-              <b>
-                {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
-              </b>
-              {estimateRate.isLiquidity ? (
-                <>
-                  , the liquidity is{' '}
-                  <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
-                </>
-              ) : (
-                ''
-              )}
-              . The as-is property value is{' '}
-              <b>{POSFormatDollar(estimateRate.propertyValue)}</b>. The
-              estimated cost of rehab is{' '}
-              <b>{POSFormatDollar(estimateRate.rehabCost)}</b>, and the
-              after-repair value of the property will be{' '}
-              <b>{POSFormatDollar(estimateRate.arv)}</b>. The total loan amount
-              is <b>{POSFormatDollar(totalLoanAmount)}</b>.
-            </Typography>
-          );
-        case LoanProductCategoryEnum.ground_up_construction:
-          if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
-            return (
-              <Typography
-                color={'text.secondary'}
-                sx={{
-                  '& > b': {
-                    color: 'text.primary',
-                    fontWeight: 600,
-                  },
-                }}
-                variant={'body2'}
-              >
-                This property is located in{' '}
-                <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
-                with a FICO score range of{' '}
-                <b>
-                  {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
-                </b>
-                {estimateRate.isLiquidity ? (
-                  <>
-                    {' '}
-                    and liquidity of{' '}
-                    <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
-                  </>
-                ) : (
-                  ''
-                )}
-                . The purchase price is{' '}
-                <b>{POSFormatDollar(estimateRate.purchasePrice)}</b>. the
-                estimated cost of rehab construction is{' '}
-                <b>{POSFormatDollar(estimateRate.purchaseConstructionCosts)}</b>
-                , and the completed/after-repair value of the property will be{' '}
-                <b>{POSFormatDollar(estimateRate.arv)}</b>, and the total loan
-                amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
-              </Typography>
-            );
-          }
-          return (
-            <Typography
-              color={'text.secondary'}
-              sx={{
-                '& > b': {
-                  color: 'text.primary',
-                  fontWeight: 600,
-                },
-              }}
-              variant={'body2'}
-            >
-              This property is located in{' '}
-              <b>{POSFindLabel(OPTIONS_COMMON_STATE, estimateRate.state)}</b>,
-              the FlCO score is{' '}
-              <b>
-                {POSFindLabel(APPLICATION_FICO_SCORE, estimateRate.ficoScore)}
-              </b>
-              {estimateRate.isLiquidity ? (
-                <>
-                  , the liquidity is{' '}
-                  <b>{POSFormatDollar(estimateRate.liquidityAmount)}</b>
-                </>
-              ) : (
-                ''
-              )}
-              . The purchase price is{' '}
-              <b>{POSFormatDollar(estimateRate.purchasePrice)}</b>, with
-              <b>
-                {POSFormatDollar(estimateRate.improvementsSinceAcquisition)}
-              </b>
-              , in improvements made since acquisition and{' '}
-              <b>{POSFormatDollar(estimateRate.refinanceConstructionCosts)}</b>
-              remaining in construction costs. The estimated completed
-              (after-repair) value of the property is{' '}
-              <b>{POSFormatDollar(estimateRate.arv)}</b>, and the total loan
-              amount is <b>{POSFormatDollar(totalLoanAmount)}</b>.
-            </Typography>
-          );
-        default:
-          return '';
-      }
-    }, [
-      estimateRate.arv,
-      estimateRate.ficoScore,
-      estimateRate.improvementsSinceAcquisition,
-      estimateRate.isLiquidity,
-      estimateRate.liquidityAmount,
-      estimateRate.loanPurpose,
-      estimateRate.productCategory,
-      estimateRate.propertyValue,
-      estimateRate.purchaseConstructionCosts,
-      estimateRate.purchasePrice,
-      estimateRate.refinanceConstructionCosts,
-      estimateRate.rehabCost,
-      estimateRate.state,
-      totalLoanAmount,
     ]);
 
     const renderEditFields = useMemo(
@@ -1233,6 +1074,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         estimateRate.propertyUnit,
         estimateRate.state,
         estimateRate.ficoScore,
+        estimateRate.accurateScore,
         estimateRate.isLiquidity,
         estimateRate.liquidityAmount,
         estimateRate.rehabCost,
@@ -1439,6 +1281,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         estimateRate.propertyUnit,
         estimateRate.state,
         estimateRate.ficoScore,
+        estimateRate.accurateScore,
         estimateRate.isLiquidity,
         estimateRate.liquidityAmount,
         estimateRate.rehabCost,
@@ -1471,22 +1314,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
 
     useEffect(
       () => {
-        if (POSNotUndefined(expanded) || expanded) {
-          return;
-        }
-        ['xs', 'sm', 'md'].includes(breakpoints) && setExpanded(false);
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [],
-    );
-
-    useEffect(
-      () => {
-        if (!saasState?.tenantId) {
-          return;
-        }
-        if (!saasState?.posSettings?.usePricingEngine) {
-          setExpanded(true);
+        if (!saasState?.tenantId || !saasState?.posSettings?.usePricingEngine) {
           return;
         }
         setLoading(true);
@@ -1497,6 +1325,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         saasState?.tenantId,
         estimateRate?.state,
         estimateRate?.ficoScore,
+        estimateRate?.accurateScore,
         estimateRate?.isLiquidity,
         estimateRate?.liquidityAmount,
         estimateRate?.rehabCost,
@@ -1540,208 +1369,143 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
           pb: { xs: 1.5, lg: 0 },
         }}
       >
-        {POSNotUndefined(expanded) && !expanded && (
+        <Stack gap={3} width={'100%'}>
           <Stack
-            alignItems={'center'}
+            alignItems={{ xs: 'flex-start', lg: 'stretch' }}
+            flexDirection={{ xs: 'column', lg: 'row' }}
             gap={3}
-            justifyContent={'space-between'}
-            width={'100%'}
+            ml={-0.5}
           >
-            <Stack
-              alignItems={'center'}
-              flexDirection={'row'}
-              gap={3}
-              justifyContent={'space-between'}
-              width={'100%'}
-            >
-              <Typography color={'text.secondary'} variant={'body3'}>
-                Rates based on following property:
-              </Typography>
-              <StyledButton
-                onClick={() => setExpanded(true)}
-                size={'small'}
-                variant={'outlined'}
-              >
-                Edit {saasState?.posSettings?.usePricingEngine ? '' : 'info'}
-              </StyledButton>
-            </Stack>
-            {renderSummary}
-          </Stack>
-        )}
-
-        {(!POSNotUndefined(expanded) || expanded) && (
-          <Stack gap={3} width={'100%'}>
-            <Stack
-              alignItems={{ xs: 'flex-start', lg: 'stretch' }}
-              flexDirection={{ xs: 'column', lg: 'row' }}
-              gap={3}
-              ml={-0.5}
-            >
-              <StyledSelect
-                isTooltip={true}
-                label={'Citizenship'}
-                onChange={(e) => {
-                  estimateRate.changeFieldValue(
-                    'citizenship',
-                    e.target.value as string as LoanCitizenshipEnum,
-                  );
-                }}
-                options={OPTIONS_COMMON_CITIZEN_TYPE}
-                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                value={estimateRate.citizenship}
-              />
-              <StyledTextFieldNumber
-                isTooltip={true}
-                label={
-                  estimateRate.productCategory !==
-                  LoanProductCategoryEnum.ground_up_construction
-                    ? '# of prior flips'
-                    : '# of construction projects exited'
-                }
-                onValueChange={({ floatValue }) => {
-                  estimateRate.changeFieldValue('priorExperience', floatValue);
-                }}
-                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                tooltipTitle={
-                  estimateRate.productCategory !==
-                  LoanProductCategoryEnum.ground_up_construction
-                    ? 'Number of flips completed and held rental properties'
-                    : 'The number of investment properties you have built and exited over the last 5 years'
-                }
-                value={estimateRate.priorExperience}
-              />
-            </Stack>
-
-            <Stack
-              alignItems={{ xs: 'flex-start', lg: 'stretch' }}
-              flexDirection={{ xs: 'column', lg: 'row' }}
-              gap={3}
-              ml={-0.5}
-            >
-              <StyledSelect
-                label={'State'}
-                onChange={(e) => {
-                  estimateRate.changeFieldValue(
-                    'state',
-                    e.target.value as string,
-                  );
-                }}
-                options={OPTIONS_COMMON_STATE}
-                sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                value={estimateRate.state}
-              />
-              {estimateRate.citizenship !==
-                LoanCitizenshipEnum.foreign_national && (
-                <StyledSelect
-                  label={'Est. FICO score'}
-                  onChange={(e) => {
-                    estimateRate.changeFieldValue(
-                      'ficoScore',
-                      e.target.value as string as LoanFicoScoreEnum,
-                    );
-                  }}
-                  options={APPLICATION_FICO_SCORE}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-                  value={estimateRate.ficoScore}
-                />
-              )}
-              <StyledSelectTextField
-                fieldLabel={'Liquidity'}
-                fieldValue={estimateRate.liquidityAmount}
-                isTooltip={true}
-                onFieldChange={(floatValue) =>
-                  estimateRate.changeFieldValue('liquidityAmount', floatValue)
-                }
-                onSelectChange={(value) => {
-                  estimateRate.changeFieldValue(
-                    'isLiquidity',
-                    value === LoanAnswerEnum.yes,
-                  );
-                }}
-                options={APPLICATION_LIQUIDITY}
-                selectLabel={'Liquidity'}
-                selectValue={
-                  estimateRate.isLiquidity
-                    ? LoanAnswerEnum.yes
-                    : LoanAnswerEnum.no
-                }
-                sx={{ maxWidth: { xs: '100%', lg: 220 } }}
-                tooltipTitle={
-                  'Liquidity means the cash or readily available funds you have, like savings or liquid investments. If unsure, use the dropdown menu on the right and select "Not sure".'
-                }
-              />
-
-              {!['xs', 'sm', 'md'].includes(breakpoints) &&
-                estimateRate.productCategory !==
-                  LoanProductCategoryEnum.ground_up_construction &&
-                saasState?.posSettings?.usePricingEngine && (
-                  <>
-                    <Stack flex={1} maxWidth={240} mt={0.5}>
-                      {loading ? (
-                        <>
-                          <Skeleton
-                            animation={'wave'}
-                            height={14}
-                            variant="rounded"
-                          />
-                          <Skeleton
-                            animation={'wave'}
-                            height={14}
-                            sx={{ marginTop: 1 }}
-                            variant="rounded"
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <Typography
-                            color={'text.secondary'}
-                            variant={'body3'}
-                          >
-                            You qualify for a loan amount between{' '}
-                          </Typography>
-                          <Typography
-                            color={'text.secondary'}
-                            sx={{
-                              '& > b': {
-                                color: 'primary.main',
-                                fontWeight: 600,
-                              },
-                            }}
-                            variant={'body3'}
-                          >
-                            <b>{POSFormatDollar(limits?.minLoanAmount)}</b> and{' '}
-                            <b>{POSFormatDollar(limits?.maxLoanAmount)}</b>.
-                          </Typography>
-                        </>
-                      )}
-                    </Stack>
-                  </>
-                )}
-            </Stack>
-
-            {renderEditFields}
-
-            {renderTail}
-          </Stack>
-        )}
-
-        {['xs', 'sm', 'md'].includes(breakpoints) &&
-          saasState?.posSettings?.usePricingEngine && (
-            <StyledButton
-              onClick={() => {
-                if (!wrapperRef.current) {
-                  return;
-                }
-                const { top } = wrapperRef.current.getBoundingClientRect();
-                window.scrollTo({ top: top + 24, behavior: 'smooth' });
+            <StyledSelect
+              isTooltip={true}
+              label={'Citizenship'}
+              onChange={(e) => {
+                estimateRate.changeFieldValue(
+                  'citizenship',
+                  e.target.value as string as LoanCitizenshipEnum,
+                );
               }}
-              sx={{ maxWidth: 600, width: '100%', mt: 3 }}
-              variant={'outlined'}
-            >
-              See rates
-            </StyledButton>
-          )}
+              options={OPTIONS_COMMON_CITIZEN_TYPE}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              value={estimateRate.citizenship}
+            />
+            <StyledTextFieldNumber
+              isTooltip={true}
+              label={
+                estimateRate.productCategory !==
+                LoanProductCategoryEnum.ground_up_construction
+                  ? '# of prior flips'
+                  : '# of construction projects exited'
+              }
+              onValueChange={({ floatValue }) => {
+                estimateRate.changeFieldValue('priorExperience', floatValue);
+              }}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              tooltipTitle={
+                estimateRate.productCategory !==
+                LoanProductCategoryEnum.ground_up_construction
+                  ? 'Number of flips completed and held rental properties'
+                  : 'The number of investment properties you have built and exited over the last 5 years'
+              }
+              value={estimateRate.priorExperience}
+            />
+          </Stack>
+
+          <Stack
+            alignItems={{ xs: 'flex-start', lg: 'stretch' }}
+            flexDirection={{ xs: 'column', lg: 'row' }}
+            gap={3}
+            ml={-0.5}
+          >
+            <StyledSelect
+              label={'State'}
+              onChange={(e) => {
+                estimateRate.changeFieldValue(
+                  'state',
+                  e.target.value as string,
+                );
+              }}
+              options={OPTIONS_COMMON_STATE}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              value={estimateRate.state}
+            />
+            {renderFico}
+            <StyledSelectTextField
+              fieldLabel={'Liquidity'}
+              fieldValue={estimateRate.liquidityAmount}
+              isTooltip={true}
+              onFieldChange={(floatValue) =>
+                estimateRate.changeFieldValue('liquidityAmount', floatValue)
+              }
+              onSelectChange={(value) => {
+                estimateRate.changeFieldValue(
+                  'isLiquidity',
+                  value === LoanAnswerEnum.yes,
+                );
+              }}
+              options={APPLICATION_LIQUIDITY}
+              selectLabel={'Liquidity'}
+              selectValue={
+                estimateRate.isLiquidity
+                  ? LoanAnswerEnum.yes
+                  : LoanAnswerEnum.no
+              }
+              sx={{ maxWidth: { xs: '100%', lg: 220 } }}
+              tooltipTitle={
+                'Liquidity means the cash or readily available funds you have, like savings or liquid investments. If unsure, use the dropdown menu on the right and select "Not sure".'
+              }
+            />
+
+            {!['xs', 'sm', 'md'].includes(breakpoints) &&
+              estimateRate.productCategory !==
+                LoanProductCategoryEnum.ground_up_construction &&
+              saasState?.posSettings?.usePricingEngine && (
+                <>
+                  <Stack flex={1} maxWidth={240} mt={0.5}>
+                    {loading ? (
+                      <>
+                        <Skeleton
+                          animation={'wave'}
+                          height={14}
+                          variant="rounded"
+                        />
+                        <Skeleton
+                          animation={'wave'}
+                          height={14}
+                          sx={{ marginTop: 1 }}
+                          variant="rounded"
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Typography color={'text.secondary'} variant={'body3'}>
+                          You qualify for a loan amount between{' '}
+                        </Typography>
+                        <Typography
+                          color={'text.secondary'}
+                          sx={{
+                            '& > b': {
+                              color: 'primary.main',
+                              fontWeight: 600,
+                            },
+                          }}
+                          variant={'body3'}
+                        >
+                          <b>{POSFormatDollar(limits?.minLoanAmount)}</b> and{' '}
+                          <b>{POSFormatDollar(limits?.maxLoanAmount)}</b>.
+                        </Typography>
+                      </>
+                    )}
+                  </Stack>
+                </>
+              )}
+          </Stack>
+
+          {renderEditFields}
+
+          {renderTail}
+        </Stack>
 
         {saasState?.posSettings?.usePricingEngine && (
           <Stack ref={wrapperRef} width={'100%'}>

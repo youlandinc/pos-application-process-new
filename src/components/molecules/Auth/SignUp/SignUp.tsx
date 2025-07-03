@@ -19,12 +19,14 @@ import {
   AUTO_HIDE_DURATION,
   LOGIN_APP_KEY,
   OPTIONS_SIGN_UP_ROLE,
+  OPTIONS_SIGN_UP_SURVEY,
   SignUpSchema,
   userpool,
 } from '@/constants';
 import { useSessionStorageState, useSwitch } from '@/hooks';
 
 import {
+  _submitSurvey,
   _userSendCode,
   _userSingIn,
   _userSingUp,
@@ -34,7 +36,13 @@ import {
 import { DetectActiveService } from '@/services/DetectActive';
 import { POSFlex } from '@/styles';
 
-import { BizType, HttpError, LoginType, UserType } from '@/types';
+import {
+  BizType,
+  HttpError,
+  LoginType,
+  SurveySourceEnum,
+  UserType,
+} from '@/types';
 import {
   StyledBoxWrap,
   StyledButton,
@@ -62,12 +70,23 @@ export const SignUp: FC<SignUpProps> = observer(
     const store = useMst();
     const { detectUserActiveService } = store;
 
-    const [userType, setUserType] = useState<keyof typeof UserType>();
+    const [userType, setUserType] = useState<keyof typeof UserType>(
+      UserType.CUSTOMER,
+    );
     const [companyName, setCompanyName] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const [surveySource, setSurveySource] = useState<SurveySourceEnum>();
+    const [surveyDetail, setSurveyDetail] = useState<string>('');
+
+    //const conditions = [
+    //  SurveySourceEnum.social_media,
+    //  SurveySourceEnum.event,
+    //  SurveySourceEnum.other,
+    //].includes(surveySource as SurveySourceEnum);
+
     const [password, setPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
@@ -88,6 +107,10 @@ export const SignUp: FC<SignUpProps> = observer(
     });
 
     const { open, close, visible } = useSwitch(false);
+
+    //const isVisibleSurvey = useMemo(() => {
+    //  return !router.query?.utm_medium;
+    //}, [router.query]);
 
     const handledPasswordChange: ChangeEventHandler<HTMLInputElement> =
       useCallback((e) => {
@@ -142,6 +165,7 @@ export const SignUp: FC<SignUpProps> = observer(
                 : UserType.CUSTOMER,
           },
         };
+
         try {
           setLoading(true);
           await _userSingUp(params);
@@ -156,6 +180,16 @@ export const SignUp: FC<SignUpProps> = observer(
           });
         } finally {
           setLoading(false);
+
+          //todo fuck
+          //if (isVisibleSurvey) {
+          //  const surveyData = {
+          //    surveyDetail: surveyDetail || '',
+          //    surveySource: surveySource || '',
+          //  };
+          //
+          //  await _submitSurvey(surveyData);
+          //}
         }
       },
       [
@@ -164,11 +198,14 @@ export const SignUp: FC<SignUpProps> = observer(
         email,
         enqueueSnackbar,
         firstName,
+        //isVisibleSurvey,
         lastName,
         open,
         password,
         phone,
         saasState?.serviceTypeEnum,
+        //surveyDetail,
+        //surveySource,
         userType,
       ],
     );
@@ -301,31 +338,6 @@ export const SignUp: FC<SignUpProps> = observer(
       ],
     );
 
-    const isDisabled = useMemo(() => {
-      for (const [, value] of Object.entries(passwordError)) {
-        if (!value) {
-          return true;
-        }
-      }
-      const condition =
-        userType === UserType.LOAN_OFFICER || userType === UserType.BROKER;
-      const result = condition ? companyName : true;
-      if (saasState?.serviceTypeEnum === 'SAAS') {
-        return (
-          !email || !password || !confirmedPassword || !userType || !result
-        );
-      }
-      return !email || !password || !confirmedPassword;
-    }, [
-      companyName,
-      confirmedPassword,
-      email,
-      password,
-      passwordError,
-      saasState?.serviceTypeEnum,
-      userType,
-    ]);
-
     const userTypeOption = useMemo(() => {
       const borrowerTypes = saasState?.posSettings?.borrowerTypes;
       if (!borrowerTypes) {
@@ -352,6 +364,17 @@ export const SignUp: FC<SignUpProps> = observer(
       }
       return result;
     }, [saasState?.posSettings?.borrowerTypes]);
+
+    //const detailLabel = useMemo(() => {
+    //  switch (surveySource) {
+    //    case SurveySourceEnum.social_media:
+    //      return 'Which platform (e.g. LinkedIn, Youtube, Instagram)?';
+    //    case SurveySourceEnum.event:
+    //      return 'Which event?';
+    //    case SurveySourceEnum.other:
+    //      return 'Please specify';
+    //  }
+    //}, [surveySource]);
 
     const FormBody = useMemo(() => {
       return (
@@ -418,10 +441,14 @@ export const SignUp: FC<SignUpProps> = observer(
           </Stack>
 
           <Stack flexDirection={{ xs: 'column', md: 'row' }} gap={3}>
+            <input name="email" style={{ display: 'none' }} type="text" />
             <StyledTextField
               disabled={loading}
               label={'Email'}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value.trim();
+                setEmail(value);
+              }}
               placeholder={'Email'}
               required
               validate={formError?.email}
@@ -441,7 +468,36 @@ export const SignUp: FC<SignUpProps> = observer(
             />
           </Stack>
 
+          {/*{isVisibleSurvey && (*/}
+          {/*  <>*/}
+          {/*    <StyledSelect*/}
+          {/*      disabled={loading}*/}
+          {/*      label={'Where did you hear about us？'}*/}
+          {/*      onChange={(e) =>*/}
+          {/*        setSurveySource(e.target.value as SurveySourceEnum)*/}
+          {/*      }*/}
+          {/*      options={OPTIONS_SIGN_UP_SURVEY}*/}
+          {/*      value={surveySource}*/}
+          {/*    />*/}
+          {/*    {conditions && (*/}
+          {/*      <StyledTextField*/}
+          {/*        label={detailLabel}*/}
+          {/*        onChange={(e) => setSurveyDetail(e.target.value)}*/}
+          {/*        value={surveyDetail}*/}
+          {/*      />*/}
+          {/*    )}*/}
+          {/*  </>*/}
+          {/*)}*/}
+
+          <Box sx={{ height: '1px', bgcolor: '#D2D6E1' }} />
+
           <Box>
+            <input
+              name="Password"
+              style={{ display: 'none' }}
+              type="password"
+            />
+
             <StyledTextFieldPassword
               disabled={loading}
               error={
@@ -502,7 +558,7 @@ export const SignUp: FC<SignUpProps> = observer(
 
           <StyledButton
             color="primary"
-            disabled={isDisabled || loading}
+            disabled={loading}
             type={'submit'}
             variant="contained"
           >
@@ -512,7 +568,9 @@ export const SignUp: FC<SignUpProps> = observer(
       );
     }, [
       companyName,
+      //conditions,
       confirmedPassword,
+      //detailLabel,
       email,
       firstName,
       formError?.confirmedPassword,
@@ -521,14 +579,16 @@ export const SignUp: FC<SignUpProps> = observer(
       formError?.userType,
       handledPasswordChange,
       handledSubmit,
-      isDisabled,
       isNestForm,
+      //isVisibleSurvey,
       lastName,
       loading,
       password,
       passwordError,
       phone,
       saasState?.serviceTypeEnum,
+      //surveyDetail,
+      //surveySource,
       userType,
       userTypeOption,
     ]);
@@ -576,7 +636,12 @@ export const SignUp: FC<SignUpProps> = observer(
                       Already have an account?{' '}
                       <Typography
                         component={'span'}
-                        onClick={() => router.push('/auth/login')}
+                        onClick={async () => {
+                          await router.push({
+                            pathname: '/auth/login/',
+                            query: { ...router.query },
+                          });
+                        }}
                         sx={{
                           color: 'primary.main',
                           cursor: 'pointer',
@@ -607,8 +672,8 @@ export const SignUp: FC<SignUpProps> = observer(
                           color: 'primary.main',
                           cursor: 'pointer',
                           fontWeight: 600,
+                          fontSize: 14,
                         }}
-                        variant={'body2'}
                       >
                         Terms of Use{' '}
                       </Typography>
@@ -626,8 +691,8 @@ export const SignUp: FC<SignUpProps> = observer(
                           color: 'primary.main',
                           cursor: 'pointer',
                           fontWeight: 600,
+                          fontSize: 14,
                         }}
-                        variant={'body2'}
                       >
                         Privacy Policy
                       </Typography>

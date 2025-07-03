@@ -2,7 +2,9 @@ import {
   AppraisalStatusEnum,
   LoanAnswerEnum,
   LoanCitizenshipEnum,
+  LoanMarriedStatusEnum,
   LoanPropertyUnitEnum,
+  SurveySourceEnum,
   UserType,
 } from '@/types';
 import { ReactNode } from 'react';
@@ -91,6 +93,24 @@ export const OPTIONS_COMMON_YES_OR_NO: Option[] = [
   },
 ];
 
+export const OPTIONS_COMMON_MARRIED_STATUS: Option[] = [
+  {
+    label: 'Separated',
+    key: LoanMarriedStatusEnum.separated,
+    value: LoanMarriedStatusEnum.separated,
+  },
+  {
+    label: 'Unmarried',
+    key: LoanMarriedStatusEnum.unmarried,
+    value: LoanMarriedStatusEnum.unmarried,
+  },
+  {
+    label: 'Married',
+    key: LoanMarriedStatusEnum.married,
+    value: LoanMarriedStatusEnum.married,
+  },
+];
+
 // just for payoff amount
 export const OPTIONS_COMMON_YES_OR_NOT_SURE: Option[] = [
   {
@@ -171,6 +191,49 @@ export const OPTIONS_SIGN_UP_ROLE: Option[] = [
     label: 'Loan Officer',
     key: UserType.LOAN_OFFICER,
     value: UserType.LOAN_OFFICER,
+  },
+];
+
+export const OPTIONS_SIGN_UP_SURVEY: Option[] = [
+  {
+    label: 'Email',
+    value: SurveySourceEnum.email,
+    key: SurveySourceEnum.email,
+  },
+  {
+    label: 'Google Search',
+    value: SurveySourceEnum.google_search,
+    key: SurveySourceEnum.google_search,
+  },
+  {
+    label: 'Call',
+    value: SurveySourceEnum.call,
+    key: SurveySourceEnum.call,
+  },
+  {
+    label: 'Social Media',
+    value: SurveySourceEnum.social_media,
+    key: SurveySourceEnum.social_media,
+  },
+  {
+    label: 'Flyer',
+    value: SurveySourceEnum.flyer,
+    key: SurveySourceEnum.flyer,
+  },
+  {
+    label: 'Referral',
+    value: SurveySourceEnum.referral,
+    key: SurveySourceEnum.referral,
+  },
+  {
+    label: 'Event',
+    value: SurveySourceEnum.event,
+    key: SurveySourceEnum.event,
+  },
+  {
+    label: 'Other',
+    value: SurveySourceEnum.other,
+    key: SurveySourceEnum.other,
   },
 ];
 

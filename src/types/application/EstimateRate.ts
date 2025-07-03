@@ -1,15 +1,15 @@
+import { LoanProductCategoryEnum } from './StartingQuestion';
 import {
   LoanAnswerEnum,
   LoanCitizenshipEnum,
-  LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
   LoanPurposeEnum,
-  PrepaymentPenaltyEnum,
 } from '@/types';
 
 export enum LoanFicoScoreEnum {
   default = '',
+  yes = 'YES',
   no_fico = 'NO_FICO',
   fico_not_available = 'FICO_NOT_AVAILABLE',
   //below_600 = 'BELOW_600',
@@ -47,7 +47,8 @@ export interface EstimateRateFormData {
   citizenship: LoanCitizenshipEnum;
   priorExperience: number;
   state: string;
-  ficoScore: LoanFicoScoreEnum;
+  ficoScore: LoanFicoScoreEnum | null;
+  accurateScore: null | number | undefined;
   isLiquidity: boolean;
   liquidityAmount: number;
   rehabCost: number;

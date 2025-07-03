@@ -60,6 +60,14 @@ export const POSGetParamsFromUrl = (url: string): Record<string, string> => {
   return params;
 };
 
+export const POSHasUTMParams = (queryParams: Record<string, any>): boolean => {
+  if (!queryParams || typeof queryParams !== 'object') {
+    return false;
+  }
+
+  return Object.keys(queryParams).some((key) => /^utm(_|$)/i.test(key));
+};
+
 export const POSGetRoundedCanvas = (
   sourceCanvas: HTMLCanvasElement,
   xWidth?: number,

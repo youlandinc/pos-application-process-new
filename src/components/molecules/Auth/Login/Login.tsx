@@ -1,6 +1,5 @@
 import { FC, FormEventHandler, useCallback, useMemo, useState } from 'react';
 import { Box, Stack, Typography } from '@mui/material';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
@@ -36,10 +35,6 @@ export const Login: FC<LoginProps> = observer(
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
-
-    const isDisabled = useMemo(() => {
-      return !email || !password;
-    }, [email, password]);
 
     const handledLoginSuccess = useCallback(
       (profile: User.UserSignInRequest) => {
@@ -133,9 +128,17 @@ export const Login: FC<LoginProps> = observer(
           sx={isNestForm ? LoginStyles.form : {}}
         >
           <StyledTextField
+            autoFocus
             disabled={loading}
-            disabledAutoFill={false}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              autoComplete: 'email',
+              name: 'email',
+            }}
             label={'Email'}
+            name={'email'}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={'Email'}
             required
@@ -143,8 +146,15 @@ export const Login: FC<LoginProps> = observer(
           />
           <StyledTextFieldPassword
             disabled={loading}
-            disabledAutoFill={false}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              autoComplete: 'current-password',
+              name: 'password',
+            }}
             label={'Password'}
+            name="password"
             onChange={(e) => setPassword(e.target.value)}
             placeholder={'Password'}
             required
@@ -152,7 +162,7 @@ export const Login: FC<LoginProps> = observer(
           />
           <StyledButton
             color="primary"
-            disabled={isDisabled || loading}
+            disabled={loading}
             type={'submit'}
             variant="contained"
           >
@@ -160,7 +170,7 @@ export const Login: FC<LoginProps> = observer(
           </StyledButton>
         </Box>
       );
-    }, [email, handledLogin, isDisabled, isNestForm, loading, password]);
+    }, [email, handledLogin, isNestForm, loading, password]);
 
     return (
       <>
@@ -200,24 +210,44 @@ export const Login: FC<LoginProps> = observer(
                   {FormBody}
                   <Box className="form_foot">
                     <Typography variant="body2">
-                      Don&apos;t have an account?
+                      Don&apos;t have an account?{' '}
                       <Typography
-                        color={'primary'}
                         component={'span'}
-                        fontWeight={600}
-                        variant={'body2'}
+                        onClick={async () => {
+                          await router.push({
+                            pathname: '/auth/sign_up/',
+                            query: {
+                              ...router.query,
+                            },
+                          });
+                        }}
+                        sx={{
+                          cursor: 'pointer',
+                          color: 'primary.main',
+                          fontWeight: 600,
+                          fontSize: 14,
+                        }}
                       >
-                        <Link href={'/auth/sign_up/'}> Sign up</Link>
+                        Sign up
                       </Typography>
                     </Typography>
                     <Typography
-                      color={'primary'}
-                      fontWeight={600}
-                      variant="body2"
+                      onClick={async () => {
+                        await router.push({
+                          pathname: '/auth/forgot_password/',
+                          query: {
+                            ...router.query,
+                          },
+                        });
+                      }}
+                      sx={{
+                        cursor: 'pointer',
+                        color: 'primary.main',
+                        fontWeight: 600,
+                        fontSize: 14,
+                      }}
                     >
-                      <Link href={'/auth/forgot_password/'}>
-                        Forgot password?
-                      </Link>
+                      Forgot password?
                     </Typography>
                   </Box>
                 </Box>

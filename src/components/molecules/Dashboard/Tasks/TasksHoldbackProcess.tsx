@@ -103,7 +103,7 @@ export const TasksHoldbackProcess: FC = observer(() => {
         maxWidth={900}
         width={'100%'}
       >
-        <Typography fontSize={{ xs: 20, lg: 24 }}>
+        <Typography component={'div'} fontSize={{ xs: 20, lg: 24 }}>
           Construction holdback process
           <Typography
             color={'text.secondary'}
