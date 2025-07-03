@@ -278,16 +278,19 @@ export const DBorrower = types
         phoneNumber,
         borrowerType,
       } = this.getEntityPostData();
-      
-      return validate({
-        entityName,
-        entityType,
-        entityId,
-        entityState,
-        email,
-        phoneNumber,
-        borrowerType,
-      }, TaskBorrowerEntity);
+
+      return validate(
+        {
+          entityName,
+          entityType,
+          entityId,
+          entityState,
+          email,
+          phoneNumber,
+          borrowerType,
+        },
+        TaskBorrowerEntity,
+      );
     },
     checkTrust() {
       const { trustName, borrowerType } = this.getTrustPostData();
@@ -314,7 +317,7 @@ export const DBorrower = types
           ? { ...formError, addressInfo: addressError }
           : formError || {};
       });
-      
+
       const arr = getSnapshot(self.signatories);
       return arr.map((item) => item.errors);
     },

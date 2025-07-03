@@ -1489,18 +1489,15 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
     );
 
     // Bridge and Fix component
-    const renderExtraBridgeAndFix = useMemo(
-      () => {
-        return (
-          <Stack gap={3} mt={3}>
-            {TitleTooltip('Multifamily information')}
-            {CommonInputFields}
-            {VacancyRateField}
-          </Stack>
-        );
-      },
-      [CommonInputFields, VacancyRateField],
-    );
+    const renderExtraBridgeAndFix = useMemo(() => {
+      return (
+        <Stack gap={3} mt={3}>
+          {TitleTooltip('Multifamily information')}
+          {CommonInputFields}
+          {VacancyRateField}
+        </Stack>
+      );
+    }, [CommonInputFields, VacancyRateField]);
 
     // DSCR component with conditional rendering based on property type
     const renderExtraDSCR = useMemo(

@@ -105,13 +105,13 @@ export const TasksBorrower: FC = observer(() => {
         break;
       }
       case DashboardTaskBorrowerType.entity:
-        formError = taskBorrower.checkSignatories()
+        formError = taskBorrower.checkSignatories();
         setEntityError(formError);
         setIndividualError(undefined);
         setTrustError(undefined);
         break;
       case DashboardTaskBorrowerType.trust:
-        formError = taskBorrower.checkSignatories()
+        formError = taskBorrower.checkSignatories();
         setTrustError(formError);
         setIndividualError(undefined);
         setEntityError(undefined);

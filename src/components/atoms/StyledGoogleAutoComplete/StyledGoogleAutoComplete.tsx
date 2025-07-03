@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Autocomplete, Box, Grid, Stack, Typography } from '@mui/material';
 import { LocationOnOutlined } from '@mui/icons-material';
 import parse from 'autosuggest-highlight/parse';
@@ -29,17 +29,16 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
       addressError,
     }) => {
       const { formatAddress } = address;
-      
 
       const [stateValidate, setStateValidate] = useState(stateError);
 
       const [addressErrorValidate, setAddressErrorValidate] = useState<
         Record<string, string[]> | undefined
       >();
-      
+
       useEffect(() => {
-        setAddressErrorValidate(addressError)
-      }, [addressError])
+        setAddressErrorValidate(addressError);
+      }, [addressError]);
 
       const handledPlaceSelect = useCallback(
         (place: any) => {
@@ -67,13 +66,13 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                 if (addressErrorValidate?.state) {
                   setAddressErrorValidate((prev) => {
                     if (!prev) {
-                      return prev
+                      return prev;
                     }
-                    const newState = { ...prev }
-                    delete newState.state
+                    const newState = { ...prev };
+                    delete newState.state;
                     return Object.keys(newState).length > 0
-                        ? newState
-                        : undefined
+                      ? newState
+                      : undefined;
                   });
                 }
                 address.changeFieldValue('state', short_name);
@@ -85,13 +84,13 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                 if (addressErrorValidate?.postcode) {
                   setAddressErrorValidate((prev) => {
                     if (!prev) {
-                      return prev
+                      return prev;
                     }
-                    const newState = { ...prev }
-                    delete newState.postcode
+                    const newState = { ...prev };
+                    delete newState.postcode;
                     return Object.keys(newState).length > 0
-                        ? newState
-                        : undefined
+                      ? newState
+                      : undefined;
                   });
                 }
                 address.changeFieldValue('postcode', long_name);
@@ -143,13 +142,13 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                     if (addressErrorValidate?.address) {
                       setAddressErrorValidate((prev) => {
                         if (!prev) {
-                          return prev
+                          return prev;
                         }
-                        const newState = { ...prev }
-                        delete newState.address
+                        const newState = { ...prev };
+                        delete newState.address;
                         return Object.keys(newState).length > 0
-                            ? newState
-                            : undefined
+                          ? newState
+                          : undefined;
                       });
                     }
                     if (!val) {
@@ -197,10 +196,10 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                     if (addressErrorValidate?.state) {
                       setAddressErrorValidate((prev) => {
                         if (!prev) {
-                          return undefined
+                          return undefined;
                         }
-                        const { state: _removed, ...rest } = prev
-                        return Object.keys(rest).length > 0 ? rest : undefined
+                        const { state: _removed, ...rest } = prev;
+                        return Object.keys(rest).length > 0 ? rest : undefined;
                       });
                     }
                     address.changeFieldValue('state', e.target.value as string);
@@ -236,13 +235,13 @@ export const StyledGoogleAutoComplete: FC<StyledGoogleAutoCompleteProps> =
                     if (addressErrorValidate?.postcode) {
                       setAddressErrorValidate((prev) => {
                         if (!prev) {
-                          return prev
+                          return prev;
                         }
-                        const newState = { ...prev }
-                        delete newState.postcode
+                        const newState = { ...prev };
+                        delete newState.postcode;
                         return Object.keys(newState).length > 0
-                            ? newState
-                            : undefined
+                          ? newState
+                          : undefined;
                       });
                     }
                     address.changeFieldValue('postcode', e.target.value);
