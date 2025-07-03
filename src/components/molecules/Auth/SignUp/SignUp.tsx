@@ -13,7 +13,7 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { POSFormatUrl, POSHasUTMParams } from '@/utils';
+import { POSFormatUrl } from '@/utils';
 
 import {
   AUTO_HIDE_DURATION,
@@ -107,7 +107,7 @@ export const SignUp: FC<SignUpProps> = observer(
     const { open, close, visible } = useSwitch(false);
 
     const isVisibleSurvey = useMemo(() => {
-      return !POSHasUTMParams(router.query);
+      return !router.query?.utm_medium;
     }, [router.query]);
 
     const handledPasswordChange: ChangeEventHandler<HTMLInputElement> =
@@ -633,7 +633,12 @@ export const SignUp: FC<SignUpProps> = observer(
                       Already have an account?{' '}
                       <Typography
                         component={'span'}
-                        onClick={() => router.push('/auth/login')}
+                        onClick={async () => {
+                          await router.push({
+                            pathname: '/auth/login/',
+                            query: { ...router.query },
+                          });
+                        }}
                         sx={{
                           color: 'primary.main',
                           cursor: 'pointer',
@@ -664,8 +669,8 @@ export const SignUp: FC<SignUpProps> = observer(
                           color: 'primary.main',
                           cursor: 'pointer',
                           fontWeight: 600,
+                          fontSize: 14,
                         }}
-                        variant={'body2'}
                       >
                         Terms of Use{' '}
                       </Typography>
@@ -683,8 +688,8 @@ export const SignUp: FC<SignUpProps> = observer(
                           color: 'primary.main',
                           cursor: 'pointer',
                           fontWeight: 600,
+                          fontSize: 14,
                         }}
-                        variant={'body2'}
                       >
                         Privacy Policy
                       </Typography>
