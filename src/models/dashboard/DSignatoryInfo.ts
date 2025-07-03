@@ -75,7 +75,9 @@ export const DSignatoryInfo = types
         marriedTogether,
       } = self;
 
-      const addressInfo = self.addressInfo.getPostData();
+      const addressInfo = isSameMailingAddress
+        ? undefined
+        : self.addressInfo.getPostData();
 
       return {
         firstName,
