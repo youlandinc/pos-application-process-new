@@ -29,11 +29,9 @@ export const MessageBox: FC = observer(() => {
       loading,
       loanChatMessage,
       loanId,
-      addLoanChatMessage,
       setUnReadCount,
       fetchChatMessage,
     },
-    userProfile,
     notificationDetail,
   } = store;
 
