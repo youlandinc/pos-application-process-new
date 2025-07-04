@@ -46,6 +46,7 @@ export enum RoleEnum {
   processor = 'PROCESSOR',
   admin = 'ADMIN',
   executive = 'EXECUTIVE',
+  underwriter = 'UNDERWRITER',
 }
 
 export interface ChatMessageResponse {
