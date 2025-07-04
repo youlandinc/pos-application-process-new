@@ -13,7 +13,6 @@ import { MessageItem } from './MessageItem';
 
 import { HttpError } from '@/types';
 import { _postChatMessage, _readAllChatMessage } from '@/requests';
-import { ChatMessageItemSource } from '@/types/account/notification';
 
 import ICON_SEND from './assets/icon-send.svg';
 import ICON_MESSAGE from './assets/icon-message.svg';
@@ -70,14 +69,7 @@ export const MessageBox: FC = observer(() => {
     } finally {
       setSending(false);
     }
-  }, [
-    addLoanChatMessage,
-    content,
-    enqueueSnackbar,
-    loanId,
-    sending,
-    userProfile?.userId,
-  ]);
+  }, [content, enqueueSnackbar, fetchChatMessage, loanId, sending]);
 
   const onReadAll = useCallback(async () => {
     try {
