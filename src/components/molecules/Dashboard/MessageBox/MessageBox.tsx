@@ -13,11 +13,11 @@ import { MessageItem } from './MessageItem';
 
 import { HttpError } from '@/types';
 import { _postChatMessage, _readAllChatMessage } from '@/requests';
+import { ChatMessageItemSource } from '@/types/account/notification';
 
 import ICON_SEND from './assets/icon-send.svg';
 import ICON_MESSAGE from './assets/icon-message.svg';
 import ICON_CLOSE from './assets/icon-close.svg';
-import { ChatMessageItemSource } from '@/types/account/notification';
 
 export const MessageBox: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
@@ -151,6 +151,55 @@ export const MessageBox: FC = observer(() => {
     }
   }, [onReadAll, visible, loanChatMessage.length]);
 
+  const [platform, setPlatForm] = useState<string>('');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const UA = window.navigator.userAgent;
+
+    // Detect platform - Windows or macOS
+    if (UA.indexOf('Win') !== -1) {
+      setPlatForm('Windows');
+    } else if (UA.indexOf('Mac') !== -1) {
+      setPlatForm('macOS');
+    } else {
+      setPlatForm('Windows');
+    }
+
+    const focusInput = () => {
+      if (!inputRef.current) {
+        return;
+      }
+
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+          const len = inputRef.current.value.length;
+          inputRef.current.setSelectionRange(len, len);
+        }
+      }, 50);
+    };
+
+    focusInput();
+
+    const handleCommentContainerClick = (e: MouseEvent) => {
+      const commentContainer = document.querySelector(
+        '[htmlFor="SEND_MESSAGE"]',
+      );
+      if (commentContainer && commentContainer.contains(e.target as Node)) {
+        if (!(e.target as HTMLElement).closest('button')) {
+          focusInput();
+        }
+      }
+    };
+
+    document.addEventListener('click', handleCommentContainerClick);
+
+    return () => {
+      document.removeEventListener('click', handleCommentContainerClick);
+    };
+  }, []);
+
   return loading ? null : (
     <>
       <Fade in={!visible}>
@@ -263,19 +312,56 @@ export const MessageBox: FC = observer(() => {
             flexShrink={0}
             gap={1.5}
             htmlFor={'SEND_MESSAGE'}
+            onClick={() => inputRef.current?.focus()}
             p={1.5}
           >
             <StyledTextField
               autoFocus={true}
               id={'SEND_MESSAGE'}
-              inputProps={{
-                maxLength: 255,
+              InputProps={{
+                inputRef: inputRef,
+                onFocus: () => {
+                  setTimeout(() => {
+                    if (inputRef.current) {
+                      const len = inputRef.current.value.length;
+                      inputRef.current.setSelectionRange(len, len);
+                    }
+                  }, 0);
+                },
               }}
-              maxRows={20}
+              maxRows={6}
               minRows={3}
               multiline
               onChange={(e) => setContent(e.target.value)}
-              placeholder={'Write message here'}
+              onKeyDown={async (e) => {
+                if (e.key === 'Enter') {
+                  // For macOS - Command+Enter to send
+                  // For Windows - Ctrl+Enter to send, regular Enter to add new line
+                  if (
+                    (platform === 'macOS' && e.metaKey) ||
+                    (platform === 'Windows' && e.ctrlKey)
+                  ) {
+                    // Only allow sending if there is actual text (not just whitespace)
+                    if (content.trim()) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      await onClickToSend();
+                    }
+                    return;
+                  }
+
+                  // For Windows - pressing Enter will add a new line
+                  if (platform === 'Windows') {
+                    // Allow default behavior (new line)
+                    e.stopPropagation();
+                    return;
+                  }
+
+                  // For macOS - default Enter behavior (add newline)
+                  e.stopPropagation();
+                }
+              }}
+              placeholder={'Add comments here'}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   height: 'auto !important',
@@ -294,28 +380,51 @@ export const MessageBox: FC = observer(() => {
               value={content}
             />
 
-            <StyledButton
-              color={'primary'}
-              disabled={!content || sending}
-              loading={sending}
-              onClick={onClickToSend}
-              size={'small'}
-              sx={{
-                borderRadius: '2px !important',
-                height: '24px !important',
-                fontWeight: '400 !important',
-                fontSize: 12,
-                '&.Mui-disabled': {
-                  color: '#ffffff !important',
-                },
-              }}
-            >
-              <Icon
-                component={ICON_SEND}
-                sx={{ width: 18, height: 18, mr: 0.5 }}
-              />
-              Send
-            </StyledButton>
+            <Stack alignItems={'flex-end'} flexDirection={'row'}>
+              <Typography color={'text.secondary'} fontSize={10} mt={1}>
+                <Typography component={'span'} fontSize={10} fontWeight={600}>
+                  {platform === 'Windows' ? 'Enter' : 'Return'}
+                </Typography>{' '}
+                for new line.{' '}
+                <Typography component={'span'} fontSize={10} fontWeight={600}>
+                  {platform === 'Windows' ? 'Ctrl' : '⌘'}
+                </Typography>{' '}
+                +{' '}
+                <Typography component={'span'} fontSize={10} fontWeight={600}>
+                  {platform === 'Windows' ? 'Enter' : 'Return'}
+                </Typography>{' '}
+                to send.
+              </Typography>
+
+              <StyledButton
+                disabled={!content || !content.trim()}
+                onClick={onClickToSend}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                }}
+                sx={{
+                  borderRadius: '4px !important',
+                  height: '24px !important',
+                  width: '48px !important',
+                  minWidth: 'auto !important',
+                  minHeight: 'auto !important',
+                  padding: '0 !important',
+                  fontWeight: 400,
+                  ml: 'auto',
+                  bgcolor: '#365EC6  !important',
+                  '&.Mui-disabled': {
+                    color: '#ffffff',
+                    bgcolor: '#BABCBE !important',
+                  },
+                  '&:hover': {
+                    bgcolor: '#D9B239 !important',
+                  },
+                }}
+                variant={'contained'}
+              >
+                <Icon component={ICON_SEND} sx={{ width: 18, height: 18 }} />
+              </StyledButton>
+            </Stack>
           </Stack>
         </Stack>
       </Fade>
