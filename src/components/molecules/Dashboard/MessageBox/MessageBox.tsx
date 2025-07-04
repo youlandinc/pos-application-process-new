@@ -340,7 +340,7 @@ export const MessageBox: FC = observer(() => {
                   e.stopPropagation();
                 }
               }}
-              placeholder={'Add comments here'}
+              placeholder={'Add message here'}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   height: 'auto !important',
@@ -360,7 +360,12 @@ export const MessageBox: FC = observer(() => {
             />
 
             <Stack alignItems={'flex-end'} flexDirection={'row'}>
-              <Typography color={'text.secondary'} fontSize={10} mt={1}>
+              <Typography
+                color={'text.secondary'}
+                display={{ xs: 'none', lg: 'block' }}
+                fontSize={10}
+                mt={1}
+              >
                 <Typography component={'span'} fontSize={10} fontWeight={600}>
                   {platform === 'Windows' ? 'Enter' : 'Return'}
                 </Typography>{' '}
