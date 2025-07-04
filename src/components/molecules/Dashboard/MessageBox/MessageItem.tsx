@@ -15,6 +15,7 @@ const ROLE_HASH: { [key in RoleEnum]: string } = {
   [RoleEnum.admin]: 'Admin',
   [RoleEnum.executive]: 'Account executive',
   [RoleEnum.processor]: 'Processor',
+  [RoleEnum.underwriter]: 'Underwriter',
 };
 
 export const MessageItem: FC<Partial<ChatMessageItem>> = observer(
@@ -46,36 +47,36 @@ export const MessageItem: FC<Partial<ChatMessageItem>> = observer(
         p={1.5}
         width={'100%'}
       >
-        {!isSelf && (
-          <Stack alignItems={'center'} flexDirection={'row'} gap={1}>
-            <Avatar
-              alt={`${
-                firstName ? firstName?.[0]?.toUpperCase() : ''
-              }${lastName ? lastName[0]?.toUpperCase() : ''}`}
-              src={avatar ? avatar : ''}
-              sx={{
-                width: 24,
-                height: 24,
-                mr: 0.5,
-                bgcolor: backgroundColor,
-                fontSize: 12,
-              }}
-            >
-              {`${
-                firstName ? firstName?.[0]?.toUpperCase() : ''
-              }${lastName ? lastName[0]?.toUpperCase() : ''}`}
-            </Avatar>
-            <Typography variant={'subtitle3'}>
-              {firstName} {lastName}
-            </Typography>
+        <Stack alignItems={'center'} flexDirection={'row'} gap={1}>
+          <Avatar
+            alt={`${
+              firstName ? firstName?.[0]?.toUpperCase() : ''
+            }${lastName ? lastName[0]?.toUpperCase() : ''}`}
+            src={avatar ? avatar : ''}
+            sx={{
+              width: 24,
+              height: 24,
+              mr: 0.5,
+              bgcolor: backgroundColor,
+              fontSize: 12,
+            }}
+          >
+            {`${
+              firstName ? firstName?.[0]?.toUpperCase() : ''
+            }${lastName ? lastName[0]?.toUpperCase() : ''}`}
+          </Avatar>
+          <Typography variant={'subtitle3'}>
+            {firstName} {lastName}
+          </Typography>
+          {!isSelf && (
             <Typography color={'text.secondary'} variant={'body3'}>
               {ROLE_HASH[role as RoleEnum]}
             </Typography>
-            <Typography color={'text.secondary'} variant={'body3'}>
-              {POSFormatDate(operationTime, 'MM/dd/yyyy hh:mm a')}
-            </Typography>
-          </Stack>
-        )}
+          )}
+          <Typography color={'text.secondary'} variant={'body3'}>
+            {POSFormatDate(operationTime, 'MM/dd/yyyy hh:mm a')}
+          </Typography>
+        </Stack>
         <Typography ml={!isSelf ? 4.25 : 0} variant={'body3'}>
           {content}
         </Typography>
