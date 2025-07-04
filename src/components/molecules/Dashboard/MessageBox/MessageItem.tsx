@@ -73,25 +73,23 @@ export const MessageItem: FC<Partial<ChatMessageItem>> = observer(
               {ROLE_HASH[role as RoleEnum]}
             </Typography>
           )}
-          <Typography color={'text.secondary'} variant={'body3'}>
-            {POSFormatDate(operationTime, 'MM/dd/yyyy hh:mm a')}
+          <Typography color={'text.secondary'} ml={'auto'} variant={'body3'}>
+            {POSFormatDate(operationTime, 'M/d/yyyy h:mm a')}
           </Typography>
         </Stack>
-        <Typography ml={!isSelf ? 4.25 : 0} variant={'body3'}>
+        <Typography
+          ml={4.5}
+          sx={{
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-word',
+          }}
+          variant={'body3'}
+        >
           {content}
         </Typography>
-        {!isSelf ? (
-          <Typography
-            color={'text.secondary'}
-            ml={'auto'}
-            textAlign={'right'}
-            variant={'body3'}
-          >
+        {!isSelf && (
+          <Typography color={'text.secondary'} ml={4.5} variant={'body3'}>
             {docName}
-          </Typography>
-        ) : (
-          <Typography color={'text.secondary'} variant={'body3'}>
-            {POSFormatDate(operationTime, 'MM/dd/yyyy hh:mm a')}
           </Typography>
         )}
       </Stack>

@@ -32,6 +32,7 @@ export const MessageBox: FC = observer(() => {
       loanId,
       addLoanChatMessage,
       setUnReadCount,
+      fetchChatMessage,
     },
     userProfile,
     notificationDetail,
@@ -57,19 +58,7 @@ export const MessageBox: FC = observer(() => {
     try {
       await _postChatMessage(postData);
       setContent('');
-      addLoanChatMessage({
-        firstName: '',
-        lastName: '',
-        name: '',
-        avatar: '',
-        backgroundColor: '',
-        operatorId: userProfile?.userId || '',
-        operationTime: new Date().toISOString(),
-        content,
-        role: null,
-        docName: '',
-        source: ChatMessageItemSource.pos,
-      });
+      await fetchChatMessage(loanId);
     } catch (err) {
       const { header, message, variant } = err as HttpError;
       enqueueSnackbar(message, {
