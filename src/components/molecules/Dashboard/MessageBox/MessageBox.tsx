@@ -385,6 +385,8 @@ export const MessageBox: FC = observer(() => {
 
               <StyledButton
                 disabled={!content || !content.trim() || sending}
+                loading={sending}
+                loadingSize={16}
                 onClick={onClickToSend}
                 onMouseDown={(e) => {
                   e.preventDefault();
