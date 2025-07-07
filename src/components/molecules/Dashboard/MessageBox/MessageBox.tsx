@@ -313,6 +313,9 @@ export const MessageBox: FC = observer(() => {
               multiline
               onChange={(e) => setContent(e.target.value)}
               onKeyDown={async (e) => {
+                if (sending) {
+                  return;
+                }
                 if (e.key === 'Enter') {
                   // For macOS - Command+Enter to send
                   // For Windows - Ctrl+Enter to send, regular Enter to add new line
@@ -381,7 +384,7 @@ export const MessageBox: FC = observer(() => {
               </Typography>
 
               <StyledButton
-                disabled={!content || !content.trim()}
+                disabled={!content || !content.trim() || sending}
                 onClick={onClickToSend}
                 onMouseDown={(e) => {
                   e.preventDefault();
