@@ -15,6 +15,7 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
       loadingText,
       sx,
       variant = 'contained',
+      loadingSize = 24,
       ...rest
     },
     ref,
@@ -63,7 +64,10 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
                 loadingText ? (
                   loadingText
                 ) : (
-                  <StyledLoading size={24} sx={{ color: 'text.grey', m: 0 }} />
+                  <StyledLoading
+                    size={loadingSize}
+                    sx={{ color: 'text.grey', m: 0 }}
+                  />
                 )
               ) : (
                 children
@@ -102,7 +106,10 @@ export const StyledButton = forwardRef<HTMLButtonElement, StyledButtonProps>(
               loadingText ? (
                 loadingText
               ) : (
-                <StyledLoading size={24} sx={{ color: 'text.grey', m: 0 }} />
+                <StyledLoading
+                  size={loadingSize}
+                  sx={{ color: 'text.grey', m: 0 }}
+                />
               )
             ) : (
               children
