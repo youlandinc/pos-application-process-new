@@ -753,34 +753,60 @@ export const Terms: FC = observer(() => {
                 )})`}
                 title={'Lender origination fee'}
               />
-              {data?.lenderProcessingFee !== null && (
-                <LoanTermCardRow
-                  content={POSFormatDollar(data?.lenderProcessingFee)}
-                  title={'Lender processing fee'}
-                />
-              )}
               <LoanTermCardRow
                 content={POSFormatDollar(data?.documentPreparationFee)}
                 title={'Document preparation fee'}
               />
               <LoanTermCardRow
-                content={data?.thirdPartyCosts}
-                title={'Third-party costs'}
-              />
-              <LoanTermCardRow
                 content={POSFormatDollar(data?.underwritingFee)}
                 title={'Underwriting fee'}
               />
-              {data?.wireFee !== null && (
+              {data?.lenderAdditionalFees?.map((fee: any, index: number) => (
                 <LoanTermCardRow
-                  content={POSFormatDollar(data?.wireFee)}
-                  title={'Wire fee'}
+                  content={
+                    fee.unit === 'DOLLAR'
+                      ? POSFormatDollar(fee.value)
+                      : POSFormatPercent(
+                          fee.value,
+                          POSGetDecimalPlaces(fee.value),
+                        )
+                  }
+                  key={`${fee.fieldName}-${index}`}
+                  title={fee.fieldName}
                 />
+              ))}
+              <LoanTermCardRow
+                content={POSFormatDollar(data?.floodCertificationFee)}
+                title={'Flood certification fee'}
+              />
+              <LoanTermCardRow
+                content={POSFormatDollar(data?.creditReportFee)}
+                title={'Credit report fee'}
+              />
+              <LoanTermCardRow
+                content={POSFormatDollar(data?.backgroundCheckFee)}
+                title={'Background check fee'}
+              />
+              {data?.thirdPartyAdditionalFees?.map(
+                (fee: any, index: number) => (
+                  <LoanTermCardRow
+                    content={
+                      fee.unit === 'DOLLAR'
+                        ? POSFormatDollar(fee.value)
+                        : POSFormatPercent(
+                            fee.value,
+                            POSGetDecimalPlaces(fee.value),
+                          )
+                    }
+                    key={`${fee.fieldName}-${index}`}
+                    title={fee.fieldName}
+                  />
+                ),
               )}
-              {/*<LoanTermCardRow*/}
-              {/*  content={data?.proRatedInterest}*/}
-              {/*  title={'Pro-rated interest'}*/}
-              {/*/>*/}
+              <LoanTermCardRow
+                content={data?.thirdPartyCosts}
+                title={'Third-party costs'}
+              />
             </Stack>
 
             {renderCompensationFee}

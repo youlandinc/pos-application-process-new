@@ -47,7 +47,7 @@ import {
 import { _downloadFile, _fetchFile } from '@/requests/application';
 import NOTIFICATION_INFO from '@/components/atoms/StyledNotification/notification_info.svg';
 
-export const LoanSummary: FC<FormNodeBaseProps> = observer(
+export const LoanSummary = observer<FormNodeBaseProps>(
   ({ nextStep, nextState, backState, backStep, data }) => {
     const { applicationForm, userType } = useMst();
     const { enqueueSnackbar } = useSnackbar();
@@ -664,34 +664,60 @@ export const LoanSummary: FC<FormNodeBaseProps> = observer(
                 )})`}
                 title={'Lender origination fee'}
               />
-              {data?.lenderProcessingFee !== null && (
-                <LoanSummaryCardRow
-                  content={POSFormatDollar(data?.lenderProcessingFee)}
-                  title={'Lender processing fee'}
-                />
-              )}
               <LoanSummaryCardRow
                 content={POSFormatDollar(data?.documentPreparationFee)}
                 title={'Document preparation fee'}
               />
               <LoanSummaryCardRow
-                content={data?.thirdPartyCosts}
-                title={'Third-party costs'}
-              />
-              <LoanSummaryCardRow
                 content={POSFormatDollar(data?.underwritingFee)}
                 title={'Underwriting fee'}
               />
-              {data?.wireFee !== null && (
+              {data?.lenderAdditionalFees?.map((fee: any, index: number) => (
                 <LoanSummaryCardRow
-                  content={POSFormatDollar(data?.wireFee)}
-                  title={'Wire fee'}
+                  content={
+                    fee.unit === 'DOLLAR'
+                      ? POSFormatDollar(fee.value)
+                      : POSFormatPercent(
+                          fee.value,
+                          POSGetDecimalPlaces(fee.value),
+                        )
+                  }
+                  key={`${fee.fieldName}-${index}`}
+                  title={fee.fieldName}
                 />
+              ))}
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.floodCertificationFee)}
+                title={'Flood certification fee'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.creditReportFee)}
+                title={'Credit report fee'}
+              />
+              <LoanSummaryCardRow
+                content={POSFormatDollar(data?.backgroundCheckFee)}
+                title={'Background check fee'}
+              />
+              {data?.thirdPartyAdditionalFees?.map(
+                (fee: any, index: number) => (
+                  <LoanSummaryCardRow
+                    content={
+                      fee.unit === 'DOLLAR'
+                        ? POSFormatDollar(fee.value)
+                        : POSFormatPercent(
+                            fee.value,
+                            POSGetDecimalPlaces(fee.value),
+                          )
+                    }
+                    key={`${fee.fieldName}-${index}`}
+                    title={fee.fieldName}
+                  />
+                ),
               )}
-              {/*<LoanSummaryCardRow*/}
-              {/*  content={data?.proRatedInterest}*/}
-              {/*  title={'Pro-rated interest'}*/}
-              {/*/>*/}
+              <LoanSummaryCardRow
+                content={data?.thirdPartyCosts}
+                title={'Third-party costs'}
+              />
             </Stack>
 
             {renderCompensationFee}
