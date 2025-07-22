@@ -19,4 +19,18 @@ module.exports = {
   images: {
     domains: ['youland-common-images.s3.us-west-1.amazonaws.com'],
   },
+  async redirects() {
+    return [
+      {
+        source: '/file-portal',
+        destination: '/doc-portal',
+        permanent: true,
+      },
+      {
+        source: '/file-portal/:path*',
+        destination: '/doc-portal/:path*',
+        permanent: true,
+      },
+    ];
+  },
 };
