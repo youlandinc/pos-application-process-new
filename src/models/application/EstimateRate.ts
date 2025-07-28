@@ -122,7 +122,10 @@ export const EstimateRate = types
         propertyTaxes: self.propertyTaxes,
         vacancyRate: self.vacancyRate,
         monthlyHoaFee: self.monthlyHoaFee,
-        prepaymentPenalty: self.prepaymentPenalty,
+        prepaymentPenalty:
+          self.productCategory === LoanProductCategoryEnum.dscr_rental
+            ? self.prepaymentPenalty
+            : undefined,
         acquisitionDate: self.acquisitionDate,
       };
     },
