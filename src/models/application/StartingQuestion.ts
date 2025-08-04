@@ -31,9 +31,11 @@ export const ApplicationStartingQuestion = types
         loanPurpose: self.loanPurpose,
         propertyType: self.propertyType,
         propertyUnit:
-          self.propertyUnit === LoanPropertyUnitEnum.default
-            ? null
-            : self.propertyUnit,
+          self.productCategory === LoanProductCategoryEnum.land
+            ? undefined
+            : self.propertyUnit === LoanPropertyUnitEnum.default
+              ? null
+              : self.propertyUnit,
         isOccupyProperty: self.isOccupyProperty,
       };
     },

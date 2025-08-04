@@ -53,6 +53,10 @@ export const StartingQuestionPage: FC = observer(() => {
       toSnapshot = LoanSnapshotEnum.contact_info;
     }
 
+    if (productCategory === LoanProductCategoryEnum.land) {
+      toSnapshot = LoanSnapshotEnum.land_readiness;
+    }
+
     if (!loanId) {
       if (!saasState?.tenantId) {
         return;

@@ -19,6 +19,10 @@ export enum LoginType {
   DEFAULT = '',
 }
 
+export enum IntendedUseEnum {
+  single_family = 'SINGLE_FAMILY',
+}
+
 export enum UserType {
   CUSTOMER = 'CUSTOMER',
   BROKER = 'BROKER',

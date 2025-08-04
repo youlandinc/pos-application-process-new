@@ -12,3 +12,5 @@ export * from './LoanSummary';
 
 export * from './SubmitLead';
 export * from './SubmitLeadSuccess';
+
+export * from './LandReadiness';
