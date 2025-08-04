@@ -25,7 +25,7 @@ export const SubscriptionSummary: FC<{
             fontSize={{ xs: 12, md: 14 }}
             variant={'body2'}
           >
-            Billing period: July 1 - July 31, 2025
+            Billing period: August 1 - August 31, 2025
           </Typography>
         </Stack>
         <Stack
@@ -36,8 +36,10 @@ export const SubscriptionSummary: FC<{
           mt={{ xs: 1.5, md: 3 }}
           pb={1}
         >
-          <Typography variant={'subtitle2'}>Standard Plan for July</Typography>
-          <Typography variant={'body2'}>{POSFormatDollar(300)}</Typography>
+          <Typography variant={'subtitle2'}>
+            Standard Plan for August
+          </Typography>
+          <Typography variant={'body2'}>{POSFormatDollar(500)}</Typography>
         </Stack>
 
         <Typography
@@ -47,7 +49,7 @@ export const SubscriptionSummary: FC<{
           textAlign={'right'}
           variant={'h6'}
         >
-          Total: {POSFormatDollar(300)}
+          Total: {POSFormatDollar(500)}
         </Typography>
       </Stack>
 
