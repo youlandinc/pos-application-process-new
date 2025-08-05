@@ -9,6 +9,7 @@ export enum LoanProductCategoryEnum {
   fix_and_flip = 'FIX_AND_FLIP',
   ground_up_construction = 'GROUND_UP_CONSTRUCTION',
   dscr_rental = 'DSCR_RENTAL',
+  land = 'LAND',
 }
 
 export enum LoanPurposeEnum {
@@ -25,6 +26,7 @@ export enum LoanPropertyTypeEnum {
   two_to_four_family = 'UNITS24',
   multifamily = 'MULTIFAMILY',
   commercial = 'COMMERCIAL',
+  land = 'LAND',
 }
 
 export enum LoanPropertyUnitEnum {

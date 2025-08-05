@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
@@ -22,7 +22,7 @@ const INITIAL_ERROR = {
   email: undefined,
 };
 
-export const SubmitLead: FC<FormNodeBaseProps> = observer(
+export const SubmitLead = observer<FormNodeBaseProps>(
   ({ nextStep, nextState, backState, backStep }) => {
     const {
       applicationForm: { submitLead },

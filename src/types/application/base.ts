@@ -1,4 +1,4 @@
-import { FeeUnitEnum, LoanAnswerEnum } from '@/types';
+import { FeeUnitEnum, IntendedUseEnum, LoanAnswerEnum } from '@/types';
 
 export enum LoanSnapshotEnum {
   starting_question = 'STARTING_QUESTION',
@@ -17,6 +17,8 @@ export enum LoanSnapshotEnum {
   // commercial
   contact_info = 'CONTACT_INFO',
   thank_you_page = 'THANK_YOU_PAGE',
+  // land
+  land_readiness = 'LAND_READINESS',
 }
 
 export interface AdditionalFee {
@@ -29,6 +31,13 @@ export interface AdditionalFee {
 export interface SelectExecutiveFormData {
   executiveId: string;
   executiveName: string;
+}
+
+export interface LandReadinessFormData {
+  intendedUse: IntendedUseEnum;
+  hasObtained: LoanAnswerEnum;
+  hasCompleted: LoanAnswerEnum;
+  hasTimeline: LoanAnswerEnum;
 }
 
 export interface CompensationInformationFromData

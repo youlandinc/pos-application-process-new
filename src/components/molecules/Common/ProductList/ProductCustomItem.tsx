@@ -114,6 +114,7 @@ export const ProductCustomItem: FC<{
   const renderTail = useMemo(() => {
     switch (estimateRate.productCategory) {
       case LoanProductCategoryEnum.stabilized_bridge:
+      case LoanProductCategoryEnum.land:
         return (
           <Stack
             alignItems={'center'}

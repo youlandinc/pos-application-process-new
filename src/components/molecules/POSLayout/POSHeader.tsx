@@ -92,6 +92,35 @@ const MULTIFAMILY_LOGIN_BROKER = [
   LoanSnapshotEnum.loan_summary,
 ];
 
+const LAND_NOT_LOGIN = [
+  LoanSnapshotEnum.starting_question,
+  LoanSnapshotEnum.land_readiness,
+  LoanSnapshotEnum.estimate_rate,
+  LoanSnapshotEnum.auth_page,
+  LoanSnapshotEnum.loan_address,
+  LoanSnapshotEnum.background_information,
+  LoanSnapshotEnum.loan_summary,
+];
+
+const LAND_LOGIN_NOT_BROKER = [
+  LoanSnapshotEnum.starting_question,
+  LoanSnapshotEnum.land_readiness,
+  LoanSnapshotEnum.estimate_rate,
+  LoanSnapshotEnum.loan_address,
+  LoanSnapshotEnum.background_information,
+  LoanSnapshotEnum.loan_summary,
+];
+
+const LAND_LOGIN_BROKER = [
+  LoanSnapshotEnum.starting_question,
+  LoanSnapshotEnum.land_readiness,
+  LoanSnapshotEnum.enter_loan_info,
+  LoanSnapshotEnum.loan_address,
+  LoanSnapshotEnum.background_information,
+  LoanSnapshotEnum.compensation_page,
+  LoanSnapshotEnum.loan_summary,
+];
+
 const COMMERCIAL = [
   LoanSnapshotEnum.contact_info,
   LoanSnapshotEnum.thank_you_page,
@@ -133,6 +162,17 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
       propertyType === LoanPropertyTypeEnum.multifamily;
 
     const isContactInfo = propertyType === LoanPropertyTypeEnum.commercial;
+
+    const isLand = productCategory === LoanProductCategoryEnum.land;
+
+    if (isLand) {
+      if (hasSession) {
+        return userType === UserType.CUSTOMER
+          ? getProgress(LAND_LOGIN_NOT_BROKER)
+          : getProgress(LAND_LOGIN_BROKER);
+      }
+      return getProgress(LAND_NOT_LOGIN);
+    }
 
     if (isContactInfo) {
       return getProgress(COMMERCIAL);

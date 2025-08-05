@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
@@ -17,6 +17,7 @@ import {
 } from '@/utils';
 import {
   APPLICATION_FICO_SCORE,
+  APPLICATION_LAND_PROPERTY_TYPE,
   APPLICATION_LIQUIDITY,
   APPLICATION_LOAN_CATEGORY,
   APPLICATION_LOAN_PURPOSE,
@@ -49,7 +50,7 @@ import {
 } from '@/types';
 import { _fetchProductList } from '@/requests/application';
 
-export const EstimateRate: FC<FormNodeBaseProps> = observer(
+export const EstimateRate = observer<FormNodeBaseProps>(
   ({ backStep, backState, nextStep, nextState }) => {
     const router = useRouter();
     const breakpoints = useBreakpoints();
@@ -212,6 +213,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
     const totalLoanAmount = useMemo(() => {
       switch (estimateRate.productCategory) {
         case LoanProductCategoryEnum.stabilized_bridge:
+        case LoanProductCategoryEnum.land:
           return estimateRate.loanPurpose === LoanPurposeEnum.purchase
             ? estimateRate.purchaseLoanAmount
             : estimateRate.refinanceLoanAmount;
@@ -251,6 +253,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
     const totalLoanAmountWithoutDutch = useMemo(() => {
       switch (estimateRate.productCategory) {
         case LoanProductCategoryEnum.stabilized_bridge:
+        case LoanProductCategoryEnum.land:
           return estimateRate.loanPurpose === LoanPurposeEnum.purchase
             ? estimateRate.purchaseLoanAmount
             : estimateRate.refinanceLoanAmount;
@@ -403,6 +406,7 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
         const condition = ['xs', 'sm', 'md'].includes(breakpoints);
         switch (estimateRate.productCategory) {
           case LoanProductCategoryEnum.stabilized_bridge:
+          case LoanProductCategoryEnum.land:
             if (estimateRate.loanPurpose === LoanPurposeEnum.purchase) {
               return (
                 <Stack
@@ -1360,7 +1364,12 @@ export const EstimateRate: FC<FormNodeBaseProps> = observer(
           estimateRate.loanPurpose,
         )} | ${
           estimateRate.propertyType !== LoanPropertyTypeEnum.two_to_four_family
-            ? POSFindLabel(APPLICATION_PROPERTY_TYPE, estimateRate.propertyType)
+            ? POSFindLabel(
+                estimateRate.productCategory === LoanProductCategoryEnum.land
+                  ? APPLICATION_LAND_PROPERTY_TYPE
+                  : APPLICATION_PROPERTY_TYPE,
+                estimateRate.propertyType,
+              )
             : POSFindLabel(APPLICATION_PROPERTY_UNIT, estimateRate.propertyUnit)
         }`}
         tipSx={{

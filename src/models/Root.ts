@@ -167,6 +167,7 @@ const initialState = {
     loanId: '',
     snapshot: LoanSnapshotEnum.starting_question,
     startingQuestion: FormData[LoanSnapshotEnum.starting_question],
+    landReadiness: FormData[LoanSnapshotEnum.land_readiness],
     estimateRate: FormData[LoanSnapshotEnum.estimate_rate],
     loanInformation: FormData[LoanSnapshotEnum.estimate_rate],
     loanAddress: FormData[LoanSnapshotEnum.loan_address],

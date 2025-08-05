@@ -36,6 +36,12 @@ export const APPLICATION_LOAN_CATEGORY: Option[] = [
     value: LoanProductCategoryEnum.dscr_rental,
     tooltip: "A rental loan based on the property's projected cash flow",
   },
+  {
+    label: 'Land',
+    key: LoanProductCategoryEnum.land,
+    value: LoanProductCategoryEnum.land,
+    tooltip: "A rental loan based on the property's projected cash flow",
+  },
 ];
 
 export const APPLICATION_LOAN_PURPOSE: Option[] = [
@@ -52,6 +58,15 @@ export const APPLICATION_LOAN_PURPOSE: Option[] = [
     value: LoanPurposeEnum.refinance,
     tooltip:
       'Used to replace an existing loan with a new one, often to secure better terms, adjust the repayment schedule, or access additional funds based on the current property value',
+  },
+];
+
+export const APPLICATION_LAND_LOAN_PURPOSE: Option[] = [
+  {
+    label: 'Purchase',
+    key: LoanPurposeEnum.purchase,
+    value: LoanPurposeEnum.purchase,
+    tooltip: 'We currently only offer land loans for purchase (no refinance).',
   },
 ];
 
@@ -95,6 +110,26 @@ export const APPLICATION_PROPERTY_TYPE: Option[] = [
     value: LoanPropertyTypeEnum.commercial,
     tooltip:
       'A property designed for business activities or mixed use (combining residential and commercial units). Includes malls, offices, restaurants, industrial estates and more.',
+  },
+];
+
+export const APPLICATION_LAND_PROPERTY_TYPE: Option[] = [
+  {
+    label: 'Land',
+    key: LoanPropertyTypeEnum.land,
+    value: LoanPropertyTypeEnum.land,
+    tooltip:
+      'Undeveloped land without buildings, intended for new construction.',
+  },
+];
+
+export const APPLICATION_LAND_INTENDED_USE: Option[] = [
+  {
+    label: 'Single family',
+    key: LoanPropertyTypeEnum.single_family,
+    value: LoanPropertyTypeEnum.single_family,
+    tooltip:
+      'We only finance zoned and entitled land for Single-Family Residential (SFR) projects.',
   },
 ];
 
