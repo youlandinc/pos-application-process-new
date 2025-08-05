@@ -201,6 +201,15 @@ export const Terms: FC = observer(() => {
                 )}
                 title={'Loan to value'}
               />
+              {data?.productCategory === LoanProductCategoryEnum.land && (
+                <LoanTermCardRow
+                  content={POSFormatPercent(
+                    data?.ltc,
+                    POSGetDecimalPlaces(data?.ltc),
+                  )}
+                  title={'Loan to cost'}
+                />
+              )}
             </>
           );
         }

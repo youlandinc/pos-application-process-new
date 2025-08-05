@@ -1,19 +1,22 @@
 import { useCallback, useEffect } from 'react';
-import { Stack } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
+
+import { useSwitch } from '@/hooks';
 
 import {
   APPLICATION_LAND_INTENDED_USE,
   OPTIONS_COMMON_YES_OR_NO,
 } from '@/constants';
 
-import { IntendedUseEnum } from '@/types';
+import { IntendedUseEnum, LoanAnswerEnum } from '@/types';
 
 import {
   StyledButton,
   StyledButtonGroup,
+  StyledDialog,
   StyledFormItem,
   StyledSelectOption,
 } from '@/components/atoms';
@@ -23,6 +26,8 @@ export const LandReadiness = observer<FormNodeBaseProps>(
     const {
       applicationForm: { landReadiness },
     } = useMst();
+
+    const { visible, open, close } = useSwitch(false);
 
     const keydownEvent = useCallback(
       (e: KeyboardEvent) => {
@@ -137,12 +142,51 @@ export const LandReadiness = observer<FormNodeBaseProps>(
             disabled={!!nextState}
             id={'application-land-readiness-next-button'}
             loading={!!nextState}
-            onClick={nextStep}
+            onClick={() => {
+              const condition = [
+                landReadiness.hasObtained,
+                landReadiness.hasCompleted,
+                landReadiness.hasTimeline,
+              ].some((value) => value === LoanAnswerEnum.no);
+
+              condition ? open() : nextStep?.();
+            }}
             sx={{ width: 'calc(50% - 12px)' }}
           >
             Next
           </StyledButton>
         </Stack>
+
+        <StyledDialog
+          content={
+            <Box
+              component={'ul'}
+              py={2.25}
+              sx={{
+                pl: 2.3,
+                listStyle: 'outside',
+                color: 'text.secondary',
+              }}
+            >
+              <Box component={'li'}>Approved building permits</Box>
+              <Box component={'li'}>Complete construction documents</Box>
+              <Box component={'li'}>Defined development timeline</Box>
+            </Box>
+          }
+          footer={
+            <StyledButton onClick={close} size={'small'}>
+              Confirm
+            </StyledButton>
+          }
+          header={
+            <Typography fontSize={{ xs: 16, lg: 18 }} fontWeight={600}>
+              Sorry, we fund sites that demonstrate a clear path to development,
+              including:
+            </Typography>
+          }
+          onClose={close}
+          open={visible}
+        />
       </Stack>
     );
   },
