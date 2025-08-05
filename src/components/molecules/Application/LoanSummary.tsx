@@ -169,6 +169,15 @@ export const LoanSummary = observer<FormNodeBaseProps>(
                   )}
                   title={'Loan to value'}
                 />
+                {data?.productCategory === LoanProductCategoryEnum.land && (
+                  <LoanSummaryCardRow
+                    content={POSFormatPercent(
+                      data?.ltc,
+                      POSGetDecimalPlaces(data?.ltc),
+                    )}
+                    title={'Loan to cost'}
+                  />
+                )}
               </>
             );
           }
