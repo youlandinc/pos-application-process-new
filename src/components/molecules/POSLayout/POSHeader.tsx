@@ -114,7 +114,7 @@ const LAND_LOGIN_NOT_BROKER = [
 const LAND_LOGIN_BROKER = [
   LoanSnapshotEnum.starting_question,
   LoanSnapshotEnum.land_readiness,
-  LoanSnapshotEnum.enter_loan_info,
+  LoanSnapshotEnum.estimate_rate,
   LoanSnapshotEnum.loan_address,
   LoanSnapshotEnum.background_information,
   LoanSnapshotEnum.compensation_page,
