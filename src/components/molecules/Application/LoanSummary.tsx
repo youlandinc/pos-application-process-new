@@ -150,6 +150,7 @@ export const LoanSummary = observer<FormNodeBaseProps>(
     const renderLoanAmount = useMemo(() => {
       switch (data?.productCategory) {
         case LoanProductCategoryEnum.stabilized_bridge:
+        case LoanProductCategoryEnum.land:
           if (data?.loanPurpose === LoanPurposeEnum.purchase) {
             return (
               <>

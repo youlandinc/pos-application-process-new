@@ -4,12 +4,18 @@ import { Stack } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { OPTIONS_COMMON_YES_OR_NO } from '@/constants';
+import {
+  APPLICATION_LAND_INTENDED_USE,
+  OPTIONS_COMMON_YES_OR_NO,
+} from '@/constants';
+
+import { IntendedUseEnum } from '@/types';
 
 import {
   StyledButton,
   StyledButtonGroup,
   StyledFormItem,
+  StyledSelectOption,
 } from '@/components/atoms';
 
 export const LandReadiness = observer<FormNodeBaseProps>(
@@ -47,16 +53,21 @@ export const LandReadiness = observer<FormNodeBaseProps>(
       <Stack gap={{ xs: 6, lg: 10 }} m={'0 auto'} maxWidth={600} width={'100%'}>
         <StyledFormItem
           label={'What’s the intended use of this land?'}
-          labelSx={{
-            textAlign: { xs: 'left', lg: 'center' },
-          }}
           width={'100%'}
-        ></StyledFormItem>
+        >
+          <StyledSelectOption
+            onChange={(value) => {
+              landReadiness.changeFieldValue(
+                'intendedUse',
+                value as string as IntendedUseEnum,
+              );
+            }}
+            options={APPLICATION_LAND_INTENDED_USE}
+            value={landReadiness.intendedUse}
+          />
+        </StyledFormItem>
         <StyledFormItem
           label={'Has the site obtained approved building permits?'}
-          labelSx={{
-            textAlign: { xs: 'left', lg: 'center' },
-          }}
           width={'100%'}
         >
           <StyledButtonGroup
@@ -73,9 +84,6 @@ export const LandReadiness = observer<FormNodeBaseProps>(
         </StyledFormItem>
         <StyledFormItem
           label={'Have complete construction documents been prepared?'}
-          labelSx={{
-            textAlign: { xs: 'left', lg: 'center' },
-          }}
           width={'100%'}
         >
           <StyledButtonGroup
@@ -92,9 +100,6 @@ export const LandReadiness = observer<FormNodeBaseProps>(
         </StyledFormItem>
         <StyledFormItem
           label={'Is there a defined development timeline for the project?'}
-          labelSx={{
-            textAlign: { xs: 'left', lg: 'center' },
-          }}
           width={'100%'}
         >
           <StyledButtonGroup
@@ -115,7 +120,6 @@ export const LandReadiness = observer<FormNodeBaseProps>(
           flexDirection={'row'}
           gap={3}
           justifyContent={'center'}
-          mt={-3}
           width={'100%'}
         >
           <StyledButton

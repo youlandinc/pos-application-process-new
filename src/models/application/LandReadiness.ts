@@ -23,7 +23,7 @@ export const LandReadiness = types
       injectServerData(data: LandReadinessFormData) {
         const { intendedUse, hasObtained, hasCompleted, hasTimeline } = data;
 
-        self.intendedUse = intendedUse ?? LoanAnswerEnum.yes;
+        self.intendedUse = intendedUse ?? IntendedUseEnum.single_family;
         self.hasObtained = hasObtained ?? LoanAnswerEnum.yes;
         self.hasCompleted = hasCompleted ?? LoanAnswerEnum.yes;
         self.hasTimeline = hasTimeline ?? LoanAnswerEnum.yes;

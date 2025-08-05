@@ -8,7 +8,7 @@ import { useMst } from '@/models/Root';
 import { useStoreData } from '@/hooks';
 
 import { POSGetParamsFromUrl } from '@/utils';
-import { LoanSnapshotEnum } from '@/types';
+import { LoanProductCategoryEnum, LoanSnapshotEnum } from '@/types';
 
 import { EstimateRate } from '@/components/molecules/Application';
 
@@ -38,8 +38,13 @@ export const EstimateRatePage: FC = observer(() => {
   };
 
   const back = async () => {
+    const storeData = estimateRate.getPostData();
+
     const postData = {
-      nextSnapshot: LoanSnapshotEnum.starting_question,
+      nextSnapshot:
+        storeData.productCategory === LoanProductCategoryEnum.land
+          ? LoanSnapshotEnum.land_readiness
+          : LoanSnapshotEnum.starting_question,
       loanId: applicationForm.loanId,
     };
     await redirectFrom(postData);

@@ -119,7 +119,17 @@ export const APPLICATION_LAND_PROPERTY_TYPE: Option[] = [
     key: LoanPropertyTypeEnum.land,
     value: LoanPropertyTypeEnum.land,
     tooltip:
-      'A standalone home designed for one family. It does not share walls with other houses',
+      'Undeveloped land without buildings, intended for new construction.',
+  },
+];
+
+export const APPLICATION_LAND_INTENDED_USE: Option[] = [
+  {
+    label: 'Single family',
+    key: LoanPropertyTypeEnum.single_family,
+    value: LoanPropertyTypeEnum.single_family,
+    tooltip:
+      'We only finance zoned and entitled land for Single-Family Residential (SFR) projects.',
   },
 ];
 
