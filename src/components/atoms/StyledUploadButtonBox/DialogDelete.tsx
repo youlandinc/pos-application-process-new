@@ -45,7 +45,7 @@ export const DialogDelete: FC<DialogDeleteProps> = ({
           <StyledButton
             autoFocus
             color={'info'}
-            onClick={close}
+            onClick={onClose}
             size={'small'}
             sx={{ width: 88 }}
             variant={'outlined'}
