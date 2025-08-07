@@ -245,8 +245,9 @@ export const DashboardInfo = types
       ];
 
       const [infoRes, chatRes] = yield Promise.allSettled(requestList);
+
       if (infoRes.status === 'rejected' || chatRes.status === 'rejected') {
-        handleError(infoRes.reason as HttpError, '/pipeline');
+        handleError(infoRes.reason as HttpError, '/404');
       }
 
       if (infoRes.status === 'fulfilled') {

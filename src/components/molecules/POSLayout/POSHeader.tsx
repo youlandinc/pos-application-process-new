@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
@@ -126,7 +126,7 @@ const COMMERCIAL = [
   LoanSnapshotEnum.thank_you_page,
 ];
 
-export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
+export const POSHeader = observer<POSHeaderProps>(({ scene, loading }) => {
   const router = useRouter();
   const store = useMst();
 
@@ -329,6 +329,7 @@ export const POSHeader: FC<POSHeaderProps> = observer(({ scene, loading }) => {
           </Stack>
         );
       case LayoutSceneTypeEnum.dashboard:
+      case LayoutSceneTypeEnum.not_found:
         return (
           <Stack
             alignItems={'center'}

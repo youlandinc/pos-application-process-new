@@ -87,6 +87,7 @@ export const FormData = {
     errors: {},
     isValid: false,
     additionalAddress: [],
+    editable: false,
   },
   [LoanSnapshotEnum.background_information]: {
     hadBankruptcy: LoanAnswerEnum.not_sure,

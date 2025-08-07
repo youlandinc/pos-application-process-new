@@ -86,13 +86,16 @@ export const ApplicationForm = types
       self.loanInformation.injectServerData(
         FormData[LoanSnapshotEnum.estimate_rate],
       );
-      const { additionalAddress, ...rest } =
+      const { additionalAddress, editable, ...rest } =
         FormData[LoanSnapshotEnum.loan_address];
       self.loanAddress.injectServerData({
         ...rest,
         address: rest.formatAddress,
       });
-      self.loanAddress.injectAdditionalAddressServerData(additionalAddress);
+      self.loanAddress.injectAdditionalAddressServerData({
+        additionalAddress,
+        editable,
+      });
       self.backgroundInformation.injectServerData(
         FormData[LoanSnapshotEnum.background_information],
       );
@@ -131,11 +134,14 @@ export const ApplicationForm = types
           self.loanInformation.injectServerData(data as EstimateRateFormData);
           break;
         case LoanSnapshotEnum.loan_address: {
-          const { additionalAddress, ...rest } = data as LoanAddressData;
+          const { additionalAddress, editable, ...rest } =
+            data as LoanAddressData;
+          console.log(data);
           self.loanAddress.injectServerData(rest as AddressData);
-          self.loanAddress.injectAdditionalAddressServerData(
-            additionalAddress as AddressData[],
-          );
+          self.loanAddress.injectAdditionalAddressServerData({
+            editable,
+            additionalAddress: additionalAddress as AddressData[],
+          });
           break;
         }
         case LoanSnapshotEnum.background_information:

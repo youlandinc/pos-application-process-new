@@ -289,6 +289,9 @@ const StyledAutoComplete: FC<StyledAutoCompleteProps> = ({
   const { options, loading, getPlaceDetailsRequest, serviceLoaded } =
     useGooglePlacesSearch(inputValue, fullAddress);
 
+  // Don't show options when disabled
+  const filteredOptions = disabled ? [] : options;
+
   return (
     <Autocomplete
       disabled={disabled}
@@ -297,7 +300,7 @@ const StyledAutoComplete: FC<StyledAutoCompleteProps> = ({
       {...rest}
       autoSelect={false}
       clearOnBlur={false}
-      filterOptions={(options) => options}
+      filterOptions={(options) => (disabled ? [] : options)}
       filterSelectedOptions
       freeSolo
       getOptionLabel={(option) => {
@@ -314,7 +317,7 @@ const StyledAutoComplete: FC<StyledAutoCompleteProps> = ({
       // @ts-ignore
       onChange={async (event: any, newValue: PlaceType | null) => {
         setSelfValue(newValue);
-        if (newValue?.place_id && fullAddress && serviceLoaded) {
+        if (newValue?.place_id && fullAddress && serviceLoaded && !disabled) {
           getPlaceDetailsRequest(
             {
               placeId: newValue.place_id,
@@ -330,7 +333,7 @@ const StyledAutoComplete: FC<StyledAutoCompleteProps> = ({
         }
       }}
       onInputChange={onInputChange}
-      options={options}
+      options={filteredOptions}
       renderInput={(params) => (
         <StyledTextField
           {...params}

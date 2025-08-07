@@ -14,6 +14,7 @@ export interface AddressData {
 
 export interface LoanAddressData extends AddressData {
   additionalAddress: AddressData[];
+  editable: boolean;
 }
 
 export type EstateAgent = User.BaseUserInfo;
@@ -43,6 +44,7 @@ export enum LayoutSceneTypeEnum {
   account = 'ACCOUNT',
   dashboard = 'DASHBOARD',
   pipeline_without_all = 'PIPELINE_WITHOUT_ALL',
+  not_found = 'NOT_FOUND',
 }
 
 export interface MenuItems {
