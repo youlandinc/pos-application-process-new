@@ -69,6 +69,7 @@ export const LoanAddress: FC<FormNodeBaseProps & { stateError: boolean }> =
         >
           <StyledGoogleAutoComplete
             address={loanAddress}
+            disabled={!loanAddress.editable}
             stateError={stateError}
           />
 
@@ -77,7 +78,13 @@ export const LoanAddress: FC<FormNodeBaseProps & { stateError: boolean }> =
               <Stack bgcolor={'#D2D6E1'} flex={1} height={2} />
               <StyledButton
                 color={'info'}
-                onClick={() => loanAddress.addAdditionalAddress()}
+                disabled={!loanAddress.editable}
+                onClick={() => {
+                  if (!loanAddress.editable) {
+                    return;
+                  }
+                  loanAddress.addAdditionalAddress();
+                }}
                 sx={{
                   p: '0 !important',
                   '&:hover': { backgroundColor: 'transparent' },

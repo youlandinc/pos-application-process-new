@@ -575,7 +575,7 @@ export const Terms: FC = observer(() => {
 
     try {
       await _resubmitLoan(postData);
-      router.push({
+      await router.push({
         pathname: '/',
         query: {
           loanId,
