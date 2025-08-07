@@ -300,7 +300,7 @@ const StyledAutoComplete: FC<StyledAutoCompleteProps> = ({
       {...rest}
       autoSelect={false}
       clearOnBlur={false}
-      filterOptions={(options) => disabled ? [] : options}
+      filterOptions={(options) => (disabled ? [] : options)}
       filterSelectedOptions
       freeSolo
       getOptionLabel={(option) => {
