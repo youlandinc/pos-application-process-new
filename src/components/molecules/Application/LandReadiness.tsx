@@ -184,7 +184,11 @@ export const LandReadiness = observer<FormNodeBaseProps>(
               including:
             </Typography>
           }
-          onClose={close}
+          onClose={(e, reason) => {
+            if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
+              close();
+            }
+          }}
           open={visible}
         />
       </Stack>

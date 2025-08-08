@@ -23,6 +23,7 @@ import {
   POSGetParamsFromUrl,
 } from '@/utils';
 import {
+  APPLICATION_LAND_PROPERTY_TYPE,
   APPLICATION_LOAN_CATEGORY,
   APPLICATION_LOAN_PURPOSE,
   APPLICATION_PROPERTY_TYPE,
@@ -104,6 +105,12 @@ export const LoanSummary = observer<FormNodeBaseProps>(
     ]);
 
     const renderPropertyType = useMemo(() => {
+      if (data?.productCategory === LoanProductCategoryEnum.land) {
+        return `${POSFindLabel(
+          APPLICATION_LAND_PROPERTY_TYPE,
+          data?.propertyType,
+        )}`;
+      }
       switch (data?.propertyType) {
         case LoanPropertyTypeEnum.two_to_four_family:
           return ` ${POSFindLabel(
@@ -118,7 +125,7 @@ export const LoanSummary = observer<FormNodeBaseProps>(
             data?.propertyType,
           )}`;
       }
-    }, [data?.propertyType, data?.propertyUnit]);
+    }, [data?.productCategory, data?.propertyType, data?.propertyUnit]);
 
     const getPDF = useCallback(
       async (fileType: 'letter' | 'summary') => {
@@ -855,27 +862,6 @@ export const LoanSummary = observer<FormNodeBaseProps>(
                     ['xs', 'sm', 'md'].includes(breakpoints) ? 'h7' : 'h5'
                   }
                 >
-                  {/*{`${*/}
-                  {/*  data.propertyAddress?.address*/}
-                  {/*    ? `${data.propertyAddress?.address} `*/}
-                  {/*    : ''*/}
-                  {/*}${*/}
-                  {/*  data.propertyAddress?.aptNumber*/}
-                  {/*    ? `${data.propertyAddress?.aptNumber}, `*/}
-                  {/*    : ''*/}
-                  {/*}${*/}
-                  {/*  data.propertyAddress?.city*/}
-                  {/*    ? `${data.propertyAddress?.city}, `*/}
-                  {/*    : ''*/}
-                  {/*}${*/}
-                  {/*  data.propertyAddress?.state*/}
-                  {/*    ? `${data.propertyAddress?.state} `*/}
-                  {/*    : ''*/}
-                  {/*}${*/}
-                  {/*  data.propertyAddress?.postcode*/}
-                  {/*    ? `${data.propertyAddress?.postcode}`*/}
-                  {/*    : ''*/}
-                  {/*}`}*/}
                   {[
                     data.propertyAddress?.address,
                     data.propertyAddress?.aptNumber &&

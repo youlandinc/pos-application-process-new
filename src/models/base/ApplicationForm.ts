@@ -136,7 +136,6 @@ export const ApplicationForm = types
         case LoanSnapshotEnum.loan_address: {
           const { additionalAddress, editable, ...rest } =
             data as LoanAddressData;
-          console.log(data);
           self.loanAddress.injectServerData(rest as AddressData);
           self.loanAddress.injectAdditionalAddressServerData({
             editable,
