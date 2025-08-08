@@ -240,14 +240,15 @@ export const DashboardInfo = types
       self.loading = true;
 
       const requestList = [
-        yield _fetchDashboardInfo(loanId),
-        yield _fetchLoanChatMessage(loanId),
+        _fetchDashboardInfo(loanId),
+        _fetchLoanChatMessage(loanId),
       ];
 
       const [infoRes, chatRes] = yield Promise.allSettled(requestList);
 
       if (infoRes.status === 'rejected' || chatRes.status === 'rejected') {
-        handleError(infoRes.reason as HttpError, '/404');
+        self.loading = false;
+        return Router.push('/404');
       }
 
       if (infoRes.status === 'fulfilled') {
