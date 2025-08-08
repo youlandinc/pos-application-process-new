@@ -1106,16 +1106,23 @@ export const Terms: FC = observer(() => {
 
         <StyledDialog
           content={
-            <Typography
-              color={'text.secondary'}
-              pb={4}
-              pt={1.5}
-              variant={'body2'}
-              width={'100%'}
-            >
-              You will have to resubmit the application and go through
-              underwriting again.
-            </Typography>
+            <Stack gap={0.5} pb={4} pt={1.5}>
+              <Typography
+                color={'text.secondary'}
+                variant={'body2'}
+                width={'100%'}
+              >
+                You will have to resubmit the application and go through
+                underwriting again.
+              </Typography>
+              <Typography
+                color={'text.secondary'}
+                variant={'subtitle2'}
+                width={'100%'}
+              >
+                Note: the property address cannot be changed.
+              </Typography>
+            </Stack>
           }
           footer={
             <Stack flexDirection={'row'} gap={3}>
