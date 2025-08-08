@@ -166,6 +166,7 @@ export const LandReadiness = observer<FormNodeBaseProps>(
                 pl: 2.3,
                 listStyle: 'outside',
                 color: 'text.secondary',
+                fontSize: 14,
               }}
             >
               <Box component={'li'}>Approved building permits</Box>
