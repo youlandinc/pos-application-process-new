@@ -17,14 +17,17 @@ import {
 } from '@/hooks';
 
 import {
+  APPLICATION_LAND_PROPERTY_TYPE,
   APPLICATION_LOAN_CATEGORY,
   APPLICATION_LOAN_PURPOSE,
   APPLICATION_PROPERTY_TYPE,
   APPLICATION_PROPERTY_UNIT,
   AUTO_HIDE_DURATION,
+  MULTIFAMILY_HASH,
 } from '@/constants';
 
 import {
+  POSFindHashKey,
   POSFindLabel,
   POSFormatDollar,
   POSFormatPercent,
@@ -46,8 +49,10 @@ import {
   LoanAnswerEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
+  LoanPropertyUnitEnum,
   LoanPurposeEnum,
   LoanSnapshotEnum,
+  PipelineLoanStageEnum,
   UserType,
 } from '@/types';
 import { _fetchLoanTermsData, _resubmitLoan } from '@/requests/dashboard';
@@ -694,6 +699,26 @@ export const Terms: FC = observer(() => {
     data?.propertyType,
   ]);
 
+  const renderPropertyType = useMemo(() => {
+    if (data?.productCategory === LoanProductCategoryEnum.land) {
+      return `${POSFindLabel(
+        APPLICATION_LAND_PROPERTY_TYPE,
+        data?.propertyType,
+      )}`;
+    }
+    switch (data?.propertyType) {
+      case LoanPropertyTypeEnum.two_to_four_family:
+        return ` ${POSFindLabel(
+          APPLICATION_PROPERTY_UNIT,
+          data?.propertyUnit,
+        )}`;
+      case LoanPropertyTypeEnum.multifamily:
+        return `Multifamily (${data?.propertyUnit === LoanPropertyUnitEnum.twenty_plus_units ? '20+' : POSFindHashKey(data?.propertyUnit, MULTIFAMILY_HASH)} Units)`;
+      default:
+        return `${POSFindLabel(APPLICATION_PROPERTY_TYPE, data?.propertyType)}`;
+    }
+  }, [data?.productCategory, data?.propertyType, data?.propertyUnit]);
+
   return loading ? (
     <Stack
       alignItems={'center'}
@@ -893,18 +918,7 @@ export const Terms: FC = observer(() => {
                     title={'Purpose'}
                   />
                   <LoanTermCardRow
-                    content={
-                      data?.propertyType ===
-                      LoanPropertyTypeEnum.two_to_four_family
-                        ? POSFindLabel(
-                            APPLICATION_PROPERTY_UNIT,
-                            data?.propertyUnit,
-                          )
-                        : POSFindLabel(
-                            APPLICATION_PROPERTY_TYPE,
-                            data?.propertyType,
-                          )
-                    }
+                    content={renderPropertyType}
                     title={'Property type'}
                   />
                   <LoanTermCardRow
@@ -1070,7 +1084,7 @@ export const Terms: FC = observer(() => {
                   </Stack>
                 </StyledTooltip>
               </Stack>
-            ) : (
+            ) : data?.loanStatus !== PipelineLoanStageEnum.funded ? (
               <Typography
                 color={'primary.main'}
                 onClick={modifyOpen}
@@ -1086,7 +1100,7 @@ export const Terms: FC = observer(() => {
               >
                 Modify application
               </Typography>
-            )}
+            ) : null}
           </Stack>
         </Stack>
 
