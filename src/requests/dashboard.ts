@@ -24,7 +24,10 @@ export const _resubmitLoan = (params: {
   loanId: string;
   nextSnapshot: LoanSnapshotEnum;
 }) => {
-  return put('/pos/loan/process/resubmit', params);
+  return put('/pos/loan/process/resubmit', {
+    ...params,
+    editable: false,
+  });
 };
 
 // tasks

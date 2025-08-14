@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
 
@@ -16,7 +16,7 @@ import {
 
 import { StyledButton, StyledTooltip } from '@/components/atoms';
 
-export const ProductItem: FC<ProductItemProps> = observer(
+export const ProductItem = observer<ProductItemProps>(
   ({
     loanTerm,
     interestRate,
@@ -50,6 +50,7 @@ export const ProductItem: FC<ProductItemProps> = observer(
     const renderTail = useMemo(() => {
       switch (estimateRate.productCategory) {
         case LoanProductCategoryEnum.stabilized_bridge:
+        case LoanProductCategoryEnum.land:
           return (
             <Stack
               alignItems={'center'}

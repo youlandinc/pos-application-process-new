@@ -8,11 +8,11 @@ import { useMst } from '@/models/Root';
 import { useStoreData } from '@/hooks';
 
 import { POSGetParamsFromUrl } from '@/utils';
-import { LoanProductCategoryEnum, LoanSnapshotEnum } from '@/types';
+import { LoanSnapshotEnum } from '@/types';
 
-import { EstimateRate } from '@/components/molecules/Application';
+import { LandReadiness } from '@/components/molecules/Application';
 
-export const EstimateRatePage: FC = observer(() => {
+export const LandReadinessPage: FC = observer(() => {
   const router = useRouter();
 
   const { redirectFrom, redirectFromState, updateFrom, updateFormState } =
@@ -20,31 +20,23 @@ export const EstimateRatePage: FC = observer(() => {
 
   const { applicationForm } = useMst();
 
-  const { estimateRate } = applicationForm;
+  const { landReadiness } = applicationForm;
 
   const next = async () => {
     const postData = {
       data: {
-        ...estimateRate.getPostData(),
-        isCustom: false,
+        ...landReadiness.getPostData(),
       },
-      snapshot: LoanSnapshotEnum.estimate_rate,
-      nextSnapshot: applicationForm.isBind
-        ? LoanSnapshotEnum.loan_address
-        : LoanSnapshotEnum.auth_page,
+      snapshot: LoanSnapshotEnum.land_readiness,
+      nextSnapshot: LoanSnapshotEnum.estimate_rate,
       loanId: applicationForm.loanId,
     };
     await updateFrom(postData);
   };
 
   const back = async () => {
-    const storeData = estimateRate.getPostData();
-
     const postData = {
-      nextSnapshot:
-        storeData.productCategory === LoanProductCategoryEnum.land
-          ? LoanSnapshotEnum.land_readiness
-          : LoanSnapshotEnum.starting_question,
+      nextSnapshot: LoanSnapshotEnum.starting_question,
       loanId: applicationForm.loanId,
     };
     await redirectFrom(postData);
@@ -68,7 +60,7 @@ export const EstimateRatePage: FC = observer(() => {
     <Fade in={!applicationForm.loading}>
       <Box>
         {!applicationForm.loading && (
-          <EstimateRate
+          <LandReadiness
             backState={redirectFromState.loading}
             backStep={back}
             nextState={updateFormState.loading}

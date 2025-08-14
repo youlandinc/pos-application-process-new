@@ -17,14 +17,17 @@ import {
 } from '@/hooks';
 
 import {
+  APPLICATION_LAND_PROPERTY_TYPE,
   APPLICATION_LOAN_CATEGORY,
   APPLICATION_LOAN_PURPOSE,
   APPLICATION_PROPERTY_TYPE,
   APPLICATION_PROPERTY_UNIT,
   AUTO_HIDE_DURATION,
+  MULTIFAMILY_HASH,
 } from '@/constants';
 
 import {
+  POSFindHashKey,
   POSFindLabel,
   POSFormatDollar,
   POSFormatPercent,
@@ -46,8 +49,10 @@ import {
   LoanAnswerEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
+  LoanPropertyUnitEnum,
   LoanPurposeEnum,
   LoanSnapshotEnum,
+  PipelineLoanStageEnum,
   UserType,
 } from '@/types';
 import { _fetchLoanTermsData, _resubmitLoan } from '@/requests/dashboard';
@@ -182,6 +187,7 @@ export const Terms: FC = observer(() => {
   const renderLoanAmount = useMemo(() => {
     switch (data?.productCategory) {
       case LoanProductCategoryEnum.stabilized_bridge:
+      case LoanProductCategoryEnum.land:
         if (data?.loanPurpose === LoanPurposeEnum.purchase) {
           return (
             <>
@@ -200,6 +206,15 @@ export const Terms: FC = observer(() => {
                 )}
                 title={'Loan to value'}
               />
+              {data?.productCategory === LoanProductCategoryEnum.land && (
+                <LoanTermCardRow
+                  content={POSFormatPercent(
+                    data?.ltc,
+                    POSGetDecimalPlaces(data?.ltc),
+                  )}
+                  title={'Loan to cost'}
+                />
+              )}
             </>
           );
         }
@@ -565,7 +580,7 @@ export const Terms: FC = observer(() => {
 
     try {
       await _resubmitLoan(postData);
-      router.push({
+      await router.push({
         pathname: '/',
         query: {
           loanId,
@@ -683,6 +698,26 @@ export const Terms: FC = observer(() => {
     data?.productCategory,
     data?.propertyType,
   ]);
+
+  const renderPropertyType = useMemo(() => {
+    if (data?.productCategory === LoanProductCategoryEnum.land) {
+      return `${POSFindLabel(
+        APPLICATION_LAND_PROPERTY_TYPE,
+        data?.propertyType,
+      )}`;
+    }
+    switch (data?.propertyType) {
+      case LoanPropertyTypeEnum.two_to_four_family:
+        return ` ${POSFindLabel(
+          APPLICATION_PROPERTY_UNIT,
+          data?.propertyUnit,
+        )}`;
+      case LoanPropertyTypeEnum.multifamily:
+        return `Multifamily (${data?.propertyUnit === LoanPropertyUnitEnum.twenty_plus_units ? '20+' : POSFindHashKey(data?.propertyUnit, MULTIFAMILY_HASH)} Units)`;
+      default:
+        return `${POSFindLabel(APPLICATION_PROPERTY_TYPE, data?.propertyType)}`;
+    }
+  }, [data?.productCategory, data?.propertyType, data?.propertyUnit]);
 
   return loading ? (
     <Stack
@@ -883,18 +918,7 @@ export const Terms: FC = observer(() => {
                     title={'Purpose'}
                   />
                   <LoanTermCardRow
-                    content={
-                      data?.propertyType ===
-                      LoanPropertyTypeEnum.two_to_four_family
-                        ? POSFindLabel(
-                            APPLICATION_PROPERTY_UNIT,
-                            data?.propertyUnit,
-                          )
-                        : POSFindLabel(
-                            APPLICATION_PROPERTY_TYPE,
-                            data?.propertyType,
-                          )
-                    }
+                    content={renderPropertyType}
                     title={'Property type'}
                   />
                   <LoanTermCardRow
@@ -1060,7 +1084,7 @@ export const Terms: FC = observer(() => {
                   </Stack>
                 </StyledTooltip>
               </Stack>
-            ) : (
+            ) : data?.loanStatus !== PipelineLoanStageEnum.funded ? (
               <Typography
                 color={'primary.main'}
                 onClick={modifyOpen}
@@ -1076,22 +1100,29 @@ export const Terms: FC = observer(() => {
               >
                 Modify application
               </Typography>
-            )}
+            ) : null}
           </Stack>
         </Stack>
 
         <StyledDialog
           content={
-            <Typography
-              color={'text.secondary'}
-              pb={4}
-              pt={1.5}
-              variant={'body2'}
-              width={'100%'}
-            >
-              You will have to resubmit the application and go through
-              underwriting again.
-            </Typography>
+            <Stack gap={0.5} pb={4} pt={1.5}>
+              <Typography
+                color={'text.secondary'}
+                variant={'body2'}
+                width={'100%'}
+              >
+                You will have to resubmit the application and go through
+                underwriting again.
+              </Typography>
+              <Typography
+                color={'text.secondary'}
+                variant={'subtitle2'}
+                width={'100%'}
+              >
+                Note: the property address cannot be changed.
+              </Typography>
+            </Stack>
           }
           footer={
             <Stack flexDirection={'row'} gap={3}>

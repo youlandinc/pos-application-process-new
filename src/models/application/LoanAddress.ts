@@ -9,6 +9,7 @@ export const LoanAddress = types
   .compose(
     Address,
     types.model({
+      editable: types.boolean,
       additionalAddress: types.array(Address),
     }),
   )
@@ -32,8 +33,13 @@ export const LoanAddress = types
     removeAdditionalAddress(index: number) {
       self.additionalAddress.splice(index, 1);
     },
-    injectAdditionalAddressServerData(data: AddressData[]) {
-      const list = data.map((item) => {
+    injectAdditionalAddressServerData(data: {
+      additionalAddress: AddressData[];
+      editable: boolean;
+    }) {
+      const { additionalAddress = [], editable = true } = data;
+
+      const list = additionalAddress.map((item) => {
         const { address, aptNumber, city, state, postcode, lng, lat } = item;
 
         return Address.create({
@@ -50,6 +56,8 @@ export const LoanAddress = types
           errors: {},
         });
       });
+
+      self.editable = editable;
       self.additionalAddress = cast(list);
     },
     getLoanAddressPostData() {

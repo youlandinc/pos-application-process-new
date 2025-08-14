@@ -29,6 +29,24 @@ import {
 import { format, parseISO } from 'date-fns';
 
 import {
+  POSFindHashKey,
+  POSFindLabel,
+  POSFormatDollar,
+  POSFormatPercent,
+  POSGetDecimalPlaces,
+} from '@/utils';
+
+import {
+  APPLICATION_LAND_PROPERTY_TYPE,
+  APPLICATION_LOAN_CATEGORY,
+  APPLICATION_LOAN_PURPOSE,
+  APPLICATION_PROPERTY_TYPE,
+  APPLICATION_PROPERTY_UNIT,
+  MULTIFAMILY_HASH,
+  OPTIONS_LOAN_STAGE,
+} from '@/constants';
+
+import {
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
@@ -37,23 +55,8 @@ import {
   PipelineLoanStageEnum,
   UserType,
 } from '@/types';
-import {
-  POSFindHashKey,
-  POSFindLabel,
-  POSFormatDollar,
-  POSFormatPercent,
-  POSGetDecimalPlaces,
-} from '@/utils';
 
 import { StyledBadge, StyledButton, StyledTooltip } from '@/components/atoms';
-import {
-  APPLICATION_LOAN_CATEGORY,
-  APPLICATION_LOAN_PURPOSE,
-  APPLICATION_PROPERTY_TYPE,
-  APPLICATION_PROPERTY_UNIT,
-  MULTIFAMILY_HASH,
-  OPTIONS_LOAN_STAGE,
-} from '@/constants';
 
 export interface LoanItemCardProps {
   formData: {
@@ -335,6 +338,12 @@ export const LoanItemCard: FC<LoanItemCardProps> = ({
           <Box flexShrink={0}>Property type</Box>
           <Typography variant={'subtitle1'}>
             {(() => {
+              if (productCategory === LoanProductCategoryEnum.land) {
+                return `${POSFindLabel(
+                  APPLICATION_LAND_PROPERTY_TYPE,
+                  propertyType,
+                )}`;
+              }
               switch (propertyType) {
                 case LoanPropertyTypeEnum.two_to_four_family:
                   return `${POSFindLabel(

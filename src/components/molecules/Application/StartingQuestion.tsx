@@ -1,10 +1,12 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Slider, Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import {
+  APPLICATION_LAND_LOAN_PURPOSE,
+  APPLICATION_LAND_PROPERTY_TYPE,
   APPLICATION_LOAN_CATEGORY,
   APPLICATION_LOAN_PURPOSE,
   APPLICATION_PROPERTY_TYPE,
@@ -28,9 +30,9 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-export const StartingQuestion: FC<
+export const StartingQuestion = observer<
   FormNodeBaseProps & { createLoading: boolean }
-> = observer(({ nextStep, nextState, createLoading }) => {
+>(({ nextStep, nextState, createLoading }) => {
   const {
     applicationForm: { startingQuestion },
   } = useMst();
@@ -89,6 +91,12 @@ export const StartingQuestion: FC<
               'productCategory',
               value as string as LoanProductCategoryEnum,
             );
+            if (value === LoanProductCategoryEnum.land) {
+              startingQuestion.changeFieldValue(
+                'propertyType',
+                LoanPropertyTypeEnum.land,
+              );
+            }
           }}
           options={APPLICATION_LOAN_CATEGORY}
           value={startingQuestion.productCategory}
@@ -109,7 +117,11 @@ export const StartingQuestion: FC<
               value as string as LoanPurposeEnum,
             );
           }}
-          options={APPLICATION_LOAN_PURPOSE}
+          options={
+            startingQuestion.productCategory === LoanProductCategoryEnum.land
+              ? APPLICATION_LAND_LOAN_PURPOSE
+              : APPLICATION_LOAN_PURPOSE
+          }
           value={startingQuestion.loanPurpose}
         />
       </StyledFormItem>
@@ -151,7 +163,11 @@ export const StartingQuestion: FC<
               );
             }
           }}
-          options={propertyTypeOptions}
+          options={
+            startingQuestion.productCategory === LoanProductCategoryEnum.land
+              ? APPLICATION_LAND_PROPERTY_TYPE
+              : propertyTypeOptions
+          }
           value={startingQuestion.propertyType}
         />
       </StyledFormItem>

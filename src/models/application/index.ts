@@ -5,3 +5,4 @@ export * from './BackgroundInformation';
 export * from './SelectExecutive';
 export * from './CompensationInformation';
 export * from './SubmitLead';
+export * from './LandReadiness';

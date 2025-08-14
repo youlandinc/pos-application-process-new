@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
@@ -12,7 +12,7 @@ import {
   StyledFormItem,
 } from '@/components/atoms';
 
-export const BackgroundInformation: FC<FormNodeBaseProps> = observer(
+export const BackgroundInformation = observer<FormNodeBaseProps>(
   ({ backStep, backState, nextStep, nextState }) => {
     const {
       applicationForm: { backgroundInformation },

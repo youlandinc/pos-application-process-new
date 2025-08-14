@@ -1,4 +1,5 @@
 import {
+  IntendedUseEnum,
   LoanAnswerEnum,
   LoanCitizenshipEnum,
   LoanProductCategoryEnum,
@@ -17,6 +18,12 @@ export const FormData = {
     propertyType: LoanPropertyTypeEnum.single_family, //  SINGLE_FAMILY, TOWNHOUSE, CONDO, UNITS24
     propertyUnit: LoanPropertyUnitEnum.two_units, //  TWO_UNITS,   THREE_UNITS,   FOUR_UNITS
     isOccupyProperty: false,
+  },
+  [LoanSnapshotEnum.land_readiness]: {
+    intendedUse: IntendedUseEnum.single_family,
+    hasObtained: LoanAnswerEnum.yes,
+    hasCompleted: LoanAnswerEnum.yes,
+    hasTimeline: LoanAnswerEnum.yes,
   },
   [LoanSnapshotEnum.estimate_rate]: {
     productCategory: LoanProductCategoryEnum.fix_and_flip, // STABILIZED_BRIDGE,   FIX_AND_FLIP,   GROUND_UP_CONSTRUCTION
@@ -80,6 +87,7 @@ export const FormData = {
     errors: {},
     isValid: false,
     additionalAddress: [],
+    editable: false,
   },
   [LoanSnapshotEnum.background_information]: {
     hadBankruptcy: LoanAnswerEnum.not_sure,

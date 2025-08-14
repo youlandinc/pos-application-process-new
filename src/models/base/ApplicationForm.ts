@@ -8,6 +8,7 @@ import {
   CompensationInformationFromData,
   EstimateRateFormData,
   HttpError,
+  LandReadinessFormData,
   LoanAddressData,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
@@ -22,6 +23,7 @@ import {
   BackgroundInformation,
   CompensationInformation,
   EstimateRate,
+  LandReadiness,
   LoanAddress,
   SelectExecutive,
   SubmitLead,
@@ -41,6 +43,7 @@ export const ApplicationForm = types
     propertyType: types.enumeration(Object.values(LoanPropertyTypeEnum)),
     snapshot: types.enumeration(Object.values(LoanSnapshotEnum)),
     startingQuestion: ApplicationStartingQuestion,
+    landReadiness: LandReadiness,
     estimateRate: EstimateRate,
     loanInformation: EstimateRate,
     loanAddress: LoanAddress,
@@ -83,13 +86,16 @@ export const ApplicationForm = types
       self.loanInformation.injectServerData(
         FormData[LoanSnapshotEnum.estimate_rate],
       );
-      const { additionalAddress, ...rest } =
+      const { additionalAddress, editable, ...rest } =
         FormData[LoanSnapshotEnum.loan_address];
       self.loanAddress.injectServerData({
         ...rest,
         address: rest.formatAddress,
       });
-      self.loanAddress.injectAdditionalAddressServerData(additionalAddress);
+      self.loanAddress.injectAdditionalAddressServerData({
+        additionalAddress,
+        editable,
+      });
       self.backgroundInformation.injectServerData(
         FormData[LoanSnapshotEnum.background_information],
       );
@@ -104,6 +110,7 @@ export const ApplicationForm = types
       snapshot: LoanSnapshotEnum,
       data:
         | StartingQuestionFormData
+        | LandReadinessFormData
         | EstimateRateFormData
         | LoanAddressData
         | BackgroundInformationFormData
@@ -117,6 +124,9 @@ export const ApplicationForm = types
             data as StartingQuestionFormData,
           );
           break;
+        case LoanSnapshotEnum.land_readiness:
+          self.landReadiness.injectServerData(data as LandReadinessFormData);
+          break;
         case LoanSnapshotEnum.estimate_rate:
           self.estimateRate.injectServerData(data as EstimateRateFormData);
           break;
@@ -124,11 +134,13 @@ export const ApplicationForm = types
           self.loanInformation.injectServerData(data as EstimateRateFormData);
           break;
         case LoanSnapshotEnum.loan_address: {
-          const { additionalAddress, ...rest } = data as LoanAddressData;
+          const { additionalAddress, editable, ...rest } =
+            data as LoanAddressData;
           self.loanAddress.injectServerData(rest as AddressData);
-          self.loanAddress.injectAdditionalAddressServerData(
-            additionalAddress as AddressData[],
-          );
+          self.loanAddress.injectAdditionalAddressServerData({
+            editable,
+            additionalAddress: additionalAddress as AddressData[],
+          });
           break;
         }
         case LoanSnapshotEnum.background_information:

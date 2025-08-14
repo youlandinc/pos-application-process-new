@@ -1,3 +1,4 @@
+import { LoanProductCategoryEnum } from '@/types';
 import { FC, useCallback, useEffect } from 'react';
 import { Fade, Icon, Stack, Typography } from '@mui/material';
 
@@ -15,7 +16,7 @@ import ICON_CLOSE from '@/svg/icon/icon_close.svg';
 export const LoanAddress: FC<FormNodeBaseProps & { stateError: boolean }> =
   observer(({ nextStep, nextState, backState, backStep, stateError }) => {
     const {
-      applicationForm: { loanAddress },
+      applicationForm: { loanAddress, productCategory },
     } = useMst();
 
     const keydownEvent = useCallback(
@@ -52,26 +53,48 @@ export const LoanAddress: FC<FormNodeBaseProps & { stateError: boolean }> =
             pb: 3,
           }}
           maxWidth={600}
+          tip={
+            productCategory === LoanProductCategoryEnum.land ? (
+              <Stack alignItems={'flex-start'} justifyItems={'flex-start'}>
+                <Typography fontSize={14}>
+                  Coastal states: California, Texas, Florida etc.
+                </Typography>
+                <Typography fontSize={14}>
+                  High-growth markets: Across the Sun Belt, where housing demand
+                  is strong
+                </Typography>
+              </Stack>
+            ) : null
+          }
         >
           <StyledGoogleAutoComplete
             address={loanAddress}
+            disabled={!loanAddress.editable}
             stateError={stateError}
           />
 
-          <Stack alignItems={'center'} flexDirection={'row'} gap={3}>
-            <Stack bgcolor={'#D2D6E1'} flex={1} height={2} />
-            <StyledButton
-              color={'info'}
-              onClick={() => loanAddress.addAdditionalAddress()}
-              sx={{
-                p: '0 !important',
-                '&:hover': { backgroundColor: 'transparent' },
-              }}
-              variant={'text'}
-            >
-              + Add another property
-            </StyledButton>
-          </Stack>
+          {productCategory !== LoanProductCategoryEnum.land && (
+            <Stack alignItems={'center'} flexDirection={'row'} gap={3}>
+              <Stack bgcolor={'#D2D6E1'} flex={1} height={2} />
+              <StyledButton
+                color={'info'}
+                disabled={!loanAddress.editable}
+                onClick={() => {
+                  if (!loanAddress.editable) {
+                    return;
+                  }
+                  loanAddress.addAdditionalAddress();
+                }}
+                sx={{
+                  p: '0 !important',
+                  '&:hover': { backgroundColor: 'transparent' },
+                }}
+                variant={'text'}
+              >
+                + Add another property
+              </StyledButton>
+            </Stack>
+          )}
 
           {loanAddress.additionalAddress.length > 0 &&
             loanAddress.additionalAddress.map((item, index) => (

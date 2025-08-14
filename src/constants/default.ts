@@ -16,6 +16,7 @@ export const LOGIN_APP_KEY = 'jjHggHfNVaGvkabpQXfs';
 
 export const URL_HASH: Record<string, any> = {
   [LoanSnapshotEnum.starting_question]: '/',
+  [LoanSnapshotEnum.land_readiness]: '/land-readiness',
   [LoanSnapshotEnum.estimate_rate]: '/estimate-rate',
   [LoanSnapshotEnum.auth_page]: '/auth-page',
   [LoanSnapshotEnum.loan_address]: '/loan-address',
