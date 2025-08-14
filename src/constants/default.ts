@@ -43,3 +43,6 @@ export const TASK_URL_HASH: Record<string, any> = {
     '/dashboard/tasks/construction-holdback-process',
   [DashboardTaskKey.referring_broker]: '/dashboard/tasks/referring-broker',
 };
+
+export const YOULAND_ID = '1000052022092800000102';
+export const TEST_ID = '1000052023020700000112';
