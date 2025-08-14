@@ -46,7 +46,8 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
         router.pathname.includes('auth-page') ||
         router.pathname.includes('loan-information') ||
         router.pathname.includes('submit-lead') ||
-        router.pathname.includes('submit-lead-success')
+        router.pathname.includes('submit-lead-success') ||
+        router.pathname.includes('land-readiness')
       ) {
         return;
       }
