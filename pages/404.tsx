@@ -32,7 +32,7 @@ export default function Custom404() {
 
           <Stack alignItems={'center'} mt={3}>
             <Typography fontSize={20} fontWeight={600}>
-              Oops, Page not found
+              Oops! Loan not found
             </Typography>
             <Typography mt={1.5} textAlign={'center'}>
               Sorry, we can’t find the page you’re looking for.
