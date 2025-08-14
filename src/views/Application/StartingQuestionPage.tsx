@@ -9,7 +9,7 @@ import { useMst } from '@/models/Root';
 import { useSessionStorageState, useStoreData } from '@/hooks';
 
 import { POSGetParamsFromUrl } from '@/utils';
-import { AUTO_HIDE_DURATION, URL_HASH } from '@/constants';
+import { AUTO_HIDE_DURATION, URL_HASH, YOULAND_ID } from '@/constants';
 
 import { StartingQuestion } from '@/components/molecules/Application';
 
@@ -63,7 +63,7 @@ export const StartingQuestionPage: FC = observer(() => {
       }
       const postData = {
         ...storeData,
-        tenantId: saasState?.tenantId || '1000052023020700000112',
+        tenantId: saasState?.tenantId || YOULAND_ID,
       };
       setLoading(true);
       try {

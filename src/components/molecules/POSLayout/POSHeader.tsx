@@ -1,3 +1,4 @@
+import { TEST_ID, YOULAND_ID } from '@/constants';
 import { useCallback, useMemo, useState } from 'react';
 import { Box, Icon, Stack, Typography } from '@mui/material';
 import { CloseOutlined } from '@mui/icons-material';
@@ -295,8 +296,7 @@ export const POSHeader = observer<POSHeaderProps>(({ scene, loading }) => {
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'View all loans'}
             </StyledButton>
-            {(saasState?.tenantId === '1000052022092800000102' ||
-              saasState?.tenantId === '1000052023020700000112') && (
+            {[YOULAND_ID, TEST_ID].includes(saasState?.tenantId) && (
               <StyledButton
                 color={'info'}
                 isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
@@ -384,8 +384,7 @@ export const POSHeader = observer<POSHeaderProps>(({ scene, loading }) => {
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
-            {(saasState?.tenantId === '1000052022092800000102' ||
-              saasState?.tenantId === '1000052023020700000112') && (
+            {[YOULAND_ID, TEST_ID].includes(saasState?.tenantId) && (
               <StyledButton
                 color={'info'}
                 isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
@@ -472,8 +471,7 @@ export const POSHeader = observer<POSHeaderProps>(({ scene, loading }) => {
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
-            {(saasState?.tenantId === '1000052022092800000102' ||
-              saasState?.tenantId === '1000052023020700000112') && (
+            {[YOULAND_ID, TEST_ID].includes(saasState?.tenantId) && (
               <StyledButton
                 color={'info'}
                 isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}
@@ -533,8 +531,7 @@ export const POSHeader = observer<POSHeaderProps>(({ scene, loading }) => {
               />
               {!['xs', 'sm', 'md'].includes(breakpoint) && 'Start new loan'}
             </StyledButton>
-            {(saasState?.tenantId === '1000052022092800000102' ||
-              saasState?.tenantId === '1000052023020700000112') && (
+            {[YOULAND_ID, TEST_ID].includes(saasState?.tenantId) && (
               <StyledButton
                 color={'info'}
                 isIconButton={['xs', 'sm', 'md'].includes(breakpoint)}

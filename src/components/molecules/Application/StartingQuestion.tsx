@@ -1,3 +1,4 @@
+import { useSessionStorageState } from '@/hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Slider, Stack } from '@mui/material';
 
@@ -13,6 +14,7 @@ import {
   APPLICATION_PROPERTY_UNIT,
   MULTIFAMILY_HASH,
   OPTIONS_COMMON_MARKS,
+  YOULAND_ID,
 } from '@/constants';
 
 import {
@@ -36,6 +38,7 @@ export const StartingQuestion = observer<
   const {
     applicationForm: { startingQuestion },
   } = useMst();
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [propertiesNum, setPropertiesNum] = useState(5);
 
@@ -76,6 +79,15 @@ export const StartingQuestion = observer<
     return APPLICATION_PROPERTY_TYPE;
   }, [startingQuestion.productCategory]);
 
+  const categoryOptions = useMemo(() => {
+    if (saasState?.tenantId !== YOULAND_ID) {
+      return APPLICATION_LOAN_CATEGORY.filter(
+        (item) => item.key !== LoanProductCategoryEnum.land,
+      );
+    }
+    return APPLICATION_LOAN_CATEGORY;
+  }, [saasState?.tenantId]);
+
   return (
     <Stack gap={{ xs: 6, lg: 10 }} m={'0 auto'} maxWidth={600} width={'100%'}>
       <StyledFormItem
@@ -98,7 +110,7 @@ export const StartingQuestion = observer<
               );
             }
           }}
-          options={APPLICATION_LOAN_CATEGORY}
+          options={categoryOptions}
           value={startingQuestion.productCategory}
         />
       </StyledFormItem>
