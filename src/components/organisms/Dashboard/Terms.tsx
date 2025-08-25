@@ -811,6 +811,10 @@ export const Terms: FC = observer(() => {
                 />
               ))}
               <LoanTermCardRow
+                content={POSFormatDollar(data?.preDrawFee)}
+                title={'Pre-draw fee'}
+              />
+              <LoanTermCardRow
                 content={POSFormatDollar(data?.floodCertificationFee)}
                 title={'Flood certification fee'}
               />
