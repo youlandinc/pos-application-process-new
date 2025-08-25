@@ -703,10 +703,15 @@ export const LoanSummary = observer<FormNodeBaseProps>(
                   title={fee.fieldName}
                 />
               ))}
-              <LoanSummaryCardRow
-                content={POSFormatDollar(data?.preDrawFee)}
-                title={'Pre-draw fee'}
-              />
+              {[
+                LoanProductCategoryEnum.fix_and_flip,
+                LoanProductCategoryEnum.ground_up_construction,
+              ].includes(data?.productCategory) && (
+                <LoanSummaryCardRow
+                  content={POSFormatDollar(data?.preDrawFee)}
+                  title={'Pre-draw fee'}
+                />
+              )}
               <LoanSummaryCardRow
                 content={POSFormatDollar(data?.floodCertificationFee)}
                 title={'Flood certification fee'}
