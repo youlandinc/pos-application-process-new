@@ -810,10 +810,15 @@ export const Terms: FC = observer(() => {
                   title={fee.fieldName}
                 />
               ))}
-              <LoanTermCardRow
-                content={POSFormatDollar(data?.preDrawFee)}
-                title={'Pre-draw fee'}
-              />
+              {[
+                LoanProductCategoryEnum.fix_and_flip,
+                LoanProductCategoryEnum.ground_up_construction,
+              ].includes(data?.productCategory) && (
+                <LoanTermCardRow
+                  content={POSFormatDollar(data?.preDrawFee)}
+                  title={'Pre-draw fee'}
+                />
+              )}
               <LoanTermCardRow
                 content={POSFormatDollar(data?.floodCertificationFee)}
                 title={'Flood certification fee'}
