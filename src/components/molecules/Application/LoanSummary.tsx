@@ -704,6 +704,10 @@ export const LoanSummary = observer<FormNodeBaseProps>(
                 />
               ))}
               <LoanSummaryCardRow
+                content={POSFormatDollar(data?.preDrawFee)}
+                title={'Pre-draw fee'}
+              />
+              <LoanSummaryCardRow
                 content={POSFormatDollar(data?.floodCertificationFee)}
                 title={'Flood certification fee'}
               />
