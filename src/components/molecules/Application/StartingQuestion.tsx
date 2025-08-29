@@ -106,7 +106,16 @@ export const StartingQuestion = observer<
             if (value === LoanProductCategoryEnum.land) {
               startingQuestion.changeFieldValue(
                 'propertyType',
-                LoanPropertyTypeEnum.land,
+                startingQuestion.propertyType === LoanPropertyTypeEnum.land
+                  ? startingQuestion.propertyType
+                  : LoanPropertyTypeEnum.land,
+              );
+            } else {
+              startingQuestion.changeFieldValue(
+                'propertyType',
+                startingQuestion.propertyType !== LoanPropertyTypeEnum.land
+                  ? startingQuestion.propertyType
+                  : LoanPropertyTypeEnum.single_family,
               );
             }
           }}
