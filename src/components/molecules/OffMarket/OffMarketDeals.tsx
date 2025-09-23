@@ -177,7 +177,7 @@ export const OffMarketDeals = () => {
                       mx={1.25}
                       width={'1px'}
                     />
-                    {item.attributes.sqft || '3,333'} sq ft.
+                    {item.attributes.sqft || '3,333'}
                     <Box
                       bgcolor={'#B9BCC6'}
                       flexShrink={0}
