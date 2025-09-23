@@ -49,7 +49,7 @@ export const fetchFundedDeals = async (
   pageSize: number = 100,
 ): Promise<FundedDealsResponse> => {
   const res = await fetch(
-    `https://api.corepass.com/api/funded-deals?sort[0]=publishedAt:desc&locale=en&pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`,
+    `https://api.corepass.com/api/off-market-deals?sort[0]=publishedAt:desc&locale=en&pagination[page]=${page}&pagination[pageSize]=${pageSize}&populate=*`,
   );
 
   if (!res.ok) {
