@@ -1,19 +1,3 @@
-import { FormEventHandler, useCallback, useMemo, useState } from 'react';
-import { Box, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
-
-import { observer } from 'mobx-react-lite';
-import { useMst } from '@/models/Root';
-
-import { LoginProps, LoginStyles } from './index';
-import { POSFlex } from '@/styles';
-import { AUTO_HIDE_DURATION, LOGIN_APP_KEY, userpool } from '@/constants';
-import { DetectActiveService } from '@/services/DetectActive';
-import { HttpError, LoginType, UserType } from '@/types';
-import { User } from '@/types/user';
-import { _userSingIn } from '@/requests';
-
 import {
   StyledBoxWrap,
   StyledButton,
@@ -21,14 +5,23 @@ import {
   StyledTextField,
   StyledTextFieldPassword,
 } from '@/components/atoms';
+import { LoginProps, LoginStyles } from '@/components/molecules/Auth/Login';
+import { AUTO_HIDE_DURATION, LOGIN_APP_KEY, userpool } from '@/constants';
+import { useMst } from '@/models/Root';
+import { _userSingIn } from '@/requests';
+import { DetectActiveService } from '@/services/DetectActive';
+import { HttpError, LoginType, UserType } from '@/types';
+import { User } from '@/types/user';
+import { Box, Stack, Typography } from '@mui/material';
+import { observer } from 'mobx-react-lite';
+import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+import { FormEventHandler, useCallback, useMemo, useState } from 'react';
 
-import { useSessionStorageState } from '@/hooks';
-
-export const Login = observer<LoginProps>(
+export const OffMarketLogin = observer<LoginProps>(
   ({ to, successCb, isNestForm = false }) => {
     const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
-    const { saasState } = useSessionStorageState('tenantConfig');
     const store = useMst();
     const { detectUserActiveService } = store;
 
@@ -174,87 +167,74 @@ export const Login = observer<LoginProps>(
 
     return (
       <>
-        {isNestForm ? (
-          FormBody
-        ) : (
-          <>
-            <Stack
-              alignItems={'center'}
-              flexDirection={'row'}
-              height={92}
-              m={'0 auto'}
-              px={{
-                lg: 0,
-                xs: 'clamp(24px,6.4vw,80px)',
-              }}
-              width={{
-                xxl: 1440,
-                xl: 1240,
-                lg: 938,
-                xs: '100%',
-              }}
-            >
-              <StyledHeaderLogo />
-            </Stack>
-            <StyledBoxWrap
-              sx={{
-                ...POSFlex('center', 'center', 'column'),
-                minHeight: 'calc(100vh - 92px)',
-              }}
-            >
-              <Box sx={LoginStyles.login}>
-                <Box className="sign_in_form">
-                  <Typography className="form_title" variant="h3">
-                    Log in to {saasState?.dbaName}
+        <Stack
+          alignItems={'center'}
+          flexDirection={'row'}
+          height={92}
+          m={'0 auto'}
+          px={{
+            lg: 0,
+            xs: 'clamp(24px,6.4vw,80px)',
+          }}
+          width={{
+            xxl: 1440,
+            xl: 1240,
+            lg: 938,
+            xs: '100%',
+          }}
+        >
+          <StyledHeaderLogo />
+        </Stack>
+        <StyledBoxWrap
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            minHeight: 'calc(100vh - 92px)',
+          }}
+        >
+          <Box sx={LoginStyles.login}>
+            <Box className="sign_in_form">
+              <Typography className="form_title" variant="h3">
+                Sign in to view market deals
+              </Typography>
+              {FormBody}
+              <Box className="form_foot">
+                <Typography variant="body2">
+                  Don&apos;t have an account?{' '}
+                  <Typography
+                    component={'span'}
+                    onClick={async () => {
+                      await router.push('/off-market/sign-up/');
+                    }}
+                    sx={{
+                      cursor: 'pointer',
+                      color: 'primary.main',
+                      fontWeight: 600,
+                      fontSize: 14,
+                    }}
+                  >
+                    Sign up
                   </Typography>
-                  {FormBody}
-                  <Box className="form_foot">
-                    <Typography variant="body2">
-                      Don&apos;t have an account?{' '}
-                      <Typography
-                        component={'span'}
-                        onClick={async () => {
-                          await router.push({
-                            pathname: '/auth/sign_up/',
-                            query: {
-                              ...router.query,
-                            },
-                          });
-                        }}
-                        sx={{
-                          cursor: 'pointer',
-                          color: 'primary.main',
-                          fontWeight: 600,
-                          fontSize: 14,
-                        }}
-                      >
-                        Sign up
-                      </Typography>
-                    </Typography>
-                    <Typography
-                      onClick={async () => {
-                        await router.push({
-                          pathname: '/auth/forgot_password/',
-                          query: {
-                            ...router.query,
-                          },
-                        });
-                      }}
-                      sx={{
-                        cursor: 'pointer',
-                        color: 'primary.main',
-                        fontWeight: 600,
-                        fontSize: 14,
-                      }}
-                    >
-                      Forgot password?
-                    </Typography>
-                  </Box>
-                </Box>
+                </Typography>
+                <Typography
+                  onClick={async () => {
+                    await router.push('/off-market/forgot-password/');
+                  }}
+                  sx={{
+                    cursor: 'pointer',
+                    color: 'primary.main',
+                    fontWeight: 600,
+                    fontSize: 14,
+                  }}
+                >
+                  Forgot password?
+                </Typography>
               </Box>
-            </StyledBoxWrap>
-          </>
-        )}
+            </Box>
+          </Box>
+        </StyledBoxWrap>
       </>
     );
   },

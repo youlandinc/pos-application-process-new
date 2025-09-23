@@ -1,6 +1,5 @@
 import {
   ChangeEventHandler,
-  FC,
   FormEventHandler,
   useCallback,
   useMemo,
@@ -19,14 +18,12 @@ import {
   AUTO_HIDE_DURATION,
   LOGIN_APP_KEY,
   OPTIONS_SIGN_UP_ROLE,
-  OPTIONS_SIGN_UP_SURVEY,
   SignUpSchema,
   userpool,
 } from '@/constants';
 import { useSessionStorageState, useSwitch } from '@/hooks';
 
 import {
-  _submitSurvey,
   _userSendCode,
   _userSingIn,
   _userSingUp,
@@ -34,15 +31,8 @@ import {
 } from '@/requests';
 
 import { DetectActiveService } from '@/services/DetectActive';
-import { POSFlex } from '@/styles';
 
-import {
-  BizType,
-  HttpError,
-  LoginType,
-  SurveySourceEnum,
-  UserType,
-} from '@/types';
+import { BizType, HttpError, LoginType, UserType } from '@/types';
 import {
   StyledBoxWrap,
   StyledButton,
@@ -56,12 +46,13 @@ import {
   Transitions,
 } from '@/components/atoms';
 
-import { SignUpProps, SignUpStyles } from './index';
+import { SignUpProps, SignUpStyles } from '@/components/molecules/Auth/SignUp';
+
 import { User } from '@/types/user';
 
 import validate from '@/constants/validate';
 
-export const SignUp = observer<SignUpProps>(
+export const OffMarketSignUp = observer<SignUpProps>(
   ({ isNestForm = false, isRedirect = true, successCb }) => {
     const router = useRouter();
     const { saasState } = useSessionStorageState('tenantConfig');
@@ -78,14 +69,6 @@ export const SignUp = observer<SignUpProps>(
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
-    const [surveySource, setSurveySource] = useState<SurveySourceEnum>();
-    const [surveyDetail, setSurveyDetail] = useState<string>('');
-
-    //const conditions = [
-    //  SurveySourceEnum.social_media,
-    //  SurveySourceEnum.event,
-    //  SurveySourceEnum.other,
-    //].includes(surveySource as SurveySourceEnum);
 
     const [password, setPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
@@ -107,10 +90,6 @@ export const SignUp = observer<SignUpProps>(
     });
 
     const { open, close, visible } = useSwitch(false);
-
-    //const isVisibleSurvey = useMemo(() => {
-    //  return !router.query?.utm_medium;
-    //}, [router.query]);
 
     const handledPasswordChange: ChangeEventHandler<HTMLInputElement> =
       useCallback((e) => {
@@ -180,16 +159,6 @@ export const SignUp = observer<SignUpProps>(
           });
         } finally {
           setLoading(false);
-
-          //todo fuck
-          //if (isVisibleSurvey) {
-          //  const surveyData = {
-          //    surveyDetail: surveyDetail || '',
-          //    surveySource: surveySource || '',
-          //  };
-          //
-          //  await _submitSurvey(surveyData);
-          //}
         }
       },
       [
@@ -198,14 +167,11 @@ export const SignUp = observer<SignUpProps>(
         email,
         enqueueSnackbar,
         firstName,
-        //isVisibleSurvey,
         lastName,
         open,
         password,
         phone,
         saasState?.serviceTypeEnum,
-        //surveyDetail,
-        //surveySource,
         userType,
       ],
     );
@@ -228,7 +194,7 @@ export const SignUp = observer<SignUpProps>(
           setLoading(false);
           return router.push(asPath);
         }
-        await router.push('/');
+        await router.push('/off-market/deals');
       },
       [router, store, successCb],
     );
@@ -311,7 +277,7 @@ export const SignUp = observer<SignUpProps>(
           await _userVerifyCode(data);
           close();
           if (isRedirect) {
-            await router.push('./login');
+            await router.push('/off-market/login');
             return;
           }
           await handledLogin();
@@ -364,17 +330,6 @@ export const SignUp = observer<SignUpProps>(
       }
       return result;
     }, [saasState?.posSettings?.borrowerTypes]);
-
-    //const detailLabel = useMemo(() => {
-    //  switch (surveySource) {
-    //    case SurveySourceEnum.social_media:
-    //      return 'Which platform (e.g. LinkedIn, Youtube, Instagram)?';
-    //    case SurveySourceEnum.event:
-    //      return 'Which event?';
-    //    case SurveySourceEnum.other:
-    //      return 'Please specify';
-    //  }
-    //}, [surveySource]);
 
     const FormBody = useMemo(() => {
       return (
@@ -468,27 +423,6 @@ export const SignUp = observer<SignUpProps>(
             />
           </Stack>
 
-          {/*{isVisibleSurvey && (*/}
-          {/*  <>*/}
-          {/*    <StyledSelect*/}
-          {/*      disabled={loading}*/}
-          {/*      label={'Where did you hear about us？'}*/}
-          {/*      onChange={(e) =>*/}
-          {/*        setSurveySource(e.target.value as SurveySourceEnum)*/}
-          {/*      }*/}
-          {/*      options={OPTIONS_SIGN_UP_SURVEY}*/}
-          {/*      value={surveySource}*/}
-          {/*    />*/}
-          {/*    {conditions && (*/}
-          {/*      <StyledTextField*/}
-          {/*        label={detailLabel}*/}
-          {/*        onChange={(e) => setSurveyDetail(e.target.value)}*/}
-          {/*        value={surveyDetail}*/}
-          {/*      />*/}
-          {/*    )}*/}
-          {/*  </>*/}
-          {/*)}*/}
-
           <Box sx={{ height: '1px', bgcolor: '#D2D6E1' }} />
 
           <Box>
@@ -568,9 +502,7 @@ export const SignUp = observer<SignUpProps>(
       );
     }, [
       companyName,
-      //conditions,
       confirmedPassword,
-      //detailLabel,
       email,
       firstName,
       formError?.confirmedPassword,
@@ -580,134 +512,126 @@ export const SignUp = observer<SignUpProps>(
       handledPasswordChange,
       handledSubmit,
       isNestForm,
-      //isVisibleSurvey,
       lastName,
       loading,
       password,
       passwordError,
       phone,
       saasState?.serviceTypeEnum,
-      //surveyDetail,
-      //surveySource,
       userType,
       userTypeOption,
     ]);
 
     return (
       <>
-        {isNestForm ? (
-          FormBody
-        ) : (
-          <>
-            <Stack
-              alignItems={'center'}
-              flexDirection={'row'}
-              height={92}
-              m={'0 auto'}
-              px={{
-                lg: 0,
-                xs: 'clamp(24px,6.4vw,80px)',
-              }}
-              width={{
-                xxl: 1440,
-                xl: 1240,
-                lg: 938,
-                xs: '100%',
-              }}
-            >
-              <StyledHeaderLogo />
-            </Stack>
-            <StyledBoxWrap
-              sx={{
-                ...POSFlex('center', 'center', 'column'),
-                minHeight: 'calc(100vh - 92px)',
-              }}
-            >
-              <Box sx={SignUpStyles.singUp}>
-                <Box className="sign_up_form">
-                  <Typography className="form_title" variant="h3">
-                    Sign up
+        <Stack
+          alignItems={'center'}
+          flexDirection={'row'}
+          height={92}
+          m={'0 auto'}
+          px={{
+            lg: 0,
+            xs: 'clamp(24px,6.4vw,80px)',
+          }}
+          width={{
+            xxl: 1440,
+            xl: 1240,
+            lg: 938,
+            xs: '100%',
+          }}
+        >
+          <StyledHeaderLogo />
+        </Stack>
+        <StyledBoxWrap
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            minHeight: 'calc(100vh - 92px)',
+          }}
+        >
+          <Box sx={SignUpStyles.singUp}>
+            <Box className="sign_up_form">
+              <Typography className="form_title" variant="h3">
+                Sign up to view off-market deals
+              </Typography>
+
+              {FormBody}
+
+              <Box className="form_foot">
+                <Typography variant="body2">
+                  Already have an account?{' '}
+                  <Typography
+                    component={'span'}
+                    onClick={async () => {
+                      await router.push({
+                        pathname: '/off-market/login/',
+                        query: { ...router.query },
+                      });
+                    }}
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
+                    variant="body2"
+                  >
+                    Log in
                   </Typography>
-
-                  {FormBody}
-
-                  <Box className="form_foot">
-                    <Typography variant="body2">
-                      Already have an account?{' '}
-                      <Typography
-                        component={'span'}
-                        onClick={async () => {
-                          await router.push({
-                            pathname: '/auth/login/',
-                            query: { ...router.query },
-                          });
-                        }}
-                        sx={{
-                          color: 'primary.main',
-                          cursor: 'pointer',
-                          fontWeight: 600,
-                        }}
-                        variant="body2"
-                      >
-                        Log in
-                      </Typography>
-                    </Typography>
-                    <Typography
-                      component={'div'}
-                      sx={{ color: 'info.main', mt: 3 }}
-                      variant={'body2'}
-                    >
-                      By signing up, you agree to our{' '}
-                      <Typography
-                        component={'span'}
-                        onClick={() =>
-                          window.open(
-                            POSFormatUrl(
-                              saasState?.legalAgreements?.termsUrl,
-                            ) ||
-                              'https://corepass.com/legal/terms-and-conditions/',
-                          )
-                        }
-                        sx={{
-                          color: 'primary.main',
-                          cursor: 'pointer',
-                          fontWeight: 600,
-                          fontSize: 14,
-                        }}
-                      >
-                        Terms of Use{' '}
-                      </Typography>
-                      and{' '}
-                      <Typography
-                        component={'span'}
-                        onClick={() =>
-                          window.open(
-                            POSFormatUrl(
-                              saasState?.legalAgreements?.privacyPolicyUrl,
-                            ) || 'https://corepass.com/legal/privacy-policy/',
-                          )
-                        }
-                        sx={{
-                          color: 'primary.main',
-                          cursor: 'pointer',
-                          fontWeight: 600,
-                          fontSize: 14,
-                        }}
-                      >
-                        Privacy Policy
-                      </Typography>
-                      ,
-                    </Typography>
-                    <Typography color={'text.secondary'} variant={'body2'}>
-                      and consent to receive loan-related emails and SMS from{' '}
-                      {saasState?.dbaName}.
-                    </Typography>
-                  </Box>
-                </Box>
+                </Typography>
+                <Typography
+                  component={'div'}
+                  sx={{ color: 'info.main', mt: 3 }}
+                  variant={'body2'}
+                >
+                  By signing up, you agree to our{' '}
+                  <Typography
+                    component={'span'}
+                    onClick={() =>
+                      window.open(
+                        POSFormatUrl(saasState?.legalAgreements?.termsUrl) ||
+                          'https://corepass.com/legal/terms-and-conditions/',
+                      )
+                    }
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                      fontSize: 14,
+                    }}
+                  >
+                    Terms of Use{' '}
+                  </Typography>
+                  and{' '}
+                  <Typography
+                    component={'span'}
+                    onClick={() =>
+                      window.open(
+                        POSFormatUrl(
+                          saasState?.legalAgreements?.privacyPolicyUrl,
+                        ) || 'https://corepass.com/legal/privacy-policy/',
+                      )
+                    }
+                    sx={{
+                      color: 'primary.main',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                      fontSize: 14,
+                    }}
+                  >
+                    Privacy Policy
+                  </Typography>
+                  ,
+                </Typography>
+                <Typography color={'text.secondary'} variant={'body2'}>
+                  and consent to receive loan-related emails and SMS from{' '}
+                  {saasState?.dbaName}.
+                </Typography>
               </Box>
-            </StyledBoxWrap>
-          </>
-        )}
+            </Box>
+          </Box>
+        </StyledBoxWrap>
 
         <StyledDialog
           content={
