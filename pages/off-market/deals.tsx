@@ -22,7 +22,7 @@ const OffMarketDealsPage: FC = observer((): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Login</title>
+        <title>Explore YouLand’s Off-Market deals</title>
       </Head>
       <DynamicOffMarketDeals />
     </>
