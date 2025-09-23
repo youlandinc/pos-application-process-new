@@ -61,7 +61,7 @@ import { User } from '@/types/user';
 
 import validate from '@/constants/validate';
 
-export const SignUp: FC<SignUpProps> = observer(
+export const SignUp = observer<SignUpProps>(
   ({ isNestForm = false, isRedirect = true, successCb }) => {
     const router = useRouter();
     const { saasState } = useSessionStorageState('tenantConfig');
