@@ -110,6 +110,10 @@ export const StartingQuestion = observer<
                   ? startingQuestion.propertyType
                   : LoanPropertyTypeEnum.land,
               );
+              startingQuestion.changeFieldValue(
+                'loanPurpose',
+                LoanPurposeEnum.purchase,
+              );
             } else {
               startingQuestion.changeFieldValue(
                 'propertyType',
