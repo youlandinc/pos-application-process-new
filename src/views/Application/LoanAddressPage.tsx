@@ -14,13 +14,14 @@ import {
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanSnapshotEnum,
+  UserType,
 } from '@/types';
 
 import { LoanAddress } from '@/components/molecules/Application';
 
 export const LoanAddressPage: FC = observer(() => {
   const router = useRouter();
-  const { applicationForm } = useMst();
+  const { applicationForm, userType } = useMst();
   const { loanAddress, productCategory, propertyType } = applicationForm;
 
   const [stateError, setStateError] = useState(false);
@@ -45,9 +46,15 @@ export const LoanAddressPage: FC = observer(() => {
   };
 
   const next = async () => {
+    if (!userType) {
+      return;
+    }
     const postData = {
       snapshot: LoanSnapshotEnum.loan_address,
-      nextSnapshot: LoanSnapshotEnum.background_information,
+      nextSnapshot:
+        userType === UserType.CUSTOMER
+          ? LoanSnapshotEnum.select_executive
+          : LoanSnapshotEnum.compensation_page,
       loanId: applicationForm.loanId,
       data: loanAddress.getLoanAddressPostData(),
     };

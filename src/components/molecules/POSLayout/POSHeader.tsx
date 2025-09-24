@@ -45,7 +45,7 @@ const NOT_LOGIN = [
   LoanSnapshotEnum.estimate_rate,
   LoanSnapshotEnum.auth_page,
   LoanSnapshotEnum.loan_address,
-  LoanSnapshotEnum.background_information,
+  //LoanSnapshotEnum.background_information,
   LoanSnapshotEnum.loan_summary,
 ];
 
@@ -53,7 +53,7 @@ const LOGIN_NOT_BROKER = [
   LoanSnapshotEnum.starting_question,
   LoanSnapshotEnum.estimate_rate,
   LoanSnapshotEnum.loan_address,
-  LoanSnapshotEnum.background_information,
+  //LoanSnapshotEnum.background_information,
   LoanSnapshotEnum.select_executive,
   LoanSnapshotEnum.loan_summary,
 ];
@@ -62,7 +62,7 @@ const LOGIN_BROKER = [
   LoanSnapshotEnum.starting_question,
   LoanSnapshotEnum.estimate_rate,
   LoanSnapshotEnum.loan_address,
-  LoanSnapshotEnum.background_information,
+  //LoanSnapshotEnum.background_information,
   LoanSnapshotEnum.compensation_page,
   LoanSnapshotEnum.loan_summary,
 ];
@@ -72,7 +72,7 @@ const MULTIFAMILY_NOT_LOGIN = [
   LoanSnapshotEnum.enter_loan_info,
   LoanSnapshotEnum.auth_page,
   LoanSnapshotEnum.loan_address,
-  LoanSnapshotEnum.background_information,
+  //LoanSnapshotEnum.background_information,
   LoanSnapshotEnum.loan_summary,
 ];
 
@@ -80,7 +80,7 @@ const MULTIFAMILY_LOGIN_NOT_BROKER = [
   LoanSnapshotEnum.starting_question,
   LoanSnapshotEnum.enter_loan_info,
   LoanSnapshotEnum.loan_address,
-  LoanSnapshotEnum.background_information,
+  //LoanSnapshotEnum.background_information,
   LoanSnapshotEnum.loan_summary,
 ];
 
@@ -88,7 +88,7 @@ const MULTIFAMILY_LOGIN_BROKER = [
   LoanSnapshotEnum.starting_question,
   LoanSnapshotEnum.enter_loan_info,
   LoanSnapshotEnum.loan_address,
-  LoanSnapshotEnum.background_information,
+  //LoanSnapshotEnum.background_information,
   LoanSnapshotEnum.compensation_page,
   LoanSnapshotEnum.loan_summary,
 ];
@@ -99,7 +99,7 @@ const LAND_NOT_LOGIN = [
   LoanSnapshotEnum.estimate_rate,
   LoanSnapshotEnum.auth_page,
   LoanSnapshotEnum.loan_address,
-  LoanSnapshotEnum.background_information,
+  //LoanSnapshotEnum.background_information,
   LoanSnapshotEnum.loan_summary,
 ];
 
@@ -108,7 +108,7 @@ const LAND_LOGIN_NOT_BROKER = [
   LoanSnapshotEnum.land_readiness,
   LoanSnapshotEnum.estimate_rate,
   LoanSnapshotEnum.loan_address,
-  LoanSnapshotEnum.background_information,
+  //LoanSnapshotEnum.background_information,
   LoanSnapshotEnum.loan_summary,
 ];
 
@@ -117,7 +117,7 @@ const LAND_LOGIN_BROKER = [
   LoanSnapshotEnum.land_readiness,
   LoanSnapshotEnum.estimate_rate,
   LoanSnapshotEnum.loan_address,
-  LoanSnapshotEnum.background_information,
+  //LoanSnapshotEnum.background_information,
   LoanSnapshotEnum.compensation_page,
   LoanSnapshotEnum.loan_summary,
 ];
