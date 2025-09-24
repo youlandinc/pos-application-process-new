@@ -23,7 +23,7 @@ export const CompensationInformationPage: FC = observer(() => {
 
   const back = async () => {
     const postData = {
-      nextSnapshot: LoanSnapshotEnum.background_information,
+      nextSnapshot: LoanSnapshotEnum.loan_address,
       loanId: applicationForm.loanId,
     };
     await redirectFrom(postData);
