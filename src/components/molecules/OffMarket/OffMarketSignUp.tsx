@@ -194,7 +194,7 @@ export const OffMarketSignUp = observer<SignUpProps>(
           setLoading(false);
           return router.push(asPath);
         }
-        await router.push('/off-market/deals');
+        await router.push('/off-market-deals');
       },
       [router, store, successCb],
     );
