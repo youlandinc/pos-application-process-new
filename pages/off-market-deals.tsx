@@ -16,7 +16,7 @@ const DynamicOffMarketDeals = dynamic(
   },
 );
 
-const OffMarketDealsPage: FC = observer((): JSX.Element => {
+const OffMarketDealsPage: FC = observer(() => {
   useCheckOffMarketIsLogin();
 
   return (

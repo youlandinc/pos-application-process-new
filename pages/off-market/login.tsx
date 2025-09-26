@@ -21,7 +21,7 @@ const OffMarketLoginPage: FC = observer(() => {
       <Head>
         <title>Login</title>
       </Head>
-      <DynamicOffMarketLogin to={'/off-market/deals'} />
+      <DynamicOffMarketLogin to={'/off-market-deals'} />
     </>
   );
 });
