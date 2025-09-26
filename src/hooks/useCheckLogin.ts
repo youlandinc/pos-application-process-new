@@ -91,7 +91,7 @@ export const useCheckIsLogin = (jumpPath = '/auth/login') => {
   }, [check, session]);
 };
 
-export const useCheckOffMarketLogIn = (jumpPath = '/off-market/deals') => {
+export const useCheckOffMarketLogIn = (jumpPath = '/off-market-deals') => {
   const { session, persistDataLoaded, userType, loginType } = useMst();
   const { enqueueSnackbar } = useSnackbar();
 
