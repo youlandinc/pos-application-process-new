@@ -82,4 +82,6 @@ export interface EstimateRateFormData {
   monthlyHoaFee?: number;
   prepaymentPenalty: string;
   acquisitionDate: string;
+  // fix & guc purchase
+  wholesaler: LoanAnswerEnum;
 }

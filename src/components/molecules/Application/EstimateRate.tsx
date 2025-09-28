@@ -567,6 +567,19 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       value={estimateRate.purchaseLoanAmount}
                     />
 
+                    <StyledSelect
+                      label={'Is there a wholesaler involved?'}
+                      onChange={(e) =>
+                        estimateRate.changeFieldValue(
+                          'wholesaler',
+                          e.target.value as string as LoanAnswerEnum,
+                        )
+                      }
+                      options={OPTIONS_COMMON_YES_OR_NO}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      value={estimateRate.wholesaler}
+                    />
+
                     {!condition && (
                       <Stack mt={0.5}>
                         <Typography
@@ -855,6 +868,26 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       value={estimateRate.purchaseConstructionCosts}
                     />
 
+                    <StyledSelect
+                      label={'Is there a wholesaler involved?'}
+                      onChange={(e) =>
+                        estimateRate.changeFieldValue(
+                          'wholesaler',
+                          e.target.value as string as LoanAnswerEnum,
+                        )
+                      }
+                      options={OPTIONS_COMMON_YES_OR_NO}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      value={estimateRate.wholesaler}
+                    />
+                  </Stack>
+
+                  <Stack
+                    alignItems={{ xs: 'flex-start', lg: 'center' }}
+                    flexDirection={{ xs: 'column', lg: 'row' }}
+                    gap={3}
+                    ml={-0.5}
+                  >
                     <StyledTextFieldNumber
                       decimalScale={0}
                       isTooltip={true}
@@ -871,14 +904,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       }
                       value={estimateRate.ltc}
                     />
-                  </Stack>
 
-                  <Stack
-                    alignItems={{ xs: 'flex-start', lg: 'center' }}
-                    flexDirection={{ xs: 'column', lg: 'row' }}
-                    gap={3}
-                    ml={-0.5}
-                  >
                     <StyledTextFieldNumber
                       isTooltip={true}
                       label={'Completed/After-repair value (ARV)'}
@@ -1102,6 +1128,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
         estimateRate.ltc,
         estimateRate.monthlyIncome,
         estimateRate.propertyOwned,
+        estimateRate.wholesaler,
         initialLTC,
         payoffAmountError,
       ],
