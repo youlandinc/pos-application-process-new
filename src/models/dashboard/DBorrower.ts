@@ -16,6 +16,7 @@ import {
 
 import {
   DashboardTaskBorrowerType,
+  LoanAnswerEnum,
   LoanCitizenshipEnum,
   LoanMarriedStatusEnum,
 } from '@/types';
@@ -37,6 +38,7 @@ export const DBorrower = types
     // common
     phoneNumber: types.string,
     email: types.string,
+    attorney: types.enumeration(Object.values(LoanAnswerEnum)),
     // individual
     firstName: types.string,
     lastName: types.string,
@@ -112,6 +114,7 @@ export const DBorrower = types
     injectServerData(data: DBorrowerResponse) {
       const {
         borrowerType,
+        attorney,
         phoneNumber,
         email,
         firstName,
@@ -129,6 +132,7 @@ export const DBorrower = types
       } = data;
 
       self.borrowerType = borrowerType ?? DashboardTaskBorrowerType.individual;
+      self.attorney = attorney ?? LoanAnswerEnum.no;
       self.phoneNumber = phoneNumber ?? '';
       self.email = email ?? '';
       self.firstName = firstName ?? '';
@@ -231,6 +235,7 @@ export const DBorrower = types
     },
     getIndividualPostData() {
       return {
+        attorney: self.attorney,
         borrowerType: self.borrowerType,
         phoneNumber: self.phoneNumber,
         email: self.email,
@@ -250,6 +255,7 @@ export const DBorrower = types
       });
 
       return {
+        attorney: self.attorney,
         borrowerType: self.borrowerType,
         phoneNumber: self.phoneNumber,
         email: self.email,
@@ -269,6 +275,7 @@ export const DBorrower = types
       });
 
       return {
+        attorney: self.attorney,
         borrowerType: self.borrowerType,
         trustName: self.trustName,
         signatories: pureSignatories,

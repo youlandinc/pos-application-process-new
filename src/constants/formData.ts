@@ -74,6 +74,8 @@ export const FormData = {
     vacancyRate: void 0,
     acquisitionDate: '',
     prepaymentPenalty: '',
+    // fix & guc purchase
+    wholesaler: LoanAnswerEnum.yes,
   },
   [LoanSnapshotEnum.loan_address]: {
     formatAddress: '',
