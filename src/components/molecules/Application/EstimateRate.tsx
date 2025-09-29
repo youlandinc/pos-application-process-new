@@ -1426,25 +1426,19 @@ export const EstimateRate = observer<FormNodeBaseProps>(
               value={estimateRate.citizenship}
             />
             <StyledTextFieldNumber
-              isTooltip={true}
-              label={'# of renovations completed '}
+              label={'# of renovations completed'}
               onValueChange={({ floatValue }) => {
                 estimateRate.changeFieldValue('priorExperience', floatValue);
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipTitle={''}
               value={estimateRate.renovationsCompleted}
             />
             <StyledTextFieldNumber
-              isTooltip={true}
               label={'# of constructions completed'}
               onValueChange={({ floatValue }) => {
                 estimateRate.changeFieldValue('priorExperience', floatValue);
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipTitle={''}
               value={estimateRate.constructionsCompleted}
             />
           </Stack>
