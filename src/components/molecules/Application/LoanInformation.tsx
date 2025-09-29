@@ -1633,25 +1633,19 @@ export const LoanInformation = observer<FormNodeBaseProps>(
               value={loanInformation.citizenship}
             />
             <StyledTextFieldNumber
-              isTooltip={true}
-              label={'# of renovations completed '}
+              label={'# of renovations completed'}
               onValueChange={({ floatValue }) => {
                 loanInformation.changeFieldValue('priorExperience', floatValue);
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipTitle={''}
               value={loanInformation.renovationsCompleted}
             />
             <StyledTextFieldNumber
-              isTooltip={true}
               label={'# of constructions completed'}
               onValueChange={({ floatValue }) => {
                 loanInformation.changeFieldValue('priorExperience', floatValue);
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipTitle={''}
               value={loanInformation.constructionsCompleted}
             />
             {loanInformation.productCategory ===
