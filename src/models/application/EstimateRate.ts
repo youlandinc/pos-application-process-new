@@ -20,6 +20,8 @@ export const EstimateRate = types
     ),
     citizenship: types.enumeration(Object.values(LoanCitizenshipEnum)),
     priorExperience: types.maybe(types.number),
+    renovationsCompleted: types.maybe(types.number),
+    constructionsCompleted: types.maybe(types.number),
     state: types.string,
     ficoScore: types.maybeNull(
       types.enumeration(Object.values(LoanFicoScoreEnum)),
@@ -78,6 +80,8 @@ export const EstimateRate = types
         loanPurpose: self.loanPurpose,
         propertyType: self.propertyType,
         propertyUnit: self.propertyUnit,
+        renovationsCompleted: self.renovationsCompleted,
+        constructionsCompleted: self.constructionsCompleted,
         state: self.state,
         wholesaler: self.wholesaler,
         ficoScore:
@@ -171,8 +175,12 @@ export const EstimateRate = types
         monthlyHoaFee,
         prepaymentPenalty,
         acquisitionDate,
+        renovationsCompleted,
+        constructionsCompleted,
       } = data;
 
+      self.renovationsCompleted = renovationsCompleted ?? 0;
+      self.constructionsCompleted = constructionsCompleted ?? 0;
       self.wholesaler = wholesaler ?? LoanAnswerEnum.yes;
       self.productCategory =
         productCategory ?? LoanProductCategoryEnum.stabilized_bridge;

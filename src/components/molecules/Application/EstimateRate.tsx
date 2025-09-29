@@ -1427,24 +1427,25 @@ export const EstimateRate = observer<FormNodeBaseProps>(
             />
             <StyledTextFieldNumber
               isTooltip={true}
-              label={
-                estimateRate.productCategory !==
-                LoanProductCategoryEnum.ground_up_construction
-                  ? '# of prior flips'
-                  : '# of construction projects exited'
-              }
+              label={'# of renovations completed '}
               onValueChange={({ floatValue }) => {
                 estimateRate.changeFieldValue('priorExperience', floatValue);
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
               tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipTitle={
-                estimateRate.productCategory !==
-                LoanProductCategoryEnum.ground_up_construction
-                  ? 'Number of flips completed and held rental properties'
-                  : 'The number of investment properties you have built and exited over the last 5 years'
-              }
-              value={estimateRate.priorExperience}
+              tooltipTitle={''}
+              value={estimateRate.renovationsCompleted}
+            />
+            <StyledTextFieldNumber
+              isTooltip={true}
+              label={'# of constructions completed'}
+              onValueChange={({ floatValue }) => {
+                estimateRate.changeFieldValue('priorExperience', floatValue);
+              }}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              tooltipTitle={''}
+              value={estimateRate.constructionsCompleted}
             />
           </Stack>
 

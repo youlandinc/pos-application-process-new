@@ -1634,24 +1634,25 @@ export const LoanInformation = observer<FormNodeBaseProps>(
             />
             <StyledTextFieldNumber
               isTooltip={true}
-              label={
-                loanInformation.productCategory !==
-                LoanProductCategoryEnum.ground_up_construction
-                  ? '# of prior flips'
-                  : '# of construction projects exited'
-              }
+              label={'# of renovations completed '}
               onValueChange={({ floatValue }) => {
                 loanInformation.changeFieldValue('priorExperience', floatValue);
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
               tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipTitle={
-                loanInformation.productCategory !==
-                LoanProductCategoryEnum.ground_up_construction
-                  ? 'Number of flips completed and held rental properties'
-                  : 'The number of investment properties you have built and exited over the last 5 years'
-              }
-              value={loanInformation.priorExperience}
+              tooltipTitle={''}
+              value={loanInformation.renovationsCompleted}
+            />
+            <StyledTextFieldNumber
+              isTooltip={true}
+              label={'# of constructions completed'}
+              onValueChange={({ floatValue }) => {
+                loanInformation.changeFieldValue('priorExperience', floatValue);
+              }}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              tooltipTitle={''}
+              value={loanInformation.constructionsCompleted}
             />
             {loanInformation.productCategory ===
               LoanProductCategoryEnum.dscr_rental &&
