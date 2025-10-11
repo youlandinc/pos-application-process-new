@@ -232,6 +232,25 @@ export const TasksTitleOrEscrow: FC = observer(() => {
       data,
     };
 
+    if (hasTitle === LoanAnswerEnum.no) {
+      setSaveLoading(true);
+      try {
+        await _updateLoanTaskDetail(postData);
+        await jumpToNextTask(DashboardTaskKey.title_escrow);
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      } finally {
+        setSaveLoading(false);
+      }
+      return;
+    }
+
     const validateContactForm = await validate(
       postData.data.contactForm,
       TaskTitleOrEscrowSchema.contractFrom,
@@ -345,7 +364,12 @@ export const TasksTitleOrEscrow: FC = observer(() => {
         >
           <StyledSelectOption
             onChange={(v) => {
-              setHasTitle(v as string as LoanAnswerEnum);
+              const newValue = v as string as LoanAnswerEnum;
+              setHasTitle(newValue);
+              if (newValue === LoanAnswerEnum.no) {
+                setFormError(undefined);
+                setAddressError(undefined);
+              }
             }}
             options={OPTIONS_TASK_TITLE_OPEN}
             value={hasTitle}
