@@ -1120,7 +1120,6 @@ export const EstimateRate = observer<FormNodeBaseProps>(
         estimateRate.interestRate,
         estimateRate.isDutch,
         estimateRate.citizenship,
-        estimateRate.priorExperience,
         estimateRate.improvementsSinceAcquisition,
         estimateRate.constructionProjectsExited,
         estimateRate.purchaseConstructionCosts,
@@ -1129,6 +1128,8 @@ export const EstimateRate = observer<FormNodeBaseProps>(
         estimateRate.monthlyIncome,
         estimateRate.propertyOwned,
         estimateRate.wholesaler,
+        estimateRate.constructionsCompleted,
+        estimateRate.renovationsCompleted,
         initialLTC,
         payoffAmountError,
       ],
@@ -1328,7 +1329,6 @@ export const EstimateRate = observer<FormNodeBaseProps>(
         estimateRate.interestRate,
         estimateRate.isDutch,
         estimateRate.citizenship,
-        estimateRate.priorExperience,
         estimateRate.improvementsSinceAcquisition,
         estimateRate.constructionProjectsExited,
         estimateRate.purchaseConstructionCosts,
@@ -1336,6 +1336,8 @@ export const EstimateRate = observer<FormNodeBaseProps>(
         estimateRate.ltc,
         estimateRate.monthlyIncome,
         estimateRate.propertyOwned,
+        estimateRate?.constructionsCompleted,
+        estimateRate?.renovationsCompleted,
         limits?.maxLoanAmount,
         limits?.minLoanAmount,
         loading,
@@ -1368,12 +1370,13 @@ export const EstimateRate = observer<FormNodeBaseProps>(
         estimateRate?.isPayoff,
         estimateRate?.payoffAmount,
         estimateRate?.citizenship,
-        estimateRate?.priorExperience,
         estimateRate?.improvementsSinceAcquisition,
         estimateRate?.refinanceConstructionCosts,
         estimateRate?.purchaseConstructionCosts,
         estimateRate?.propertyOwned,
         estimateRate?.ltc,
+        estimateRate?.constructionsCompleted,
+        estimateRate?.renovationsCompleted,
         session,
       ],
     );
@@ -1428,7 +1431,10 @@ export const EstimateRate = observer<FormNodeBaseProps>(
             <StyledTextFieldNumber
               label={'# of renovations completed'}
               onValueChange={({ floatValue }) => {
-                estimateRate.changeFieldValue('priorExperience', floatValue);
+                estimateRate.changeFieldValue(
+                  'renovationsCompleted',
+                  floatValue,
+                );
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
               value={estimateRate.renovationsCompleted}
@@ -1436,7 +1442,10 @@ export const EstimateRate = observer<FormNodeBaseProps>(
             <StyledTextFieldNumber
               label={'# of constructions completed'}
               onValueChange={({ floatValue }) => {
-                estimateRate.changeFieldValue('priorExperience', floatValue);
+                estimateRate.changeFieldValue(
+                  'constructionsCompleted',
+                  floatValue,
+                );
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
               value={estimateRate.constructionsCompleted}

@@ -1231,7 +1231,6 @@ export const LoanInformation = observer<FormNodeBaseProps>(
         loanInformation.interestRate,
         loanInformation.isDutch,
         loanInformation.citizenship,
-        loanInformation.priorExperience,
         loanInformation.improvementsSinceAcquisition,
         loanInformation.constructionProjectsExited,
         loanInformation.purchaseConstructionCosts,
@@ -1244,6 +1243,8 @@ export const LoanInformation = observer<FormNodeBaseProps>(
         loanInformation.prepaymentPenalty,
         loanInformation.acquisitionDate,
         loanInformation.wholesaler,
+        loanInformation.renovationsCompleted,
+        loanInformation.constructionsCompleted,
         payoffAmountError,
       ],
     );
@@ -1635,7 +1636,10 @@ export const LoanInformation = observer<FormNodeBaseProps>(
             <StyledTextFieldNumber
               label={'# of renovations completed'}
               onValueChange={({ floatValue }) => {
-                loanInformation.changeFieldValue('priorExperience', floatValue);
+                loanInformation.changeFieldValue(
+                  'renovationsCompleted',
+                  floatValue,
+                );
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
               value={loanInformation.renovationsCompleted}
@@ -1643,7 +1647,10 @@ export const LoanInformation = observer<FormNodeBaseProps>(
             <StyledTextFieldNumber
               label={'# of constructions completed'}
               onValueChange={({ floatValue }) => {
-                loanInformation.changeFieldValue('priorExperience', floatValue);
+                loanInformation.changeFieldValue(
+                  'constructionsCompleted',
+                  floatValue,
+                );
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
               value={loanInformation.constructionsCompleted}
