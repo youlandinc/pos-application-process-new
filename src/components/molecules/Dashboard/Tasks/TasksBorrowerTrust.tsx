@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Icon, Stack } from '@mui/material';
+import { Icon, Stack, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -62,9 +62,8 @@ export const TasksBorrowerTrust = observer<TasksBorrowerTrustProps>(
           </Stack>
         </StyledFormItem>
 
-        {/* todo: poa*/}
         <StyledFormItem
-          gap={3}
+          gap={1}
           label={
             <Stack alignItems={'center'} flexDirection={'row'} gap={1.5}>
               Signing & Authorization{' '}
@@ -86,7 +85,6 @@ export const TasksBorrowerTrust = observer<TasksBorrowerTrustProps>(
           labelSx={{ pb: 3 }}
           maxWidth={600}
           sub
-          tip={'Most people say no'}
           tipSx={{ textAlign: 'left' }}
         >
           <StyledSelect
@@ -101,6 +99,9 @@ export const TasksBorrowerTrust = observer<TasksBorrowerTrustProps>(
             sx={{ maxWidth: 600 }}
             value={taskBorrower.attorney}
           />
+          <Typography color={'text.secondary'} fontSize={12}>
+            Most people say no
+          </Typography>
         </StyledFormItem>
 
         <TasksBorrowerSignatories />
