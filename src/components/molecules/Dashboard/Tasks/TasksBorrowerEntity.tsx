@@ -1,11 +1,15 @@
-import { Dispatch, FC, SetStateAction } from 'react';
-import { Stack } from '@mui/material';
+import { Dispatch, SetStateAction } from 'react';
+import { Icon, Stack, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { OPTIONS_COMMON_STATE, OPTIONS_TASK_ENTITY_TYPE } from '@/constants';
-import { DashboardTaskBorrowerEntityType } from '@/types';
+import {
+  OPTIONS_COMMON_LOAN_ANSWER,
+  OPTIONS_COMMON_STATE,
+  OPTIONS_TASK_ENTITY_TYPE,
+} from '@/constants';
+import { DashboardTaskBorrowerEntityType, LoanAnswerEnum } from '@/types';
 
 import {
   StyledFormItem,
@@ -13,15 +17,18 @@ import {
   StyledSelect,
   StyledTextField,
   StyledTextFieldPhone,
+  StyledTooltip,
 } from '@/components/atoms';
 import { TasksBorrowerSignatories } from './index';
+
+import ICON_INFO from './assets/icon-info.svg';
 
 interface TasksBorrowerEntityProps {
   formError: Record<string, any> | undefined;
   setFormError: Dispatch<SetStateAction<Record<string, any> | undefined>>;
 }
 
-export const TasksBorrowerEntity: FC<TasksBorrowerEntityProps> = observer(
+export const TasksBorrowerEntity = observer<TasksBorrowerEntityProps>(
   ({ formError, setFormError }) => {
     const {
       dashboardInfo: { taskBorrower },
@@ -181,6 +188,48 @@ export const TasksBorrowerEntity: FC<TasksBorrowerEntityProps> = observer(
             addressError={formError?.addressInfo || void 0}
             label={'Mailing address'}
           />
+        </StyledFormItem>
+
+        <StyledFormItem
+          gap={1}
+          label={
+            <Stack alignItems={'center'} flexDirection={'row'} gap={1.5}>
+              Signing & Authorization{' '}
+              <StyledTooltip
+                mode={'controlled'}
+                placement={'right'}
+                sx={{ maxWidth: 400 }}
+                title={
+                  'A POA (Power of Attorney) is a written authorization allowing an agent to sign loan documents on the borrower’s behalf.'
+                }
+                tooltipSx={{ width: 24, height: 24 }}
+              >
+                <Stack>
+                  <Icon component={ICON_INFO} />
+                </Stack>
+              </StyledTooltip>
+            </Stack>
+          }
+          labelSx={{ pb: 3 }}
+          maxWidth={600}
+          sub
+          tipSx={{ textAlign: 'left' }}
+        >
+          <StyledSelect
+            label={'Will you be signing using POA (Power of Attorney)? '}
+            onChange={(e) => {
+              taskBorrower.changeFieldValue(
+                'attorney',
+                e.target.value as string as LoanAnswerEnum,
+              );
+            }}
+            options={OPTIONS_COMMON_LOAN_ANSWER}
+            sx={{ maxWidth: 600 }}
+            value={taskBorrower.attorney}
+          />
+          <Typography color={'text.secondary'} fontSize={12}>
+            Most people say no
+          </Typography>
         </StyledFormItem>
 
         <TasksBorrowerSignatories />

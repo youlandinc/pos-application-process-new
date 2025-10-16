@@ -1,12 +1,15 @@
 import { Dispatch, FC, SetStateAction } from 'react';
-import { Stack } from '@mui/material';
+import { Icon, Stack, Typography } from '@mui/material';
 import { format, isDate, isValid } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { OPTIONS_COMMON_CITIZEN_TYPE } from '@/constants';
-import { LoanCitizenshipEnum } from '@/types';
+import {
+  OPTIONS_COMMON_CITIZEN_TYPE,
+  OPTIONS_COMMON_LOAN_ANSWER,
+} from '@/constants';
+import { LoanAnswerEnum, LoanCitizenshipEnum } from '@/types';
 
 import {
   StyledDatePicker,
@@ -16,8 +19,11 @@ import {
   StyledTextField,
   StyledTextFieldPhone,
   StyledTextFieldSocialNumber,
+  StyledTooltip,
   Transitions,
 } from '@/components/atoms';
+
+import ICON_INFO from './assets/icon-info.svg';
 
 interface TasksBorrowerIndividualProps {
   formError: Record<string, any> | undefined;
@@ -216,6 +222,48 @@ export const TasksBorrowerIndividual: FC<TasksBorrowerIndividualProps> =
               />
             )}
           </Transitions>
+        </StyledFormItem>
+
+        <StyledFormItem
+          gap={1}
+          label={
+            <Stack alignItems={'center'} flexDirection={'row'} gap={1.5}>
+              Signing & Authorization{' '}
+              <StyledTooltip
+                mode={'controlled'}
+                placement={'right'}
+                sx={{ maxWidth: 400 }}
+                title={
+                  'A POA (Power of Attorney) is a written authorization allowing an agent to sign loan documents on the borrower’s behalf.'
+                }
+                tooltipSx={{ width: 24, height: 24 }}
+              >
+                <Stack>
+                  <Icon component={ICON_INFO} />
+                </Stack>
+              </StyledTooltip>
+            </Stack>
+          }
+          labelSx={{ pb: 3 }}
+          maxWidth={600}
+          sub
+          tipSx={{ textAlign: 'left' }}
+        >
+          <StyledSelect
+            label={'Will you be signing using POA (Power of Attorney)? '}
+            onChange={(e) => {
+              taskBorrower.changeFieldValue(
+                'attorney',
+                e.target.value as string as LoanAnswerEnum,
+              );
+            }}
+            options={OPTIONS_COMMON_LOAN_ANSWER}
+            sx={{ maxWidth: 600 }}
+            value={taskBorrower.attorney}
+          />
+          <Typography color={'text.secondary'} fontSize={12}>
+            Most people say no
+          </Typography>
         </StyledFormItem>
       </>
     );

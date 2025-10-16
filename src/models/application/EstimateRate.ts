@@ -1,4 +1,3 @@
-import { types } from 'mobx-state-tree';
 import {
   EstimateRateFormData,
   LoanAnswerEnum,
@@ -9,6 +8,7 @@ import {
   LoanPropertyUnitEnum,
   LoanPurposeEnum,
 } from '@/types';
+import { types } from 'mobx-state-tree';
 
 export const EstimateRate = types
   .model({
@@ -20,6 +20,8 @@ export const EstimateRate = types
     ),
     citizenship: types.enumeration(Object.values(LoanCitizenshipEnum)),
     priorExperience: types.maybe(types.number),
+    renovationsCompleted: types.maybe(types.number),
+    constructionsCompleted: types.maybe(types.number),
     state: types.string,
     ficoScore: types.maybeNull(
       types.enumeration(Object.values(LoanFicoScoreEnum)),
@@ -29,6 +31,7 @@ export const EstimateRate = types
       types.maybeNull(types.number),
       types.maybe(types.number),
     ),
+    wholesaler: types.maybe(types.enumeration(Object.values(LoanAnswerEnum))),
     isLiquidity: types.maybe(types.boolean),
     liquidityAmount: types.maybe(types.number),
     rehabCost: types.maybe(types.number),
@@ -77,7 +80,10 @@ export const EstimateRate = types
         loanPurpose: self.loanPurpose,
         propertyType: self.propertyType,
         propertyUnit: self.propertyUnit,
+        renovationsCompleted: self.renovationsCompleted,
+        constructionsCompleted: self.constructionsCompleted,
         state: self.state,
+        wholesaler: self.wholesaler,
         ficoScore:
           self.citizenship === LoanCitizenshipEnum.foreign_national
             ? LoanFicoScoreEnum.no_fico
@@ -131,6 +137,7 @@ export const EstimateRate = types
     },
     injectServerData(data: EstimateRateFormData) {
       const {
+        wholesaler,
         productCategory,
         loanPurpose,
         propertyType,
@@ -168,8 +175,13 @@ export const EstimateRate = types
         monthlyHoaFee,
         prepaymentPenalty,
         acquisitionDate,
+        renovationsCompleted,
+        constructionsCompleted,
       } = data;
 
+      self.renovationsCompleted = renovationsCompleted ?? 0;
+      self.constructionsCompleted = constructionsCompleted ?? 0;
+      self.wholesaler = wholesaler ?? LoanAnswerEnum.yes;
       self.productCategory =
         productCategory ?? LoanProductCategoryEnum.stabilized_bridge;
       self.loanPurpose = loanPurpose ?? LoanPurposeEnum.purchase;

@@ -23,6 +23,7 @@ export interface DBorrowerSignatoryInfo {
 
 export interface DBorrowerResponse {
   borrowerType: DashboardTaskBorrowerType;
+  attorney: LoanAnswerEnum;
   phoneNumber: string;
   email: string;
   firstName: string;

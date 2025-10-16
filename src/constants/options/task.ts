@@ -4,6 +4,7 @@ import {
   DashboardTaskInstructions,
   DashboardTaskLoanClosing,
   LandTypeEnum,
+  LoanAnswerEnum,
 } from '@/types';
 
 export const OPTIONS_TASK_BORROWER_TYPE: Option[] = [
@@ -98,5 +99,18 @@ export const OPTIONS_TASK_LAND_TYPE: Option[] = [
     key: LandTypeEnum.all_utilities,
     value: LandTypeEnum.all_utilities,
     label: 'All utilities',
+  },
+];
+
+export const OPTIONS_TASK_TITLE_OPEN: Option[] = [
+  {
+    key: LoanAnswerEnum.yes,
+    value: LoanAnswerEnum.yes,
+    label: 'Yes, I can provide details later',
+  },
+  {
+    key: LoanAnswerEnum.no,
+    value: LoanAnswerEnum.no,
+    label: 'No, please open title/escrow for me',
   },
 ];

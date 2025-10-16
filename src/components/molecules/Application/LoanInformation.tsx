@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
@@ -23,6 +23,7 @@ import {
   MULTIFAMILY_HASH,
   OPTIONS_COMMON_CITIZEN_TYPE,
   OPTIONS_COMMON_STATE,
+  OPTIONS_COMMON_YES_OR_NO,
 } from '@/constants';
 
 import {
@@ -47,7 +48,7 @@ import {
 } from '@/types';
 import { isDate, isValid } from 'date-fns';
 
-export const LoanInformation: FC<FormNodeBaseProps> = observer(
+export const LoanInformation = observer<FormNodeBaseProps>(
   ({ nextStep, nextState, backState, backStep }) => {
     const breakpoints = useBreakpoints();
     const { saasState } = useSessionStorageState('tenantConfig');
@@ -553,6 +554,19 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                       value={loanInformation.purchaseLoanAmount}
                     />
 
+                    <StyledSelect
+                      label={'Is there a wholesaler involved?'}
+                      onChange={(e) => {
+                        loanInformation.changeFieldValue(
+                          'wholesaler',
+                          e.target.value as string as LoanAnswerEnum,
+                        );
+                      }}
+                      options={OPTIONS_COMMON_YES_OR_NO}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      value={LoanAnswerEnum.no}
+                    />
+
                     {!condition && (
                       <Stack mt={0.5}>
                         <Typography
@@ -797,6 +811,26 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                       value={loanInformation.purchaseConstructionCosts}
                     />
 
+                    <StyledSelect
+                      label={'Is there a wholesaler involved?'}
+                      onChange={(e) => {
+                        loanInformation.changeFieldValue(
+                          'wholesaler',
+                          e.target.value as string as LoanAnswerEnum,
+                        );
+                      }}
+                      options={OPTIONS_COMMON_YES_OR_NO}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      value={LoanAnswerEnum.no}
+                    />
+                  </Stack>
+
+                  <Stack
+                    alignItems={{ xs: 'flex-start', lg: 'center' }}
+                    flexDirection={{ xs: 'column', lg: 'row' }}
+                    gap={3}
+                    ml={-0.5}
+                  >
                     <StyledTextFieldNumber
                       decimalScale={0}
                       isTooltip={true}
@@ -813,14 +847,7 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
                       }
                       value={loanInformation.ltc}
                     />
-                  </Stack>
 
-                  <Stack
-                    alignItems={{ xs: 'flex-start', lg: 'center' }}
-                    flexDirection={{ xs: 'column', lg: 'row' }}
-                    gap={3}
-                    ml={-0.5}
-                  >
                     <StyledTextFieldNumber
                       isTooltip={true}
                       label={'Completed/After-repair value (ARV)'}
@@ -1204,7 +1231,6 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
         loanInformation.interestRate,
         loanInformation.isDutch,
         loanInformation.citizenship,
-        loanInformation.priorExperience,
         loanInformation.improvementsSinceAcquisition,
         loanInformation.constructionProjectsExited,
         loanInformation.purchaseConstructionCosts,
@@ -1216,6 +1242,9 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
         loanInformation.monthlyHoaFee,
         loanInformation.prepaymentPenalty,
         loanInformation.acquisitionDate,
+        loanInformation.wholesaler,
+        loanInformation.renovationsCompleted,
+        loanInformation.constructionsCompleted,
         payoffAmountError,
       ],
     );
@@ -1605,25 +1634,26 @@ export const LoanInformation: FC<FormNodeBaseProps> = observer(
               value={loanInformation.citizenship}
             />
             <StyledTextFieldNumber
-              isTooltip={true}
-              label={
-                loanInformation.productCategory !==
-                LoanProductCategoryEnum.ground_up_construction
-                  ? '# of prior flips'
-                  : '# of construction projects exited'
-              }
+              label={'# of renovations completed'}
               onValueChange={({ floatValue }) => {
-                loanInformation.changeFieldValue('priorExperience', floatValue);
+                loanInformation.changeFieldValue(
+                  'renovationsCompleted',
+                  floatValue,
+                );
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipTitle={
-                loanInformation.productCategory !==
-                LoanProductCategoryEnum.ground_up_construction
-                  ? 'Number of flips completed and held rental properties'
-                  : 'The number of investment properties you have built and exited over the last 5 years'
-              }
-              value={loanInformation.priorExperience}
+              value={loanInformation.renovationsCompleted}
+            />
+            <StyledTextFieldNumber
+              label={'# of constructions completed'}
+              onValueChange={({ floatValue }) => {
+                loanInformation.changeFieldValue(
+                  'constructionsCompleted',
+                  floatValue,
+                );
+              }}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              value={loanInformation.constructionsCompleted}
             />
             {loanInformation.productCategory ===
               LoanProductCategoryEnum.dscr_rental &&

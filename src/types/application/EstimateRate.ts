@@ -46,6 +46,8 @@ export interface EstimateRateFormData {
   propertyUnit: LoanPropertyUnitEnum | null;
   citizenship: LoanCitizenshipEnum;
   priorExperience: number;
+  renovationsCompleted: number;
+  constructionsCompleted: number;
   state: string;
   ficoScore: LoanFicoScoreEnum | null;
   accurateScore: null | number | undefined;
@@ -82,4 +84,6 @@ export interface EstimateRateFormData {
   monthlyHoaFee?: number;
   prepaymentPenalty: string;
   acquisitionDate: string;
+  // fix & guc purchase
+  wholesaler: LoanAnswerEnum;
 }

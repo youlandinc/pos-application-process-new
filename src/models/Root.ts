@@ -17,6 +17,7 @@ import { User } from '@/types/user';
 
 import { FormData, userpool } from '@/constants';
 import {
+  LoanAnswerEnum,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
@@ -196,6 +197,7 @@ const initialState = {
     messages: [],
     additionalAddress: [],
     taskBorrower: {
+      attorney: LoanAnswerEnum.no,
       borrowerType: '',
       phoneNumber: '',
       email: '',

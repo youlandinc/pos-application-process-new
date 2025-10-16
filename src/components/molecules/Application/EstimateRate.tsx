@@ -567,6 +567,19 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       value={estimateRate.purchaseLoanAmount}
                     />
 
+                    <StyledSelect
+                      label={'Is there a wholesaler involved?'}
+                      onChange={(e) =>
+                        estimateRate.changeFieldValue(
+                          'wholesaler',
+                          e.target.value as string as LoanAnswerEnum,
+                        )
+                      }
+                      options={OPTIONS_COMMON_YES_OR_NO}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      value={estimateRate.wholesaler}
+                    />
+
                     {!condition && (
                       <Stack mt={0.5}>
                         <Typography
@@ -855,6 +868,26 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       value={estimateRate.purchaseConstructionCosts}
                     />
 
+                    <StyledSelect
+                      label={'Is there a wholesaler involved?'}
+                      onChange={(e) =>
+                        estimateRate.changeFieldValue(
+                          'wholesaler',
+                          e.target.value as string as LoanAnswerEnum,
+                        )
+                      }
+                      options={OPTIONS_COMMON_YES_OR_NO}
+                      sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+                      value={estimateRate.wholesaler}
+                    />
+                  </Stack>
+
+                  <Stack
+                    alignItems={{ xs: 'flex-start', lg: 'center' }}
+                    flexDirection={{ xs: 'column', lg: 'row' }}
+                    gap={3}
+                    ml={-0.5}
+                  >
                     <StyledTextFieldNumber
                       decimalScale={0}
                       isTooltip={true}
@@ -871,14 +904,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       }
                       value={estimateRate.ltc}
                     />
-                  </Stack>
 
-                  <Stack
-                    alignItems={{ xs: 'flex-start', lg: 'center' }}
-                    flexDirection={{ xs: 'column', lg: 'row' }}
-                    gap={3}
-                    ml={-0.5}
-                  >
                     <StyledTextFieldNumber
                       isTooltip={true}
                       label={'Completed/After-repair value (ARV)'}
@@ -1094,7 +1120,6 @@ export const EstimateRate = observer<FormNodeBaseProps>(
         estimateRate.interestRate,
         estimateRate.isDutch,
         estimateRate.citizenship,
-        estimateRate.priorExperience,
         estimateRate.improvementsSinceAcquisition,
         estimateRate.constructionProjectsExited,
         estimateRate.purchaseConstructionCosts,
@@ -1102,6 +1127,9 @@ export const EstimateRate = observer<FormNodeBaseProps>(
         estimateRate.ltc,
         estimateRate.monthlyIncome,
         estimateRate.propertyOwned,
+        estimateRate.wholesaler,
+        estimateRate.constructionsCompleted,
+        estimateRate.renovationsCompleted,
         initialLTC,
         payoffAmountError,
       ],
@@ -1301,7 +1329,6 @@ export const EstimateRate = observer<FormNodeBaseProps>(
         estimateRate.interestRate,
         estimateRate.isDutch,
         estimateRate.citizenship,
-        estimateRate.priorExperience,
         estimateRate.improvementsSinceAcquisition,
         estimateRate.constructionProjectsExited,
         estimateRate.purchaseConstructionCosts,
@@ -1309,6 +1336,8 @@ export const EstimateRate = observer<FormNodeBaseProps>(
         estimateRate.ltc,
         estimateRate.monthlyIncome,
         estimateRate.propertyOwned,
+        estimateRate?.constructionsCompleted,
+        estimateRate?.renovationsCompleted,
         limits?.maxLoanAmount,
         limits?.minLoanAmount,
         loading,
@@ -1341,12 +1370,13 @@ export const EstimateRate = observer<FormNodeBaseProps>(
         estimateRate?.isPayoff,
         estimateRate?.payoffAmount,
         estimateRate?.citizenship,
-        estimateRate?.priorExperience,
         estimateRate?.improvementsSinceAcquisition,
         estimateRate?.refinanceConstructionCosts,
         estimateRate?.purchaseConstructionCosts,
         estimateRate?.propertyOwned,
         estimateRate?.ltc,
+        estimateRate?.constructionsCompleted,
+        estimateRate?.renovationsCompleted,
         session,
       ],
     );
@@ -1399,25 +1429,26 @@ export const EstimateRate = observer<FormNodeBaseProps>(
               value={estimateRate.citizenship}
             />
             <StyledTextFieldNumber
-              isTooltip={true}
-              label={
-                estimateRate.productCategory !==
-                LoanProductCategoryEnum.ground_up_construction
-                  ? '# of prior flips'
-                  : '# of construction projects exited'
-              }
+              label={'# of renovations completed'}
               onValueChange={({ floatValue }) => {
-                estimateRate.changeFieldValue('priorExperience', floatValue);
+                estimateRate.changeFieldValue(
+                  'renovationsCompleted',
+                  floatValue,
+                );
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
-              tooltipTitle={
-                estimateRate.productCategory !==
-                LoanProductCategoryEnum.ground_up_construction
-                  ? 'Number of flips completed and held rental properties'
-                  : 'The number of investment properties you have built and exited over the last 5 years'
-              }
-              value={estimateRate.priorExperience}
+              value={estimateRate.renovationsCompleted}
+            />
+            <StyledTextFieldNumber
+              label={'# of constructions completed'}
+              onValueChange={({ floatValue }) => {
+                estimateRate.changeFieldValue(
+                  'constructionsCompleted',
+                  floatValue,
+                );
+              }}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              value={estimateRate.constructionsCompleted}
             />
           </Stack>
 

@@ -1,27 +1,12 @@
 import { FC, useState } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
-import { format, isDate, isValid } from 'date-fns';
-import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import { useAsync } from 'react-use';
+import { format, isDate, isValid } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
-
-import { Address, IAddress, SAddress } from '@/models/common/Address';
-
-import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
-import { useSessionStorageState } from '@/hooks';
-import {
-  AddressSchema,
-  AUTO_HIDE_DURATION,
-  OPTIONS_COMMON_YES_OR_NO,
-  OPTIONS_TASK_INSTRUCTIONS,
-  OPTIONS_TASK_MANAGING_LOAN_CLOSING,
-  TaskTitleOrEscrowSchema,
-} from '@/constants';
-
-import validate from '@/constants/validate';
 
 import {
   StyledButton,
@@ -36,6 +21,24 @@ import {
   StyledTextFieldPhone,
   Transitions,
 } from '@/components/atoms';
+import {
+  AddressSchema,
+  AUTO_HIDE_DURATION,
+  OPTIONS_COMMON_YES_OR_NO,
+  OPTIONS_TASK_INSTRUCTIONS,
+  OPTIONS_TASK_MANAGING_LOAN_CLOSING,
+  OPTIONS_TASK_TITLE_OPEN,
+  TaskTitleOrEscrowSchema,
+} from '@/constants';
+
+import validate from '@/constants/validate';
+import { useSessionStorageState } from '@/hooks';
+
+import { Address, IAddress, SAddress } from '@/models/common/Address';
+import {
+  _fetchLoanTaskDetail,
+  _updateLoanTaskDetail,
+} from '@/requests/dashboard';
 
 import {
   DashboardTaskInstructions,
@@ -44,10 +47,8 @@ import {
   HttpError,
   LoanAnswerEnum,
 } from '@/types';
-import {
-  _fetchLoanTaskDetail,
-  _updateLoanTaskDetail,
-} from '@/requests/dashboard';
+
+import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
 
 const initialValues: {
   firstName: string;
@@ -100,6 +101,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
 
   const [saveLoading, setSaveLoading] = useState(false);
 
+  const [hasTitle, setHasTitle] = useState<LoanAnswerEnum>(LoanAnswerEnum.no);
   const [addressError, setAddressError] = useState<
     { [key: string]: Record<string, string[]> & string[] } | undefined
   >();
@@ -147,6 +149,8 @@ export const TasksTitleOrEscrow: FC = observer(() => {
 
             escrowNumber,
             instructions,
+
+            hasTitle,
           },
         },
       } = await _fetchLoanTaskDetail({
@@ -168,6 +172,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
       setWhoIsManaging(
         whoIsManaging ?? DashboardTaskLoanClosing.escrow_company,
       );
+      setHasTitle(hasTitle);
 
       clientContactAddress.injectServerData(contactAddress ?? resetAddress);
       clientManageAddress.injectServerData(manageAddress ?? resetAddress);
@@ -202,6 +207,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
           whoIsManaging: undefined,
           escrowNumber,
           instructions,
+          hasTitle,
         }
       : {
           contactForm: {
@@ -217,6 +223,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
           whoIsManaging,
           escrowNumber: undefined,
           instructions,
+          hasTitle,
         };
 
     const postData = {
@@ -224,6 +231,25 @@ export const TasksTitleOrEscrow: FC = observer(() => {
       taskKey: DashboardTaskKey.title_escrow,
       data,
     };
+
+    if (hasTitle === LoanAnswerEnum.no) {
+      setSaveLoading(true);
+      try {
+        await _updateLoanTaskDetail(postData);
+        await jumpToNextTask(DashboardTaskKey.title_escrow);
+      } catch (err) {
+        const { header, message, variant } = err as HttpError;
+        enqueueSnackbar(message, {
+          variant: variant || 'error',
+          autoHideDuration: AUTO_HIDE_DURATION,
+          isSimple: !header,
+          header,
+        });
+      } finally {
+        setSaveLoading(false);
+      }
+      return;
+    }
 
     const validateContactForm = await validate(
       postData.data.contactForm,
@@ -330,6 +356,28 @@ export const TasksTitleOrEscrow: FC = observer(() => {
 
         <StyledFormItem
           gap={3}
+          label={'Do you already have title/escrow open?'}
+          labelSx={{ pb: 3 }}
+          maxWidth={600}
+          mt={-3}
+          sub
+        >
+          <StyledSelectOption
+            onChange={(v) => {
+              const newValue = v as string as LoanAnswerEnum;
+              setHasTitle(newValue);
+              if (newValue === LoanAnswerEnum.no) {
+                setFormError(undefined);
+                setAddressError(undefined);
+              }
+            }}
+            options={OPTIONS_TASK_TITLE_OPEN}
+            value={hasTitle}
+          />
+        </StyledFormItem>
+
+        <StyledFormItem
+          gap={3}
           label={'Provide contact details for the title company'}
           labelSx={{ pb: 3 }}
           maxWidth={600}
@@ -337,6 +385,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
           sub
         >
           <StyledTextField
+            disabled={hasTitle === LoanAnswerEnum.no}
             label={'Company name'}
             onChange={(e) => {
               if (formError?.contactForm?.companyName) {
@@ -356,6 +405,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
             value={contactForm.companyName}
           />
           <StyledTextField
+            disabled={hasTitle === LoanAnswerEnum.no}
             label={'Title order number'}
             onChange={(e) => {
               if (formError?.contactForm?.titleOrderNumber) {
@@ -375,6 +425,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
             value={contactForm.titleOrderNumber}
           />
           <StyledDatePicker
+            disabled={hasTitle === LoanAnswerEnum.no}
             label={'Title effective date'}
             onChange={(date) => {
               if (formError?.contactForm?.contractDate) {
@@ -393,6 +444,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
           <StyledGoogleAutoComplete
             address={clientContactAddress}
             addressError={addressError?.contactAddress}
+            disabled={hasTitle === LoanAnswerEnum.no}
             label={'Company address'}
           />
         </StyledFormItem>
@@ -405,6 +457,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
           sub
         >
           <StyledSelectOption
+            disabled={hasTitle === LoanAnswerEnum.no}
             onChange={(value) =>
               setInstructions(value as string as DashboardTaskInstructions)
             }
@@ -431,6 +484,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                   width={'100%'}
                 >
                   <StyledTextField
+                    disabled={hasTitle === LoanAnswerEnum.no}
                     label={"Signee's first name"}
                     onChange={(e) => {
                       if (formError?.contactForm?.firstName) {
@@ -450,6 +504,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                     value={contactForm.firstName}
                   />
                   <StyledTextField
+                    disabled={hasTitle === LoanAnswerEnum.no}
                     label={"Signee's last name"}
                     onChange={(e) => {
                       if (formError?.contactForm?.lastName) {
@@ -477,6 +532,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                   width={'100%'}
                 >
                   <StyledTextFieldPhone
+                    disabled={hasTitle === LoanAnswerEnum.no}
                     label={"Signee's phone number"}
                     onValueChange={({ value }) => {
                       if (formError?.contactForm?.phoneNumber) {
@@ -496,6 +552,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                     value={contactForm.phoneNumber}
                   />
                   <StyledTextField
+                    disabled={hasTitle === LoanAnswerEnum.no}
                     label={"Signee's email address"}
                     onChange={(e) => {
                       if (formError?.contactForm?.email) {
@@ -527,6 +584,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
           sub
         >
           <StyledButtonGroup
+            disabled={hasTitle === LoanAnswerEnum.no}
             onChange={(e, value) => {
               if (value === null) {
                 return;
@@ -573,6 +631,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                 width={'100%'}
               >
                 <StyledSelectOption
+                  disabled={hasTitle === LoanAnswerEnum.no}
                   onChange={(value) =>
                     setWhoIsManaging(
                       value as string as DashboardTaskLoanClosing,
@@ -588,6 +647,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                   width={'100%'}
                 >
                   <StyledTextField
+                    disabled={hasTitle === LoanAnswerEnum.no}
                     label={'Contact first name'}
                     onChange={(e) => {
                       if (formError?.manageForm?.firstName) {
@@ -607,6 +667,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                     value={manageForm.firstName}
                   />
                   <StyledTextField
+                    disabled={hasTitle === LoanAnswerEnum.no}
                     label={'Contact last name'}
                     onChange={(e) => {
                       if (formError?.manageForm?.lastName) {
@@ -633,6 +694,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                   width={'100%'}
                 >
                   <StyledTextFieldPhone
+                    disabled={hasTitle === LoanAnswerEnum.no}
                     label={'Phone number'}
                     onValueChange={({ value }) => {
                       if (formError?.manageForm?.phoneNumber) {
@@ -649,6 +711,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                     value={manageForm.phoneNumber}
                   />
                   <StyledTextField
+                    disabled={hasTitle === LoanAnswerEnum.no}
                     label={'Email'}
                     onChange={(e) => {
                       if (formError?.manageForm?.email) {
@@ -675,6 +738,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                   width={'100%'}
                 >
                   <StyledTextField
+                    disabled={hasTitle === LoanAnswerEnum.no}
                     label={'Company name'}
                     onChange={(e) => {
                       if (formError?.manageForm?.companyName) {
@@ -694,6 +758,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                     value={manageForm.companyName}
                   />
                   <StyledTextField
+                    disabled={hasTitle === LoanAnswerEnum.no}
                     label={
                       whoIsManaging === DashboardTaskLoanClosing.escrow_company
                         ? 'Escrow number'
@@ -721,6 +786,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
                 <StyledGoogleAutoComplete
                   address={clientManageAddress}
                   addressError={addressError?.manageAddress}
+                  disabled={hasTitle === LoanAnswerEnum.no}
                   label={'Company address'}
                 />
               </StyledFormItem>
@@ -728,6 +794,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
               <Stack mt={{ xs: -3, lg: -5 }} width={'100%'}>
                 <StyledTextFieldNumber
                   decimalScale={0}
+                  disabled={hasTitle === LoanAnswerEnum.no}
                   label={'Escrow number'}
                   onValueChange={({ floatValue }) => {
                     if (formError?.escrowNumber) {
