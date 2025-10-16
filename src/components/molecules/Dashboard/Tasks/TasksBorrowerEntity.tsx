@@ -228,7 +228,7 @@ export const TasksBorrowerEntity = observer<TasksBorrowerEntityProps>(
             value={taskBorrower.attorney}
           />
           <Typography color={'text.secondary'} fontSize={12}>
-            Most people say no
+            Most applicants don’t use Power of Attorney
           </Typography>
         </StyledFormItem>
 
