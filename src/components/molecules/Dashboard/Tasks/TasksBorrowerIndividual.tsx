@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction } from 'react';
-import { Icon, Stack } from '@mui/material';
+import { Icon, Stack, Typography } from '@mui/material';
 import { format, isDate, isValid } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
@@ -224,9 +224,8 @@ export const TasksBorrowerIndividual: FC<TasksBorrowerIndividualProps> =
           </Transitions>
         </StyledFormItem>
 
-        {/* todo: poa*/}
         <StyledFormItem
-          gap={3}
+          gap={1}
           label={
             <Stack alignItems={'center'} flexDirection={'row'} gap={1.5}>
               Signing & Authorization{' '}
@@ -248,7 +247,6 @@ export const TasksBorrowerIndividual: FC<TasksBorrowerIndividualProps> =
           labelSx={{ pb: 3 }}
           maxWidth={600}
           sub
-          tip={'Most people say no'}
           tipSx={{ textAlign: 'left' }}
         >
           <StyledSelect
@@ -263,6 +261,9 @@ export const TasksBorrowerIndividual: FC<TasksBorrowerIndividualProps> =
             sx={{ maxWidth: 600 }}
             value={taskBorrower.attorney}
           />
+          <Typography color={'text.secondary'} fontSize={12}>
+            Most people say no
+          </Typography>
         </StyledFormItem>
       </>
     );
