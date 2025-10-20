@@ -43,7 +43,6 @@ export const MessageItem: FC<Partial<ChatMessageItem>> = observer(
         bgcolor={isSelf ? '#E4ECFF' : '#F1F1F1'}
         borderRadius={2}
         gap={1}
-        ml={isSelf ? 'auto' : 0}
         p={1.5}
         width={'100%'}
       >
@@ -87,7 +86,7 @@ export const MessageItem: FC<Partial<ChatMessageItem>> = observer(
         >
           {content}
         </Typography>
-        {!isSelf && (
+        {!isSelf && docName && (
           <Typography color={'text.secondary'} ml={4.5} variant={'body3'}>
             {docName}
           </Typography>
