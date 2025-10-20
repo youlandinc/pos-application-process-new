@@ -105,7 +105,7 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
             borderTop={'1px solid #D2D6E1'}
             bottom={0}
             flexDirection={'row'}
-            height={48}
+            height={56}
             position={'sticky'}
             zIndex={9}
           >
@@ -124,7 +124,7 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
             <Stack
               bgcolor={'#D2D6E1'}
               borderRadius={2}
-              height={32}
+              height={56}
               width={'1px'}
             />
             <Stack
