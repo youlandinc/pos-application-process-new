@@ -1429,7 +1429,8 @@ export const EstimateRate = observer<FormNodeBaseProps>(
               value={estimateRate.citizenship}
             />
             <StyledTextFieldNumber
-              label={'# of renovations completed'}
+              isTooltip
+              label={'Fix&Flip/Rental projects completed'}
               onValueChange={({ floatValue }) => {
                 estimateRate.changeFieldValue(
                   'renovationsCompleted',
@@ -1437,10 +1438,15 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                 );
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              tooltipTitle={
+                'The total number of properties successfully renovated and sold (Fix & Flip), or renovated and rented out (Rental).'
+              }
               value={estimateRate.renovationsCompleted}
             />
             <StyledTextFieldNumber
-              label={'# of constructions completed'}
+              isTooltip
+              label={'Ground-Up Constructions completed'}
               onValueChange={({ floatValue }) => {
                 estimateRate.changeFieldValue(
                   'constructionsCompleted',
@@ -1448,6 +1454,10 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                 );
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              tooltipSx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              tooltipTitle={
+                'The total number of projects where a new property was built from the ground up and completed.'
+              }
               value={estimateRate.constructionsCompleted}
             />
           </Stack>
