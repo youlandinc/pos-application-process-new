@@ -816,7 +816,7 @@ export const Terms: FC = observer(() => {
               ].includes(data?.productCategory) && (
                 <LoanTermCardRow
                   content={POSFormatDollar(data?.preDrawFee)}
-                  title={'Pre-draw fee'}
+                  title={'Per-draw fee'}
                 />
               )}
               <LoanTermCardRow
