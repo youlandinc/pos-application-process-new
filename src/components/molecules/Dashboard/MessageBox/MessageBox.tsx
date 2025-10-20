@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
 import { AUTO_HIDE_DURATION } from '@/constants';
-import { useSessionStorageState, useSwitch } from '@/hooks';
+import { useBreakpoints, useSessionStorageState, useSwitch } from '@/hooks';
 
 import { StyledButton, StyledTextField } from '@/components/atoms';
 import { MessageItem } from './MessageItem';
@@ -22,6 +22,7 @@ export const MessageBox: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
   const store = useMst();
   const { saasState } = useSessionStorageState('tenantConfig');
+  const breakpoints = useBreakpoints();
 
   const {
     dashboardInfo: {
@@ -191,9 +192,9 @@ export const MessageBox: FC = observer(() => {
           height={48}
           onClick={onOpen}
           position={'fixed'}
-          px={3.5}
+          px={{ xs: 2, md: 3.5 }}
           sx={{
-            bottom: 'clamp(24px,6.4vw,60px)',
+            bottom: { xs: 64, lg: 'clamp(24px,6.4vw,60px)' },
             right: {
               xs: 'clamp(24px,6.4vw,60px)',
               lg: 'calc(50% - 488px)',
@@ -205,9 +206,11 @@ export const MessageBox: FC = observer(() => {
           }}
         >
           <Icon component={ICON_MESSAGE} />
-          <Typography color={'white'} variant={'subtitle2'}>
-            Messages
-          </Typography>
+          {!['xs', 'sm'].includes(breakpoints) && (
+            <Typography color={'white'} variant={'subtitle2'}>
+              Messages
+            </Typography>
+          )}
           {!!unReadCount && (
             <Stack
               alignItems={'center'}

@@ -709,7 +709,7 @@ export const LoanSummary = observer<FormNodeBaseProps>(
               ].includes(data?.productCategory) && (
                 <LoanSummaryCardRow
                   content={POSFormatDollar(data?.preDrawFee)}
-                  title={'Pre-draw fee'}
+                  title={'Per-draw fee'}
                 />
               )}
               <LoanSummaryCardRow

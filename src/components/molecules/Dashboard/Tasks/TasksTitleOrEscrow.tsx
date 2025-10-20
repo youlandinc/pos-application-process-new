@@ -347,7 +347,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
           >
             A closing agent assists with closing and verifies there are no
             outstanding title issues.
-            <Typography component={'span'}>
+            <Typography component={'span'} fontSize={{ xs: 12, lg: 16 }}>
               {saasState?.dbaName} also orders a Title Commitment and a Title
               Report on the property from this agent.
             </Typography>
