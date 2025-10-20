@@ -406,7 +406,7 @@ export const MessageBox: FC = observer(() => {
                     bgcolor: '#BABCBE !important',
                   },
                   '&:hover': {
-                    bgcolor: '#D9B239 !important',
+                    bgcolor: '#3C538F !important',
                   },
                 }}
                 variant={'contained'}
