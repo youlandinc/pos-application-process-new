@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Fade, Stack, Typography } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
@@ -26,7 +26,7 @@ interface ProductListProps {
   totalLoanAmountWithoutDutch?: number;
 }
 
-export const ProductList: FC<ProductListProps> = observer(
+export const ProductList = observer<ProductListProps>(
   ({
     errorList,
     productList,
