@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Icon, InputAdornment, Stack, Typography } from '@mui/material';
+import { isDate, isValid } from 'date-fns';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
@@ -46,7 +47,8 @@ import {
   LoanPurposeEnum,
   PrepaymentPenaltyEnum,
 } from '@/types';
-import { isDate, isValid } from 'date-fns';
+
+import ICON_INFO from './assets/icon-info.svg';
 
 export const LoanInformation = observer<FormNodeBaseProps>(
   ({ nextStep, nextState, backState, backStep }) => {
@@ -1682,6 +1684,16 @@ export const LoanInformation = observer<FormNodeBaseProps>(
               value={loanInformation.citizenship}
             />
             <StyledTextFieldNumber
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Icon
+                      component={ICON_INFO}
+                      sx={{ width: 20, height: 20, cursor: 'pointer' }}
+                    />
+                  </InputAdornment>
+                ),
+              }}
               isTooltip
               label={'Fix&Flip/Rental projects completed'}
               onValueChange={({ floatValue }) => {
@@ -1691,6 +1703,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                 );
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              tooltipMode={'controlled'}
               tooltipSx={{
                 flex: 1,
                 maxWidth: { xs: '100%', lg: 220, xl: 260 },
@@ -1701,8 +1714,18 @@ export const LoanInformation = observer<FormNodeBaseProps>(
               value={loanInformation.renovationsCompleted}
             />
             <StyledTextFieldNumber
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Icon
+                      component={ICON_INFO}
+                      sx={{ width: 20, height: 20, cursor: 'pointer' }}
+                    />
+                  </InputAdornment>
+                ),
+              }}
               isTooltip
-              label={'Ground-Up Constructions completed'}
+              label={'GUC completed'}
               onValueChange={({ floatValue }) => {
                 loanInformation.changeFieldValue(
                   'constructionsCompleted',
@@ -1710,12 +1733,13 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                 );
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              tooltipMode={'controlled'}
               tooltipSx={{
                 flex: 1,
                 maxWidth: { xs: '100%', lg: 220, xl: 260 },
               }}
               tooltipTitle={
-                'The total number of projects where a new property was built from the ground up and completed.'
+                'The total number of projects completed where a new property was built from the ground up and completed.'
               }
               value={loanInformation.constructionsCompleted}
             />

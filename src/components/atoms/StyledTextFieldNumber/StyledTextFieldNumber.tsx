@@ -33,6 +33,7 @@ export interface StyledTextFieldNumberProps {
   tooltipTitle?: ReactNode;
   isTooltip?: boolean;
   InputLabelProps?: TextFieldProps['InputLabelProps'];
+  tooltipMode?: 'click' | 'hover' | 'for-select' | 'controlled' | 'none';
 }
 
 export const StyledTextFieldNumber: FC<StyledTextFieldNumberProps> = ({

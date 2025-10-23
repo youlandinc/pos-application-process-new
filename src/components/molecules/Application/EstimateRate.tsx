@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Skeleton, Stack, Typography } from '@mui/material';
+import {
+  Icon,
+  InputAdornment,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 
@@ -49,6 +55,8 @@ import {
   ProductItemProps,
 } from '@/types';
 import { _fetchProductList } from '@/requests/application';
+
+import ICON_INFO from './assets/icon-info.svg';
 
 export const EstimateRate = observer<FormNodeBaseProps>(
   ({ backStep, backState, nextStep, nextState }) => {
@@ -1486,6 +1494,16 @@ export const EstimateRate = observer<FormNodeBaseProps>(
               value={estimateRate.citizenship}
             />
             <StyledTextFieldNumber
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Icon
+                      component={ICON_INFO}
+                      sx={{ width: 20, height: 20, cursor: 'pointer' }}
+                    />
+                  </InputAdornment>
+                ),
+              }}
               isTooltip
               label={'Fix&Flip/Rental projects completed'}
               onValueChange={({ floatValue }) => {
@@ -1495,6 +1513,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                 );
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              tooltipMode={'controlled'}
               tooltipSx={{
                 flex: 1,
                 maxWidth: { xs: '100%', lg: 220, xl: 260 },
@@ -1505,8 +1524,18 @@ export const EstimateRate = observer<FormNodeBaseProps>(
               value={estimateRate.renovationsCompleted}
             />
             <StyledTextFieldNumber
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Icon
+                      component={ICON_INFO}
+                      sx={{ width: 20, height: 20, cursor: 'pointer' }}
+                    />
+                  </InputAdornment>
+                ),
+              }}
               isTooltip
-              label={'Ground-Up Constructions completed'}
+              label={'GUC completed'}
               onValueChange={({ floatValue }) => {
                 estimateRate.changeFieldValue(
                   'constructionsCompleted',
@@ -1514,12 +1543,13 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                 );
               }}
               sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              tooltipMode={'controlled'}
               tooltipSx={{
                 flex: 1,
                 maxWidth: { xs: '100%', lg: 220, xl: 260 },
               }}
               tooltipTitle={
-                'The total number of projects where a new property was built from the ground up and completed.'
+                'The total number of projects completed where a new property was built from the ground up and completed.'
               }
               value={estimateRate.constructionsCompleted}
             />
