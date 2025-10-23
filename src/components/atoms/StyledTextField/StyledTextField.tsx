@@ -14,6 +14,7 @@ export interface StyledTextFieldProps
   tooltipTitle?: ReactNode;
   tooltipSx?: SxProps;
   isTooltip?: boolean;
+  tooltipMode?: 'click' | 'hover' | 'for-select' | 'controlled' | 'none';
 }
 
 export const StyledTextField: FC<StyledTextFieldProps> = ({
@@ -25,6 +26,7 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
   tooltipSx = { width: '100%' },
   isTooltip = false,
   disabledAutoFill = true,
+  tooltipMode = 'click',
   ...rest
 }) => {
   const breakpoints = useBreakpoints();
@@ -37,6 +39,7 @@ export const StyledTextField: FC<StyledTextFieldProps> = ({
 
   return isTooltip ? (
     <StyledTooltip
+      mode={tooltipMode}
       placement={'top'}
       theme={'main'}
       title={tooltipTitle}

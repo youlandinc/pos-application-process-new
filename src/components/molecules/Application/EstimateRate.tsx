@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Skeleton, Stack, Typography } from '@mui/material';
+import {
+  Icon,
+  InputAdornment,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import { enqueueSnackbar } from 'notistack';
 
@@ -49,6 +55,8 @@ import {
   ProductItemProps,
 } from '@/types';
 import { _fetchProductList } from '@/requests/application';
+
+import ICON_INFO from './assets/icon-info.svg';
 
 export const EstimateRate = observer<FormNodeBaseProps>(
   ({ backStep, backState, nextStep, nextState }) => {
@@ -124,7 +132,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
             options={options}
             selectLabel={'Est. FICO score'}
             selectValue={estimateRate.ficoScore || LoanFicoScoreEnum.yes}
-            sx={{ maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+            sx={{ maxWidth: { xs: '100%', lg: 220 } }}
           />
         );
       },
@@ -424,7 +432,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       );
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={estimateRate.purchasePrice}
                   />
 
@@ -437,7 +445,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       );
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={estimateRate.purchaseLoanAmount}
                   />
                   {!condition && (
@@ -471,7 +479,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                     estimateRate.changeFieldValue('propertyValue', floatValue);
                   }}
                   prefix={'$'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                   value={estimateRate.propertyValue}
                 />
 
@@ -484,7 +492,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                     );
                   }}
                   prefix={'$'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                   value={estimateRate.refinanceLoanAmount}
                 />
 
@@ -507,7 +515,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       ? LoanAnswerEnum.yes
                       : LoanAnswerEnum.no
                   }
-                  sx={{ maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                  sx={{ maxWidth: { xs: '100%', lg: 220 } }}
                   tooltipTitle={
                     'The total amount needed to fully repay your existing loan. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure".'
                   }
@@ -552,7 +560,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={estimateRate.purchasePrice}
                     />
@@ -568,7 +576,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={estimateRate.purchaseLoanAmount}
                     />
@@ -584,7 +592,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       options={OPTIONS_COMMON_YES_OR_NO}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={estimateRate.wholesaler}
                     />
@@ -646,7 +654,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={estimateRate.rehabCost}
                     />
@@ -659,11 +667,11 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       tooltipSx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       tooltipTitle={
                         'Estimated value of the property after rehab'
@@ -691,7 +699,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       );
                     }}
                     options={OPTIONS_COMMON_YES_OR_NO}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={estimateRate.propertyOwned}
                   />
                   {estimateRate.propertyOwned === LoanAnswerEnum.no ? (
@@ -706,7 +714,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={estimateRate.purchasePrice || 0}
                     />
@@ -722,7 +730,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={estimateRate.propertyValue || 0}
                     />
@@ -736,7 +744,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       );
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={estimateRate.refinanceLoanAmount}
                   />
                   <StyledSelectTextField
@@ -758,7 +766,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                         ? LoanAnswerEnum.yes
                         : LoanAnswerEnum.no
                     }
-                    sx={{ maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ maxWidth: { xs: '100%', lg: 220 } }}
                     tooltipTitle={
                       'The total amount needed to fully repay your existing loan. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure".'
                     }
@@ -781,10 +789,10 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       )
                     }
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     tooltipSx={{
                       flex: 1,
-                      maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                      maxWidth: { xs: '100%', lg: 220 },
                     }}
                     tooltipTitle={
                       'How much has been spent towards completed work?'
@@ -797,7 +805,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       estimateRate.changeFieldValue('rehabCost', floatValue);
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={estimateRate.rehabCost}
                   />
                   <StyledTextFieldNumber
@@ -807,10 +815,10 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       estimateRate.changeFieldValue('arv', floatValue);
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     tooltipSx={{
                       flex: 1,
-                      maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                      maxWidth: { xs: '100%', lg: 220 },
                     }}
                     tooltipTitle={'Estimated value of the property after rehab'}
                     value={estimateRate.arv}
@@ -878,7 +886,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={estimateRate.purchasePrice}
                     />
@@ -895,11 +903,11 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       tooltipSx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       tooltipTitle={
                         'The estimated costs needed to build the construction project, including materials, labor, and other expenses'
@@ -918,7 +926,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       options={OPTIONS_COMMON_YES_OR_NO}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={estimateRate.wholesaler}
                     />
@@ -940,12 +948,12 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       suffix={'%'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       thousandSeparator={false}
                       tooltipSx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       tooltipTitle={
                         'Your total loan amount as a % of your purchase price and estimated construction costs.'
@@ -1009,7 +1017,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       );
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={estimateRate.purchasePrice}
                   />
                   <StyledTextFieldNumber
@@ -1022,10 +1030,10 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       )
                     }
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     tooltipSx={{
                       flex: 1,
-                      maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                      maxWidth: { xs: '100%', lg: 220 },
                     }}
                     tooltipTitle={
                       'How much has been spent towards completed work?'
@@ -1052,7 +1060,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                         ? LoanAnswerEnum.yes
                         : LoanAnswerEnum.no
                     }
-                    sx={{ maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ maxWidth: { xs: '100%', lg: 220 } }}
                     tooltipTitle={
                       'The total amount needed to fully repay your existing loan. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure".'
                     }
@@ -1067,11 +1075,11 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       estimateRate.changeFieldValue('ltc', floatValue);
                     }}
                     suffix={'%'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     thousandSeparator={false}
                     tooltipSx={{
                       flex: 1,
-                      maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                      maxWidth: { xs: '100%', lg: 220 },
                     }}
                     tooltipTitle={
                       'Your total loan amount as a % of your purchase price and estimated construction costs.'
@@ -1096,10 +1104,10 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                       );
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     tooltipSx={{
                       flex: 1,
-                      maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                      maxWidth: { xs: '100%', lg: 220 },
                     }}
                     tooltipTitle={
                       'The estimated costs needed to complete the current construction project'
@@ -1442,7 +1450,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
       <StyledFormItem
         label={'Enter loan information'}
         m={'0 auto'}
-        maxWidth={1100}
+        maxWidth={976}
         tip={`${POSFindLabel(
           APPLICATION_LOAN_CATEGORY,
           estimateRate.productCategory,
@@ -1482,10 +1490,20 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                 );
               }}
               options={OPTIONS_COMMON_CITIZEN_TYPE}
-              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
               value={estimateRate.citizenship}
             />
             <StyledTextFieldNumber
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Icon
+                      component={ICON_INFO}
+                      sx={{ width: 20, height: 20, cursor: 'pointer' }}
+                    />
+                  </InputAdornment>
+                ),
+              }}
               isTooltip
               label={'Fix&Flip/Rental projects completed'}
               onValueChange={({ floatValue }) => {
@@ -1494,10 +1512,11 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                   floatValue,
                 );
               }}
-              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              tooltipMode={'controlled'}
               tooltipSx={{
                 flex: 1,
-                maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                maxWidth: { xs: '100%', lg: 220 },
               }}
               tooltipTitle={
                 'The total number of properties successfully renovated and sold (Fix & Flip), or renovated and rented out (Rental).'
@@ -1505,21 +1524,32 @@ export const EstimateRate = observer<FormNodeBaseProps>(
               value={estimateRate.renovationsCompleted}
             />
             <StyledTextFieldNumber
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Icon
+                      component={ICON_INFO}
+                      sx={{ width: 20, height: 20, cursor: 'pointer' }}
+                    />
+                  </InputAdornment>
+                ),
+              }}
               isTooltip
-              label={'Ground-Up Constructions completed'}
+              label={'GUC completed'}
               onValueChange={({ floatValue }) => {
                 estimateRate.changeFieldValue(
                   'constructionsCompleted',
                   floatValue,
                 );
               }}
-              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
+              tooltipMode={'controlled'}
               tooltipSx={{
                 flex: 1,
-                maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                maxWidth: { xs: '100%', lg: 220 },
               }}
               tooltipTitle={
-                'The total number of projects where a new property was built from the ground up and completed.'
+                'The total number of projects completed where a new property was built from the ground up and completed.'
               }
               value={estimateRate.constructionsCompleted}
             />
@@ -1540,7 +1570,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                 );
               }}
               options={OPTIONS_COMMON_STATE}
-              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
               value={estimateRate.state}
             />
             {renderFico}
@@ -1564,7 +1594,7 @@ export const EstimateRate = observer<FormNodeBaseProps>(
                   ? LoanAnswerEnum.yes
                   : LoanAnswerEnum.no
               }
-              sx={{ maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              sx={{ maxWidth: { xs: '100%', lg: 220 } }}
               tooltipTitle={
                 'Liquidity means the cash or readily available funds you have, like savings or liquid investments. If unsure, use the dropdown menu on the right and select "Not sure".'
               }
