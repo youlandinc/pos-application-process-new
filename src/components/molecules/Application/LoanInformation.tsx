@@ -220,7 +220,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
             options={options}
             selectLabel={'Est. FICO score'}
             selectValue={loanInformation.ficoScore || LoanAnswerEnum.yes}
-            sx={{ maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+            sx={{ maxWidth: { xs: '100%', lg: 220 } }}
           />
         );
       },
@@ -410,7 +410,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       );
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={loanInformation.purchasePrice}
                   />
 
@@ -423,7 +423,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       );
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={loanInformation.purchaseLoanAmount}
                   />
                   {!condition && (
@@ -460,7 +460,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                     );
                   }}
                   prefix={'$'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                   value={loanInformation.propertyValue}
                 />
 
@@ -473,7 +473,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                     );
                   }}
                   prefix={'$'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                   value={loanInformation.refinanceLoanAmount}
                 />
 
@@ -496,7 +496,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       ? LoanAnswerEnum.yes
                       : LoanAnswerEnum.no
                   }
-                  sx={{ maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                  sx={{ maxWidth: { xs: '100%', lg: 220 } }}
                   tooltipTitle={
                     'The total amount needed to fully repay your existing loan. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure".'
                   }
@@ -541,7 +541,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={loanInformation.purchasePrice}
                     />
@@ -557,7 +557,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={loanInformation.purchaseLoanAmount}
                     />
@@ -573,7 +573,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       options={OPTIONS_COMMON_YES_OR_NO}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={LoanAnswerEnum.no}
                     />
@@ -635,7 +635,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={loanInformation.rehabCost}
                     />
@@ -648,11 +648,11 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       tooltipSx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       tooltipTitle={
                         'Estimated value of the property after rehab'
@@ -680,7 +680,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       );
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={loanInformation.propertyValue}
                   />
 
@@ -693,7 +693,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       );
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={loanInformation.refinanceLoanAmount}
                   />
 
@@ -719,7 +719,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                         ? LoanAnswerEnum.yes
                         : LoanAnswerEnum.no
                     }
-                    sx={{ maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ maxWidth: { xs: '100%', lg: 220 } }}
                     tooltipTitle={
                       'The total amount needed to fully repay your existing loan. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure".'
                     }
@@ -772,7 +772,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       loanInformation.changeFieldValue('rehabCost', floatValue);
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={loanInformation.rehabCost}
                   />
                   <StyledTextFieldNumber
@@ -782,10 +782,10 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       loanInformation.changeFieldValue('arv', floatValue);
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     tooltipSx={{
                       flex: 1,
-                      maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                      maxWidth: { xs: '100%', lg: 220 },
                     }}
                     tooltipTitle={'Estimated value of the property after rehab'}
                     value={loanInformation.arv}
@@ -814,7 +814,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={loanInformation.purchasePrice}
                     />
@@ -831,11 +831,11 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       prefix={'$'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       tooltipSx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       tooltipTitle={
                         'The estimated costs needed to build the construction project, including materials, labor, and other expenses'
@@ -854,7 +854,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       options={OPTIONS_COMMON_YES_OR_NO}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       value={LoanAnswerEnum.no}
                     />
@@ -876,12 +876,12 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       suffix={'%'}
                       sx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       thousandSeparator={false}
                       tooltipSx={{
                         flex: 1,
-                        maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                        maxWidth: { xs: '100%', lg: 220 },
                       }}
                       tooltipTitle={
                         'Your total loan amount as a % of your purchase price and estimated construction costs.'
@@ -945,7 +945,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       );
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={loanInformation.purchasePrice}
                   />
 
@@ -959,10 +959,10 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       )
                     }
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     tooltipSx={{
                       flex: 1,
-                      maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                      maxWidth: { xs: '100%', lg: 220 },
                     }}
                     tooltipTitle={
                       'How much has been spent towards completed work?'
@@ -978,11 +978,11 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       loanInformation.changeFieldValue('ltc', floatValue);
                     }}
                     suffix={'%'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     thousandSeparator={false}
                     tooltipSx={{
                       flex: 1,
-                      maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                      maxWidth: { xs: '100%', lg: 220 },
                     }}
                     tooltipTitle={
                       'Your total loan amount as a % of your purchase price and estimated construction costs.'
@@ -1007,10 +1007,10 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       );
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     tooltipSx={{
                       flex: 1,
-                      maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                      maxWidth: { xs: '100%', lg: 220 },
                     }}
                     tooltipTitle={
                       'The estimated costs needed to complete the current construction project'
@@ -1074,7 +1074,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       );
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={loanInformation.purchasePrice}
                   />
 
@@ -1087,7 +1087,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       );
                     }}
                     prefix={'$'}
-                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                     value={loanInformation.purchaseLoanAmount}
                   />
 
@@ -1113,7 +1113,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                     options={prepaymentPenaltyOptions}
                     selectLabel={'Prepayment penalty'}
                     selectValue={prepaymentSelect}
-                    sx={{ maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                    sx={{ maxWidth: { xs: '100%', lg: 220 } }}
                     tooltipTitle={
                       <Stack gap={0.5}>
                         <Typography fontSize={12}>
@@ -1157,7 +1157,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                     )
                   }
                   prefix={'$'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                   value={loanInformation.propertyValue}
                 />
                 <StyledTextFieldNumber
@@ -1169,7 +1169,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                     )
                   }
                   prefix={'$'}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                   value={loanInformation.refinanceLoanAmount}
                 />
                 <StyledSelectTextField
@@ -1191,7 +1191,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                       ? LoanAnswerEnum.yes
                       : LoanAnswerEnum.no
                   }
-                  sx={{ maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                  sx={{ maxWidth: { xs: '100%', lg: 220 } }}
                   tooltipTitle={
                     'The total amount needed to fully repay your existing loan. If not sure, please open the dropdown menu on the right side of the textfield and select "Not sure".'
                   }
@@ -1219,7 +1219,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                   options={prepaymentPenaltyOptions}
                   selectLabel={'Prepayment penalty'}
                   selectValue={prepaymentSelect}
-                  sx={{ maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                  sx={{ maxWidth: { xs: '100%', lg: 220 } }}
                   tooltipTitle={
                     <Stack gap={0.5}>
                       <Typography fontSize={12}>
@@ -1462,7 +1462,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
               loanInformation.changeFieldValue('monthlyIncome', floatValue)
             }
             prefix={'$'}
-            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
             value={loanInformation.monthlyIncome}
           />
           <StyledTextFieldNumber
@@ -1472,7 +1472,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
               loanInformation.changeFieldValue('operatingExpense', floatValue)
             }
             prefix={'$'}
-            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
             value={loanInformation.operatingExpense}
           />
           <StyledTextFieldNumber
@@ -1482,7 +1482,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
               loanInformation.changeFieldValue('propertyInsurance', floatValue)
             }
             prefix={'$'}
-            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
             value={loanInformation.propertyInsurance}
           />
           <StyledTextFieldNumber
@@ -1492,7 +1492,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
               loanInformation.changeFieldValue('propertyTaxes', floatValue)
             }
             prefix={'$'}
-            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+            sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
             value={loanInformation.propertyTaxes}
           />
         </Stack>
@@ -1518,7 +1518,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
           }
           percentage={true}
           suffix={'%'}
-          sx={{ width: { xs: '100%', lg: 220, xl: 260 }, ml: -0.5 }}
+          sx={{ width: { xs: '100%', lg: 220 }, ml: -0.5 }}
           thousandSeparator={false}
           value={loanInformation.vacancyRate}
         />
@@ -1537,7 +1537,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
             loanInformation.changeFieldValue('monthlyHoaFee', floatValue)
           }
           prefix={' $'}
-          sx={{ width: { xs: '100%', lg: 220, xl: 260 }, ml: -0.5 }}
+          sx={{ width: { xs: '100%', lg: 220 }, ml: -0.5 }}
           thousandSeparator={false}
           value={loanInformation.monthlyHoaFee}
         />
@@ -1656,7 +1656,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
       <StyledFormItem
         label={'Enter loan information'}
         m={'0 auto'}
-        maxWidth={1100}
+        maxWidth={976}
         tip={renderTip}
         tipSx={{
           textAlign: 'left',
@@ -1680,7 +1680,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                 );
               }}
               options={OPTIONS_COMMON_CITIZEN_TYPE}
-              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
               value={loanInformation.citizenship}
             />
             <StyledTextFieldNumber
@@ -1702,11 +1702,11 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                   floatValue,
                 );
               }}
-              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
               tooltipMode={'controlled'}
               tooltipSx={{
                 flex: 1,
-                maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                maxWidth: { xs: '100%', lg: 220 },
               }}
               tooltipTitle={
                 'The total number of properties successfully renovated and sold (Fix & Flip), or renovated and rented out (Rental).'
@@ -1732,11 +1732,11 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                   floatValue,
                 );
               }}
-              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
               tooltipMode={'controlled'}
               tooltipSx={{
                 flex: 1,
-                maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                maxWidth: { xs: '100%', lg: 220 },
               }}
               tooltipTitle={
                 'The total number of projects completed where a new property was built from the ground up and completed.'
@@ -1758,10 +1758,10 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                         : '';
                     loanInformation.changeFieldValue('acquisitionDate', value);
                   }}
-                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+                  sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
                   tooltipSx={{
                     flex: 1,
-                    maxWidth: { xs: '100%', lg: 220, xl: 260 },
+                    maxWidth: { xs: '100%', lg: 220 },
                   }}
                   tooltipTitle={
                     'YouLand requires a minimum of 90 days of ownership before the signing date for a Cash-Out Refinance. However, this requirement does not apply to properties owned free-and-clear or for Rate-Term Refinances. To confirm eligibility, YouLand will verify the acquisition date, defined as the closing date of the subject property.'
@@ -1790,7 +1790,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                 );
               }}
               options={OPTIONS_COMMON_STATE}
-              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              sx={{ flex: 1, maxWidth: { xs: '100%', lg: 220 } }}
               value={loanInformation.state}
             />
             {renderFico}
@@ -1814,7 +1814,7 @@ export const LoanInformation = observer<FormNodeBaseProps>(
                   ? LoanAnswerEnum.yes
                   : LoanAnswerEnum.no
               }
-              sx={{ maxWidth: { xs: '100%', lg: 220, xl: 260 } }}
+              sx={{ maxWidth: { xs: '100%', lg: 220 } }}
               tooltipTitle={
                 'Liquidity means the cash or readily available funds you have, like savings or liquid investments. If unsure, use the dropdown menu on the right and select "Not sure".'
               }
