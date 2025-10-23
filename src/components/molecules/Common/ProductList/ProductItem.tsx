@@ -198,25 +198,25 @@ export const ProductItem = observer<ProductItemProps>(
         }}
         width={{ xs: '100%', md: 'calc(50% - 12px)' }}
       >
-        {lowest && (
-          <Stack
-            alignItems={'center'}
-            bgcolor={'primary.lighter'}
-            color={'primary.main'}
-            height={24}
-            justifyContent={'center'}
-            sx={{
-              position: 'absolute',
-              zIndex: 10,
-              top: 0,
-              left: 0,
-              fontSize: 12,
-            }}
-            width={'100%'}
-          >
-            Lowest rate
-          </Stack>
-        )}
+        {/*{lowest && (*/}
+        {/*  <Stack*/}
+        {/*    alignItems={'center'}*/}
+        {/*    bgcolor={'primary.lighter'}*/}
+        {/*    color={'primary.main'}*/}
+        {/*    height={24}*/}
+        {/*    justifyContent={'center'}*/}
+        {/*    sx={{*/}
+        {/*      position: 'absolute',*/}
+        {/*      zIndex: 10,*/}
+        {/*      top: 0,*/}
+        {/*      left: 0,*/}
+        {/*      fontSize: 12,*/}
+        {/*    }}*/}
+        {/*    width={'100%'}*/}
+        {/*  >*/}
+        {/*    Lowest rate*/}
+        {/*  </Stack>*/}
+        {/*)}*/}
 
         <Stack
           alignItems={'center'}
