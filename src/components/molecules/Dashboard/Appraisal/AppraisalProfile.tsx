@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -39,10 +39,11 @@ export interface AppraisalProfileProps {
   nextStep?: (postData: AppraisalProfileData) => Promise<void>;
   nextState: boolean;
   profileData: AppraisalProfileData;
+  isAppraisalNotRequired: boolean;
 }
 
-export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
-  ({ nextStep, nextState, profileData }) => {
+export const AppraisalProfile = observer<AppraisalProfileProps>(
+  ({ nextStep, nextState, profileData, isAppraisalNotRequired }) => {
     const { userType, dashboardInfo } = useMst();
     const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
@@ -131,7 +132,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
         instructions,
       };
       await nextStep?.(postData);
-      if (haveAppraisal) {
+      if (haveAppraisal || isAppraisalNotRequired) {
         await router.push({
           pathname: '/dashboard/overview',
           query: { loanId: router.query.loanId },
@@ -281,7 +282,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
                             component={'span'}
                             fontWeight={600}
                             onClick={async () => {
-                              router.push({
+                              await router.push({
                                 pathname: '/account',
                                 query: { tab: 1 },
                               });
@@ -395,7 +396,7 @@ export const AppraisalProfile: FC<AppraisalProfileProps> = observer(
           onClick={handleSave}
           sx={{ maxWidth: 276, width: '100%' }}
         >
-          {haveAppraisal ? 'Save' : 'Next'}
+          {haveAppraisal || isAppraisalNotRequired ? 'Save' : 'Next'}
           {/*Save*/}
         </StyledButton>
       </Stack>
