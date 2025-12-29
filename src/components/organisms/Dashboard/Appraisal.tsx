@@ -35,12 +35,40 @@ import {
   _updateAppraisalData,
 } from '@/requests/dashboard';
 
+const APPRAISAL_NOT_REQUIRED_STATES: string[] = ['CA', 'FL'];
+
+const appraisalNoPaymentLinkContent = (
+  <Stack fontSize={14} fontWeight={600}>
+    Why don’t I see a payment link for this appraisal?
+    <Typography variant="body2">
+      For CA and FL loans, our team will help coordinate the appraisal by
+      working directly with a third-party appraisal company. We’ll assist with
+      placing the order and follow up with you if any additional steps or
+      payment are needed.
+    </Typography>
+  </Stack>
+);
+
+const appraisalPaymentLinkContent = (
+  <Stack fontSize={14} fontWeight={600}>
+    What is the payment link?
+    <Typography variant="body2">
+      As a broker, you may send borrowers a white-labeled payment portal to
+      accept the appraisal payment.
+    </Typography>
+  </Stack>
+);
+
 export const Appraisal: FC = observer(() => {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const { userType, dashboardInfo } = useMst();
   const breakpoint = useBreakpoints();
+
+  const isAppraisalNotRequired = APPRAISAL_NOT_REQUIRED_STATES.includes(
+    dashboardInfo.propertyAddress.state,
+  );
 
   const [formState, setFormState] = useState<
     'profile' | 'payment' | 'afterPayment' | 'sendLink'
@@ -87,7 +115,11 @@ export const Appraisal: FC = observer(() => {
       setProfileLoading(true);
       try {
         await _updateAppraisalData(params);
-        if (!params.haveAppraisal && !params.isNeedToSend) {
+        if (
+          !params.haveAppraisal &&
+          !params.isNeedToSend &&
+          !isAppraisalNotRequired
+        ) {
           const { data } = await _fetchAppraisalPaymentData({
             loanId: router.query.loanId as string,
           });
@@ -96,6 +128,7 @@ export const Appraisal: FC = observer(() => {
           return;
         }
         !params.haveAppraisal &&
+          !isAppraisalNotRequired &&
           setFormState(!params.isNeedToSend ? 'payment' : 'sendLink');
       } catch (err) {
         const { header, message, variant } = err as HttpError;
@@ -110,7 +143,7 @@ export const Appraisal: FC = observer(() => {
         setBackToProfileLoading(false);
       }
     },
-    [enqueueSnackbar, router.query.loanId],
+    [enqueueSnackbar, isAppraisalNotRequired, router.query.loanId],
   );
 
   const handlePayment = useCallback(async () => {
@@ -233,6 +266,7 @@ export const Appraisal: FC = observer(() => {
               </Typography>
 
               <AppraisalProfile
+                isAppraisalNotRequired={isAppraisalNotRequired}
                 nextState={profileLoading}
                 nextStep={async (postData) => {
                   await updateAppraisalProfileAndGetPaymentDetails(postData);
@@ -268,15 +302,13 @@ export const Appraisal: FC = observer(() => {
                   </Typography>
                 </Stack>
 
-                {userType === UserType.BROKER && (
-                  <Stack fontSize={14} fontWeight={600}>
-                    What is the payment link?
-                    <Typography variant={'body2'}>
-                      As a broker, you may send borrowers a white-labeled
-                      payment portal to accept the appraisal payment.
-                    </Typography>
-                  </Stack>
-                )}
+                {userType === UserType.BROKER
+                  ? isAppraisalNotRequired
+                    ? appraisalNoPaymentLinkContent
+                    : appraisalPaymentLinkContent
+                  : null}
+
+                {isAppraisalNotRequired && appraisalNoPaymentLinkContent}
 
                 <Stack fontSize={14} fontWeight={600}>
                   Is it necessary to fill out property access instructions?
@@ -350,6 +382,7 @@ export const Appraisal: FC = observer(() => {
     }
   }, [
     formState,
+    isAppraisalNotRequired,
     profileLoading,
     profileData,
     breakpoint,

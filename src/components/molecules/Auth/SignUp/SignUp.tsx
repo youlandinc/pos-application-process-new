@@ -1,6 +1,6 @@
 import {
   ChangeEventHandler,
-  FC,
+  //FC,
   FormEventHandler,
   useCallback,
   useMemo,
@@ -19,14 +19,14 @@ import {
   AUTO_HIDE_DURATION,
   LOGIN_APP_KEY,
   OPTIONS_SIGN_UP_ROLE,
-  OPTIONS_SIGN_UP_SURVEY,
+  //OPTIONS_SIGN_UP_SURVEY,
   SignUpSchema,
   userpool,
 } from '@/constants';
 import { useSessionStorageState, useSwitch } from '@/hooks';
 
 import {
-  _submitSurvey,
+  //_submitSurvey,
   _userSendCode,
   _userSingIn,
   _userSingUp,
@@ -40,7 +40,7 @@ import {
   BizType,
   HttpError,
   LoginType,
-  SurveySourceEnum,
+  //SurveySourceEnum,
   UserType,
 } from '@/types';
 import {
@@ -78,8 +78,8 @@ export const SignUp = observer<SignUpProps>(
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
-    const [surveySource, setSurveySource] = useState<SurveySourceEnum>();
-    const [surveyDetail, setSurveyDetail] = useState<string>('');
+    //const [surveySource, setSurveySource] = useState<SurveySourceEnum>();
+    //const [surveyDetail, setSurveyDetail] = useState<string>('');
 
     //const conditions = [
     //  SurveySourceEnum.social_media,
