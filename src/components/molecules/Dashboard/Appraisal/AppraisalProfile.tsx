@@ -243,7 +243,7 @@ export const AppraisalProfile = observer<AppraisalProfileProps>(
                 />
               </StyledFormItem>
 
-              {userType !== UserType.CUSTOMER && (
+              {userType !== UserType.CUSTOMER && !isAppraisalNotRequired && (
                 <StyledFormItem
                   gap={3}
                   label={'Would you like to send the borrower a payment link?'}
