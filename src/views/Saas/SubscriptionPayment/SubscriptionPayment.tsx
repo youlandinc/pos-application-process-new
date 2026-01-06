@@ -489,8 +489,8 @@ export const SubscriptionPayment = () => {
                     )}
                     <Stack gap={3}>
                       <Typography variant={'body3'} width={'100%'}>
-                        <strong>Important:</strong> By proceeding, you purchase
-                        a non-refundable subscription for the dates above.
+                        <strong>Important:</strong> This payment is for a
+                        non-refundable one-time set up fee.
                       </Typography>
                       <StyledButton
                         disabled={nextDisabled || state.loading}
