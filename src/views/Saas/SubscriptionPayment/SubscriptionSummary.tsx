@@ -18,14 +18,14 @@ export const SubscriptionSummary: FC<{
             fontSize={{ xs: 12, md: 14 }}
             variant={'body2'}
           >
-            Subscription plan: Standard
+            Charge type: One-time set up fee
           </Typography>
           <Typography
             color={'text.primary'}
             fontSize={{ xs: 12, md: 14 }}
             variant={'body2'}
           >
-            Billing period: August 1 - August 31, 2025
+            Invoice date: January 6, 2026
           </Typography>
         </Stack>
         <Stack
@@ -36,10 +36,8 @@ export const SubscriptionSummary: FC<{
           mt={{ xs: 1.5, md: 3 }}
           pb={1}
         >
-          <Typography variant={'subtitle2'}>
-            Standard Plan for August
-          </Typography>
-          <Typography variant={'body2'}>{POSFormatDollar(500)}</Typography>
+          <Typography variant={'subtitle2'}>Set up fee (one-time)</Typography>
+          <Typography variant={'body2'}>{POSFormatDollar(599)}</Typography>
         </Stack>
 
         <Typography
@@ -49,7 +47,7 @@ export const SubscriptionSummary: FC<{
           textAlign={'right'}
           variant={'h6'}
         >
-          Total: {POSFormatDollar(500)}
+          Total: {POSFormatDollar(599)}
         </Typography>
       </Stack>
 
