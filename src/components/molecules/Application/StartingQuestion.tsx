@@ -79,14 +79,14 @@ export const StartingQuestion = observer<
     return APPLICATION_PROPERTY_TYPE;
   }, [startingQuestion.productCategory]);
 
-  const categoryOptions = useMemo(() => {
-    if (saasState?.tenantId !== YOULAND_ID) {
-      return APPLICATION_LOAN_CATEGORY.filter(
-        (item) => item.key !== LoanProductCategoryEnum.land,
-      );
-    }
-    return APPLICATION_LOAN_CATEGORY;
-  }, [saasState?.tenantId]);
+  //const categoryOptions = useMemo(() => {
+  //  if (saasState?.tenantId !== YOULAND_ID) {
+  //    return APPLICATION_LOAN_CATEGORY.filter(
+  //      (item) => item.key !== LoanProductCategoryEnum.land,
+  //    );
+  //  }
+  //  return APPLICATION_LOAN_CATEGORY;
+  //}, [saasState?.tenantId]);
 
   return (
     <Stack gap={{ xs: 6, lg: 10 }} m={'0 auto'} maxWidth={600} width={'100%'}>
@@ -123,7 +123,7 @@ export const StartingQuestion = observer<
               );
             }
           }}
-          options={categoryOptions}
+          options={APPLICATION_LOAN_CATEGORY}
           value={startingQuestion.productCategory}
         />
       </StyledFormItem>
