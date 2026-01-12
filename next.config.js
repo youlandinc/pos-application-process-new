@@ -3,6 +3,7 @@
 module.exports = {
   env: {},
   reactStrictMode: false,
+  transpilePackages: ['@mui/x-date-pickers', 'date-fns'],
   trailingSlash: true,
   webpack(config) {
     config.module.rules.push({

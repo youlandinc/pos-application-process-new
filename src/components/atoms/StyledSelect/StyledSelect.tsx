@@ -6,9 +6,9 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectProps,
   SxProps,
 } from '@mui/material';
+import { BaseSelectProps } from '@mui/material/Select';
 
 import { useBreakpoints, useSessionStorageState } from '@/hooks';
 
@@ -16,7 +16,7 @@ import { StyledSelectStyles } from './index';
 
 import { StyledTooltip, Transitions } from '@/components/atoms';
 
-export interface StyledSelectProps extends SelectProps {
+export interface StyledSelectProps extends BaseSelectProps {
   validate?: undefined | string[];
   options: Option[];
   sxHelperText?: SxProps;
