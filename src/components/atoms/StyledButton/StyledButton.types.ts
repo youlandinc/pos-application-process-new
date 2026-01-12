@@ -5,8 +5,6 @@ export interface StyledButtonPropsWithDisabled extends ButtonProps {
   loadingText?: string;
   isIconButton?: boolean;
   disabled?: boolean;
-  component?: string;
-  ref?: any;
   loadingSize?: number;
 }
 

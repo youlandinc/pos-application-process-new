@@ -177,7 +177,7 @@ export default function MyApp(props: MyAppProps) {
       return (
         <ThemeProvider theme={saasTheme}>
           <CssBaseline />
-          <LocalizationProvider apterLocale={en} dateAdapter={AdapterDateFns}>
+          <LocalizationProvider adapterLocale={en} dateAdapter={AdapterDateFns}>
             <SnackbarProvider
               anchorOrigin={{
                 vertical: 'top',
@@ -207,7 +207,7 @@ export default function MyApp(props: MyAppProps) {
       return (
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <LocalizationProvider apterLocale={en} dateAdapter={AdapterDateFns}>
+          <LocalizationProvider adapterLocale={en} dateAdapter={AdapterDateFns}>
             <SnackbarProvider
               anchorOrigin={{
                 vertical: 'top',

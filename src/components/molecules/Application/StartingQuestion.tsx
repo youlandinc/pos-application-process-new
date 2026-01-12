@@ -1,9 +1,10 @@
-import { useSessionStorageState } from '@/hooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Slider, Stack } from '@mui/material';
 
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
+
+//import { useSessionStorageState } from '@/hooks';
 
 import {
   APPLICATION_LAND_LOAN_PURPOSE,
@@ -14,7 +15,7 @@ import {
   APPLICATION_PROPERTY_UNIT,
   MULTIFAMILY_HASH,
   OPTIONS_COMMON_MARKS,
-  YOULAND_ID,
+  //YOULAND_ID,
 } from '@/constants';
 
 import {
@@ -38,7 +39,7 @@ export const StartingQuestion = observer<
   const {
     applicationForm: { startingQuestion },
   } = useMst();
-  const { saasState } = useSessionStorageState('tenantConfig');
+  //const { saasState } = useSessionStorageState('tenantConfig');
 
   const [propertiesNum, setPropertiesNum] = useState(5);
 

@@ -4,6 +4,7 @@ import { useSnackbar } from 'notistack';
 import { format, isDate, isValid } from 'date-fns';
 
 import { AUTO_HIDE_DURATION, EmailSchema, userpool } from '@/constants';
+import { POSParseToDate } from '@/utils';
 
 import validate from '@/constants/validate';
 
@@ -219,7 +220,7 @@ export const SettingsChangeProfile: FC<SettingsChangeProfileProps> = ({
               },
             });
           }}
-          value={store.birthDay}
+          value={POSParseToDate(store.birthDay)}
         />
       </Stack>
 

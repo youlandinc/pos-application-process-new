@@ -1,5 +1,5 @@
 import { POSTypeOf } from './TypeOf';
-import { format } from 'date-fns';
+import { format, isValid, parseISO } from 'date-fns';
 
 export const POSFormatDollar = (
   amount: number | undefined | string | null,
@@ -55,6 +55,20 @@ export const POSFormatDate = (
     return '';
   }
   return format(new Date(date), timeFormat, options);
+};
+
+export const POSParseToDate = (value: unknown): Date | null => {
+  if (!value) {
+    return null;
+  }
+  if (value instanceof Date) {
+    return isValid(value) ? value : null;
+  }
+  if (typeof value === 'string') {
+    const parsed = parseISO(value);
+    return isValid(parsed) ? parsed : null;
+  }
+  return null;
 };
 
 export const POSFormatUSPhoneToText = (entry = '') => {

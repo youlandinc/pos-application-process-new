@@ -48,7 +48,7 @@ import {
   LoanAnswerEnum,
 } from '@/types';
 
-import { POSGetParamsFromUrl, POSNotUndefined } from '@/utils';
+import { POSGetParamsFromUrl, POSNotUndefined, POSParseToDate } from '@/utils';
 
 const initialValues: {
   firstName: string;
@@ -439,7 +439,7 @@ export const TasksTitleOrEscrow: FC = observer(() => {
               setContactForm({ ...contactForm, contractDate: date });
             }}
             validate={formError?.contactForm?.contractDate}
-            value={contactForm.contractDate}
+            value={POSParseToDate(contactForm.contractDate)}
           />
           <StyledGoogleAutoComplete
             address={clientContactAddress}
