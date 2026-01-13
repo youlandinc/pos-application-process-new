@@ -11,6 +11,8 @@ import { AUTO_HIDE_DURATION } from '@/constants';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
+import { useSessionStorageState } from '@/hooks';
+
 import {
   StyledLoading,
   StyledTab,
@@ -34,6 +36,7 @@ export const Documents: FC = observer(() => {
 
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [tabData, setTabData] = useState<
     { label: string | ReactNode; content: ReactNode }[]
@@ -212,7 +215,8 @@ export const Documents: FC = observer(() => {
             encryption, secure SSL connections, and regular security audits.
           </Typography>
           {/*todo : pre-approval*/}
-          {productCategory !== LoanProductCategoryEnum.dscr_rental &&
+          {saasState?.posSettings?.letterSignee?.preApprovalDisplay &&
+            productCategory !== LoanProductCategoryEnum.dscr_rental &&
             propertyType !== LoanPropertyTypeEnum.multifamily && (
               <Typography
                 color={'text.secondary'}
