@@ -171,9 +171,6 @@ export function MaskedDateField(props: any) {
     <TextField
       error={!!validate?.length}
       focused={pickerContext.open}
-      FormHelperTextProps={{
-        component: 'div',
-      }}
       helperText={
         <Transitions>
           {validate?.length
@@ -202,21 +199,28 @@ export function MaskedDateField(props: any) {
       sx={pickerContext.rootSx as any}
       {...rifmProps}
       {...forwardedProps}
-      InputLabelProps={{
-        shrink: true,
-      }}
-      InputProps={{
-        ref: pickerContext.triggerRef,
-        endAdornment: (
-          <InputAdornment position="end">
-            <IconButton
-              edge="end"
-              onClick={() => pickerContext.setOpen((prev: boolean) => !prev)}
-            >
-              <CalendarIcon />
-            </IconButton>
-          </InputAdornment>
-        ),
+      slotProps={{
+        input: {
+          ref: pickerContext.triggerRef,
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                edge="end"
+                onClick={() => pickerContext.setOpen((prev: boolean) => !prev)}
+              >
+                <CalendarIcon />
+              </IconButton>
+            </InputAdornment>
+          ),
+        },
+
+        inputLabel: {
+          shrink: true,
+        },
+
+        formHelperText: {
+          component: 'div',
+        },
       }}
     />
   );

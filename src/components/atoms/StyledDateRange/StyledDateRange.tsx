@@ -143,35 +143,37 @@ export const StyledDateRange: FC<StyledDateRangeProps> = ({
     return (
       <>
         <TextField
-          InputProps={{
-            readOnly: true,
-            endAdornment: (
-              <InputAdornment position="end">
-                {dateRange[1] && (
-                  <IconButton
-                    disableRipple
-                    edge="end"
-                    size="small"
-                    tabIndex={-1}
-                  >
-                    <Close />
-                  </IconButton>
-                )}
-                <IconButton
-                  disableRipple
-                  edge="end"
-                  onClick={props.onClick}
-                  tabIndex={-1}
-                >
-                  <DateRange />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
           sx={StyledTextFieldStyles}
           variant="outlined"
           {...props}
           ref={ref}
+          slotProps={{
+            input: {
+              readOnly: true,
+              endAdornment: (
+                <InputAdornment position="end">
+                  {dateRange[1] && (
+                    <IconButton
+                      disableRipple
+                      edge="end"
+                      size="small"
+                      tabIndex={-1}
+                    >
+                      <Close />
+                    </IconButton>
+                  )}
+                  <IconButton
+                    disableRipple
+                    edge="end"
+                    onClick={props.onClick}
+                    tabIndex={-1}
+                  >
+                    <DateRange />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
+          }}
         />
       </>
     );
