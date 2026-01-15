@@ -1,4 +1,4 @@
-import { StyledButton } from '@/components/atoms';
+import { StyledBrand, StyledButton } from '@/components/atoms';
 import { POSHeader } from '@/components/molecules';
 import { LayoutSceneTypeEnum } from '@/types';
 import { Stack, Typography } from '@mui/material';
@@ -10,7 +10,7 @@ export default function Custom404() {
 
   return (
     <>
-      <Stack height={'100vh'} minHeight={667} width={'100vw'}>
+      <Stack height={'calc(100vh - 36px)'} minHeight={667} width={'100vw'}>
         <POSHeader scene={LayoutSceneTypeEnum.not_found} />
         <Stack
           alignItems={'center'}
@@ -54,6 +54,7 @@ export default function Custom404() {
           </StyledButton>
         </Stack>
       </Stack>
+      <StyledBrand />
     </>
   );
 }

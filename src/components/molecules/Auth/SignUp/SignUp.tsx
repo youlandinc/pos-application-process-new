@@ -45,6 +45,7 @@ import {
 } from '@/types';
 import {
   StyledBoxWrap,
+  StyledBrand,
   StyledButton,
   StyledDialog,
   StyledHeaderLogo,
@@ -620,7 +621,7 @@ export const SignUp = observer<SignUpProps>(
             <StyledBoxWrap
               sx={{
                 ...POSFlex('center', 'center', 'column'),
-                minHeight: 'calc(100vh - 92px)',
+                minHeight: 'calc(100vh - 128px)',
               }}
             >
               <Box sx={SignUpStyles.singUp}>
@@ -706,6 +707,7 @@ export const SignUp = observer<SignUpProps>(
                 </Box>
               </Box>
             </StyledBoxWrap>
+            <StyledBrand />
           </>
         )}
 
