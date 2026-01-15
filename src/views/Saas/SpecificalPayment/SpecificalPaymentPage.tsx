@@ -1,4 +1,5 @@
 import {
+  StyledBrand,
   StyledButton,
   StyledGoogleAutoComplete,
   StyledLoading,
@@ -404,7 +405,7 @@ export const SpecificalPaymentPage = () => {
       {loading ? (
         <Stack
           alignItems={'center'}
-          height={'100vh'}
+          height={'calc(100vh - 36px)'}
           justifyContent={'center'}
           minHeight={'calc(667px - 46px)'}
           width={'100%'}
@@ -759,6 +760,7 @@ export const SpecificalPaymentPage = () => {
           )}
         </Stack>
       )}
+      <StyledBrand />
     </Stack>
   );
 };

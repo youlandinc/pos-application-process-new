@@ -35,6 +35,7 @@ import { DetectActiveService } from '@/services/DetectActive';
 import { BizType, HttpError, LoginType, UserType } from '@/types';
 import {
   StyledBoxWrap,
+  StyledBrand,
   StyledButton,
   StyledDialog,
   StyledHeaderLogo,
@@ -548,7 +549,7 @@ export const OffMarketSignUp = observer<SignUpProps>(
             alignItems: 'center',
             justifyContent: 'center',
             flexDirection: 'column',
-            minHeight: 'calc(100vh - 92px)',
+            minHeight: 'calc(100vh - 128px)',
           }}
         >
           <Box sx={SignUpStyles.singUp}>
@@ -702,6 +703,7 @@ export const OffMarketSignUp = observer<SignUpProps>(
           }}
           open={visible}
         />
+        <StyledBrand />
       </>
     );
   },

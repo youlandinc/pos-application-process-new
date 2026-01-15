@@ -1,5 +1,6 @@
 import {
   StyledBoxWrap,
+  StyledBrand,
   StyledButton,
   StyledHeaderLogo,
   StyledTextField,
@@ -191,7 +192,7 @@ export const OffMarketLogin = observer<LoginProps>(
             alignItems: 'center',
             justifyContent: 'center',
             flexDirection: 'column',
-            minHeight: 'calc(100vh - 92px)',
+            minHeight: 'calc(100vh - 128px)',
           }}
         >
           <Box sx={LoginStyles.login}>
@@ -235,6 +236,7 @@ export const OffMarketLogin = observer<LoginProps>(
             </Box>
           </Box>
         </StyledBoxWrap>
+        <StyledBrand />
       </>
     );
   },

@@ -16,6 +16,7 @@ import { _userSingIn } from '@/requests';
 
 import {
   StyledBoxWrap,
+  StyledBrand,
   StyledButton,
   StyledHeaderLogo,
   StyledTextField,
@@ -199,7 +200,7 @@ export const Login = observer<LoginProps>(
             <StyledBoxWrap
               sx={{
                 ...POSFlex('center', 'center', 'column'),
-                minHeight: 'calc(100vh - 92px)',
+                minHeight: 'calc(100vh - 128px)',
               }}
             >
               <Box sx={LoginStyles.login}>
@@ -253,6 +254,7 @@ export const Login = observer<LoginProps>(
                 </Box>
               </Box>
             </StyledBoxWrap>
+            <StyledBrand />
           </>
         )}
       </>

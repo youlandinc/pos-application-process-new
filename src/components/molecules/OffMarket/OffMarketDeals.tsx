@@ -3,7 +3,11 @@ import Image from 'next/image';
 import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { useAsync } from 'react-use';
 
-import { StyledBoxWrap, StyledHeaderLogo } from '@/components/atoms';
+import {
+  StyledBoxWrap,
+  StyledBrand,
+  StyledHeaderLogo,
+} from '@/components/atoms';
 
 export interface FundedDeal {
   id: number;
@@ -92,7 +96,7 @@ export const OffMarketDeals = () => {
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'column',
-          minHeight: 'calc(100vh - 92px)',
+          minHeight: 'calc(100vh - 128px)',
         }}
       >
         <Stack
@@ -193,6 +197,7 @@ export const OffMarketDeals = () => {
           )}
         </Stack>
       </StyledBoxWrap>
+      <StyledBrand />
     </>
   );
 };
