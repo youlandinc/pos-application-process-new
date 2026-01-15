@@ -8,8 +8,8 @@ export const POSFooter: FC = () => {
     <Stack
       sx={{
         width: '100%',
-        px: 'clamp(24px,2.5vw,48px)',
-        pb: 'clamp(24px,2.5vw,48px)',
+        px: 3,
+        pb: 3,
         pt: {
           md: 0,
           xs: 31.5,
@@ -25,7 +25,7 @@ export const POSFooter: FC = () => {
       <Icon
         component={ICON_BRAND}
         sx={{
-          height: 16,
+          height: 12,
           width: 167,
         }}
       />
