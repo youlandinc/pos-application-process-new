@@ -7,8 +7,8 @@ import { useAsync } from 'react-use';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { AUTO_HIDE_DURATION } from '@/constants';
-import { useBreakpoints } from '@/hooks';
+import { AUTO_HIDE_DURATION, TEST_ID, YOULAND_ID } from '@/constants';
+import { useBreakpoints, useSessionStorageState } from '@/hooks';
 import { POSGetParamsFromUrl } from '@/utils';
 
 import { StyledLoading } from '@/components/atoms';
@@ -65,10 +65,11 @@ export const Appraisal: FC = observer(() => {
 
   const { userType, dashboardInfo } = useMst();
   const breakpoint = useBreakpoints();
+  const { saasState } = useSessionStorageState('tenantConfig');
 
-  const isAppraisalNotRequired = APPRAISAL_NOT_REQUIRED_STATES.includes(
-    dashboardInfo.propertyAddress.state,
-  );
+  const isAppraisalNotRequired =
+    [YOULAND_ID, TEST_ID].includes(saasState?.tenantId) &&
+    APPRAISAL_NOT_REQUIRED_STATES.includes(dashboardInfo.propertyAddress.state);
 
   const [formState, setFormState] = useState<
     'profile' | 'payment' | 'afterPayment' | 'sendLink'
