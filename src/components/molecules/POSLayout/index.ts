@@ -7,3 +7,5 @@ export * from './POSMenuSelect';
 
 export * from './POSMyAccountButton';
 export * from './POSMessageItem';
+
+export * from './POSFooter';

@@ -9,7 +9,7 @@ import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 import { Address, IAddress } from '@/models/common/Address';
 
-import { POSGetParamsFromUrl } from '@/utils';
+import { POSGetParamsFromUrl, POSParseToDate } from '@/utils';
 import {
   AddressSchema,
   AUTO_HIDE_DURATION,
@@ -303,7 +303,7 @@ export const TasksCoBorrower: FC = observer(() => {
                     setBirthDate(value as Date);
                   }}
                   validate={formMessage?.birthDate}
-                  value={birthDate}
+                  value={POSParseToDate(birthDate)}
                 />
 
                 <Stack

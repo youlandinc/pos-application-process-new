@@ -1034,17 +1034,18 @@ export const Terms: FC = observer(() => {
                     ),
                   )}
               </Stack>
-              {preApprovedCondition && (
-                <StyledButton
-                  color={'info'}
-                  disabled={viewLoading || data?.isCustom}
-                  loading={viewLoading}
-                  onClick={() => getPDF('letter')}
-                  variant={'outlined'}
-                >
-                  View pre-approval letter
-                </StyledButton>
-              )}
+              {saasState?.posSettings?.letterSignee?.preApprovalDisplay &&
+                preApprovedCondition && (
+                  <StyledButton
+                    color={'info'}
+                    disabled={viewLoading || data?.isCustom}
+                    loading={viewLoading}
+                    onClick={() => getPDF('letter')}
+                    variant={'outlined'}
+                  >
+                    View pre-approval letter
+                  </StyledButton>
+                )}
 
               {data?.isCustom && (
                 <Typography color={'text.secondary'} variant={'body3'}>

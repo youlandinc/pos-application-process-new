@@ -21,7 +21,7 @@ export const ProductItem = observer<ProductItemProps>(
     loanTerm,
     interestRate,
     monthlyPayment,
-    lowest,
+    //lowest,
     initialMonthlyPayment,
     fullyDrawnMonthlyPayment,
   }) => {

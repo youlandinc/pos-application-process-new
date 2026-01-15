@@ -9,7 +9,7 @@ import { useBreakpoints, useCheckIsLogin } from '@/hooks';
 
 import { StyledBoxWrap } from '@/components/atoms';
 
-import { POSHeader } from './index';
+import { POSFooter, POSHeader } from './index';
 
 import { LayoutSceneTypeEnum } from '@/types';
 import { MessageBox, TasksRightMenu } from '@/components/molecules';
@@ -140,6 +140,7 @@ export const POSLayout: FC<POSLayoutProps> = observer(({ children, scene }) => {
             </Stack>
           </Stack>
         )}
+      <POSFooter />
     </Box>
   );
 });

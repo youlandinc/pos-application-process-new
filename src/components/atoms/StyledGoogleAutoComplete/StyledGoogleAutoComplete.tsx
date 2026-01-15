@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Autocomplete, Box, Grid, Stack, Typography } from '@mui/material';
+import { Autocomplete, Box, Stack, Typography } from '@mui/material';
 import { LocationOnOutlined } from '@mui/icons-material';
 import parse from 'autosuggest-highlight/parse';
 
@@ -360,11 +360,13 @@ const StyledAutoComplete: FC<StyledAutoCompleteProps> = ({
 
         return (
           <li {...props} key={props.id}>
-            <Grid alignItems="center" container>
-              <Grid item sx={{ display: 'flex', width: 44 }}>
+            <Stack alignItems="center" direction="row">
+              <Box sx={{ display: 'flex', width: 44 }}>
                 <LocationOnOutlined sx={{ color: 'text.secondary' }} />
-              </Grid>
-              <Grid item sx={StyledGoogleAutoCompleteStyles.inside.icon}>
+              </Box>
+              <Box
+                sx={{ ...StyledGoogleAutoCompleteStyles.inside.icon, flex: 1 }}
+              >
                 {parts.map((part, index) => (
                   <Box
                     component="span"
@@ -377,8 +379,8 @@ const StyledAutoComplete: FC<StyledAutoCompleteProps> = ({
                 <Typography color="text.secondary" variant="body2">
                   {option.structured_formatting.secondary_text}
                 </Typography>
-              </Grid>
-            </Grid>
+              </Box>
+            </Stack>
           </li>
         );
       }}
