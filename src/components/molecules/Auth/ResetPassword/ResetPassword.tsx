@@ -19,6 +19,7 @@ import {
 } from '@/constants';
 
 import {
+  StyledBrand,
   StyledButton,
   StyledHeaderLogo,
   StyledTextFieldPassword,
@@ -152,7 +153,7 @@ export const ResetPassword: FC = observer(() => {
       <Stack
         alignItems={'center'}
         justifyContent={'center'}
-        minHeight={'calc(100vh - 92px)'}
+        minHeight={'calc(100vh - 128px)'}
       >
         <Box
           height={'100%'}
@@ -301,6 +302,7 @@ export const ResetPassword: FC = observer(() => {
           </Stack>
         </Box>
       </Stack>
+      <StyledBrand />
     </>
   );
 });

@@ -16,6 +16,7 @@ import { POSFlex } from '@/styles';
 
 import {
   StyledBoxWrap,
+  StyledBrand,
   StyledButton,
   StyledDialog,
   StyledHeaderLogo,
@@ -483,7 +484,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
           <StyledBoxWrap
             sx={{
               ...POSFlex('center', 'center', 'column'),
-              minHeight: 'calc(100vh - 92px)',
+              minHeight: 'calc(100vh - 128px)',
             }}
           >
             <Stack
@@ -537,6 +538,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
               </Stack>
             </Stack>
           </StyledBoxWrap>
+          <StyledBrand />
         </>
       )}
     </>

@@ -34,6 +34,7 @@ import {
 } from '@/utils';
 
 import {
+  StyledBrand,
   StyledButton,
   StyledGoogleAutoComplete,
   StyledLoading,
@@ -305,7 +306,7 @@ export const SubscriptionPayment = () => {
       {loading ? (
         <Stack
           alignItems={'center'}
-          height={'100vh'}
+          height={'calc(100vh - 36px)'}
           justifyContent={'center'}
           minHeight={'calc(667px - 46px)'}
           width={'100%'}
@@ -538,6 +539,7 @@ export const SubscriptionPayment = () => {
           )}
         </Stack>
       )}
+      <StyledBrand />
     </Stack>
   );
 };
