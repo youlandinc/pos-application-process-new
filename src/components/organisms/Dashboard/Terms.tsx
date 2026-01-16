@@ -699,6 +699,23 @@ export const Terms: FC = observer(() => {
     data?.propertyType,
   ]);
 
+  const showPreApprovalLetterButton = useMemo(() => {
+    if (saasState?.posSettings?.letterSignee?.preApprovalDisplay) {
+      return (
+        ![
+          PipelineLoanStageEnum.not_submitted,
+          PipelineLoanStageEnum.scenario,
+        ].includes(data?.loanStatus) && preApprovedCondition
+      );
+    }
+
+    return preApprovedCondition;
+  }, [
+    data?.loanStatus,
+    preApprovedCondition,
+    saasState?.posSettings?.letterSignee?.preApprovalDisplay,
+  ]);
+
   const renderPropertyType = useMemo(() => {
     if (data?.productCategory === LoanProductCategoryEnum.land) {
       return `${POSFindLabel(
@@ -1034,18 +1051,17 @@ export const Terms: FC = observer(() => {
                     ),
                   )}
               </Stack>
-              {saasState?.posSettings?.letterSignee?.preApprovalDisplay &&
-                preApprovedCondition && (
-                  <StyledButton
-                    color={'info'}
-                    disabled={viewLoading || data?.isCustom}
-                    loading={viewLoading}
-                    onClick={() => getPDF('letter')}
-                    variant={'outlined'}
-                  >
-                    View pre-approval letter
-                  </StyledButton>
-                )}
+              {showPreApprovalLetterButton && (
+                <StyledButton
+                  color={'info'}
+                  disabled={viewLoading || data?.isCustom}
+                  loading={viewLoading}
+                  onClick={() => getPDF('letter')}
+                  variant={'outlined'}
+                >
+                  View pre-approval letter
+                </StyledButton>
+              )}
 
               {data?.isCustom && (
                 <Typography color={'text.secondary'} variant={'body3'}>

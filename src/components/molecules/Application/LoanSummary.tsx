@@ -906,7 +906,7 @@ export const LoanSummary = observer<FormNodeBaseProps>(
                     ),
                   )}
               </Stack>
-              {saasState?.posSettings?.letterSignee?.preApprovalDisplay &&
+              {!saasState?.posSettings?.letterSignee?.preApprovalDisplay &&
                 data?.productCategory !== LoanProductCategoryEnum.dscr_rental &&
                 data?.propertyType !== LoanPropertyTypeEnum.multifamily && (
                   <StyledButton

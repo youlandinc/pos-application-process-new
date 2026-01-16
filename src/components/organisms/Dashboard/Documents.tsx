@@ -1,4 +1,4 @@
-import { FC, ReactNode, useCallback, useState } from 'react';
+import { FC, ReactNode, useCallback, useMemo, useState } from 'react';
 import { Fade, Icon, Stack, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useAsync } from 'react-use';
@@ -23,6 +23,7 @@ import {
   HttpError,
   LoanProductCategoryEnum,
   LoanPropertyTypeEnum,
+  PipelineLoanStageEnum,
 } from '@/types';
 import { _downloadFile } from '@/requests/application';
 import { _fetchLoanDocumentData } from '@/requests/dashboard';
@@ -31,7 +32,7 @@ import NOTIFICATION_WARNING from '@/components/atoms/StyledNotification/notifica
 
 export const Documents: FC = observer(() => {
   const {
-    dashboardInfo: { productCategory, propertyType },
+    dashboardInfo: { productCategory, propertyType, loanStageEnum },
   } = useMst();
 
   const router = useRouter();
@@ -47,6 +48,32 @@ export const Documents: FC = observer(() => {
 
   const { loading } = useAsync(async () => await fetchData(), [location.href]);
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
+
+  const preApprovalEligible = useMemo(
+    () =>
+      productCategory !== LoanProductCategoryEnum.dscr_rental &&
+      propertyType !== LoanPropertyTypeEnum.multifamily,
+    [productCategory, propertyType],
+  );
+
+  const showPreApprovalLetter = useMemo(() => {
+    if (saasState?.posSettings?.letterSignee?.preApprovalDisplay) {
+      const disallowedStages: PipelineLoanStageEnum[] = [
+        PipelineLoanStageEnum.not_submitted,
+        PipelineLoanStageEnum.scenario,
+      ];
+      return (
+        loanStageEnum !== undefined &&
+        !disallowedStages.includes(loanStageEnum) &&
+        preApprovalEligible
+      );
+    }
+    return preApprovalEligible;
+  }, [
+    loanStageEnum,
+    preApprovalEligible,
+    saasState?.posSettings?.letterSignee?.preApprovalDisplay,
+  ]);
 
   const fetchData = async () => {
     const { loanId } = POSGetParamsFromUrl(location.href);
@@ -214,41 +241,38 @@ export const Documents: FC = observer(() => {
             data&apos;s privacy and protection, including advanced 256-bit
             encryption, secure SSL connections, and regular security audits.
           </Typography>
-          {/*todo : pre-approval*/}
-          {saasState?.posSettings?.letterSignee?.preApprovalDisplay &&
-            productCategory !== LoanProductCategoryEnum.dscr_rental &&
-            propertyType !== LoanPropertyTypeEnum.multifamily && (
+          {showPreApprovalLetter && (
+            <Typography
+              color={'text.secondary'}
+              fontSize={{ xs: 12, lg: 16 }}
+              mt={1.5}
+            >
+              Here is your{' '}
               <Typography
-                color={'text.secondary'}
+                color={downloadLoading ? 'text.disabled' : 'primary.main'}
+                component={'span'}
                 fontSize={{ xs: 12, lg: 16 }}
-                mt={1.5}
+                fontWeight={600}
+                onClick={async () => {
+                  if (downloadLoading) {
+                    return;
+                  }
+                  await onClickToDownloadLetter();
+                  // todo
+                  // await router.push({
+                  //   pathname: '/dashboard/overview',
+                  //   query: {
+                  //     loanId: router.query.loanId,
+                  //   },
+                  // });
+                }}
+                sx={{ cursor: downloadLoading ? 'not-allowed' : 'pointer' }}
               >
-                Here is your{' '}
-                <Typography
-                  color={downloadLoading ? 'text.disabled' : 'primary.main'}
-                  component={'span'}
-                  fontSize={{ xs: 12, lg: 16 }}
-                  fontWeight={600}
-                  onClick={async () => {
-                    if (downloadLoading) {
-                      return;
-                    }
-                    await onClickToDownloadLetter();
-                    // todo
-                    // await router.push({
-                    //   pathname: '/dashboard/overview',
-                    //   query: {
-                    //     loanId: router.query.loanId,
-                    //   },
-                    // });
-                  }}
-                  sx={{ cursor: downloadLoading ? 'not-allowed' : 'pointer' }}
-                >
-                  Pre-approval letter
-                </Typography>
-                .
+                Pre-approval letter
               </Typography>
-            )}
+              .
+            </Typography>
+          )}
           {isTips && (
             <Stack
               bgcolor={'rgba(255, 249, 234, 1)'}

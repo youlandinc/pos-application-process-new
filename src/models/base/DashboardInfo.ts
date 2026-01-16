@@ -15,6 +15,7 @@ import {
   LoanPropertyTypeEnum,
   LoanPropertyUnitEnum,
   LoanPurposeEnum,
+  PipelineLoanStageEnum,
 } from '@/types';
 import { _fetchDashboardInfo, _fetchLoanTaskList } from '@/requests/dashboard';
 import { _fetchLoanChatMessage } from '@/requests';
@@ -73,6 +74,9 @@ export const DashboardInfo = types
     propertyUnit: types.enumeration(Object.values(LoanPropertyUnitEnum)),
     productCategory: types.enumeration(Object.values(LoanProductCategoryEnum)),
     loanPurpose: types.maybe(types.enumeration(Object.values(LoanPurposeEnum))),
+    loanStageEnum: types.maybe(
+      types.enumeration(Object.values(PipelineLoanStageEnum)),
+    ),
     loading: types.boolean,
     loanId: types.maybe(types.string),
     loanNumber: types.maybe(types.string),
@@ -260,6 +264,7 @@ export const DashboardInfo = types
             loanNumber,
             productCategory,
             loanPurpose,
+            loanStageEnum,
             additionalAddress,
           },
         } = infoRes.value;
@@ -269,6 +274,7 @@ export const DashboardInfo = types
         self.propertyUnit = propertyUnit || LoanPropertyUnitEnum.default;
         self.productCategory = productCategory;
         self.loanPurpose = loanPurpose;
+        self.loanStageEnum = loanStageEnum;
         self.loanId = loanId;
         self.loanNumber = loanNumber ?? '';
       }
