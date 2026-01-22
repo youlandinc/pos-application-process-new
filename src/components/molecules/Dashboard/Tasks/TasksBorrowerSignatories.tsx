@@ -1,7 +1,11 @@
 import { FC } from 'react';
 import { Icon, Stack, Typography } from '@mui/material';
 import { format, isDate, isValid } from 'date-fns';
-import { LoanCitizenshipEnum, LoanMarriedStatusEnum } from '@/types';
+import {
+  DashboardTaskBorrowerType,
+  LoanCitizenshipEnum,
+  LoanMarriedStatusEnum,
+} from '@/types';
 
 import { useMst } from '@/models/Root';
 import { observer } from 'mobx-react-lite';
@@ -31,6 +35,9 @@ export const TasksBorrowerSignatories: FC = observer(() => {
   const {
     dashboardInfo: { taskBorrower },
   } = useMst();
+
+  const showOwnership =
+    taskBorrower.borrowerType === DashboardTaskBorrowerType.entity;
 
   const breakpoints = useBreakpoints();
 
@@ -234,22 +241,24 @@ export const TasksBorrowerSignatories: FC = observer(() => {
               validate={signatory.errors?.maritalStatus}
               value={signatory.maritalStatus}
             />
-            <StyledTextFieldNumber
-              label={'Ownership'}
-              onValueChange={(values) => {
-                signatory.removeError('ownership');
-                taskBorrower.changeSignatoryFieldValue(
-                  index,
-                  'ownership',
-                  values.floatValue ?? null,
-                );
-              }}
-              prefix={''}
-              suffix={'%'}
-              thousandSeparator={false}
-              validate={signatory.errors?.ownership}
-              value={signatory.ownership ?? undefined}
-            />
+            {showOwnership && (
+              <StyledTextFieldNumber
+                label={'Ownership'}
+                onValueChange={(values) => {
+                  signatory.removeError('ownership');
+                  taskBorrower.changeSignatoryFieldValue(
+                    index,
+                    'ownership',
+                    values.floatValue ?? null,
+                  );
+                }}
+                prefix={''}
+                suffix={'%'}
+                thousandSeparator={false}
+                validate={signatory.errors?.ownership}
+                value={signatory.ownership ?? undefined}
+              />
+            )}
           </Stack>
 
           {index === 1 &&
