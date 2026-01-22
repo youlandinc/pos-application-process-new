@@ -315,7 +315,11 @@ export const DBorrower = types
     },
     checkSignatories() {
       self.signatories.map((signatory, index) => {
-        const formError = validate(signatory, TaskBorrowerSignatory);
+        const formError = validate(signatory, TaskBorrowerSignatory) || {};
+
+        if (signatory.ownership !== null && signatory.ownership > 100) {
+          formError.ownership = ['Ownership cannot exceed 100%'];
+        }
 
         if (
           index === 1 &&
