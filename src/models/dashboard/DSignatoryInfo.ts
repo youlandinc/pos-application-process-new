@@ -27,6 +27,7 @@ export const DSignatoryInfo = types
       types.enumeration(Object.values(LoanMarriedStatusEnum)),
       types.string,
     ),
+    ownership: types.maybeNull(types.number),
     isSameMailingAddress: types.boolean,
     addressInfo: Address,
     marriedTogether: types.union(
@@ -69,8 +70,9 @@ export const DSignatoryInfo = types
         phoneNumber,
         email,
         citizenship,
-        isSameMailingAddress,
         ssn,
+        isSameMailingAddress,
+        ownership,
         maritalStatus,
         marriedTogether,
       } = self;
@@ -89,6 +91,7 @@ export const DSignatoryInfo = types
         citizenship,
         ssn,
         isSameMailingAddress,
+        ownership,
         addressInfo,
         maritalStatus,
         marriedTogether: marriedTogether || undefined,
