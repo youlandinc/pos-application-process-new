@@ -623,6 +623,15 @@ export const Terms: FC = observer(() => {
             content={`${data?.loanTerm} months`}
             title={'Term'}
           />
+          {data?.productCategory === LoanProductCategoryEnum.dscr_rental && (
+            <LoanTermCardRow
+              content={POSFormatPercent(
+                data?.buydownPoints,
+                POSGetDecimalPlaces(data?.buydownPoints),
+              )}
+              title={'Buydown points'}
+            />
+          )}
         </Stack>
         <Stack
           border={'1px solid #D2D6E1'}
