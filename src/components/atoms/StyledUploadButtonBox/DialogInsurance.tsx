@@ -43,9 +43,9 @@ export const DialogInsurance: FC<DialogInsuranceProps> = ({
                 onClick={async () => {
                   await navigator.clipboard.writeText(
                     `${saasState?.organizationName || 'YouLand Inc.'} ISAOA/ATIMA
-${saasState?.address?.address}${
-                      saasState?.address.aptNumber
-                        ? `, ${saasState?.address.aptNumber}`
+${saasState?.address?.address || ''}${
+                      saasState?.address?.aptNumber
+                        ? `, ${saasState?.address?.aptNumber}`
                         : ''
                     }.
 ${saasState?.address?.city ? `${saasState?.address?.city}, ` : ''}${
@@ -66,9 +66,9 @@ ${saasState?.address?.city ? `${saasState?.address?.city}, ` : ''}${
               />
             </Stack>
             <Typography variant={'body3'}>
-              {`${saasState?.address?.address}${
-                saasState?.address.aptNumber
-                  ? `, ${saasState?.address.aptNumber}`
+              {`${saasState?.address?.address || ''}${
+                saasState?.address?.aptNumber
+                  ? `, ${saasState?.address?.aptNumber}`
                   : ''
               }`}
             </Typography>
