@@ -623,15 +623,16 @@ export const Terms: FC = observer(() => {
             content={`${data?.loanTerm} months`}
             title={'Term'}
           />
-          {data?.productCategory === LoanProductCategoryEnum.dscr_rental && (
-            <LoanTermCardRow
-              content={POSFormatPercent(
-                data?.buydownPoints,
-                POSGetDecimalPlaces(data?.buydownPoints),
-              )}
-              title={'Buydown points'}
-            />
-          )}
+          {data?.productCategory === LoanProductCategoryEnum.dscr_rental &&
+            data?.buydownPoints != null && (
+              <LoanTermCardRow
+                content={POSFormatPercent(
+                  data?.buydownPoints,
+                  POSGetDecimalPlaces(data?.buydownPoints),
+                )}
+                title={'Buydown points'}
+              />
+            )}
         </Stack>
         <Stack
           border={'1px solid #D2D6E1'}
@@ -668,13 +669,6 @@ export const Terms: FC = observer(() => {
       ) {
         return shouldRender ? renderNodes() : null;
       }
-      return shouldRender ? renderNodes() : null;
-    }
-
-    if (
-      data?.productCategory === LoanProductCategoryEnum.dscr_rental ||
-      data?.propertyType === LoanPropertyTypeEnum.multifamily
-    ) {
       return shouldRender ? renderNodes() : null;
     }
 
