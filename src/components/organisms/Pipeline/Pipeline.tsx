@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useSwitch } from '@/hooks';
+import { useSessionStorageState, useSwitch } from '@/hooks';
 import { AUTO_HIDE_DURATION, PAGE_SIZE, URL_HASH } from '@/constants';
 
 import { StyledButton, StyledDialog, StyledLoading } from '@/components/atoms';
@@ -29,6 +29,8 @@ import PIPELINE_NO_RESULT from '@/svg/pipeline/pipeline_no_result.svg';
 export const Pipeline: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
+
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const {
     // userSetting: { pipelineStatus, pipelineStatusInitialized },
@@ -143,9 +145,14 @@ export const Pipeline: FC = observer(() => {
     }
 
     applicationForm.resetForm();
+    const pathname =
+      saasState?.posSettings?.hasExecutiveQuestion === false &&
+      row.snapshot === LoanSnapshotEnum.select_executive
+        ? URL_HASH[LoanSnapshotEnum.loan_address]
+        : URL_HASH[row.snapshot];
     await router.push(
       {
-        pathname: URL_HASH[row.snapshot],
+        pathname,
         query: { loanId: row.loanId },
       },
       undefined,
