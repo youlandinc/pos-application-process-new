@@ -34,6 +34,8 @@ import {
   Transitions,
 } from '@/components/atoms';
 
+import { useSessionStorageState } from '@/hooks';
+
 import { _fetchExecutiveList } from '@/requests/application';
 
 import ICON_CLOSE from '@/svg/icon/icon_close.svg';
@@ -82,6 +84,8 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
       applicationForm: { compensationInformation },
       userType,
     } = useMst();
+
+    const { saasState } = useSessionStorageState('tenantConfig');
 
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState<InsideOption[]>([DefaultOption]);
@@ -362,105 +366,107 @@ export const CompensationInformation: FC<FormNodeBaseProps> = observer(
           </Transitions>
         </StyledFormItem>
 
-        <StyledFormItem
-          gap={3}
-          label={'Is there anyone helping you with the loan?'}
-          mt={3}
-          sub
-        >
-          <Autocomplete
-            getOptionLabel={(option) => {
-              return option.title;
-            }}
-            inputValue={compensationInformation.executiveName}
-            isOptionEqualToValue={(option, value) =>
-              option.title === value.title
-            }
-            loading={loading}
-            onChange={(e, newValue) => {
-              setSelfValue(newValue);
-              compensationInformation.changeFieldValue(
-                'executiveId',
-                newValue?.key || '',
-              );
-              compensationInformation.changeFieldValue(
-                'executiveName',
-                newValue?.title || '',
-              );
-            }}
-            onClose={handleClose}
-            onInputChange={(e, newValue) => {
-              compensationInformation.changeFieldValue(
-                'executiveName',
-                newValue || '',
-              );
-              throttleFetchOptions();
-            }}
-            onOpen={handleOpen}
-            open={open}
-            options={options}
-            renderInput={(params) => (
-              <StyledTextField
-                {...params}
-                InputProps={{
-                  ...params.InputProps,
-                  endAdornment: (
-                    <>
-                      {loading && (
-                        <CircularProgress color="inherit" size={20} />
-                      )}
-                      {params.InputProps.endAdornment}
-                    </>
-                  ),
-                }}
-                label={'Please select an account executive'}
-              />
-            )}
-            renderOption={(props, option, { inputValue }) => {
-              const matches = match(option.title, inputValue, {
-                insideWords: true,
-              });
-              const parts = parse(option.title, matches);
-              return (
-                <Stack
-                  {...props}
-                  component={'li'}
-                  flexDirection={'row'}
-                  height={48}
-                  key={props.id}
-                  sx={{
-                    alignItems: 'center !important',
-                    justifyContent: 'flex-start !important',
+        {saasState?.posSettings?.hasExecutiveQuestion && (
+          <StyledFormItem
+            gap={3}
+            label={'Is there anyone helping you with the loan?'}
+            mt={3}
+            sub
+          >
+            <Autocomplete
+              getOptionLabel={(option) => {
+                return option.title;
+              }}
+              inputValue={compensationInformation.executiveName}
+              isOptionEqualToValue={(option, value) =>
+                option.title === value.title
+              }
+              loading={loading}
+              onChange={(e, newValue) => {
+                setSelfValue(newValue);
+                compensationInformation.changeFieldValue(
+                  'executiveId',
+                  newValue?.key || '',
+                );
+                compensationInformation.changeFieldValue(
+                  'executiveName',
+                  newValue?.title || '',
+                );
+              }}
+              onClose={handleClose}
+              onInputChange={(e, newValue) => {
+                compensationInformation.changeFieldValue(
+                  'executiveName',
+                  newValue || '',
+                );
+                throttleFetchOptions();
+              }}
+              onOpen={handleOpen}
+              open={open}
+              options={options}
+              renderInput={(params) => (
+                <StyledTextField
+                  {...params}
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <>
+                        {loading && (
+                          <CircularProgress color="inherit" size={20} />
+                        )}
+                        {params.InputProps.endAdornment}
+                      </>
+                    ),
                   }}
-                >
-                  {parts.map((part, index) => (
-                    <Stack
-                      component="span"
-                      height={'100%'}
-                      justifyContent={'center'}
-                      key={index}
-                      sx={{
-                        fontWeight: part.highlight ? 'bold' : 'regular',
-                      }}
-                    >
-                      {part.text}
-                    </Stack>
-                  ))}
-                </Stack>
-              );
-            }}
-            slotProps={{
-              paper: {
-                sx: {
-                  '.MuiAutocomplete-listbox': {
-                    p: 0,
+                  label={'Please select an account executive'}
+                />
+              )}
+              renderOption={(props, option, { inputValue }) => {
+                const matches = match(option.title, inputValue, {
+                  insideWords: true,
+                });
+                const parts = parse(option.title, matches);
+                return (
+                  <Stack
+                    {...props}
+                    component={'li'}
+                    flexDirection={'row'}
+                    height={48}
+                    key={props.id}
+                    sx={{
+                      alignItems: 'center !important',
+                      justifyContent: 'flex-start !important',
+                    }}
+                  >
+                    {parts.map((part, index) => (
+                      <Stack
+                        component="span"
+                        height={'100%'}
+                        justifyContent={'center'}
+                        key={index}
+                        sx={{
+                          fontWeight: part.highlight ? 'bold' : 'regular',
+                        }}
+                      >
+                        {part.text}
+                      </Stack>
+                    ))}
+                  </Stack>
+                );
+              }}
+              slotProps={{
+                paper: {
+                  sx: {
+                    '.MuiAutocomplete-listbox': {
+                      p: 0,
+                    },
                   },
                 },
-              },
-            }}
-            value={selfValue}
-          />
-        </StyledFormItem>
+              }}
+              value={selfValue}
+            />
+          </StyledFormItem>
+        )}
 
         <Stack flexDirection={'row'} gap={3} maxWidth={600} width={'100%'}>
           <StyledButton

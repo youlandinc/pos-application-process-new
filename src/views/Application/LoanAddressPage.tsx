@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useStoreData } from '@/hooks';
+import { useSessionStorageState, useStoreData } from '@/hooks';
 
 import { POSGetParamsFromUrl } from '@/utils';
 
@@ -23,6 +23,8 @@ export const LoanAddressPage: FC = observer(() => {
   const router = useRouter();
   const { applicationForm, userType } = useMst();
   const { loanAddress, productCategory, propertyType } = applicationForm;
+
+  const { saasState } = useSessionStorageState('tenantConfig');
 
   const [stateError, setStateError] = useState(false);
 
@@ -53,7 +55,9 @@ export const LoanAddressPage: FC = observer(() => {
       snapshot: LoanSnapshotEnum.loan_address,
       nextSnapshot:
         userType === UserType.CUSTOMER
-          ? LoanSnapshotEnum.select_executive
+          ? saasState?.posSettings?.hasExecutiveQuestion === false
+            ? LoanSnapshotEnum.loan_summary
+            : LoanSnapshotEnum.select_executive
           : LoanSnapshotEnum.compensation_page,
       loanId: applicationForm.loanId,
       data: loanAddress.getLoanAddressPostData(),

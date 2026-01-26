@@ -7,7 +7,7 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { useStoreData } from '@/hooks';
+import { useSessionStorageState, useStoreData } from '@/hooks';
 
 import { POSGetParamsFromUrl } from '@/utils';
 import { AUTO_HIDE_DURATION } from '@/constants';
@@ -21,6 +21,8 @@ export const LoanSummaryPage: FC = observer(() => {
   const { enqueueSnackbar } = useSnackbar();
   const { applicationForm, userType } = useMst();
 
+  const { saasState } = useSessionStorageState('tenantConfig');
+
   const { redirectFrom, redirectFromState, updateFormState, updateFrom } =
     useStoreData();
 
@@ -33,7 +35,9 @@ export const LoanSummaryPage: FC = observer(() => {
     const postData = {
       nextSnapshot:
         userType === UserType.CUSTOMER
-          ? LoanSnapshotEnum.select_executive
+          ? saasState?.posSettings?.hasExecutiveQuestion === false
+            ? LoanSnapshotEnum.loan_address
+            : LoanSnapshotEnum.select_executive
           : LoanSnapshotEnum.compensation_page,
       loanId: applicationForm.loanId,
     };
