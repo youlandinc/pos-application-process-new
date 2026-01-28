@@ -132,6 +132,39 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
             },
             {
               icon: null,
+              label: 'Under review',
+              tooltipTitle: '',
+              description:
+                'Your application is being reviewed to determine initial eligibility. We may contact you if additional information is required.',
+              date: loanStatusDetails?.[PipelineLoanStageEnum.pre_approved]
+                ?.date
+                ? `${format(
+                    parseISO(
+                      loanStatusDetails?.[PipelineLoanStageEnum.pre_approved]
+                        ?.date,
+                    ),
+                    "MMMM dd, yyyy 'at' h:mm a",
+                  )}`
+                : '',
+            },
+            {
+              icon: null,
+              label: 'Processing',
+              tooltipTitle: '',
+              description:
+                'Your loan is actively being reviewed by our underwriting team. We’re working through the details now.',
+              date: loanStatusDetails?.[PipelineLoanStageEnum.processing]?.date
+                ? `${format(
+                    parseISO(
+                      loanStatusDetails?.[PipelineLoanStageEnum.processing]
+                        ?.date,
+                    ),
+                    "MMMM dd, yyyy 'at' h:mm a",
+                  )}`
+                : '',
+            },
+            {
+              icon: null,
               label: 'Preliminary underwriting passed',
               tooltipTitle:
                 "When you have passed preliminary underwriting, you'll be well on your way to full approval. Once you provide the remaining documentation (like an appraisal), we'll review it to ensure it meets our underwriting criteria. If everything checks out, you'll be fully approved.",
