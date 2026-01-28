@@ -32,6 +32,7 @@ const hash = {
   [PipelineLoanStageEnum.preparing_docs]: 2,
   [PipelineLoanStageEnum.docs_out]: 3,
   [PipelineLoanStageEnum.funded]: 4,
+  [PipelineLoanStageEnum.processing]: 5,
   [PipelineLoanStageEnum.rejected]: 0,
   [PipelineLoanStageEnum.inactive]: 0,
   [PipelineLoanStageEnum.not_submitted]: -1,

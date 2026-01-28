@@ -51,6 +51,19 @@ export const Pipeline: FC = observer(() => {
 
   const [listData, setListData] = useState<LoanItemCardProps['formData'][]>([]);
 
+  useEffect(() => {
+    if (listData.length > 0) {
+      listData.forEach((data) => {
+        //eslint-disable-next-line no-console
+        console.log(
+          '~LoanItemCard ~ loanStage:',
+          data.loanNumber,
+          data.loanStage,
+        );
+      });
+    }
+  }, [listData]);
+
   const [isChange, setIsChange] = useState<boolean>(false);
   const [deleteAddress, setDeleteAddress] = useState<string[]>([]);
   const [deleteId, setDeleteId] = useState<string>('');
