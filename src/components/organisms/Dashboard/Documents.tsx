@@ -26,7 +26,10 @@ import {
   PipelineLoanStageEnum,
 } from '@/types';
 import { _downloadFile } from '@/requests/application';
-import { _fetchLoanDocumentData } from '@/requests/dashboard';
+import {
+  _fetchLoanDocumentData,
+  _fetchLoanTermsData,
+} from '@/requests/dashboard';
 
 import NOTIFICATION_WARNING from '@/components/atoms/StyledNotification/notification_warning.svg';
 
@@ -43,18 +46,29 @@ export const Documents: FC = observer(() => {
     { label: string | ReactNode; content: ReactNode }[]
   >([]);
 
+  const [termsData, setTermsData] = useState<any>({});
+
   const [isTips, setIsTips] = useState<boolean>(false);
   //const [startTabIndex, setStartTabIndex] = useState<number>(0);
 
   const { loading } = useAsync(async () => await fetchData(), [location.href]);
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
 
-  const preApprovalEligible = useMemo(
-    () =>
-      productCategory !== LoanProductCategoryEnum.dscr_rental &&
-      propertyType !== LoanPropertyTypeEnum.multifamily,
-    [productCategory, propertyType],
-  );
+  const preApprovalEligible = useMemo(() => {
+    if (productCategory === LoanProductCategoryEnum.dscr_rental) {
+      if (!termsData?.loanTerm || !termsData?.interestRate) {
+        return false;
+      }
+      return propertyType !== LoanPropertyTypeEnum.multifamily;
+    }
+
+    return propertyType !== LoanPropertyTypeEnum.multifamily;
+  }, [
+    productCategory,
+    propertyType,
+    termsData?.interestRate,
+    termsData?.loanTerm,
+  ]);
 
   const showPreApprovalLetter = useMemo(() => {
     if (saasState?.posSettings?.letterSignee?.preApprovalDisplay) {
@@ -86,9 +100,24 @@ export const Documents: FC = observer(() => {
       return;
     }
     try {
+      const [docsRes, termsRes] = await Promise.allSettled([
+        _fetchLoanDocumentData(loanId),
+        _fetchLoanTermsData(loanId),
+      ]);
+
+      if (termsRes.status === 'fulfilled') {
+        setTermsData(termsRes.value.data);
+      } else {
+        setTermsData({});
+      }
+
+      if (docsRes.status === 'rejected') {
+        throw docsRes.reason;
+      }
+
       const {
         data: { docs, isTips, loanNumber },
-      } = await _fetchLoanDocumentData(loanId);
+      } = docsRes.value;
       setIsTips(isTips);
       const tabData = docs.reduce(
         (
