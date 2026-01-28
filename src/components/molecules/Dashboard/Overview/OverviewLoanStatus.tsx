@@ -111,6 +111,7 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
         case PipelineLoanStageEnum.scenario:
         case PipelineLoanStageEnum.initial_approval:
         case PipelineLoanStageEnum.pre_approved:
+        case PipelineLoanStageEnum.processing:
         case PipelineLoanStageEnum.preparing_docs:
         case PipelineLoanStageEnum.docs_out:
         case PipelineLoanStageEnum.funded:
