@@ -314,8 +314,28 @@ export const DBorrower = types
       return validate({ trustName, borrowerType }, TaskBorrowerTrust);
     },
     checkSignatories() {
+      const signatoryCount = self.signatories.length;
+      const totalOwnership =
+        signatoryCount === 2
+          ? self.signatories.reduce(
+              (sum, current) => sum + (current.ownership ?? 0),
+              0,
+            )
+          : 0;
+      const exceedTotalOwnership = signatoryCount === 2 && totalOwnership > 100;
+
       self.signatories.map((signatory, index) => {
-        const formError = validate(signatory, TaskBorrowerSignatory);
+        const formError = validate(signatory, TaskBorrowerSignatory) || {};
+
+        if (signatory.ownership !== null && signatory.ownership > 100) {
+          formError.ownership = ['Ownership cannot exceed 100%'];
+        }
+
+        if (exceedTotalOwnership) {
+          formError.ownership = [
+            'The total ownership of the two signatories/sponsors cannot exceed 100%',
+          ];
+        }
 
         if (
           index === 1 &&

@@ -182,7 +182,13 @@ export const POSHeader = observer<POSHeaderProps>(({ scene, loading }) => {
     if (hasSession) {
       return userType === UserType.CUSTOMER
         ? getProgress(
-            isEnterLoanInfo ? MULTIFAMILY_LOGIN_NOT_BROKER : LOGIN_NOT_BROKER,
+            isEnterLoanInfo
+              ? MULTIFAMILY_LOGIN_NOT_BROKER
+              : saasState?.posSettings?.hasExecutiveQuestion === false
+                ? LOGIN_NOT_BROKER.filter(
+                    (item) => item !== LoanSnapshotEnum.select_executive,
+                  )
+                : LOGIN_NOT_BROKER,
           )
         : getProgress(
             isEnterLoanInfo ? MULTIFAMILY_LOGIN_BROKER : LOGIN_BROKER,
@@ -190,7 +196,15 @@ export const POSHeader = observer<POSHeaderProps>(({ scene, loading }) => {
     }
 
     return getProgress(isEnterLoanInfo ? MULTIFAMILY_NOT_LOGIN : NOT_LOGIN);
-  }, [hasSession, productCategory, propertyType, scene, snapshot, userType]);
+  }, [
+    hasSession,
+    productCategory,
+    propertyType,
+    saasState?.posSettings?.hasExecutiveQuestion,
+    scene,
+    snapshot,
+    userType,
+  ]);
 
   const handledLoginSuccess = usePersistFn(() => {
     close();

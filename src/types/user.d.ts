@@ -184,6 +184,7 @@ declare namespace User {
     softCreditRequirement?: SoftCreditRequirementEnum;
     usePricingEngine?: boolean;
     exactFicoScoreConfig?: boolean;
+    hasExecutiveQuestion?: boolean;
   }
 
   interface TenantConfigUserInfo {

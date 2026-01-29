@@ -1,7 +1,11 @@
 import { FC } from 'react';
 import { Icon, Stack, Typography } from '@mui/material';
 import { format, isDate, isValid } from 'date-fns';
-import { LoanCitizenshipEnum, LoanMarriedStatusEnum } from '@/types';
+import {
+  DashboardTaskBorrowerType,
+  LoanCitizenshipEnum,
+  LoanMarriedStatusEnum,
+} from '@/types';
 
 import { useMst } from '@/models/Root';
 import { observer } from 'mobx-react-lite';
@@ -20,6 +24,7 @@ import {
   StyledGoogleAutoComplete,
   StyledSelect,
   StyledTextField,
+  StyledTextFieldNumber,
   StyledTextFieldPhone,
   StyledTextFieldSocialNumber,
 } from '@/components/atoms';
@@ -30,6 +35,9 @@ export const TasksBorrowerSignatories: FC = observer(() => {
   const {
     dashboardInfo: { taskBorrower },
   } = useMst();
+
+  const showOwnership =
+    taskBorrower.borrowerType === DashboardTaskBorrowerType.entity;
 
   const breakpoints = useBreakpoints();
 
@@ -210,23 +218,48 @@ export const TasksBorrowerSignatories: FC = observer(() => {
             )}
           </Stack>
 
-          <StyledSelect
-            label={'Marital status'}
-            onChange={(e) => {
-              signatory.removeError('maritalStatus');
-              taskBorrower.changeSignatoryFieldValue(
-                index,
-                'maritalStatus',
-                e.target.value as string as LoanMarriedStatusEnum,
-              );
-            }}
-            options={OPTIONS_COMMON_MARRIED_STATUS}
-            sx={{
-              maxWidth: 600,
-            }}
-            validate={signatory.errors?.maritalStatus}
-            value={signatory.maritalStatus}
-          />
+          <Stack
+            flexDirection={{ xs: 'column', lg: 'row' }}
+            gap={3}
+            maxWidth={600}
+            width={'100%'}
+          >
+            <StyledSelect
+              label={'Marital status'}
+              onChange={(e) => {
+                signatory.removeError('maritalStatus');
+                taskBorrower.changeSignatoryFieldValue(
+                  index,
+                  'maritalStatus',
+                  e.target.value as string as LoanMarriedStatusEnum,
+                );
+              }}
+              options={OPTIONS_COMMON_MARRIED_STATUS}
+              sx={{
+                maxWidth: 600,
+              }}
+              validate={signatory.errors?.maritalStatus}
+              value={signatory.maritalStatus}
+            />
+            {showOwnership && (
+              <StyledTextFieldNumber
+                label={'Ownership'}
+                onValueChange={(values) => {
+                  signatory.removeError('ownership');
+                  taskBorrower.changeSignatoryFieldValue(
+                    index,
+                    'ownership',
+                    values.floatValue ?? null,
+                  );
+                }}
+                prefix={''}
+                suffix={'%'}
+                thousandSeparator={false}
+                validate={signatory.errors?.ownership}
+                value={signatory.ownership ?? undefined}
+              />
+            )}
+          </Stack>
 
           {index === 1 &&
             taskBorrower.signatories[0].maritalStatus ===

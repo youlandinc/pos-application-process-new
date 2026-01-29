@@ -623,6 +623,16 @@ export const Terms: FC = observer(() => {
             content={`${data?.loanTerm} months`}
             title={'Term'}
           />
+          {data?.productCategory === LoanProductCategoryEnum.dscr_rental &&
+            data?.buydownPoints != null && (
+              <LoanTermCardRow
+                content={POSFormatPercent(
+                  data?.buydownPoints,
+                  POSGetDecimalPlaces(data?.buydownPoints),
+                )}
+                title={'Buydown points'}
+              />
+            )}
         </Stack>
         <Stack
           border={'1px solid #D2D6E1'}
@@ -662,13 +672,6 @@ export const Terms: FC = observer(() => {
       return shouldRender ? renderNodes() : null;
     }
 
-    if (
-      data?.productCategory === LoanProductCategoryEnum.dscr_rental ||
-      data?.propertyType === LoanPropertyTypeEnum.multifamily
-    ) {
-      return shouldRender ? renderNodes() : null;
-    }
-
     return renderNodes();
   }, [
     data?.loanTerm,
@@ -697,6 +700,23 @@ export const Terms: FC = observer(() => {
     data?.loanTerm,
     data?.productCategory,
     data?.propertyType,
+  ]);
+
+  const showPreApprovalLetterButton = useMemo(() => {
+    if (saasState?.posSettings?.letterSignee?.preApprovalDisplay) {
+      return (
+        ![
+          PipelineLoanStageEnum.not_submitted,
+          PipelineLoanStageEnum.scenario,
+        ].includes(data?.loanStatus) && preApprovedCondition
+      );
+    }
+
+    return preApprovedCondition;
+  }, [
+    data?.loanStatus,
+    preApprovedCondition,
+    saasState?.posSettings?.letterSignee?.preApprovalDisplay,
   ]);
 
   const renderPropertyType = useMemo(() => {
@@ -1034,18 +1054,17 @@ export const Terms: FC = observer(() => {
                     ),
                   )}
               </Stack>
-              {saasState?.posSettings?.letterSignee?.preApprovalDisplay &&
-                preApprovedCondition && (
-                  <StyledButton
-                    color={'info'}
-                    disabled={viewLoading || data?.isCustom}
-                    loading={viewLoading}
-                    onClick={() => getPDF('letter')}
-                    variant={'outlined'}
-                  >
-                    View pre-approval letter
-                  </StyledButton>
-                )}
+              {showPreApprovalLetterButton && (
+                <StyledButton
+                  color={'info'}
+                  disabled={viewLoading || data?.isCustom}
+                  loading={viewLoading}
+                  onClick={() => getPDF('letter')}
+                  variant={'outlined'}
+                >
+                  View pre-approval letter
+                </StyledButton>
+              )}
 
               {data?.isCustom && (
                 <Typography color={'text.secondary'} variant={'body3'}>
