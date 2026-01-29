@@ -6,7 +6,11 @@ import { useSnackbar } from 'notistack';
 import { observer } from 'mobx-react-lite';
 import { useMst } from '@/models/Root';
 
-import { AUTO_HIDE_DURATION, OPTIONS_COMMON_YES_OR_NO } from '@/constants';
+import {
+  AUTO_HIDE_DURATION,
+  OPTIONS_COMMON_YES_OR_NO,
+  YOULAND_ID,
+} from '@/constants';
 
 import {
   StyledButton,
@@ -21,6 +25,7 @@ import {
 
 import { HttpError, LoanAnswerEnum, TaskFiles, UserType } from '@/types';
 import { _deleteFile, _uploadFile } from '@/requests/base';
+import { useSessionStorageState } from '@/hooks';
 
 export interface AppraisalProfileData {
   haveAppraisal: boolean;
@@ -47,6 +52,7 @@ export const AppraisalProfile = observer<AppraisalProfileProps>(
     const { userType, dashboardInfo } = useMst();
     const router = useRouter();
     const { enqueueSnackbar } = useSnackbar();
+    const { saasState } = useSessionStorageState('tenantConfig');
 
     const [uploadLoading, setUploadLoading] = useState(false);
 
@@ -118,6 +124,10 @@ export const AppraisalProfile = observer<AppraisalProfileProps>(
     };
 
     const handleSave = async () => {
+      const isSaveMode =
+        haveAppraisal ||
+        isAppraisalNotRequired ||
+        saasState?.tenantId !== YOULAND_ID;
       const postData = {
         loanId: router.query.loanId,
         haveAppraisal,
@@ -132,7 +142,7 @@ export const AppraisalProfile = observer<AppraisalProfileProps>(
         instructions,
       };
       await nextStep?.(postData);
-      if (haveAppraisal || isAppraisalNotRequired) {
+      if (isSaveMode) {
         await router.push({
           pathname: '/dashboard/overview',
           query: { loanId: router.query.loanId },
@@ -396,7 +406,11 @@ export const AppraisalProfile = observer<AppraisalProfileProps>(
           onClick={handleSave}
           sx={{ maxWidth: 276, width: '100%' }}
         >
-          {haveAppraisal || isAppraisalNotRequired ? 'Save' : 'Next'}
+          {haveAppraisal ||
+          isAppraisalNotRequired ||
+          saasState?.tenantId !== YOULAND_ID
+            ? 'Save'
+            : 'Next'}
           {/*Save*/}
         </StyledButton>
       </Stack>
