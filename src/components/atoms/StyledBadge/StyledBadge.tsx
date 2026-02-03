@@ -21,8 +21,11 @@ export const StyledBadge: FC<StyledBadgeProps> = ({ content, status }) => {
         case PipelineLoanStageEnum.inactive:
           return 'rgba(176, 176, 176, 0.2)';
         case PipelineLoanStageEnum.initial_approval:
-        case PipelineLoanStageEnum.pre_approved:
           return '#DBF4EF';
+        case PipelineLoanStageEnum.pre_approved:
+          return '#F1FAFF';
+        case PipelineLoanStageEnum.processing:
+          return '#FFF1C8';
         case PipelineLoanStageEnum.preparing_docs:
           return 'rgba(10, 154, 235, 0.2)';
         case PipelineLoanStageEnum.docs_out:
@@ -31,6 +34,8 @@ export const StyledBadge: FC<StyledBadgeProps> = ({ content, status }) => {
           return 'rgba(68, 235, 10, 0.2)';
         case PipelineLoanStageEnum.rejected:
           return 'rgba(235, 10, 10, 0.15)';
+        case PipelineLoanStageEnum.on_hold:
+          return 'rgba(176, 176, 176, 0.2)';
       }
     },
     color: () => {
@@ -42,8 +47,11 @@ export const StyledBadge: FC<StyledBadgeProps> = ({ content, status }) => {
         case PipelineLoanStageEnum.inactive:
           return 'rgba(79, 79, 79, 0.5)';
         case PipelineLoanStageEnum.initial_approval:
-        case PipelineLoanStageEnum.pre_approved:
           return '#099D99';
+        case PipelineLoanStageEnum.pre_approved:
+          return '#5099B0';
+        case PipelineLoanStageEnum.processing:
+          return '#DC9B24';
         case PipelineLoanStageEnum.preparing_docs:
           return '#005EA1';
         case PipelineLoanStageEnum.docs_out:
@@ -52,6 +60,8 @@ export const StyledBadge: FC<StyledBadgeProps> = ({ content, status }) => {
           return '#00A123';
         case PipelineLoanStageEnum.rejected:
           return '#A10000';
+        case PipelineLoanStageEnum.on_hold:
+          return '#4F4F4F';
       }
     },
   });

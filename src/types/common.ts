@@ -33,10 +33,12 @@ export enum PipelineLoanStageEnum {
   initial_approval = 'INITIAL_APPROVAL',
   pre_approved = 'PRE_APPROVED',
   preparing_docs = 'PREPARING_DOCS',
+  processing = 'PROCESSING',
   docs_out = 'DOCS_OUT',
   funded = 'FUNDED',
   rejected = 'REJECTED',
   inactive = 'INACTIVE',
+  on_hold = 'ON_HOLD',
 }
 
 export enum LayoutSceneTypeEnum {
