@@ -1,5 +1,6 @@
 import { FC, ReactNode, useMemo, useState } from 'react';
 import {
+  Icon,
   Stack,
   Step,
   StepContent,
@@ -25,16 +26,20 @@ import {
 } from '@/types';
 import { _resubmitLoan } from '@/requests/dashboard';
 
+import ICON_ON_HOLD from './assets/icon_on_hold.svg';
+
 const hash = {
   [PipelineLoanStageEnum.scenario]: 0,
-  [PipelineLoanStageEnum.initial_approval]: 1,
   [PipelineLoanStageEnum.pre_approved]: 1,
-  [PipelineLoanStageEnum.preparing_docs]: 2,
-  [PipelineLoanStageEnum.docs_out]: 3,
-  [PipelineLoanStageEnum.funded]: 4,
+  [PipelineLoanStageEnum.processing]: 2,
+  [PipelineLoanStageEnum.initial_approval]: 3,
+  [PipelineLoanStageEnum.preparing_docs]: 4,
+  [PipelineLoanStageEnum.docs_out]: 5,
+  [PipelineLoanStageEnum.funded]: 6,
   [PipelineLoanStageEnum.rejected]: 0,
   [PipelineLoanStageEnum.inactive]: 0,
   [PipelineLoanStageEnum.not_submitted]: -1,
+  [PipelineLoanStageEnum.on_hold]: 0,
 };
 
 export type OverviewLoanStatusProps = {
@@ -107,9 +112,36 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                 : '',
             },
           ];
+        case PipelineLoanStageEnum.on_hold:
+          return [
+            {
+              icon: (
+                <Icon
+                  component={ICON_ON_HOLD}
+                  sx={{
+                    height: 24,
+                    width: 24,
+                  }}
+                />
+              ),
+              label: 'on hold',
+              tooltipTitle: '',
+              description:
+                'Your loan is temporarily on hold while we review details. We’ll reach out if we need more information.',
+              date: loanStatusDetails?.[PipelineLoanStageEnum.on_hold]?.date
+                ? `${format(
+                    parseISO(
+                      loanStatusDetails?.[PipelineLoanStageEnum.on_hold]?.date,
+                    ),
+                    "MMMM dd, yyyy 'at' h:mm a",
+                  )}`
+                : '',
+            },
+          ];
         case PipelineLoanStageEnum.scenario:
         case PipelineLoanStageEnum.initial_approval:
         case PipelineLoanStageEnum.pre_approved:
+        case PipelineLoanStageEnum.processing:
         case PipelineLoanStageEnum.preparing_docs:
         case PipelineLoanStageEnum.docs_out:
         case PipelineLoanStageEnum.funded:
@@ -124,6 +156,41 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                 ? `${format(
                     parseISO(
                       loanStatusDetails?.[PipelineLoanStageEnum.scenario]?.date,
+                    ),
+                    "MMMM dd, yyyy 'at' h:mm a",
+                  )}`
+                : '',
+            },
+            {
+              icon: null,
+              label: 'Under review',
+              tooltipTitle:
+                'Your application is being reviewed for initial eligibility. We’re confirming key details and may request more information. Once complete, we’ll move your loan to processing.',
+              description:
+                'Your application is being reviewed to determine initial eligibility. We may contact you if additional information is required.',
+              date: loanStatusDetails?.[PipelineLoanStageEnum.pre_approved]
+                ?.date
+                ? `${format(
+                    parseISO(
+                      loanStatusDetails?.[PipelineLoanStageEnum.pre_approved]
+                        ?.date,
+                    ),
+                    "MMMM dd, yyyy 'at' h:mm a",
+                  )}`
+                : '',
+            },
+            {
+              icon: null,
+              label: 'Processing',
+              tooltipTitle:
+                'Your loan is actively being reviewed and prepared for underwriting. We’re validating details and organizing your file. Next, your loan will move toward preliminary underwriting.',
+              description:
+                'Your loan is actively being reviewed by our underwriting team. We’re working through the details now.',
+              date: loanStatusDetails?.[PipelineLoanStageEnum.processing]?.date
+                ? `${format(
+                    parseISO(
+                      loanStatusDetails?.[PipelineLoanStageEnum.processing]
+                        ?.date,
                     ),
                     "MMMM dd, yyyy 'at' h:mm a",
                   )}`
@@ -214,6 +281,8 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
       loanStatusDetails?.[PipelineLoanStageEnum.preparing_docs],
       loanStatusDetails?.[PipelineLoanStageEnum.rejected],
       loanStatusDetails?.[PipelineLoanStageEnum.scenario],
+      loanStatusDetails?.[PipelineLoanStageEnum.processing],
+      loanStatusDetails?.[PipelineLoanStageEnum.on_hold],
     ],
   );
 
@@ -266,11 +335,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                   >
                     <Typography
                       color={
-                        computedData.length === 1
-                          ? 'error'
-                          : index <= hash[loanStatus]
-                            ? 'text.primary'
-                            : 'text.secondary'
+                        loanStatus === PipelineLoanStageEnum.on_hold
+                          ? '#212B36'
+                          : computedData.length === 1
+                            ? 'error'
+                            : index <= hash[loanStatus]
+                              ? 'text.primary'
+                              : 'text.secondary'
                       }
                       fontSize={{ xs: 14, lg: 16 }}
                       variant={'subtitle1'}
@@ -282,11 +353,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                         bgcolor={
                           loanStatus === PipelineLoanStageEnum.rejected
                             ? 'error.background'
-                            : loanStatus === PipelineLoanStageEnum.inactive
-                              ? 'rgba(239, 239, 239, 1)'
-                              : index <= hash[loanStatus]
-                                ? 'success.background'
-                                : 'transparent'
+                            : loanStatus === PipelineLoanStageEnum.on_hold
+                              ? 'rgba(176, 176, 176, 0.2)'
+                              : loanStatus === PipelineLoanStageEnum.inactive
+                                ? 'rgba(239, 239, 239, 1)'
+                                : index <= hash[loanStatus]
+                                  ? 'success.background'
+                                  : 'transparent'
                         }
                         border={
                           index <= hash[loanStatus]
@@ -297,11 +370,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                         color={
                           loanStatus === PipelineLoanStageEnum.rejected
                             ? 'error.main'
-                            : loanStatus === PipelineLoanStageEnum.inactive
-                              ? '#9F9F9F'
-                              : index <= hash[loanStatus]
-                                ? 'success.main'
-                                : 'text.disabled'
+                            : loanStatus === PipelineLoanStageEnum.on_hold
+                              ? '#4F4F4F'
+                              : loanStatus === PipelineLoanStageEnum.inactive
+                                ? '#9F9F9F'
+                                : index <= hash[loanStatus]
+                                  ? 'success.main'
+                                  : 'text.disabled'
                         }
                         height={22}
                         sx={{
@@ -314,11 +389,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                       >
                         {loanStatus === PipelineLoanStageEnum.rejected
                           ? 'Rejected'
-                          : loanStatus === PipelineLoanStageEnum.inactive
-                            ? 'Inactive'
-                            : index <= hash[loanStatus]
-                              ? 'Completed'
-                              : 'Pending'}
+                          : loanStatus === PipelineLoanStageEnum.on_hold
+                            ? 'On hold'
+                            : loanStatus === PipelineLoanStageEnum.inactive
+                              ? 'Inactive'
+                              : index <= hash[loanStatus]
+                                ? 'Completed'
+                                : 'Pending'}
                       </Typography>
                     )}
                   </Stack>
@@ -345,11 +422,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                         bgcolor={
                           loanStatus === PipelineLoanStageEnum.rejected
                             ? 'error.background'
-                            : loanStatus === PipelineLoanStageEnum.inactive
-                              ? 'rgba(239, 239, 239, 1)'
-                              : index <= hash[loanStatus]
-                                ? 'success.background'
-                                : 'transparent'
+                            : loanStatus === PipelineLoanStageEnum.on_hold
+                              ? 'rgba(176, 176, 176, 0.2)'
+                              : loanStatus === PipelineLoanStageEnum.inactive
+                                ? 'rgba(239, 239, 239, 1)'
+                                : index <= hash[loanStatus]
+                                  ? 'success.background'
+                                  : 'transparent'
                         }
                         border={
                           index <= hash[loanStatus]
@@ -360,11 +439,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                         color={
                           loanStatus === PipelineLoanStageEnum.rejected
                             ? 'error.main'
-                            : loanStatus === PipelineLoanStageEnum.inactive
-                              ? '#9F9F9F'
-                              : index <= hash[loanStatus]
-                                ? 'success.main'
-                                : 'text.disabled'
+                            : loanStatus === PipelineLoanStageEnum.on_hold
+                              ? '#4F4F4F'
+                              : loanStatus === PipelineLoanStageEnum.inactive
+                                ? '#9F9F9F'
+                                : index <= hash[loanStatus]
+                                  ? 'success.main'
+                                  : 'text.disabled'
                         }
                         height={22}
                         sx={{
@@ -377,11 +458,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                       >
                         {loanStatus === PipelineLoanStageEnum.rejected
                           ? 'Rejected'
-                          : loanStatus === PipelineLoanStageEnum.inactive
-                            ? 'Inactive'
-                            : index <= hash[loanStatus]
-                              ? 'Completed'
-                              : 'Pending'}
+                          : loanStatus === PipelineLoanStageEnum.on_hold
+                            ? 'On hold'
+                            : loanStatus === PipelineLoanStageEnum.inactive
+                              ? 'Inactive'
+                              : index <= hash[loanStatus]
+                                ? 'Completed'
+                                : 'Pending'}
                       </Typography>
                     )}
                     {item.date &&
@@ -425,11 +508,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                   >
                     <Typography
                       color={
-                        computedData.length === 1
-                          ? 'error'
-                          : index <= hash[loanStatus]
-                            ? 'text.primary'
-                            : 'text.secondary'
+                        loanStatus === PipelineLoanStageEnum.on_hold
+                          ? '#212B36'
+                          : computedData.length === 1
+                            ? 'error'
+                            : index <= hash[loanStatus]
+                              ? 'text.primary'
+                              : 'text.secondary'
                       }
                       fontSize={{ xs: 14, lg: 16 }}
                       variant={'subtitle1'}
@@ -441,11 +526,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                         bgcolor={
                           loanStatus === PipelineLoanStageEnum.rejected
                             ? 'error.background'
-                            : loanStatus === PipelineLoanStageEnum.inactive
-                              ? 'rgba(239, 239, 239, 1)'
-                              : index <= hash[loanStatus]
-                                ? 'success.background'
-                                : 'transparent'
+                            : loanStatus === PipelineLoanStageEnum.on_hold
+                              ? 'rgba(176, 176, 176, 0.2)'
+                              : loanStatus === PipelineLoanStageEnum.inactive
+                                ? 'rgba(239, 239, 239, 1)'
+                                : index <= hash[loanStatus]
+                                  ? 'success.background'
+                                  : 'transparent'
                         }
                         border={
                           index <= hash[loanStatus]
@@ -456,11 +543,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                         color={
                           loanStatus === PipelineLoanStageEnum.rejected
                             ? 'error.main'
-                            : loanStatus === PipelineLoanStageEnum.inactive
-                              ? '#9F9F9F'
-                              : index <= hash[loanStatus]
-                                ? 'success.main'
-                                : 'text.disabled'
+                            : loanStatus === PipelineLoanStageEnum.on_hold
+                              ? '#4F4F4F'
+                              : loanStatus === PipelineLoanStageEnum.inactive
+                                ? '#9F9F9F'
+                                : index <= hash[loanStatus]
+                                  ? 'success.main'
+                                  : 'text.disabled'
                         }
                         height={22}
                         sx={{
@@ -473,11 +562,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                       >
                         {loanStatus === PipelineLoanStageEnum.rejected
                           ? 'Rejected'
-                          : loanStatus === PipelineLoanStageEnum.inactive
-                            ? 'Inactive'
-                            : index <= hash[loanStatus]
-                              ? 'Completed'
-                              : 'Pending'}
+                          : loanStatus === PipelineLoanStageEnum.on_hold
+                            ? 'On hold'
+                            : loanStatus === PipelineLoanStageEnum.inactive
+                              ? 'Inactive'
+                              : index <= hash[loanStatus]
+                                ? 'Completed'
+                                : 'Pending'}
                       </Typography>
                     )}
                   </Stack>
@@ -507,11 +598,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                       bgcolor={
                         loanStatus === PipelineLoanStageEnum.rejected
                           ? 'error.background'
-                          : loanStatus === PipelineLoanStageEnum.inactive
-                            ? 'rgba(239, 239, 239, 1)'
-                            : index <= hash[loanStatus]
-                              ? 'success.background'
-                              : 'transparent'
+                          : loanStatus === PipelineLoanStageEnum.on_hold
+                            ? 'rgba(176, 176, 176, 0.2)'
+                            : loanStatus === PipelineLoanStageEnum.inactive
+                              ? 'rgba(239, 239, 239, 1)'
+                              : index <= hash[loanStatus]
+                                ? 'success.background'
+                                : 'transparent'
                       }
                       border={
                         index <= hash[loanStatus]
@@ -522,11 +615,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                       color={
                         loanStatus === PipelineLoanStageEnum.rejected
                           ? 'error.main'
-                          : loanStatus === PipelineLoanStageEnum.inactive
-                            ? '#9F9F9F'
-                            : index <= hash[loanStatus]
-                              ? 'success.main'
-                              : 'text.disabled'
+                          : loanStatus === PipelineLoanStageEnum.on_hold
+                            ? '#4F4F4F'
+                            : loanStatus === PipelineLoanStageEnum.inactive
+                              ? '#9F9F9F'
+                              : index <= hash[loanStatus]
+                                ? 'success.main'
+                                : 'text.disabled'
                       }
                       height={22}
                       sx={{
@@ -539,11 +634,13 @@ export const OverviewLoanStatus: FC<OverviewLoanStatusProps> = ({
                     >
                       {loanStatus === PipelineLoanStageEnum.rejected
                         ? 'Rejected'
-                        : loanStatus === PipelineLoanStageEnum.inactive
-                          ? 'Inactive'
-                          : index <= hash[loanStatus]
-                            ? 'Completed'
-                            : 'Pending'}
+                        : loanStatus === PipelineLoanStageEnum.on_hold
+                          ? 'On hold'
+                          : loanStatus === PipelineLoanStageEnum.inactive
+                            ? 'Inactive'
+                            : index <= hash[loanStatus]
+                              ? 'Completed'
+                              : 'Pending'}
                     </Typography>
                   )}
 

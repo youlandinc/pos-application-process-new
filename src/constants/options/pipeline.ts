@@ -2,9 +2,14 @@ import { PipelineLicenseType, PipelineLoanStageEnum } from '@/types';
 
 export const OPTIONS_LOAN_STAGE: Option[] = [
   {
+    key: PipelineLoanStageEnum.inactive,
+    value: PipelineLoanStageEnum.inactive,
+    label: 'Inactive',
+  },
+  {
     key: PipelineLoanStageEnum.not_submitted,
     value: PipelineLoanStageEnum.not_submitted,
-    label: 'Unsubmitted',
+    label: 'Not submitted',
   },
   {
     key: PipelineLoanStageEnum.scenario,
@@ -12,13 +17,18 @@ export const OPTIONS_LOAN_STAGE: Option[] = [
     label: 'Submitted',
   },
   {
-    key: PipelineLoanStageEnum.initial_approval,
-    value: PipelineLoanStageEnum.initial_approval,
-    label: 'Initial approval',
-  },
-  {
     key: PipelineLoanStageEnum.pre_approved,
     value: PipelineLoanStageEnum.pre_approved,
+    label: 'Under review',
+  },
+  {
+    key: PipelineLoanStageEnum.processing,
+    value: PipelineLoanStageEnum.processing,
+    label: 'Processing',
+  },
+  {
+    key: PipelineLoanStageEnum.initial_approval,
+    value: PipelineLoanStageEnum.initial_approval,
     label: 'Initial approval',
   },
   {
@@ -37,14 +47,14 @@ export const OPTIONS_LOAN_STAGE: Option[] = [
     label: 'Funded',
   },
   {
+    key: PipelineLoanStageEnum.on_hold,
+    value: PipelineLoanStageEnum.on_hold,
+    label: 'On hold',
+  },
+  {
     key: PipelineLoanStageEnum.rejected,
     value: PipelineLoanStageEnum.rejected,
     label: 'Rejected',
-  },
-  {
-    key: PipelineLoanStageEnum.inactive,
-    value: PipelineLoanStageEnum.inactive,
-    label: 'Inactive',
   },
 ];
 
